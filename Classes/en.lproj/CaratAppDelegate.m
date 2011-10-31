@@ -16,7 +16,7 @@
 
 @synthesize window;
 @synthesize tabBarController;
-
+@synthesize uuid; // TODO override getter, setter does nothing
 
 #pragma mark -
 #pragma mark Application lifecycle

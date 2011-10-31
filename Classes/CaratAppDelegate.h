@@ -21,6 +21,7 @@
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) IBOutlet UITabBarController *tabBarController;
+@property CFUUIDRef *uuid;
 
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (void) setupNotificationSubscriptions;
