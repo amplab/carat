@@ -9,14 +9,13 @@
 #import "CaratAppDelegate.h"
 #import "Reachability.h"
 #import "UIDeviceProc.h"
-#import "AsyncSocket.h"
-#import "CaratProtocol.pb.h"
+#import <CoreData/CoreData.h>
 
 @implementation CaratAppDelegate
 
 @synthesize window;
 @synthesize tabBarController;
-@synthesize uuid; // TODO override getter, setter does nothing
+
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -33,7 +32,11 @@
 	// Set the tab bar controller as the window's root view controller and display.
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-
+    
+    if (communicationMgr == Nil) {
+        communicationMgr = [[CommunicationManager alloc] init];
+    }
+    
     return YES;
 }
 
@@ -67,7 +70,10 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [self doSample];
+    //[self doSample];
+    
+    Registration *dummy = [[Registration alloc] initWithUuId:@"Uuid" platformId:[UIDevice currentDevice].model systemVersion:[UIDevice currentDevice].systemVersion]; 
+    [communicationMgr sendRegistrationMessage:dummy];
 }
 
 
@@ -93,113 +99,6 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed {
 }
 */
-
-
-#pragma mark -
-#pragma mark sampling methods
-
-- (void)doSample {
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-    {
-        [self doSampleBackground];
-    }
-    else
-    {
-        [self doSampleForeground];
-    }
-    
-    AsyncSocket *asyncSocket = [[AsyncSocket alloc] initWithDelegate:self];
-    NSError *nsError = nil;
-    if (![asyncSocket connectToHost:@"127.0.0.1" onPort:8080 error:&nsError]) {
-        NSLog(@"%@ %@", [nsError code], [nsError localizedDescription]);
-    } else {
-        NSLog(@"Connected!");
-    }
-    
-    NSLog(@"Sending samples");
-    
-    Sample_Builder *sampleBuilder1 = [[Sample_Builder alloc] init];
-    [sampleBuilder1 setProcessId: 1];
-    [sampleBuilder1 setProcessName:@"Process1"];
-    Sample *sample1 = [sampleBuilder1 build];
-    
-    Sample_Builder *sampleBuilder2 = [[Sample_Builder alloc] init];
-    [sampleBuilder2 setProcessId: 2];
-    [sampleBuilder2 setProcessName:@"Process2"];
-    Sample *sample2 = [sampleBuilder2 build];
-    
-    Samples_Builder *samplesBuilder = [[Samples_Builder alloc] init];
-    [samplesBuilder addSample:sample1];
-    [samplesBuilder addSample:sample2];
-    Samples *samples = [samplesBuilder build];
-    NSData* nsData = [samples data];
-    NSLog(@"Raw string is '%s' (length %d)\n", [nsData bytes], [nsData length]);
-    [asyncSocket writeData:nsData withTimeout:-1 tag:10];
-}
-
-- (void)doSampleForeground {
-    NSArray *processes = [[UIDevice currentDevice] runningProcesses];
-    for (NSDictionary *dict in processes){
-        NSLog(@"%@ - %@", [dict objectForKey:@"ProcessID"], [dict objectForKey:@"ProcessName"]);
-    }
-    
-    NSLog(@"%@", [UIDevice currentDevice].name);
-    NSLog(@"%@", [UIDevice currentDevice].model);
-    NSLog(@"%@", [UIDevice currentDevice].systemName);
-    NSLog(@"%@", [UIDevice currentDevice].systemVersion);
-    
-    if ([UIDevice currentDevice].batteryMonitoringEnabled) {
-        NSLog(@"%f", [UIDevice currentDevice].batteryLevel);
-        switch ([UIDevice currentDevice].batteryState) {
-            case UIDeviceBatteryStateUnknown:
-                NSLog(@"%@", @"Unknown");
-                break;
-            case UIDeviceBatteryStateUnplugged:
-                NSLog(@"%@", @"Unplugged");
-                break;
-            case UIDeviceBatteryStateCharging:
-                NSLog(@"%@", @"Charging");
-                break;
-            case UIDeviceBatteryStateFull:
-                NSLog(@"%@", @"Full");
-                break;
-            default:
-                break;
-        }
-    }
-
-    
-}
-
-- (void)doSampleBackground {
-    // REMEMBER. We are running in the background if this is being executed.
-    // We can't assume normal network access.
-    // bgTask is defined as an instance variable of type UIBackgroundTaskIdentifier
-    
-    // Note that the expiration handler block simply ends the task. It is important that we always
-    // end tasks that we have started.
-    
-    bgTask = [[UIApplication sharedApplication]
-              beginBackgroundTaskWithExpirationHandler:^{
-                  [[UIApplication sharedApplication] endBackgroundTask:bgTask];
-              }];
-                  
-    // ANY CODE WE PUT HERE IS OUR BACKGROUND TASK
-    // For example, I can do a series of SYNCHRONOUS network methods
-    // (we're in the background, there is
-    // no UI to block so synchronous is the correct approach here).
-
-    // ...
-
-    // AFTER ALL THE UPDATES, close the task
-
-    if (bgTask != UIBackgroundTaskInvalid)
-    {
-      [[UIApplication sharedApplication] endBackgroundTask:bgTask];
-       bgTask = UIBackgroundTaskInvalid;
-    }
-}
-
 
 #pragma mark -
 #pragma mark application logic methods
@@ -231,7 +130,7 @@
 {
     // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
     
-    [self doSample];
+    //[self doSample];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {

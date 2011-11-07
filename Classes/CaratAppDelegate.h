@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
+#import "CaratProtocol.h"
+#import "Sampler.h"
+#import "CommunicationManager.h"
+#import "Thrift/transport/TSocketClient.h"
+#import "Thrift/protocol/TBinaryProtocol.h"
 
 @class Reachability;
 
@@ -17,17 +23,15 @@
     CLLocationManager *locationManager;
     Reachability *hostReachable;
     UIBackgroundTaskIdentifier bgTask;
+    Sampler *sampler;
+    CommunicationManager *communicationMgr;
 }
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) IBOutlet UITabBarController *tabBarController;
-@property CFUUIDRef *uuid;
 
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (void) setupNotificationSubscriptions;
-- (void) doSample;
-- (void) doSampleBackground;
-- (void) doSampleForeground;
 - (void) doSyncIfNeeded;
 
 @end
