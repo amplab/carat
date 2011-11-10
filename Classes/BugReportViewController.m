@@ -12,14 +12,12 @@
 @implementation BugReportViewController
 
 
-
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
         self.title = @"Bug Report";
-        self.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemHistory tag:0];
-
+        self.tabBarItem.image = [UIImage imageNamed:@"bug"];
     }
     return self;
 }

@@ -10,15 +10,14 @@
 
 @implementation CurrentViewController
 
-@synthesize jScore;
+//@synthesize jScore;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
         self.title = @"Current State";
-        self.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemHistory tag:0];
-
+        self.tabBarItem.image = [UIImage imageNamed:@"clock"];
     }
     return self;
 }
@@ -52,9 +51,10 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
+- (void)viewDidUnload {    
 	// Release any retained subviews of the main view.
 	// e.g. self.myOutlet = nil;
 }
+
 
 @end

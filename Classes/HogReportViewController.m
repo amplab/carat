@@ -18,8 +18,7 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
         self.title = @"Hog Report";
-        self.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemHistory tag:0];
-
+        self.tabBarItem.image = [UIImage imageNamed:@"hog"];
     }
     return self;
 }

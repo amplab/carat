@@ -11,6 +11,10 @@
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
 
+#import "CurrentViewController.h"
+#import "HogReportViewController.h"
+#import "BugReportViewController.h"
+
 @implementation CaratAppDelegate
 
 @synthesize window;
@@ -29,7 +33,14 @@
     }
     [self setupNotificationSubscriptions];
 
-	// Set the tab bar controller as the window's root view controller and display.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+    UIViewController *viewController1, *viewController2, *viewController3;
+    viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
+    viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
+    viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
+    self.tabBarController = [[UITabBarController alloc] init];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2,viewController3, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
