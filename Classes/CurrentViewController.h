@@ -13,4 +13,6 @@
 
 }
 
+@property (nonatomic,strong) IBOutlet UILabel *jScore;
+
 @end
