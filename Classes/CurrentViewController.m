@@ -57,17 +57,4 @@
 	// e.g. self.myOutlet = nil;
 }
 
-- (void)sampleNow {
-    // button down
-}
-
-- (void)sampleNowCanceled {
-    // button click canceled
-
-}
-
-- (void)sampleNowPressed {
-
-}
-
 @end
