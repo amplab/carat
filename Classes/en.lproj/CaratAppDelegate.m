@@ -40,14 +40,16 @@
     viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
     viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
     self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2,viewController3, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, viewController3, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
     if (communicationMgr == Nil) {
         communicationMgr = [[CommunicationManager alloc] init];
     }
-    
+    [locationManager startMonitoringSignificantLocationChanges];
+    [locationManager stopMonitoringSignificantLocationChanges];
+
     return YES;
 }
 

@@ -61,6 +61,7 @@
         [request release];
         return array;
     }
+    return nil; // will return nil if control falls to here
 }
 
 #pragma mark - Core Data stack
