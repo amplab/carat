@@ -8,6 +8,6 @@
 //  Code from http://forrst.com/posts/UIDevice_Category_For_Processes-h1H
 //
 
-@interface UIDevice (ProcessesAdditions)
-- (NSArray *)runningProcesses;
+@interface UIDevice (ProcessesAdditions) 
+- (NSArray *) runningProcesses;
 @end

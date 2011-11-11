@@ -2,6 +2,8 @@
 //  CoreDataManager.m
 //  Carat
 //
+//  The controller for CARAT's core data storage.
+//
 //  Created by Anand Padmanabha Iyer on 11/6/11.
 //  Copyright (c) 2011 UC Berkeley. All rights reserved.
 //
@@ -24,12 +26,21 @@
     [super dealloc];
 }
 
-- (void)saveSample
+- (void) saveSample : (Sample *)sample 
+           sampledAt: (NSDate *)nsTimestamp
 {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
     if (managedObjectContext != nil)
     {
+        //
+        // Insert the new sample.
+        //
+        CoreDataSample *cdataSample = (CoreDataSample *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataSample" inManagedObjectContext:managedObjectContext];
+        [cdataSample setTimestamp:[NSNumber numberWithDouble:[nsTimestamp timeIntervalSince1970]]];
+        //[cdataSample setProcessInfoList:<#(NSString *)#>
+                
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
         {
             /*
@@ -50,7 +61,7 @@
     if (managedObjectContext != nil)
     {
         NSEntityDescription *entityDescription = [NSEntityDescription
-                                                  entityForName:@"Sample" inManagedObjectContext:managedObjectContext];
+                                                  entityForName:@"CoreDataSample" inManagedObjectContext:managedObjectContext];
         NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
         [request setFetchLimit:100];
         [request setEntity:entityDescription];
@@ -61,7 +72,6 @@
         [request release];
         return array;
     }
-    return nil; // will return nil if control falls to here
 }
 
 #pragma mark - Core Data stack

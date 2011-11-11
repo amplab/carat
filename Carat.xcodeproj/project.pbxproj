@@ -49,6 +49,9 @@
 		C15978A114667AAD0046F1F1 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C15978A014667AAD0046F1F1 /* CoreDataManager.m */; };
 		C18E106E1466591A0028095B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C18E106D1466591A0028095B /* CoreData.framework */; };
 		C18E107214665E230028095B /* Carat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C18E107014665E230028095B /* Carat.xcdatamodeld */; };
+		C19D41FD146D2386004C842A /* CoreDataProcessInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */; };
+		C19D4201146D23B0004C842A /* Globals.m in Sources */ = {isa = PBXBuildFile; fileRef = C19D4200146D23B0004C842A /* Globals.m */; };
+		C19D4207146D2AD6004C842A /* CoreDataSample.m in Sources */ = {isa = PBXBuildFile; fileRef = C19D4206146D2AD6004C842A /* CoreDataSample.m */; };
 		C1D52E511465F0A9008D6D09 /* CaratProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52E501465F0A9008D6D09 /* CaratProtocol.m */; };
 		C1D52F2F1465F85A008D6D09 /* TBinaryProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F0F1465F85A008D6D09 /* TBinaryProtocol.m */; };
 		C1D52F301465F85A008D6D09 /* TProtocolException.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F121465F85A008D6D09 /* TProtocolException.m */; };
@@ -124,6 +127,12 @@
 		C15978A014667AAD0046F1F1 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
 		C18E106D1466591A0028095B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C18E107114665E230028095B /* Carat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Carat.xcdatamodel; sourceTree = "<group>"; };
+		C19D41F9146D2385004C842A /* CoreDataProcessInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataProcessInfo.h; sourceTree = "<group>"; };
+		C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataProcessInfo.m; sourceTree = "<group>"; };
+		C19D41FF146D23B0004C842A /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
+		C19D4200146D23B0004C842A /* Globals.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Globals.m; sourceTree = "<group>"; };
+		C19D4205146D2AD6004C842A /* CoreDataSample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataSample.h; sourceTree = "<group>"; };
+		C19D4206146D2AD6004C842A /* CoreDataSample.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataSample.m; sourceTree = "<group>"; };
 		C1D52E4F1465F0A9008D6D09 /* CaratProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratProtocol.h; sourceTree = "<group>"; };
 		C1D52E501465F0A9008D6D09 /* CaratProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratProtocol.m; sourceTree = "<group>"; };
 		C1D52F0E1465F85A008D6D09 /* TBinaryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBinaryProtocol.h; sourceTree = "<group>"; };
@@ -180,15 +189,23 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C19D4205146D2AD6004C842A /* CoreDataSample.h */,
+				C19D4206146D2AD6004C842A /* CoreDataSample.m */,
+				AB41CE0A144F572D0090CC09 /* iPhone */,
+				AB41CE0C144F574A0090CC09 /* iPad */,
 				C1D52F0C1465F85A008D6D09 /* Thrift */,
 				C1D52E4F1465F0A9008D6D09 /* CaratProtocol.h */,
+				C19D41FF146D23B0004C842A /* Globals.h */,
+				C19D4200146D23B0004C842A /* Globals.m */,
 				C1D52E501465F0A9008D6D09 /* CaratProtocol.m */,
+				C19D41F9146D2385004C842A /* CoreDataProcessInfo.h */,
+				C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */,
+				C136F095146627E100F0A292 /* Sampler.h */,
+				C136F0971466281100F0A292 /* Sampler.m */,
 				C14F5C34145BDA9900087F74 /* AsyncUdpSocket.h */,
 				C14F5C35145BDA9900087F74 /* AsyncUdpSocket.m */,
 				C14F5C2C145BD4D300087F74 /* AsyncSocket.h */,
 				C14F5C2D145BD4D300087F74 /* AsyncSocket.m */,
-				AB41CE0C144F574A0090CC09 /* iPad */,
-				AB41CE0A144F572D0090CC09 /* iPhone */,
 				1D3623240D0F684500981E51 /* CaratAppDelegate.h */,
 				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
 				C159789F14667AAD0046F1F1 /* CoreDataManager.h */,
@@ -203,8 +220,6 @@
 				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
 				AB41CDFB144E3B990090CC09 /* Reachability.h */,
 				AB41CDFC144E3B990090CC09 /* Reachability.m */,
-				C136F095146627E100F0A292 /* Sampler.h */,
-				C136F0971466281100F0A292 /* Sampler.m */,
 				C136F09914662E5600F0A292 /* CommunicationManager.h */,
 				C136F09A14662E5600F0A292 /* CommunicationManager.m */,
 			);
@@ -398,6 +413,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "UC Berkeley";
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Carat" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -482,6 +498,9 @@
 				C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */,
 				C18E107214665E230028095B /* Carat.xcdatamodeld in Sources */,
 				C15978A114667AAD0046F1F1 /* CoreDataManager.m in Sources */,
+				C19D41FD146D2386004C842A /* CoreDataProcessInfo.m in Sources */,
+				C19D4201146D23B0004C842A /* Globals.m in Sources */,
+				C19D4207146D2AD6004C842A /* CoreDataSample.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

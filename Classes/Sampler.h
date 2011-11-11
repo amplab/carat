@@ -9,14 +9,22 @@
 #ifndef Carat_Sampler_h
 #define Carat_Sampler_h
 
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 #import "UIDeviceProc.h"
+#import "CoreDataProcessInfo.h"
+#import "CoreDataSample.h"
 
-@interface Sampler : NSObject {
-    NSManagedObjectModel *managedObjectModel;
-    NSManagedObjectContext *managedObjectContext;
-    NSPersistentStoreCoordinator *persistentStoreCoordinator;
-}
+@interface Sampler : NSObject 
+
+@property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+
 - (void) sampleNow;
+- (NSURL *) applicationDocumentsDirectory;
+
 @end
 
 #endif

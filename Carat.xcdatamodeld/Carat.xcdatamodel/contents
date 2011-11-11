@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="11C74" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Sample" representedClassName="Sample" syncable="YES">
-        <attribute name="processInfoList" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+    <entity name="CoreDataProcessInfo" representedClassName="CoreDataProcessInfo" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="coredatasample" optional="YES" minCount="1" maxCount="1" deletionRule="No Action" destinationEntity="CoreDataSample" inverseName="processInfos" inverseEntity="CoreDataSample" syncable="YES"/>
+    </entity>
+    <entity name="CoreDataSample" representedClassName="CoreDataSample" syncable="YES">
+        <attribute name="batteryLevel" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="batteryState" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="processInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CoreDataProcessInfo" inverseName="coredatasample" inverseEntity="CoreDataProcessInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Sample" positionX="-63" positionY="-270" width="128" height="75"/>
+        <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
+        <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="105"/>
     </elements>
 </model>

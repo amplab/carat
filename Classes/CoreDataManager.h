@@ -8,15 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "CoreDataSample.h"
+#import "CaratProtocol.h"
 
-@interface CoreDataManager : NSObject
+@interface CoreDataManager : NSObject 
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
-- (void) saveSample;
+- (void) saveSample : (Sample *) sample 
+          sampledAt : (NSDate *) nsTimestamp;
 - (NSArray *) fetchSamples;
 - (NSURL *) applicationDocumentsDirectory;
 

@@ -11,18 +11,22 @@
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
 
-#import "CurrentViewController.h"
-#import "HogReportViewController.h"
-#import "BugReportViewController.h"
-
 @implementation CaratAppDelegate
 
 @synthesize window;
 @synthesize tabBarController;
 
-
 #pragma mark -
 #pragma mark Application lifecycle
+
+- (id) init {
+    [super init];
+    if (self != Nil) {
+        communicationMgr = [[CommunicationManager alloc] init];
+        sampler = [[Sampler alloc] init];
+    }
+    return self;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
@@ -33,23 +37,20 @@
     }
     [self setupNotificationSubscriptions];
 
-    //self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    UIViewController *viewController1, *viewController2, *viewController3;
-    viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
-    viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
-    viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
-    self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, viewController3, nil];
+	// Set the tab bar controller as the window's root view controller and display.
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
-    if (communicationMgr == Nil) {
-        communicationMgr = [[CommunicationManager alloc] init];
-    }
-    [locationManager startMonitoringSignificantLocationChanges];
-    [locationManager stopMonitoringSignificantLocationChanges];
-
+    //
+    // Everytime the CARAT app is launched, send a registration message.
+    // 
+    //Registration *dummy = [[Registration alloc] initWithUuId:[[Globals instance] getUUID] platformId:[UIDevice currentDevice].model systemVersion:[UIDevice currentDevice].systemVersion]; 
+    Registration *registerMe = [[Registration alloc] init];
+    registerMe.uuId = [[Globals instance] getUUID ];
+    registerMe.platformId = [UIDevice currentDevice].model;
+    registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
+    [communicationMgr sendRegistrationMessage:registerMe];
+        
     return YES;
 }
 
@@ -84,9 +85,7 @@
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
     //[self doSample];
-    
-    Registration *dummy = [[Registration alloc] initWithUuId:@"Uuid" platformId:[UIDevice currentDevice].model systemVersion:[UIDevice currentDevice].systemVersion]; 
-    [communicationMgr sendRegistrationMessage:dummy];
+    [sampler sampleNow];
 }
 
 
@@ -181,8 +180,10 @@
 }
 
 
-- (void)dealloc {
+- (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [sampler release];
+    [communicationMgr release];
 }
 
 @end

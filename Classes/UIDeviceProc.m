@@ -17,9 +17,9 @@
 #import "UIDeviceProc.h"
 #import <sys/sysctl.h>
 
-@implementation UIDevice (ProcessesAdditions)
+@implementation UIDevice (ProcessesAdditions) 
 
-- (NSArray *)runningProcesses {
+- (NSArray *) runningProcesses {
     
     int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
     size_t miblen = 4;
