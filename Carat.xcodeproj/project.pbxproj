@@ -189,15 +189,15 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C19D4205146D2AD6004C842A /* CoreDataSample.h */,
-				C19D4206146D2AD6004C842A /* CoreDataSample.m */,
 				AB41CE0A144F572D0090CC09 /* iPhone */,
 				AB41CE0C144F574A0090CC09 /* iPad */,
 				C1D52F0C1465F85A008D6D09 /* Thrift */,
 				C1D52E4F1465F0A9008D6D09 /* CaratProtocol.h */,
+				C1D52E501465F0A9008D6D09 /* CaratProtocol.m */,
 				C19D41FF146D23B0004C842A /* Globals.h */,
 				C19D4200146D23B0004C842A /* Globals.m */,
-				C1D52E501465F0A9008D6D09 /* CaratProtocol.m */,
+				C19D4205146D2AD6004C842A /* CoreDataSample.h */,
+				C19D4206146D2AD6004C842A /* CoreDataSample.m */,
 				C19D41F9146D2385004C842A /* CoreDataProcessInfo.h */,
 				C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */,
 				C136F095146627E100F0A292 /* Sampler.h */,

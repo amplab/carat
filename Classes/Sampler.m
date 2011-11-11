@@ -28,11 +28,12 @@
 }
 
 //
-// Get the list of running processes and put it in core data.
+// Get the list of running processes and put it in core data. Note that we 
+// don't call save on the managed object here, as we will do a final call to 
+// save the entire sample.
 //
 - (void) sampleProcessInfo : (CoreDataSample *) currentCDSample
 {
-    //NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     if (managedObjectContext != nil)
@@ -48,17 +49,6 @@
             [cdataProcessInfo setCoredatasample:currentCDSample];
             [currentCDSample addProcessInfosObject:cdataProcessInfo];
         }
-        
-        //if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        //{
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-             */
-          //  NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-           // abort();
-        //} 
     }
 }
 
