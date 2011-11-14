@@ -35,12 +35,13 @@
 }
 
 //
-// Setup the carat thrift service.
+//  Setup the carat thrift service. We check if we already setup the service. 
+//  
 //
 - (bool) setupCaratService
 {
-    if ([self isCaratServiceSetup]) 
-        return YES;
+    //if ([self isCaratServiceSetup]) 
+    //    return YES;
     
     //
     // Try setting it up.
@@ -59,18 +60,41 @@
 }
 
 //
-// Send a registration message.
+//  Send a registration message.
 //
 - (void) sendRegistrationMessage:(Registration *) registrationMessage
 {
-    [self setupCaratService];   
-    @try {
-        [service registerMe:registrationMessage];
-        NSLog(@"sendRegistrationMessage: Success!");
+    if ([self setupCaratService] == YES) {
+        @try {
+            [service registerMe:registrationMessage];
+            NSLog(@"sendRegistrationMessage: Success!");
+        }
+        @catch (NSException *exception) {
+            NSLog(@"sendRegistrationMessage: Caught %@: %@", [exception name], [exception reason]);
+        }
     }
-    @catch (NSException *exception) {
-        NSLog(@"sendRegistrationMessage: Caught %@: %@", [exception name], [exception reason]);
+}
+
+//
+//  Send sample to the server.
+//
+- (BOOL) sendSample:(Sample *)sample
+{
+    BOOL ret = NO;
+    
+    if ([self setupCaratService] == YES) 
+    {
+        @try {
+            [service uploadSample:sample];
+            ret = YES;
+            NSLog(@"sendSample: Success!");
+        }
+        @catch (NSException *exception) {
+            NSLog(@"sendSample: Caught %@: %@", [exception name], [exception reason]);
+        }
     }
+    
+    return ret;
 }
 
 //

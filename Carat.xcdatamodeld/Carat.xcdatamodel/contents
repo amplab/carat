@@ -3,7 +3,7 @@
     <entity name="CoreDataProcessInfo" representedClassName="CoreDataProcessInfo" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="coredatasample" optional="YES" minCount="1" maxCount="1" deletionRule="No Action" destinationEntity="CoreDataSample" inverseName="processInfos" inverseEntity="CoreDataSample" syncable="YES"/>
+        <relationship name="coredatasample" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataSample" inverseName="processInfos" inverseEntity="CoreDataSample" syncable="YES"/>
     </entity>
     <entity name="CoreDataSample" representedClassName="CoreDataSample" syncable="YES">
         <attribute name="batteryLevel" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>

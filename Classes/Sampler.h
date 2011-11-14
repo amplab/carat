@@ -11,18 +11,24 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Globals.h"
 #import "UIDeviceProc.h"
 #import "CoreDataProcessInfo.h"
 #import "CoreDataSample.h"
+#import "CommunicationManager.h"
 
-@interface Sampler : NSObject 
+@interface Sampler : NSObject {
+    CommunicationManager * commManager;
+}
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
+- (id) initWithCommManager : cManager;
 - (void) sampleNow;
+- (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
 - (NSURL *) applicationDocumentsDirectory;
 
 @end

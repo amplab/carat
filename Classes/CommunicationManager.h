@@ -14,4 +14,5 @@
 
 @interface CommunicationManager : NSObject
 - (void) sendRegistrationMessage:(Registration *) registrationMessage;
+- (BOOL) sendSample:(Sample *) sample;
 @end

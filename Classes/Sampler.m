@@ -18,19 +18,27 @@
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize fetchedResultsController = __fetchResultsController;
 
+- (id) initWithCommManager:(id)cManager 
+{
+    self = [super init];
+    commManager = [cManager retain];
+    return self;
+}
+
 - (void)dealloc
 {
     [__managedObjectContext release];
     [__managedObjectModel release];
     [__persistentStoreCoordinator release];
     [__fetchResultsController release];
+    [commManager release];
     [super dealloc];
 }
 
 //
-// Get the list of running processes and put it in core data. Note that we 
-// don't call save on the managed object here, as we will do a final call to 
-// save the entire sample.
+//  Get the list of running processes and put it in core data. Note that we 
+//  don't call save on the managed object here, as we will do a final call to 
+//  save the entire sample.
 //
 - (void) sampleProcessInfo : (CoreDataSample *) currentCDSample
 {
@@ -52,6 +60,10 @@
     }
 }
 
+//
+//  Do a sampling while the app is in the foreground. There shouldn't be any
+//  restrictions on CPU usage as we are active.
+//
 - (void) sampleForeground 
 {
     NSError *error = nil;
@@ -62,12 +74,12 @@
     [cdataSample setTimestamp:[NSDate date]];
     
     //
-    // Running processes.
+    //  Running processes.
     //
     [self sampleProcessInfo:cdataSample];
     
     //
-    // Battery state and level.
+    //  Battery state and level.
     //
     if ([UIDevice currentDevice].batteryMonitoringEnabled) 
     {
@@ -95,7 +107,7 @@
     }
     
     //
-    // Now save the sample.
+    //  Now save the sample.
     //
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
     {
@@ -149,6 +161,93 @@
     else
     {
         [self sampleForeground];
+    }
+}
+
+//
+//  Retrieve and send some samples to the server.
+//
+- (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" 
+                                                                       ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataSample" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        [fetchRequest setFetchLimit:limitSamplesTo];  
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"Could not fetch samples, error %@, %@", error, [error userInfo]);
+            goto cleanup;
+        } 
+        
+        NSLog(@"Number of samples fetched: %u", [fetchedObjects count]);
+        
+        for (CoreDataSample *sample in fetchedObjects)
+        {
+            //CoreDataSample *sample = (CoreDataSample *)  obj;
+            if (sample == nil) 
+                break;
+            
+            Sample* sampleToSend = [[Sample alloc] init];
+            sampleToSend.uuId = [[Globals instance] getUUID ];
+            NSMutableArray *pInfoList = [[NSMutableArray alloc] init];
+            sampleToSend.piList = pInfoList;
+            
+            NSLog(@"timestamp: %@", [sample valueForKey:@"timestamp"]);
+            NSLog(@"batteryLevel: %@", [sample valueForKey:@"batteryLevel"]);
+            NSLog(@"batteryState: %@", [sample valueForKey:@"batteryState"]);
+            
+            //
+            //  Get all the process info objects for this sample.
+            //
+            NSSet *processInfosSet = sample.processInfos;
+            NSArray *processInfoArray = [processInfosSet allObjects];
+            
+            for (CoreDataProcessInfo *processInfo in processInfoArray)
+            {
+                ProcessInfo *pInfo = [[ProcessInfo alloc] init];
+                pInfo.pId = (int)[processInfo valueForKey:@"id"];
+                pInfo.pName = (NSString *)[processInfo valueForKey:@"name"];
+                [pInfoList addObject:pInfo];
+                NSLog(@"Id: %@", [processInfo valueForKey:@"id"]);
+                NSLog(@"Name: %@", [processInfo valueForKey:@"name"]);
+            }
+            
+            //
+            //  Try to send. If successful, delete. Note that the process info
+            //  is cascaded with sample deletion.
+            //
+            BOOL ret = [commManager sendSample:sampleToSend];
+            if (ret == YES) 
+            {
+                [managedObjectContext deleteObject:sample];
+            }
+        }
+        
+    cleanup:
+        [sortDescriptors release];
+        [sortDescriptor release];
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+        {
+            /*
+             Replace this implementation with code to handle the error appropriately.
+             
+             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+             */
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        } 
     }
 }
 
