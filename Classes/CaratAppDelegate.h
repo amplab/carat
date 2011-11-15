@@ -18,7 +18,7 @@
 
 @class Reachability;
 
-@interface CaratAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate> {
+@interface CaratAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate> {
     UIWindow *window;
     UITabBarController *tabBarController;
     CLLocationManager *locationManager;
@@ -28,8 +28,8 @@
     CommunicationManager *communicationMgr;
 }
 
-@property (nonatomic, strong) IBOutlet UIWindow *window;
-@property (nonatomic, strong) IBOutlet UITabBarController *tabBarController;
+@property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) UITabBarController *tabBarController;
 
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (void) setupNotificationSubscriptions;

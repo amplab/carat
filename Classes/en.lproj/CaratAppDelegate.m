@@ -3,13 +3,17 @@
 //  Carat
 //
 //  Created by Adam Oliner on 10/6/11.
-//  Copyright 2011 Stanford University. All rights reserved.
+//  Copyright 2011 UC Berkeley. All rights reserved.
 //
 
 #import "CaratAppDelegate.h"
 #import "Reachability.h"
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
+
+#import "CurrentViewController.h"
+#import "HogReportViewController.h"
+#import "BugReportViewController.h"
 
 @implementation CaratAppDelegate
 
@@ -29,6 +33,16 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
+
+    // UI
+    UIViewController *viewController1, *viewController2, *viewController3;
+    viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
+    viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
+    viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
+    self.tabBarController = [[UITabBarController alloc] init];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, viewController3, nil];
+    self.window.rootViewController = self.tabBarController;
+    [self.window makeKeyAndVisible];
     
     // Override point for customization after application launch.
     if (locationManager == nil && [CLLocationManager significantLocationChangeMonitoringAvailable]) {
@@ -36,12 +50,7 @@
         locationManager.delegate = self;
     }
     [self setupNotificationSubscriptions];
-
-	// Set the tab bar controller as the window's root view controller and display.
-    self.window.rootViewController = self.tabBarController;
-    [self.window makeKeyAndVisible];
     
-    //
     // Everytime the CARAT app is launched, send a registration message.
     // 
     //Registration *dummy = [[Registration alloc] initWithUuId:[[Globals instance] getUUID] platformId:[UIDevice currentDevice].model systemVersion:[UIDevice currentDevice].systemVersion]; 
