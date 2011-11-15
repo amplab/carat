@@ -17,8 +17,8 @@
 
 @implementation CaratAppDelegate
 
-@synthesize window;
-@synthesize tabBarController;
+@synthesize window = _window;
+@synthesize tabBarController = _tabBarController;
 
 #pragma mark -
 #pragma mark Application lifecycle
