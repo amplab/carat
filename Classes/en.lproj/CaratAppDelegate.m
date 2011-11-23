@@ -21,6 +21,14 @@
 @synthesize tabBarController = _tabBarController;
 
 #pragma mark -
+#pragma mark utility
+
+void onUncaughtException(NSException *exception)
+{
+    NSLog(@"uncaught exception: %@", exception.description);
+}
+
+#pragma mark -
 #pragma mark Application lifecycle
 
 - (id) init {
@@ -35,6 +43,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 
     // UI
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *viewController1, *viewController2, *viewController3;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
     viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
@@ -51,6 +60,10 @@
     }
     [self setupNotificationSubscriptions];
     
+    // we do this to prompt the dialog asking for permission to share location info
+    [locationManager startMonitoringSignificantLocationChanges];
+    [locationManager stopMonitoringSignificantLocationChanges];
+    
     // Everytime the CARAT app is launched, send a registration message.
     // 
     //Registration *dummy = [[Registration alloc] initWithUuId:[[Globals instance] getUUID] platformId:[UIDevice currentDevice].model systemVersion:[UIDevice currentDevice].systemVersion]; 
@@ -59,6 +72,9 @@
     registerMe.platformId = [UIDevice currentDevice].model;
     registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
     [communicationMgr sendRegistrationMessage:registerMe];
+    
+    // to help track down where exceptions are being raised
+    NSSetUncaughtExceptionHandler(&onUncaughtException);
         
     return YES;
 }
