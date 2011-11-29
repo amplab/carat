@@ -40,6 +40,8 @@
 		AB645E041456FF1F0008244B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E031456FF1F0008244B /* Default@2x.png */; };
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
+		ABC07A14148569F200FCC2C2 /* ReportItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemView.xib */; };
+		ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A151485828A00FCC2C2 /* amplab_logo.png */; };
 		C136F0981466281100F0A292 /* Sampler.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F0971466281100F0A292 /* Sampler.m */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
@@ -112,6 +114,8 @@
 		AB7999111455C1C5000AE9FE /* HogReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HogReportViewController.m; sourceTree = "<group>"; };
 		AB7999131455C237000AE9FE /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		AB7999141455C23E000AE9FE /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
+		ABC07A13148569F200FCC2C2 /* ReportItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemView.xib; sourceTree = "<group>"; };
+		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		C136F095146627E100F0A292 /* Sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampler.h; sourceTree = "<group>"; };
 		C136F0971466281100F0A292 /* Sampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sampler.m; sourceTree = "<group>"; };
 		C136F09914662E5600F0A292 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
@@ -265,6 +269,7 @@
 				2840D7CD1179279E00D7F93C /* HogReportView.xib */,
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */,
+				ABC07A13148569F200FCC2C2 /* ReportItemView.xib */,
 				AB41CE15144F78450090CC09 /* img */,
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 			);
@@ -306,6 +311,7 @@
 		AB41CE15144F78450090CC09 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				ABC07A151485828A00FCC2C2 /* amplab_logo.png */,
 				AB645DF11456F7760008244B /* icon.svg */,
 				AB645DF31456F9520008244B /* icon.png */,
 				AB645DFB1456FDD50008244B /* icon57.png */,
@@ -455,6 +461,8 @@
 				AB645E001456FDD50008244B /* icon114.png in Resources */,
 				AB645E021456FE530008244B /* Default.png in Resources */,
 				AB645E041456FF1F0008244B /* Default@2x.png in Resources */,
+				ABC07A14148569F200FCC2C2 /* ReportItemView.xib in Resources */,
+				ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
