@@ -16,8 +16,8 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-        self.title = @"Current State";
-        self.tabBarItem.image = [UIImage imageNamed:@"clock"];
+        self.title = @"Home";
+        self.tabBarItem.image = [UIImage imageNamed:@"house"];
     }
     return self;
 }
