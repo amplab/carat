@@ -10,6 +10,7 @@
 
 
 @implementation HogReportViewController
+
 @synthesize hogTable = _hogTable;
 
 
@@ -29,6 +30,19 @@
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
 }
+
+#pragma mark - table methods
+
+- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+    
+    //UITableViewCellAccessoryNone
+    //UITableViewCellAccessoryDisclosureIndicator
+    //UITableViewCellAccessoryDetailDisclosureButton // (requires different code)
+    //UITableViewCellAccessoryCheckmark
+    return UITableViewCellAccessoryDisclosureIndicator;
+}
+
+
 
 #pragma mark - View lifecycle
 

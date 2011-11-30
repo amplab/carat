@@ -40,13 +40,13 @@
 				<int key="NSvFlags">274</int>
 				<object class="NSMutableArray" key="NSSubviews">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUITextView" id="3233705">
+					<object class="IBUITextView" id="904660543">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 317}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="33647401"/>
+						<reference key="NSNextKeyView" ref="142967997"/>
 						<string key="NSReuseIdentifierKey">_NS:639</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
@@ -57,7 +57,19 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<bool key="IBUIEditable">NO</bool>
 						<object class="NSMutableString" key="IBUIText">
-							<characters key="NS.bytes">Carat is a research project from the AMP Lab at UC Berkeley that aims to perform collaborative detection of energy bugs. The app collects generic usage statistics about your phone, the apps you are running, and your battery state; absolutely no personally identifying information is collected or transmitted by the app. Period. Carat is under development, so please check back often to see new data and new analyses. You can read more about Carat on our research page: http://carat.eecs.bereley.edu                           You can also contact us directy at carat@eecs.berkeley.edu</characters>
+							<bytes key="NS.bytes">Q2FyYXQgaXMgYSByZXNlYXJjaCBwcm9qZWN0IGZyb20gdGhlIEFNUCBMYWIgYXQgVUMgQmVya2VsZXkg
+dGhhdCBhaW1zIHRvIHBlcmZvcm0gY29sbGFib3JhdGl2ZSBkZXRlY3Rpb24gb2YgZW5lcmd5IGJ1Z3Mu
+CiJCdWciIG1lYW5zIGFuIGFwcCB0aGF0IGlzIHVzaW5nIGEgbG90IG9mIGVuZXJneSBvbiBhIHNtYWxs
+IG51bWJlciBvZiBkZXZpY2VzLCBpbmNsdWRpbmcgeW91cnMuIFJlc3RhcnRpbmcgYSBidWdneSBhcHAg
+bWF5IGltcHJvdmUgYmF0dGVyeSBsaWZlLgoiSG9nIiBtZWFucyBhbiBhcHAgdGhhdCBpcyBjb3JyZWxh
+dGVkIHdpdGggaGlnaGVyIGVuZXJneSB1c2UuIENsb3NpbmcgdGhpcyBhcHAgbWF5IGltcHJvdmUgYmF0
+dGVyeSBsaWZlLgpDYXJhdCBjb2xsZWN0cyBhbmQgcmVwb3J0cyBnZW5lcmljIHVzYWdlIHN0YXRpc3Rp
+Y3MgYWJvdXQgeW91ciBwaG9uZTsgaXQgaW52b2x2ZXMgYWJzb2x1dGVseSBubyBwZXJzb25hbGx5IGlk
+ZW50aWZ5aW5nIGluZm9ybWF0aW9uLiBQZXJpb2QuIENhcmF0IGlzIHVuZGVyIGRldmVsb3BtZW50LCBz
+byBwbGVhc2UgY2hlY2sgYmFjayBvZnRlbiB0byBzZWUgbmV3IGRhdGEgYW5kIG5ldyBhbmFseXNlcy4g
+WW91IGNhbiByZWFkIG1vcmUgYWJvdXQgQ2FyYXQgb24gb3VyIHJlc2VhcmNoIHBhZ2U6IGh0dHA6Ly9j
+YXJhdC5lZWNzLmJlcmVsZXkuZWR1ICAgICAgICAgICAgICAgICAgICAgICAgICAgWW91IGNhbiBhbHNv
+IGNvbnRhY3QgdXMgZGlyZWN0eSBhdCBjYXJhdEBlZWNzLmJlcmtlbGV5LmVkdQ</bytes>
 						</object>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
@@ -70,15 +82,15 @@
 						<int key="IBUIDataDetectorTypes">6</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription">
 							<int key="type">2</int>
-							<double key="pointSize">14</double>
+							<double key="pointSize">13</double>
 						</object>
 						<object class="NSFont" key="IBUIFont">
 							<string key="NSName">Helvetica-Bold</string>
-							<double key="NSSize">14</double>
+							<double key="NSSize">13</double>
 							<int key="NSfFlags">16</int>
 						</object>
 					</object>
-					<object class="IBUIImageView" id="33647401">
+					<object class="IBUIImageView" id="142967997">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{15, 325}, {285, 66}}</string>
@@ -97,7 +109,7 @@
 				<string key="NSFrame">{{0, 20}, {320, 411}}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="3233705"/>
+				<reference key="NSNextKeyView" ref="904660543"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
 					<bytes key="NSWhite">MQA</bytes>
@@ -135,8 +147,8 @@
 						<reference key="object" ref="191373211"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="3233705"/>
-							<reference ref="33647401"/>
+							<reference ref="142967997"/>
+							<reference ref="904660543"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -153,12 +165,12 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">14</int>
-						<reference key="object" ref="3233705"/>
+						<reference key="object" ref="904660543"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">15</int>
-						<reference key="object" ref="33647401"/>
+						<reference key="object" ref="142967997"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
