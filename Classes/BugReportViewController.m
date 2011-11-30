@@ -12,6 +12,7 @@
 @implementation BugReportViewController
 
 @synthesize bugTable = _bugTable;
+@synthesize lastUpdatedString = _lastUpdatedString;
 
 
 
@@ -44,6 +45,9 @@
     [bugTable release];
     bugTable = nil;
     [self setBugTable:nil];
+    [lastUpdatedString release];
+    lastUpdatedString = nil;
+    [self setLastUpdatedString:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -83,6 +87,8 @@
 - (void)dealloc {
     [bugTable release];
     [bugTable release];
+    [lastUpdatedString release];
+    [lastUpdatedString release];
     [super dealloc];
 }
 @end
