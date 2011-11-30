@@ -10,7 +10,9 @@
 
 
 @interface CurrentViewController : UIViewController {
-
+    IBOutlet UILabel *jscore;
 }
+
+@property (strong, nonatomic) IBOutlet UILabel *jscore;
 
 @end

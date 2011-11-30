@@ -10,13 +10,13 @@
 
 @implementation CurrentViewController
 
-
+@synthesize jscore = _jscore;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-        self.title = @"Home";
+        self.title = @"Current State";
         self.tabBarItem.image = [UIImage imageNamed:@"house"];
     }
     return self;
