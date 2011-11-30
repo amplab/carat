@@ -65,6 +65,8 @@
     scoreSameModelProgBar = nil;
     [scoreSimilarAppsProgBar release];
     scoreSimilarAppsProgBar = nil;
+    [jscore release];
+    jscore = nil;
     [sinceLastWeekString release];
     sinceLastWeekString = nil;
     [super viewDidUnload];
@@ -107,6 +109,7 @@
     [scoreSameOSProgBar release];
     [scoreSameModelProgBar release];
     [scoreSimilarAppsProgBar release];
+    [jscore release];
     [sinceLastWeekString release];
     [super dealloc];
 }
