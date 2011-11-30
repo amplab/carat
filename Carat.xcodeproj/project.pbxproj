@@ -49,6 +49,7 @@
 		ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */; };
 		ABC07A281485A19800FCC2C2 /* house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A261485A19800FCC2C2 /* house.png */; };
 		ABC07A291485A19800FCC2C2 /* house.svg in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A271485A19800FCC2C2 /* house.svg */; };
+		ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A321486C21A00FCC2C2 /* 53-house.png */; };
 		C136F0981466281100F0A292 /* Sampler.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F0971466281100F0A292 /* Sampler.m */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
@@ -131,6 +132,7 @@
 		ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		ABC07A261485A19800FCC2C2 /* house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = house.png; sourceTree = "<group>"; };
 		ABC07A271485A19800FCC2C2 /* house.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = house.svg; sourceTree = "<group>"; };
+		ABC07A321486C21A00FCC2C2 /* 53-house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "53-house.png"; sourceTree = "<group>"; };
 		C136F095146627E100F0A292 /* Sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampler.h; sourceTree = "<group>"; };
 		C136F0971466281100F0A292 /* Sampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sampler.m; sourceTree = "<group>"; };
 		C136F09914662E5600F0A292 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 				AB41CE1B1450BC060090CC09 /* hog.svg */,
 				ABC07A261485A19800FCC2C2 /* house.png */,
 				ABC07A271485A19800FCC2C2 /* house.svg */,
+				ABC07A321486C21A00FCC2C2 /* 53-house.png */,
 				AB41CE16144F78450090CC09 /* bug.png */,
 				AB41CE17144F78450090CC09 /* bug.svg */,
 			);
@@ -492,6 +495,7 @@
 				ABC07A2014859E7600FCC2C2 /* AboutView.xib in Resources */,
 				ABC07A281485A19800FCC2C2 /* house.png in Resources */,
 				ABC07A291485A19800FCC2C2 /* house.svg in Resources */,
+				ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

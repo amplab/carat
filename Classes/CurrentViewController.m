@@ -21,7 +21,7 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
         self.title = @"Current State";
-        self.tabBarItem.image = [UIImage imageNamed:@"house"];
+        self.tabBarItem.image = [UIImage imageNamed:@"53-house"];
     }
     return self;
 }
