@@ -284,8 +284,8 @@
 			children = (
 				C18E107014665E230028095B /* Carat.xcdatamodeld */,
 				ABC07A1F14859E7500FCC2C2 /* AboutView.xib */,
-				2840D7CD1179279E00D7F93C /* HogReportView.xib */,
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
+				2840D7CD1179279E00D7F93C /* HogReportView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemView.xib */,
 				AB41CE15144F78450090CC09 /* img */,

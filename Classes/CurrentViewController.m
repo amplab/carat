@@ -11,6 +11,10 @@
 @implementation CurrentViewController
 
 @synthesize jscore = _jscore;
+@synthesize sinceLastWeekString = _sinceLastWeekString;
+@synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
+@synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
+@synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -28,6 +32,23 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - button actions
+
+- (IBAction)getSameOSDetail:(id)sender
+{
+    NSLog(@"same OS detail");
+}
+
+- (IBAction)getSameModelDetail:(id)sender
+{
+    NSLog(@"same Model detail");
+}
+
+- (IBAction)getSimilarAppsDetail:(id)sender
+{
+    NSLog(@"similar Apps detail");
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -38,6 +59,14 @@
 
 - (void)viewDidUnload
 {
+    [scoreSameOSProgBar release];
+    scoreSameOSProgBar = nil;
+    [scoreSameModelProgBar release];
+    scoreSameModelProgBar = nil;
+    [scoreSimilarAppsProgBar release];
+    scoreSimilarAppsProgBar = nil;
+    [sinceLastWeekString release];
+    sinceLastWeekString = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -73,5 +102,13 @@
     }
 }
 
+
+- (void)dealloc {
+    [scoreSameOSProgBar release];
+    [scoreSameModelProgBar release];
+    [scoreSimilarAppsProgBar release];
+    [sinceLastWeekString release];
+    [super dealloc];
+}
 
 @end
