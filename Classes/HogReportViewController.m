@@ -10,6 +10,7 @@
 
 
 @implementation HogReportViewController
+@synthesize hogTable = _hogTable;
 
 
 
@@ -39,6 +40,9 @@
 
 - (void)viewDidUnload
 {
+    [hogTable release];
+    hogTable = nil;
+    [self setHogTable:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -75,4 +79,9 @@
 }
 
 
+- (void)dealloc {
+    [hogTable release];
+    [hogTable release];
+    [super dealloc];
+}
 @end

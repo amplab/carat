@@ -17,11 +17,11 @@
     IBOutlet UIProgressView *scoreSimilarAppsProgBar;
 }
 
-@property (strong, nonatomic) IBOutlet UILabel *jscore;
-@property (strong, nonatomic) IBOutlet UILabel *sinceLastWeekString;
-@property (strong, nonatomic) IBOutlet UIProgressView *scoreSameOSProgBar;
-@property (strong, nonatomic) IBOutlet UIProgressView *scoreSameModelProgBar;
-@property (strong, nonatomic) IBOutlet UIProgressView *scoreSimilarAppsProgBar;
+@property (retain, nonatomic) IBOutlet UILabel *jscore;
+@property (retain, nonatomic) IBOutlet UILabel *sinceLastWeekString;
+@property (retain, nonatomic) IBOutlet UIProgressView *scoreSameOSProgBar;
+@property (retain, nonatomic) IBOutlet UIProgressView *scoreSameModelProgBar;
+@property (retain, nonatomic) IBOutlet UIProgressView *scoreSimilarAppsProgBar;
 
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;

@@ -11,6 +11,9 @@
 
 @interface BugReportViewController : UIViewController {
 
+    IBOutlet UITableView *bugTable;
 }
+
+@property (retain, nonatomic) IBOutlet UITableView *bugTable;
 
 @end

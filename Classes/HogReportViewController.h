@@ -10,7 +10,9 @@
 
 
 @interface HogReportViewController : UIViewController {
-
+    IBOutlet UITableView *hogTable;
 }
+
+@property (retain, nonatomic) IBOutlet UITableView *hogTable;
 
 @end
