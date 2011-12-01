@@ -12,6 +12,7 @@
 @interface HogReportViewController : UIViewController {
     IBOutlet UITableView *hogTable;
     IBOutlet UILabel *lastUpdatedString;
+    NSMutableArray *listOfAppNames;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *hogTable;

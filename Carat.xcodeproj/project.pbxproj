@@ -40,7 +40,7 @@
 		AB645E041456FF1F0008244B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E031456FF1F0008244B /* Default@2x.png */; };
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
-		ABC07A14148569F200FCC2C2 /* ReportItemView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemView.xib */; };
+		ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */; };
 		ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A151485828A00FCC2C2 /* amplab_logo.png */; };
 		ABC07A18148595E200FCC2C2 /* shareonfacebook.gif in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */; };
 		ABC07A1B14859C7100FCC2C2 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A1914859C7100FCC2C2 /* about.png */; };
@@ -61,6 +61,7 @@
 		ABC07A601486E3CA00FCC2C2 /* Skype.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A551486E3CA00FCC2C2 /* Skype.jpeg */; };
 		ABC07A611486E3CA00FCC2C2 /* Twitter.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A561486E3CA00FCC2C2 /* Twitter.jpeg */; };
 		ABC07A621486E3CA00FCC2C2 /* Words With Friends.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A571486E3CA00FCC2C2 /* Words With Friends.jpeg */; };
+		ABC07A681487FC9F00FCC2C2 /* ReportItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */; };
 		C136F0981466281100F0A292 /* Sampler.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F0971466281100F0A292 /* Sampler.m */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
@@ -133,7 +134,7 @@
 		AB7999111455C1C5000AE9FE /* HogReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HogReportViewController.m; sourceTree = "<group>"; };
 		AB7999131455C237000AE9FE /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		AB7999141455C23E000AE9FE /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
-		ABC07A13148569F200FCC2C2 /* ReportItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemView.xib; sourceTree = "<group>"; };
+		ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shareonfacebook.gif; sourceTree = "<group>"; };
 		ABC07A1914859C7100FCC2C2 /* about.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about.png; sourceTree = "<group>"; };
@@ -155,6 +156,8 @@
 		ABC07A551486E3CA00FCC2C2 /* Skype.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Skype.jpeg; path = appicons/Skype.jpeg; sourceTree = "<group>"; };
 		ABC07A561486E3CA00FCC2C2 /* Twitter.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = Twitter.jpeg; path = appicons/Twitter.jpeg; sourceTree = "<group>"; };
 		ABC07A571486E3CA00FCC2C2 /* Words With Friends.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "Words With Friends.jpeg"; path = "appicons/Words With Friends.jpeg"; sourceTree = "<group>"; };
+		ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportItemCell.h; sourceTree = "<group>"; };
+		ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportItemCell.m; sourceTree = "<group>"; };
 		C136F095146627E100F0A292 /* Sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampler.h; sourceTree = "<group>"; };
 		C136F0971466281100F0A292 /* Sampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sampler.m; sourceTree = "<group>"; };
 		C136F09914662E5600F0A292 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
@@ -251,14 +254,7 @@
 				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
 				C159789F14667AAD0046F1F1 /* CoreDataManager.h */,
 				C15978A014667AAD0046F1F1 /* CoreDataManager.m */,
-				ABC07A2114859EBE00FCC2C2 /* AboutViewController.h */,
-				ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */,
-				28216C950DB411BC00E5133A /* BugReportViewController.h */,
-				28216C960DB411BC00E5133A /* BugReportViewController.m */,
-				AB7999101455C1BC000AE9FE /* HogReportViewController.h */,
-				AB7999111455C1C5000AE9FE /* HogReportViewController.m */,
-				AB7999131455C237000AE9FE /* CurrentViewController.h */,
-				AB7999141455C23E000AE9FE /* CurrentViewController.m */,
+				ABD317C91487FD1C000A8DC7 /* UI */,
 				AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */,
 				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
 				AB41CDFB144E3B990090CC09 /* Reachability.h */,
@@ -311,7 +307,7 @@
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
 				2840D7CD1179279E00D7F93C /* HogReportView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */,
-				ABC07A13148569F200FCC2C2 /* ReportItemView.xib */,
+				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
 				AB41CE15144F78450090CC09 /* img */,
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 			);
@@ -392,6 +388,23 @@
 				ABC07A571486E3CA00FCC2C2 /* Words With Friends.jpeg */,
 			);
 			name = appicons;
+			sourceTree = "<group>";
+		};
+		ABD317C91487FD1C000A8DC7 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				ABC07A2114859EBE00FCC2C2 /* AboutViewController.h */,
+				ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */,
+				28216C950DB411BC00E5133A /* BugReportViewController.h */,
+				28216C960DB411BC00E5133A /* BugReportViewController.m */,
+				AB7999101455C1BC000AE9FE /* HogReportViewController.h */,
+				AB7999111455C1C5000AE9FE /* HogReportViewController.m */,
+				AB7999131455C237000AE9FE /* CurrentViewController.h */,
+				AB7999141455C23E000AE9FE /* CurrentViewController.m */,
+				ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */,
+				ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		C1D52F0C1465F85A008D6D09 /* Thrift */ = {
@@ -528,7 +541,7 @@
 				AB645E001456FDD50008244B /* icon114.png in Resources */,
 				AB645E021456FE530008244B /* Default.png in Resources */,
 				AB645E041456FF1F0008244B /* Default@2x.png in Resources */,
-				ABC07A14148569F200FCC2C2 /* ReportItemView.xib in Resources */,
+				ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */,
 				ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */,
 				ABC07A18148595E200FCC2C2 /* shareonfacebook.gif in Resources */,
 				ABC07A1B14859C7100FCC2C2 /* about.png in Resources */,
@@ -591,6 +604,7 @@
 				C19D4201146D23B0004C842A /* Globals.m in Sources */,
 				C19D4207146D2AD6004C842A /* CoreDataSample.m in Sources */,
 				ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */,
+				ABC07A681487FC9F00FCC2C2 /* ReportItemCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

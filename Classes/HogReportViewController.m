@@ -34,8 +34,13 @@
 
 #pragma mark - table methods
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [listOfAppNames count];
+}
+
+- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
+{    
     //UITableViewCellAccessoryNone
     //UITableViewCellAccessoryDisclosureIndicator
     //UITableViewCellAccessoryDetailDisclosureButton // (requires different code)
@@ -51,6 +56,24 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
+    // TODO: remove DUMMY DATA
+    //Initialize the arrays.
+    listOfAppNames = [[NSMutableArray alloc] init];
+    
+    //Add items
+    [listOfAppNames addObject:@"Camera+"];
+    [listOfAppNames addObject:@"Fruit Ninja"];
+    [listOfAppNames addObject:@"Skype"];
+    [listOfAppNames addObject:@"Words With Friends"];
+    [listOfAppNames addObject:@"Twitter"];
+    [listOfAppNames addObject:@"Cut the Rope"];
+    [listOfAppNames addObject:@"Angry Birds"];
+    [listOfAppNames addObject:@"Shazam"];
+    
+    //Set the title
+    self.navigationItem.title = @"Energy Hogs";
+    
 }
 
 - (void)viewDidUnload
@@ -102,6 +125,7 @@
     [hogTable release];
     [lastUpdatedString release];
     [lastUpdatedString release];
+    [listOfAppNames release];
     [super dealloc];
 }
 @end
