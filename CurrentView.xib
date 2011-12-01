@@ -208,9 +208,9 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<float key="IBUIProgress">0.20000000298023224</float>
-						<object class="NSColor" key="IBUIProgressTintColor">
+						<object class="NSColor" key="IBUIProgressTintColor" id="832499524">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MSAwLjQgMAA</bytes>
+							<bytes key="NSRGB">MCAwLjQgMAA</bytes>
 						</object>
 					</object>
 					<object class="IBUIProgressView" id="480320542">
@@ -224,10 +224,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<float key="IBUIProgress">0.80000001192092896</float>
-						<object class="NSColor" key="IBUIProgressTintColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwLjQgMAA</bytes>
-						</object>
+						<reference key="IBUIProgressTintColor" ref="832499524"/>
 					</object>
 					<object class="IBUIProgressView" id="194128267">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -240,10 +237,7 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<float key="IBUIProgress">0.89999997615814209</float>
-						<object class="NSColor" key="IBUIProgressTintColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MCAwLjQgMAA</bytes>
-						</object>
+						<reference key="IBUIProgressTintColor" ref="832499524"/>
 					</object>
 					<object class="IBUIImageView" id="1059947790">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -251,7 +245,6 @@
 						<string key="NSFrame">{{15, 325}, {285, 66}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>

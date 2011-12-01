@@ -7,7 +7,7 @@
 //
 
 #import "HogReportViewController.h"
-
+#import "ReportItemCell.h"
 
 @implementation HogReportViewController
 
@@ -39,16 +39,31 @@
     return [listOfAppNames count];
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-{    
-    //UITableViewCellAccessoryNone
-    //UITableViewCellAccessoryDisclosureIndicator
-    //UITableViewCellAccessoryDetailDisclosureButton // (requires different code)
-    //UITableViewCellAccessoryCheckmark
-    return UITableViewCellAccessoryDisclosureIndicator;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"ReportViewCell";
+    
+    ReportItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ReportItemCell" owner:nil options:nil];
+        for (id currentObject in topLevelObjects) {
+            if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+                cell = (ReportItemCell *)currentObject;
+                break;
+            }
+        }
+    }
+    
+    // Set up the cell...
+    NSString *appName = [listOfAppNames objectAtIndex:indexPath.row];
+    cell.appName.text = appName;
+    NSString *iconPath = [appName stringByAppendingString:@".jpeg"];
+    
+    //cell.appIcon.image = [UIImage imageWithContentsOfFile:[appName stringByAppendingString:@".jpeg"]];
+    cell.appIcon.image = [UIImage imageNamed:iconPath];
+    cell.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
+    return cell;
 }
-
-
 
 #pragma mark - View lifecycle
 
@@ -60,6 +75,7 @@
     // TODO: remove DUMMY DATA
     //Initialize the arrays.
     listOfAppNames = [[NSMutableArray alloc] init];
+    listOfAppScores = [[NSMutableArray alloc] init];
     
     //Add items
     [listOfAppNames addObject:@"Camera+"];
@@ -70,6 +86,15 @@
     [listOfAppNames addObject:@"Cut the Rope"];
     [listOfAppNames addObject:@"Angry Birds"];
     [listOfAppNames addObject:@"Shazam"];
+    
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.9f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.86f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.85f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.79f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.4f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.38f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.01f]];
     
     //Set the title
     self.navigationItem.title = @"Energy Hogs";
@@ -122,10 +147,9 @@
 
 - (void)dealloc {
     [hogTable release];
-    [hogTable release];
-    [lastUpdatedString release];
     [lastUpdatedString release];
     [listOfAppNames release];
+    [listOfAppScores release];
     [super dealloc];
 }
 @end

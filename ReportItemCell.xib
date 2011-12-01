@@ -62,13 +62,14 @@
 								<string key="NSFrame">{{60, 36}, {225, 9}}</string>
 								<reference key="NSSuperview" ref="802273323"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:677</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								<float key="IBUIProgress">0.5</float>
 								<object class="NSColor" key="IBUIProgressTintColor">
 									<int key="NSColorSpace">1</int>
-									<bytes key="NSRGB">MCAwLjQgMAA</bytes>
+									<bytes key="NSRGB">MSAwLjQgMAA</bytes>
 								</object>
 							</object>
 							<object class="IBUILabel" id="680595643">
@@ -77,6 +78,7 @@
 								<string key="NSFrame">{{60, 7}, {225, 21}}</string>
 								<reference key="NSSuperview" ref="802273323"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView" ref="24523533"/>
 								<string key="NSReuseIdentifierKey">_NS:328</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -102,7 +104,7 @@
 								</object>
 							</object>
 						</array>
-						<string key="NSFrameSize">{320, 54}</string>
+						<string key="NSFrameSize">{300, 54}</string>
 						<reference key="NSSuperview" ref="534543413"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="84806429"/>
@@ -128,6 +130,7 @@
 					<bytes key="NSRGB">MSAxIDEAA</bytes>
 				</object>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+				<int key="IBUIAccessoryType">1</int>
 				<reference key="IBUIContentView" ref="802273323"/>
 				<string key="IBUIReuseIdentifier">ReportItemCell</string>
 				<real value="55" key="IBUIRowHeight"/>

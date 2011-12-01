@@ -13,6 +13,7 @@
     IBOutlet UITableView *hogTable;
     IBOutlet UILabel *lastUpdatedString;
     NSMutableArray *listOfAppNames;
+    NSMutableArray *listOfAppScores;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *hogTable;
