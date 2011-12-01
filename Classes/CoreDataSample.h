@@ -2,7 +2,7 @@
 //  CoreDataSample.h
 //  Carat
 //
-//  Created by Anand Padmanabha Iyer on 11/11/11.
+//  Created by Anand Padmanabha Iyer on 11/28/11.
 //  Copyright (c) 2011 UC Berkeley. All rights reserved.
 //
 
@@ -13,9 +13,15 @@
 
 @interface CoreDataSample : NSManagedObject
 
-@property (nonatomic, retain) NSDate * timestamp;
+@property (nonatomic, retain) NSString * triggeredBy;
 @property (nonatomic, retain) NSNumber * batteryLevel;
 @property (nonatomic, retain) NSNumber * batteryState;
+@property (nonatomic, retain) NSNumber * timestamp;
+@property (nonatomic, retain) NSNumber * memoryWired;
+@property (nonatomic, retain) NSNumber * memoryActive;
+@property (nonatomic, retain) NSNumber * memoryInactive;
+@property (nonatomic, retain) NSNumber * memoryFree;
+@property (nonatomic, retain) NSNumber * memoryUser;
 @property (nonatomic, retain) NSSet *processInfos;
 @end
 

@@ -8,11 +8,17 @@
     <entity name="CoreDataSample" representedClassName="CoreDataSample" syncable="YES">
         <attribute name="batteryLevel" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="batteryState" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="memoryActive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="memoryFree" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="memoryInactive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="memoryUser" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="memoryWired" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="triggeredBy" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="processInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CoreDataProcessInfo" inverseName="coredatasample" inverseEntity="CoreDataProcessInfo" syncable="YES"/>
     </entity>
     <elements>
         <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
-        <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="105"/>
+        <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="195"/>
     </elements>
 </model>

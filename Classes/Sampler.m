@@ -10,6 +10,8 @@
 //
 
 #import "Sampler.h"
+#include <IOKit/ps/IOPowerSources.h>
+#include <IOKit/ps/IOPSKeys.h>
 
 @implementation Sampler
 
@@ -33,6 +35,56 @@
     [__fetchResultsController release];
     [commManager release];
     [super dealloc];
+}
+
+//
+//  Get information about the memory.
+//
+- (void) printMemoryInfo
+{
+    int pagesize = [[UIDevice currentDevice] pageSize];
+    NSLog(@"Memory Info");
+    NSLog(@"-----------");
+    NSLog(@"Page size = %d bytes", pagesize);
+    
+    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+    
+    vm_statistics_data_t vmstat;
+    if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) != KERN_SUCCESS)
+    {
+        NSLog(@"Failed to get VM statistics.");
+    }
+    
+    double total = vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count;
+    double wired = vmstat.wire_count / total;
+    double active = vmstat.active_count / total;
+    double inactive = vmstat.inactive_count / total;
+    double free = vmstat.free_count / total;
+    
+    NSLog(@"Total =    %8d pages", vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count);
+    
+    NSLog(@"Wired =    %8d bytes", vmstat.wire_count * pagesize);
+    NSLog(@"Active =   %8d bytes", vmstat.active_count * pagesize);
+    NSLog(@"Inactive = %8d bytes", vmstat.inactive_count * pagesize);
+    NSLog(@"Free =     %8d bytes", vmstat.free_count * pagesize);
+    
+    NSLog(@"Total =    %8d bytes", (vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count) * pagesize);
+    
+    NSLog(@"Wired =    %0.2f %%", wired * 100.0);
+    NSLog(@"Active =   %0.2f %%", active * 100.0);
+    NSLog(@"Inactive = %0.2f %%", inactive * 100.0);
+    NSLog(@"Free =     %0.2f %%", free * 100.0);
+    
+    NSLog(@"Physical memory = %8d bytes", [[UIDevice currentDevice] totalMemory]);
+    NSLog(@"User memory =     %8d bytes", [[UIDevice currentDevice] userMemory]);
+}
+
+- (void) printProcessorInfo
+{
+    NSLog(@"Processor Info");
+    NSLog(@"--------------");
+    NSLog(@"CPU Frequency = %d hz", [[UIDevice currentDevice] cpuFrequency]);
+    NSLog(@"Bus Frequency = %d hz", [[UIDevice currentDevice] busFrequency]);
 }
 
 //
@@ -64,13 +116,18 @@
 //  Do a sampling while the app is in the foreground. There shouldn't be any
 //  restrictions on CPU usage as we are active.
 //
-- (void) sampleForeground 
+- (void) sampleForeground : (NSString *) triggeredBy
 {
+    [self printMemoryInfo];
+    [self printProcessorInfo];
+    return;
+    
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     CoreDataSample *cdataSample = (CoreDataSample *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataSample" 
                                                                                    inManagedObjectContext:managedObjectContext];
+    [cdataSample setTriggeredBy:triggeredBy];
     [cdataSample setTimestamp:[NSDate date]];
     
     //
@@ -107,6 +164,29 @@
     }
     
     //
+    //  Memory info.
+    //
+    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+    vm_statistics_data_t vmstat;
+    if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) != KERN_SUCCESS)
+    {
+        NSLog(@"Failed to get VM statistics.");
+    }
+    else 
+    {
+        int pagesize = [[UIDevice currentDevice] pageSize];
+        int wired = vmstat.wire_count * pagesize;
+        int active = vmstat.active_count * pagesize;
+        int inactive = vmstat.inactive_count * pagesize;
+        int free = vmstat.free_count * pagesize;
+        [cdataSample setMemoryWired:[NSNumber numberWithInt:wired]];
+        [cdataSample setMemoryActive:[NSNumber numberWithInt:active]];
+        [cdataSample setMemoryInactive:[NSNumber numberWithInt:inactive]];
+        [cdataSample setMemoryFree:[NSNumber numberWithInt:free]];
+        [cdataSample setMemoryUser:[NSNumber numberWithUnsignedInteger:[[UIDevice currentDevice] userMemory]]];
+    }
+    
+    //
     //  Now save the sample.
     //
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
@@ -121,7 +201,7 @@
     } 
 }
 
-- (void) sampleBackground 
+- (void) sampleBackground : (NSString *) triggeredBy
 {
     // REMEMBER. We are running in the background if this is being executed.
     // We can't assume normal network access.
@@ -152,15 +232,15 @@
 }
 
 
-- (void) sampleNow 
+- (void) sampleNow : (NSString *) triggeredBy
 {
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
-        [self sampleBackground];
+        [self sampleBackground:triggeredBy];
     }
     else
     {
-        [self sampleForeground];
+        [self sampleForeground:triggeredBy];
     }
 }
 
@@ -195,7 +275,6 @@
         
         for (CoreDataSample *sample in fetchedObjects)
         {
-            //CoreDataSample *sample = (CoreDataSample *)  obj;
             if (sample == nil) 
                 break;
             

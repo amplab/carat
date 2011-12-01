@@ -10,4 +10,12 @@
 
 @interface UIDevice (ProcessesAdditions) 
 - (NSArray *) runningProcesses;
+- (NSUInteger) cpuFrequency;
+- (NSUInteger) busFrequency;
+- (NSUInteger) totalMemory;
+- (NSUInteger) userMemory;
+- (NSUInteger) pageSize;
+- (NSUInteger) maxSocketBufferSize;
+- (NSNumber *) totalDiskSpace;
+- (NSNumber *) freeDiskSpace;
 @end

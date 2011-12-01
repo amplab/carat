@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Stanford University. All rights reserved.
 //
 //  Code from http://forrst.com/posts/UIDevice_Category_For_Processes-h1H
-//
+//  and https://github.com/erica/uidevice-extension/blob/master/UIDevice-Hardware.m
 // Example usage.
 //NSArray * processes = [[UIDevice currentDevice] runningProcesses];
 //for (NSDictionary * dict in processes){
@@ -18,6 +18,57 @@
 #import <sys/sysctl.h>
 
 @implementation UIDevice (ProcessesAdditions) 
+
+- (NSUInteger) getSysInfo: (uint) typeSpecifier
+{
+    size_t size = sizeof(int);
+    int results;
+    int mib[2] = {CTL_HW, typeSpecifier};
+    sysctl(mib, 2, &results, &size, NULL, 0);
+    return (NSUInteger) results;
+}
+
+- (NSUInteger) pageSize
+{
+    return [self getSysInfo:HW_PAGESIZE];
+}
+
+- (NSUInteger) cpuFrequency
+{
+    return [self getSysInfo:HW_CPU_FREQ];
+}
+
+- (NSUInteger) busFrequency
+{
+    return [self getSysInfo:HW_BUS_FREQ];
+}
+
+- (NSUInteger) totalMemory
+{
+    return [self getSysInfo:HW_PHYSMEM];
+}
+
+- (NSUInteger) userMemory
+{
+    return [self getSysInfo:HW_USERMEM];
+}
+
+- (NSUInteger) maxSocketBufferSize
+{
+    return [self getSysInfo:KIPC_MAXSOCKBUF];
+}
+
+- (NSNumber *) totalDiskSpace
+{
+    NSDictionary *fattributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+    return [fattributes objectForKey:NSFileSystemSize];
+}
+
+- (NSNumber *) freeDiskSpace
+{
+    NSDictionary *fattributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil];
+    return [fattributes objectForKey:NSFileSystemFreeSize];
+}
 
 - (NSArray *) runningProcesses {
     

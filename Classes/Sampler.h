@@ -11,6 +11,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <mach/mach_host.h>
 #import "Globals.h"
 #import "UIDeviceProc.h"
 #import "CoreDataProcessInfo.h"
@@ -27,7 +28,7 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 - (id) initWithCommManager : cManager;
-- (void) sampleNow;
+- (void) sampleNow : (NSString *) triggeredBy;
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
 - (NSURL *) applicationDocumentsDirectory;
 
