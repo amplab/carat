@@ -8,12 +8,12 @@
 
 #import "HogReportViewController.h"
 #import "ReportItemCell.h"
+#import "HogDetailViewController.h"
 
 @implementation HogReportViewController
 
 @synthesize hogTable = _hogTable;
 @synthesize lastUpdatedString = _lastUpdatedString;
-
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -57,12 +57,32 @@
     // Set up the cell...
     NSString *appName = [listOfAppNames objectAtIndex:indexPath.row];
     cell.appName.text = appName;
-    NSString *iconPath = [appName stringByAppendingString:@".jpeg"];
-    
-    //cell.appIcon.image = [UIImage imageWithContentsOfFile:[appName stringByAppendingString:@".jpeg"]];
-    cell.appIcon.image = [UIImage imageNamed:iconPath];
+    cell.appIcon.image = [UIImage imageNamed:[appName stringByAppendingString:@".png"]];
     cell.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Energy Hogs";
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"'Updated:' yyyy-MM-dd, hh:mm:ss"];
+    lastUpdatedString = [dateFormatter stringFromDate:[NSDate date]];
+    return lastUpdatedString;
+}
+
+// loads the selected detail view
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+    
+    HogDetailViewController *dvController = [[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
+    [self.navigationController pushViewController:dvController animated:YES];
+    [dvController release];
+    dvController = nil;
 }
 
 #pragma mark - View lifecycle
@@ -81,7 +101,7 @@
     [listOfAppNames addObject:@"Camera+"];
     [listOfAppNames addObject:@"Fruit Ninja"];
     [listOfAppNames addObject:@"Skype"];
-    [listOfAppNames addObject:@"Words With Friends"];
+    [listOfAppNames addObject:@"Words With Friends HD"];
     [listOfAppNames addObject:@"Twitter"];
     [listOfAppNames addObject:@"Cut the Rope"];
     [listOfAppNames addObject:@"Angry Birds"];
@@ -96,9 +116,8 @@
     [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
     [listOfAppScores addObject:[NSNumber numberWithFloat:0.01f]];
     
-    //Set the title
+    //Setup the navigation
     self.navigationItem.title = @"Energy Hogs";
-    
 }
 
 - (void)viewDidUnload
@@ -117,6 +136,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -127,6 +148,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -150,6 +173,7 @@
     [lastUpdatedString release];
     [listOfAppNames release];
     [listOfAppScores release];
+    [dateFormatter release];
     [super dealloc];
 }
 @end

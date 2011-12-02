@@ -46,8 +46,10 @@ void onUncaughtException(NSException *exception)
     // UI
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
+    UINavigationController *navController2;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
     viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
+    navController2 = [[UINavigationController alloc] initWithRootViewController:viewController2];
     viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
     self.tabBarController = [[UITabBarController alloc] init];

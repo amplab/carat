@@ -7,7 +7,7 @@
 //
 
 #import "BugReportViewController.h"
-
+#import "ReportItemCell.h"
 
 @implementation BugReportViewController
 
@@ -32,12 +32,76 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#pragma mark - table methods
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [listOfAppNames count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    static NSString *CellIdentifier = @"ReportViewCell";
+    
+    ReportItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ReportItemCell" owner:nil options:nil];
+        for (id currentObject in topLevelObjects) {
+            if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+                cell = (ReportItemCell *)currentObject;
+                break;
+            }
+        }
+    }
+    
+    // Set up the cell...
+    NSString *appName = [listOfAppNames objectAtIndex:indexPath.row];
+    cell.appName.text = appName;
+    cell.appIcon.image = [UIImage imageNamed:[appName stringByAppendingString:@".png"]];
+    cell.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
+    return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Energy Bugs";
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"'Updated:' yyyy-MM-dd, hh:mm:ss"];
+    lastUpdatedString = [dateFormatter stringFromDate:[NSDate date]];
+    return lastUpdatedString;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    // TODO: remove DUMMY DATA
+    //Initialize the arrays.
+    listOfAppNames = [[NSMutableArray alloc] init];
+    listOfAppScores = [[NSMutableArray alloc] init];
+    
+    //Add items
+    [listOfAppNames addObject:@"Pandora Radio"];
+    [listOfAppNames addObject:@"Facebook"];
+    [listOfAppNames addObject:@"Paper Toss"];
+    [listOfAppNames addObject:@"Shazam"];
+    [listOfAppNames addObject:@"Angry Birds"];
+    
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.95f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.93f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.47f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.1f]];
+    
+    //Set the title
+    self.navigationItem.title = @"Energy Bugs";
 }
 
 - (void)viewDidUnload
@@ -86,9 +150,10 @@
 
 - (void)dealloc {
     [bugTable release];
-    [bugTable release];
     [lastUpdatedString release];
-    [lastUpdatedString release];
+    [listOfAppNames release];
+    [listOfAppScores release];
+    [dateFormatter release];
     [super dealloc];
 }
 @end

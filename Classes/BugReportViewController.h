@@ -12,10 +12,13 @@
 @interface BugReportViewController : UIViewController {
 
     IBOutlet UITableView *bugTable;
-    IBOutlet UILabel *lastUpdatedString;
+    NSString *lastUpdatedString;
+    NSMutableArray *listOfAppNames;
+    NSMutableArray *listOfAppScores;
+    NSDateFormatter *dateFormatter;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *bugTable;
-@property (retain, nonatomic) IBOutlet UILabel *lastUpdatedString;
+@property (retain, nonatomic) NSString *lastUpdatedString;
 
 @end
