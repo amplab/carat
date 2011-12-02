@@ -10,6 +10,11 @@
 
 @implementation HogDetailViewController
 
+@synthesize wassersteinDistance;
+@synthesize appName;
+@synthesize numSamplesWith;
+@synthesize numSamplesWithout;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -39,6 +44,17 @@
 
 - (void)viewDidUnload
 {
+    [numSamplesWith release];
+    numSamplesWith = nil;
+    [numSamplesWithout release];
+    numSamplesWithout = nil;
+    [self setNumSamplesWith:nil];
+    [wassersteinDistance release];
+    wassersteinDistance = nil;
+    [self setWassersteinDistance:nil];
+    [appName release];
+    appName = nil;
+    [self setAppName:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -50,4 +66,14 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+- (void)dealloc {
+    [numSamplesWith release];
+    [numSamplesWithout release];
+    [numSamplesWith release];
+    [wassersteinDistance release];
+    [wassersteinDistance release];
+    [appName release];
+    [appName release];
+    [super dealloc];
+}
 @end

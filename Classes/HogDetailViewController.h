@@ -9,5 +9,17 @@
 #import <UIKit/UIKit.h>
 
 @interface HogDetailViewController : UIViewController
+{
+    
+    IBOutlet UILabel *appName;
+    IBOutlet UILabel *numSamplesWith;
+    IBOutlet UILabel *numSamplesWithout;
+    IBOutlet UILabel *wassersteinDistance;
+}
+
+@property (retain, nonatomic) IBOutlet UILabel *appName;
+@property (retain, nonatomic) IBOutlet UILabel *numSamplesWith;
+@property (retain, nonatomic) IBOutlet UILabel *numSamplesWithout;
+@property (retain, nonatomic) IBOutlet UILabel *wassersteinDistance;
 
 @end
