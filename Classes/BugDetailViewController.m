@@ -1,14 +1,14 @@
 //
-//  HogDetailViewController.m
+//  BugDetailViewController.m
 //  Carat
 //
 //  Created by Adam Oliner on 12/1/11.
 //  Copyright (c) 2011 UC Berkeley. All rights reserved.
 //
 
-#import "HogDetailViewController.h"
+#import "BugDetailViewController.h"
 
-@implementation HogDetailViewController
+@implementation BugDetailViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,7 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.navigationItem.title = @"Hog Detail";
+    self.navigationItem.title = @"Bug Detail";
 }
 
 - (void)viewDidUnload

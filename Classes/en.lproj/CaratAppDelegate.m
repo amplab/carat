@@ -46,14 +46,17 @@ void onUncaughtException(NSException *exception)
     // UI
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
-    UINavigationController *navController2;
+    UINavigationController *navController2, *navController3;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
     viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
     navController2 = [[UINavigationController alloc] initWithRootViewController:viewController2];
+    navController2.navigationBarHidden = YES;
     viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
+    navController3 = [[UINavigationController alloc] initWithRootViewController:viewController3];
+    navController3.navigationBarHidden = YES;
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
     self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, navController2, viewController3, viewController4, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     

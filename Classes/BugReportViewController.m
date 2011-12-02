@@ -8,6 +8,7 @@
 
 #import "BugReportViewController.h"
 #import "ReportItemCell.h"
+#import "BugDetailViewController.h"
 
 @implementation BugReportViewController
 
@@ -75,6 +76,16 @@
     return lastUpdatedString;
 }
 
+// loads the selected detail view
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+    
+    BugDetailViewController *dvController = [[BugDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
+    [self.navigationController pushViewController:dvController animated:YES];
+    [dvController release];
+    dvController = nil;
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -120,6 +131,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -130,6 +143,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
