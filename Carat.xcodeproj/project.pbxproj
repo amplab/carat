@@ -33,7 +33,6 @@
 		AB645DF61456F9EC0008244B /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF51456F9EC0008244B /* icon57.png */; };
 		AB645DF81456FCED0008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF71456FCED0008244B /* icon114.png */; };
 		AB645DFA1456FD0C0008244B /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF91456FD0C0008244B /* icon72.png */; };
-		AB645DFE1456FDD50008244B /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFB1456FDD50008244B /* icon57.png */; };
 		AB645DFF1456FDD50008244B /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFC1456FDD50008244B /* icon72.png */; };
 		AB645E001456FDD50008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFD1456FDD50008244B /* icon114.png */; };
 		AB645E021456FE530008244B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E011456FE530008244B /* Default.png */; };
@@ -66,6 +65,8 @@
 		ABD317E514882F1C000A8DC7 /* HogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */; };
 		ABD317FD14884F6F000A8DC7 /* BugDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */; };
 		ABD317FE14884F6F000A8DC7 /* BugDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317FC14884F6F000A8DC7 /* BugDetailView.xib */; };
+		ABD318021489910D000A8DC7 /* carat.svg in Resources */ = {isa = PBXBuildFile; fileRef = ABD318011489910D000A8DC7 /* carat.svg */; };
+		ABD3180414899275000A8DC7 /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFB1456FDD50008244B /* icon57.png */; };
 		C136F0981466281100F0A292 /* Sampler.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F0971466281100F0A292 /* Sampler.m */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
@@ -168,6 +169,7 @@
 		ABD317FA14884F6F000A8DC7 /* BugDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugDetailViewController.h; sourceTree = "<group>"; };
 		ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugDetailViewController.m; sourceTree = "<group>"; };
 		ABD317FC14884F6F000A8DC7 /* BugDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BugDetailView.xib; path = Classes/BugDetailView.xib; sourceTree = "<group>"; };
+		ABD318011489910D000A8DC7 /* carat.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = carat.svg; sourceTree = "<group>"; };
 		C136F095146627E100F0A292 /* Sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampler.h; sourceTree = "<group>"; };
 		C136F0971466281100F0A292 /* Sampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sampler.m; sourceTree = "<group>"; };
 		C136F09914662E5600F0A292 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 				ABC07A321486C21A00FCC2C2 /* 53-house.png */,
 				AB41CE16144F78450090CC09 /* bug.png */,
 				AB41CE17144F78450090CC09 /* bug.svg */,
+				ABD318011489910D000A8DC7 /* carat.svg */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -552,7 +555,6 @@
 				AB645DF61456F9EC0008244B /* icon57.png in Resources */,
 				AB645DF81456FCED0008244B /* icon114.png in Resources */,
 				AB645DFA1456FD0C0008244B /* icon72.png in Resources */,
-				AB645DFE1456FDD50008244B /* icon57.png in Resources */,
 				AB645DFF1456FDD50008244B /* icon72.png in Resources */,
 				AB645E001456FDD50008244B /* icon114.png in Resources */,
 				AB645E021456FE530008244B /* Default.png in Resources */,
@@ -579,6 +581,8 @@
 				ABD317DF14881391000A8DC7 /* Words With Friends HD.png in Resources */,
 				ABD317E114882E93000A8DC7 /* HogDetailView.xib in Resources */,
 				ABD317FE14884F6F000A8DC7 /* BugDetailView.xib in Resources */,
+				ABD318021489910D000A8DC7 /* carat.svg in Resources */,
+				ABD3180414899275000A8DC7 /* icon57.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
