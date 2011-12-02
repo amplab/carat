@@ -53,7 +53,7 @@ void onUncaughtException(NSException *exception)
     viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
     self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, viewController3, viewController4, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, navController2, viewController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
