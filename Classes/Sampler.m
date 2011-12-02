@@ -10,8 +10,8 @@
 //
 
 #import "Sampler.h"
-#include <IOKit/ps/IOPowerSources.h>
-#include <IOKit/ps/IOPSKeys.h>
+//#include <IOKit/ps/IOPowerSources.h>
+//#include <IOKit/ps/IOPSKeys.h>
 
 @implementation Sampler
 
