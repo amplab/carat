@@ -77,9 +77,11 @@
 
 // loads the selected detail view
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO animated:YES];
+    ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [selectedCell setSelected:NO animated:YES];
     
     HogDetailViewController *dvController = [[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
+    dvController.appName = selectedCell.appName;
     [self.navigationController pushViewController:dvController animated:YES];
     [dvController release];
     dvController = nil;
