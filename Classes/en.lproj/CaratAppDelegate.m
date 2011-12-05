@@ -10,6 +10,7 @@
 #import "Reachability.h"
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
+#import "FlurryAnalytics.h"
 
 #import "CurrentViewController.h"
 #import "HogReportViewController.h"
@@ -26,6 +27,7 @@
 
 void onUncaughtException(NSException *exception)
 {
+    [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
     NSLog(@"uncaught exception: %@", exception.description);
 }
 
@@ -43,6 +45,9 @@ void onUncaughtException(NSException *exception)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 
+    // Analytics
+    [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
+    
     // UI
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
@@ -79,6 +84,7 @@ void onUncaughtException(NSException *exception)
     registerMe.platformId = [UIDevice currentDevice].model;
     registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
     [communicationMgr sendRegistrationMessage:registerMe];
+    [FlurryAnalytics setUserID:registerMe.uuId];
     
     // to help track down where exceptions are being raised
     NSSetUncaughtExceptionHandler(&onUncaughtException);
