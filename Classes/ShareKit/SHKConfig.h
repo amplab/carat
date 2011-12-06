@@ -39,8 +39,8 @@
 
 
 // Delicious - https://developer.apps.yahoo.com/projects
-#define SHKDeliciousConsumerKey		@""
-#define SHKDeliciousSecretKey		@""
+#define SHKDeliciousConsumerKey		@"dj0yJmk9RTZmU2FzME1XV3NqJmQ9WVdrOWVtOU1VRXQwTnpnbWNHbzlNekl5TWpnMU9EWXkmcz1jb25zdW1lcnNlY3JldCZ4PTVi"
+#define SHKDeliciousSecretKey		@"7f6e909be0dcb1a6fc17da9e5880ef59dff620bd"
 
 // Facebook - http://www.facebook.com/developers
 // If SHKFacebookUseSessionProxy is enabled then SHKFacebookSecret is ignored and should be left blank
