@@ -10,8 +10,7 @@
 //
 
 #import "Sampler.h"
-//#include <IOKit/ps/IOPowerSources.h>
-//#include <IOKit/ps/IOPSKeys.h>
+#import "FlurryAnalytics.h"
 
 @implementation Sampler
 
@@ -234,6 +233,8 @@
 
 - (void) sampleNow : (NSString *) triggeredBy
 {
+    [FlurryAnalytics logEvent:@"selectedHogDetail"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"Sample Triggered", nil]];
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
         [self sampleBackground:triggeredBy];

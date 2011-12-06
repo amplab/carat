@@ -75,8 +75,6 @@ void onUncaughtException(NSException *exception)
     [locationManager stopMonitoringSignificantLocationChanges];
     
     // Everytime the CARAT app is launched, send a registration message.
-    // 
-    //Registration *dummy = [[Registration alloc] initWithUuId:[[Globals instance] getUUID] platformId:[UIDevice currentDevice].model systemVersion:[UIDevice currentDevice].systemVersion]; 
     Registration *registerMe = [[Registration alloc] init];
     registerMe.uuId = [[Globals instance] getUUID ];
     registerMe.platformId = [UIDevice currentDevice].model;

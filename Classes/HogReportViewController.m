@@ -9,6 +9,7 @@
 #import "HogReportViewController.h"
 #import "ReportItemCell.h"
 #import "HogDetailViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation HogReportViewController
 
@@ -82,6 +83,8 @@
     
     HogDetailViewController *dvController = [[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
     dvController.appName = selectedCell.appName;
+    [FlurryAnalytics logEvent:@"selectedHogDetail"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName, @"App Name", nil]];
     [self.navigationController pushViewController:dvController animated:YES];
     [dvController release];
     dvController = nil;
