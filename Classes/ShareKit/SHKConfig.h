@@ -51,7 +51,7 @@
 #define SHKFacebookSessionProxyURL  @""
 
 // Read It Later - http://readitlaterlist.com/api/?shk
-#define SHKReadItLaterKey			@""
+#define SHKReadItLaterKey			@"32cpIRH9A31d8x7906g8e9dUe6dbS14b"
 
 // Twitter - http://dev.twitter.com/apps/new
 /*

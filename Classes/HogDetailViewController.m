@@ -44,16 +44,13 @@
 
 - (void)viewDidUnload
 {
-    [numSamplesWith release];
-    numSamplesWith = nil;
     [numSamplesWithout release];
-    numSamplesWithout = nil;
+    [self setNumSamplesWithout:nil];
+    [numSamplesWith release];
     [self setNumSamplesWith:nil];
     [wassersteinDistance release];
-    wassersteinDistance = nil;
     [self setWassersteinDistance:nil];
     [appName release];
-    appName = nil;
     [self setAppName:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -69,10 +66,7 @@
 - (void)dealloc {
     [numSamplesWith release];
     [numSamplesWithout release];
-    [numSamplesWith release];
     [wassersteinDistance release];
-    [wassersteinDistance release];
-    [appName release];
     [appName release];
     [super dealloc];
 }
