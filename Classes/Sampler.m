@@ -233,8 +233,9 @@
 
 - (void) sampleNow : (NSString *) triggeredBy
 {
-    [FlurryAnalytics logEvent:@"selectedHogDetail"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"Sample Triggered", nil]];
+    [FlurryAnalytics logEvent:@"sampleNow"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"Sample Triggered", nil]
+                        timed:YES];
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
         [self sampleBackground:triggeredBy];
@@ -243,6 +244,7 @@
     {
         [self sampleForeground:triggeredBy];
     }
+    [FlurryAnalytics endTimedEvent:@"sampleNow" withParameters:nil];
 }
 
 //
