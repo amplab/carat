@@ -45,10 +45,7 @@ void onUncaughtException(NSException *exception)
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-
-    // Analytics
-    [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
-    
+   
     // UI
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
@@ -65,7 +62,7 @@ void onUncaughtException(NSException *exception)
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-    
+
     // Override point for customization after application launch.
     if (locationManager == nil && [CLLocationManager significantLocationChangeMonitoringAvailable]) {
         locationManager = [[CLLocationManager alloc] init];
@@ -85,6 +82,12 @@ void onUncaughtException(NSException *exception)
     registerMe.platformId = [UIDevice currentDevice].model;
     registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
     [communicationMgr sendRegistrationMessage:registerMe];
+    
+    // Analytics
+    [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
+    [FlurryAnalytics logAllPageViews:self.tabBarController];
+    [FlurryAnalytics logAllPageViews:navController2];
+    [FlurryAnalytics logAllPageViews:navController3];
     [FlurryAnalytics setUserID:registerMe.uuId];
     
     // flush any sharing actions that were performed offline and cached
@@ -182,6 +185,7 @@ void onUncaughtException(NSException *exception)
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
+    [FlurryAnalytics setLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude horizontalAccuracy:newLocation.horizontalAccuracy            verticalAccuracy:newLocation.verticalAccuracy]; 
     // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
     
     //[self doSample];
