@@ -11,13 +11,16 @@
 
 @interface CurrentViewController : UIViewController {
     IBOutlet UILabel *jscore;
+    IBOutlet UILabel *lastUpdated;
     IBOutlet UILabel *sinceLastWeekString;
     IBOutlet UIProgressView *scoreSameOSProgBar;
     IBOutlet UIProgressView *scoreSameModelProgBar;
     IBOutlet UIProgressView *scoreSimilarAppsProgBar;
+    NSDateFormatter *dateFormatter;
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *jscore;
+@property (retain, nonatomic) IBOutlet UILabel *lastUpdated;
 @property (retain, nonatomic) IBOutlet UILabel *sinceLastWeekString;
 @property (retain, nonatomic) IBOutlet UIProgressView *scoreSameOSProgBar;
 @property (retain, nonatomic) IBOutlet UIProgressView *scoreSameModelProgBar;

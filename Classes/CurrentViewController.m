@@ -12,6 +12,7 @@
 @implementation CurrentViewController
 
 @synthesize jscore = _jscore;
+@synthesize lastUpdated = _lastUpdated;
 @synthesize sinceLastWeekString = _sinceLastWeekString;
 @synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
@@ -69,6 +70,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"'( Updated:' yyyy-MM-dd, hh:mm:ss ')'"];
+    self.lastUpdated.text = [dateFormatter stringFromDate:[NSDate date]];
 }
 
 - (void)viewDidUnload
@@ -81,6 +85,8 @@
     scoreSimilarAppsProgBar = nil;
     [jscore release];
     jscore = nil;
+    [lastUpdated release];
+    [self setLastUpdated:nil];
     [sinceLastWeekString release];
     sinceLastWeekString = nil;
     [super viewDidUnload];
@@ -124,6 +130,7 @@
     [scoreSameModelProgBar release];
     [scoreSimilarAppsProgBar release];
     [jscore release];
+    [lastUpdated release];
     [sinceLastWeekString release];
     [super dealloc];
 }

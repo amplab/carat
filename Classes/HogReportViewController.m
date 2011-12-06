@@ -125,10 +125,8 @@
 - (void)viewDidUnload
 {
     [hogTable release];
-    hogTable = nil;
     [self setHogTable:nil];
     [lastUpdatedString release];
-    lastUpdatedString = nil;
     [self setLastUpdatedString:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
