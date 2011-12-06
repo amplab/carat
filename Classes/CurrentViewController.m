@@ -7,6 +7,7 @@
 //
 
 #import "CurrentViewController.h"
+#import "SHK.h"
 
 @implementation CurrentViewController
 
@@ -47,6 +48,19 @@
 - (IBAction)getSimilarAppsDetail:(id)sender
 {
     NSLog(@"similar Apps detail");
+}
+
+- (IBAction)shareButtonHandlerAction
+{
+	// Create the item to share (in this example, a url)
+	NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
+	SHKItem *item = [SHKItem URL:url title:@"Learn about your phone's battery usage. For science! (Seriously.)"];
+    
+	// Get the ShareKit action sheet
+	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+    
+	// Display the action sheet
+	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
 #pragma mark - View lifecycle

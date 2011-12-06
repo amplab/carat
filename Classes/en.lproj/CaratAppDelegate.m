@@ -11,6 +11,7 @@
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
 #import "FlurryAnalytics.h"
+#import "SHK.h"
 
 #import "CurrentViewController.h"
 #import "HogReportViewController.h"
@@ -85,6 +86,9 @@ void onUncaughtException(NSException *exception)
     registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
     [communicationMgr sendRegistrationMessage:registerMe];
     [FlurryAnalytics setUserID:registerMe.uuId];
+    
+    // flush any sharing actions that were performed offline and cached
+    [SHK flushOfflineQueue];
     
     // to help track down where exceptions are being raised
     NSSetUncaughtExceptionHandler(&onUncaughtException);
