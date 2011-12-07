@@ -548,6 +548,8 @@
 				ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */,
 				ABD3180C148D869A000A8DC7 /* ShareKit */,
 				AB91E431149024C3007786F0 /* Data */,
+				ABD317C91487FD1C000A8DC7 /* UI */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
 				C1D52E4F1465F0A9008D6D09 /* CaratProtocol.h */,
 				C1D52E501465F0A9008D6D09 /* CaratProtocol.m */,
 				C19D41FF146D23B0004C842A /* Globals.h */,
@@ -560,7 +562,6 @@
 				C14F5C2D145BD4D300087F74 /* AsyncSocket.m */,
 				1D3623240D0F684500981E51 /* CaratAppDelegate.h */,
 				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
-				ABD317C91487FD1C000A8DC7 /* UI */,
 				AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */,
 				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
 				AB41CDFB144E3B990090CC09 /* Reachability.h */,
@@ -591,7 +592,6 @@
 				AB645DF51456F9EC0008244B /* icon57.png */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
-				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -622,6 +622,7 @@
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 			);
 			name = Resources;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
