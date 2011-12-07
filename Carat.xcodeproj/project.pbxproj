@@ -42,6 +42,8 @@
 		AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */; };
 		AB9B580B148FEA10004F92F2 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */; };
 		AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580C148FF31D004F92F2 /* 37x-X.png */; };
+		AB9B581014902467004F92F2 /* CoreDataDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9B580F14902467004F92F2 /* CoreDataDetail.m */; };
+		AB9B58131490247B004F92F2 /* CoreDataReport.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9B58121490247A004F92F2 /* CoreDataReport.m */; };
 		ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */; };
 		ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A151485828A00FCC2C2 /* amplab_logo.png */; };
 		ABC07A18148595E200FCC2C2 /* shareonfacebook.gif in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */; };
@@ -291,6 +293,10 @@
 		AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "Classes/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		AB9B580C148FF31D004F92F2 /* 37x-X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-X.png"; sourceTree = "<group>"; };
+		AB9B580E14902467004F92F2 /* CoreDataDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataDetail.h; sourceTree = "<group>"; };
+		AB9B580F14902467004F92F2 /* CoreDataDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataDetail.m; sourceTree = "<group>"; };
+		AB9B58111490247A004F92F2 /* CoreDataReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataReport.h; sourceTree = "<group>"; };
+		AB9B58121490247A004F92F2 /* CoreDataReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataReport.m; sourceTree = "<group>"; };
 		ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shareonfacebook.gif; sourceTree = "<group>"; };
@@ -541,14 +547,11 @@
 				C1D52F0C1465F85A008D6D09 /* Thrift */,
 				ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */,
 				ABD3180C148D869A000A8DC7 /* ShareKit */,
+				AB91E431149024C3007786F0 /* Data */,
 				C1D52E4F1465F0A9008D6D09 /* CaratProtocol.h */,
 				C1D52E501465F0A9008D6D09 /* CaratProtocol.m */,
 				C19D41FF146D23B0004C842A /* Globals.h */,
 				C19D4200146D23B0004C842A /* Globals.m */,
-				C19D4205146D2AD6004C842A /* CoreDataSample.h */,
-				C19D4206146D2AD6004C842A /* CoreDataSample.m */,
-				C19D41F9146D2385004C842A /* CoreDataProcessInfo.h */,
-				C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */,
 				C136F095146627E100F0A292 /* Sampler.h */,
 				C136F0971466281100F0A292 /* Sampler.m */,
 				C14F5C34145BDA9900087F74 /* AsyncUdpSocket.h */,
@@ -557,8 +560,6 @@
 				C14F5C2D145BD4D300087F74 /* AsyncSocket.m */,
 				1D3623240D0F684500981E51 /* CaratAppDelegate.h */,
 				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
-				C159789F14667AAD0046F1F1 /* CoreDataManager.h */,
-				C15978A014667AAD0046F1F1 /* CoreDataManager.m */,
 				ABD317C91487FD1C000A8DC7 /* UI */,
 				AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */,
 				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
@@ -687,6 +688,23 @@
 				ABD318011489910D000A8DC7 /* carat.svg */,
 			);
 			path = img;
+			sourceTree = "<group>";
+		};
+		AB91E431149024C3007786F0 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C19D4205146D2AD6004C842A /* CoreDataSample.h */,
+				C19D4206146D2AD6004C842A /* CoreDataSample.m */,
+				C19D41F9146D2385004C842A /* CoreDataProcessInfo.h */,
+				C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */,
+				AB9B58111490247A004F92F2 /* CoreDataReport.h */,
+				AB9B58121490247A004F92F2 /* CoreDataReport.m */,
+				AB9B580E14902467004F92F2 /* CoreDataDetail.h */,
+				AB9B580F14902467004F92F2 /* CoreDataDetail.m */,
+				C159789F14667AAD0046F1F1 /* CoreDataManager.h */,
+				C15978A014667AAD0046F1F1 /* CoreDataManager.m */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		AB9B57A2148EC504004F92F2 /* CorePlotHeaders */ = {
@@ -1440,6 +1458,8 @@
 				ABD318E6148D869A000A8DC7 /* SHKOAuthView.m in Sources */,
 				ABD318E7148D869A000A8DC7 /* SHKShareMenu.m in Sources */,
 				ABD318E8148D869A000A8DC7 /* SHKViewControllerWrapper.m in Sources */,
+				AB9B581014902467004F92F2 /* CoreDataDetail.m in Sources */,
+				AB9B58131490247B004F92F2 /* CoreDataReport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
