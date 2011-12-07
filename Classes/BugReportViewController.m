@@ -82,7 +82,7 @@
     ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     [selectedCell setSelected:NO animated:YES];
     
-    BugDetailViewController *dvController = [[BugDetailViewController alloc] initWithNibName:@"BugDetailView" bundle:nil];
+    BugDetailViewController *dvController = [[[BugDetailViewController alloc] initWithNibName:@"BugDetailView" bundle:nil] autorelease];
     [self.navigationController pushViewController:dvController animated:YES];
     
     dvController.appName.text = selectedCell.appName.text;
@@ -90,9 +90,6 @@
     dvController.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
     [FlurryAnalytics logEvent:@"selectedBugDetail"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName.text, @"App Name", nil]];
-    
-    [dvController release];
-    dvController = nil;
 }
 
 #pragma mark - View lifecycle
