@@ -82,17 +82,14 @@
     ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     [selectedCell setSelected:NO animated:YES];
     
-    HogDetailViewController *dvController = [[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
+    HogDetailViewController *dvController = [[[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil] autorelease];
     [self.navigationController pushViewController:dvController animated:YES];
     
-    dvController.appName.text = selectedCell.appName.text;
-    dvController.appIcon.image = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
-    dvController.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
+    [dvController appName].text = selectedCell.appName.text;
+    [dvController appIcon].image = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
+    [dvController appScore].progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
     [FlurryAnalytics logEvent:@"selectedHogDetail"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName.text, @"App Name", nil]];
-    
-    [dvController release];
-    dvController = nil;
 }
 
 #pragma mark - View lifecycle

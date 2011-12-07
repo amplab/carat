@@ -40,6 +40,8 @@
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
 		AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */; };
+		AB9B580B148FEA10004F92F2 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */; };
+		AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580C148FF31D004F92F2 /* 37x-X.png */; };
 		ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */; };
 		ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A151485828A00FCC2C2 /* amplab_logo.png */; };
 		ABC07A18148595E200FCC2C2 /* shareonfacebook.gif in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */; };
@@ -287,6 +289,8 @@
 		AB9B57F0148EC504004F92F2 /* NSExceptionExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSExceptionExtensions.h; sourceTree = "<group>"; };
 		AB9B57F1148EC504004F92F2 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "Classes/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
+		AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
+		AB9B580C148FF31D004F92F2 /* 37x-X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-X.png"; sourceTree = "<group>"; };
 		ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shareonfacebook.gif; sourceTree = "<group>"; };
@@ -659,6 +663,8 @@
 		AB41CE15144F78450090CC09 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */,
+				AB9B580C148FF31D004F92F2 /* 37x-X.png */,
 				ABC07A361486E09500FCC2C2 /* appicons */,
 				ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */,
 				ABC07A151485828A00FCC2C2 /* amplab_logo.png */,
@@ -1326,6 +1332,8 @@
 				ABD318C1148D869A000A8DC7 /* SHKSharers.plist in Resources */,
 				ABD318C6148D869A000A8DC7 /* Localizable.strings in Resources */,
 				ABD318CD148D869A000A8DC7 /* FBConnect.bundle in Resources */,
+				AB9B580B148FEA10004F92F2 /* 37x-Checkmark.png in Resources */,
+				AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

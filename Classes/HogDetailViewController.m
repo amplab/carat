@@ -8,16 +8,18 @@
 
 #import "HogDetailViewController.h"
 #import "CorePlot-CocoaTouch.h"
+#import "MBProgressHUD.h"
 
 @implementation HogDetailViewController
 
-@synthesize hogDetailGraphView;
-@synthesize wassersteinDistance;
-@synthesize appName;
-@synthesize appIcon;
-@synthesize appScore;
-@synthesize numSamplesWith;
-@synthesize numSamplesWithout;
+@synthesize hogDetailGraphView = _hogDetailGraphView;
+@synthesize wassersteinDistance = _wassersteinDistance;
+@synthesize appName = _appName;
+@synthesize appIcon = _appIcon;
+@synthesize appScore = _appScore;
+@synthesize numSamplesWith = _numSamplesWith;
+@synthesize numSamplesWithout = _numSamplesWithout;
+@synthesize firstAppearance = _firstAppearance;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -34,6 +36,67 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - Data management
+
+- (void)loadDetailDataWithHUD
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.tabBarController.view];
+	[self.navigationController.tabBarController.view addSubview:HUD];
+	
+	HUD.dimBackground = YES;
+	
+	// Regiser for HUD callbacks so we can remove it from the window at the right time
+    HUD.delegate = self;
+    HUD.labelText = @"Loading";
+	
+    [HUD showWhileExecuting:@selector(loadDetailData) onTarget:self withObject:nil animated:YES];
+}
+
+- (void)loadDetailData
+{
+    // TODO finish
+    // display waiting indicator
+    sleep(1);
+    // check local cache, use if fresh
+    
+    // attempt to refresh cache over network
+    // [(HogDetailViewController *)vc setWasUpdated:NO/YES];
+    
+    // if stale data found, display brief hud error and show
+    
+    // finally, if all else fails, show without the graph
+    
+    
+    if ([self isFresh]) {
+        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"Completed";
+    } else {
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-X.png"]] autorelease];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"Failed";
+        HUD.detailsLabelText = @"(showing stale data)";
+    }
+    
+	sleep(2);
+}
+
+- (BOOL)isFresh
+{
+    return NO; // TODO will check current date against date in CoreData
+}
+
+#pragma mark - MBProgressHUDDelegate method
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    // Remove HUD from screen when the HUD was hidded
+    [HUD removeFromSuperview];
+    [HUD release];
+	HUD = nil;
 }
 
 #pragma mark - CPTPlotDataSource protocol
@@ -65,6 +128,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setFirstAppearance:YES];
     // Do any additional setup after loading the view from its nib.
     
     self.navigationItem.title = @"Hog Detail";
@@ -143,9 +207,21 @@
     [self setAppIcon:nil];
     [appScore release];
     [self setAppScore:nil];
+    [self hudWasHidden:HUD];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    // loads data while showing busy indicator
+    if ([self firstAppearance]) {
+        [self loadDetailDataWithHUD];
+        [self setFirstAppearance:NO];
+        [self.view setNeedsDisplay];
+    }
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

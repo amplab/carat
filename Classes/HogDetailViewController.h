@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
+#import "MBProgressHUD.h"
 
-@interface HogDetailViewController : UIViewController <CPTPlotDataSource>
+@interface HogDetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
     CPTXYGraph *graph;
     IBOutlet CPTGraphHostingView *hogDetailGraphView;
@@ -19,6 +20,8 @@
     IBOutlet UILabel *numSamplesWith;
     IBOutlet UILabel *numSamplesWithout;
     IBOutlet UILabel *wassersteinDistance;
+    MBProgressHUD *HUD;
+    BOOL firstAppearance;
 }
 
 @property (retain, nonatomic) IBOutlet CPTGraphHostingView *hogDetailGraphView;
@@ -28,5 +31,9 @@
 @property (retain, nonatomic) IBOutlet UILabel *numSamplesWith;
 @property (retain, nonatomic) IBOutlet UILabel *numSamplesWithout;
 @property (retain, nonatomic) IBOutlet UILabel *wassersteinDistance;
+@property (assign, nonatomic) BOOL firstAppearance;
+
+- (void)loadDetailDataWithHUD;
+- (BOOL)isFresh;
 
 @end
