@@ -286,7 +286,7 @@
 		AB9B57EF148EC504004F92F2 /* NSDecimalNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDecimalNumberExtensions.h; sourceTree = "<group>"; };
 		AB9B57F0148EC504004F92F2 /* NSExceptionExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSExceptionExtensions.h; sourceTree = "<group>"; };
 		AB9B57F1148EC504004F92F2 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
-		AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
+		AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libCorePlot-CocoaTouch.a"; path = "Classes/libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
 		ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		ABC07A17148595E200FCC2C2 /* shareonfacebook.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = shareonfacebook.gif; sourceTree = "<group>"; };
@@ -449,7 +449,7 @@
 		ABD318E9148D8703000A8DC7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		ABD318EB148D8732000A8DC7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		ABD318EE148D88D1000A8DC7 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
-		ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryAnalytics.a; sourceTree = "<group>"; };
+		ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurryAnalytics.a; path = Classes/FlurryAnalytics/libFlurryAnalytics.a; sourceTree = "<group>"; };
 		ABD31902148EC41B000A8DC7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C136F095146627E100F0A292 /* Sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampler.h; sourceTree = "<group>"; };
 		C136F0971466281100F0A292 /* Sampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sampler.m; sourceTree = "<group>"; };
@@ -511,6 +511,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */,
+				AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				ABD318EC148D8733000A8DC7 /* MessageUI.framework in Frameworks */,
 				ABD318EA148D8703000A8DC7 /* Security.framework in Frameworks */,
 				C18E106E1466591A0028095B /* CoreData.framework in Frameworks */,
@@ -521,7 +522,6 @@
 				288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */,
 				C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */,
 				ABD318F0148D88D2000A8DC7 /* libFlurryAnalytics.a in Frameworks */,
-				AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -534,7 +534,6 @@
 				AB41CE0A144F572D0090CC09 /* iPhone */,
 				AB41CE0C144F574A0090CC09 /* iPad */,
 				AB9B57A2148EC504004F92F2 /* CorePlotHeaders */,
-				AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */,
 				C1D52F0C1465F85A008D6D09 /* Thrift */,
 				ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */,
 				ABD3180C148D869A000A8DC7 /* ShareKit */,
@@ -580,7 +579,6 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
-				ABD31902148EC41B000A8DC7 /* QuartzCore.framework */,
 				AB645E031456FF1F0008244B /* Default@2x.png */,
 				AB645E011456FE530008244B /* Default.png */,
 				AB645DF91456FD0C0008244B /* icon72.png */,
@@ -633,6 +631,9 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765070DF74369002DB57D /* CoreGraphics.framework */,
+				ABD31902148EC41B000A8DC7 /* QuartzCore.framework */,
+				AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */,
+				ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1159,7 +1160,6 @@
 			isa = PBXGroup;
 			children = (
 				ABD318EE148D88D1000A8DC7 /* FlurryAnalytics.h */,
-				ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */,
 			);
 			path = FlurryAnalytics;
 			sourceTree = "<group>";
@@ -1462,6 +1462,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1476,6 +1477,7 @@
 					"\"$(SRCROOT)/Classes/FlurryAnalytics\"",
 					"\"$(SRCROOT)/Classes\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Carat;
 			};
@@ -1485,6 +1487,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1497,6 +1500,7 @@
 					"\"$(SRCROOT)/Classes/FlurryAnalytics\"",
 					"\"$(SRCROOT)/Classes\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Carat;
 				VALIDATE_PRODUCT = YES;

@@ -10,6 +10,7 @@
 #import "ReportItemCell.h"
 #import "HogDetailViewController.h"
 #import "FlurryAnalytics.h"
+#import "CorePlot-CocoaTouch.h"
 
 @implementation HogReportViewController
 
@@ -82,10 +83,14 @@
     [selectedCell setSelected:NO animated:YES];
     
     HogDetailViewController *dvController = [[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
-    dvController.appName = selectedCell.appName;
-    [FlurryAnalytics logEvent:@"selectedHogDetail"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName, @"App Name", nil]];
     [self.navigationController pushViewController:dvController animated:YES];
+    
+    dvController.appName.text = selectedCell.appName.text;
+    dvController.appIcon.image = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
+    dvController.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
+    [FlurryAnalytics logEvent:@"selectedHogDetail"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName.text, @"App Name", nil]];
+    
     [dvController release];
     dvController = nil;
 }
