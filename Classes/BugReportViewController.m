@@ -9,12 +9,13 @@
 #import "BugReportViewController.h"
 #import "ReportItemCell.h"
 #import "BugDetailViewController.h"
+#import "FlurryAnalytics.h"
+#import "CorePlot-CocoaTouch.h"
 
 @implementation BugReportViewController
 
 @synthesize bugTable = _bugTable;
 @synthesize lastUpdatedString = _lastUpdatedString;
-
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -81,9 +82,15 @@
     ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     [selectedCell setSelected:NO animated:YES];
     
-    BugDetailViewController *dvController = [[BugDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil];
-    //dvController.appName = selectedCell.appName;
+    BugDetailViewController *dvController = [[BugDetailViewController alloc] initWithNibName:@"BugDetailView" bundle:nil];
     [self.navigationController pushViewController:dvController animated:YES];
+    
+    dvController.appName.text = selectedCell.appName.text;
+    dvController.appIcon.image = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
+    dvController.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
+    [FlurryAnalytics logEvent:@"selectedBugDetail"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName.text, @"App Name", nil]];
+    
     [dvController release];
     dvController = nil;
 }
@@ -120,10 +127,8 @@
 - (void)viewDidUnload
 {
     [bugTable release];
-    bugTable = nil;
     [self setBugTable:nil];
     [lastUpdatedString release];
-    lastUpdatedString = nil;
     [self setLastUpdatedString:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.

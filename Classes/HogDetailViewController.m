@@ -164,4 +164,5 @@
     [appScore release];
     [super dealloc];
 }
+
 @end

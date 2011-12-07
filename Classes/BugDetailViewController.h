@@ -7,7 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CorePlot-CocoaTouch.h"
 
-@interface BugDetailViewController : UIViewController
+@interface BugDetailViewController : UIViewController <CPTPlotDataSource>
+{
+    CPTXYGraph *graph;
+    IBOutlet CPTGraphHostingView *bugDetailGraphView;
+    IBOutlet UILabel *appName;
+    IBOutlet UIImageView *appIcon;
+    IBOutlet UIProgressView *appScore;
+    IBOutlet UILabel *numSamplesWith;
+    IBOutlet UILabel *numSamplesWithout;
+    IBOutlet UILabel *wassersteinDistance;
+}
+
+@property (retain, nonatomic) IBOutlet CPTGraphHostingView *bugDetailGraphView;
+@property (retain, nonatomic) IBOutlet UILabel *appName;
+@property (retain, nonatomic) IBOutlet UIImageView *appIcon;
+@property (retain, nonatomic) IBOutlet UIProgressView *appScore;
+@property (retain, nonatomic) IBOutlet UILabel *numSamplesWith;
+@property (retain, nonatomic) IBOutlet UILabel *numSamplesWithout;
+@property (retain, nonatomic) IBOutlet UILabel *wassersteinDistance;
 
 @end

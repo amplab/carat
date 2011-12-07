@@ -10,7 +10,6 @@
 
 
 @interface BugReportViewController : UIViewController {
-
     IBOutlet UITableView *bugTable;
     NSString *lastUpdatedString;
     NSMutableArray *listOfAppNames;
