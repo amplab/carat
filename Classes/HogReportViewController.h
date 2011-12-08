@@ -14,7 +14,6 @@
     IBOutlet UITableView *hogTable;
     NSMutableArray *listOfAppNames;
     NSMutableArray *listOfAppScores;
-    NSDateFormatter *dateFormatter;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *hogTable;

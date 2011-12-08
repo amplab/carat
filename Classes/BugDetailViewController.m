@@ -85,7 +85,7 @@
 
 - (BOOL)isFresh
 {
-    return NO; // TODO will check current date against date in CoreData
+    return YES; // TODO will check current date against date in CoreData
 }
 
 #pragma mark - MBProgressHUDDelegate method

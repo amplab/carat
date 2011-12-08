@@ -175,7 +175,6 @@
     [hogTable release];
     [listOfAppNames release];
     [listOfAppScores release];
-    [dateFormatter release];
     [super dealloc];
 }
 @end

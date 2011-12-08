@@ -62,7 +62,7 @@
     {
         NSEntityDescription *entityDescription = [NSEntityDescription
                                                   entityForName:@"CoreDataSample" inManagedObjectContext:managedObjectContext];
-        NSFetchRequest *request = [[[NSFetchRequest alloc] init] autorelease];
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
         [request setFetchLimit:100];
         [request setEntity:entityDescription];
         NSArray *array = [managedObjectContext executeFetchRequest:request error:&error];

@@ -18,6 +18,7 @@
 @synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
 @synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
+@synthesize firstAppearance = _firstAppearance;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -33,6 +34,67 @@
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - Data management
+
+- (void)loadDetailDataWithHUD
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
+	[self.tabBarController.view addSubview:HUD];
+	
+	HUD.dimBackground = YES;
+	
+	// Regiser for HUD callbacks so we can remove it from the window at the right time
+    HUD.delegate = self;
+    HUD.labelText = @"Loading";
+	
+    [HUD showWhileExecuting:@selector(loadDetailData) onTarget:self withObject:nil animated:YES];
+}
+
+- (void)loadDetailData
+{
+    // TODO finish
+    // display waiting indicator
+    sleep(1);
+    // check local cache, use if fresh
+    
+    // attempt to refresh cache over network
+    // [(HogDetailViewController *)vc setWasUpdated:NO/YES];
+    
+    // if stale data found, display brief hud error and show
+    
+    // finally, if all else fails, show without the graph
+    
+    
+    if ([self isFresh]) {
+        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"Completed";
+    } else {
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-X.png"]] autorelease];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"Failed";
+        HUD.detailsLabelText = @"(showing stale data)";
+    }
+    
+	sleep(2);
+}
+
+- (BOOL)isFresh
+{
+    return YES; // TODO will check current date against date in CoreData
+}
+
+#pragma mark - MBProgressHUDDelegate method
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    // Remove HUD from screen when the HUD was hidded
+    [HUD removeFromSuperview];
+    [HUD release];
+	HUD = nil;
 }
 
 #pragma mark - button actions
@@ -70,6 +132,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setFirstAppearance:YES];
 	// Do any additional setup after loading the view, typically from a nib.
     NSDate *lastUpdatedDate = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
     NSDate *now = [NSDate date];
@@ -80,17 +143,18 @@
 - (void)viewDidUnload
 {
     [scoreSameOSProgBar release];
-    scoreSameOSProgBar = nil;
+    [self setScoreSameOSProgBar:nil];
     [scoreSameModelProgBar release];
-    scoreSameModelProgBar = nil;
+    [self setScoreSameModelProgBar:nil];
     [scoreSimilarAppsProgBar release];
-    scoreSimilarAppsProgBar = nil;
+    [self setScoreSimilarAppsProgBar:nil];
     [jscore release];
-    jscore = nil;
+    [self setJscore:nil];
     [lastUpdated release];
     [self setLastUpdated:nil];
     [sinceLastWeekString release];
-    sinceLastWeekString = nil;
+    [self setSinceLastWeekString:nil];
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -104,6 +168,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    // loads data while showing busy indicator
+    if ([self firstAppearance]) {
+        [self loadDetailDataWithHUD];
+        [self setFirstAppearance:NO];
+        [self.view setNeedsDisplay];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

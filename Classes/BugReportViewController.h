@@ -13,7 +13,6 @@
     IBOutlet UITableView *bugTable;
     NSMutableArray *listOfAppNames;
     NSMutableArray *listOfAppScores;
-    NSDateFormatter *dateFormatter;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *bugTable;
