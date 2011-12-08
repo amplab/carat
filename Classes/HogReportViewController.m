@@ -34,6 +34,19 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (NSString *)formatNSTimeIntervalAsNSString:(NSTimeInterval)timeInterval {
+    // (Updated Dd Mm Ss ago)
+    int days = (int)(timeInterval / 86400);
+    int mins = (int)((timeInterval - (days * 86400)) / 3600);
+    int secs = (int)((int)timeInterval % 60);
+    NSLog(@"time %f %d %d %d", timeInterval, days, mins, secs);
+    NSString *sDays = days > 0 ? [NSString stringWithFormat:@"%dd ", days] : @"";
+    NSString *sMins = mins > 0 ? [NSString stringWithFormat:@"%dm ", mins] : @"";
+    NSString *sSecs = secs > 0 ? [NSString stringWithFormat:@"%ds ", secs] : @"";
+    
+    return [@"(Updated " stringByAppendingString:[sDays stringByAppendingString:[sMins stringByAppendingString:[sSecs stringByAppendingString:@"ago.)"]]]];
+}
+
 #pragma mark - table methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -71,10 +84,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"'Updated:' yyyy-MM-dd, hh:mm:ss"];
-    lastUpdatedString = [dateFormatter stringFromDate:[NSDate date]];
-    return lastUpdatedString;
+    NSDate *lastUpdated = [NSDate dateWithTimeIntervalSinceNow:-100000];
+    NSDate *now = [NSDate date];
+    NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
+    return [self formatNSTimeIntervalAsNSString:howLong];
 }
 
 // loads the selected detail view
