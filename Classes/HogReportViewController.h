@@ -12,15 +12,11 @@
 
 @interface HogReportViewController : UIViewController {
     IBOutlet UITableView *hogTable;
-    NSString *lastUpdatedString;
     NSMutableArray *listOfAppNames;
     NSMutableArray *listOfAppScores;
     NSDateFormatter *dateFormatter;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *hogTable;
-@property (retain, nonatomic) NSString *lastUpdatedString;
-
-- (NSString *)formatNSTimeIntervalAsNSString:(NSTimeInterval)timeInterval;
 
 @end

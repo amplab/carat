@@ -8,6 +8,7 @@
 
 #import "CurrentViewController.h"
 #import "SHK.h"
+#import "Utilities.h"
 
 @implementation CurrentViewController
 
@@ -70,9 +71,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"'( Updated:' yyyy-MM-dd, hh:mm:ss ')'"];
-    self.lastUpdated.text = [dateFormatter stringFromDate:[NSDate date]];
+    NSDate *lastUpdatedDate = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
+    NSDate *now = [NSDate date];
+    NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdatedDate];
+    self.lastUpdated.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
 }
 
 - (void)viewDidUnload

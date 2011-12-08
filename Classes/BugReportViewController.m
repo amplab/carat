@@ -11,11 +11,11 @@
 #import "BugDetailViewController.h"
 #import "FlurryAnalytics.h"
 #import "CorePlot-CocoaTouch.h"
+#import "Utilities.h"
 
 @implementation BugReportViewController
 
 @synthesize bugTable = _bugTable;
-@synthesize lastUpdatedString = _lastUpdatedString;
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -71,10 +71,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"'Updated:' yyyy-MM-dd, hh:mm:ss"];
-    lastUpdatedString = [dateFormatter stringFromDate:[NSDate date]];
-    return lastUpdatedString;
+    NSDate *lastUpdated = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
+    NSDate *now = [NSDate date];
+    NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
+    return [Utilities formatNSTimeIntervalAsNSString:howLong];
 }
 
 // loads the selected detail view
@@ -125,8 +125,6 @@
 {
     [bugTable release];
     [self setBugTable:nil];
-    [lastUpdatedString release];
-    [self setLastUpdatedString:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -169,7 +167,6 @@
 
 - (void)dealloc {
     [bugTable release];
-    [lastUpdatedString release];
     [listOfAppNames release];
     [listOfAppScores release];
     [dateFormatter release];

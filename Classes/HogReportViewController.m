@@ -11,11 +11,11 @@
 #import "HogDetailViewController.h"
 #import "FlurryAnalytics.h"
 #import "CorePlot-CocoaTouch.h"
+#import "Utilities.h"
 
 @implementation HogReportViewController
 
 @synthesize hogTable = _hogTable;
-@synthesize lastUpdatedString = _lastUpdatedString;
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -32,19 +32,6 @@
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
-}
-
-- (NSString *)formatNSTimeIntervalAsNSString:(NSTimeInterval)timeInterval {
-    // (Updated Dd Mm Ss ago)
-    int days = (int)(timeInterval / 86400);
-    int mins = (int)((timeInterval - (days * 86400)) / 3600);
-    int secs = (int)((int)timeInterval % 60);
-    NSLog(@"time %f %d %d %d", timeInterval, days, mins, secs);
-    NSString *sDays = days > 0 ? [NSString stringWithFormat:@"%dd ", days] : @"";
-    NSString *sMins = mins > 0 ? [NSString stringWithFormat:@"%dm ", mins] : @"";
-    NSString *sSecs = secs > 0 ? [NSString stringWithFormat:@"%ds ", secs] : @"";
-    
-    return [@"(Updated " stringByAppendingString:[sDays stringByAppendingString:[sMins stringByAppendingString:[sSecs stringByAppendingString:@"ago.)"]]]];
 }
 
 #pragma mark - table methods
@@ -84,10 +71,10 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSDate *lastUpdated = [NSDate dateWithTimeIntervalSinceNow:-100000];
+    NSDate *lastUpdated = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
     NSDate *now = [NSDate date];
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
-    return [self formatNSTimeIntervalAsNSString:howLong];
+    return [Utilities formatNSTimeIntervalAsNSString:howLong];
 }
 
 // loads the selected detail view
@@ -144,8 +131,6 @@
 {
     [hogTable release];
     [self setHogTable:nil];
-    [lastUpdatedString release];
-    [self setLastUpdatedString:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -188,7 +173,6 @@
 
 - (void)dealloc {
     [hogTable release];
-    [lastUpdatedString release];
     [listOfAppNames release];
     [listOfAppScores release];
     [dateFormatter release];
