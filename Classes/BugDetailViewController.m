@@ -73,14 +73,14 @@
         HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = @"Completed";
+        sleep(1);
     } else {
         HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-X.png"]] autorelease];
         HUD.mode = MBProgressHUDModeCustomView;
         HUD.labelText = @"Failed";
         HUD.detailsLabelText = @"(showing stale data)";
+        sleep(2);
     }
-    
-	sleep(2);
 }
 
 - (BOOL)isFresh

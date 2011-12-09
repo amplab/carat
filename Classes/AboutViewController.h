@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AboutViewController : UIViewController
+@interface AboutViewController : UIViewController <UIWebViewDelegate> {
+
+    IBOutlet UIWebView *aboutWebView;
+    NSString *theHTML;
+}
+
+@property (retain, nonatomic) IBOutlet UIWebView *aboutWebView;
+@property (nonatomic, copy) NSString *theHTML;
 
 @end

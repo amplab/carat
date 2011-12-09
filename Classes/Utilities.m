@@ -15,7 +15,6 @@
     int days = (int)(timeInterval / 86400);
     int mins = (int)((timeInterval - (days * 86400)) / 3600);
     int secs = (int)((int)timeInterval % 60);
-    NSLog(@"time %f %d %d %d", timeInterval, days, mins, secs);
     NSString *sDays = days > 0 ? [NSString stringWithFormat:@"%dd ", days] : @"";
     NSString *sMins = mins > 0 ? [NSString stringWithFormat:@"%dm ", mins] : @"";
     NSString *sSecs = secs > 0 ? [NSString stringWithFormat:@"%ds ", secs] : @"";
