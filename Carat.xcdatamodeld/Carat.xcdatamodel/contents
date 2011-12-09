@@ -16,6 +16,7 @@
         <attribute name="appName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="appScore" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="reportType" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="appDetails" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataDetail" inverseName="dataReport" inverseEntity="CoreDataDetail" syncable="YES"/>
     </entity>
     <entity name="CoreDataSample" representedClassName="CoreDataSample" syncable="YES">
@@ -31,9 +32,9 @@
         <relationship name="processInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CoreDataProcessInfo" inverseName="coredatasample" inverseEntity="CoreDataProcessInfo" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CoreDataDetail" positionX="160" positionY="192" width="128" height="120"/>
+        <element name="CoreDataDetail" positionX="160" positionY="192" width="128" height="105"/>
         <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
-        <element name="CoreDataReport" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="CoreDataReport" positionX="160" positionY="192" width="128" height="120"/>
         <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="195"/>
     </elements>
 </model>

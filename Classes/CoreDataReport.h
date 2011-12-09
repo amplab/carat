@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSString * appName;
 @property (nonatomic, retain) NSNumber * appScore;
+@property (nonatomic, retain) NSString * reportType; // e.g., "hog" or "bug"
 @property (nonatomic, retain) NSDate * lastUpdated;
 @property (nonatomic, retain) CoreDataDetail *appDetails;
 

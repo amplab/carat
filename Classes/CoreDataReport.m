@@ -14,6 +14,7 @@
 
 @dynamic appName;
 @dynamic appScore;
+@dynamic reportType;
 @dynamic lastUpdated;
 @dynamic appDetails;
 
