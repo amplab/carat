@@ -11,8 +11,11 @@
 #import "Thrift/protocol/TProtocolUtil.h"
 #import "Thrift/TProcessor.h"
 
-
 typedef NSArray * ProcessInfoList;
+
+typedef NSArray * HogsBugsList;
+
+typedef NSArray * FeatureList;
 
 @interface Registration : NSObject <NSCoding> {
   NSString * __uuId;
@@ -79,18 +82,45 @@ typedef NSArray * ProcessInfoList;
 
 @interface Sample : NSObject <NSCoding> {
   NSString * __uuId;
+  int32_t __timestamp;
   ProcessInfoList __piList;
+  int16_t __batteryState;
+  double __batteryLevel;
+  int32_t __memoryWired;
+  int32_t __memoryActive;
+  int32_t __memoryInactive;
+  int32_t __memoryFree;
+  int32_t __memoryUser;
+  NSString * __triggeredBy;
 
   BOOL __uuId_isset;
+  BOOL __timestamp_isset;
   BOOL __piList_isset;
+  BOOL __batteryState_isset;
+  BOOL __batteryLevel_isset;
+  BOOL __memoryWired_isset;
+  BOOL __memoryActive_isset;
+  BOOL __memoryInactive_isset;
+  BOOL __memoryFree_isset;
+  BOOL __memoryUser_isset;
+  BOOL __triggeredBy_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=uuId, setter=setUuId:) NSString * uuId;
+@property (nonatomic, getter=timestamp, setter=setTimestamp:) int32_t timestamp;
 @property (nonatomic, retain, getter=piList, setter=setPiList:) ProcessInfoList piList;
+@property (nonatomic, getter=batteryState, setter=setBatteryState:) int16_t batteryState;
+@property (nonatomic, getter=batteryLevel, setter=setBatteryLevel:) double batteryLevel;
+@property (nonatomic, getter=memoryWired, setter=setMemoryWired:) int32_t memoryWired;
+@property (nonatomic, getter=memoryActive, setter=setMemoryActive:) int32_t memoryActive;
+@property (nonatomic, getter=memoryInactive, setter=setMemoryInactive:) int32_t memoryInactive;
+@property (nonatomic, getter=memoryFree, setter=setMemoryFree:) int32_t memoryFree;
+@property (nonatomic, getter=memoryUser, setter=setMemoryUser:) int32_t memoryUser;
+@property (nonatomic, retain, getter=triggeredBy, setter=setTriggeredBy:) NSString * triggeredBy;
 #endif
 
-- (id) initWithUuId: (NSString *) uuId piList: (ProcessInfoList) piList;
+- (id) initWithUuId: (NSString *) uuId timestamp: (int32_t) timestamp piList: (ProcessInfoList) piList batteryState: (int16_t) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -99,15 +129,157 @@ typedef NSArray * ProcessInfoList;
 - (void) setUuId: (NSString *) uuId;
 - (BOOL) uuIdIsSet;
 
+- (int32_t) timestamp;
+- (void) setTimestamp: (int32_t) timestamp;
+- (BOOL) timestampIsSet;
+
 - (ProcessInfoList) piList;
 - (void) setPiList: (ProcessInfoList) piList;
 - (BOOL) piListIsSet;
+
+- (int16_t) batteryState;
+- (void) setBatteryState: (int16_t) batteryState;
+- (BOOL) batteryStateIsSet;
+
+- (double) batteryLevel;
+- (void) setBatteryLevel: (double) batteryLevel;
+- (BOOL) batteryLevelIsSet;
+
+- (int32_t) memoryWired;
+- (void) setMemoryWired: (int32_t) memoryWired;
+- (BOOL) memoryWiredIsSet;
+
+- (int32_t) memoryActive;
+- (void) setMemoryActive: (int32_t) memoryActive;
+- (BOOL) memoryActiveIsSet;
+
+- (int32_t) memoryInactive;
+- (void) setMemoryInactive: (int32_t) memoryInactive;
+- (BOOL) memoryInactiveIsSet;
+
+- (int32_t) memoryFree;
+- (void) setMemoryFree: (int32_t) memoryFree;
+- (BOOL) memoryFreeIsSet;
+
+- (int32_t) memoryUser;
+- (void) setMemoryUser: (int32_t) memoryUser;
+- (BOOL) memoryUserIsSet;
+
+- (NSString *) triggeredBy;
+- (void) setTriggeredBy: (NSString *) triggeredBy;
+- (BOOL) triggeredByIsSet;
+
+@end
+
+@interface HogsBugs : NSObject <NSCoding> {
+  int16_t __pId;
+  NSString * __pName;
+  double __wDistance;
+  NSArray * __pdfXVals;
+  NSArray * __pdfYVals;
+
+  BOOL __pId_isset;
+  BOOL __pName_isset;
+  BOOL __wDistance_isset;
+  BOOL __pdfXVals_isset;
+  BOOL __pdfYVals_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=pId, setter=setPId:) int16_t pId;
+@property (nonatomic, retain, getter=pName, setter=setPName:) NSString * pName;
+@property (nonatomic, getter=wDistance, setter=setWDistance:) double wDistance;
+@property (nonatomic, retain, getter=pdfXVals, setter=setPdfXVals:) NSArray * pdfXVals;
+@property (nonatomic, retain, getter=pdfYVals, setter=setPdfYVals:) NSArray * pdfYVals;
+#endif
+
+- (id) initWithPId: (int16_t) pId pName: (NSString *) pName wDistance: (double) wDistance pdfXVals: (NSArray *) pdfXVals pdfYVals: (NSArray *) pdfYVals;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (int16_t) pId;
+- (void) setPId: (int16_t) pId;
+- (BOOL) pIdIsSet;
+
+- (NSString *) pName;
+- (void) setPName: (NSString *) pName;
+- (BOOL) pNameIsSet;
+
+- (double) wDistance;
+- (void) setWDistance: (double) wDistance;
+- (BOOL) wDistanceIsSet;
+
+- (NSArray *) pdfXVals;
+- (void) setPdfXVals: (NSArray *) pdfXVals;
+- (BOOL) pdfXValsIsSet;
+
+- (NSArray *) pdfYVals;
+- (void) setPdfYVals: (NSArray *) pdfYVals;
+- (BOOL) pdfYValsIsSet;
+
+@end
+
+@interface HogBugReport : NSObject <NSCoding> {
+  NSString * __uuId;
+  HogsBugsList __hbList;
+
+  BOOL __uuId_isset;
+  BOOL __hbList_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=uuId, setter=setUuId:) NSString * uuId;
+@property (nonatomic, retain, getter=hbList, setter=setHbList:) HogsBugsList hbList;
+#endif
+
+- (id) initWithUuId: (NSString *) uuId hbList: (HogsBugsList) hbList;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) uuId;
+- (void) setUuId: (NSString *) uuId;
+- (BOOL) uuIdIsSet;
+
+- (HogsBugsList) hbList;
+- (void) setHbList: (HogsBugsList) hbList;
+- (BOOL) hbListIsSet;
+
+@end
+
+@interface Feature : NSObject <NSCoding> {
+  NSString * __key;
+  NSString * __value;
+
+  BOOL __key_isset;
+  BOOL __value_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=key, setter=setKey:) NSString * key;
+@property (nonatomic, retain, getter=value, setter=setValue:) NSString * value;
+#endif
+
+- (id) initWithKey: (NSString *) key value: (NSString *) value;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) key;
+- (void) setKey: (NSString *) key;
+- (BOOL) keyIsSet;
+
+- (NSString *) value;
+- (void) setValue: (NSString *) value;
+- (BOOL) valueIsSet;
 
 @end
 
 @protocol CaratService <NSObject>
 - (void) registerMe: (Registration *) registration;  // throws TException
 - (BOOL) uploadSample: (Sample *) sample;  // throws TException
+- (HogBugReport *) getHogOrBugReport: (NSString *) uuId : (FeatureList) features;  // throws TException
 @end
 
 @interface CaratServiceClient : NSObject <CaratService> {

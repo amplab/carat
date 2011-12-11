@@ -387,13 +387,31 @@
 
 @implementation Sample
 
-- (id) initWithUuId: (NSString *) uuId piList: (ProcessInfoList) piList
+- (id) initWithUuId: (NSString *) uuId timestamp: (int32_t) timestamp piList: (ProcessInfoList) piList batteryState: (int16_t) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy
 {
   self = [super init];
   __uuId = [uuId retain];
   __uuId_isset = YES;
+  __timestamp = timestamp;
+  __timestamp_isset = YES;
   __piList = [piList retain];
   __piList_isset = YES;
+  __batteryState = batteryState;
+  __batteryState_isset = YES;
+  __batteryLevel = batteryLevel;
+  __batteryLevel_isset = YES;
+  __memoryWired = memoryWired;
+  __memoryWired_isset = YES;
+  __memoryActive = memoryActive;
+  __memoryActive_isset = YES;
+  __memoryInactive = memoryInactive;
+  __memoryInactive_isset = YES;
+  __memoryFree = memoryFree;
+  __memoryFree_isset = YES;
+  __memoryUser = memoryUser;
+  __memoryUser_isset = YES;
+  __triggeredBy = [triggeredBy retain];
+  __triggeredBy_isset = YES;
   return self;
 }
 
@@ -405,10 +423,55 @@
     __uuId = [[decoder decodeObjectForKey: @"uuId"] retain];
     __uuId_isset = YES;
   }
+  if ([decoder containsValueForKey: @"timestamp"])
+  {
+    __timestamp = [decoder decodeInt32ForKey: @"timestamp"];
+    __timestamp_isset = YES;
+  }
   if ([decoder containsValueForKey: @"piList"])
   {
     __piList = [[decoder decodeObjectForKey: @"piList"] retain];
     __piList_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"batteryState"])
+  {
+    __batteryState = [decoder decodeIntForKey: @"batteryState"];
+    __batteryState_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"batteryLevel"])
+  {
+    __batteryLevel = [decoder decodeDoubleForKey: @"batteryLevel"];
+    __batteryLevel_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"memoryWired"])
+  {
+    __memoryWired = [decoder decodeInt32ForKey: @"memoryWired"];
+    __memoryWired_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"memoryActive"])
+  {
+    __memoryActive = [decoder decodeInt32ForKey: @"memoryActive"];
+    __memoryActive_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"memoryInactive"])
+  {
+    __memoryInactive = [decoder decodeInt32ForKey: @"memoryInactive"];
+    __memoryInactive_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"memoryFree"])
+  {
+    __memoryFree = [decoder decodeInt32ForKey: @"memoryFree"];
+    __memoryFree_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"memoryUser"])
+  {
+    __memoryUser = [decoder decodeInt32ForKey: @"memoryUser"];
+    __memoryUser_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"triggeredBy"])
+  {
+    __triggeredBy = [[decoder decodeObjectForKey: @"triggeredBy"] retain];
+    __triggeredBy_isset = YES;
   }
   return self;
 }
@@ -419,9 +482,45 @@
   {
     [encoder encodeObject: __uuId forKey: @"uuId"];
   }
+  if (__timestamp_isset)
+  {
+    [encoder encodeInt32: __timestamp forKey: @"timestamp"];
+  }
   if (__piList_isset)
   {
     [encoder encodeObject: __piList forKey: @"piList"];
+  }
+  if (__batteryState_isset)
+  {
+    [encoder encodeInt: __batteryState forKey: @"batteryState"];
+  }
+  if (__batteryLevel_isset)
+  {
+    [encoder encodeDouble: __batteryLevel forKey: @"batteryLevel"];
+  }
+  if (__memoryWired_isset)
+  {
+    [encoder encodeInt32: __memoryWired forKey: @"memoryWired"];
+  }
+  if (__memoryActive_isset)
+  {
+    [encoder encodeInt32: __memoryActive forKey: @"memoryActive"];
+  }
+  if (__memoryInactive_isset)
+  {
+    [encoder encodeInt32: __memoryInactive forKey: @"memoryInactive"];
+  }
+  if (__memoryFree_isset)
+  {
+    [encoder encodeInt32: __memoryFree forKey: @"memoryFree"];
+  }
+  if (__memoryUser_isset)
+  {
+    [encoder encodeInt32: __memoryUser forKey: @"memoryUser"];
+  }
+  if (__triggeredBy_isset)
+  {
+    [encoder encodeObject: __triggeredBy forKey: @"triggeredBy"];
   }
 }
 
@@ -429,6 +528,7 @@
 {
   [__uuId release];
   [__piList release];
+  [__triggeredBy release];
   [super dealloc];
 }
 
@@ -453,6 +553,23 @@
   __uuId_isset = NO;
 }
 
+- (int32_t) timestamp {
+  return __timestamp;
+}
+
+- (void) setTimestamp: (int32_t) timestamp {
+  __timestamp = timestamp;
+  __timestamp_isset = YES;
+}
+
+- (BOOL) timestampIsSet {
+  return __timestamp_isset;
+}
+
+- (void) unsetTimestamp {
+  __timestamp_isset = NO;
+}
+
 - (NSArray *) piList {
   return [[__piList retain] autorelease];
 }
@@ -472,6 +589,797 @@
   [__piList release];
   __piList = nil;
   __piList_isset = NO;
+}
+
+- (int16_t) batteryState {
+  return __batteryState;
+}
+
+- (void) setBatteryState: (int16_t) batteryState {
+  __batteryState = batteryState;
+  __batteryState_isset = YES;
+}
+
+- (BOOL) batteryStateIsSet {
+  return __batteryState_isset;
+}
+
+- (void) unsetBatteryState {
+  __batteryState_isset = NO;
+}
+
+- (double) batteryLevel {
+  return __batteryLevel;
+}
+
+- (void) setBatteryLevel: (double) batteryLevel {
+  __batteryLevel = batteryLevel;
+  __batteryLevel_isset = YES;
+}
+
+- (BOOL) batteryLevelIsSet {
+  return __batteryLevel_isset;
+}
+
+- (void) unsetBatteryLevel {
+  __batteryLevel_isset = NO;
+}
+
+- (int32_t) memoryWired {
+  return __memoryWired;
+}
+
+- (void) setMemoryWired: (int32_t) memoryWired {
+  __memoryWired = memoryWired;
+  __memoryWired_isset = YES;
+}
+
+- (BOOL) memoryWiredIsSet {
+  return __memoryWired_isset;
+}
+
+- (void) unsetMemoryWired {
+  __memoryWired_isset = NO;
+}
+
+- (int32_t) memoryActive {
+  return __memoryActive;
+}
+
+- (void) setMemoryActive: (int32_t) memoryActive {
+  __memoryActive = memoryActive;
+  __memoryActive_isset = YES;
+}
+
+- (BOOL) memoryActiveIsSet {
+  return __memoryActive_isset;
+}
+
+- (void) unsetMemoryActive {
+  __memoryActive_isset = NO;
+}
+
+- (int32_t) memoryInactive {
+  return __memoryInactive;
+}
+
+- (void) setMemoryInactive: (int32_t) memoryInactive {
+  __memoryInactive = memoryInactive;
+  __memoryInactive_isset = YES;
+}
+
+- (BOOL) memoryInactiveIsSet {
+  return __memoryInactive_isset;
+}
+
+- (void) unsetMemoryInactive {
+  __memoryInactive_isset = NO;
+}
+
+- (int32_t) memoryFree {
+  return __memoryFree;
+}
+
+- (void) setMemoryFree: (int32_t) memoryFree {
+  __memoryFree = memoryFree;
+  __memoryFree_isset = YES;
+}
+
+- (BOOL) memoryFreeIsSet {
+  return __memoryFree_isset;
+}
+
+- (void) unsetMemoryFree {
+  __memoryFree_isset = NO;
+}
+
+- (int32_t) memoryUser {
+  return __memoryUser;
+}
+
+- (void) setMemoryUser: (int32_t) memoryUser {
+  __memoryUser = memoryUser;
+  __memoryUser_isset = YES;
+}
+
+- (BOOL) memoryUserIsSet {
+  return __memoryUser_isset;
+}
+
+- (void) unsetMemoryUser {
+  __memoryUser_isset = NO;
+}
+
+- (NSString *) triggeredBy {
+  return [[__triggeredBy retain] autorelease];
+}
+
+- (void) setTriggeredBy: (NSString *) triggeredBy {
+  [triggeredBy retain];
+  [__triggeredBy release];
+  __triggeredBy = triggeredBy;
+  __triggeredBy_isset = YES;
+}
+
+- (BOOL) triggeredByIsSet {
+  return __triggeredBy_isset;
+}
+
+- (void) unsetTriggeredBy {
+  [__triggeredBy release];
+  __triggeredBy = nil;
+  __triggeredBy_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setUuId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setTimestamp: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_LIST) {
+          int _size0;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
+          int _i1;
+          for (_i1 = 0; _i1 < _size0; ++_i1)
+          {
+            ProcessInfo *_elem2 = [[ProcessInfo alloc] init];
+            [_elem2 read: inProtocol];
+            [fieldValue addObject: _elem2];
+            [_elem2 release];
+          }
+          [inProtocol readListEnd];
+          [self setPiList: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 4:
+        if (fieldType == TType_I16) {
+          int16_t fieldValue = [inProtocol readI16];
+          [self setBatteryState: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setBatteryLevel: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 6:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setMemoryWired: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 7:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setMemoryActive: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 8:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setMemoryInactive: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 9:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setMemoryFree: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 10:
+        if (fieldType == TType_I32) {
+          int32_t fieldValue = [inProtocol readI32];
+          [self setMemoryUser: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 11:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setTriggeredBy: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"Sample"];
+  if (__uuId_isset) {
+    if (__uuId != nil) {
+      [outProtocol writeFieldBeginWithName: @"uuId" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __uuId];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__timestamp_isset) {
+    [outProtocol writeFieldBeginWithName: @"timestamp" type: TType_I32 fieldID: 2];
+    [outProtocol writeI32: __timestamp];
+    [outProtocol writeFieldEnd];
+  }
+  if (__piList_isset) {
+    if (__piList != nil) {
+      [outProtocol writeFieldBeginWithName: @"piList" type: TType_LIST fieldID: 3];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__piList count]];
+        int i4;
+        for (i4 = 0; i4 < [__piList count]; i4++)
+        {
+          [[__piList objectAtIndex: i4] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__batteryState_isset) {
+    [outProtocol writeFieldBeginWithName: @"batteryState" type: TType_I16 fieldID: 4];
+    [outProtocol writeI16: __batteryState];
+    [outProtocol writeFieldEnd];
+  }
+  if (__batteryLevel_isset) {
+    [outProtocol writeFieldBeginWithName: @"batteryLevel" type: TType_DOUBLE fieldID: 5];
+    [outProtocol writeDouble: __batteryLevel];
+    [outProtocol writeFieldEnd];
+  }
+  if (__memoryWired_isset) {
+    [outProtocol writeFieldBeginWithName: @"memoryWired" type: TType_I32 fieldID: 6];
+    [outProtocol writeI32: __memoryWired];
+    [outProtocol writeFieldEnd];
+  }
+  if (__memoryActive_isset) {
+    [outProtocol writeFieldBeginWithName: @"memoryActive" type: TType_I32 fieldID: 7];
+    [outProtocol writeI32: __memoryActive];
+    [outProtocol writeFieldEnd];
+  }
+  if (__memoryInactive_isset) {
+    [outProtocol writeFieldBeginWithName: @"memoryInactive" type: TType_I32 fieldID: 8];
+    [outProtocol writeI32: __memoryInactive];
+    [outProtocol writeFieldEnd];
+  }
+  if (__memoryFree_isset) {
+    [outProtocol writeFieldBeginWithName: @"memoryFree" type: TType_I32 fieldID: 9];
+    [outProtocol writeI32: __memoryFree];
+    [outProtocol writeFieldEnd];
+  }
+  if (__memoryUser_isset) {
+    [outProtocol writeFieldBeginWithName: @"memoryUser" type: TType_I32 fieldID: 10];
+    [outProtocol writeI32: __memoryUser];
+    [outProtocol writeFieldEnd];
+  }
+  if (__triggeredBy_isset) {
+    if (__triggeredBy != nil) {
+      [outProtocol writeFieldBeginWithName: @"triggeredBy" type: TType_STRING fieldID: 11];
+      [outProtocol writeString: __triggeredBy];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"Sample("];
+  [ms appendString: @"uuId:"];
+  [ms appendFormat: @"\"%@\"", __uuId];
+  [ms appendString: @",timestamp:"];
+  [ms appendFormat: @"%i", __timestamp];
+  [ms appendString: @",piList:"];
+  [ms appendFormat: @"%@", __piList];
+  [ms appendString: @",batteryState:"];
+  [ms appendFormat: @"%hi", __batteryState];
+  [ms appendString: @",batteryLevel:"];
+  [ms appendFormat: @"%f", __batteryLevel];
+  [ms appendString: @",memoryWired:"];
+  [ms appendFormat: @"%i", __memoryWired];
+  [ms appendString: @",memoryActive:"];
+  [ms appendFormat: @"%i", __memoryActive];
+  [ms appendString: @",memoryInactive:"];
+  [ms appendFormat: @"%i", __memoryInactive];
+  [ms appendString: @",memoryFree:"];
+  [ms appendFormat: @"%i", __memoryFree];
+  [ms appendString: @",memoryUser:"];
+  [ms appendFormat: @"%i", __memoryUser];
+  [ms appendString: @",triggeredBy:"];
+  [ms appendFormat: @"\"%@\"", __triggeredBy];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation HogsBugs
+
+- (id) initWithPId: (int16_t) pId pName: (NSString *) pName wDistance: (double) wDistance pdfXVals: (NSArray *) pdfXVals pdfYVals: (NSArray *) pdfYVals
+{
+  self = [super init];
+  __pId = pId;
+  __pId_isset = YES;
+  __pName = [pName retain];
+  __pName_isset = YES;
+  __wDistance = wDistance;
+  __wDistance_isset = YES;
+  __pdfXVals = [pdfXVals retain];
+  __pdfXVals_isset = YES;
+  __pdfYVals = [pdfYVals retain];
+  __pdfYVals_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"pId"])
+  {
+    __pId = [decoder decodeIntForKey: @"pId"];
+    __pId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"pName"])
+  {
+    __pName = [[decoder decodeObjectForKey: @"pName"] retain];
+    __pName_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"wDistance"])
+  {
+    __wDistance = [decoder decodeDoubleForKey: @"wDistance"];
+    __wDistance_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"pdfXVals"])
+  {
+    __pdfXVals = [[decoder decodeObjectForKey: @"pdfXVals"] retain];
+    __pdfXVals_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"pdfYVals"])
+  {
+    __pdfYVals = [[decoder decodeObjectForKey: @"pdfYVals"] retain];
+    __pdfYVals_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__pId_isset)
+  {
+    [encoder encodeInt: __pId forKey: @"pId"];
+  }
+  if (__pName_isset)
+  {
+    [encoder encodeObject: __pName forKey: @"pName"];
+  }
+  if (__wDistance_isset)
+  {
+    [encoder encodeDouble: __wDistance forKey: @"wDistance"];
+  }
+  if (__pdfXVals_isset)
+  {
+    [encoder encodeObject: __pdfXVals forKey: @"pdfXVals"];
+  }
+  if (__pdfYVals_isset)
+  {
+    [encoder encodeObject: __pdfYVals forKey: @"pdfYVals"];
+  }
+}
+
+- (void) dealloc
+{
+  [__pName release];
+  [__pdfXVals release];
+  [__pdfYVals release];
+  [super dealloc];
+}
+
+- (int16_t) pId {
+  return __pId;
+}
+
+- (void) setPId: (int16_t) pId {
+  __pId = pId;
+  __pId_isset = YES;
+}
+
+- (BOOL) pIdIsSet {
+  return __pId_isset;
+}
+
+- (void) unsetPId {
+  __pId_isset = NO;
+}
+
+- (NSString *) pName {
+  return [[__pName retain] autorelease];
+}
+
+- (void) setPName: (NSString *) pName {
+  [pName retain];
+  [__pName release];
+  __pName = pName;
+  __pName_isset = YES;
+}
+
+- (BOOL) pNameIsSet {
+  return __pName_isset;
+}
+
+- (void) unsetPName {
+  [__pName release];
+  __pName = nil;
+  __pName_isset = NO;
+}
+
+- (double) wDistance {
+  return __wDistance;
+}
+
+- (void) setWDistance: (double) wDistance {
+  __wDistance = wDistance;
+  __wDistance_isset = YES;
+}
+
+- (BOOL) wDistanceIsSet {
+  return __wDistance_isset;
+}
+
+- (void) unsetWDistance {
+  __wDistance_isset = NO;
+}
+
+- (NSArray *) pdfXVals {
+  return [[__pdfXVals retain] autorelease];
+}
+
+- (void) setPdfXVals: (NSArray *) pdfXVals {
+  [pdfXVals retain];
+  [__pdfXVals release];
+  __pdfXVals = pdfXVals;
+  __pdfXVals_isset = YES;
+}
+
+- (BOOL) pdfXValsIsSet {
+  return __pdfXVals_isset;
+}
+
+- (void) unsetPdfXVals {
+  [__pdfXVals release];
+  __pdfXVals = nil;
+  __pdfXVals_isset = NO;
+}
+
+- (NSArray *) pdfYVals {
+  return [[__pdfYVals retain] autorelease];
+}
+
+- (void) setPdfYVals: (NSArray *) pdfYVals {
+  [pdfYVals retain];
+  [__pdfYVals release];
+  __pdfYVals = pdfYVals;
+  __pdfYVals_isset = YES;
+}
+
+- (BOOL) pdfYValsIsSet {
+  return __pdfYVals_isset;
+}
+
+- (void) unsetPdfYVals {
+  [__pdfYVals release];
+  __pdfYVals = nil;
+  __pdfYVals_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_I16) {
+          int16_t fieldValue = [inProtocol readI16];
+          [self setPId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setPName: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setWDistance: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 4:
+        if (fieldType == TType_LIST) {
+          int _size5;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
+          int _i6;
+          for (_i6 = 0; _i6 < _size5; ++_i6)
+          {
+            double _elem7 = [inProtocol readDouble];
+            [fieldValue addObject: [NSNumber numberWithDouble: _elem7]];
+          }
+          [inProtocol readListEnd];
+          [self setPdfXVals: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 5:
+        if (fieldType == TType_LIST) {
+          int _size8;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size8];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size8];
+          int _i9;
+          for (_i9 = 0; _i9 < _size8; ++_i9)
+          {
+            double _elem10 = [inProtocol readDouble];
+            [fieldValue addObject: [NSNumber numberWithDouble: _elem10]];
+          }
+          [inProtocol readListEnd];
+          [self setPdfYVals: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"HogsBugs"];
+  if (__pId_isset) {
+    [outProtocol writeFieldBeginWithName: @"pId" type: TType_I16 fieldID: 1];
+    [outProtocol writeI16: __pId];
+    [outProtocol writeFieldEnd];
+  }
+  if (__pName_isset) {
+    if (__pName != nil) {
+      [outProtocol writeFieldBeginWithName: @"pName" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __pName];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__wDistance_isset) {
+    [outProtocol writeFieldBeginWithName: @"wDistance" type: TType_DOUBLE fieldID: 3];
+    [outProtocol writeDouble: __wDistance];
+    [outProtocol writeFieldEnd];
+  }
+  if (__pdfXVals_isset) {
+    if (__pdfXVals != nil) {
+      [outProtocol writeFieldBeginWithName: @"pdfXVals" type: TType_LIST fieldID: 4];
+      {
+        [outProtocol writeListBeginWithElementType: TType_DOUBLE size: [__pdfXVals count]];
+        int i12;
+        for (i12 = 0; i12 < [__pdfXVals count]; i12++)
+        {
+          [outProtocol writeDouble: [[__pdfXVals objectAtIndex: i12] doubleValue]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__pdfYVals_isset) {
+    if (__pdfYVals != nil) {
+      [outProtocol writeFieldBeginWithName: @"pdfYVals" type: TType_LIST fieldID: 5];
+      {
+        [outProtocol writeListBeginWithElementType: TType_DOUBLE size: [__pdfYVals count]];
+        int i14;
+        for (i14 = 0; i14 < [__pdfYVals count]; i14++)
+        {
+          [outProtocol writeDouble: [[__pdfYVals objectAtIndex: i14] doubleValue]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"HogsBugs("];
+  [ms appendString: @"pId:"];
+  [ms appendFormat: @"%hi", __pId];
+  [ms appendString: @",pName:"];
+  [ms appendFormat: @"\"%@\"", __pName];
+  [ms appendString: @",wDistance:"];
+  [ms appendFormat: @"%f", __wDistance];
+  [ms appendString: @",pdfXVals:"];
+  [ms appendFormat: @"%@", __pdfXVals];
+  [ms appendString: @",pdfYVals:"];
+  [ms appendFormat: @"%@", __pdfYVals];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation HogBugReport
+
+- (id) initWithUuId: (NSString *) uuId hbList: (HogsBugsList) hbList
+{
+  self = [super init];
+  __uuId = [uuId retain];
+  __uuId_isset = YES;
+  __hbList = [hbList retain];
+  __hbList_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"uuId"])
+  {
+    __uuId = [[decoder decodeObjectForKey: @"uuId"] retain];
+    __uuId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"hbList"])
+  {
+    __hbList = [[decoder decodeObjectForKey: @"hbList"] retain];
+    __hbList_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__uuId_isset)
+  {
+    [encoder encodeObject: __uuId forKey: @"uuId"];
+  }
+  if (__hbList_isset)
+  {
+    [encoder encodeObject: __hbList forKey: @"hbList"];
+  }
+}
+
+- (void) dealloc
+{
+  [__uuId release];
+  [__hbList release];
+  [super dealloc];
+}
+
+- (NSString *) uuId {
+  return [[__uuId retain] autorelease];
+}
+
+- (void) setUuId: (NSString *) uuId {
+  [uuId retain];
+  [__uuId release];
+  __uuId = uuId;
+  __uuId_isset = YES;
+}
+
+- (BOOL) uuIdIsSet {
+  return __uuId_isset;
+}
+
+- (void) unsetUuId {
+  [__uuId release];
+  __uuId = nil;
+  __uuId_isset = NO;
+}
+
+- (NSArray *) hbList {
+  return [[__hbList retain] autorelease];
+}
+
+- (void) setHbList: (NSArray *) hbList {
+  [hbList retain];
+  [__hbList release];
+  __hbList = hbList;
+  __hbList_isset = YES;
+}
+
+- (BOOL) hbListIsSet {
+  return __hbList_isset;
+}
+
+- (void) unsetHbList {
+  [__hbList release];
+  __hbList = nil;
+  __hbList_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -499,19 +1407,19 @@
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size0;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size0];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size0];
-          int _i1;
-          for (_i1 = 0; _i1 < _size0; ++_i1)
+          int _size15;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size15];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size15];
+          int _i16;
+          for (_i16 = 0; _i16 < _size15; ++_i16)
           {
-            ProcessInfo *_elem2 = [[ProcessInfo alloc] init];
-            [_elem2 read: inProtocol];
-            [fieldValue addObject: _elem2];
-            [_elem2 release];
+            HogsBugs *_elem17 = [[HogsBugs alloc] init];
+            [_elem17 read: inProtocol];
+            [fieldValue addObject: _elem17];
+            [_elem17 release];
           }
           [inProtocol readListEnd];
-          [self setPiList: fieldValue];
+          [self setHbList: fieldValue];
           [fieldValue release];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
@@ -527,7 +1435,7 @@
 }
 
 - (void) write: (id <TProtocol>) outProtocol {
-  [outProtocol writeStructBeginWithName: @"Sample"];
+  [outProtocol writeStructBeginWithName: @"HogBugReport"];
   if (__uuId_isset) {
     if (__uuId != nil) {
       [outProtocol writeFieldBeginWithName: @"uuId" type: TType_STRING fieldID: 1];
@@ -535,15 +1443,15 @@
       [outProtocol writeFieldEnd];
     }
   }
-  if (__piList_isset) {
-    if (__piList != nil) {
-      [outProtocol writeFieldBeginWithName: @"piList" type: TType_LIST fieldID: 2];
+  if (__hbList_isset) {
+    if (__hbList != nil) {
+      [outProtocol writeFieldBeginWithName: @"hbList" type: TType_LIST fieldID: 2];
       {
-        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__piList count]];
-        int i4;
-        for (i4 = 0; i4 < [__piList count]; i4++)
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__hbList count]];
+        int i19;
+        for (i19 = 0; i19 < [__hbList count]; i19++)
         {
-          [[__piList objectAtIndex: i4] write: outProtocol];
+          [[__hbList objectAtIndex: i19] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -555,11 +1463,172 @@
 }
 
 - (NSString *) description {
-  NSMutableString * ms = [NSMutableString stringWithString: @"Sample("];
+  NSMutableString * ms = [NSMutableString stringWithString: @"HogBugReport("];
   [ms appendString: @"uuId:"];
   [ms appendFormat: @"\"%@\"", __uuId];
-  [ms appendString: @",piList:"];
-  [ms appendFormat: @"%@", __piList];
+  [ms appendString: @",hbList:"];
+  [ms appendFormat: @"%@", __hbList];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@implementation Feature
+
+- (id) initWithKey: (NSString *) key value: (NSString *) value
+{
+  self = [super init];
+  __key = [key retain];
+  __key_isset = YES;
+  __value = [value retain];
+  __value_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"key"])
+  {
+    __key = [[decoder decodeObjectForKey: @"key"] retain];
+    __key_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"value"])
+  {
+    __value = [[decoder decodeObjectForKey: @"value"] retain];
+    __value_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__key_isset)
+  {
+    [encoder encodeObject: __key forKey: @"key"];
+  }
+  if (__value_isset)
+  {
+    [encoder encodeObject: __value forKey: @"value"];
+  }
+}
+
+- (void) dealloc
+{
+  [__key release];
+  [__value release];
+  [super dealloc];
+}
+
+- (NSString *) key {
+  return [[__key retain] autorelease];
+}
+
+- (void) setKey: (NSString *) key {
+  [key retain];
+  [__key release];
+  __key = key;
+  __key_isset = YES;
+}
+
+- (BOOL) keyIsSet {
+  return __key_isset;
+}
+
+- (void) unsetKey {
+  [__key release];
+  __key = nil;
+  __key_isset = NO;
+}
+
+- (NSString *) value {
+  return [[__value retain] autorelease];
+}
+
+- (void) setValue: (NSString *) value {
+  [value retain];
+  [__value release];
+  __value = value;
+  __value_isset = YES;
+}
+
+- (BOOL) valueIsSet {
+  return __value_isset;
+}
+
+- (void) unsetValue {
+  [__value release];
+  __value = nil;
+  __value_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setKey: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setValue: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"Feature"];
+  if (__key_isset) {
+    if (__key != nil) {
+      [outProtocol writeFieldBeginWithName: @"key" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __key];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__value_isset) {
+    if (__value != nil) {
+      [outProtocol writeFieldBeginWithName: @"value" type: TType_STRING fieldID: 2];
+      [outProtocol writeString: __value];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"Feature("];
+  [ms appendString: @"key:"];
+  [ms appendFormat: @"\"%@\"", __key];
+  [ms appendString: @",value:"];
+  [ms appendFormat: @"\"%@\"", __value];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -960,6 +2029,350 @@
 
 @end
 
+@interface getHogOrBugReport_args : NSObject <NSCoding> {
+  NSString * __uuId;
+  FeatureList __features;
+
+  BOOL __uuId_isset;
+  BOOL __features_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=uuId, setter=setUuId:) NSString * uuId;
+@property (nonatomic, retain, getter=features, setter=setFeatures:) FeatureList features;
+#endif
+
+- (id) initWithUuId: (NSString *) uuId features: (FeatureList) features;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) uuId;
+- (void) setUuId: (NSString *) uuId;
+- (BOOL) uuIdIsSet;
+
+- (FeatureList) features;
+- (void) setFeatures: (FeatureList) features;
+- (BOOL) featuresIsSet;
+
+@end
+
+@implementation getHogOrBugReport_args
+
+- (id) initWithUuId: (NSString *) uuId features: (FeatureList) features
+{
+  self = [super init];
+  __uuId = [uuId retain];
+  __uuId_isset = YES;
+  __features = [features retain];
+  __features_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"uuId"])
+  {
+    __uuId = [[decoder decodeObjectForKey: @"uuId"] retain];
+    __uuId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"features"])
+  {
+    __features = [[decoder decodeObjectForKey: @"features"] retain];
+    __features_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__uuId_isset)
+  {
+    [encoder encodeObject: __uuId forKey: @"uuId"];
+  }
+  if (__features_isset)
+  {
+    [encoder encodeObject: __features forKey: @"features"];
+  }
+}
+
+- (void) dealloc
+{
+  [__uuId release];
+  [__features release];
+  [super dealloc];
+}
+
+- (NSString *) uuId {
+  return [[__uuId retain] autorelease];
+}
+
+- (void) setUuId: (NSString *) uuId {
+  [uuId retain];
+  [__uuId release];
+  __uuId = uuId;
+  __uuId_isset = YES;
+}
+
+- (BOOL) uuIdIsSet {
+  return __uuId_isset;
+}
+
+- (void) unsetUuId {
+  [__uuId release];
+  __uuId = nil;
+  __uuId_isset = NO;
+}
+
+- (NSArray *) features {
+  return [[__features retain] autorelease];
+}
+
+- (void) setFeatures: (NSArray *) features {
+  [features retain];
+  [__features release];
+  __features = features;
+  __features_isset = YES;
+}
+
+- (BOOL) featuresIsSet {
+  return __features_isset;
+}
+
+- (void) unsetFeatures {
+  [__features release];
+  __features = nil;
+  __features_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setUuId: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size20;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size20];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size20];
+          int _i21;
+          for (_i21 = 0; _i21 < _size20; ++_i21)
+          {
+            Feature *_elem22 = [[Feature alloc] init];
+            [_elem22 read: inProtocol];
+            [fieldValue addObject: _elem22];
+            [_elem22 release];
+          }
+          [inProtocol readListEnd];
+          [self setFeatures: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"getHogOrBugReport_args"];
+  if (__uuId_isset) {
+    if (__uuId != nil) {
+      [outProtocol writeFieldBeginWithName: @"uuId" type: TType_STRING fieldID: 1];
+      [outProtocol writeString: __uuId];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__features_isset) {
+    if (__features != nil) {
+      [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__features count]];
+        int i24;
+        for (i24 = 0; i24 < [__features count]; i24++)
+        {
+          [[__features objectAtIndex: i24] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"getHogOrBugReport_args("];
+  [ms appendString: @"uuId:"];
+  [ms appendFormat: @"\"%@\"", __uuId];
+  [ms appendString: @",features:"];
+  [ms appendFormat: @"%@", __features];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
+@interface GetHogOrBugReport_result : NSObject <NSCoding> {
+  HogBugReport * __success;
+
+  BOOL __success_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=success, setter=setSuccess:) HogBugReport * success;
+#endif
+
+- (id) initWithSuccess: (HogBugReport *) success;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (HogBugReport *) success;
+- (void) setSuccess: (HogBugReport *) success;
+- (BOOL) successIsSet;
+
+@end
+
+@implementation GetHogOrBugReport_result
+
+- (id) initWithSuccess: (HogBugReport *) success
+{
+  self = [super init];
+  __success = [success retain];
+  __success_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"success"])
+  {
+    __success = [[decoder decodeObjectForKey: @"success"] retain];
+    __success_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__success_isset)
+  {
+    [encoder encodeObject: __success forKey: @"success"];
+  }
+}
+
+- (void) dealloc
+{
+  [__success release];
+  [super dealloc];
+}
+
+- (HogBugReport *) success {
+  return [[__success retain] autorelease];
+}
+
+- (void) setSuccess: (HogBugReport *) success {
+  [success retain];
+  [__success release];
+  __success = success;
+  __success_isset = YES;
+}
+
+- (BOOL) successIsSet {
+  return __success_isset;
+}
+
+- (void) unsetSuccess {
+  [__success release];
+  __success = nil;
+  __success_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 0:
+        if (fieldType == TType_STRUCT) {
+          HogBugReport *fieldValue = [[HogBugReport alloc] init];
+          [fieldValue read: inProtocol];
+          [self setSuccess: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"GetHogOrBugReport_result"];
+
+  if (__success_isset) {
+    if (__success != nil) {
+      [outProtocol writeFieldBeginWithName: @"success" type: TType_STRUCT fieldID: 0];
+      [__success write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"GetHogOrBugReport_result("];
+  [ms appendString: @"success:"];
+  [ms appendFormat: @"%@", __success];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation CaratServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -1041,6 +2454,59 @@
   return [self recv_uploadSample];
 }
 
+- (void) send_getHogOrBugReport: (NSString *) uuId : (FeatureList) features
+{
+  [outProtocol writeMessageBeginWithName: @"getHogOrBugReport" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"getHogOrBugReport_args"];
+  if (uuId != nil)  {
+    [outProtocol writeFieldBeginWithName: @"uuId" type: TType_STRING fieldID: 1];
+    [outProtocol writeString: uuId];
+    [outProtocol writeFieldEnd];
+  }
+  if (features != nil)  {
+    [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
+    {
+      [outProtocol writeListBeginWithElementType: TType_STRUCT size: [features count]];
+      int i26;
+      for (i26 = 0; i26 < [features count]; i26++)
+      {
+        [[features objectAtIndex: i26] write: outProtocol];
+      }
+      [outProtocol writeListEnd];
+    }
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (HogBugReport *) recv_getHogOrBugReport
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  GetHogOrBugReport_result * result = [[[GetHogOrBugReport_result alloc] init] autorelease];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  if ([result successIsSet]) {
+    return [result success];
+  }
+  @throw [TApplicationException exceptionWithType: TApplicationException_MISSING_RESULT
+                                           reason: @"getHogOrBugReport failed: unknown result"];
+}
+
+- (HogBugReport *) getHogOrBugReport: (NSString *) uuId : (FeatureList) features
+{
+  [self send_getHogOrBugReport: uuId : features];
+  return [self recv_getHogOrBugReport];
+}
+
 @end
 
 @implementation CaratServiceProcessor
@@ -1068,6 +2534,14 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"uploadSample"];
+  }
+  {
+    SEL s = @selector(process_getHogOrBugReport_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"getHogOrBugReport"];
   }
   return self;
 }
@@ -1118,6 +2592,23 @@
   UploadSample_result * result = [[UploadSample_result alloc] init];
   [result setSuccess: [mService uploadSample: [args sample]]];
   [outProtocol writeMessageBeginWithName: @"uploadSample"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release];
+  [args release];
+}
+
+- (void) process_getHogOrBugReport_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  getHogOrBugReport_args * args = [[getHogOrBugReport_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  GetHogOrBugReport_result * result = [[GetHogOrBugReport_result alloc] init];
+  [result setSuccess: [mService getHogOrBugReport: [args uuId]: [args features]]];
+  [outProtocol writeMessageBeginWithName: @"getHogOrBugReport"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

@@ -283,6 +283,15 @@
             
             Sample* sampleToSend = [[Sample alloc] init];
             sampleToSend.uuId = [[Globals instance] getUUID ];
+            sampleToSend.batteryState = (int16_t) [sample valueForKey:@"batteryState"];
+            sampleToSend.batteryLevel = [[sample valueForKey:@"batteryLevel"] doubleValue];
+            sampleToSend.memoryWired = (int) [sample valueForKey:@"memoryWired"];
+            sampleToSend.memoryActive = (int) [sample valueForKey:@"memoryActive"];
+            sampleToSend.memoryInactive = (int) [sample valueForKey:@"memoryInactive"];
+            sampleToSend.memoryFree = (int) [sample valueForKey:@"memoryFree"];
+            sampleToSend.memoryUser = (int) [sample valueForKey:@"memoryUser"];
+            sampleToSend.triggeredBy = (NSString *) [sample valueForKey:@"triggeredBy"];
+            
             NSMutableArray *pInfoList = [[NSMutableArray alloc] init];
             sampleToSend.piList = pInfoList;
             
