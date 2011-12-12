@@ -10,11 +10,15 @@
 
 @interface AboutViewController : UIViewController <UIWebViewDelegate> {
 
-    IBOutlet UIWebView *aboutWebView;
+    NSArray *aboutWebView;
     NSString *theHTML;
+    IBOutlet UIView *portraitView;
+	IBOutlet UIView *landscapeView;
 }
 
-@property (retain, nonatomic) IBOutlet UIWebView *aboutWebView;
+@property (retain, nonatomic) IBOutletCollection(UIWebView) NSArray *aboutWebView;
 @property (nonatomic, copy) NSString *theHTML;
+@property (nonatomic, retain) IBOutlet UIView *portraitView;
+@property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
 @end

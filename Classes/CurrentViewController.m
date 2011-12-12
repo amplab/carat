@@ -140,7 +140,6 @@
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdatedDate];
     
     for (UILabel *lastUp in self.lastUpdated) {
-        NSLog([Utilities formatNSTimeIntervalAsNSString:howLong]);
         lastUp.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
     }
 
@@ -162,6 +161,10 @@
     [self setLastUpdated:nil];
     [sinceLastWeekString release];
     [self setSinceLastWeekString:nil];
+    [portraitView release];
+    [self setPortraitView:nil];
+    [landscapeView release];
+    [self setLandscapeView:nil];
     
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -198,7 +201,9 @@
 {  
 	UIDeviceOrientation interfaceOrientation = [[object object] orientation];
 	
-	if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.view = self.portraitView;
+    } else if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
 	{
 		self.view = self.portraitView;
 	} 
@@ -219,6 +224,8 @@
     [jscore release];
     [lastUpdated release];
     [sinceLastWeekString release];
+    [portraitView release];
+    [landscapeView release];
     [super dealloc];
 }
 

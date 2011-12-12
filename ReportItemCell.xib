@@ -58,11 +58,10 @@
 							</object>
 							<object class="IBUIProgressView" id="24523533">
 								<reference key="NSNextResponder" ref="802273323"/>
-								<int key="NSvFlags">292</int>
+								<int key="NSvFlags">294</int>
 								<string key="NSFrame">{{136, 36}, {155, 9}}</string>
 								<reference key="NSSuperview" ref="802273323"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:677</string>
 								<bool key="IBUIOpaque">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>

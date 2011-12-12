@@ -9,8 +9,9 @@
 #import "AboutViewController.h"
 
 @implementation AboutViewController
-@synthesize aboutWebView = _aboutWebView;
+@synthesize aboutWebView;
 @synthesize theHTML = _theHTML;
+@synthesize portraitView, landscapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,7 +71,12 @@
     <p>You can also <a href=\"mailto:oliner+carat@eecs.berkeley.edu\">contact us directly</a>.<p> \
     </body> \
     </html>";
-    [self.aboutWebView loadHTMLString:self.theHTML baseURL:nil];
+    for (UIWebView *wv in self.aboutWebView) {
+        [wv loadHTMLString:self.theHTML baseURL:nil];
+    }
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 }
 
 - (void)viewDidUnload
@@ -82,6 +88,22 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+}
+
+- (void) orientationChanged:(id)object
+{  
+	UIDeviceOrientation interfaceOrientation = [[object object] orientation];
+	
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.view = self.portraitView;
+    } else if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	{
+		self.view = self.portraitView;
+	} 
+	else 
+	{
+		self.view = self.landscapeView;
+	}
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
