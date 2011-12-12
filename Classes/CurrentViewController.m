@@ -13,12 +13,13 @@
 @implementation CurrentViewController
 
 @synthesize jscore = _jscore;
-@synthesize lastUpdated = _lastUpdated;
+@synthesize lastUpdated;
 @synthesize sinceLastWeekString = _sinceLastWeekString;
 @synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
 @synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
 @synthesize firstAppearance = _firstAppearance;
+@synthesize portraitView, landscapeView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -137,7 +138,14 @@
     NSDate *lastUpdatedDate = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
     NSDate *now = [NSDate date];
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdatedDate];
-    self.lastUpdated.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
+    
+    for (UILabel *lastUp in self.lastUpdated) {
+        NSLog([Utilities formatNSTimeIntervalAsNSString:howLong]);
+        lastUp.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
+    }
+
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
 }
 
 - (void)viewDidUnload
@@ -186,16 +194,23 @@
 	[super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
-        return YES;
-    }
+- (void) orientationChanged:(id)object
+{  
+	UIDeviceOrientation interfaceOrientation = [[object object] orientation];
+	
+	if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	{
+		self.view = self.portraitView;
+	} 
+	else 
+	{
+		self.view = self.landscapeView;
+	}
 }
 
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return YES;
+}
 
 - (void)dealloc {
     [scoreSameOSProgBar release];

@@ -11,23 +11,27 @@
 
 
 @interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
-    IBOutlet UILabel *jscore;
-    IBOutlet UILabel *lastUpdated;
-    IBOutlet UILabel *sinceLastWeekString;
-    IBOutlet UIProgressView *scoreSameOSProgBar;
-    IBOutlet UIProgressView *scoreSameModelProgBar;
-    IBOutlet UIProgressView *scoreSimilarAppsProgBar;
+    NSArray *jscore;
+    NSArray *lastUpdated;
+    NSArray *sinceLastWeekString;
+    NSArray *scoreSameOSProgBar;
+    NSArray *scoreSameModelProgBar;
+    NSArray *scoreSimilarAppsProgBar;
     MBProgressHUD *HUD;
     BOOL firstAppearance;
+    IBOutlet UIView *portraitView;
+	IBOutlet UIView *landscapeView;
 }
 
-@property (retain, nonatomic) IBOutlet UILabel *jscore;
-@property (retain, nonatomic) IBOutlet UILabel *lastUpdated;
-@property (retain, nonatomic) IBOutlet UILabel *sinceLastWeekString;
-@property (retain, nonatomic) IBOutlet UIProgressView *scoreSameOSProgBar;
-@property (retain, nonatomic) IBOutlet UIProgressView *scoreSameModelProgBar;
-@property (retain, nonatomic) IBOutlet UIProgressView *scoreSimilarAppsProgBar;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *jscore;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *lastUpdated;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *sinceLastWeekString;
+@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameOSProgBar;
+@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameModelProgBar;
+@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSimilarAppsProgBar;
 @property (assign, nonatomic) BOOL firstAppearance;
+@property (nonatomic, retain) IBOutlet UIView *portraitView;
+@property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
 - (void)loadDetailDataWithHUD;
 - (BOOL)isFresh;
