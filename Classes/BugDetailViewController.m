@@ -25,7 +25,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // custom init
+        // init code
     }
     
     return self;
@@ -131,13 +131,12 @@
     [super viewDidLoad];
     [self setFirstAppearance:YES];
     // Do any additional setup after loading the view from its nib.
-
+    
     self.navigationItem.title = @"Bug Detail";
     
     // graph setup
-    CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
-    
     for (CPTGraphHostingView *hostingView in self.bugDetailGraphView) {
+        CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
         
         graph.paddingLeft = 0;
@@ -228,6 +227,17 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
+            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
+        {
+            self.view = self.portraitView;
+        } else {
+            self.view = self.landscapeView;
+        }
+    }
+    
     // loads data while showing busy indicator
     if ([self firstAppearance]) {
         [self loadDetailDataWithHUD];
