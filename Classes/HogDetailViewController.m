@@ -8,7 +8,6 @@
 
 #import "HogDetailViewController.h"
 #import "CorePlot-CocoaTouch.h"
-#import "MBProgressHUD.h"
 
 @implementation HogDetailViewController
 
@@ -20,12 +19,13 @@
 @synthesize numSamplesWith = _numSamplesWith;
 @synthesize numSamplesWithout = _numSamplesWithout;
 @synthesize firstAppearance = _firstAppearance;
+@synthesize portraitView, landscapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        // custom init
     }
     return self;
 }
@@ -134,61 +134,67 @@
     self.navigationItem.title = @"Hog Detail";
     
     // graph setup
-    graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
-    CPTGraphHostingView *hostingView = (CPTGraphHostingView *)self.hogDetailGraphView;
-    hostingView.hostedGraph = graph;
-    graph.paddingLeft = 0;
-    graph.paddingTop = 0;
-    graph.paddingRight = 0;
-    graph.paddingBottom = 0;
+    CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
     
-    CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-    plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-6)
-                                                    length:CPTDecimalFromFloat(12)];
-    plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-5)
-                                                    length:CPTDecimalFromFloat(30)];
-    
-    CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
-    
-    CPTLineStyle *lineStyle = [CPTLineStyle lineStyle];
-//    lineStyle.lineColor = [CPTColor blackColor];
-//    lineStyle.lineWidth = 2.0f;
-    
-    axisSet.xAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
-    axisSet.xAxis.minorTicksPerInterval = 4;
-    axisSet.xAxis.majorTickLineStyle = lineStyle;
-    axisSet.xAxis.minorTickLineStyle = lineStyle;
-    axisSet.xAxis.axisLineStyle = lineStyle;
-    axisSet.xAxis.minorTickLength = 5.0f;
-    axisSet.xAxis.majorTickLength = 7.0f;
-    
-    axisSet.yAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
-    axisSet.yAxis.minorTicksPerInterval = 4;
-    axisSet.yAxis.majorTickLineStyle = lineStyle;
-    axisSet.yAxis.minorTickLineStyle = lineStyle;
-    axisSet.yAxis.axisLineStyle = lineStyle;
-    axisSet.yAxis.minorTickLength = 5.0f;
-    axisSet.yAxis.majorTickLength = 7.0f;
-    
-    CPTScatterPlot *xSquaredPlot = [[[CPTScatterPlot alloc] init] autorelease];
-    xSquaredPlot.identifier = @"X Squared Plot";
-//    xSquaredPlot.dataLineStyle.lineWidth = 1.0f;
-//    xSquaredPlot.dataLineStyle.lineColor = [CPTColor redColor];
-    xSquaredPlot.dataSource = self;
-    [graph addPlot:xSquaredPlot];
-    
-    CPTPlotSymbol *greenCirclePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-    greenCirclePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor greenColor]];
-    greenCirclePlotSymbol.size = CGSizeMake(2.0, 2.0);
-    xSquaredPlot.plotSymbol = greenCirclePlotSymbol;  
-    
-    CPTScatterPlot *xInversePlot = [[[CPTScatterPlot alloc] init] autorelease];
-    xInversePlot.identifier = @"X Inverse Plot";
-//    xInversePlot.dataLineStyle.lineWidth = 1.0f;
-//    xInversePlot.dataLineStyle.lineColor = [CPTColor blueColor];
-    xInversePlot.dataSource = self;
-    [graph addPlot:xInversePlot];
+    for (CPTGraphHostingView *hostingView in self.hogDetailGraphView) {
+        hostingView.hostedGraph = graph;
 
+        graph.paddingLeft = 0;
+        graph.paddingTop = 0;
+        graph.paddingRight = 0;
+        graph.paddingBottom = 0;
+        
+        CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
+        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-6)
+                                                        length:CPTDecimalFromFloat(12)];
+        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-5)
+                                                        length:CPTDecimalFromFloat(30)];
+        
+        CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
+        
+        CPTLineStyle *lineStyle = [CPTLineStyle lineStyle];
+    //    lineStyle.lineColor = [CPTColor blackColor];
+    //    lineStyle.lineWidth = 2.0f;
+        
+        axisSet.xAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
+        axisSet.xAxis.minorTicksPerInterval = 4;
+        axisSet.xAxis.majorTickLineStyle = lineStyle;
+        axisSet.xAxis.minorTickLineStyle = lineStyle;
+        axisSet.xAxis.axisLineStyle = lineStyle;
+        axisSet.xAxis.minorTickLength = 5.0f;
+        axisSet.xAxis.majorTickLength = 7.0f;
+        
+        axisSet.yAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
+        axisSet.yAxis.minorTicksPerInterval = 4;
+        axisSet.yAxis.majorTickLineStyle = lineStyle;
+        axisSet.yAxis.minorTickLineStyle = lineStyle;
+        axisSet.yAxis.axisLineStyle = lineStyle;
+        axisSet.yAxis.minorTickLength = 5.0f;
+        axisSet.yAxis.majorTickLength = 7.0f;
+        
+        CPTScatterPlot *xSquaredPlot = [[[CPTScatterPlot alloc] init] autorelease];
+        xSquaredPlot.identifier = @"X Squared Plot";
+    //    xSquaredPlot.dataLineStyle.lineWidth = 1.0f;
+    //    xSquaredPlot.dataLineStyle.lineColor = [CPTColor redColor];
+        xSquaredPlot.dataSource = self;
+        [graph addPlot:xSquaredPlot];
+        
+        CPTPlotSymbol *greenCirclePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+        greenCirclePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor greenColor]];
+        greenCirclePlotSymbol.size = CGSizeMake(2.0, 2.0);
+        xSquaredPlot.plotSymbol = greenCirclePlotSymbol;  
+        
+        CPTScatterPlot *xInversePlot = [[[CPTScatterPlot alloc] init] autorelease];
+        xInversePlot.identifier = @"X Inverse Plot";
+    //    xInversePlot.dataLineStyle.lineWidth = 1.0f;
+    //    xInversePlot.dataLineStyle.lineColor = [CPTColor blueColor];
+        xInversePlot.dataSource = self;
+        [graph addPlot:xInversePlot];
+    }
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 - (void)viewDidUnload
@@ -208,6 +214,11 @@
     [appScore release];
     [self setAppScore:nil];
     [self hudWasHidden:HUD];
+    [portraitView release];
+    [self setPortraitView:nil];
+    [landscapeView release];
+    [self setLandscapeView:nil];
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -224,10 +235,24 @@
     }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+- (void) orientationChanged:(id)object
+{  
+	UIDeviceOrientation interfaceOrientation = [[object object] orientation];
+	
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        self.view = self.landscapeView;
+    } else if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
+	{
+		self.view = self.portraitView;
+	} 
+	else 
+	{
+		self.view = self.landscapeView;
+	}
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return YES;
 }
 
 - (void)dealloc {
@@ -238,6 +263,8 @@
     [hogDetailGraphView release];
     [appIcon release];
     [appScore release];
+    [portraitView release];
+    [landscapeView release];
     [super dealloc];
 }
 

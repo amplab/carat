@@ -19,6 +19,7 @@
     NSArray *scoreSimilarAppsProgBar;
     MBProgressHUD *HUD;
     BOOL firstAppearance;
+    
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
 }
@@ -30,6 +31,7 @@
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameModelProgBar;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSimilarAppsProgBar;
 @property (assign, nonatomic) BOOL firstAppearance;
+
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
 

@@ -85,11 +85,11 @@
     BugDetailViewController *dvController = [[[BugDetailViewController alloc] initWithNibName:@"BugDetailView" bundle:nil] autorelease];
     [self.navigationController pushViewController:dvController animated:YES];
     
-    dvController.appName.text = selectedCell.appName.text;
-    dvController.appIcon.image = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
-    dvController.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
-    [FlurryAnalytics logEvent:@"selectedBugDetail"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:dvController.appName.text, @"App Name", nil]];
+    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]]];
+    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[listOfAppScores objectAtIndex:indexPath.row]];
+    [FlurryAnalytics logEvent:@"selectedHogDetail"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 
 #pragma mark - View lifecycle

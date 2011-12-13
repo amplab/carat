@@ -12,26 +12,31 @@
 
 @interface HogDetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
-    CPTXYGraph *graph;
-    IBOutlet CPTGraphHostingView *hogDetailGraphView;
-    IBOutlet UILabel *appName;
-    IBOutlet UIImageView *appIcon;
-    IBOutlet UIProgressView *appScore;
-    IBOutlet UILabel *numSamplesWith;
-    IBOutlet UILabel *numSamplesWithout;
-    IBOutlet UILabel *wassersteinDistance;
+    NSArray *hogDetailGraphView;
+    NSArray *appName;
+    NSArray *appIcon;
+    NSArray *appScore;
+    NSArray *numSamplesWith;
+    NSArray *numSamplesWithout;
+    NSArray *wassersteinDistance;
     MBProgressHUD *HUD;
     BOOL firstAppearance;
+    
+    IBOutlet UIView *portraitView;
+	IBOutlet UIView *landscapeView;
 }
 
-@property (retain, nonatomic) IBOutlet CPTGraphHostingView *hogDetailGraphView;
-@property (retain, nonatomic) IBOutlet UILabel *appName;
-@property (retain, nonatomic) IBOutlet UIImageView *appIcon;
-@property (retain, nonatomic) IBOutlet UIProgressView *appScore;
-@property (retain, nonatomic) IBOutlet UILabel *numSamplesWith;
-@property (retain, nonatomic) IBOutlet UILabel *numSamplesWithout;
-@property (retain, nonatomic) IBOutlet UILabel *wassersteinDistance;
+@property (retain, nonatomic) IBOutletCollection(CPTGraphHostingView) NSArray *hogDetailGraphView;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *appName;
+@property (retain, nonatomic) IBOutletCollection(UIImageView) NSArray *appIcon;
+@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *appScore;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *numSamplesWith;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *numSamplesWithout;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *wassersteinDistance;
 @property (assign, nonatomic) BOOL firstAppearance;
+
+@property (nonatomic, retain) IBOutlet UIView *portraitView;
+@property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
 - (void)loadDetailDataWithHUD;
 - (BOOL)isFresh;
