@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ReportViewController.h"
 
-@interface HogReportViewController : UIViewController {
+@interface HogReportViewController : ReportViewController {
     IBOutlet UITableView *dataTable;
-    NSMutableArray *listOfAppNames;
-    NSMutableArray *listOfAppScores;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *dataTable;

@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ReportViewController.h"
 
-@interface BugReportViewController : UIViewController {
+@interface BugReportViewController : ReportViewController {
     IBOutlet UITableView *dataTable;
-    NSMutableArray *listOfAppNames;
-    NSMutableArray *listOfAppScores;
 }
 
 @property (retain, nonatomic) IBOutlet UITableView *dataTable;
