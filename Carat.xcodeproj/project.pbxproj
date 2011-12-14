@@ -62,10 +62,9 @@
 		ABD317DD14881391000A8DC7 /* Skype.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D214881391000A8DC7 /* Skype.png */; };
 		ABD317DE14881391000A8DC7 /* Twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D314881391000A8DC7 /* Twitter.png */; };
 		ABD317DF14881391000A8DC7 /* Words With Friends HD.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D414881391000A8DC7 /* Words With Friends HD.png */; };
-		ABD317E114882E93000A8DC7 /* HogDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317E014882E93000A8DC7 /* HogDetailView.xib */; };
+		ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317E014882E93000A8DC7 /* DetailView.xib */; };
 		ABD317E514882F1C000A8DC7 /* HogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */; };
 		ABD317FD14884F6F000A8DC7 /* BugDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */; };
-		ABD317FE14884F6F000A8DC7 /* BugDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317FC14884F6F000A8DC7 /* BugDetailView.xib */; };
 		ABD3180414899275000A8DC7 /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFB1456FDD50008244B /* icon57.png */; };
 		ABD31807148D8304000A8DC7 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD31806148D8304000A8DC7 /* MBProgressHUD.m */; };
 		ABD318AA148D869A000A8DC7 /* SHKOAuthSharer.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD31810148D869A000A8DC7 /* SHKOAuthSharer.m */; };
@@ -315,12 +314,11 @@
 		ABD317D214881391000A8DC7 /* Skype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Skype.png; path = appicons/Skype.png; sourceTree = "<group>"; };
 		ABD317D314881391000A8DC7 /* Twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Twitter.png; path = appicons/Twitter.png; sourceTree = "<group>"; };
 		ABD317D414881391000A8DC7 /* Words With Friends HD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Words With Friends HD.png"; path = "appicons/Words With Friends HD.png"; sourceTree = "<group>"; };
-		ABD317E014882E93000A8DC7 /* HogDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HogDetailView.xib; sourceTree = "<group>"; };
+		ABD317E014882E93000A8DC7 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		ABD317E214882F1C000A8DC7 /* HogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HogDetailViewController.h; sourceTree = "<group>"; };
 		ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HogDetailViewController.m; sourceTree = "<group>"; };
 		ABD317FA14884F6F000A8DC7 /* BugDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugDetailViewController.h; sourceTree = "<group>"; };
 		ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugDetailViewController.m; sourceTree = "<group>"; };
-		ABD317FC14884F6F000A8DC7 /* BugDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = BugDetailView.xib; path = Classes/BugDetailView.xib; sourceTree = "<group>"; };
 		ABD31805148D8303000A8DC7 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		ABD31806148D8304000A8DC7 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		ABD3180F148D869A000A8DC7 /* SHKOAuthSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKOAuthSharer.h; sourceTree = "<group>"; };
@@ -611,8 +609,7 @@
 				2840D7CD1179279E00D7F93C /* HogReportView.xib */,
 				282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
-				ABD317E014882E93000A8DC7 /* HogDetailView.xib */,
-				ABD317FC14884F6F000A8DC7 /* BugDetailView.xib */,
+				ABD317E014882E93000A8DC7 /* DetailView.xib */,
 				AB41CE15144F78450090CC09 /* img */,
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 			);
@@ -1328,8 +1325,7 @@
 				ABD317DD14881391000A8DC7 /* Skype.png in Resources */,
 				ABD317DE14881391000A8DC7 /* Twitter.png in Resources */,
 				ABD317DF14881391000A8DC7 /* Words With Friends HD.png in Resources */,
-				ABD317E114882E93000A8DC7 /* HogDetailView.xib in Resources */,
-				ABD317FE14884F6F000A8DC7 /* BugDetailView.xib in Resources */,
+				ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */,
 				ABD3180414899275000A8DC7 /* icon57.png in Resources */,
 				ABD318C1148D869A000A8DC7 /* SHKSharers.plist in Resources */,
 				ABD318C6148D869A000A8DC7 /* Localizable.strings in Resources */,
