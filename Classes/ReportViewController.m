@@ -10,11 +10,15 @@
 #import "ReportItemCell.h"
 #import "CorePlot-CocoaTouch.h"
 #import "Utilities.h"
+#import "DetailViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation ReportViewController
 
 @synthesize detailViewName;
 @synthesize tableTitle;
+
+@synthesize dataTable = _dataTable;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -29,6 +33,11 @@
 {
     [super didReceiveMemoryWarning];
     // Release any cached data, images, etc that aren't in use.
+}
+
+- (DetailViewController *)getDetailView
+{
+    return nil;
 }
 
 #pragma mark - table methods
@@ -74,7 +83,31 @@
     return [Utilities formatNSTimeIntervalAsNSString:howLong];
 }
 
+// loads the selected detail view
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [selectedCell setSelected:NO animated:YES];
+    
+    DetailViewController *dvController = [self getDetailView];
+    [self.navigationController pushViewController:dvController animated:YES];
+    
+    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]]];
+    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[listOfAppScores objectAtIndex:indexPath.row]];
+    [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
+}
+
 #pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+
+    //Setup the navigation
+    self.navigationItem.title = self.tableTitle;
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -104,7 +137,17 @@
     return YES;
 }
 
+- (void)viewDidUnload
+{
+    [dataTable release];
+    [self setDataTable:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
 - (void)dealloc {
+    [dataTable release];
     [listOfAppNames release];
     [listOfAppScores release];
     [super dealloc];

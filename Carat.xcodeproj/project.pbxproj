@@ -11,8 +11,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28216C970DB411BC00E5133A /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28216C960DB411BC00E5133A /* BugReportViewController.m */; };
-		282CCBFE0DB6C98000C4EA27 /* BugReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */; };
-		2840D7CE1179279E00D7F93C /* HogReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* HogReportView.xib */; };
+		2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* ReportView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
 		AB41CDF4144E1E520090CC09 /* CaratAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */; };
@@ -167,8 +166,7 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28216C950DB411BC00E5133A /* BugReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BugReportViewController.h; sourceTree = "<group>"; };
 		28216C960DB411BC00E5133A /* BugReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BugReportViewController.m; sourceTree = "<group>"; };
-		282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BugReportView.xib; sourceTree = "<group>"; };
-		2840D7CD1179279E00D7F93C /* HogReportView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HogReportView.xib; sourceTree = "<group>"; };
+		2840D7CD1179279E00D7F93C /* ReportView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReportView.xib; sourceTree = "<group>"; };
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		28A0AB4B0D9B1048005BE974 /* Carat_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Carat_Prefix.pch; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -606,8 +604,7 @@
 				C18E107014665E230028095B /* Carat.xcdatamodeld */,
 				ABC07A1F14859E7500FCC2C2 /* AboutView.xib */,
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
-				2840D7CD1179279E00D7F93C /* HogReportView.xib */,
-				282CCBFD0DB6C98000C4EA27 /* BugReportView.xib */,
+				2840D7CD1179279E00D7F93C /* ReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
 				ABD317E014882E93000A8DC7 /* DetailView.xib */,
 				AB41CE15144F78450090CC09 /* img */,
@@ -1294,8 +1291,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				282CCBFE0DB6C98000C4EA27 /* BugReportView.xib in Resources */,
-				2840D7CE1179279E00D7F93C /* HogReportView.xib in Resources */,
+				2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */,
 				AB41CE18144F78450090CC09 /* bug.png in Resources */,
 				AB41CE1C1450BC060090CC09 /* hog.png in Resources */,
 				AB41CE201450BE620090CC09 /* clock.png in Resources */,

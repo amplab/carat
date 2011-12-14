@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class DetailViewController;
 
 @interface ReportViewController : UIViewController {
     NSMutableArray *listOfAppNames;
@@ -14,9 +15,15 @@
     
     NSString *detailViewName;
     NSString *tableTitle;
+    
+    IBOutlet UITableView *dataTable;
 }
 
 @property (retain, nonatomic) NSString *detailViewName;
 @property (retain, nonatomic) NSString *tableTitle;
+
+@property (retain, nonatomic) IBOutlet UITableView *dataTable;
+
+- (DetailViewController *)getDetailView;
 
 @end
