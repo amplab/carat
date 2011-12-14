@@ -8,13 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-
 @interface BugReportViewController : UIViewController {
-    IBOutlet UITableView *bugTable;
+    IBOutlet UITableView *dataTable;
     NSMutableArray *listOfAppNames;
     NSMutableArray *listOfAppScores;
 }
 
-@property (retain, nonatomic) IBOutlet UITableView *bugTable;
+@property (retain, nonatomic) IBOutlet UITableView *dataTable;
 
 @end

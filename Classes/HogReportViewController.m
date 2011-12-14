@@ -15,7 +15,7 @@
 
 @implementation HogReportViewController
 
-@synthesize hogTable = _hogTable;
+@synthesize dataTable = _hogTable;
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -129,8 +129,8 @@
 
 - (void)viewDidUnload
 {
-    [hogTable release];
-    [self setHogTable:nil];
+    [dataTable release];
+    [self setDataTable:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -165,7 +165,7 @@
 }
 
 - (void)dealloc {
-    [hogTable release];
+    [dataTable release];
     [listOfAppNames release];
     [listOfAppScores release];
     [super dealloc];

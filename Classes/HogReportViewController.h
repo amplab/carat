@@ -7,15 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
-
 
 @interface HogReportViewController : UIViewController {
-    IBOutlet UITableView *hogTable;
+    IBOutlet UITableView *dataTable;
     NSMutableArray *listOfAppNames;
     NSMutableArray *listOfAppScores;
 }
 
-@property (retain, nonatomic) IBOutlet UITableView *hogTable;
+@property (retain, nonatomic) IBOutlet UITableView *dataTable;
 
 @end

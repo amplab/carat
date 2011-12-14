@@ -15,7 +15,7 @@
 
 @implementation BugReportViewController
 
-@synthesize bugTable = _bugTable;
+@synthesize dataTable = _bugTable;
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -123,8 +123,8 @@
 
 - (void)viewDidUnload
 {
-    [bugTable release];
-    [self setBugTable:nil];
+    [dataTable release];
+    [self setDataTable:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -159,7 +159,7 @@
 }
 
 - (void)dealloc {
-    [bugTable release];
+    [dataTable release];
     [listOfAppNames release];
     [listOfAppScores release];
     [super dealloc];

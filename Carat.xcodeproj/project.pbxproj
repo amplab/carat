@@ -36,6 +36,8 @@
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
+		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
+		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
 		AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */; };
 		AB9B580B148FEA10004F92F2 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */; };
 		AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580C148FF31D004F92F2 /* 37x-X.png */; };
@@ -202,6 +204,10 @@
 		AB7999141455C23E000AE9FE /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
 		AB91E432149162F7007786F0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AB91E433149162F7007786F0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		AB91E4411499264F007786F0 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		AB91E4421499264F007786F0 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		AB91E4441499266A007786F0 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		AB91E4451499266B007786F0 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		AB9B57A3148EC504004F92F2 /* _CPTConstraintsFixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CPTConstraintsFixed.h; sourceTree = "<group>"; };
 		AB9B57A4148EC504004F92F2 /* _CPTConstraintsRelative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CPTConstraintsRelative.h; sourceTree = "<group>"; };
 		AB9B57A5148EC504004F92F2 /* _CPTDarkGradientTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CPTDarkGradientTheme.h; sourceTree = "<group>"; };
@@ -798,6 +804,10 @@
 			children = (
 				ABC07A2114859EBE00FCC2C2 /* AboutViewController.h */,
 				ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */,
+				AB91E4411499264F007786F0 /* ReportViewController.h */,
+				AB91E4421499264F007786F0 /* ReportViewController.m */,
+				AB91E4441499266A007786F0 /* DetailViewController.h */,
+				AB91E4451499266B007786F0 /* DetailViewController.m */,
 				28216C950DB411BC00E5133A /* BugReportViewController.h */,
 				28216C960DB411BC00E5133A /* BugReportViewController.m */,
 				ABD317FA14884F6F000A8DC7 /* BugDetailViewController.h */,
@@ -1435,6 +1445,8 @@
 				AB9B581014902467004F92F2 /* CoreDataDetail.m in Sources */,
 				AB9B58131490247B004F92F2 /* CoreDataReport.m in Sources */,
 				AB91E434149162F7007786F0 /* Utilities.m in Sources */,
+				AB91E44314992650007786F0 /* ReportViewController.m in Sources */,
+				AB91E4461499266C007786F0 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
