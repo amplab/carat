@@ -13,7 +13,7 @@
 
 @implementation HogReportViewController
 
-@synthesize dataTable = _hogTable;
+@synthesize dataTable = _dataTable;
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -22,29 +22,27 @@
 	if (self) {
         self.title = @"Hog Report";
         self.tabBarItem.image = [UIImage imageNamed:@"hog"];
+        self.detailViewName = @"HogDetailView";
+        self.tableTitle = @"Energy Hogs";
     }
     return self;
 }
 
 #pragma mark - table methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return @"Energy Hogs";
-}
-
+// TODO replace with DetailViewController superclass, move to ReportViewController
 // loads the selected detail view
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     [selectedCell setSelected:NO animated:YES];
     
-    HogDetailViewController *dvController = [[[HogDetailViewController alloc] initWithNibName:@"HogDetailView" bundle:nil] autorelease];
+    HogDetailViewController *dvController = [[[HogDetailViewController alloc] initWithNibName:self.detailViewName bundle:nil] autorelease];
     [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]]];
     [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[listOfAppScores objectAtIndex:indexPath.row]];
-    [FlurryAnalytics logEvent:@"selectedHogDetail"
+    [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 
@@ -80,7 +78,7 @@
     [listOfAppScores addObject:[NSNumber numberWithFloat:0.01f]];
     
     //Setup the navigation
-    self.navigationItem.title = @"Energy Hogs";
+    self.navigationItem.title = self.tableTitle;
 }
 
 - (void)viewDidUnload

@@ -13,7 +13,7 @@
 
 @implementation BugReportViewController
 
-@synthesize dataTable = _bugTable;
+@synthesize dataTable = _dataTable;
 
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -22,29 +22,27 @@
 	if (self) {
         self.title = @"Bug Report";
         self.tabBarItem.image = [UIImage imageNamed:@"bug"];
+        self.detailViewName = @"BugDetailView";
+        self.tableTitle = @"Energy Bugs";
     }
     return self;
 }
 
 #pragma mark - table methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return @"Energy Bugs";
-}
-
+// TODO replace with DetailViewController superclass, move to ReportViewController
 // loads the selected detail view
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
     [selectedCell setSelected:NO animated:YES];
     
-    BugDetailViewController *dvController = [[[BugDetailViewController alloc] initWithNibName:@"BugDetailView" bundle:nil] autorelease];
+    BugDetailViewController *dvController = [[[BugDetailViewController alloc] initWithNibName:self.detailViewName bundle:nil] autorelease];
     [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]]];
     [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[listOfAppScores objectAtIndex:indexPath.row]];
-    [FlurryAnalytics logEvent:@"selectedBugDetail"
+    [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 
@@ -74,7 +72,7 @@
     [listOfAppScores addObject:[NSNumber numberWithFloat:0.1f]];
     
     //Set the title
-    self.navigationItem.title = @"Energy Bugs";
+    self.navigationItem.title = self.tableTitle;
 }
 
 - (void)viewDidUnload

@@ -11,6 +11,12 @@
 @interface ReportViewController : UIViewController {
     NSMutableArray *listOfAppNames;
     NSMutableArray *listOfAppScores;
+    
+    NSString *detailViewName;
+    NSString *tableTitle;
 }
+
+@property (retain, nonatomic) NSString *detailViewName;
+@property (retain, nonatomic) NSString *tableTitle;
 
 @end
