@@ -7,7 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CorePlot-CocoaTouch.h"
+#import "MBProgressHUD.h"
 
-@interface DetailViewController : UIViewController
+@interface DetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
+{
+    BOOL firstAppearance;
+    MBProgressHUD *HUD;
+    
+    NSString *navTitle;
+}
+
+@property (assign, nonatomic) BOOL firstAppearance;
+@property (assign, nonatomic) NSString *navTitle;
+
+- (void)loadDetailDataWithHUD;
+- (BOOL)isFresh;
 
 @end

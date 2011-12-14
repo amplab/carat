@@ -12,7 +12,7 @@
 
 @interface BugDetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
-    NSArray *bugDetailGraphView;
+    NSArray *detailGraphView;
     NSArray *appName;
     NSArray *appIcon;
     NSArray *appScore;
@@ -26,7 +26,7 @@
 	IBOutlet UIView *landscapeView;
 }
 
-@property (retain, nonatomic) IBOutletCollection(CPTGraphHostingView) NSArray *bugDetailGraphView;
+@property (retain, nonatomic) IBOutletCollection(CPTGraphHostingView) NSArray *detailGraphView;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *appName;
 @property (retain, nonatomic) IBOutletCollection(UIImageView) NSArray *appIcon;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *appScore;

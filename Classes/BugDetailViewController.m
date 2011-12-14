@@ -11,7 +11,7 @@
 
 @implementation BugDetailViewController
 
-@synthesize bugDetailGraphView = _bugDetailGraphView;
+@synthesize detailGraphView = _bugDetailGraphView;
 @synthesize wassersteinDistance = _wassersteinDistance;
 @synthesize appName = _appName;
 @synthesize appIcon = _appIcon;
@@ -135,7 +135,7 @@
     self.navigationItem.title = @"Bug Detail";
     
     // graph setup
-    for (CPTGraphHostingView *hostingView in self.bugDetailGraphView) {
+    for (CPTGraphHostingView *hostingView in self.detailGraphView) {
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
         
@@ -207,8 +207,8 @@
     [self setWassersteinDistance:nil];
     [appName release];
     [self setAppName:nil];
-    [bugDetailGraphView release];
-    [self setBugDetailGraphView:nil];
+    [detailGraphView release];
+    [self setDetailGraphView:nil];
     [appIcon release];
     [self setAppIcon:nil];
     [appScore release];
@@ -271,7 +271,7 @@
     [numSamplesWithout release];
     [wassersteinDistance release];
     [appName release];
-    [bugDetailGraphView release];
+    [detailGraphView release];
     [appIcon release];
     [appScore release];
     [portraitView release];
