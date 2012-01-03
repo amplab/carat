@@ -119,7 +119,7 @@
 {
 	// Create the item to share (in this example, a url)
 	NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
-	SHKItem *item = [SHKItem URL:url title:@"Learn about your phone's battery usage. For science! (Seriously.)"];
+	SHKItem *item = [SHKItem URL:url title:@"Learn about your mobile device's battery usage. For science! (Seriously.)"];
     
 	// Get the ShareKit action sheet
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
@@ -174,6 +174,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
+            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
+        {
+            self.view = self.portraitView;
+        } else {
+            self.view = self.landscapeView;
+        }
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
