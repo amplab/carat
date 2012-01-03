@@ -51,10 +51,10 @@ void onUncaughtException(NSException *exception)
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
     UINavigationController *navController2, *navController3;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
-    viewController2 = [[HogReportViewController alloc] initWithNibName:@"HogReportView" bundle:nil];
+    viewController2 = [[HogReportViewController alloc] initWithNibName:@"ReportView" bundle:nil];
     navController2 = [[UINavigationController alloc] initWithRootViewController:viewController2];
     navController2.navigationBarHidden = YES;
-    viewController3 = [[BugReportViewController alloc] initWithNibName:@"BugReportView" bundle:nil];
+    viewController3 = [[BugReportViewController alloc] initWithNibName:@"ReportView" bundle:nil];
     navController3 = [[UINavigationController alloc] initWithRootViewController:viewController3];
     navController3.navigationBarHidden = YES;
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
