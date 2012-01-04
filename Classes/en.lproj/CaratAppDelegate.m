@@ -49,8 +49,10 @@ void onUncaughtException(NSException *exception)
     // UI
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
-    UINavigationController *navController2, *navController3;
+    UINavigationController *navController1, *navController2, *navController3;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
+    navController1 = [[UINavigationController alloc] initWithRootViewController:viewController1];
+    navController1.navigationBarHidden = YES;
     viewController2 = [[HogReportViewController alloc] initWithNibName:@"ReportView" bundle:nil];
     navController2 = [[UINavigationController alloc] initWithRootViewController:viewController2];
     navController2.navigationBarHidden = YES;
@@ -59,7 +61,7 @@ void onUncaughtException(NSException *exception)
     navController3.navigationBarHidden = YES;
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
     self.tabBarController = [[UITabBarController alloc] init];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, navController2, navController3, viewController4, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
 
@@ -84,6 +86,7 @@ void onUncaughtException(NSException *exception)
     // Analytics
     [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
     [FlurryAnalytics logAllPageViews:self.tabBarController];
+    [FlurryAnalytics logAllPageViews:navController1];
     [FlurryAnalytics logAllPageViews:navController2];
     [FlurryAnalytics logAllPageViews:navController3];
     [FlurryAnalytics setUserID:registerMe.uuId];

@@ -9,6 +9,9 @@
 #import "CurrentViewController.h"
 #import "SHK.h"
 #import "Utilities.h"
+#import "DetailViewController.h"
+#import "HogDetailViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation CurrentViewController
 
@@ -100,19 +103,46 @@
 
 #pragma mark - button actions
 
+- (DetailViewController *)getDetailView
+{
+    DetailViewController *detailView = [[[HogDetailViewController alloc] initWithNibName:@"DetailView" bundle:nil] autorelease];
+    detailView.navTitle = @"Category Detail";
+    return detailView;
+}
+
 - (IBAction)getSameOSDetail:(id)sender
 {
-    NSLog(@"same OS detail");
+    DetailViewController *dvController = [self getDetailView];
+    [self.navigationController pushViewController:dvController animated:YES];
+    
+    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[NSNumber numberWithFloat:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress]];
+    [FlurryAnalytics logEvent:@"selectedSameOS"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"OS Version", nil]]; // TODO get OS version
 }
 
 - (IBAction)getSameModelDetail:(id)sender
 {
-    NSLog(@"same Model detail");
+    DetailViewController *dvController = [self getDetailView];
+    [self.navigationController pushViewController:dvController animated:YES];
+    
+    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[NSNumber numberWithFloat:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress]];
+    [FlurryAnalytics logEvent:@"selectedSameModel"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"Model", nil]]; // TODO get model
 }
 
 - (IBAction)getSimilarAppsDetail:(id)sender
 {
-    NSLog(@"similar Apps detail");
+    DetailViewController *dvController = [self getDetailView];
+    [self.navigationController pushViewController:dvController animated:YES];
+    
+    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[NSNumber numberWithFloat:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress]];
+    [FlurryAnalytics logEvent:@"selectedSimilarApps"];
 }
 
 - (IBAction)shareButtonHandlerAction
@@ -184,6 +214,8 @@
             self.view = self.landscapeView;
         }
     }
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -200,6 +232,8 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
