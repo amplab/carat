@@ -117,7 +117,9 @@
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[NSNumber numberWithFloat:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress]];
+    for (UIProgressView *pBar in [dvController appScore]) {
+        [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
+    }
     [FlurryAnalytics logEvent:@"selectedSameOS"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"OS Version", nil]]; // TODO get OS version
 }
@@ -129,7 +131,9 @@
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[NSNumber numberWithFloat:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress]];
+    for (UIProgressView *pBar in [dvController appScore]) {
+        [pBar setProgress:((UIProgressView *)[self.scoreSameModelProgBar objectAtIndex:1]).progress animated:NO];
+    }
     [FlurryAnalytics logEvent:@"selectedSameModel"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"Model", nil]]; // TODO get model
 }
@@ -141,7 +145,9 @@
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    [[dvController appScore] makeObjectsPerformSelector:@selector(setProgress:) withObject:[NSNumber numberWithFloat:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress]];
+    for (UIProgressView *pBar in [dvController appScore]) {
+        [pBar setProgress:((UIProgressView *)[self.scoreSimilarAppsProgBar objectAtIndex:1]).progress animated:NO];
+    }
     [FlurryAnalytics logEvent:@"selectedSimilarApps"];
 }
 
