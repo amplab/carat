@@ -173,11 +173,11 @@ void onUncaughtException(NSException *exception)
 }
 
 - (void)batteryLevelChanged:(NSNotification *)notification {
-
+    [sampler sampleNow:@"batteryLevelChanged"];
 }
 
 - (void)batteryStateChanged:(NSNotification *)notification {
-
+    [sampler sampleNow:@"batteryStateChanged"];
 }
 
 
@@ -189,7 +189,7 @@ void onUncaughtException(NSException *exception)
     [FlurryAnalytics setLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude horizontalAccuracy:newLocation.horizontalAccuracy            verticalAccuracy:newLocation.verticalAccuracy]; 
     // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
     
-    //[self doSample];
+    [sampler sampleNow:@"didUpdateToLocation"];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {

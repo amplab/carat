@@ -233,18 +233,22 @@
 
 - (void) sampleNow : (NSString *) triggeredBy
 {
-    [FlurryAnalytics logEvent:@"sampleNow"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"Sample Triggered", nil]
-                        timed:YES];
     if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
     {
+        [FlurryAnalytics logEvent:@"sampleNowBackground"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"BG Sample Triggered", nil]
+                            timed:YES];
         [self sampleBackground:triggeredBy];
+        [FlurryAnalytics endTimedEvent:@"sampleNowBackground" withParameters:nil];
     }
     else
     {
+        [FlurryAnalytics logEvent:@"sampleNowForeround"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"FG Sample Triggered", nil]
+                            timed:YES];
         [self sampleForeground:triggeredBy];
+        [FlurryAnalytics endTimedEvent:@"sampleNowForeround" withParameters:nil];
     }
-    [FlurryAnalytics endTimedEvent:@"sampleNow" withParameters:nil];
 }
 
 //
