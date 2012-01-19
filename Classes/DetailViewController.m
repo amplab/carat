@@ -115,13 +115,12 @@
 {
     double val = (index/5.0)-5;
     
-    if(fieldEnum == CPTScatterPlotFieldX)
-    { return [NSNumber numberWithDouble:val]; }
-    else
-    { 
-        if(plot.identifier == @"X Squared Plot")
+    if(fieldEnum == CPTScatterPlotFieldX) {
+        return [NSNumber numberWithDouble:val];
+    } else { 
+        if(plot.identifier == @"This Plot")
         { return [NSNumber numberWithDouble:val*val]; }
-        else
+        else if (plot.identifier == @"That Plot")
         { return [NSNumber numberWithDouble:1/val]; }
     }
 }
@@ -138,6 +137,8 @@
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
+        float maxRate = 10; // TODO get actual max rate
+        
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
         
@@ -147,51 +148,60 @@
         graph.paddingBottom = 0;
         
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-6)
-                                                        length:CPTDecimalFromFloat(12)];
-        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-5)
-                                                        length:CPTDecimalFromFloat(30)];
+        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0)
+                                                        length:CPTDecimalFromFloat(maxRate)];
+        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0)
+                                                        length:CPTDecimalFromFloat(1)];
         
         CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
         
-        CPTLineStyle *lineStyle = [CPTLineStyle lineStyle];
-        //    lineStyle.lineColor = [CPTColor blackColor];
-        //    lineStyle.lineWidth = 2.0f;
+        CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
+        axisLineStyle.lineColor = [CPTColor blackColor];
+        axisLineStyle.lineWidth = 1.0f;
         
+        CPTMutableLineStyle *thisLineStyle = [CPTMutableLineStyle lineStyle];
+        thisLineStyle.lineColor = [CPTColor redColor];
+        thisLineStyle.lineWidth = 2.0f;
+        
+        CPTMutableLineStyle *thatLineStyle = [CPTMutableLineStyle lineStyle];
+        thatLineStyle.lineColor = [CPTColor blueColor];
+        thatLineStyle.lineWidth = 2.0f;
+        
+        // THIS
         axisSet.xAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
         axisSet.xAxis.minorTicksPerInterval = 4;
-        axisSet.xAxis.majorTickLineStyle = lineStyle;
-        axisSet.xAxis.minorTickLineStyle = lineStyle;
-        axisSet.xAxis.axisLineStyle = lineStyle;
+        axisSet.xAxis.majorTickLineStyle = axisLineStyle;
+        axisSet.xAxis.minorTickLineStyle = axisLineStyle;
+        axisSet.xAxis.axisLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLength = 5.0f;
         axisSet.xAxis.majorTickLength = 7.0f;
         
-        axisSet.yAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
-        axisSet.yAxis.minorTicksPerInterval = 4;
-        axisSet.yAxis.majorTickLineStyle = lineStyle;
-        axisSet.yAxis.minorTickLineStyle = lineStyle;
-        axisSet.yAxis.axisLineStyle = lineStyle;
+        // THAT
+        axisSet.yAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"1"] decimalValue];
+        axisSet.yAxis.minorTicksPerInterval = 5;
+        axisSet.yAxis.majorTickLineStyle = axisLineStyle;
+        axisSet.yAxis.minorTickLineStyle = axisLineStyle;
+        axisSet.yAxis.axisLineStyle = axisLineStyle;
         axisSet.yAxis.minorTickLength = 5.0f;
         axisSet.yAxis.majorTickLength = 7.0f;
         
-        CPTScatterPlot *xSquaredPlot = [[[CPTScatterPlot alloc] init] autorelease];
-        xSquaredPlot.identifier = @"X Squared Plot";
-        //    xSquaredPlot.dataLineStyle.lineWidth = 1.0f;
-        //    xSquaredPlot.dataLineStyle.lineColor = [CPTColor redColor];
-        xSquaredPlot.dataSource = self;
-        [graph addPlot:xSquaredPlot];
+        CPTScatterPlot *thisPlot = [[[CPTScatterPlot alloc] init] autorelease];
+        thisPlot.identifier = @"This Plot";
+        thisPlot.dataLineStyle = thisLineStyle;
+        thisPlot.dataSource = self;
+        [graph addPlot:thisPlot];
         
-        CPTPlotSymbol *greenCirclePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-        greenCirclePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor greenColor]];
-        greenCirclePlotSymbol.size = CGSizeMake(2.0, 2.0);
-        xSquaredPlot.plotSymbol = greenCirclePlotSymbol;  
+        CPTScatterPlot *thatPlot = [[[CPTScatterPlot alloc] init] autorelease];
+        thatPlot.identifier = @"That Plot";
+        thatPlot.dataLineStyle = thatLineStyle;
+        thatPlot.dataSource = self;
+        [graph addPlot:thatPlot];
         
-        CPTScatterPlot *xInversePlot = [[[CPTScatterPlot alloc] init] autorelease];
-        xInversePlot.identifier = @"X Inverse Plot";
-        //    xInversePlot.dataLineStyle.lineWidth = 1.0f;
-        //    xInversePlot.dataLineStyle.lineColor = [CPTColor blueColor];
-        xInversePlot.dataSource = self;
-        [graph addPlot:xInversePlot];
+        CPTPlotSymbol *blackCirclePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
+        blackCirclePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
+        blackCirclePlotSymbol.size = CGSizeMake(2.0, 2.0);
+        thisPlot.plotSymbol = blackCirclePlotSymbol;
+        thatPlot.plotSymbol = blackCirclePlotSymbol;
     }
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
