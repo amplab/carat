@@ -132,6 +132,7 @@
 		ABD318EC148D8733000A8DC7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318EB148D8732000A8DC7 /* MessageUI.framework */; };
 		ABD318F0148D88D2000A8DC7 /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */; };
 		ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD31902148EC41B000A8DC7 /* QuartzCore.framework */; };
+		ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF64FE814C8D8DF00C21D8E /* PGTableViewWithEmptyView.m */; };
 		C136F0981466281100F0A292 /* Sampler.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F0971466281100F0A292 /* Sampler.m */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
@@ -450,6 +451,8 @@
 		ABD318EE148D88D1000A8DC7 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
 		ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurryAnalytics.a; path = Classes/FlurryAnalytics/libFlurryAnalytics.a; sourceTree = "<group>"; };
 		ABD31902148EC41B000A8DC7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		ABF64FE714C8D8DF00C21D8E /* PGTableViewWithEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGTableViewWithEmptyView.h; sourceTree = "<group>"; };
+		ABF64FE814C8D8DF00C21D8E /* PGTableViewWithEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTableViewWithEmptyView.m; sourceTree = "<group>"; };
 		C136F095146627E100F0A292 /* Sampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sampler.h; sourceTree = "<group>"; };
 		C136F0971466281100F0A292 /* Sampler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Sampler.m; sourceTree = "<group>"; };
 		C136F09914662E5600F0A292 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
@@ -535,6 +538,7 @@
 				AB9B57A2148EC504004F92F2 /* CorePlotHeaders */,
 				C1D52F0C1465F85A008D6D09 /* Thrift */,
 				ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */,
+				ABF64FE614C8D8DE00C21D8E /* PGTableWithEmptyView */,
 				ABD3180C148D869A000A8DC7 /* ShareKit */,
 				AB91E431149024C3007786F0 /* Data */,
 				ABD317C91487FD1C000A8DC7 /* UI */,
@@ -1174,6 +1178,15 @@
 			path = FlurryAnalytics;
 			sourceTree = "<group>";
 		};
+		ABF64FE614C8D8DE00C21D8E /* PGTableWithEmptyView */ = {
+			isa = PBXGroup;
+			children = (
+				ABF64FE714C8D8DF00C21D8E /* PGTableViewWithEmptyView.h */,
+				ABF64FE814C8D8DF00C21D8E /* PGTableViewWithEmptyView.m */,
+			);
+			path = PGTableWithEmptyView;
+			sourceTree = "<group>";
+		};
 		C1D52F0C1465F85A008D6D09 /* Thrift */ = {
 			isa = PBXGroup;
 			children = (
@@ -1439,6 +1452,7 @@
 				AB91E434149162F7007786F0 /* Utilities.m in Sources */,
 				AB91E44314992650007786F0 /* ReportViewController.m in Sources */,
 				AB91E4461499266C007786F0 /* DetailViewController.m in Sources */,
+				ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
