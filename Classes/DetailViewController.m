@@ -14,12 +14,10 @@
 @synthesize navTitle;
 
 @synthesize detailGraphView = _hogDetailGraphView;
-@synthesize wassersteinDistance = _wassersteinDistance;
 @synthesize appName = _appName;
 @synthesize appIcon = _appIcon;
 @synthesize appScore = _appScore;
-@synthesize numSamplesWith = _numSamplesWith;
-@synthesize numSamplesWithout = _numSamplesWithout;
+@synthesize numSamples = _numSamples;
 @synthesize portraitView, landscapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -106,22 +104,24 @@
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    return 51;
+    return 100;
 }
 
 - (NSNumber *)numberForPlot:(CPTPlot *)plot 
                       field:(NSUInteger)fieldEnum 
                 recordIndex:(NSUInteger)index
 {
-    double val = (index/5.0)-5;
+    double val = (((double)index)/100.0);
     
     if(fieldEnum == CPTScatterPlotFieldX) {
-        return [NSNumber numberWithDouble:val];
+        return [NSNumber numberWithDouble:val*10];
     } else { 
         if(plot.identifier == @"This Plot")
-        { return [NSNumber numberWithDouble:val*val]; }
+        { return [NSNumber numberWithDouble:val]; }
         else if (plot.identifier == @"That Plot")
-        { return [NSNumber numberWithDouble:1/val]; }
+        { return [NSNumber numberWithDouble:val+0.1]; }
+        else
+        { NSLog(@"Unknown plot identifier."); }
     }
 }
 
@@ -137,7 +137,7 @@
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
-        float maxRate = 10; // TODO get actual max rate
+        float maxRate = 10.0f; // TODO get actual max rate
         
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
@@ -148,42 +148,52 @@
         graph.paddingBottom = 0;
         
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0)
-                                                        length:CPTDecimalFromFloat(maxRate)];
-        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0)
-                                                        length:CPTDecimalFromFloat(1)];
-        
+        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-1)
+                                                        length:CPTDecimalFromFloat(maxRate+1)];
+        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-0.1)
+                                                        length:CPTDecimalFromFloat(1.15)];
+
         CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
         
         CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
-        axisLineStyle.lineColor = [CPTColor blackColor];
-        axisLineStyle.lineWidth = 1.0f;
         
         CPTMutableLineStyle *thisLineStyle = [CPTMutableLineStyle lineStyle];
-        thisLineStyle.lineColor = [CPTColor redColor];
+        thisLineStyle.lineColor = [CPTColor colorWithComponentRed:1 green:0.4 blue:0 alpha:1];
         thisLineStyle.lineWidth = 2.0f;
         
         CPTMutableLineStyle *thatLineStyle = [CPTMutableLineStyle lineStyle];
-        thatLineStyle.lineColor = [CPTColor blueColor];
+        thatLineStyle.lineColor = [CPTColor colorWithComponentRed:0 green:0.4 blue:0 alpha:1];
         thatLineStyle.lineWidth = 2.0f;
         
-        // THIS
-        axisSet.xAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"5"] decimalValue];
-        axisSet.xAxis.minorTicksPerInterval = 4;
+        CPTMutableTextStyle *axisTextStyle = [CPTMutableTextStyle textStyle];
+        axisTextStyle.color = [CPTColor blackColor];
+        
+        // X-Axis
+        axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat(maxRate/10.0f);
+        axisSet.xAxis.minorTicksPerInterval = 2;
         axisSet.xAxis.majorTickLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLineStyle = axisLineStyle;
         axisSet.xAxis.axisLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLength = 5.0f;
         axisSet.xAxis.majorTickLength = 7.0f;
+        axisSet.xAxis.labelOffset = 1.0f;
+        axisSet.xAxis.titleTextStyle = axisTextStyle;
+        axisSet.xAxis.title = @"Energy Rate";
+        NSString *xAxisTitleLocation = [NSString stringWithFormat:@"%f", (maxRate/2)];
+        axisSet.xAxis.titleLocation = [[NSDecimalNumber decimalNumberWithString:xAxisTitleLocation] decimalValue];;
+        NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        axisSet.xAxis.labelFormatter = formatter;
         
-        // THAT
+        // Y-Axis
         axisSet.yAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"1"] decimalValue];
-        axisSet.yAxis.minorTicksPerInterval = 5;
+        axisSet.yAxis.minorTicksPerInterval = 10;
         axisSet.yAxis.majorTickLineStyle = axisLineStyle;
         axisSet.yAxis.minorTickLineStyle = axisLineStyle;
         axisSet.yAxis.axisLineStyle = axisLineStyle;
         axisSet.yAxis.minorTickLength = 5.0f;
         axisSet.yAxis.majorTickLength = 7.0f;
+        axisSet.yAxis.labelOffset = 1.0f;
         
         CPTScatterPlot *thisPlot = [[[CPTScatterPlot alloc] init] autorelease];
         thisPlot.identifier = @"This Plot";
@@ -196,12 +206,7 @@
         thatPlot.dataLineStyle = thatLineStyle;
         thatPlot.dataSource = self;
         [graph addPlot:thatPlot];
-        
-        CPTPlotSymbol *blackCirclePlotSymbol = [CPTPlotSymbol ellipsePlotSymbol];
-        blackCirclePlotSymbol.fill = [CPTFill fillWithColor:[CPTColor blackColor]];
-        blackCirclePlotSymbol.size = CGSizeMake(2.0, 2.0);
-        thisPlot.plotSymbol = blackCirclePlotSymbol;
-        thatPlot.plotSymbol = blackCirclePlotSymbol;
+
     }
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -225,12 +230,8 @@
 
 - (void)viewDidUnload
 {
-    [numSamplesWithout release];
-    [self setNumSamplesWithout:nil];
-    [numSamplesWith release];
-    [self setNumSamplesWith:nil];
-    [wassersteinDistance release];
-    [self setWassersteinDistance:nil];
+    [numSamples release];
+    [self setNumSamples:nil];
     [appName release];
     [self setAppName:nil];
     [detailGraphView release];
@@ -294,9 +295,7 @@
 }
 
 - (void)dealloc {
-    [numSamplesWith release];
-    [numSamplesWithout release];
-    [wassersteinDistance release];
+    [numSamples release];
     [appName release];
     [detailGraphView release];
     [appIcon release];
