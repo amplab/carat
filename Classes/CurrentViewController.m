@@ -120,6 +120,10 @@
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
     }
+    
+    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
+    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
+    
     [FlurryAnalytics logEvent:@"selectedSameOS"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"OS Version", nil]]; // TODO get OS version
 }
@@ -134,6 +138,10 @@
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:((UIProgressView *)[self.scoreSameModelProgBar objectAtIndex:1]).progress animated:NO];
     }
+    
+    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
+    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
+    
     [FlurryAnalytics logEvent:@"selectedSameModel"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"Model", nil]]; // TODO get model
 }
@@ -148,6 +156,10 @@
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:((UIProgressView *)[self.scoreSimilarAppsProgBar objectAtIndex:1]).progress animated:NO];
     }
+    
+    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
+    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
+    
     [FlurryAnalytics logEvent:@"selectedSimilarApps"];
 }
 
@@ -238,6 +250,13 @@
 {
     [super viewDidAppear:animated];
     // loads data while showing busy indicator
+    
+    // TODO
+    // check data freshness
+    
+    // update from server while showing hud, if needed
+    
+    
     if ([self firstAppearance]) {
         [self loadDetailDataWithHUD];
         [self setFirstAppearance:NO];

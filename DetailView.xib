@@ -40,7 +40,7 @@
 					<object class="IBUILabel" id="372225646">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{20, 85}, {108, 21}}</string>
+						<string key="NSFrame">{{20, 85}, {140, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="794948369"/>
@@ -50,10 +50,10 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Samples:</string>
+						<string key="IBUIText">This</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40IDAuMiAwAA</bytes>
+							<bytes key="NSRGB">MCAwLjQgMAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -102,7 +102,7 @@
 					<object class="IBUILabel" id="794948369">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{209, 85}, {91, 21}}</string>
+						<string key="NSFrame">{{160, 85}, {140, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="785548539"/>
@@ -112,10 +112,10 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText"># samples</string>
-						<object class="NSColor" key="IBUITextColor">
+						<string key="IBUIText">That</string>
+						<object class="NSColor" key="IBUITextColor" id="25603456">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40IDAuMiAwAA</bytes>
+							<bytes key="NSRGB">MSAwLjQgMAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -227,7 +227,7 @@
 					<object class="IBUILabel" id="263162572">
 						<reference key="NSNextResponder" ref="768759067"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{237, 52}, {108, 21}}</string>
+						<string key="NSFrame">{{180, 52}, {140, 21}}</string>
 						<reference key="NSSuperview" ref="768759067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="397234122"/>
@@ -237,10 +237,10 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText">Samples:</string>
+						<string key="IBUIText">This</string>
 						<object class="NSColor" key="IBUITextColor">
 							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40IDAuMiAwAA</bytes>
+							<bytes key="NSRGB">MCAwLjQgMAA</bytes>
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
@@ -275,7 +275,7 @@
 					<object class="IBUILabel" id="397234122">
 						<reference key="NSNextResponder" ref="768759067"/>
 						<int key="NSvFlags">289</int>
-						<string key="NSFrame">{{353, 52}, {107, 21}}</string>
+						<string key="NSFrame">{{328, 52}, {140, 21}}</string>
 						<reference key="NSSuperview" ref="768759067"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="381895233"/>
@@ -285,11 +285,8 @@
 						<int key="IBUIContentMode">7</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<string key="IBUIText"># samples</string>
-						<object class="NSColor" key="IBUITextColor">
-							<int key="NSColorSpace">1</int>
-							<bytes key="NSRGB">MC40IDAuMiAwAA</bytes>
-						</object>
+						<string key="IBUIText">That</string>
+						<reference key="IBUITextColor" ref="25603456"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
@@ -494,23 +491,43 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
-						<string key="label">numSamples</string>
+						<string key="label">thisText</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="397234122"/>
+						<reference key="destination" ref="372225646"/>
 						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 						<bool key="addsContentToExistingCollection">NO</bool>
 					</object>
-					<int key="connectionID">62</int>
+					<int key="connectionID">64</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
-						<string key="label">numSamples</string>
+						<string key="label">thisText</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="263162572"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">65</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">thatText</string>
 						<reference key="source" ref="372490531"/>
 						<reference key="destination" ref="794948369"/>
 						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
 						<bool key="addsContentToExistingCollection">NO</bool>
 					</object>
-					<int key="connectionID">63</int>
+					<int key="connectionID">66</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletCollectionConnection" key="connection">
+						<string key="label">thatText</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="397234122"/>
+						<string key="cachedDesigntimeCollectionClassName">NSArray</string>
+						<bool key="addsContentToExistingCollection">NO</bool>
+					</object>
+					<int key="connectionID">67</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -662,7 +679,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">63</int>
+			<int key="maxID">67</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -712,8 +729,13 @@
 							<string key="candidateClassName">CPTGraphHostingView</string>
 							<string key="collectionClassName">NSArray</string>
 						</object>
-						<object class="IBToManyOutletInfo" key="numSamples">
-							<string key="name">numSamples</string>
+						<object class="IBToManyOutletInfo" key="thatText">
+							<string key="name">thatText</string>
+							<string key="candidateClassName">UILabel</string>
+							<string key="collectionClassName">NSArray</string>
+						</object>
+						<object class="IBToManyOutletInfo" key="thisText">
+							<string key="name">thisText</string>
 							<string key="candidateClassName">UILabel</string>
 							<string key="collectionClassName">NSArray</string>
 						</object>

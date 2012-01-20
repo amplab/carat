@@ -20,6 +20,8 @@
         self.tabBarItem.image = [UIImage imageNamed:@"hog"];
         self.detailViewName = @"HogDetailView";
         self.tableTitle = @"Energy Hogs";
+        self.thisText = @"(Running)";
+        self.thatText = @"(Not Running)";
     }
     return self;
 }

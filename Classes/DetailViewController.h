@@ -21,7 +21,8 @@
     NSArray *appName;
     NSArray *appIcon;
     NSArray *appScore;
-    NSArray *numSamples;
+    NSArray *thisText;
+    NSArray *thatText;
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
 }
@@ -33,7 +34,8 @@
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *appName;
 @property (retain, nonatomic) IBOutletCollection(UIImageView) NSArray *appIcon;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *appScore;
-@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *numSamples;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *thisText;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *thatText;
 
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;

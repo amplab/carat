@@ -17,6 +17,8 @@
 
 @synthesize detailViewName;
 @synthesize tableTitle;
+@synthesize thisText;
+@synthesize thatText;
 
 @synthesize dataTable = _dataTable;
 
@@ -96,6 +98,9 @@
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:selectedCell.appScore.progress animated:NO];
     }
+    
+    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thisText];
+    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thatText];
     
     [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];

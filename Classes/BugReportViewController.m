@@ -20,6 +20,8 @@
         self.tabBarItem.image = [UIImage imageNamed:@"bug"];
         self.detailViewName = @"BugDetailView";
         self.tableTitle = @"Energy Bugs";
+        self.thisText = @"(Running Here)";
+        self.thatText = @"(Running Elsewhere)";
     }
     return self;
 }
@@ -42,17 +44,17 @@
     listOfAppScores = [[NSMutableArray alloc] init];
     
     //Add items
-//    [listOfAppNames addObject:@"Pandora Radio"];
-//    [listOfAppNames addObject:@"Facebook"];
-//    [listOfAppNames addObject:@"Paper Toss"];
-//    [listOfAppNames addObject:@"Shazam"];
-//    [listOfAppNames addObject:@"Angry Birds"];
-//    
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.95f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.93f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.47f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.1f]];
+    [listOfAppNames addObject:@"Pandora Radio"];
+    [listOfAppNames addObject:@"Facebook"];
+    [listOfAppNames addObject:@"Paper Toss"];
+    [listOfAppNames addObject:@"Shazam"];
+    [listOfAppNames addObject:@"Angry Birds"];
+    
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.95f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.93f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.47f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
+    [listOfAppScores addObject:[NSNumber numberWithFloat:0.1f]];
 }
 
 @end

@@ -17,7 +17,8 @@
 @synthesize appName = _appName;
 @synthesize appIcon = _appIcon;
 @synthesize appScore = _appScore;
-@synthesize numSamples = _numSamples;
+@synthesize thisText = _thisText;
+@synthesize thatText = _thatText;
 @synthesize portraitView, landscapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -158,11 +159,11 @@
         CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
         
         CPTMutableLineStyle *thisLineStyle = [CPTMutableLineStyle lineStyle];
-        thisLineStyle.lineColor = [CPTColor colorWithComponentRed:1 green:0.4 blue:0 alpha:1];
+        thisLineStyle.lineColor = [CPTColor colorWithComponentRed:0 green:0.4 blue:0 alpha:1];
         thisLineStyle.lineWidth = 2.0f;
         
         CPTMutableLineStyle *thatLineStyle = [CPTMutableLineStyle lineStyle];
-        thatLineStyle.lineColor = [CPTColor colorWithComponentRed:0 green:0.4 blue:0 alpha:1];
+        thatLineStyle.lineColor = [CPTColor colorWithComponentRed:1 green:0.4 blue:0 alpha:1];
         thatLineStyle.lineWidth = 2.0f;
         
         CPTMutableTextStyle *axisTextStyle = [CPTMutableTextStyle textStyle];
@@ -230,8 +231,10 @@
 
 - (void)viewDidUnload
 {
-    [numSamples release];
-    [self setNumSamples:nil];
+    [thisText release];
+    [self setThisText:nil];
+    [thatText release];
+    [self setThatText:nil];
     [appName release];
     [self setAppName:nil];
     [detailGraphView release];
@@ -295,7 +298,8 @@
 }
 
 - (void)dealloc {
-    [numSamples release];
+    [thisText release];
+    [thatText release];
     [appName release];
     [detailGraphView release];
     [appIcon release];
