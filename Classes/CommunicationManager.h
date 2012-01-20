@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Globals.h"
 #import "CaratProtocol.h"
 #import "Thrift/transport/TSocketClient.h"
 #import "Thrift/protocol/TBinaryProtocol.h"
@@ -15,4 +16,5 @@
 @interface CommunicationManager : NSObject
 - (void) sendRegistrationMessage:(Registration *) registrationMessage;
 - (BOOL) sendSample:(Sample *) sample;
+- (HogBugReport *) getHogOrBugReport:(FeatureList) featureList;
 @end

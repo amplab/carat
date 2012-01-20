@@ -346,6 +346,12 @@
     }
 }
 
+- (NSDate *) getLastReportUpdateTimestamp
+{
+    // TODO: Check core data, and return appropriate timestamp. 
+    return [NSDate date];
+}
+
 #pragma mark - Core Data stack
 
 /**

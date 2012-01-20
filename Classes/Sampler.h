@@ -31,7 +31,7 @@
 - (void) sampleNow : (NSString *) triggeredBy;
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
 - (NSURL *) applicationDocumentsDirectory;
-
+- (NSDate *) getLastReportUpdateTimestamp; 
 @end
 
 #endif

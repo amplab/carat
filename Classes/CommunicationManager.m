@@ -97,6 +97,22 @@
     return ret;
 }
 
+- (HogBugReport *) getHogOrBugReport:(FeatureList) featureList
+{
+    if ([self setupCaratService] == YES) 
+    {
+        @try {
+            return [service getHogOrBugReport:[[Globals instance] getUUID ]
+                                             :featureList];
+            NSLog(@"getHogOrBugReport: Success!");
+        }
+        @catch (NSException *exception) {
+            NSLog(@"getHogOrBugReport: Caught %@: %@", [exception name], [exception reason]);
+        }
+    }
+    return NULL;
+}
+
 //
 // Cleanup stuff.
 //
