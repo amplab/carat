@@ -10,8 +10,8 @@
 #import "SHK.h"
 #import "Utilities.h"
 #import "DetailViewController.h"
-#import "HogDetailViewController.h"
 #import "FlurryAnalytics.h"
+#import "Sampler.h"
 
 @implementation CurrentViewController
 
@@ -105,7 +105,7 @@
 
 - (DetailViewController *)getDetailView
 {
-    DetailViewController *detailView = [[[HogDetailViewController alloc] initWithNibName:@"DetailView" bundle:nil] autorelease];
+    DetailViewController *detailView = [[[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil] autorelease];
     detailView.navTitle = @"Category Detail";
     return detailView;
 }
@@ -115,6 +115,7 @@
     DetailViewController *dvController = [self getDetailView];
     [self.navigationController pushViewController:dvController animated:YES];
     
+    //dvController.detailData =
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
     for (UIProgressView *pBar in [dvController appScore]) {

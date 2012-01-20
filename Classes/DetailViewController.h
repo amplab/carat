@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import "MBProgressHUD.h"
+#import "Sampler.h"
 
 @interface DetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
@@ -16,6 +17,7 @@
     MBProgressHUD *HUD;
     
     NSString *navTitle;
+    DetailScreenReport *detailData;
     
     NSArray *detailGraphView;
     NSArray *appName;
@@ -29,6 +31,7 @@
 
 @property (assign, nonatomic) BOOL firstAppearance;
 @property (assign, nonatomic) NSString *navTitle;
+@property (assign, nonatomic) DetailScreenReport *detailData;
 
 @property (retain, nonatomic) IBOutletCollection(CPTGraphHostingView) NSArray *detailGraphView;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *appName;

@@ -12,6 +12,7 @@
 
 @synthesize firstAppearance = _firstAppearance;
 @synthesize navTitle;
+@synthesize detailData;
 
 @synthesize detailGraphView = _hogDetailGraphView;
 @synthesize appName = _appName;
