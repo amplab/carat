@@ -32,6 +32,14 @@
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
 - (NSURL *) applicationDocumentsDirectory;
 - (NSDate *) getLastReportUpdateTimestamp; 
+- (double) secondsSinceLastUpdate;
+- (HogBugReport *) getHogs;
+- (HogBugReport *) getBugs;
+- (double) getJScore;
+- (DetailScreenReport *) getOSInfo;
+- (DetailScreenReport *) getModelInfo;
+- (DetailScreenReport *) getSimilarAppsInfo;
+- (NSArray *) getChangeSinceLastWeek;
 @end
 
 #endif

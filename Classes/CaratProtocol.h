@@ -11,6 +11,7 @@
 #import "Thrift/protocol/TProtocolUtil.h"
 #import "Thrift/TProcessor.h"
 
+
 typedef NSArray * ProcessInfoList;
 
 typedef NSArray * HogsBugsList;
@@ -168,6 +169,41 @@ typedef NSArray * FeatureList;
 - (NSString *) triggeredBy;
 - (void) setTriggeredBy: (NSString *) triggeredBy;
 - (BOOL) triggeredByIsSet;
+
+@end
+
+@interface DetailScreenReport : NSObject <NSCoding> {
+  double __score;
+  NSArray * __xVals;
+  NSArray * __yVals;
+
+  BOOL __score_isset;
+  BOOL __xVals_isset;
+  BOOL __yVals_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, getter=score, setter=setScore:) double score;
+@property (nonatomic, retain, getter=xVals, setter=setXVals:) NSArray * xVals;
+@property (nonatomic, retain, getter=yVals, setter=setYVals:) NSArray * yVals;
+#endif
+
+- (id) initWithScore: (double) score xVals: (NSArray *) xVals yVals: (NSArray *) yVals;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (double) score;
+- (void) setScore: (double) score;
+- (BOOL) scoreIsSet;
+
+- (NSArray *) xVals;
+- (void) setXVals: (NSArray *) xVals;
+- (BOOL) xValsIsSet;
+
+- (NSArray *) yVals;
+- (void) setYVals: (NSArray *) yVals;
+- (BOOL) yValsIsSet;
 
 @end
 

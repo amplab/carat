@@ -11,7 +11,6 @@
 #import "Thrift/protocol/TProtocolUtil.h"
 #import "Thrift/TProcessor.h"
 
-
 #import "CaratProtocol.h"
 
 
@@ -960,6 +959,246 @@
 
 @end
 
+@implementation DetailScreenReport
+
+- (id) initWithScore: (double) score xVals: (NSArray *) xVals yVals: (NSArray *) yVals
+{
+  self = [super init];
+  __score = score;
+  __score_isset = YES;
+  __xVals = [xVals retain];
+  __xVals_isset = YES;
+  __yVals = [yVals retain];
+  __yVals_isset = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"score"])
+  {
+    __score = [decoder decodeDoubleForKey: @"score"];
+    __score_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"xVals"])
+  {
+    __xVals = [[decoder decodeObjectForKey: @"xVals"] retain];
+    __xVals_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"yVals"])
+  {
+    __yVals = [[decoder decodeObjectForKey: @"yVals"] retain];
+    __yVals_isset = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__score_isset)
+  {
+    [encoder encodeDouble: __score forKey: @"score"];
+  }
+  if (__xVals_isset)
+  {
+    [encoder encodeObject: __xVals forKey: @"xVals"];
+  }
+  if (__yVals_isset)
+  {
+    [encoder encodeObject: __yVals forKey: @"yVals"];
+  }
+}
+
+- (void) dealloc
+{
+  [__xVals release];
+  [__yVals release];
+  [super dealloc];
+}
+
+- (double) score {
+  return __score;
+}
+
+- (void) setScore: (double) score {
+  __score = score;
+  __score_isset = YES;
+}
+
+- (BOOL) scoreIsSet {
+  return __score_isset;
+}
+
+- (void) unsetScore {
+  __score_isset = NO;
+}
+
+- (NSArray *) xVals {
+  return [[__xVals retain] autorelease];
+}
+
+- (void) setXVals: (NSArray *) xVals {
+  [xVals retain];
+  [__xVals release];
+  __xVals = xVals;
+  __xVals_isset = YES;
+}
+
+- (BOOL) xValsIsSet {
+  return __xVals_isset;
+}
+
+- (void) unsetXVals {
+  [__xVals release];
+  __xVals = nil;
+  __xVals_isset = NO;
+}
+
+- (NSArray *) yVals {
+  return [[__yVals retain] autorelease];
+}
+
+- (void) setYVals: (NSArray *) yVals {
+  [yVals retain];
+  [__yVals release];
+  __yVals = yVals;
+  __yVals_isset = YES;
+}
+
+- (BOOL) yValsIsSet {
+  return __yVals_isset;
+}
+
+- (void) unsetYVals {
+  [__yVals release];
+  __yVals = nil;
+  __yVals_isset = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setScore: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size5;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
+          int _i6;
+          for (_i6 = 0; _i6 < _size5; ++_i6)
+          {
+            double _elem7 = [inProtocol readDouble];
+            [fieldValue addObject: [NSNumber numberWithDouble: _elem7]];
+          }
+          [inProtocol readListEnd];
+          [self setXVals: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
+        if (fieldType == TType_LIST) {
+          int _size8;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size8];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size8];
+          int _i9;
+          for (_i9 = 0; _i9 < _size8; ++_i9)
+          {
+            double _elem10 = [inProtocol readDouble];
+            [fieldValue addObject: [NSNumber numberWithDouble: _elem10]];
+          }
+          [inProtocol readListEnd];
+          [self setYVals: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"DetailScreenReport"];
+  if (__score_isset) {
+    [outProtocol writeFieldBeginWithName: @"score" type: TType_DOUBLE fieldID: 1];
+    [outProtocol writeDouble: __score];
+    [outProtocol writeFieldEnd];
+  }
+  if (__xVals_isset) {
+    if (__xVals != nil) {
+      [outProtocol writeFieldBeginWithName: @"xVals" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_DOUBLE size: [__xVals count]];
+        int i12;
+        for (i12 = 0; i12 < [__xVals count]; i12++)
+        {
+          [outProtocol writeDouble: [[__xVals objectAtIndex: i12] doubleValue]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__yVals_isset) {
+    if (__yVals != nil) {
+      [outProtocol writeFieldBeginWithName: @"yVals" type: TType_LIST fieldID: 3];
+      {
+        [outProtocol writeListBeginWithElementType: TType_DOUBLE size: [__yVals count]];
+        int i14;
+        for (i14 = 0; i14 < [__yVals count]; i14++)
+        {
+          [outProtocol writeDouble: [[__yVals objectAtIndex: i14] doubleValue]];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (NSString *) description {
+  NSMutableString * ms = [NSMutableString stringWithString: @"DetailScreenReport("];
+  [ms appendString: @"score:"];
+  [ms appendFormat: @"%f", __score];
+  [ms appendString: @",xVals:"];
+  [ms appendFormat: @"%@", __xVals];
+  [ms appendString: @",yVals:"];
+  [ms appendFormat: @"%@", __yVals];
+  [ms appendString: @")"];
+  return [NSString stringWithString: ms];
+}
+
+@end
+
 @implementation HogsBugs
 
 - (id) initWithPId: (int16_t) pId pName: (NSString *) pName wDistance: (double) wDistance pdfXVals: (NSArray *) pdfXVals pdfYVals: (NSArray *) pdfYVals
@@ -1179,14 +1418,14 @@
         break;
       case 4:
         if (fieldType == TType_LIST) {
-          int _size5;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size5];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size5];
-          int _i6;
-          for (_i6 = 0; _i6 < _size5; ++_i6)
+          int _size15;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size15];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size15];
+          int _i16;
+          for (_i16 = 0; _i16 < _size15; ++_i16)
           {
-            double _elem7 = [inProtocol readDouble];
-            [fieldValue addObject: [NSNumber numberWithDouble: _elem7]];
+            double _elem17 = [inProtocol readDouble];
+            [fieldValue addObject: [NSNumber numberWithDouble: _elem17]];
           }
           [inProtocol readListEnd];
           [self setPdfXVals: fieldValue];
@@ -1197,14 +1436,14 @@
         break;
       case 5:
         if (fieldType == TType_LIST) {
-          int _size8;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size8];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size8];
-          int _i9;
-          for (_i9 = 0; _i9 < _size8; ++_i9)
+          int _size18;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size18];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size18];
+          int _i19;
+          for (_i19 = 0; _i19 < _size18; ++_i19)
           {
-            double _elem10 = [inProtocol readDouble];
-            [fieldValue addObject: [NSNumber numberWithDouble: _elem10]];
+            double _elem20 = [inProtocol readDouble];
+            [fieldValue addObject: [NSNumber numberWithDouble: _elem20]];
           }
           [inProtocol readListEnd];
           [self setPdfYVals: fieldValue];
@@ -1246,10 +1485,10 @@
       [outProtocol writeFieldBeginWithName: @"pdfXVals" type: TType_LIST fieldID: 4];
       {
         [outProtocol writeListBeginWithElementType: TType_DOUBLE size: [__pdfXVals count]];
-        int i12;
-        for (i12 = 0; i12 < [__pdfXVals count]; i12++)
+        int i22;
+        for (i22 = 0; i22 < [__pdfXVals count]; i22++)
         {
-          [outProtocol writeDouble: [[__pdfXVals objectAtIndex: i12] doubleValue]];
+          [outProtocol writeDouble: [[__pdfXVals objectAtIndex: i22] doubleValue]];
         }
         [outProtocol writeListEnd];
       }
@@ -1261,10 +1500,10 @@
       [outProtocol writeFieldBeginWithName: @"pdfYVals" type: TType_LIST fieldID: 5];
       {
         [outProtocol writeListBeginWithElementType: TType_DOUBLE size: [__pdfYVals count]];
-        int i14;
-        for (i14 = 0; i14 < [__pdfYVals count]; i14++)
+        int i24;
+        for (i24 = 0; i24 < [__pdfYVals count]; i24++)
         {
-          [outProtocol writeDouble: [[__pdfYVals objectAtIndex: i14] doubleValue]];
+          [outProtocol writeDouble: [[__pdfYVals objectAtIndex: i24] doubleValue]];
         }
         [outProtocol writeListEnd];
       }
@@ -1407,16 +1646,16 @@
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size15;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size15];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size15];
-          int _i16;
-          for (_i16 = 0; _i16 < _size15; ++_i16)
+          int _size25;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size25];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size25];
+          int _i26;
+          for (_i26 = 0; _i26 < _size25; ++_i26)
           {
-            HogsBugs *_elem17 = [[HogsBugs alloc] init];
-            [_elem17 read: inProtocol];
-            [fieldValue addObject: _elem17];
-            [_elem17 release];
+            HogsBugs *_elem27 = [[HogsBugs alloc] init];
+            [_elem27 read: inProtocol];
+            [fieldValue addObject: _elem27];
+            [_elem27 release];
           }
           [inProtocol readListEnd];
           [self setHbList: fieldValue];
@@ -1448,10 +1687,10 @@
       [outProtocol writeFieldBeginWithName: @"hbList" type: TType_LIST fieldID: 2];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__hbList count]];
-        int i19;
-        for (i19 = 0; i19 < [__hbList count]; i19++)
+        int i29;
+        for (i29 = 0; i29 < [__hbList count]; i29++)
         {
-          [[__hbList objectAtIndex: i19] write: outProtocol];
+          [[__hbList objectAtIndex: i29] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2171,16 +2410,16 @@
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size20;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size20];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size20];
-          int _i21;
-          for (_i21 = 0; _i21 < _size20; ++_i21)
+          int _size30;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size30];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size30];
+          int _i31;
+          for (_i31 = 0; _i31 < _size30; ++_i31)
           {
-            Feature *_elem22 = [[Feature alloc] init];
-            [_elem22 read: inProtocol];
-            [fieldValue addObject: _elem22];
-            [_elem22 release];
+            Feature *_elem32 = [[Feature alloc] init];
+            [_elem32 read: inProtocol];
+            [fieldValue addObject: _elem32];
+            [_elem32 release];
           }
           [inProtocol readListEnd];
           [self setFeatures: fieldValue];
@@ -2212,10 +2451,10 @@
       [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__features count]];
-        int i24;
-        for (i24 = 0; i24 < [__features count]; i24++)
+        int i34;
+        for (i34 = 0; i34 < [__features count]; i34++)
         {
-          [[__features objectAtIndex: i24] write: outProtocol];
+          [[__features objectAtIndex: i34] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -2467,10 +2706,10 @@
     [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
     {
       [outProtocol writeListBeginWithElementType: TType_STRUCT size: [features count]];
-      int i26;
-      for (i26 = 0; i26 < [features count]; i26++)
+      int i36;
+      for (i36 = 0; i36 < [features count]; i36++)
       {
-        [[features objectAtIndex: i26] write: outProtocol];
+        [[features objectAtIndex: i36] write: outProtocol];
       }
       [outProtocol writeListEnd];
     }

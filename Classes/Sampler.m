@@ -352,6 +352,52 @@
     return [NSDate date];
 }
 
+- (double) secondsSinceLastUpdate
+{
+    return 0.0;
+}
+
+- (HogBugReport *) getHogs 
+{
+    HogBugReport *dummy = [[HogBugReport alloc] init];
+    return dummy;
+}
+
+- (HogBugReport *) getBugs 
+{
+    HogBugReport *dummy = [[HogBugReport alloc] init];
+    return dummy;
+}
+
+- (double) getJScore
+{
+    return 0.0;
+}
+
+- (DetailScreenReport *) getOSInfo
+{
+    DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
+    return dummy;
+}
+
+- (DetailScreenReport *) getModelInfo 
+{
+    DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
+    return dummy;
+}
+
+- (DetailScreenReport *) getSimilarAppsInfo
+{
+    DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
+    return dummy;
+}
+
+- (NSArray *) getChangeSinceLastWeek
+{
+    NSArray *dummy = [[NSArray alloc] init];
+    return dummy;
+}
+
 #pragma mark - Core Data stack
 
 /**
