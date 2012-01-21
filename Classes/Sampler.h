@@ -18,15 +18,14 @@
 #import "CoreDataSample.h"
 #import "CommunicationManager.h"
 
-@interface Sampler : NSObject {
-    CommunicationManager * commManager;
-}
+@interface Sampler : NSObject 
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
++ (id) instance;
 - (id) initWithCommManager : cManager;
 - (void) sampleNow : (NSString *) triggeredBy;
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;

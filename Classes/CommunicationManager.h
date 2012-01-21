@@ -14,6 +14,7 @@
 #import "Thrift/protocol/TBinaryProtocol.h"
 
 @interface CommunicationManager : NSObject
++ (id) instance;
 - (void) sendRegistrationMessage:(Registration *) registrationMessage;
 - (BOOL) sendSample:(Sample *) sample;
 - (HogBugReport *) getHogOrBugReport:(FeatureList) featureList;

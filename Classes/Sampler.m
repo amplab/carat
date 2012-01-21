@@ -19,20 +19,32 @@
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize fetchedResultsController = __fetchResultsController;
 
+static id instance = nil;
+
++ (void) initialize {
+    if (self == [Sampler class]) {
+        instance = [[self alloc] init];
+    }
+}
+
++ (id) instance {
+    return instance;
+}
+
 - (id) initWithCommManager:(id)cManager 
 {
     self = [super init];
-    commManager = [cManager retain];
+//    commManager = [cManager retain];
     return self;
 }
 
-- (void)dealloc
+- (void) dealloc
 {
     [__managedObjectContext release];
     [__managedObjectModel release];
     [__persistentStoreCoordinator release];
     [__fetchResultsController release];
-    [commManager release];
+  //  [commManager release];
     [super dealloc];
 }
 
@@ -323,7 +335,8 @@
             //  Try to send. If successful, delete. Note that the process info
             //  is cascaded with sample deletion.
             //
-            BOOL ret = [commManager sendSample:sampleToSend];
+            BOOL ret = [[CommunicationManager instance] sendSample:sampleToSend];
+            //BOOL ret = [commManager sendSample:sampleToSend];
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:sample];

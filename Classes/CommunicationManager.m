@@ -22,6 +22,18 @@
 @synthesize protocol;
 @synthesize service;
 
+static id instance = nil;
+
++ (void) initialize {
+    if (self == [CommunicationManager class]) {
+        instance = [[self alloc] init];
+    }
+}
+
++ (id) instance {
+    return instance;
+}
+
 //
 // Checks if the service is already setup.
 //
