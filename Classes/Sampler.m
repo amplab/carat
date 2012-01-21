@@ -407,7 +407,7 @@ static id instance = nil;
 
 - (NSArray *) getChangeSinceLastWeek
 {
-    NSArray *dummy = [[NSArray alloc] init];
+    NSArray *dummy = [[NSArray alloc] initWithObjects:@"-6",@"-11", nil];
     return dummy;
 }
 

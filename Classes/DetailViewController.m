@@ -10,7 +10,6 @@
 
 @implementation DetailViewController
 
-@synthesize firstAppearance = _firstAppearance;
 @synthesize navTitle;
 @synthesize detailData;
 
@@ -41,90 +40,36 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
-#pragma mark - Data management
-
-- (void)loadDetailData
-{
-    // TODO finish
-    // display waiting indicator
-    sleep(1);
-    // check local cache, use if fresh
-    
-    // attempt to refresh cache over network
-    // [(HogDetailViewController *)vc setWasUpdated:NO/YES];
-    
-    // if stale data found, display brief hud error and show
-    
-    // finally, if all else fails, show without the graph
-    
-    
-    if ([self isFresh]) {
-        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
-        HUD.mode = MBProgressHUDModeCustomView;
-        HUD.labelText = @"Completed";
-        sleep(1);
-    } else {
-        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-X.png"]] autorelease];
-        HUD.mode = MBProgressHUDModeCustomView;
-        HUD.labelText = @"Failed";
-        HUD.detailsLabelText = @"(showing stale data)";
-        sleep(2);
-    }
-}
-
-- (void)loadDetailDataWithHUD
-{
-    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.tabBarController.view];
-	[self.navigationController.tabBarController.view addSubview:HUD];
-	
-	HUD.dimBackground = YES;
-	
-	// Regiser for HUD callbacks so we can remove it from the window at the right time
-    HUD.delegate = self;
-    HUD.labelText = @"Loading";
-	
-    [HUD showWhileExecuting:@selector(loadDetailData) onTarget:self withObject:nil animated:YES];
-}
-
-- (BOOL)isFresh
-{
-    return YES; // TODO will check current date against date in CoreData
-}
-
-#pragma mark - MBProgressHUDDelegate method
-
-- (void)hudWasHidden:(MBProgressHUD *)hud
-{
-    // Remove HUD from screen when the HUD was hidded
-    [HUD removeFromSuperview];
-    [HUD release];
-	HUD = nil;
-}
-
 #pragma mark - CPTPlotDataSource protocol
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    return 100;
+    if (self.detailData != nil) {
+        return [[self.detailData xVals] count];
+    } else return 0;
 }
 
 - (NSNumber *)numberForPlot:(CPTPlot *)plot 
                       field:(NSUInteger)fieldEnum 
                 recordIndex:(NSUInteger)index
 {
-    double val = (((double)index)/100.0);
-    
-    if(fieldEnum == CPTScatterPlotFieldX) {
-        return [NSNumber numberWithDouble:val*10];
-    } else { 
-        if(plot.identifier == @"This Plot")
-        { return [NSNumber numberWithDouble:val]; }
-        else if (plot.identifier == @"That Plot")
-        { return [NSNumber numberWithDouble:val+0.1]; }
-        else
-        { NSLog(@"Unknown plot identifier."); }
-    }
+    // TODO
+//    if (self.detailData != nil) {
+//        if(fieldEnum == CPTScatterPlotFieldX) {
+//            if(plot.identifier == @"This Plot")
+//            { return [self.detailData xVals]; }
+//            else if (plot.identifier == @"That Plot")
+//            { return [NSNumber numberWithDouble:val+0.1]; }
+//            else
+//            { NSLog(@"Unknown plot identifier."); }
+//        } else {
+//            if(plot.identifier == @"This Plot")
+//            { return [NSNumber numberWithDouble:val]; }
+//            else if (plot.identifier == @"That Plot")
+//            { return [NSNumber numberWithDouble:val+0.1]; }
+//            else
+//            { NSLog(@"Unknown plot identifier."); }
+//    }
 }
 
 #pragma mark - View lifecycle
@@ -132,7 +77,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setFirstAppearance:YES];
     // Do any additional setup after loading the view from its nib.
     
     self.navigationItem.title = self.navTitle;
@@ -244,7 +188,6 @@
     [self setAppIcon:nil];
     [appScore release];
     [self setAppScore:nil];
-    [self hudWasHidden:HUD];
     [portraitView release];
     [self setPortraitView:nil];
     [landscapeView release];
@@ -273,13 +216,6 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
-    // loads data while showing busy indicator
-    if ([self firstAppearance]) {
-        [self loadDetailDataWithHUD];
-        [self setFirstAppearance:NO];
-        [self.view setNeedsDisplay];
-    }
 }
 
 - (void) orientationChanged:(id)object

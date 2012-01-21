@@ -37,7 +37,7 @@ void onUncaughtException(NSException *exception)
 
 - (id) init {
     [super init];
-    //if (self != Nil) {
+    //if (self != nil) {
     //    communicationMgr = [[CommunicationManager alloc] init];
     //    sampler = [[Sampler alloc] initWithCommManager:communicationMgr];
     //}
@@ -82,7 +82,6 @@ void onUncaughtException(NSException *exception)
     registerMe.platformId = [UIDevice currentDevice].model;
     registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
     [[CommunicationManager instance] sendRegistrationMessage:registerMe];
-    //[communicationMgr sendRegistrationMessage:registerMe];
     
     // Analytics
     [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
@@ -131,7 +130,6 @@ void onUncaughtException(NSException *exception)
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    //[sampler sampleNow:@"applicationDidBecomeActive"];
     [[Sampler instance] sampleNow:@"applicationDidBecomeActive"];
     //[sampler fetchAndSendSamples:10];
 }
@@ -175,12 +173,10 @@ void onUncaughtException(NSException *exception)
 }
 
 - (void)batteryLevelChanged:(NSNotification *)notification {
-    //[sampler sampleNow:@"batteryLevelChanged"];
     [[Sampler instance] sampleNow:@"batteryLevelChanged"];
 }
 
 - (void)batteryStateChanged:(NSNotification *)notification {
-    //[sampler sampleNow:@"batteryStateChanged"];
     [[Sampler instance] sampleNow:@"batteryStateChanged"];
 }
 
@@ -193,7 +189,6 @@ void onUncaughtException(NSException *exception)
     [FlurryAnalytics setLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude horizontalAccuracy:newLocation.horizontalAccuracy            verticalAccuracy:newLocation.verticalAccuracy]; 
     // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
     
-    //[sampler sampleNow:@"didUpdateToLocation"];
     [[Sampler instance] sampleNow:@"didUpdateToLocation"];
 }
 

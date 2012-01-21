@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Sampler.h"
 @class DetailViewController;
 
 @interface ReportViewController : UIViewController {
@@ -17,6 +18,8 @@
     NSString *tableTitle;
     NSString *thisText;
     NSString *thatText;
+    
+    HogBugReport *report;
     
     IBOutlet UITableView *dataTable;
 }

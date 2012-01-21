@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-
 @interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
     NSArray *jscore;
     NSArray *lastUpdated;
@@ -18,7 +17,6 @@
     NSArray *scoreSameModelProgBar;
     NSArray *scoreSimilarAppsProgBar;
     MBProgressHUD *HUD;
-    BOOL firstAppearance;
     
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
@@ -30,13 +28,13 @@
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameOSProgBar;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameModelProgBar;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSimilarAppsProgBar;
-@property (assign, nonatomic) BOOL firstAppearance;
 
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
-- (void)loadDetailDataWithHUD;
+- (void)loadDataWithHUD;
 - (BOOL)isFresh;
+- (void)updateView;
 
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;

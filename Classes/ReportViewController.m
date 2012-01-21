@@ -46,7 +46,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [listOfAppNames count];
+    if (report != nil && [report hbListIsSet]) {
+        return [[report hbList] count];
+    } else return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -70,16 +72,23 @@
     }
     
     // Set up the cell...
-    NSString *appName = [listOfAppNames objectAtIndex:indexPath.row];
+    NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] pName];
     cell.appName.text = appName;
-    cell.appIcon.image = [UIImage imageNamed:[appName stringByAppendingString:@".png"]];
-    cell.appScore.progress = [[listOfAppScores objectAtIndex:indexPath.row] floatValue];
+    
+    UIImage *img = [UIImage imageNamed:[appName stringByAppendingString:@".png"]];
+    if (img != nil) {
+        cell.appIcon.image = img;
+    } else {
+        cell.appIcon.image = [UIImage imageNamed:@"icon57.png"];
+    }
+
+    cell.appScore.progress = [[[report hbList] objectAtIndex:indexPath.row] wDistance];    
     return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSDate *lastUpdated = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
+    NSDate *lastUpdated = [[Sampler instance] getLastReportUpdateTimestamp];
     NSDate *now = [NSDate date];
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
     return [Utilities formatNSTimeIntervalAsNSString:howLong];
@@ -94,7 +103,14 @@
     [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
-    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]]];
+
+    UIImage *img = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
+    if (img != nil) {
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
+    } else {
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+    }
+
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:selectedCell.appScore.progress animated:NO];
     }

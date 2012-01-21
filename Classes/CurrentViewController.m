@@ -12,6 +12,7 @@
 #import "DetailViewController.h"
 #import "FlurryAnalytics.h"
 #import "Sampler.h"
+#import "CommunicationManager.h"
 
 @implementation CurrentViewController
 
@@ -21,7 +22,6 @@
 @synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
 @synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
-@synthesize firstAppearance = _firstAppearance;
 @synthesize portraitView, landscapeView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -42,7 +42,7 @@
 
 #pragma mark - Data management
 
-- (void)loadDetailDataWithHUD
+- (void)loadDataWithHUD
 {
     HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
 	[self.tabBarController.view addSubview:HUD];
@@ -53,24 +53,23 @@
     HUD.delegate = self;
     HUD.labelText = @"Loading";
 	
-    [HUD showWhileExecuting:@selector(loadDetailData) onTarget:self withObject:nil animated:YES];
+    [HUD showWhileExecuting:@selector(loadData) onTarget:self withObject:nil animated:YES];
 }
 
-- (void)loadDetailData
+- (void)loadData
 {
-    // TODO finish
-    // display waiting indicator
-    sleep(1);
-    // check local cache, use if fresh
+    // this shouldn't trigger; just being defensive
+    if ([self isFresh]) {
+        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+        HUD.mode = MBProgressHUDModeCustomView;
+        HUD.labelText = @"Completed";
+        sleep(1);
+    }
     
-    // attempt to refresh cache over network
-    // [(HogDetailViewController *)vc setWasUpdated:NO/YES];
-    
-    // if stale data found, display brief hud error and show
-    
-    // finally, if all else fails, show without the graph
-    
-    
+    // TODO UPDATE DATA
+
+    // display result
     if ([self isFresh]) {
         // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
         HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
@@ -88,7 +87,7 @@
 
 - (BOOL)isFresh
 {
-    return YES; // TODO will check current date against date in CoreData
+    return [[Sampler instance] secondsSinceLastUpdate] < 86400; // 1 day
 }
 
 #pragma mark - MBProgressHUDDelegate method
@@ -115,7 +114,6 @@
     DetailViewController *dvController = [self getDetailView];
     [self.navigationController pushViewController:dvController animated:YES];
     
-    //dvController.detailData =
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
     for (UIProgressView *pBar in [dvController appScore]) {
@@ -126,7 +124,7 @@
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
     
     [FlurryAnalytics logEvent:@"selectedSameOS"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"OS Version", nil]]; // TODO get OS version
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
 }
 
 - (IBAction)getSameModelDetail:(id)sender
@@ -144,7 +142,7 @@
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
     
     [FlurryAnalytics logEvent:@"selectedSameModel"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:@"N/A", @"Model", nil]]; // TODO get model
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] model], @"Model", nil]];
 }
 
 - (IBAction)getSimilarAppsDetail:(id)sender
@@ -182,11 +180,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self setFirstAppearance:YES];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSDate *lastUpdatedDate = [NSDate dateWithTimeIntervalSinceNow:-100000]; // TODO
-    NSDate *now = [NSDate date];
-    NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdatedDate];
+    NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
     
     for (UILabel *lastUp in self.lastUpdated) {
         lastUp.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
@@ -234,6 +229,10 @@
 {
     [super viewWillAppear:animated];
     
+    if ([self isFresh]) {
+        [self updateView];
+    }
+    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
             [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
@@ -250,17 +249,15 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     // loads data while showing busy indicator
-    
-    // TODO
-    // check data freshness
-    
-    // update from server while showing hud, if needed
-    
-    
-    if ([self firstAppearance]) {
-        [self loadDetailDataWithHUD];
-        [self setFirstAppearance:NO];
+    if (![self isFresh]) {
+        [self loadDataWithHUD];
+        
+        if ([self isFresh]) {
+            [self updateView];
+        }
+
         [self.view setNeedsDisplay];
     }
 }
@@ -275,6 +272,24 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
+}
+
+- (void)updateView
+{
+    // J-Score
+    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[[Sampler instance] getJScore]] stringValue]];
+    
+    // Last Updated
+    NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
+    for (UILabel *lastUp in self.lastUpdated) {
+        lastUp.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
+    }
+    
+    // Change since last week
+    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
+    
+    // Progress Bars
+    
 }
 
 - (void) orientationChanged:(id)object

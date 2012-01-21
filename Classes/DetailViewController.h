@@ -13,9 +13,6 @@
 
 @interface DetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
-    BOOL firstAppearance;
-    MBProgressHUD *HUD;
-    
     NSString *navTitle;
     DetailScreenReport *detailData;
     
@@ -29,7 +26,6 @@
 	IBOutlet UIView *landscapeView;
 }
 
-@property (assign, nonatomic) BOOL firstAppearance;
 @property (assign, nonatomic) NSString *navTitle;
 @property (assign, nonatomic) DetailScreenReport *detailData;
 
@@ -42,8 +38,5 @@
 
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
-
-- (void)loadDetailDataWithHUD;
-- (BOOL)isFresh;
 
 @end

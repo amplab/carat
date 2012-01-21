@@ -24,8 +24,6 @@
     CLLocationManager *locationManager;
     Reachability *hostReachable;
     UIBackgroundTaskIdentifier bgTask;
-    //Sampler *sampler;
-    //CommunicationManager *communicationMgr;
 }
 
 @property (strong, nonatomic) UIWindow *window;
