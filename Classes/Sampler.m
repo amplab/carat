@@ -129,9 +129,9 @@ static id instance = nil;
 //
 - (void) sampleForeground : (NSString *) triggeredBy
 {
-    [self printMemoryInfo];
-    [self printProcessorInfo];
-    return;
+    //[self printMemoryInfo];
+    //[self printProcessorInfo];
+    //return;
     
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
@@ -299,6 +299,7 @@ static id instance = nil;
             
             Sample* sampleToSend = [[Sample alloc] init];
             sampleToSend.uuId = [[Globals instance] getUUID ];
+            sampleToSend.timestamp = (int32_t) [sample valueForKey:@"timestamp"];
             sampleToSend.batteryState = (int16_t) [sample valueForKey:@"batteryState"];
             sampleToSend.batteryLevel = [[sample valueForKey:@"batteryLevel"] doubleValue];
             sampleToSend.memoryWired = (int) [sample valueForKey:@"memoryWired"];
@@ -387,19 +388,19 @@ static id instance = nil;
     return 0.0;
 }
 
-- (DetailScreenReport *) getOSInfo
+- (DetailScreenReport *) getOSInfo : (BOOL) with
 {
     DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
     return dummy;
 }
 
-- (DetailScreenReport *) getModelInfo 
+- (DetailScreenReport *) getModelInfo : (BOOL) with
 {
     DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
     return dummy;
 }
 
-- (DetailScreenReport *) getSimilarAppsInfo
+- (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with
 {
     DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
     return dummy;

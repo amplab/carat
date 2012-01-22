@@ -130,8 +130,9 @@ void onUncaughtException(NSException *exception)
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [[Sampler instance] sampleNow:@"applicationDidBecomeActive"];
     //[sampler fetchAndSendSamples:10];
+    [[Sampler instance] sampleNow:@"applicationDidBecomeActive"];
+    //[[Sampler instance] fetchAndSendSamples: 10];
 }
 
 
@@ -204,7 +205,6 @@ void onUncaughtException(NSException *exception)
 - (void) checkNetworkStatus:(NSNotification *)notice
 {
     // called after network status changes
-   
     NetworkStatus internetStatus = [hostReachable currentReachabilityStatus];
     if (internetStatus == ReachableViaWiFi || internetStatus == ReachableViaWWAN) {
         [self doSyncIfNeeded];
@@ -215,6 +215,7 @@ void onUncaughtException(NSException *exception)
     // we've already checked that the host we need to talk to is reachable
     // so see if there's enough data stored up to justify a sync
     // if so, do it!
+    //[[Sampler instance] fetchAndSendSamples: 10];
 }
 
 #pragma mark -

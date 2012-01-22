@@ -35,9 +35,9 @@
 - (HogBugReport *) getHogs;
 - (HogBugReport *) getBugs;
 - (double) getJScore;
-- (DetailScreenReport *) getOSInfo;
-- (DetailScreenReport *) getModelInfo;
-- (DetailScreenReport *) getSimilarAppsInfo;
+- (DetailScreenReport *) getOSInfo : (BOOL) with;
+- (DetailScreenReport *) getModelInfo : (BOOL) with;
+- (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with;
 - (NSArray *) getChangeSinceLastWeek;
 @end
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="878" systemVersion="11C74" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="11C74" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CoreDataDetail" syncable="YES">
         <attribute name="distance" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="distributionWith" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -27,7 +27,7 @@
         <attribute name="memoryInactive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="memoryUser" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="memoryWired" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="triggeredBy" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="processInfos" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CoreDataProcessInfo" inverseName="coredatasample" inverseEntity="CoreDataProcessInfo" syncable="YES"/>
     </entity>
