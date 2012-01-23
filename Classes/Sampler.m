@@ -362,8 +362,7 @@ static id instance = nil;
 
 - (NSDate *) getLastReportUpdateTimestamp
 {
-    // TODO: Check core data, and return appropriate timestamp. 
-    return [NSDate date];
+    return [[Sampler instance] getLastReportUpdateTimestamp];
 }
 
 - (double) secondsSinceLastUpdate

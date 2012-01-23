@@ -96,7 +96,7 @@
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
-        float maxRate = 10.0f; // TODO get actual max rate
+        NSNumber *maxRate = [[self.detailDataThis xVals] valueForKeyPath:@"@max.intValue"];
         
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
@@ -108,7 +108,7 @@
         
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
         plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-1)
-                                                        length:CPTDecimalFromFloat(maxRate+1)];
+                                                        length:CPTDecimalFromFloat([maxRate floatValue]+1)];
         plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-0.1)
                                                         length:CPTDecimalFromFloat(1.15)];
 
@@ -128,7 +128,7 @@
         axisTextStyle.color = [CPTColor blackColor];
         
         // X-Axis
-        axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat(maxRate/10.0f);
+        axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat([maxRate floatValue]/10.0f);
         axisSet.xAxis.minorTicksPerInterval = 2;
         axisSet.xAxis.majorTickLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLineStyle = axisLineStyle;
@@ -138,7 +138,7 @@
         axisSet.xAxis.labelOffset = 1.0f;
         axisSet.xAxis.titleTextStyle = axisTextStyle;
         axisSet.xAxis.title = @"Energy Rate";
-        NSString *xAxisTitleLocation = [NSString stringWithFormat:@"%f", (maxRate/2)];
+        NSString *xAxisTitleLocation = [NSString stringWithFormat:@"%f", ([maxRate floatValue]/2)];
         axisSet.xAxis.titleLocation = [[NSDecimalNumber decimalNumberWithString:xAxisTitleLocation] decimalValue];;
         NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];

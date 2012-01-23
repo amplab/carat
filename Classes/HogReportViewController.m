@@ -38,29 +38,28 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
-    // TODO: remove DUMMY DATA
-    //Initialize the arrays.
-    listOfAppNames = [[NSMutableArray alloc] init];
-    listOfAppScores = [[NSMutableArray alloc] init];
-    
-    //Add items
-    [listOfAppNames addObject:@"Camera+"];
-    [listOfAppNames addObject:@"Fruit Ninja"];
-    [listOfAppNames addObject:@"Skype"];
-    [listOfAppNames addObject:@"Words With Friends HD"];
-    [listOfAppNames addObject:@"Twitter"];
-    [listOfAppNames addObject:@"Cut the Rope"];
-    [listOfAppNames addObject:@"Angry Birds"];
-    [listOfAppNames addObject:@"Shazam"];
-    
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.9f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.86f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.85f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.79f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.4f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.38f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
-    [listOfAppScores addObject:[NSNumber numberWithFloat:0.01f]];
+//    //Initialize the arrays.
+//    listOfAppNames = [[NSMutableArray alloc] init];
+//    listOfAppScores = [[NSMutableArray alloc] init];
+//    
+//    //Add items
+//    [listOfAppNames addObject:@"Camera+"];
+//    [listOfAppNames addObject:@"Fruit Ninja"];
+//    [listOfAppNames addObject:@"Skype"];
+//    [listOfAppNames addObject:@"Words With Friends HD"];
+//    [listOfAppNames addObject:@"Twitter"];
+//    [listOfAppNames addObject:@"Cut the Rope"];
+//    [listOfAppNames addObject:@"Angry Birds"];
+//    [listOfAppNames addObject:@"Shazam"];
+//    
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.9f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.86f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.85f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.79f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.4f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.38f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
+//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.01f]];
 }
 
 @end
