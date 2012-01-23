@@ -37,10 +37,9 @@ void onUncaughtException(NSException *exception)
 
 - (id) init {
     [super init];
-    //if (self != nil) {
-    //    communicationMgr = [[CommunicationManager alloc] init];
-    //    sampler = [[Sampler alloc] initWithCommManager:communicationMgr];
-    //}
+    if (self != nil) {
+        // custom init code
+    }
     return self;
 }
 
@@ -70,6 +69,8 @@ void onUncaughtException(NSException *exception)
         locationManager = [[CLLocationManager alloc] init];
         locationManager.delegate = self;
     }
+    
+    // idempotent setup of notifications; also called in willResignActive
     [self setupNotificationSubscriptions];
     
     // we do this to prompt the dialog asking for permission to share location info
@@ -102,10 +103,7 @@ void onUncaughtException(NSException *exception)
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    /*
-     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-     */
+    [self setupNotificationSubscriptions]; // we aren't seeing any battery events, and I don't know why
 }
 
 
@@ -141,6 +139,7 @@ void onUncaughtException(NSException *exception)
      Called when the application is about to terminate.
      See also applicationDidEnterBackground:.
      */
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -181,6 +180,10 @@ void onUncaughtException(NSException *exception)
     [[Sampler instance] sampleNow:@"batteryStateChanged"];
 }
 
+- (void)application:(UIApplication *)application 
+didReceiveLocalNotification:(UILocalNotification *)notification {
+    [[Sampler instance] sampleNow:@"didReceiveLocalNotification"];
+}
 
 #pragma mark -
 #pragma mark location awareness
@@ -230,8 +233,6 @@ void onUncaughtException(NSException *exception)
 
 - (void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    //[sampler release];
-    //[communicationMgr release];
 }
 
 @end
