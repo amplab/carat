@@ -14,7 +14,8 @@
 @interface DetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
     NSString *navTitle;
-    DetailScreenReport *detailData;
+    DetailScreenReport *detailDataThis;
+    DetailScreenReport *detailDataThat;
     
     NSArray *detailGraphView;
     NSArray *appName;
@@ -27,7 +28,8 @@
 }
 
 @property (assign, nonatomic) NSString *navTitle;
-@property (assign, nonatomic) DetailScreenReport *detailData;
+@property (assign, nonatomic) DetailScreenReport *detailDataThis;
+@property (assign, nonatomic) DetailScreenReport *detailDataThat;
 
 @property (retain, nonatomic) IBOutletCollection(CPTGraphHostingView) NSArray *detailGraphView;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *appName;

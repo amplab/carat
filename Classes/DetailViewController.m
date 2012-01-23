@@ -11,7 +11,7 @@
 @implementation DetailViewController
 
 @synthesize navTitle;
-@synthesize detailData;
+@synthesize detailDataThis, detailDataThat;
 
 @synthesize detailGraphView = _hogDetailGraphView;
 @synthesize appName = _appName;
@@ -44,8 +44,12 @@
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    if (self.detailData != nil) {
-        return [[self.detailData xVals] count];
+    if (self.detailDataThis != nil) {
+        if(plot.identifier == @"This Plot")
+        { return [[self.detailDataThis xVals] count]; }
+        else if (plot.identifier == @"That Plot")
+        { return [[self.detailDataThat xVals] count]; }
+        else return 0;
     } else return 0;
 }
 
@@ -53,23 +57,32 @@
                       field:(NSUInteger)fieldEnum 
                 recordIndex:(NSUInteger)index
 {
-    // TODO
-//    if (self.detailData != nil) {
-//        if(fieldEnum == CPTScatterPlotFieldX) {
-//            if(plot.identifier == @"This Plot")
-//            { return [self.detailData xVals]; }
-//            else if (plot.identifier == @"That Plot")
-//            { return [NSNumber numberWithDouble:val+0.1]; }
-//            else
-//            { NSLog(@"Unknown plot identifier."); }
-//        } else {
-//            if(plot.identifier == @"This Plot")
-//            { return [NSNumber numberWithDouble:val]; }
-//            else if (plot.identifier == @"That Plot")
-//            { return [NSNumber numberWithDouble:val+0.1]; }
-//            else
-//            { NSLog(@"Unknown plot identifier."); }
-//    }
+    if (self.detailDataThis != nil) {
+        if(fieldEnum == CPTScatterPlotFieldX) {
+            if(plot.identifier == @"This Plot")
+            { return [[self.detailDataThis xVals] objectAtIndex:index]; }
+            else if (plot.identifier == @"That Plot")
+            { return [[self.detailDataThat xVals] objectAtIndex:index]; }
+            else
+            {
+                NSLog(@"Unknown plot identifier.");
+                return [NSNumber numberWithInteger:index];
+            }
+        } else {
+            if(plot.identifier == @"This Plot")
+            { return [[self.detailDataThis yVals] objectAtIndex:index]; }
+            else if (plot.identifier == @"That Plot")
+            { return [[self.detailDataThat yVals] objectAtIndex:index]; }
+            else
+            {
+                NSLog(@"Unknown plot identifier.");
+                return [NSNumber numberWithInteger:index];
+            }
+        }
+    } else {
+        NSLog(@"Plot data is nil.");
+        return [NSNumber numberWithInteger:index];
+    }
 }
 
 #pragma mark - View lifecycle

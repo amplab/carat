@@ -71,6 +71,9 @@
         } 
         [request release];
         return array;
+    } else {
+        NSLog(@"The ManagedObjectContext is nil. Oh noes!");
+        return nil;
     }
 }
 

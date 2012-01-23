@@ -123,6 +123,9 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
     
+    [dvController setDetailDataThis:[[Sampler instance] getOSInfo:YES]];
+    [dvController setDetailDataThat:[[Sampler instance] getOSInfo:NO]];
+    
     [FlurryAnalytics logEvent:@"selectedSameOS"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
 }
@@ -141,6 +144,9 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
     
+    [dvController setDetailDataThis:[[Sampler instance] getModelInfo:YES]];
+    [dvController setDetailDataThat:[[Sampler instance] getModelInfo:NO]];
+    
     [FlurryAnalytics logEvent:@"selectedSameModel"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] model], @"Model", nil]];
 }
@@ -158,6 +164,9 @@
     
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
+    
+    [dvController setDetailDataThis:[[Sampler instance] getSimilarAppsInfo:YES]];
+    [dvController setDetailDataThat:[[Sampler instance] getSimilarAppsInfo:NO]];
     
     [FlurryAnalytics logEvent:@"selectedSimilarApps"];
 }
