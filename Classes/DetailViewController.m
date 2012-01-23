@@ -96,7 +96,10 @@
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
-        NSNumber *maxRate = [[self.detailDataThis xVals] valueForKeyPath:@"@max.intValue"];
+        NSNumber *maxRate;
+        if (self.detailDataThis != nil) {
+            maxRate = [[self.detailDataThis xVals] valueForKeyPath:@"@max.intValue"];
+        } else maxRate = [NSNumber numberWithFloat:10.0f];
         
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
