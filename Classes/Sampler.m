@@ -362,7 +362,7 @@ static id instance = nil;
 
 - (NSDate *) getLastReportUpdateTimestamp
 {
-    return [[Sampler instance] getLastReportUpdateTimestamp];
+    return [NSDate date];
 }
 
 - (double) secondsSinceLastUpdate
