@@ -88,8 +88,8 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUILabel" id="93417125">
 						<reference key="NSNextResponder" ref="552278971"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{25, 121}, {270, 33}}</string>
+						<int key="NSvFlags">293</int>
+						<string key="NSFrame">{{0, 46}, {320, 33}}</string>
 						<reference key="NSSuperview" ref="552278971"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="892852280"/>
@@ -120,8 +120,8 @@
 					</object>
 					<object class="IBUITextView" id="892852280">
 						<reference key="NSNextResponder" ref="552278971"/>
-						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{25, 162}, {270, 128}}</string>
+						<int key="NSvFlags">293</int>
+						<string key="NSFrame">{{0, 95}, {320, 128}}</string>
 						<reference key="NSSuperview" ref="552278971"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>

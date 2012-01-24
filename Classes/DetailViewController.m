@@ -111,7 +111,7 @@
         
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
         plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-1)
-                                                        length:CPTDecimalFromFloat([maxRate floatValue]+1)];
+                                                        length:CPTDecimalFromFloat([maxRate floatValue]+([maxRate floatValue]*0.1))];
         plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-0.1)
                                                         length:CPTDecimalFromFloat(1.15)];
 
