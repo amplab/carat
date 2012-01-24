@@ -251,6 +251,10 @@
 }
 
 - (void)dealloc {
+    [navTitle release];
+    [detailDataThis release];
+    [detailDataThat release];
+    
     [thisText release];
     [thatText release];
     [appName release];
@@ -259,6 +263,7 @@
     [appScore release];
     [portraitView release];
     [landscapeView release];
+    
     [super dealloc];
 }
 

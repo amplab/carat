@@ -11,9 +11,6 @@
 @class DetailViewController;
 
 @interface ReportViewController : UIViewController {
-    NSMutableArray *listOfAppNames;
-    NSMutableArray *listOfAppScores;
-    
     NSString *detailViewName;
     NSString *tableTitle;
     NSString *thisText;

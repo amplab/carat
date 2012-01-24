@@ -171,9 +171,12 @@
 }
 
 - (void)dealloc {
+    [detailViewName release];
+    [tableTitle release];
+    [thisText release];
+    [thatText release];
+    [report release];
     [dataTable release];
-    [listOfAppNames release];
-    [listOfAppScores release];
     [super dealloc];
 }
 
