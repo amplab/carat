@@ -23,8 +23,7 @@
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
 @synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
 @synthesize portraitView, landscapeView;
-
-Reachability * hostReachable = nil;
+@synthesize isInternetActive;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id) initWithNibName: (NSString *) nibNameOrNil 
@@ -35,12 +34,16 @@ Reachability * hostReachable = nil;
         self.title = @"Current State";
         self.tabBarItem.image = [UIImage imageNamed:@"53-house"];
     }
+    
+    //
+    // Subscribe to network status notifications.
+    //
+    self.isInternetActive = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    internetReachable = [[Reachability reachabilityForInternetConnection] retain];
+    [internetReachable startNotifier];
+    
     return self;
-}
-
-- (void) setReachability: (Reachability *) pReachability
-{
-    hostReachable = pReachability;
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,7 +61,7 @@ Reachability * hostReachable = nil;
 	
 	HUD.dimBackground = YES;
 	
-	// Regiser for HUD callbacks so we can remove it from the window at the right time
+	// Register for HUD callbacks so we can remove it from the window at the right time
     HUD.delegate = self;
     HUD.labelText = @"Loading";
 	
@@ -80,10 +83,9 @@ Reachability * hostReachable = nil;
     // Try to send the stored data. When this screen loads, we are sure to be in foreground.
     // Check for network connectivity before sending.
     //
-    NSLog(@"loadData %@", [hostReachable currentReachabilityStatus]);
+    //NSLog(@"loadData %@", [hostReachable currentReachabilityStatus]);
     
-    // TODO UPDATE DATA
-    [[Sampler instance] sendStoredDataToServer:100];
+    // TODO UPDATE REPORT DATA
 
     // display result
     if ([self isFresh]) {
@@ -332,6 +334,29 @@ Reachability * hostReachable = nil;
         [scoreBar setProgress:[[[Sampler instance] getSimilarAppsInfo:YES] score] animated:NO];
     }
     
+}
+
+- (void) checkNetworkStatus:(NSNotification *)notice
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus)
+    {
+        case NotReachable:
+        {
+            self.isInternetActive = NO;
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            self.isInternetActive = YES;
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            self.isInternetActive = YES;
+            break;
+        }
+    }
 }
 
 - (void) orientationChanged:(id)object

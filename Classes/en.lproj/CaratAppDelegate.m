@@ -72,7 +72,6 @@ void onUncaughtException(NSException *exception)
     
     // idempotent setup of notifications; also called in willResignActive
     [self setupNotificationSubscriptions];
-    [(CurrentViewController *)viewController1 setReachability:hostReachable];
     
     // we do this to prompt the dialog asking for permission to share location info
     [locationManager startMonitoringSignificantLocationChanges];
