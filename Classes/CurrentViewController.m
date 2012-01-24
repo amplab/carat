@@ -17,7 +17,7 @@
 @implementation CurrentViewController
 
 @synthesize jscore = _jscore;
-@synthesize lastUpdated;
+@synthesize lastUpdated = _lastUpdated;
 @synthesize sinceLastWeekString = _sinceLastWeekString;
 @synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
@@ -306,6 +306,15 @@
     [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
     // Progress Bars
+    for (UIProgressView *scoreBar in scoreSameOSProgBar) {
+        [scoreBar setProgress:[[[Sampler instance] getOSInfo:YES] score] animated:NO];
+    }
+    for (UIProgressView *scoreBar in scoreSameModelProgBar) {
+        [scoreBar setProgress:[[[Sampler instance] getModelInfo:YES] score] animated:NO];
+    }
+    for (UIProgressView *scoreBar in scoreSimilarAppsProgBar) {
+        [scoreBar setProgress:[[[Sampler instance] getSimilarAppsInfo:YES] score] animated:NO];
+    }
     
 }
 

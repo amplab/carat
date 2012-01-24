@@ -1022,6 +1022,8 @@
 }
 
 - (void) setScore: (double) score {
+    if (score < 0) { score = 0; }
+    else if (score > 1) { score = 1; }
   __score = score;
   __score_isset = YES;
 }

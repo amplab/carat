@@ -130,7 +130,6 @@ void onUncaughtException(NSException *exception)
      */
     //[sampler fetchAndSendSamples:10];
     [[Sampler instance] sampleNow:@"applicationDidBecomeActive"];
-    //[[Sampler instance] fetchAndSendSamples: 10];
 }
 
 
