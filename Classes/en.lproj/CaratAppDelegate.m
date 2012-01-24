@@ -72,17 +72,16 @@ void onUncaughtException(NSException *exception)
     
     // idempotent setup of notifications; also called in willResignActive
     [self setupNotificationSubscriptions];
+    [viewController1 setReachability:hostReachable];
     
     // we do this to prompt the dialog asking for permission to share location info
     [locationManager startMonitoringSignificantLocationChanges];
     [locationManager stopMonitoringSignificantLocationChanges];
     
-    // Everytime the CARAT app is launched, send a registration message.
-    Registration *registerMe = [[Registration alloc] init];
-    registerMe.uuId = [[Globals instance] getUUID ];
-    registerMe.platformId = [UIDevice currentDevice].model;
-    registerMe.systemVersion = [UIDevice currentDevice].systemVersion;
-    [[CommunicationManager instance] sendRegistrationMessage:registerMe];
+    // Everytime the CARAT app is launched, we will send a registration message. 
+    // Right at this point, we are unsure if there is network connectivity, so 
+    // save the message in core data. 
+    [[Sampler instance] generateSaveRegistration];
     
     // Analytics
     [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
@@ -90,7 +89,7 @@ void onUncaughtException(NSException *exception)
     [FlurryAnalytics logAllPageViews:navController1];
     [FlurryAnalytics logAllPageViews:navController2];
     [FlurryAnalytics logAllPageViews:navController3];
-    [FlurryAnalytics setUserID:registerMe.uuId];
+    [FlurryAnalytics setUserID:[[Globals instance] getUUID]];
     
     // flush any sharing actions that were performed offline and cached
     [SHK flushOfflineQueue];
@@ -128,7 +127,6 @@ void onUncaughtException(NSException *exception)
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    //[sampler fetchAndSendSamples:10];
     [[Sampler instance] sampleNow:@"applicationDidBecomeActive"];
 }
 
@@ -217,7 +215,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     // we've already checked that the host we need to talk to is reachable
     // so see if there's enough data stored up to justify a sync
     // if so, do it!
-    //[[Sampler instance] fetchAndSendSamples: 10];
+    [[Sampler instance] sendStoredDataToServer: 100];
 }
 
 #pragma mark -

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "Reachability.h"
 
 @interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
     NSArray *jscore;
@@ -35,6 +36,7 @@
 - (void)loadDataWithHUD;
 - (BOOL)isFresh;
 - (void)updateView;
+- (void) setReachability: (Reachability *) pReachability;
 
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;

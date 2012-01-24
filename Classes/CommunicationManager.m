@@ -59,7 +59,8 @@ static id instance = nil;
     // Try setting it up.
     //
     @try {
-        [self setTransport:[[TSocketClient alloc] initWithHostname:@"50.18.127.4" port:4444]];
+        //[self setTransport:[[TSocketClient alloc] initWithHostname:@"50.18.127.4" port:4444]];
+        [self setTransport:[[TSocketClient alloc] initWithHostname:@"localhost" port:4444]];
         [self setProtocol:[[TBinaryProtocol alloc] initWithTransport:transport strictRead:YES strictWrite:YES]];
         [self setService:[[CaratServiceClient alloc] initWithProtocol:protocol]];
         NSLog(@"setupCaratService: CARAT service setup successful.");
@@ -74,17 +75,21 @@ static id instance = nil;
 //
 //  Send a registration message.
 //
-- (void) sendRegistrationMessage:(Registration *) registrationMessage
+- (BOOL) sendRegistrationMessage:(Registration *) registrationMessage
 {
+    BOOL ret = NO;
+    
     if ([self setupCaratService] == YES) {
         @try {
             [service registerMe:registrationMessage];
+            ret = YES;
             NSLog(@"sendRegistrationMessage: Success!");
         }
         @catch (NSException *exception) {
             NSLog(@"sendRegistrationMessage: Caught %@: %@", [exception name], [exception reason]);
         }
     }
+    return ret;
 }
 
 //

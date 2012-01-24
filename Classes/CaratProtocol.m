@@ -11,6 +11,7 @@
 #import "Thrift/protocol/TProtocolUtil.h"
 #import "Thrift/TProcessor.h"
 
+
 #import "CaratProtocol.h"
 
 
@@ -21,11 +22,13 @@
 
 @implementation Registration
 
-- (id) initWithUuId: (NSString *) uuId platformId: (NSString *) platformId systemVersion: (NSString *) systemVersion
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp platformId: (NSString *) platformId systemVersion: (NSString *) systemVersion
 {
   self = [super init];
   __uuId = [uuId retain];
   __uuId_isset = YES;
+  __timestamp = timestamp;
+  __timestamp_isset = YES;
   __platformId = [platformId retain];
   __platformId_isset = YES;
   __systemVersion = [systemVersion retain];
@@ -40,6 +43,11 @@
   {
     __uuId = [[decoder decodeObjectForKey: @"uuId"] retain];
     __uuId_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"timestamp"])
+  {
+    __timestamp = [decoder decodeDoubleForKey: @"timestamp"];
+    __timestamp_isset = YES;
   }
   if ([decoder containsValueForKey: @"platformId"])
   {
@@ -59,6 +67,10 @@
   if (__uuId_isset)
   {
     [encoder encodeObject: __uuId forKey: @"uuId"];
+  }
+  if (__timestamp_isset)
+  {
+    [encoder encodeDouble: __timestamp forKey: @"timestamp"];
   }
   if (__platformId_isset)
   {
@@ -97,6 +109,23 @@
   [__uuId release];
   __uuId = nil;
   __uuId_isset = NO;
+}
+
+- (double) timestamp {
+  return __timestamp;
+}
+
+- (void) setTimestamp: (double) timestamp {
+  __timestamp = timestamp;
+  __timestamp_isset = YES;
+}
+
+- (BOOL) timestampIsSet {
+  return __timestamp_isset;
+}
+
+- (void) unsetTimestamp {
+  __timestamp_isset = NO;
 }
 
 - (NSString *) platformId {
@@ -165,6 +194,14 @@
         }
         break;
       case 2:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setTimestamp: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 3:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setPlatformId: fieldValue];
@@ -172,7 +209,7 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
-      case 3:
+      case 4:
         if (fieldType == TType_STRING) {
           NSString * fieldValue = [inProtocol readString];
           [self setSystemVersion: fieldValue];
@@ -198,16 +235,21 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__timestamp_isset) {
+    [outProtocol writeFieldBeginWithName: @"timestamp" type: TType_DOUBLE fieldID: 2];
+    [outProtocol writeDouble: __timestamp];
+    [outProtocol writeFieldEnd];
+  }
   if (__platformId_isset) {
     if (__platformId != nil) {
-      [outProtocol writeFieldBeginWithName: @"platformId" type: TType_STRING fieldID: 2];
+      [outProtocol writeFieldBeginWithName: @"platformId" type: TType_STRING fieldID: 3];
       [outProtocol writeString: __platformId];
       [outProtocol writeFieldEnd];
     }
   }
   if (__systemVersion_isset) {
     if (__systemVersion != nil) {
-      [outProtocol writeFieldBeginWithName: @"systemVersion" type: TType_STRING fieldID: 3];
+      [outProtocol writeFieldBeginWithName: @"systemVersion" type: TType_STRING fieldID: 4];
       [outProtocol writeString: __systemVersion];
       [outProtocol writeFieldEnd];
     }
@@ -220,6 +262,8 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"Registration("];
   [ms appendString: @"uuId:"];
   [ms appendFormat: @"\"%@\"", __uuId];
+  [ms appendString: @",timestamp:"];
+  [ms appendFormat: @"%f", __timestamp];
   [ms appendString: @",platformId:"];
   [ms appendFormat: @"\"%@\"", __platformId];
   [ms appendString: @",systemVersion:"];
@@ -386,7 +430,7 @@
 
 @implementation Sample
 
-- (id) initWithUuId: (NSString *) uuId timestamp: (int32_t) timestamp piList: (ProcessInfoList) piList batteryState: (int16_t) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy
 {
   self = [super init];
   __uuId = [uuId retain];
@@ -395,7 +439,7 @@
   __timestamp_isset = YES;
   __piList = [piList retain];
   __piList_isset = YES;
-  __batteryState = batteryState;
+  __batteryState = [batteryState retain];
   __batteryState_isset = YES;
   __batteryLevel = batteryLevel;
   __batteryLevel_isset = YES;
@@ -424,7 +468,7 @@
   }
   if ([decoder containsValueForKey: @"timestamp"])
   {
-    __timestamp = [decoder decodeInt32ForKey: @"timestamp"];
+    __timestamp = [decoder decodeDoubleForKey: @"timestamp"];
     __timestamp_isset = YES;
   }
   if ([decoder containsValueForKey: @"piList"])
@@ -434,7 +478,7 @@
   }
   if ([decoder containsValueForKey: @"batteryState"])
   {
-    __batteryState = [decoder decodeIntForKey: @"batteryState"];
+    __batteryState = [[decoder decodeObjectForKey: @"batteryState"] retain];
     __batteryState_isset = YES;
   }
   if ([decoder containsValueForKey: @"batteryLevel"])
@@ -483,7 +527,7 @@
   }
   if (__timestamp_isset)
   {
-    [encoder encodeInt32: __timestamp forKey: @"timestamp"];
+    [encoder encodeDouble: __timestamp forKey: @"timestamp"];
   }
   if (__piList_isset)
   {
@@ -491,7 +535,7 @@
   }
   if (__batteryState_isset)
   {
-    [encoder encodeInt: __batteryState forKey: @"batteryState"];
+    [encoder encodeObject: __batteryState forKey: @"batteryState"];
   }
   if (__batteryLevel_isset)
   {
@@ -527,6 +571,7 @@
 {
   [__uuId release];
   [__piList release];
+  [__batteryState release];
   [__triggeredBy release];
   [super dealloc];
 }
@@ -552,11 +597,11 @@
   __uuId_isset = NO;
 }
 
-- (int32_t) timestamp {
+- (double) timestamp {
   return __timestamp;
 }
 
-- (void) setTimestamp: (int32_t) timestamp {
+- (void) setTimestamp: (double) timestamp {
   __timestamp = timestamp;
   __timestamp_isset = YES;
 }
@@ -590,11 +635,13 @@
   __piList_isset = NO;
 }
 
-- (int16_t) batteryState {
-  return __batteryState;
+- (NSString *) batteryState {
+  return [[__batteryState retain] autorelease];
 }
 
-- (void) setBatteryState: (int16_t) batteryState {
+- (void) setBatteryState: (NSString *) batteryState {
+  [batteryState retain];
+  [__batteryState release];
   __batteryState = batteryState;
   __batteryState_isset = YES;
 }
@@ -604,6 +651,8 @@
 }
 
 - (void) unsetBatteryState {
+  [__batteryState release];
+  __batteryState = nil;
   __batteryState_isset = NO;
 }
 
@@ -754,8 +803,8 @@
         }
         break;
       case 2:
-        if (fieldType == TType_I32) {
-          int32_t fieldValue = [inProtocol readI32];
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
           [self setTimestamp: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
@@ -782,8 +831,8 @@
         }
         break;
       case 4:
-        if (fieldType == TType_I16) {
-          int16_t fieldValue = [inProtocol readI16];
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
           [self setBatteryState: fieldValue];
         } else { 
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
@@ -864,8 +913,8 @@
     }
   }
   if (__timestamp_isset) {
-    [outProtocol writeFieldBeginWithName: @"timestamp" type: TType_I32 fieldID: 2];
-    [outProtocol writeI32: __timestamp];
+    [outProtocol writeFieldBeginWithName: @"timestamp" type: TType_DOUBLE fieldID: 2];
+    [outProtocol writeDouble: __timestamp];
     [outProtocol writeFieldEnd];
   }
   if (__piList_isset) {
@@ -884,9 +933,11 @@
     }
   }
   if (__batteryState_isset) {
-    [outProtocol writeFieldBeginWithName: @"batteryState" type: TType_I16 fieldID: 4];
-    [outProtocol writeI16: __batteryState];
-    [outProtocol writeFieldEnd];
+    if (__batteryState != nil) {
+      [outProtocol writeFieldBeginWithName: @"batteryState" type: TType_STRING fieldID: 4];
+      [outProtocol writeString: __batteryState];
+      [outProtocol writeFieldEnd];
+    }
   }
   if (__batteryLevel_isset) {
     [outProtocol writeFieldBeginWithName: @"batteryLevel" type: TType_DOUBLE fieldID: 5];
@@ -934,11 +985,11 @@
   [ms appendString: @"uuId:"];
   [ms appendFormat: @"\"%@\"", __uuId];
   [ms appendString: @",timestamp:"];
-  [ms appendFormat: @"%i", __timestamp];
+  [ms appendFormat: @"%f", __timestamp];
   [ms appendString: @",piList:"];
   [ms appendFormat: @"%@", __piList];
   [ms appendString: @",batteryState:"];
-  [ms appendFormat: @"%hi", __batteryState];
+  [ms appendFormat: @"\"%@\"", __batteryState];
   [ms appendString: @",batteryLevel:"];
   [ms appendFormat: @"%f", __batteryLevel];
   [ms appendString: @",memoryWired:"];
@@ -1022,8 +1073,6 @@
 }
 
 - (void) setScore: (double) score {
-    if (score < 0) { score = 0; }
-    else if (score > 1) { score = 1; }
   __score = score;
   __score_isset = YES;
 }

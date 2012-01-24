@@ -24,14 +24,23 @@
 @synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
 @synthesize portraitView, landscapeView;
 
+Reachability * hostReachable = nil;
+
 // The designated initializer. Override to perform setup that is required before the view is loaded.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+- (id) initWithNibName: (NSString *) nibNameOrNil 
+                bundle: (NSBundle *)nibBundleOrNil 
+{
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
         self.title = @"Current State";
         self.tabBarItem.image = [UIImage imageNamed:@"53-house"];
     }
     return self;
+}
+
+- (void) setReachability: (Reachability *) pReachability
+{
+    hostReachable = pReachability;
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,7 +66,7 @@
 }
 
 - (void)loadData
-{
+{    
     // this shouldn't trigger; just being defensive
     if ([self isFresh]) {
         // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
@@ -67,7 +76,14 @@
         sleep(1);
     }
     
+    //
+    // Try to send the stored data. When this screen loads, we are sure to be in foreground.
+    // Check for network connectivity before sending.
+    //
+    NSLog(@"loadData %@", [hostReachable currentReachabilityStatus]);
+    
     // TODO UPDATE DATA
+    [[Sampler instance] sendStoredDataToServer:100];
 
     // display result
     if ([self isFresh]) {

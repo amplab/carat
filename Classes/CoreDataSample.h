@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain) NSString * triggeredBy;
 @property (nonatomic, retain) NSNumber * batteryLevel;
-@property (nonatomic, retain) NSNumber * batteryState;
+@property (nonatomic, retain) NSString * batteryState;
 @property (nonatomic, retain) NSNumber * timestamp;
 @property (nonatomic, retain) NSNumber * memoryWired;
 @property (nonatomic, retain) NSNumber * memoryActive;

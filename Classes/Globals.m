@@ -48,11 +48,35 @@ static NSString* myUUID = nil;
 // 
 - (NSString *) getUUID {
     
-    if (myUUID == Nil) {
+    if (myUUID == nil) {
         myUUID = [self generateUUID];
     }
     
     return myUUID;
 }
+
+//
+// Convert local datetime to UTC.
+// From: http://stackoverflow.com/questions/1081647/how-to-convert-time-to-the-timezone-of-the-iphone-device
+//
+- (NSDate *) utcDateTime {
+    NSDate* sourceDate = [NSDate date];
+    NSTimeZone* sourceTimeZone = [NSTimeZone systemTimeZone];
+    NSTimeZone* destinationTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:sourceDate];
+    NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:sourceDate];
+    NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
+    NSDate* destinationDate = [[[NSDate alloc] initWithTimeInterval:interval sinceDate:sourceDate] autorelease];
+    return destinationDate;
+}
+
+//
+// Return seconds since epoch.
+//
+- (double) utcSecondsSinceEpoch {
+    NSDate* dateTimeInUTC = [self utcDateTime];
+    return (double) [dateTimeInUTC timeIntervalSince1970];
+}
+
 
 @end

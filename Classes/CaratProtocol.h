@@ -20,21 +20,24 @@ typedef NSArray * FeatureList;
 
 @interface Registration : NSObject <NSCoding> {
   NSString * __uuId;
+  double __timestamp;
   NSString * __platformId;
   NSString * __systemVersion;
 
   BOOL __uuId_isset;
+  BOOL __timestamp_isset;
   BOOL __platformId_isset;
   BOOL __systemVersion_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=uuId, setter=setUuId:) NSString * uuId;
+@property (nonatomic, getter=timestamp, setter=setTimestamp:) double timestamp;
 @property (nonatomic, retain, getter=platformId, setter=setPlatformId:) NSString * platformId;
 @property (nonatomic, retain, getter=systemVersion, setter=setSystemVersion:) NSString * systemVersion;
 #endif
 
-- (id) initWithUuId: (NSString *) uuId platformId: (NSString *) platformId systemVersion: (NSString *) systemVersion;
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp platformId: (NSString *) platformId systemVersion: (NSString *) systemVersion;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -42,6 +45,10 @@ typedef NSArray * FeatureList;
 - (NSString *) uuId;
 - (void) setUuId: (NSString *) uuId;
 - (BOOL) uuIdIsSet;
+
+- (double) timestamp;
+- (void) setTimestamp: (double) timestamp;
+- (BOOL) timestampIsSet;
 
 - (NSString *) platformId;
 - (void) setPlatformId: (NSString *) platformId;
@@ -83,9 +90,9 @@ typedef NSArray * FeatureList;
 
 @interface Sample : NSObject <NSCoding> {
   NSString * __uuId;
-  int32_t __timestamp;
+  double __timestamp;
   ProcessInfoList __piList;
-  int16_t __batteryState;
+  NSString * __batteryState;
   double __batteryLevel;
   int32_t __memoryWired;
   int32_t __memoryActive;
@@ -109,9 +116,9 @@ typedef NSArray * FeatureList;
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=uuId, setter=setUuId:) NSString * uuId;
-@property (nonatomic, getter=timestamp, setter=setTimestamp:) int32_t timestamp;
+@property (nonatomic, getter=timestamp, setter=setTimestamp:) double timestamp;
 @property (nonatomic, retain, getter=piList, setter=setPiList:) ProcessInfoList piList;
-@property (nonatomic, getter=batteryState, setter=setBatteryState:) int16_t batteryState;
+@property (nonatomic, retain, getter=batteryState, setter=setBatteryState:) NSString * batteryState;
 @property (nonatomic, getter=batteryLevel, setter=setBatteryLevel:) double batteryLevel;
 @property (nonatomic, getter=memoryWired, setter=setMemoryWired:) int32_t memoryWired;
 @property (nonatomic, getter=memoryActive, setter=setMemoryActive:) int32_t memoryActive;
@@ -121,7 +128,7 @@ typedef NSArray * FeatureList;
 @property (nonatomic, retain, getter=triggeredBy, setter=setTriggeredBy:) NSString * triggeredBy;
 #endif
 
-- (id) initWithUuId: (NSString *) uuId timestamp: (int32_t) timestamp piList: (ProcessInfoList) piList batteryState: (int16_t) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy;
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -130,16 +137,16 @@ typedef NSArray * FeatureList;
 - (void) setUuId: (NSString *) uuId;
 - (BOOL) uuIdIsSet;
 
-- (int32_t) timestamp;
-- (void) setTimestamp: (int32_t) timestamp;
+- (double) timestamp;
+- (void) setTimestamp: (double) timestamp;
 - (BOOL) timestampIsSet;
 
 - (ProcessInfoList) piList;
 - (void) setPiList: (ProcessInfoList) piList;
 - (BOOL) piListIsSet;
 
-- (int16_t) batteryState;
-- (void) setBatteryState: (int16_t) batteryState;
+- (NSString *) batteryState;
+- (void) setBatteryState: (NSString *) batteryState;
 - (BOOL) batteryStateIsSet;
 
 - (double) batteryLevel;

@@ -11,5 +11,7 @@
 @interface Globals : NSObject
 + (id) instance;
 - (NSString*) getUUID;
+- (NSDate *) utcDateTime;
+- (double) utcSecondsSinceEpoch;
 @end
 #endif

@@ -99,6 +99,39 @@ static id instance = nil;
 }
 
 //
+// Generate and save registration information in core data.
+//
+- (void) generateSaveRegistration 
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    //
+    // Store registration information.
+    //
+    CoreDataRegistration *cdataRegistration = (CoreDataRegistration *) [NSEntityDescription 
+                                                                        insertNewObjectForEntityForName:@"CoreDataRegistration" 
+                                                                        inManagedObjectContext:managedObjectContext];
+    [cdataRegistration setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
+    [cdataRegistration setPlatformId:[UIDevice currentDevice].model];
+    [cdataRegistration setSystemVersion:[UIDevice currentDevice].systemVersion];
+    
+    //
+    //  Now save the sample.
+    //
+    if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+    {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+         */
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    } 
+}
+
+//
 //  Get the list of running processes and put it in core data. Note that we 
 //  don't call save on the managed object here, as we will do a final call to 
 //  save the entire sample.
@@ -113,7 +146,7 @@ static id instance = nil;
         
         for (NSDictionary *dict in processes)
         {
-            NSLog(@"%@ - %@", [dict objectForKey:@"ProcessID"], [dict objectForKey:@"ProcessName"]);
+            //NSLog(@"%@ - %@", [dict objectForKey:@"ProcessID"], [dict objectForKey:@"ProcessName"]);
             CoreDataProcessInfo *cdataProcessInfo = (CoreDataProcessInfo *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataProcessInfo" inManagedObjectContext:managedObjectContext];
             [cdataProcessInfo setId: [NSNumber numberWithInt:[[dict objectForKey:@"ProcessID"] intValue]]];
             [cdataProcessInfo setName:[dict objectForKey:@"ProcessName"]];
@@ -129,17 +162,13 @@ static id instance = nil;
 //
 - (void) sampleForeground : (NSString *) triggeredBy
 {
-    //[self printMemoryInfo];
-    //[self printProcessorInfo];
-    //return;
-    
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     CoreDataSample *cdataSample = (CoreDataSample *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataSample" 
                                                                                    inManagedObjectContext:managedObjectContext];
     [cdataSample setTriggeredBy:triggeredBy];
-    [cdataSample setTimestamp:[NSDate date]];
+    [cdataSample setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
     
     //
     //  Running processes.
@@ -154,24 +183,29 @@ static id instance = nil;
         NSLog(@"%f", [UIDevice currentDevice].batteryLevel);
         [cdataSample setBatteryLevel:[NSNumber numberWithFloat:[UIDevice currentDevice].batteryLevel]];
         
+        NSString* batteryStateString = @"None";
         switch ([UIDevice currentDevice].batteryState) 
         {
             case UIDeviceBatteryStateUnknown:
                 NSLog(@"%@", @"Unknown");
+                batteryStateString = @"Unknown";
                 break;
             case UIDeviceBatteryStateUnplugged:
                 NSLog(@"%@", @"Unplugged");
+                batteryStateString = @"Unplugged";
                 break;
             case UIDeviceBatteryStateCharging:
                 NSLog(@"%@", @"Charging");
+                batteryStateString = @"Charging";
                 break;
             case UIDeviceBatteryStateFull:
                 NSLog(@"%@", @"Full");
+                batteryStateString = @"Full";
                 break;
             default:
                 break;
         }
-        [cdataSample setBatteryState:[NSNumber numberWithInt:[UIDevice currentDevice].batteryState]];
+        [cdataSample setBatteryState:batteryStateString];
     }
     
     //
@@ -264,6 +298,72 @@ static id instance = nil;
 }
 
 //
+// Retrieve and send registration messages to the server.
+//
+- (void) fetchAndSendRegistrations : (NSUInteger) limitMessagesTo
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" 
+                                                                       ascending:YES];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataRegistration" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        [fetchRequest setFetchLimit:limitMessagesTo];  
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"Could not fetch registrations, error %@, %@", error, [error userInfo]);
+            goto cleanup;
+        } 
+        
+        NSLog(@"Number of registrations fetched: %u", [fetchedObjects count]);
+        
+        for (CoreDataRegistration *registration in fetchedObjects)
+        {
+            if (registration == nil) 
+                break;
+            
+            Registration* registrationToSend = [[Registration alloc] init];
+            registrationToSend.uuId = [[Globals instance] getUUID];
+            registrationToSend.timestamp = [[registration valueForKey:@"timestamp"] doubleValue]; 
+            registrationToSend.platformId = (NSString*) [registration valueForKey:@"platformId"];
+            registrationToSend.systemVersion = (NSString*) [registration valueForKey:@"systemVersion"]; 
+            
+            //
+            //  Try to send. If successful, delete. 
+            //
+            BOOL ret = [[CommunicationManager instance] sendRegistrationMessage:registrationToSend];
+            if (ret == YES) 
+            {
+                [managedObjectContext deleteObject:registration];
+            }
+        }
+        
+    cleanup:
+        [sortDescriptors release];
+        [sortDescriptor release];
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+        {
+            /*
+             Replace this implementation with code to handle the error appropriately.
+             
+             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+             */
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        } 
+    }
+}
+
+//
 //  Retrieve and send some samples to the server.
 //
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo
@@ -299,9 +399,9 @@ static id instance = nil;
             
             Sample* sampleToSend = [[Sample alloc] init];
             sampleToSend.uuId = [[Globals instance] getUUID ];
-            sampleToSend.timestamp = (int32_t) [sample valueForKey:@"timestamp"];
-            sampleToSend.batteryState = (int16_t) [sample valueForKey:@"batteryState"];
-            sampleToSend.batteryLevel = [[sample valueForKey:@"batteryLevel"] doubleValue];
+            sampleToSend.timestamp = [[sample valueForKey:@"timestamp"] doubleValue];
+            sampleToSend.batteryState = (NSString *) [sample valueForKey:@"batteryState"];
+            sampleToSend.batteryLevel = (double) [[sample valueForKey:@"batteryLevel"] doubleValue];
             sampleToSend.memoryWired = (int) [sample valueForKey:@"memoryWired"];
             sampleToSend.memoryActive = (int) [sample valueForKey:@"memoryActive"];
             sampleToSend.memoryInactive = (int) [sample valueForKey:@"memoryInactive"];
@@ -312,7 +412,7 @@ static id instance = nil;
             NSMutableArray *pInfoList = [[NSMutableArray alloc] init];
             sampleToSend.piList = pInfoList;
             
-            NSLog(@"timestamp: %@", [sample valueForKey:@"timestamp"]);
+            NSLog(@"timestamp: %f", sampleToSend.timestamp);
             NSLog(@"batteryLevel: %@", [sample valueForKey:@"batteryLevel"]);
             NSLog(@"batteryState: %@", [sample valueForKey:@"batteryState"]);
             
@@ -328,8 +428,8 @@ static id instance = nil;
                 pInfo.pId = (int)[processInfo valueForKey:@"id"];
                 pInfo.pName = (NSString *)[processInfo valueForKey:@"name"];
                 [pInfoList addObject:pInfo];
-                NSLog(@"Id: %@", [processInfo valueForKey:@"id"]);
-                NSLog(@"Name: %@", [processInfo valueForKey:@"name"]);
+                //NSLog(@"Id: %@", [processInfo valueForKey:@"id"]);
+                //NSLog(@"Name: %@", [processInfo valueForKey:@"name"]);
             }
             
             //
@@ -337,7 +437,6 @@ static id instance = nil;
             //  is cascaded with sample deletion.
             //
             BOOL ret = [[CommunicationManager instance] sendSample:sampleToSend];
-            //BOOL ret = [commManager sendSample:sampleToSend];
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:sample];
@@ -358,6 +457,16 @@ static id instance = nil;
             abort();
         } 
     }
+}
+
+//
+// Send stored data in coredatastore to the server. First, we 
+// send all the registration messages. Then we send samples.
+//
+- (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo
+{
+    [self fetchAndSendRegistrations: limitEntriesTo];
+    [self fetchAndSendSamples:limitEntriesTo];
 }
 
 - (NSDate *) getLastReportUpdateTimestamp

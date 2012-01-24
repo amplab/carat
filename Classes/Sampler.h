@@ -16,6 +16,7 @@
 #import "UIDeviceProc.h"
 #import "CoreDataProcessInfo.h"
 #import "CoreDataSample.h"
+#import "CoreDataRegistration.h"
 #import "CommunicationManager.h"
 
 @interface Sampler : NSObject 
@@ -27,8 +28,11 @@
 
 + (id) instance;
 - (id) initWithCommManager : cManager;
+- (void) generateSaveRegistration;
 - (void) sampleNow : (NSString *) triggeredBy;
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
+- (void) fetchAndSendRegistrations : (NSUInteger) limitMessagesTo;
+- (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo;
 - (NSURL *) applicationDocumentsDirectory;
 - (NSDate *) getLastReportUpdateTimestamp; 
 - (double) secondsSinceLastUpdate;
