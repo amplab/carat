@@ -545,6 +545,7 @@
 				ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */,
 				ABF64FE614C8D8DE00C21D8E /* PGTableWithEmptyView */,
 				ABD3180C148D869A000A8DC7 /* ShareKit */,
+				AB1E7AB814D0BF420010617A /* UIDeviceHardware */,
 				AB91E431149024C3007786F0 /* Data */,
 				ABD317C91487FD1C000A8DC7 /* UI */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -585,7 +586,6 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
-				AB1E7AB814D0BF420010617A /* UIDeviceHardware */,
 				AB1E7AB314CF8ECD0010617A /* Entitlements.plist */,
 				AB645E031456FF1F0008244B /* Default@2x.png */,
 				AB645E011456FE530008244B /* Default.png */,
@@ -651,6 +651,7 @@
 				AB1E7AB614D0BE480010617A /* UIDeviceHardware.m */,
 			);
 			name = UIDeviceHardware;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		AB41CE0A144F572D0090CC09 /* iPhone */ = {
