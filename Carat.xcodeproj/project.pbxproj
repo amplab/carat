@@ -14,6 +14,7 @@
 		2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* ReportView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		AB1E7AB414CF8ECE0010617A /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB1E7AB314CF8ECD0010617A /* Entitlements.plist */; };
+		AB1E7AB714D0BE480010617A /* UIDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = AB1E7AB614D0BE480010617A /* UIDeviceHardware.m */; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
 		AB41CDF4144E1E520090CC09 /* CaratAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */; };
 		AB41CDF8144E27200090CC09 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB41CDF7144E27200090CC09 /* CoreLocation.framework */; };
@@ -174,6 +175,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Carat-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Carat-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		AB1E7AB314CF8ECD0010617A /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		AB1E7AB514D0BE480010617A /* UIDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIDeviceHardware.h; path = "Classes/UIDevice-HW/UIDeviceHardware.h"; sourceTree = "<group>"; };
+		AB1E7AB614D0BE480010617A /* UIDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIDeviceHardware.m; path = "Classes/UIDevice-HW/UIDeviceHardware.m"; sourceTree = "<group>"; };
 		AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceProc.h; sourceTree = "<group>"; };
 		AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDeviceProc.m; sourceTree = "<group>"; };
 		AB41CDF5144E1E520090CC09 /* en */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = en; path = en.lproj/CaratAppDelegate.m; sourceTree = "<group>"; };
@@ -582,6 +585,7 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
+				AB1E7AB814D0BF420010617A /* UIDeviceHardware */,
 				AB1E7AB314CF8ECD0010617A /* Entitlements.plist */,
 				AB645E031456FF1F0008244B /* Default@2x.png */,
 				AB645E011456FE530008244B /* Default.png */,
@@ -638,6 +642,15 @@
 				ABD318EF148D88D1000A8DC7 /* libFlurryAnalytics.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AB1E7AB814D0BF420010617A /* UIDeviceHardware */ = {
+			isa = PBXGroup;
+			children = (
+				AB1E7AB514D0BE480010617A /* UIDeviceHardware.h */,
+				AB1E7AB614D0BE480010617A /* UIDeviceHardware.m */,
+			);
+			name = UIDeviceHardware;
 			sourceTree = "<group>";
 		};
 		AB41CE0A144F572D0090CC09 /* iPhone */ = {
@@ -1457,6 +1470,7 @@
 				AB91E44314992650007786F0 /* ReportViewController.m in Sources */,
 				AB91E4461499266C007786F0 /* DetailViewController.m in Sources */,
 				ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */,
+				AB1E7AB714D0BE480010617A /* UIDeviceHardware.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

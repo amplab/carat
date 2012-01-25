@@ -13,6 +13,7 @@
 #import "FlurryAnalytics.h"
 #import "Sampler.h"
 #import "CommunicationManager.h"
+#import "UIDeviceHardware.h"
 
 @implementation CurrentViewController
 
@@ -165,8 +166,10 @@
     [dvController setDetailDataThis:[[Sampler instance] getModelInfo:YES]];
     [dvController setDetailDataThat:[[Sampler instance] getModelInfo:NO]];
     
+    UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
     [FlurryAnalytics logEvent:@"selectedSameModel"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] model], @"Model", nil]];
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[h platformString], @"Model", nil]];
+    [h release];
 }
 
 - (IBAction)getSimilarAppsDetail:(id)sender

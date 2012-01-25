@@ -11,6 +11,7 @@
 
 #import "Sampler.h"
 #import "FlurryAnalytics.h"
+#import "UIDeviceHardware.h"
 
 @implementation Sampler
 
@@ -113,7 +114,12 @@ static id instance = nil;
                                                                         insertNewObjectForEntityForName:@"CoreDataRegistration" 
                                                                         inManagedObjectContext:managedObjectContext];
     [cdataRegistration setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
-    [cdataRegistration setPlatformId:[UIDevice currentDevice].model];
+    
+    UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
+    [cdataRegistration setPlatformId:[h platformString]];
+    NSLog([h platformString]);
+    [h release];
+    
     [cdataRegistration setSystemVersion:[UIDevice currentDevice].systemVersion];
     
     //
