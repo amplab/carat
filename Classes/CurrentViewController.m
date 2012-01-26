@@ -72,6 +72,10 @@
     }
     
     // TODO UPDATE REPORT DATA
+    if ([[CommunicationManager instance] isInternetReachable] == YES)
+    {
+        //[[Sampler instance] updateLocalReportsFromServer];
+    }
     
     // display result
     if ([self isFresh]) {

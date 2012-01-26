@@ -195,17 +195,48 @@ static NSArray * SubReports = nil;
         }
                 
     cleanup:
-        //[fetchedObjects release];
-        //[entity release];
         return;
     }
 }
 
-- (void) updateSubReportForMainReport: (CoreDataMainReport *) CurrentMainReport 
-                     withDetailReport: (DetailScreenReport *) detailScreenReportWith 
-            withDetailReportExcluding: (DetailScreenReport *) detailScreenReportWithout
+- (BOOL) clearLocalAppReports
 {
-    
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            return NO;
+        } 
+        
+        // NOTE: We don't want to save this unless putting new data is successful. 
+        // That will happen in the calling function.
+        for (CoreDataAppReport *appReport in fetchedObjects)
+        {
+            [managedObjectContext deleteObject:appReport];
+        }
+        
+        return YES;
+    }
+    return NO;
+}
+
+- (void) updateLocalSubReport: (CoreDataSubReport *) cdataSubReport 
+          withThisDetailReport: (DetailScreenReport *) detailScreenReportWith 
+          andThatDetailReport: (DetailScreenReport *) detailScreenReportWithout
+{
+    cdataSubReport.score = [NSNumber numberWithDouble:detailScreenReportWith.score];
+    cdataSubReport.distributionXWith = detailScreenReportWith.xVals;
+    cdataSubReport.distributionYWith = detailScreenReportWith.yVals;
+    cdataSubReport.distributionXWithout = detailScreenReportWithout.xVals;
+    cdataSubReport.distributionYWithout = detailScreenReportWithout.yVals;
 }
 
 //
@@ -218,29 +249,164 @@ static NSArray * SubReports = nil;
     
     if (managedObjectContext != nil) 
     {
-        CoreDataMainReport *cdataMainReport = (CoreDataMainReport *) [NSEntityDescription 
-                                                                            insertNewObjectForEntityForName:@"CoreDataMainReport" 
-                                                                            inManagedObjectContext:managedObjectContext];
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataMainReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"%s Could not fetch CoreDataMainReport, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            return;
+        } 
+        
+        NSLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+        
+        // Check for sanity.
+        if ([fetchedObjects count] == 0)
+        {
+            NSLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
+            [self initLocalReportStore];
+            fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        }
+        else if ([fetchedObjects count] > 1)    // This should not happen!!!!
+        {
+            NSLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
+            for (CoreDataMainReport *mainReport in fetchedObjects)
+            {
+                [managedObjectContext deleteObject:mainReport];
+                [managedObjectContext save:nil];
+            }
+            [self initLocalReportStore];
+            fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        }
+
+        // Now let's get the report data from the server. First main reports.
         Reports *reports = [[CommunicationManager instance] getReports];
+        
         if (reports != nil)
         {
-            cdataMainReport.jScore = [NSNumber numberWithDouble:reports.jScore];
+            CoreDataMainReport *cdataMainReport = [fetchedObjects objectAtIndex:0];
+            if (cdataMainReport == nil) return;
             
-            //
-            // OS report.
-            //
-            CoreDataSubReport *cdataSubReport = (CoreDataSubReport *) [NSEntityDescription 
-                                                                       insertNewObjectForEntityForName:@"CoreDataSubReport" 
-                                                                       inManagedObjectContext:managedObjectContext];
-            cdataSubReport.name = @"OSInfo";
-            cdataSubReport.score = [NSNumber numberWithDouble:reports.os.score];
-            cdataSubReport.distributionXWith = reports.os.xVals;
-            cdataSubReport.distributionXWithout = reports.osWithout.xVals;
-            cdataSubReport.distributionYWith = reports.os.yVals;
-            cdataSubReport.distributionYWithout = reports.osWithout.yVals;
-            [cdataSubReport setMainreport:cdataMainReport];
-            [cdataMainReport addSubreportsObject:cdataSubReport];
+            [cdataMainReport setLastUpdated:[NSDate date]];
+            double lastJScore = [[cdataMainReport valueForKey:@"jScore"] doubleValue];
+            double change = reports.jScore - lastJScore;
+            double changePercentage = ((reports.jScore - lastJScore)*100.0) / lastJScore;
+            
+            [cdataMainReport setJScore:[NSNumber numberWithDouble:reports.jScore]];
+            NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
+            [existing release];
+            NSArray *new = [[NSArray alloc] initWithObjects:
+                            [NSNumber numberWithDouble:change],
+                            [NSNumber numberWithDouble:changePercentage], 
+                            nil];
+            cdataMainReport.changesSinceLastWeek = new;
+            
+            // Subreports.
+            NSSet *subReportsSet = cdataMainReport.subreports;
+            NSArray *subReportsArray = [subReportsSet allObjects];
+            NSLog(@"%s Number of sub reports fetched: %u", __PRETTY_FUNCTION__, [subReportsArray count]);
+            
+            for (CoreDataSubReport *cdataSubReport in subReportsArray)
+            {
+                NSString *subReportName = (NSString *) [cdataSubReport valueForKey:@"name"];
+                if ([subReportName isEqualToString:@"OSInfo"]) 
+                {
+                    [self updateLocalSubReport:cdataSubReport 
+                           withThisDetailReport:reports.os 
+                           andThatDetailReport:reports.osWithout];
+                } 
+                else if ([subReportName isEqualToString:@"ModelInfo"]) 
+                {
+                    [self updateLocalSubReport:cdataSubReport 
+                           withThisDetailReport:reports.model 
+                           andThatDetailReport:reports.modelWithout];
+                }
+                else if ([subReportName isEqualToString:@"SimilarAppsInfo"])
+                {
+                    [self updateLocalSubReport:cdataSubReport 
+                          withThisDetailReport:reports.similarApps 
+                           andThatDetailReport:reports.similarAppsWithout];
+                }
+            }
         }
+        
+        // Clear local app reports.
+        if ([self clearLocalAppReports] == NO)
+            return;
+        
+        // Hog report
+        Feature *feature = [[[Feature alloc] init] autorelease];
+        [feature setKey:@"ReportType"];
+        [feature setValue:@"Hog"];
+        FeatureList list = [[NSArray alloc] initWithObjects:feature, nil];
+        HogBugReport *hogReport = [[CommunicationManager instance] getHogOrBugReport:list];
+        if (hogReport != nil)
+        {
+            HogsBugsList hogList = hogReport.hbList;
+            for(HogsBugs * hog in hogList)
+            {
+                CoreDataAppReport *cdataAppReport = (CoreDataAppReport *) [NSEntityDescription 
+                                                                           insertNewObjectForEntityForName:@"CoreDataAppReport" 
+                                                                           inManagedObjectContext:managedObjectContext];
+                [cdataAppReport setAppName:hog.appName];
+                [cdataAppReport setAppScore:[NSNumber numberWithDouble:hog.wDistance]];
+                [cdataAppReport setReportType:@"Hog"];
+                [cdataAppReport setLastUpdated:[NSDate date]];
+                CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
+                                                                  insertNewObjectForEntityForName:@"CoreDataDetail" 
+                                                                  inManagedObjectContext:managedObjectContext];
+                [cdataDetail setDistance:[NSNumber numberWithDouble:hog.wDistance]];
+                cdataDetail.distributionXWith = hog.xVals;
+                cdataDetail.distributionXWithout = hog.xValsWithout;
+                cdataDetail.distributionYWith = hog.yVals;
+                cdataDetail.distributionYWithout = hog.yValsWithout;
+                [cdataDetail setAppReport:cdataAppReport];
+                [cdataAppReport setAppDetails:cdataDetail];
+            }
+        }
+        [list release];
+        
+        // Bug report
+        [feature setValue:@"Bug"];
+        list = [[NSArray alloc] initWithObjects:feature, nil];
+        HogBugReport *bugReport = [[CommunicationManager instance] getHogOrBugReport:list];
+        if (bugReport != nil)
+        {
+            HogsBugsList bugList = bugReport.hbList;
+            for(HogsBugs * bug in bugList)
+            {
+                CoreDataAppReport *cdataAppReport = (CoreDataAppReport *) [NSEntityDescription 
+                                                                           insertNewObjectForEntityForName:@"CoreDataAppReport" 
+                                                                           inManagedObjectContext:managedObjectContext];
+                [cdataAppReport setAppName:bug.appName];
+                [cdataAppReport setAppScore:[NSNumber numberWithDouble:bug.wDistance]];
+                [cdataAppReport setReportType:@"Bug"];
+                [cdataAppReport setLastUpdated:[NSDate date]];
+                CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
+                                                                           insertNewObjectForEntityForName:@"CoreDataDetail" 
+                                                                           inManagedObjectContext:managedObjectContext];
+                [cdataDetail setDistance:[NSNumber numberWithDouble:bug.wDistance]];
+                cdataDetail.distributionXWith = bug.xVals;
+                cdataDetail.distributionXWithout = bug.xValsWithout;
+                cdataDetail.distributionYWith = bug.yVals;
+                cdataDetail.distributionYWithout = bug.yValsWithout;
+                [cdataDetail setAppReport:cdataAppReport];
+                [cdataAppReport setAppDetails:cdataDetail];
+            }
+        }
+        [list release];
+    
+        // Save the entire stuff.
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+        {
+            NSLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+            return;
+        }
+        
+        // Reload data in memory.
+        [self loadLocalReportsToMemory];
     }    
 }
 
@@ -561,9 +727,9 @@ static NSArray * SubReports = nil;
             registrationToSend.platformId = (NSString*) [registration valueForKey:@"platformId"];
             registrationToSend.systemVersion = (NSString*) [registration valueForKey:@"systemVersion"]; 
             
-            NSLog(@"\ttimestamp: %f", registrationToSend.timestamp);
-            NSLog(@"\tplatformId: %@", registrationToSend.platformId);
-            NSLog(@"\tsystemVersion: %@", registrationToSend.systemVersion);
+            NSLog(@"%s\ttimestamp: %f", __PRETTY_FUNCTION__, registrationToSend.timestamp);
+            NSLog(@"%s\tplatformId: %@", __PRETTY_FUNCTION__,registrationToSend.platformId);
+            NSLog(@"%s\tsystemVersion: %@", __PRETTY_FUNCTION__,registrationToSend.systemVersion);
             
             //
             //  Try to send. If successful, delete. 
@@ -634,10 +800,10 @@ static NSArray * SubReports = nil;
             NSMutableArray *pInfoList = [[[NSMutableArray alloc] init] autorelease];
             sampleToSend.piList = pInfoList;
             
-            NSLog(@"\ttimestamp: %f", sampleToSend.timestamp);
-            NSLog(@"\tbatteryLevel: %@", [sample valueForKey:@"batteryLevel"]);
-            NSLog(@"\tbatteryState: %@", [sample valueForKey:@"batteryState"]);
-            NSLog(@"\ttriggeredBy: %@", sampleToSend.triggeredBy);
+            NSLog(@"%s\ttimestamp: %f",__PRETTY_FUNCTION__, sampleToSend.timestamp);
+            NSLog(@"%s\tbatteryLevel: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryLevel"]);
+            NSLog(@"%s\tbatteryState: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryState"]);
+            NSLog(@"%s\ttriggeredBy: %@",__PRETTY_FUNCTION__, sampleToSend.triggeredBy);
             
             //
             //  Get all the process info objects for this sample.
@@ -732,14 +898,90 @@ static NSArray * SubReports = nil;
 
 - (HogBugReport *) getHogs 
 {
-    HogBugReport *dummy = [[[HogBugReport alloc] init] autorelease];
-    return dummy;
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Hog"];
+        [fetchRequest setPredicate:predicate];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                      ascending:NO];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            return nil;
+        }
+     
+        HogBugReport * hogs = [[[HogBugReport alloc] init] autorelease];
+        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
+        [hogs setHbList:hbList];
+        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
+        {
+            HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
+            [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
+            [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
+            [hog setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
+            [hog setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
+            [hog setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
+            [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            [hbList addObject:hog];
+        }
+        return hogs;
+    }
+    return nil;
 }
 
 - (HogBugReport *) getBugs 
 {
-    HogBugReport *dummy = [[[HogBugReport alloc] init] autorelease];
-    return dummy;
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Bug"];
+        [fetchRequest setPredicate:predicate];
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                       ascending:NO];
+        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            return nil;
+        }
+        
+        HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
+        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
+        [bugs setHbList:hbList];
+        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
+        {
+            HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
+            [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
+            [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
+            [bug setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
+            [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
+            [bug setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
+            [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            [hbList addObject:bug];
+        }
+        return bugs;
+    }
+    return nil;
 }
 
 - (double) getJScore

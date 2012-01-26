@@ -16,6 +16,8 @@
 #import "UIDeviceProc.h"
 #import "CoreDataProcessInfo.h"
 #import "CoreDataSample.h"
+#import "CoreDataAppReport.h"
+#import "CoreDataDetail.h"
 #import "CoreDataMainReport.h"
 #import "CoreDataSubReport.h"
 #import "CoreDataRegistration.h"
