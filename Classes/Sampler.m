@@ -45,7 +45,6 @@ static NSArray * SubReports = nil;
     return instance;
 }
 
-
 - (void) initLocalReportStore
 {
     NSError *error = nil;
@@ -118,7 +117,7 @@ static NSArray * SubReports = nil;
         //
         if ([fetchedObjects count] == 0)
         {
-            NSLog(@"%s Reports core data store not initialized. Initializing and reloading...", __PRETTY_FUNCTION__);
+            NSLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
             [self initLocalReportStore];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }

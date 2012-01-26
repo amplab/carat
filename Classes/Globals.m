@@ -47,9 +47,10 @@ static NSString* myUUID = nil;
 //
 // Get the Unique ID for the device. 
 // 
-- (NSString *) getUUID {
-    
-    if (myUUID == nil) {
+- (NSString *) getUUID 
+{    
+    if (myUUID == nil) 
+    {
         myUUID = [self generateUUID];
     }
     
