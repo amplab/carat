@@ -514,8 +514,8 @@ static NSArray * SubReports = nil;
          Error is logged, but we soldier on without saving our registration. :-(
          */
         [FlurryAnalytics logEvent:@"generateSaveRegistration Error"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]
-                            timed:YES];
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
+        NSLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
     } 
 }
 
@@ -628,8 +628,9 @@ static NSArray * SubReports = nil;
          Error is logged, but we soldier on without saving our sample. :-(
          */
         [FlurryAnalytics logEvent:@"sampleForeground Error"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]
-                            timed:YES];
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
+        NSLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        
     } 
 }
 
@@ -1086,10 +1087,6 @@ static NSArray * SubReports = nil;
     if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error])
     {
         /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-         
          Typical reasons for an error here include:
          * The persistent store is not accessible;
          * The schema for the persistent store is incompatible with current managed object model.
@@ -1108,8 +1105,12 @@ static NSArray * SubReports = nil;
          Lightweight migration will only work for a limited set of schema changes; consult "Core Data Model Versioning and Data Migration Programming Guide" for details.
          
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        /*
+         Error is logged, but we soldier on. Should probably implement one of the solutions above.
+         */
+        [FlurryAnalytics logEvent:@"sampleForeground Error"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
+        NSLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
     }    
     
     return __persistentStoreCoordinator;
