@@ -24,6 +24,7 @@
 #import "TTransportException.h"
 #import <sys/socket.h>
 #include <netinet/in.h>
+#import "Utilities.h"
 
 
 
@@ -63,11 +64,11 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
     if (CFSocketSetAddress(socket, (CFDataRef)address) != kCFSocketSuccess) {
       CFSocketInvalidate(socket);
       CFRelease(socket);
-      NSLog(@"*** Could not bind to address");
+      DLog(@"*** Could not bind to address");
       return nil;
     }
   } else {
-    NSLog(@"*** No server socket");
+    DLog(@"*** No server socket");
     return nil;
   }
   
@@ -88,7 +89,7 @@ NSString * const kTSockerServer_TransportKey = @"TSockerServer_Transport";
   // tell socket to listen
   [mSocketFileHandle acceptConnectionInBackgroundAndNotify];
   
-  NSLog(@"Listening on TCP port %d", port);
+  DLog(@"Listening on TCP port %d", port);
   
   return self;
 }

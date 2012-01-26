@@ -70,11 +70,11 @@
         HUD.labelText = @"Completed";
         sleep(1);
     }
-    
+
     // TODO UPDATE REPORT DATA
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
-        //[[Sampler instance] updateLocalReportsFromServer];
+        [[Sampler instance] updateLocalReportsFromServer];
     }
     
     // display result
@@ -87,7 +87,7 @@
     } else {
         HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-X.png"]] autorelease];
         HUD.mode = MBProgressHUDModeCustomView;
-        HUD.labelText = @"Failed";
+        HUD.labelText = @"Update Failed";
         HUD.detailsLabelText = @"(showing stale data)";
         sleep(2);
     }

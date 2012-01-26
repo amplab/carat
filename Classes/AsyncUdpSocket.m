@@ -15,6 +15,7 @@
 #import <sys/ioctl.h>
 #import <net/if.h>
 #import <netdb.h>
+#import "Utilities.h"
 
 #if TARGET_OS_IPHONE
 // Note: You may need to add the CFNetwork Framework to your project
@@ -1777,7 +1778,7 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 	
 	if(theNativeSocket == 0)
 	{
-		NSLog(@"Error - Could not get CFSocketNativeHandle from CFSocketRef");
+		DLog(@"Error - Could not get CFSocketNativeHandle from CFSocketRef");
 		return NO;
 	} 
 	
@@ -2003,7 +2004,7 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 	
 	if(theNativeSocket == 0)
 	{
-		NSLog(@"Error - Could not get CFSocketNativeHandle from CFSocketRef");
+		DLog(@"Error - Could not get CFSocketNativeHandle from CFSocketRef");
 		return NO;
 	} 
 	
@@ -2321,7 +2322,7 @@ static void MyCFSocketCallback(CFSocketRef, CFSocketCallBackType, CFDataRef, con
 			[self doSend:sock];
 			break;
 		default:
-			NSLog (@"AsyncUdpSocket %p received unexpected CFSocketCallBackType %lu.", self, (unsigned long)type);
+			DLog (@"AsyncUdpSocket %p received unexpected CFSocketCallBackType %lu.", self, (unsigned long)type);
 			break;
 	}
 }

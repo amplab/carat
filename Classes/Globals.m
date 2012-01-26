@@ -10,6 +10,7 @@
 //
 
 #import "Globals.h"
+#import "Utilities.h"
 
 @implementation Globals
 
@@ -45,7 +46,7 @@ static id instance = nil;
     CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
     NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
     CFRelease(uuidObject);
-    NSLog(@"%s Generated new UUID: %@", __PRETTY_FUNCTION__, uuidStr);
+    DLog(@"%s Generated new UUID: %@", __PRETTY_FUNCTION__, uuidStr);
     [defaults setObject:uuidStr forKey:@"CaratUUID"];
     [defaults synchronize];
     return uuidStr;

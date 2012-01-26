@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "Utilities.h"
 
 @implementation DetailViewController
 
@@ -65,7 +66,7 @@
             { return [[self.detailDataThat xVals] objectAtIndex:index]; }
             else
             {
-                NSLog(@"Unknown plot identifier.");
+                DLog(@"Unknown plot identifier.");
                 return [NSNumber numberWithInteger:index];
             }
         } else {
@@ -75,12 +76,12 @@
             { return [[self.detailDataThat yVals] objectAtIndex:index]; }
             else
             {
-                NSLog(@"Unknown plot identifier.");
+                DLog(@"Unknown plot identifier.");
                 return [NSNumber numberWithInteger:index];
             }
         }
     } else {
-        NSLog(@"Plot data is nil.");
+        DLog(@"Plot data is nil.");
         return [NSNumber numberWithInteger:index];
     }
 }

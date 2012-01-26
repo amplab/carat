@@ -7,11 +7,11 @@
 //
 
 #import "CaratAppDelegate.h"
-//#import "Reachability.h"
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
 #import "FlurryAnalytics.h"
 #import "SHK.h"
+#import "Utilities.h"
 
 #import "CurrentViewController.h"
 #import "HogReportViewController.h"
@@ -203,7 +203,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     NSString *errorData = [NSString stringWithFormat:@"%@",[error localizedDescription]];
-    NSLog(@"%@", errorData);
+    DLog(@"%@", errorData);
 }
 
        
