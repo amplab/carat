@@ -74,6 +74,7 @@ static BOOL isInternetActive;
         [[self service] release];
         [[self protocol] release];
         [[self transport] release];
+        NSLog(@"%s Successful.", __PRETTY_FUNCTION__);
     }
     @catch (NSException *exception) {
         NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);

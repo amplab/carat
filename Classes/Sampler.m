@@ -689,7 +689,12 @@ static NSArray * SubReports = nil;
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
         NSLog(@"%s Internet active", __PRETTY_FUNCTION__);
-        [self sendStoredDataToServer:100];
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self sendStoredDataToServer:100];
+            dispatch_async( dispatch_get_main_queue(), ^{
+                NSLog(@"%s Done!", __PRETTY_FUNCTION__);
+            });
+        });
     } 
     else 
     {
