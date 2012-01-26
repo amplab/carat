@@ -10,6 +10,7 @@
 
 #import "CommunicationManager.h"
 #import "Reachability.h"
+#import "Utilities.h"
 
 @interface CommunicationManager() 
 @property (retain) TSocketClient *transport;
@@ -53,7 +54,7 @@ static BOOL isInternetActive;
     //internetReachable = [[Reachability reachabilityForInternetConnection] retain];
     internetReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
     [internetReachable startNotifier];
-    NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+    DLog(@"%s Success!", __PRETTY_FUNCTION__);
 }
 
 //
@@ -74,10 +75,10 @@ static BOOL isInternetActive;
         [[self service] release];
         [[self protocol] release];
         [[self transport] release];
-        NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+        DLog(@"%s Success!", __PRETTY_FUNCTION__);
     }
     @catch (NSException *exception) {
-        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
     }
 }
 
@@ -98,12 +99,12 @@ static BOOL isInternetActive;
         [self setTransport:[[TSocketClient alloc] initWithHostname:caratServerIP port:caratServerPort]];
         [self setProtocol:[[TBinaryProtocol alloc] initWithTransport:transport strictRead:YES strictWrite:YES]];
         [self setService:[[CaratServiceClient alloc] initWithProtocol:protocol]];
-        NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+        DLog(@"%s Success!", __PRETTY_FUNCTION__);
         return YES;
     }
     @catch (NSException *exception) 
     {
-        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         [self shutdownCaratService];
     }
     return NO;
@@ -120,10 +121,10 @@ static BOOL isInternetActive;
         @try {
             [service registerMe:registrationMessage];
             ret = YES;
-            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+            DLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+            DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
         [self shutdownCaratService];
     }
@@ -142,10 +143,10 @@ static BOOL isInternetActive;
         @try {
             [service uploadSample:sample];
             ret = YES;
-            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+            DLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+            DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
         [self shutdownCaratService];
     }
@@ -159,10 +160,10 @@ static BOOL isInternetActive;
     {
         @try {
             return [service getReports:[[Globals instance] getUUID]];
-            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+            DLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+            DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
         [self shutdownCaratService];
     }
@@ -176,10 +177,10 @@ static BOOL isInternetActive;
         @try {
             return [service getHogOrBugReport:[[Globals instance] getUUID ]
                                              :featureList];
-            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+            DLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+            DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
         [self shutdownCaratService];
     }
@@ -188,7 +189,7 @@ static BOOL isInternetActive;
 
 - (BOOL) isInternetReachable
 {
-    NSLog(@"%s %d", __PRETTY_FUNCTION__, isInternetActive);
+    DLog(@"%s %d", __PRETTY_FUNCTION__, isInternetActive);
     return isInternetActive;
 }
 
@@ -199,19 +200,19 @@ static BOOL isInternetActive;
     {
         case NotReachable:
         {
-            NSLog(@"%s NetworkStatus changed to NotReachable", __PRETTY_FUNCTION__);
+            DLog(@"%s NetworkStatus changed to NotReachable", __PRETTY_FUNCTION__);
             isInternetActive = NO;
             break;
         }
         case ReachableViaWiFi:
         {
-            NSLog(@"%s NetworkStatus changed to ReachableViaWiFi", __PRETTY_FUNCTION__);
+            DLog(@"%s NetworkStatus changed to ReachableViaWiFi", __PRETTY_FUNCTION__);
             isInternetActive = YES;
             break;
         }
         case ReachableViaWWAN:
         {
-            NSLog(@"%s NetworkStatus changed to ReachableViaWWAN", __PRETTY_FUNCTION__);
+            DLog(@"%s NetworkStatus changed to ReachableViaWWAN", __PRETTY_FUNCTION__);
             isInternetActive = YES;
             break;
         }
