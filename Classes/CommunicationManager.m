@@ -166,7 +166,7 @@ static BOOL isInternetActive;
         }
         [self shutdownCaratService];
     }
-    return NULL;
+    return nil;
 }
 
 - (HogBugReport *) getHogOrBugReport:(FeatureList) featureList
@@ -183,7 +183,7 @@ static BOOL isInternetActive;
         }
         [self shutdownCaratService];
     }
-    return NULL;
+    return nil;
 }
 
 - (BOOL) isInternetReachable
