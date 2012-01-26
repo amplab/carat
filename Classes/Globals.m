@@ -13,20 +13,27 @@
 
 @implementation Globals
 
+@synthesize myUUID;
+@synthesize defaults;
+
 static id instance = nil;
-static NSUserDefaults* defaults = nil;
-static NSString* myUUID = nil;
+//static NSUserDefaults* defaults = nil;
 
 + (void) initialize {
     if (self == [Globals class]) {
         instance = [[self alloc] init];
-        defaults = [NSUserDefaults standardUserDefaults];
-        myUUID = [defaults objectForKey:@"CaratUUID"];
+        [instance getUUIDFromNSUserDefaults];
     }
 }
 
 + (id) instance {
     return instance;
+}
+
+- (void) getUUIDFromNSUserDefaults
+{
+    self.defaults = [NSUserDefaults standardUserDefaults];
+    self.myUUID = [[self defaults] objectForKey:@"CaratUUID"];
 }
 
 //
@@ -49,12 +56,12 @@ static NSString* myUUID = nil;
 // 
 - (NSString *) getUUID 
 {    
-    if (myUUID == nil) 
+    if (self.myUUID == nil) 
     {
-        myUUID = [self generateUUID];
+        self.myUUID = [self generateUUID];
     }
     
-    return myUUID;
+    return self.myUUID;
 }
 
 //
@@ -80,5 +87,11 @@ static NSString* myUUID = nil;
     return (double) [dateTimeInUTC timeIntervalSince1970];
 }
 
+- (void) dealloc
+{
+    [myUUID release];
+    [defaults release];
+    [super dealloc];
+}
 
 @end

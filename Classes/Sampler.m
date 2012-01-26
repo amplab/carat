@@ -141,7 +141,7 @@ static NSArray * SubReports = nil;
             
             JScore = [[mainReport valueForKey:@"jScore"] doubleValue];
             self.LastUpdatedDate = (NSDate *) [mainReport valueForKey:@"lastUpdated"];
-            ChangesSinceLastWeek = (NSArray *) [mainReport valueForKey:@"changesSinceLastWeek"];
+            self.ChangesSinceLastWeek = (NSArray *) [mainReport valueForKey:@"changesSinceLastWeek"];
             
             NSSet *subReportsSet = mainReport.subreports;
             NSArray *subReportsArray = [subReportsSet allObjects];
