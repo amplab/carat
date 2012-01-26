@@ -13,9 +13,19 @@
 #import "Thrift/transport/TSocketClient.h"
 #import "Thrift/protocol/TBinaryProtocol.h"
 
+@class Reachability;
+
 @interface CommunicationManager : NSObject
+{
+    Reachability* internetReachable;
+}
+
 + (id) instance;
+- (void) setupReachabilityNotifications;
 - (BOOL) sendRegistrationMessage:(Registration *) registrationMessage;
 - (BOOL) sendSample:(Sample *) sample;
+- (Reports *) getReports;
 - (HogBugReport *) getHogOrBugReport:(FeatureList) featureList;
+- (BOOL) isInternetReachable; 
+- (void) checkNetworkStatus:(NSNotification *)notice;
 @end

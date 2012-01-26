@@ -7,7 +7,7 @@
 //
 
 #import "CaratAppDelegate.h"
-#import "Reachability.h"
+//#import "Reachability.h"
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
 #import "FlurryAnalytics.h"
@@ -161,11 +161,20 @@ void onUncaughtException(NSException *exception)
     // check settings to determine if location-change service is allowed
     // setup notifications for battery, location, etc.
     [[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batteryLevelChanged:) name:UIDeviceBatteryLevelDidChangeNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(batteryStateChanged:) name:UIDeviceBatteryStateDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(batteryLevelChanged:) 
+                                                 name:UIDeviceBatteryLevelDidChangeNotification 
+                                               object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(batteryStateChanged:) 
+                                                 name:UIDeviceBatteryStateDidChangeNotification 
+                                               object:nil];
+    /*[[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(checkNetworkStatus:) 
+                                                 name:kReachabilityChangedNotification 
+                                               object:nil];
     hostReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
-    [hostReachable startNotifier];
+    [hostReachable startNotifier];*/
 }
 
 - (void)batteryLevelChanged:(NSNotification *)notification {
@@ -204,17 +213,17 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 - (void) checkNetworkStatus:(NSNotification *)notice
 {
     // called after network status changes
-    NetworkStatus internetStatus = [hostReachable currentReachabilityStatus];
-    if (internetStatus == ReachableViaWiFi || internetStatus == ReachableViaWWAN) {
-        [self doSyncIfNeeded];
-    }
+    //NetworkStatus internetStatus = [hostReachable currentReachabilityStatus];
+    //if (internetStatus == ReachableViaWiFi || internetStatus == ReachableViaWWAN) {
+    //    [self doSyncIfNeeded];
+    //}
 }
 
 - (void) doSyncIfNeeded {
     // we've already checked that the host we need to talk to is reachable
     // so see if there's enough data stored up to justify a sync
     // if so, do it!
-    [[Sampler instance] sendStoredDataToServer: 100];
+    //[[Sampler instance] sendStoredDataToServer: 100];
 }
 
 #pragma mark -

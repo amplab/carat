@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
-#import "Reachability.h"
+//#import "Reachability.h"
 
-@class Reachability;
+//@class Reachability;
 
 @interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
     NSArray *jscore;
@@ -20,8 +20,8 @@
     NSArray *scoreSameModelProgBar;
     NSArray *scoreSimilarAppsProgBar;
     MBProgressHUD *HUD;
-    Reachability* internetReachable;
-    BOOL isInternetActive;
+    //Reachability* internetReachable;
+    //BOOL isInternetActive;
     
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
@@ -33,7 +33,7 @@
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameOSProgBar;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSameModelProgBar;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *scoreSimilarAppsProgBar;
-@property (nonatomic) BOOL isInternetActive;
+//@property (nonatomic) BOOL isInternetActive;
 
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
@@ -41,7 +41,7 @@
 - (void)loadDataWithHUD;
 - (BOOL)isFresh;
 - (void)updateView;
-- (void) checkNetworkStatus:(NSNotification *)notice;
+//- (void) checkNetworkStatus:(NSNotification *)notice;
 
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;

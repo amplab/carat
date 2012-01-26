@@ -16,20 +16,20 @@
 #import "Thrift/transport/TSocketClient.h"
 #import "Thrift/protocol/TBinaryProtocol.h"
 
-@class Reachability;
+//@class Reachability;
 
 @interface CaratAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate> {
     UIWindow *window;
     UITabBarController *tabBarController;
     CLLocationManager *locationManager;
-    Reachability *hostReachable;
+    //Reachability *hostReachable;
     UIBackgroundTaskIdentifier bgTask;
 }
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tabBarController;
 
-- (void) checkNetworkStatus:(NSNotification *)notice;
+//- (void) checkNetworkStatus:(NSNotification *)notice;
 - (void) setupNotificationSubscriptions;
 - (void) doSyncIfNeeded;
 

@@ -214,52 +214,136 @@ typedef NSArray * FeatureList;
 
 @end
 
-@interface HogsBugs : NSObject <NSCoding> {
-  int16_t __pId;
-  NSString * __pName;
-  double __wDistance;
-  NSArray * __pdfXVals;
-  NSArray * __pdfYVals;
+@interface Reports : NSObject <NSCoding> {
+  double __jScore;
+  DetailScreenReport * __os;
+  DetailScreenReport * __osWithout;
+  DetailScreenReport * __model;
+  DetailScreenReport * __modelWithout;
+  DetailScreenReport * __similarApps;
+  DetailScreenReport * __similarAppsWithout;
+  double __changeSinceLastWeek;
+  double __changeSinceLastWeekPercentage;
 
-  BOOL __pId_isset;
-  BOOL __pName_isset;
-  BOOL __wDistance_isset;
-  BOOL __pdfXVals_isset;
-  BOOL __pdfYVals_isset;
+  BOOL __jScore_isset;
+  BOOL __os_isset;
+  BOOL __osWithout_isset;
+  BOOL __model_isset;
+  BOOL __modelWithout_isset;
+  BOOL __similarApps_isset;
+  BOOL __similarAppsWithout_isset;
+  BOOL __changeSinceLastWeek_isset;
+  BOOL __changeSinceLastWeekPercentage_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
-@property (nonatomic, getter=pId, setter=setPId:) int16_t pId;
-@property (nonatomic, retain, getter=pName, setter=setPName:) NSString * pName;
-@property (nonatomic, getter=wDistance, setter=setWDistance:) double wDistance;
-@property (nonatomic, retain, getter=pdfXVals, setter=setPdfXVals:) NSArray * pdfXVals;
-@property (nonatomic, retain, getter=pdfYVals, setter=setPdfYVals:) NSArray * pdfYVals;
+@property (nonatomic, getter=jScore, setter=setJScore:) double jScore;
+@property (nonatomic, retain, getter=os, setter=setOs:) DetailScreenReport * os;
+@property (nonatomic, retain, getter=osWithout, setter=setOsWithout:) DetailScreenReport * osWithout;
+@property (nonatomic, retain, getter=model, setter=setModel:) DetailScreenReport * model;
+@property (nonatomic, retain, getter=modelWithout, setter=setModelWithout:) DetailScreenReport * modelWithout;
+@property (nonatomic, retain, getter=similarApps, setter=setSimilarApps:) DetailScreenReport * similarApps;
+@property (nonatomic, retain, getter=similarAppsWithout, setter=setSimilarAppsWithout:) DetailScreenReport * similarAppsWithout;
+@property (nonatomic, getter=changeSinceLastWeek, setter=setChangeSinceLastWeek:) double changeSinceLastWeek;
+@property (nonatomic, getter=changeSinceLastWeekPercentage, setter=setChangeSinceLastWeekPercentage:) double changeSinceLastWeekPercentage;
 #endif
 
-- (id) initWithPId: (int16_t) pId pName: (NSString *) pName wDistance: (double) wDistance pdfXVals: (NSArray *) pdfXVals pdfYVals: (NSArray *) pdfYVals;
+- (id) initWithJScore: (double) jScore os: (DetailScreenReport *) os osWithout: (DetailScreenReport *) osWithout model: (DetailScreenReport *) model modelWithout: (DetailScreenReport *) modelWithout similarApps: (DetailScreenReport *) similarApps similarAppsWithout: (DetailScreenReport *) similarAppsWithout changeSinceLastWeek: (double) changeSinceLastWeek changeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 
-- (int16_t) pId;
-- (void) setPId: (int16_t) pId;
-- (BOOL) pIdIsSet;
+- (double) jScore;
+- (void) setJScore: (double) jScore;
+- (BOOL) jScoreIsSet;
 
-- (NSString *) pName;
-- (void) setPName: (NSString *) pName;
-- (BOOL) pNameIsSet;
+- (DetailScreenReport *) os;
+- (void) setOs: (DetailScreenReport *) os;
+- (BOOL) osIsSet;
+
+- (DetailScreenReport *) osWithout;
+- (void) setOsWithout: (DetailScreenReport *) osWithout;
+- (BOOL) osWithoutIsSet;
+
+- (DetailScreenReport *) model;
+- (void) setModel: (DetailScreenReport *) model;
+- (BOOL) modelIsSet;
+
+- (DetailScreenReport *) modelWithout;
+- (void) setModelWithout: (DetailScreenReport *) modelWithout;
+- (BOOL) modelWithoutIsSet;
+
+- (DetailScreenReport *) similarApps;
+- (void) setSimilarApps: (DetailScreenReport *) similarApps;
+- (BOOL) similarAppsIsSet;
+
+- (DetailScreenReport *) similarAppsWithout;
+- (void) setSimilarAppsWithout: (DetailScreenReport *) similarAppsWithout;
+- (BOOL) similarAppsWithoutIsSet;
+
+- (double) changeSinceLastWeek;
+- (void) setChangeSinceLastWeek: (double) changeSinceLastWeek;
+- (BOOL) changeSinceLastWeekIsSet;
+
+- (double) changeSinceLastWeekPercentage;
+- (void) setChangeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage;
+- (BOOL) changeSinceLastWeekPercentageIsSet;
+
+@end
+
+@interface HogsBugs : NSObject <NSCoding> {
+  NSString * __appName;
+  double __wDistance;
+  NSArray * __xVals;
+  NSArray * __yVals;
+  NSArray * __xValsWithout;
+  NSArray * __yValsWithout;
+
+  BOOL __appName_isset;
+  BOOL __wDistance_isset;
+  BOOL __xVals_isset;
+  BOOL __yVals_isset;
+  BOOL __xValsWithout_isset;
+  BOOL __yValsWithout_isset;
+}
+
+#if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
+@property (nonatomic, retain, getter=appName, setter=setAppName:) NSString * appName;
+@property (nonatomic, getter=wDistance, setter=setWDistance:) double wDistance;
+@property (nonatomic, retain, getter=xVals, setter=setXVals:) NSArray * xVals;
+@property (nonatomic, retain, getter=yVals, setter=setYVals:) NSArray * yVals;
+@property (nonatomic, retain, getter=xValsWithout, setter=setXValsWithout:) NSArray * xValsWithout;
+@property (nonatomic, retain, getter=yValsWithout, setter=setYValsWithout:) NSArray * yValsWithout;
+#endif
+
+- (id) initWithAppName: (NSString *) appName wDistance: (double) wDistance xVals: (NSArray *) xVals yVals: (NSArray *) yVals xValsWithout: (NSArray *) xValsWithout yValsWithout: (NSArray *) yValsWithout;
+
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+
+- (NSString *) appName;
+- (void) setAppName: (NSString *) appName;
+- (BOOL) appNameIsSet;
 
 - (double) wDistance;
 - (void) setWDistance: (double) wDistance;
 - (BOOL) wDistanceIsSet;
 
-- (NSArray *) pdfXVals;
-- (void) setPdfXVals: (NSArray *) pdfXVals;
-- (BOOL) pdfXValsIsSet;
+- (NSArray *) xVals;
+- (void) setXVals: (NSArray *) xVals;
+- (BOOL) xValsIsSet;
 
-- (NSArray *) pdfYVals;
-- (void) setPdfYVals: (NSArray *) pdfYVals;
-- (BOOL) pdfYValsIsSet;
+- (NSArray *) yVals;
+- (void) setYVals: (NSArray *) yVals;
+- (BOOL) yValsIsSet;
+
+- (NSArray *) xValsWithout;
+- (void) setXValsWithout: (NSArray *) xValsWithout;
+- (BOOL) xValsWithoutIsSet;
+
+- (NSArray *) yValsWithout;
+- (void) setYValsWithout: (NSArray *) yValsWithout;
+- (BOOL) yValsWithoutIsSet;
 
 @end
 
@@ -322,6 +406,7 @@ typedef NSArray * FeatureList;
 @protocol CaratService <NSObject>
 - (void) registerMe: (Registration *) registration;  // throws TException
 - (BOOL) uploadSample: (Sample *) sample;  // throws TException
+- (Reports *) getReports: (NSString *) uuId;  // throws TException
 - (HogBugReport *) getHogOrBugReport: (NSString *) uuId : (FeatureList) features;  // throws TException
 @end
 

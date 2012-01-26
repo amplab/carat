@@ -16,6 +16,8 @@
 #import "UIDeviceProc.h"
 #import "CoreDataProcessInfo.h"
 #import "CoreDataSample.h"
+#import "CoreDataMainReport.h"
+#import "CoreDataSubReport.h"
 #import "CoreDataRegistration.h"
 #import "CommunicationManager.h"
 
@@ -27,6 +29,8 @@
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 + (id) instance;
+- (void) loadLocalReportsToMemory;
+- (void) updateLocalReportsFromServer;
 - (id) initWithCommManager : cManager;
 - (void) generateSaveRegistration;
 - (void) sampleNow : (NSString *) triggeredBy;

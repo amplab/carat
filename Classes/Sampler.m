@@ -21,21 +21,231 @@
 @synthesize fetchedResultsController = __fetchResultsController;
 
 static id instance = nil;
+static double JScore;
+static NSDate * LastUpdatedDate = nil;
+static DetailScreenReport * OSInfo = nil;
+static DetailScreenReport * OSInfoWithout = nil;
+static DetailScreenReport * ModelInfo = nil;
+static DetailScreenReport * ModelInfoWithout = nil;
+static DetailScreenReport * SimilarAppsInfo = nil;
+static DetailScreenReport * SimilarAppsInfoWithout = nil;
+static NSArray * ChangesSinceLastWeek = nil;
+static NSArray * SubReports = nil;
 
 + (void) initialize {
     if (self == [Sampler class]) {
         instance = [[self alloc] init];
     }
+    SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
+    [instance loadLocalReportsToMemory];
+    [[CommunicationManager instance] isInternetReachable];
 }
 
 + (id) instance {
     return instance;
 }
 
+
+- (void) initLocalReportStore
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    if (managedObjectContext != nil) 
+    {
+        CoreDataMainReport *cdataMainReport = (CoreDataMainReport *) [NSEntityDescription 
+                                                                      insertNewObjectForEntityForName:@"CoreDataMainReport" 
+                                                                      inManagedObjectContext:managedObjectContext];
+        cdataMainReport.jScore = [NSNumber numberWithDouble:0.0];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        cdataMainReport.lastUpdated = [[dateFormatter dateFromString:@"1970-01-01"] retain];
+        [dateFormatter release];
+        
+        cdataMainReport.changesSinceLastWeek = [[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil];
+        
+        for (NSString * subReportName in SubReports)
+        {
+            CoreDataSubReport *cdataSubReport = (CoreDataSubReport *) [NSEntityDescription 
+                                                                       insertNewObjectForEntityForName:@"CoreDataSubReport" 
+                                                                       inManagedObjectContext:managedObjectContext];
+            cdataSubReport.name = subReportName;
+            cdataSubReport.score = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.distributionXWith = [[[NSArray alloc] init] autorelease];
+            cdataSubReport.distributionXWithout = [[[NSArray alloc] init] autorelease];
+            cdataSubReport.distributionYWith = [[[NSArray alloc] init] autorelease];
+            cdataSubReport.distributionYWithout = [[[NSArray alloc] init] autorelease];
+            [cdataSubReport setMainreport:cdataMainReport];
+            [cdataMainReport addSubreportsObject:cdataSubReport];
+        }
+    }
+
+    if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+    {
+        NSLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+        return;
+    }
+}
+
+//
+// Load the report data (except bug and hog report) to memory so that 
+// we don't have to keep going to the core data store.
+//
+- (void) loadLocalReportsToMemory 
+{    
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataMainReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            NSLog(@"Could not fetch main report data, error %@, %@", error, [error userInfo]);
+            goto cleanup;
+        } 
+        
+        NSLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+        
+        //
+        // If the store is empty, let us create a dummy placeholder until we
+        // get back real stuff from the server.
+        //
+        if ([fetchedObjects count] == 0)
+        {
+            NSLog(@"%s Reports core data store not initialized. Initializing and reloading...", __PRETTY_FUNCTION__);
+            [self initLocalReportStore];
+            fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        }
+        else if ([fetchedObjects count] > 1)    // This should not happen!!!!
+        {
+            NSLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
+            for (CoreDataMainReport *mainReport in fetchedObjects)
+            {
+                [managedObjectContext deleteObject:mainReport];
+                [managedObjectContext save:nil];
+            }
+            [self initLocalReportStore];
+            fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        }
+                
+        for (CoreDataMainReport *mainReport in fetchedObjects)
+        {
+            if (mainReport == nil)
+                break;
+            
+            JScore = [[mainReport valueForKey:@"jScore"] doubleValue];
+            LastUpdatedDate = (NSDate *) [mainReport valueForKey:@"lastUpdated"];
+            ChangesSinceLastWeek = (NSArray *) [mainReport valueForKey:@"changesSinceLastWeek"];
+            
+            NSSet *subReportsSet = mainReport.subreports;
+            NSArray *subReportsArray = [subReportsSet allObjects];
+            NSLog(@"%s Number of sub reports fetched: %u", __PRETTY_FUNCTION__, [subReportsArray count]);
+            
+            for (CoreDataSubReport *subReport in subReportsArray)
+            {
+                NSString *subReportName = (NSString *) [subReport valueForKey:@"name"];
+                if ([subReportName isEqualToString:@"OSInfo"]) 
+                {
+                    if (OSInfo == nil)
+                        OSInfo = [[[DetailScreenReport alloc] init] autorelease];
+                    OSInfo.score = [[subReport valueForKey:@"score"] doubleValue];
+                    OSInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
+                    OSInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    if (OSInfoWithout == nil)
+                        OSInfoWithout = [[[DetailScreenReport alloc] init] autorelease];
+                    OSInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    OSInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    OSInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
+                } 
+                else if ([subReportName isEqualToString:@"ModelInfo"]) 
+                {
+                    if (ModelInfo == nil)
+                        ModelInfo = [[[DetailScreenReport alloc] init] autorelease];
+                    ModelInfo.score = [[subReport valueForKey:@"score"] doubleValue];
+                    ModelInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
+                    ModelInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    
+                    if (ModelInfoWithout == nil)
+                        ModelInfoWithout = [[[DetailScreenReport alloc] init] autorelease];
+                    ModelInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    ModelInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    ModelInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
+                }
+                else if ([subReportName isEqualToString:@"SimilarAppsInfo"])
+                {
+                    if (SimilarAppsInfo == nil)
+                        SimilarAppsInfo = [[[DetailScreenReport alloc] init] autorelease];
+                    SimilarAppsInfo.score = [[subReport valueForKey:@"score"] doubleValue];
+                    SimilarAppsInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
+                    SimilarAppsInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    
+                    if (SimilarAppsInfoWithout == nil)
+                        SimilarAppsInfoWithout = [[[DetailScreenReport alloc] init] autorelease];
+                    SimilarAppsInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    SimilarAppsInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    SimilarAppsInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
+                }
+            }
+        }
+                
+    cleanup:
+        [fetchedObjects release];
+        [entity release];
+    }
+}
+
+- (void) updateSubReportForMainReport: (CoreDataMainReport *) CurrentMainReport 
+                     withDetailReport: (DetailScreenReport *) detailScreenReportWith 
+            withDetailReportExcluding: (DetailScreenReport *) detailScreenReportWithout
+{
+    
+}
+
+//
+// Refresh all the local reports from server. 
+//
+- (void) updateLocalReportsFromServer
+{
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    if (managedObjectContext != nil) 
+    {
+        CoreDataMainReport *cdataMainReport = (CoreDataMainReport *) [NSEntityDescription 
+                                                                            insertNewObjectForEntityForName:@"CoreDataMainReport" 
+                                                                            inManagedObjectContext:managedObjectContext];
+        Reports *reports = [[CommunicationManager instance] getReports];
+        if (reports != nil)
+        {
+            cdataMainReport.jScore = [NSNumber numberWithDouble:reports.jScore];
+            
+            //
+            // OS report.
+            //
+            CoreDataSubReport *cdataSubReport = (CoreDataSubReport *) [NSEntityDescription 
+                                                                       insertNewObjectForEntityForName:@"CoreDataSubReport" 
+                                                                       inManagedObjectContext:managedObjectContext];
+            cdataSubReport.name = @"OSInfo";
+            cdataSubReport.score = [NSNumber numberWithDouble:reports.os.score];
+            cdataSubReport.distributionXWith = reports.os.xVals;
+            cdataSubReport.distributionXWithout = reports.osWithout.xVals;
+            cdataSubReport.distributionYWith = reports.os.yVals;
+            cdataSubReport.distributionYWithout = reports.osWithout.yVals;
+            [cdataSubReport setMainreport:cdataMainReport];
+            [cdataMainReport addSubreportsObject:cdataSubReport];
+        }
+    }    
+}
+
 - (id) initWithCommManager:(id)cManager 
 {
     self = [super init];
-//    commManager = [cManager retain];
     return self;
 }
 
@@ -45,7 +255,6 @@ static id instance = nil;
     [__managedObjectModel release];
     [__persistentStoreCoordinator release];
     [__fetchResultsController release];
-  //  [commManager release];
     [super dealloc];
 }
 
@@ -123,7 +332,7 @@ static id instance = nil;
     [cdataRegistration setSystemVersion:[UIDevice currentDevice].systemVersion];
     
     //
-    //  Now save the sample.
+    //  Now save it.
     //
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
     {
@@ -326,11 +535,11 @@ static id instance = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"Could not fetch registrations, error %@, %@", error, [error userInfo]);
+            NSLog(@"%s Could not fetch registrations, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             goto cleanup;
         } 
         
-        NSLog(@"Number of registrations fetched: %u", [fetchedObjects count]);
+        NSLog(@"%s # registrations fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
         
         for (CoreDataRegistration *registration in fetchedObjects)
         {
@@ -338,10 +547,14 @@ static id instance = nil;
                 break;
             
             Registration* registrationToSend = [[Registration alloc] init];
-            registrationToSend.uuId = [[Globals instance] getUUID];
+            registrationToSend.uuId = [[Globals instance] getUUID ];
             registrationToSend.timestamp = [[registration valueForKey:@"timestamp"] doubleValue]; 
             registrationToSend.platformId = (NSString*) [registration valueForKey:@"platformId"];
             registrationToSend.systemVersion = (NSString*) [registration valueForKey:@"systemVersion"]; 
+            
+            NSLog(@"\ttimestamp: %f", registrationToSend.timestamp);
+            NSLog(@"\tplatformId: %@", registrationToSend.platformId);
+            NSLog(@"\tsystemVersion: %@", registrationToSend.systemVersion);
             
             //
             //  Try to send. If successful, delete. 
@@ -350,22 +563,17 @@ static id instance = nil;
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:registration];
+                if (![managedObjectContext save:&error])
+                {
+                    NSLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                }
             }
         }
         
     cleanup:
+        [fetchedObjects release];
         [sortDescriptors release];
         [sortDescriptor release];
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        {
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-             */
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
     }
 }
 
@@ -392,11 +600,11 @@ static id instance = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"Could not fetch samples, error %@, %@", error, [error userInfo]);
+            NSLog(@"%s Could not fetch samples, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             goto cleanup;
         } 
         
-        NSLog(@"Number of samples fetched: %u", [fetchedObjects count]);
+        NSLog(@"%s Number of samples fetched: %u",__PRETTY_FUNCTION__,[fetchedObjects count]);
         
         for (CoreDataSample *sample in fetchedObjects)
         {
@@ -418,9 +626,10 @@ static id instance = nil;
             NSMutableArray *pInfoList = [[NSMutableArray alloc] init];
             sampleToSend.piList = pInfoList;
             
-            NSLog(@"timestamp: %f", sampleToSend.timestamp);
-            NSLog(@"batteryLevel: %@", [sample valueForKey:@"batteryLevel"]);
-            NSLog(@"batteryState: %@", [sample valueForKey:@"batteryState"]);
+            NSLog(@"\ttimestamp: %f", sampleToSend.timestamp);
+            NSLog(@"\tbatteryLevel: %@", [sample valueForKey:@"batteryLevel"]);
+            NSLog(@"\tbatteryState: %@", [sample valueForKey:@"batteryState"]);
+            NSLog(@"\ttriggeredBy: %@", sampleToSend.triggeredBy);
             
             //
             //  Get all the process info objects for this sample.
@@ -434,8 +643,6 @@ static id instance = nil;
                 pInfo.pId = (int)[processInfo valueForKey:@"id"];
                 pInfo.pName = (NSString *)[processInfo valueForKey:@"name"];
                 [pInfoList addObject:pInfo];
-                //NSLog(@"Id: %@", [processInfo valueForKey:@"id"]);
-                //NSLog(@"Name: %@", [processInfo valueForKey:@"name"]);
             }
             
             //
@@ -446,22 +653,17 @@ static id instance = nil;
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:sample];
+                if (![managedObjectContext save:&error])
+                {
+                    NSLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                }
             }
         }
         
     cleanup:
+        [fetchedObjects release];
         [sortDescriptors release];
         [sortDescriptor release];
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        {
-            /*
-             Replace this implementation with code to handle the error appropriately.
-             
-             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-             */
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
     }
 }
 
@@ -477,12 +679,33 @@ static id instance = nil;
 
 - (NSDate *) getLastReportUpdateTimestamp
 {
-    return [NSDate date];
+    @try {
+        NSLog(@"%s %@", __PRETTY_FUNCTION__, LastUpdatedDate);
+        return LastUpdatedDate;
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        return [NSDate date];
+    }
 }
 
 - (double) secondsSinceLastUpdate
 {
-    return 0.0;
+    @try {
+        NSTimeInterval interval = 0.0;
+        if (LastUpdatedDate != nil)
+        {
+            NSDate *now = [[NSDate date] retain];
+            interval = [now timeIntervalSinceDate:LastUpdatedDate];
+            [now release];
+        }
+        NSLog(@"%s %f", __PRETTY_FUNCTION__, interval);
+        return interval;
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        return 0.0;
+    }
 }
 
 - (HogBugReport *) getHogs 
@@ -499,31 +722,42 @@ static id instance = nil;
 
 - (double) getJScore
 {
-    return 0.0;
+    NSLog(@"%s %@", __PRETTY_FUNCTION__, JScore);
+    return JScore;
 }
 
 - (DetailScreenReport *) getOSInfo : (BOOL) with
 {
-    DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
-    return dummy;
+    if (with == YES)
+        return OSInfo;
+    else
+        return OSInfoWithout;
 }
 
 - (DetailScreenReport *) getModelInfo : (BOOL) with
 {
-    DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
-    return dummy;
+    if (with == YES)
+        return ModelInfo;
+    else
+        return ModelInfoWithout;
 }
 
 - (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with
 {
-    DetailScreenReport *dummy = [[DetailScreenReport alloc] init ];
-    return dummy;
+    if (with == YES)
+        return SimilarAppsInfo;
+    else
+        return SimilarAppsInfoWithout;
 }
 
 - (NSArray *) getChangeSinceLastWeek
 {
-    NSArray *dummy = [[NSArray alloc] initWithObjects:@"-6",@"-11", nil];
-    return dummy;
+    if (ChangesSinceLastWeek == nil)
+    {
+        NSArray *dummy = [[NSArray alloc] initWithObjects:@"-6",@"-11", nil];
+        return dummy;
+    }
+    return ChangesSinceLastWeek;
 }
 
 #pragma mark - Core Data stack
@@ -575,6 +809,7 @@ static id instance = nil;
     }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Carat.sqlite"];
+    NSLog(@"%s Coredatastore location: %@", __PRETTY_FUNCTION__, storeURL);
     
     NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

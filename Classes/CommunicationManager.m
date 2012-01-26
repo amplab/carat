@@ -9,6 +9,7 @@
 //
 
 #import "CommunicationManager.h"
+#import "Reachability.h"
 
 @interface CommunicationManager() 
 @property (retain) TSocketClient *transport;
@@ -23,15 +24,34 @@
 @synthesize service;
 
 static id instance = nil;
+static NSString* caratServerIP = nil;
+static int caratServerPort = 4444;
+static BOOL isInternetActive;
 
 + (void) initialize {
     if (self == [CommunicationManager class]) {
         instance = [[self alloc] init];
     }
+    //caratServerIP = @"localhost";
+    caratServerIP = @"50.18.127.4";
+    
+    [instance setupReachabilityNotifications];
 }
 
 + (id) instance {
     return instance;
+}
+
+- (void) setupReachabilityNotifications
+{
+    isInternetActive = NO;
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(checkNetworkStatus:) 
+                                                 name:kReachabilityChangedNotification 
+                                               object:nil];
+    internetReachable = [[Reachability reachabilityForInternetConnection] retain];
+    [internetReachable startNotifier];
+    NSLog(@"%s Success.", __PRETTY_FUNCTION__);
 }
 
 //
@@ -46,6 +66,18 @@ static id instance = nil;
     return NO;
 }
 
+- (void) shutdownCaratService
+{
+    @try {
+        [[self service] release];
+        [[self protocol] release];
+        [[self transport] release];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+    }
+}
+
 //
 //  Setup the carat thrift service. We check if we already setup the service. 
 //  
@@ -58,16 +90,24 @@ static id instance = nil;
     //
     // Try setting it up.
     //
+<<<<<<< .mine
+    @try 
+    {
+        [self setTransport:[[TSocketClient alloc] initWithHostname:caratServerIP port:caratServerPort]];
+=======
     @try {
         [self setTransport:[[TSocketClient alloc] initWithHostname:@"50.18.127.4" port:4444]];
         //[self setTransport:[[TSocketClient alloc] initWithHostname:@"localhost" port:4444]];
+>>>>>>> .r1195
         [self setProtocol:[[TBinaryProtocol alloc] initWithTransport:transport strictRead:YES strictWrite:YES]];
         [self setService:[[CaratServiceClient alloc] initWithProtocol:protocol]];
-        NSLog(@"setupCaratService: CARAT service setup successful.");
+        NSLog(@"%s Successful.", __PRETTY_FUNCTION__);
         return YES;
     }
-    @catch (NSException *exception) {
-        NSLog(@"setupCaratService: Caught %@: %@", [exception name], [exception reason]);
+    @catch (NSException *exception) 
+    {
+        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        [self shutdownCaratService];
     }
     return NO;
 }
@@ -83,11 +123,12 @@ static id instance = nil;
         @try {
             [service registerMe:registrationMessage];
             ret = YES;
-            NSLog(@"sendRegistrationMessage: Success!");
+            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"sendRegistrationMessage: Caught %@: %@", [exception name], [exception reason]);
+            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
+        [self shutdownCaratService];
     }
     return ret;
 }
@@ -104,14 +145,31 @@ static id instance = nil;
         @try {
             [service uploadSample:sample];
             ret = YES;
-            NSLog(@"sendSample: Success!");
+            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"sendSample: Caught %@: %@", [exception name], [exception reason]);
+            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
+        [self shutdownCaratService];
     }
     
     return ret;
+}
+
+- (Reports *) getReports
+{
+    if ([self setupCaratService] == YES) 
+    {
+        @try {
+            return [service getReports:[[Globals instance] getUUID]];
+            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        }
+        [self shutdownCaratService];
+    }
+    return NULL;
 }
 
 - (HogBugReport *) getHogOrBugReport:(FeatureList) featureList
@@ -121,13 +179,46 @@ static id instance = nil;
         @try {
             return [service getHogOrBugReport:[[Globals instance] getUUID ]
                                              :featureList];
-            NSLog(@"getHogOrBugReport: Success!");
+            NSLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
-            NSLog(@"getHogOrBugReport: Caught %@: %@", [exception name], [exception reason]);
+            NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
+        [self shutdownCaratService];
     }
     return NULL;
+}
+
+- (BOOL) isInternetReachable
+{
+    NSLog(@"%s %d", __PRETTY_FUNCTION__, isInternetActive);
+    return isInternetActive;
+}
+
+- (void) checkNetworkStatus:(NSNotification *)notice
+{
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus)
+    {
+        case NotReachable:
+        {
+            NSLog(@"%s NetworkStatus changed to NotReachable", __PRETTY_FUNCTION__);
+            isInternetActive = NO;
+            break;
+        }
+        case ReachableViaWiFi:
+        {
+            NSLog(@"%s NetworkStatus changed to ReachableViaWiFi", __PRETTY_FUNCTION__);
+            isInternetActive = YES;
+            break;
+        }
+        case ReachableViaWWAN:
+        {
+            NSLog(@"%s NetworkStatus changed to ReachableViaWWAN", __PRETTY_FUNCTION__);
+            isInternetActive = YES;
+            break;
+        }
+    }
 }
 
 //

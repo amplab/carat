@@ -33,14 +33,15 @@ static NSString* myUUID = nil;
 // Generate a new UUID using CFUUIDCreateString. Save the generated ID in 
 // NSUserDefaults.
 //
-- (NSString *) generateUUID {
-
-        CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
-        NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
-        CFRelease(uuidObject);
-        [defaults setObject:uuidStr forKey:@"CaratUUID"];
-        [defaults synchronize];
-        return uuidStr;
+- (NSString *) generateUUID 
+{
+    CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidStr = [(NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject) autorelease];
+    CFRelease(uuidObject);
+    NSLog(@"%s Generated new UUID: %@", __PRETTY_FUNCTION__, uuidStr);
+    [defaults setObject:uuidStr forKey:@"CaratUUID"];
+    [defaults synchronize];
+    return uuidStr;
 }
 
 //

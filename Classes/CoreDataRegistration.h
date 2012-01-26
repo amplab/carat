@@ -2,7 +2,7 @@
 //  CoreDataRegistration.h
 //  Carat
 //
-//  Created by Anand Padmanabha Iyer on 1/23/12.
+//  Created by Anand Padmanabha Iyer on 1/24/12.
 //  Copyright (c) 2012 UC Berkeley. All rights reserved.
 //
 
@@ -12,8 +12,8 @@
 
 @interface CoreDataRegistration : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * timestamp;
 @property (nonatomic, retain) NSString * platformId;
 @property (nonatomic, retain) NSString * systemVersion;
+@property (nonatomic, retain) NSNumber * timestamp;
 
 @end

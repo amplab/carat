@@ -24,7 +24,6 @@
 @synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
 @synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
 @synthesize portraitView, landscapeView;
-@synthesize isInternetActive;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id) initWithNibName: (NSString *) nibNameOrNil 
@@ -35,14 +34,6 @@
         self.title = @"Current State";
         self.tabBarItem.image = [UIImage imageNamed:@"53-house"];
     }
-    
-    //
-    // Subscribe to network status notifications.
-    //
-    self.isInternetActive = NO;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkNetworkStatus:) name:kReachabilityChangedNotification object:nil];
-    internetReachable = [[Reachability reachabilityForInternetConnection] retain];
-    [internetReachable startNotifier];
     
     return self;
 }
@@ -80,14 +71,8 @@
         sleep(1);
     }
     
-    //
-    // Try to send the stored data. When this screen loads, we are sure to be in foreground.
-    // Check for network connectivity before sending.
-    //
-    //NSLog(@"loadData %@", [hostReachable currentReachabilityStatus]);
-    
     // TODO UPDATE REPORT DATA
-
+    
     // display result
     if ([self isFresh]) {
         // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
@@ -104,7 +89,7 @@
     }
 }
 
-- (BOOL)isFresh
+- (BOOL) isFresh
 {
     return [[Sampler instance] secondsSinceLastUpdate] < 86400; // 1 day
 }
@@ -266,7 +251,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     if ([self isFresh]) {
         [self updateView];
     }
@@ -337,29 +322,6 @@
         [scoreBar setProgress:[[[Sampler instance] getSimilarAppsInfo:YES] score] animated:NO];
     }
     
-}
-
-- (void) checkNetworkStatus:(NSNotification *)notice
-{
-    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
-    switch (internetStatus)
-    {
-        case NotReachable:
-        {
-            self.isInternetActive = NO;
-            break;
-        }
-        case ReachableViaWiFi:
-        {
-            self.isInternetActive = YES;
-            break;
-        }
-        case ReachableViaWWAN:
-        {
-            self.isInternetActive = YES;
-            break;
-        }
-    }
 }
 
 - (void) orientationChanged:(id)object

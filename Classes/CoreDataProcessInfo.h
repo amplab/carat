@@ -2,8 +2,8 @@
 //  CoreDataProcessInfo.h
 //  Carat
 //
-//  Created by Anand Padmanabha Iyer on 11/11/11.
-//  Copyright (c) 2011 UC Berkeley. All rights reserved.
+//  Created by Anand Padmanabha Iyer on 1/24/12.
+//  Copyright (c) 2012 UC Berkeley. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
