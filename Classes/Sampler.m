@@ -501,7 +501,6 @@ static NSArray * SubReports = nil;
     
     UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
     [cdataRegistration setPlatformId:[h platformString]];
-    NSLog([h platformString]);
     [h release];
     
     [cdataRegistration setSystemVersion:[UIDevice currentDevice].systemVersion];
@@ -512,12 +511,11 @@ static NSArray * SubReports = nil;
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
     {
         /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+         Error is logged, but we soldier on without saving our registration. :-(
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        [FlurryAnalytics logEvent:@"generateSaveRegistration Error"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]
+                            timed:YES];
     } 
 }
 
@@ -627,12 +625,11 @@ static NSArray * SubReports = nil;
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
     {
         /*
-         Replace this implementation with code to handle the error appropriately.
-     
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
+         Error is logged, but we soldier on without saving our sample. :-(
          */
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        [FlurryAnalytics logEvent:@"sampleForeground Error"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]
+                            timed:YES];
     } 
 }
 
@@ -655,7 +652,7 @@ static NSArray * SubReports = nil;
     // (we're in the background, there is
     // no UI to block so synchronous is the correct approach here).
     
-    // ...
+    [self sampleForeground:triggeredBy];
     
     // AFTER ALL THE UPDATES, close the task
     
