@@ -138,6 +138,8 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (void)viewDidAppear:(BOOL)animated

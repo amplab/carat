@@ -19,17 +19,17 @@
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize fetchedResultsController = __fetchResultsController;
+@synthesize LastUpdatedDate;
+@synthesize OSInfo;
+@synthesize OSInfoWithout;
+@synthesize ModelInfo;
+@synthesize ModelInfoWithout;
+@synthesize SimilarAppsInfo;
+@synthesize SimilarAppsInfoWithout;
+@synthesize ChangesSinceLastWeek;
 
 static id instance = nil;
 static double JScore;
-static NSDate * LastUpdatedDate = nil;
-static DetailScreenReport * OSInfo = nil;
-static DetailScreenReport * OSInfoWithout = nil;
-static DetailScreenReport * ModelInfo = nil;
-static DetailScreenReport * ModelInfoWithout = nil;
-static DetailScreenReport * SimilarAppsInfo = nil;
-static DetailScreenReport * SimilarAppsInfoWithout = nil;
-static NSArray * ChangesSinceLastWeek = nil;
 static NSArray * SubReports = nil;
 
 + (void) initialize {
@@ -38,7 +38,8 @@ static NSArray * SubReports = nil;
     }
     SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
     [instance loadLocalReportsToMemory];
-    [[CommunicationManager instance] isInternetReachable];
+    [[CommunicationManager instance] isInternetReachable]; // This is here just to make sure CommunicationManager subscribes 
+                                                           // to reachability updates.
 }
 
 + (id) instance {
@@ -139,7 +140,7 @@ static NSArray * SubReports = nil;
                 break;
             
             JScore = [[mainReport valueForKey:@"jScore"] doubleValue];
-            LastUpdatedDate = (NSDate *) [mainReport valueForKey:@"lastUpdated"];
+            self.LastUpdatedDate = (NSDate *) [mainReport valueForKey:@"lastUpdated"];
             ChangesSinceLastWeek = (NSArray *) [mainReport valueForKey:@"changesSinceLastWeek"];
             
             NSSet *subReportsSet = mainReport.subreports;
@@ -152,12 +153,12 @@ static NSArray * SubReports = nil;
                 if ([subReportName isEqualToString:@"OSInfo"]) 
                 {
                     if (OSInfo == nil)
-                        OSInfo = [[[DetailScreenReport alloc] init] autorelease];
+                        OSInfo = [[DetailScreenReport alloc] init];
                     OSInfo.score = [[subReport valueForKey:@"score"] doubleValue];
                     OSInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     OSInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     if (OSInfoWithout == nil)
-                        OSInfoWithout = [[[DetailScreenReport alloc] init] autorelease];
+                        OSInfoWithout = [[DetailScreenReport alloc] init];
                     OSInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     OSInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     OSInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
@@ -165,13 +166,13 @@ static NSArray * SubReports = nil;
                 else if ([subReportName isEqualToString:@"ModelInfo"]) 
                 {
                     if (ModelInfo == nil)
-                        ModelInfo = [[[DetailScreenReport alloc] init] autorelease];
+                        ModelInfo = [[DetailScreenReport alloc] init];
                     ModelInfo.score = [[subReport valueForKey:@"score"] doubleValue];
                     ModelInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     ModelInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     
                     if (ModelInfoWithout == nil)
-                        ModelInfoWithout = [[[DetailScreenReport alloc] init] autorelease];
+                        ModelInfoWithout = [[DetailScreenReport alloc] init];
                     ModelInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     ModelInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     ModelInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
@@ -179,13 +180,13 @@ static NSArray * SubReports = nil;
                 else if ([subReportName isEqualToString:@"SimilarAppsInfo"])
                 {
                     if (SimilarAppsInfo == nil)
-                        SimilarAppsInfo = [[[DetailScreenReport alloc] init] autorelease];
+                        SimilarAppsInfo = [[DetailScreenReport alloc] init];
                     SimilarAppsInfo.score = [[subReport valueForKey:@"score"] doubleValue];
                     SimilarAppsInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     SimilarAppsInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     
                     if (SimilarAppsInfoWithout == nil)
-                        SimilarAppsInfoWithout = [[[DetailScreenReport alloc] init] autorelease];
+                        SimilarAppsInfoWithout = [[DetailScreenReport alloc] init];
                     SimilarAppsInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     SimilarAppsInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     SimilarAppsInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
@@ -194,8 +195,9 @@ static NSArray * SubReports = nil;
         }
                 
     cleanup:
-        [fetchedObjects release];
-        [entity release];
+        //[fetchedObjects release];
+        //[entity release];
+        return;
     }
 }
 
@@ -254,6 +256,14 @@ static NSArray * SubReports = nil;
     [__managedObjectModel release];
     [__persistentStoreCoordinator release];
     [__fetchResultsController release];
+    [LastUpdatedDate release];
+    [OSInfo release];
+    [OSInfoWithout release];
+    [ModelInfo release];
+    [ModelInfoWithout release];
+    [SimilarAppsInfo release];
+    [SimilarAppsInfoWithout release];
+    [ChangesSinceLastWeek release];
     [super dealloc];
 }
 
@@ -545,7 +555,7 @@ static NSArray * SubReports = nil;
             if (registration == nil) 
                 break;
             
-            Registration* registrationToSend = [[Registration alloc] init];
+            Registration* registrationToSend = [[[Registration alloc] init] autorelease];
             registrationToSend.uuId = [[Globals instance] getUUID ];
             registrationToSend.timestamp = [[registration valueForKey:@"timestamp"] doubleValue]; 
             registrationToSend.platformId = (NSString*) [registration valueForKey:@"platformId"];
@@ -570,7 +580,6 @@ static NSArray * SubReports = nil;
         }
         
     cleanup:
-        [fetchedObjects release];
         [sortDescriptors release];
         [sortDescriptor release];
     }
@@ -610,7 +619,7 @@ static NSArray * SubReports = nil;
             if (sample == nil) 
                 break;
             
-            Sample* sampleToSend = [[Sample alloc] init];
+            Sample* sampleToSend = [[[Sample alloc] init] autorelease];
             sampleToSend.uuId = [[Globals instance] getUUID ];
             sampleToSend.timestamp = [[sample valueForKey:@"timestamp"] doubleValue];
             sampleToSend.batteryState = (NSString *) [sample valueForKey:@"batteryState"];
@@ -622,7 +631,7 @@ static NSArray * SubReports = nil;
             sampleToSend.memoryUser = (int) [sample valueForKey:@"memoryUser"];
             sampleToSend.triggeredBy = (NSString *) [sample valueForKey:@"triggeredBy"];
             
-            NSMutableArray *pInfoList = [[NSMutableArray alloc] init];
+            NSMutableArray *pInfoList = [[[NSMutableArray alloc] init] autorelease];
             sampleToSend.piList = pInfoList;
             
             NSLog(@"\ttimestamp: %f", sampleToSend.timestamp);
@@ -638,7 +647,7 @@ static NSArray * SubReports = nil;
             
             for (CoreDataProcessInfo *processInfo in processInfoArray)
             {
-                ProcessInfo *pInfo = [[ProcessInfo alloc] init];
+                ProcessInfo *pInfo = [[[ProcessInfo alloc] init] autorelease];
                 pInfo.pId = (int)[processInfo valueForKey:@"id"];
                 pInfo.pName = (NSString *)[processInfo valueForKey:@"name"];
                 [pInfoList addObject:pInfo];
@@ -660,7 +669,6 @@ static NSArray * SubReports = nil;
         }
         
     cleanup:
-        [fetchedObjects release];
         [sortDescriptors release];
         [sortDescriptor release];
     }
@@ -676,77 +684,96 @@ static NSArray * SubReports = nil;
     [self fetchAndSendSamples:limitEntriesTo];
 }
 
+- (void) checkConnectivityAndSendStoredDataToServer
+{
+    if ([[CommunicationManager instance] isInternetReachable] == YES)
+    {
+        NSLog(@"%s Internet active", __PRETTY_FUNCTION__);
+        [self sendStoredDataToServer:100];
+    } 
+    else 
+    {
+        NSLog(@"%s No connectivity", __PRETTY_FUNCTION__);
+    }
+}
+
 - (NSDate *) getLastReportUpdateTimestamp
 {
-    @try {
-        NSLog(@"%s %@", __PRETTY_FUNCTION__, LastUpdatedDate);
-        return LastUpdatedDate;
-    }
-    @catch (NSException *exception) {
-        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
-        return [NSDate date];
+    if (self.LastUpdatedDate != nil) 
+    {
+        NSLog(@"%s %@", __PRETTY_FUNCTION__, self.LastUpdatedDate);
+        return self.LastUpdatedDate;
+    } 
+    else
+    {
+        NSLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
+        NSDate *now = [[NSDate date] retain];
+        return now;
     }
 }
 
 - (double) secondsSinceLastUpdate
 {
-    @try {
-        NSTimeInterval interval = 0.0;
-        if (LastUpdatedDate != nil)
-        {
-            NSDate *now = [[NSDate date] retain];
-            interval = [now timeIntervalSinceDate:LastUpdatedDate];
-            [now release];
-        }
-        NSLog(@"%s %f", __PRETTY_FUNCTION__, interval);
-        return interval;
+    NSTimeInterval interval = 0.0;
+    if (self.LastUpdatedDate != nil)
+    {
+        NSDate *now = [[NSDate date] retain];
+        interval = [now timeIntervalSinceDate:self.LastUpdatedDate];
+        [now release];
     }
-    @catch (NSException *exception) {
-        NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
-        return 0.0;
-    }
+    NSLog(@"%s %f", __PRETTY_FUNCTION__, interval);
+    return interval;
 }
 
 - (HogBugReport *) getHogs 
 {
-    HogBugReport *dummy = [[HogBugReport alloc] init];
+    HogBugReport *dummy = [[[HogBugReport alloc] init] autorelease];
     return dummy;
 }
 
 - (HogBugReport *) getBugs 
 {
-    HogBugReport *dummy = [[HogBugReport alloc] init];
+    HogBugReport *dummy = [[[HogBugReport alloc] init] autorelease];
     return dummy;
 }
 
 - (double) getJScore
 {
-    NSLog(@"%s %@", __PRETTY_FUNCTION__, JScore);
+    NSLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
     return JScore;
 }
 
 - (DetailScreenReport *) getOSInfo : (BOOL) with
 {
     if (with == YES)
-        return OSInfo;
-    else
-        return OSInfoWithout;
+        if (self.OSInfo != nil)
+            return self.OSInfo;
+    else 
+        if (self.OSInfoWithout != nil)
+            return self.OSInfoWithout;
+    return nil;
 }
 
 - (DetailScreenReport *) getModelInfo : (BOOL) with
 {
     if (with == YES)
-        return ModelInfo;
-    else
-        return ModelInfoWithout;
+        if (self.ModelInfo != nil)
+            return self.ModelInfo;
+        else 
+            if (self.ModelInfoWithout != nil)
+                return self.ModelInfoWithout;
+    return nil;
 }
 
 - (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with
 {
     if (with == YES)
-        return SimilarAppsInfo;
-    else
-        return SimilarAppsInfoWithout;
+        if (self.SimilarAppsInfo != nil)
+            return self.SimilarAppsInfo;
+        else 
+            if (self.SimilarAppsInfoWithout != nil)
+                return self.SimilarAppsInfoWithout;
+    return nil;
 }
 
 - (NSArray *) getChangeSinceLastWeek

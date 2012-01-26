@@ -227,6 +227,8 @@
             self.view = self.landscapeView;
         }
     }
+    
+    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (void)viewDidAppear:(BOOL)animated

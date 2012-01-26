@@ -113,6 +113,8 @@
             self.view = self.landscapeView;
         }
     }
+    
+    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (void) orientationChanged:(id)object

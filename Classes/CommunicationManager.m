@@ -45,11 +45,13 @@ static BOOL isInternetActive;
 - (void) setupReachabilityNotifications
 {
     isInternetActive = NO;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(checkNetworkStatus:) 
                                                  name:kReachabilityChangedNotification 
                                                object:nil];
-    internetReachable = [[Reachability reachabilityForInternetConnection] retain];
+    //internetReachable = [[Reachability reachabilityForInternetConnection] retain];
+    internetReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
     [internetReachable startNotifier];
     NSLog(@"%s Success.", __PRETTY_FUNCTION__);
 }
@@ -189,7 +191,7 @@ static BOOL isInternetActive;
     return isInternetActive;
 }
 
-- (void) checkNetworkStatus:(NSNotification *)notice
+- (void) checkNetworkStatus:(NSNotification *) notice
 {
     NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
     switch (internetStatus)

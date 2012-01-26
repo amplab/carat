@@ -29,7 +29,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tabBarController;
 
-//- (void) checkNetworkStatus:(NSNotification *)notice;
+- (void) checkNetworkStatus:(NSNotification *)notice;
 - (void) setupNotificationSubscriptions;
 - (void) doSyncIfNeeded;
 

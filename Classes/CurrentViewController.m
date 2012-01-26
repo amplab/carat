@@ -251,6 +251,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
 
     if ([self isFresh]) {
         [self updateView];

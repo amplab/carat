@@ -22,11 +22,29 @@
 #import "CommunicationManager.h"
 
 @interface Sampler : NSObject 
+{
+    NSDate * LastUpdatedDate;
+    DetailScreenReport * OSInfo;
+    DetailScreenReport * OSInfoWithout;
+    DetailScreenReport * ModelInfo;
+    DetailScreenReport * ModelInfoWithout;
+    DetailScreenReport * SimilarAppsInfo;
+    DetailScreenReport * SimilarAppsInfoWithout;
+    NSArray * ChangesSinceLastWeek;
+}
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSDate * LastUpdatedDate;
+@property (nonatomic, retain) DetailScreenReport * OSInfo;
+@property (nonatomic, retain) DetailScreenReport * OSInfoWithout;
+@property (nonatomic, retain) DetailScreenReport * ModelInfo;
+@property (nonatomic, retain) DetailScreenReport * ModelInfoWithout;
+@property (nonatomic, retain) DetailScreenReport * SimilarAppsInfo;
+@property (nonatomic, retain) DetailScreenReport * SimilarAppsInfoWithout;
+@property (nonatomic, retain) NSArray * ChangesSinceLastWeek;
 
 + (id) instance;
 - (void) loadLocalReportsToMemory;
@@ -37,6 +55,7 @@
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
 - (void) fetchAndSendRegistrations : (NSUInteger) limitMessagesTo;
 - (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo;
+- (void) checkConnectivityAndSendStoredDataToServer;
 - (NSURL *) applicationDocumentsDirectory;
 - (NSDate *) getLastReportUpdateTimestamp; 
 - (double) secondsSinceLastUpdate;

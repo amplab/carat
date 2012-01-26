@@ -169,12 +169,12 @@ void onUncaughtException(NSException *exception)
                                              selector:@selector(batteryStateChanged:) 
                                                  name:UIDeviceBatteryStateDidChangeNotification 
                                                object:nil];
-    /*[[NSNotificationCenter defaultCenter] addObserver:self 
-                                             selector:@selector(checkNetworkStatus:) 
-                                                 name:kReachabilityChangedNotification 
-                                               object:nil];
-    hostReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
-    [hostReachable startNotifier];*/
+    //[[NSNotificationCenter defaultCenter] addObserver:self 
+    //                                         selector:@selector(checkNetworkStatus:) 
+    //                                             name:kReachabilityChangedNotification 
+    //                                           object:nil];
+    //hostReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
+    //[hostReachable startNotifier];
 }
 
 - (void)batteryLevelChanged:(NSNotification *)notification {
