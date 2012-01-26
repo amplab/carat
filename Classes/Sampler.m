@@ -12,6 +12,7 @@
 #import "Sampler.h"
 #import "FlurryAnalytics.h"
 #import "UIDeviceHardware.h"
+#import "Utilities.h"
 
 @implementation Sampler
 
@@ -83,7 +84,7 @@ static NSArray * SubReports = nil;
 
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
     {
-        NSLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+        DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
         return;
     }
 }
@@ -106,11 +107,11 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch main report data, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            DLog(@"%s Could not fetch main report data, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             goto cleanup;
         } 
         
-        NSLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+        DLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
         
         //
         // If the store is empty, let us create a dummy placeholder until we
@@ -118,13 +119,13 @@ static NSArray * SubReports = nil;
         //
         if ([fetchedObjects count] == 0)
         {
-            NSLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
+            DLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
             [self initLocalReportStore];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }
         else if ([fetchedObjects count] > 1)    // This should not happen!!!!
         {
-            NSLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
+            DLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
             for (CoreDataMainReport *mainReport in fetchedObjects)
             {
                 [managedObjectContext deleteObject:mainReport];
@@ -145,7 +146,7 @@ static NSArray * SubReports = nil;
             
             NSSet *subReportsSet = mainReport.subreports;
             NSArray *subReportsArray = [subReportsSet allObjects];
-            NSLog(@"%s Number of sub reports fetched: %u", __PRETTY_FUNCTION__, [subReportsArray count]);
+            DLog(@"%s Number of sub reports fetched: %u", __PRETTY_FUNCTION__, [subReportsArray count]);
             
             for (CoreDataSubReport *subReport in subReportsArray)
             {
@@ -212,7 +213,7 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             return NO;
         } 
         
@@ -256,22 +257,22 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch CoreDataMainReport, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            DLog(@"%s Could not fetch CoreDataMainReport, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             return;
         } 
         
-        NSLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+        DLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
         
         // Check for sanity.
         if ([fetchedObjects count] == 0)
         {
-            NSLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
+            DLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
             [self initLocalReportStore];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }
         else if ([fetchedObjects count] > 1)    // This should not happen!!!!
         {
-            NSLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
+            DLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
             for (CoreDataMainReport *mainReport in fetchedObjects)
             {
                 [managedObjectContext deleteObject:mainReport];
@@ -306,7 +307,7 @@ static NSArray * SubReports = nil;
             // Subreports.
             NSSet *subReportsSet = cdataMainReport.subreports;
             NSArray *subReportsArray = [subReportsSet allObjects];
-            NSLog(@"%s Number of sub reports fetched: %u", __PRETTY_FUNCTION__, [subReportsArray count]);
+            DLog(@"%s Number of sub reports fetched: %u", __PRETTY_FUNCTION__, [subReportsArray count]);
             
             for (CoreDataSubReport *cdataSubReport in subReportsArray)
             {
@@ -401,7 +402,7 @@ static NSArray * SubReports = nil;
         // Save the entire stuff.
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
         {
-            NSLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+            DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
             return;
         }
         
@@ -439,16 +440,16 @@ static NSArray * SubReports = nil;
 - (void) printMemoryInfo
 {
     int pagesize = [[UIDevice currentDevice] pageSize];
-    NSLog(@"Memory Info");
-    NSLog(@"-----------");
-    NSLog(@"Page size = %d bytes", pagesize);
+    DLog(@"Memory Info");
+    DLog(@"-----------");
+    DLog(@"Page size = %d bytes", pagesize);
     
     mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
     
     vm_statistics_data_t vmstat;
     if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) != KERN_SUCCESS)
     {
-        NSLog(@"Failed to get VM statistics.");
+        DLog(@"Failed to get VM statistics.");
     }
     
     double total = vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count;
@@ -457,30 +458,30 @@ static NSArray * SubReports = nil;
     double inactive = vmstat.inactive_count / total;
     double free = vmstat.free_count / total;
     
-    NSLog(@"Total =    %8d pages", vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count);
+    DLog(@"Total =    %8d pages", vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count);
     
-    NSLog(@"Wired =    %8d bytes", vmstat.wire_count * pagesize);
-    NSLog(@"Active =   %8d bytes", vmstat.active_count * pagesize);
-    NSLog(@"Inactive = %8d bytes", vmstat.inactive_count * pagesize);
-    NSLog(@"Free =     %8d bytes", vmstat.free_count * pagesize);
+    DLog(@"Wired =    %8d bytes", vmstat.wire_count * pagesize);
+    DLog(@"Active =   %8d bytes", vmstat.active_count * pagesize);
+    DLog(@"Inactive = %8d bytes", vmstat.inactive_count * pagesize);
+    DLog(@"Free =     %8d bytes", vmstat.free_count * pagesize);
     
-    NSLog(@"Total =    %8d bytes", (vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count) * pagesize);
+    DLog(@"Total =    %8d bytes", (vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count) * pagesize);
     
-    NSLog(@"Wired =    %0.2f %%", wired * 100.0);
-    NSLog(@"Active =   %0.2f %%", active * 100.0);
-    NSLog(@"Inactive = %0.2f %%", inactive * 100.0);
-    NSLog(@"Free =     %0.2f %%", free * 100.0);
+    DLog(@"Wired =    %0.2f %%", wired * 100.0);
+    DLog(@"Active =   %0.2f %%", active * 100.0);
+    DLog(@"Inactive = %0.2f %%", inactive * 100.0);
+    DLog(@"Free =     %0.2f %%", free * 100.0);
     
-    NSLog(@"Physical memory = %8d bytes", [[UIDevice currentDevice] totalMemory]);
-    NSLog(@"User memory =     %8d bytes", [[UIDevice currentDevice] userMemory]);
+    DLog(@"Physical memory = %8d bytes", [[UIDevice currentDevice] totalMemory]);
+    DLog(@"User memory =     %8d bytes", [[UIDevice currentDevice] userMemory]);
 }
 
 - (void) printProcessorInfo
 {
-    NSLog(@"Processor Info");
-    NSLog(@"--------------");
-    NSLog(@"CPU Frequency = %d hz", [[UIDevice currentDevice] cpuFrequency]);
-    NSLog(@"Bus Frequency = %d hz", [[UIDevice currentDevice] busFrequency]);
+    DLog(@"Processor Info");
+    DLog(@"--------------");
+    DLog(@"CPU Frequency = %d hz", [[UIDevice currentDevice] cpuFrequency]);
+    DLog(@"Bus Frequency = %d hz", [[UIDevice currentDevice] busFrequency]);
 }
 
 //
@@ -515,7 +516,7 @@ static NSArray * SubReports = nil;
          */
         [FlurryAnalytics logEvent:@"generateSaveRegistration Error"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
-        NSLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
     } 
 }
 
@@ -534,7 +535,7 @@ static NSArray * SubReports = nil;
         
         for (NSDictionary *dict in processes)
         {
-            //NSLog(@"%@ - %@", [dict objectForKey:@"ProcessID"], [dict objectForKey:@"ProcessName"]);
+            //DLog(@"%@ - %@", [dict objectForKey:@"ProcessID"], [dict objectForKey:@"ProcessName"]);
             CoreDataProcessInfo *cdataProcessInfo = (CoreDataProcessInfo *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataProcessInfo" inManagedObjectContext:managedObjectContext];
             [cdataProcessInfo setId: [NSNumber numberWithInt:[[dict objectForKey:@"ProcessID"] intValue]]];
             [cdataProcessInfo setName:[dict objectForKey:@"ProcessName"]];
@@ -568,26 +569,26 @@ static NSArray * SubReports = nil;
     //
     if ([UIDevice currentDevice].batteryMonitoringEnabled) 
     {
-        NSLog(@"%f", [UIDevice currentDevice].batteryLevel);
+        DLog(@"%f", [UIDevice currentDevice].batteryLevel);
         [cdataSample setBatteryLevel:[NSNumber numberWithFloat:[UIDevice currentDevice].batteryLevel]];
         
         NSString* batteryStateString = @"None";
         switch ([UIDevice currentDevice].batteryState) 
         {
             case UIDeviceBatteryStateUnknown:
-                NSLog(@"%@", @"Unknown");
+                DLog(@"%@", @"Unknown");
                 batteryStateString = @"Unknown";
                 break;
             case UIDeviceBatteryStateUnplugged:
-                NSLog(@"%@", @"Unplugged");
+                DLog(@"%@", @"Unplugged");
                 batteryStateString = @"Unplugged";
                 break;
             case UIDeviceBatteryStateCharging:
-                NSLog(@"%@", @"Charging");
+                DLog(@"%@", @"Charging");
                 batteryStateString = @"Charging";
                 break;
             case UIDeviceBatteryStateFull:
-                NSLog(@"%@", @"Full");
+                DLog(@"%@", @"Full");
                 batteryStateString = @"Full";
                 break;
             default:
@@ -603,7 +604,7 @@ static NSArray * SubReports = nil;
     vm_statistics_data_t vmstat;
     if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) != KERN_SUCCESS)
     {
-        NSLog(@"Failed to get VM statistics.");
+        DLog(@"Failed to get VM statistics.");
     }
     else 
     {
@@ -629,7 +630,7 @@ static NSArray * SubReports = nil;
          */
         [FlurryAnalytics logEvent:@"sampleForeground Error"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
-        NSLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
         
     } 
 }
@@ -708,11 +709,11 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch registrations, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            DLog(@"%s Could not fetch registrations, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             goto cleanup;
         } 
         
-        NSLog(@"%s # registrations fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+        DLog(@"%s # registrations fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
         
         for (CoreDataRegistration *registration in fetchedObjects)
         {
@@ -725,9 +726,9 @@ static NSArray * SubReports = nil;
             registrationToSend.platformId = (NSString*) [registration valueForKey:@"platformId"];
             registrationToSend.systemVersion = (NSString*) [registration valueForKey:@"systemVersion"]; 
             
-            NSLog(@"%s\ttimestamp: %f", __PRETTY_FUNCTION__, registrationToSend.timestamp);
-            NSLog(@"%s\tplatformId: %@", __PRETTY_FUNCTION__,registrationToSend.platformId);
-            NSLog(@"%s\tsystemVersion: %@", __PRETTY_FUNCTION__,registrationToSend.systemVersion);
+            DLog(@"%s\ttimestamp: %f", __PRETTY_FUNCTION__, registrationToSend.timestamp);
+            DLog(@"%s\tplatformId: %@", __PRETTY_FUNCTION__,registrationToSend.platformId);
+            DLog(@"%s\tsystemVersion: %@", __PRETTY_FUNCTION__,registrationToSend.systemVersion);
             
             //
             //  Try to send. If successful, delete. 
@@ -738,7 +739,7 @@ static NSArray * SubReports = nil;
                 [managedObjectContext deleteObject:registration];
                 if (![managedObjectContext save:&error])
                 {
-                    NSLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                    DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
                 }
             }
         }
@@ -772,11 +773,11 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch samples, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            DLog(@"%s Could not fetch samples, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             goto cleanup;
         } 
         
-        NSLog(@"%s Number of samples fetched: %u",__PRETTY_FUNCTION__,[fetchedObjects count]);
+        DLog(@"%s Number of samples fetched: %u",__PRETTY_FUNCTION__,[fetchedObjects count]);
         
         for (CoreDataSample *sample in fetchedObjects)
         {
@@ -798,10 +799,10 @@ static NSArray * SubReports = nil;
             NSMutableArray *pInfoList = [[[NSMutableArray alloc] init] autorelease];
             sampleToSend.piList = pInfoList;
             
-            NSLog(@"%s\ttimestamp: %f",__PRETTY_FUNCTION__, sampleToSend.timestamp);
-            NSLog(@"%s\tbatteryLevel: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryLevel"]);
-            NSLog(@"%s\tbatteryState: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryState"]);
-            NSLog(@"%s\ttriggeredBy: %@",__PRETTY_FUNCTION__, sampleToSend.triggeredBy);
+            DLog(@"%s\ttimestamp: %f",__PRETTY_FUNCTION__, sampleToSend.timestamp);
+            DLog(@"%s\tbatteryLevel: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryLevel"]);
+            DLog(@"%s\tbatteryState: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryState"]);
+            DLog(@"%s\ttriggeredBy: %@",__PRETTY_FUNCTION__, sampleToSend.triggeredBy);
             
             //
             //  Get all the process info objects for this sample.
@@ -827,7 +828,7 @@ static NSArray * SubReports = nil;
                 [managedObjectContext deleteObject:sample];
                 if (![managedObjectContext save:&error])
                 {
-                    NSLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                    DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
                 }
             }
         }
@@ -852,17 +853,17 @@ static NSArray * SubReports = nil;
 {
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
-        NSLog(@"%s Internet active", __PRETTY_FUNCTION__);
+        DLog(@"%s Internet active", __PRETTY_FUNCTION__);
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self sendStoredDataToServer:100];
             dispatch_async( dispatch_get_main_queue(), ^{
-                NSLog(@"%s Done!", __PRETTY_FUNCTION__);
+                DLog(@"%s Done!", __PRETTY_FUNCTION__);
             });
         });
     } 
     else 
     {
-        NSLog(@"%s No connectivity", __PRETTY_FUNCTION__);
+        DLog(@"%s No connectivity", __PRETTY_FUNCTION__);
     }
 }
 
@@ -870,12 +871,12 @@ static NSArray * SubReports = nil;
 {
     if (self.LastUpdatedDate != nil) 
     {
-        NSLog(@"%s %@", __PRETTY_FUNCTION__, self.LastUpdatedDate);
+        DLog(@"%s %@", __PRETTY_FUNCTION__, self.LastUpdatedDate);
         return self.LastUpdatedDate;
     } 
     else
     {
-        NSLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
+        DLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
         NSDate *now = [[NSDate date] retain];
         return now;
     }
@@ -890,7 +891,7 @@ static NSArray * SubReports = nil;
         interval = [now timeIntervalSinceDate:self.LastUpdatedDate];
         [now release];
     }
-    NSLog(@"%s %f", __PRETTY_FUNCTION__, interval);
+    DLog(@"%s %f", __PRETTY_FUNCTION__, interval);
     return interval;
 }
 
@@ -914,7 +915,7 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             return nil;
         }
      
@@ -958,7 +959,7 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             return nil;
         }
         
@@ -984,7 +985,7 @@ static NSArray * SubReports = nil;
 
 - (double) getJScore
 {
-    NSLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
+    DLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
     return JScore;
 }
 
@@ -1080,7 +1081,7 @@ static NSArray * SubReports = nil;
     }
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Carat.sqlite"];
-    NSLog(@"%s Coredatastore location: %@", __PRETTY_FUNCTION__, storeURL);
+    DLog(@"%s Coredatastore location: %@", __PRETTY_FUNCTION__, storeURL);
     
     NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
@@ -1110,7 +1111,7 @@ static NSArray * SubReports = nil;
          */
         [FlurryAnalytics logEvent:@"sampleForeground Error"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
-        NSLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
     }    
     
     return __persistentStoreCoordinator;
