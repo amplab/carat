@@ -90,15 +90,9 @@ static BOOL isInternetActive;
     //
     // Try setting it up.
     //
-<<<<<<< .mine
     @try 
     {
         [self setTransport:[[TSocketClient alloc] initWithHostname:caratServerIP port:caratServerPort]];
-=======
-    @try {
-        [self setTransport:[[TSocketClient alloc] initWithHostname:@"50.18.127.4" port:4444]];
-        //[self setTransport:[[TSocketClient alloc] initWithHostname:@"localhost" port:4444]];
->>>>>>> .r1195
         [self setProtocol:[[TBinaryProtocol alloc] initWithTransport:transport strictRead:YES strictWrite:YES]];
         [self setService:[[CaratServiceClient alloc] initWithProtocol:protocol]];
         NSLog(@"%s Successful.", __PRETTY_FUNCTION__);
