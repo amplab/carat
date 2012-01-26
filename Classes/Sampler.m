@@ -106,7 +106,7 @@ static NSArray * SubReports = nil;
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
-            NSLog(@"Could not fetch main report data, error %@, %@", error, [error userInfo]);
+            NSLog(@"%s Could not fetch main report data, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             goto cleanup;
         } 
         
@@ -284,7 +284,7 @@ static NSArray * SubReports = nil;
         // Now let's get the report data from the server. First main reports.
         Reports *reports = [[CommunicationManager instance] getReports];
         
-        if (reports != nil)
+        if (reports != nil && reports != NULL)
         {
             CoreDataMainReport *cdataMainReport = [fetchedObjects objectAtIndex:0];
             if (cdataMainReport == nil) return;
@@ -342,7 +342,7 @@ static NSArray * SubReports = nil;
         [feature setValue:@"Hog"];
         FeatureList list = [[NSArray alloc] initWithObjects:feature, nil];
         HogBugReport *hogReport = [[CommunicationManager instance] getHogOrBugReport:list];
-        if (hogReport != nil)
+        if (hogReport != nil && hogReport != NULL)
         {
             HogsBugsList hogList = hogReport.hbList;
             for(HogsBugs * hog in hogList)
@@ -372,7 +372,7 @@ static NSArray * SubReports = nil;
         [feature setValue:@"Bug"];
         list = [[NSArray alloc] initWithObjects:feature, nil];
         HogBugReport *bugReport = [[CommunicationManager instance] getHogOrBugReport:list];
-        if (bugReport != nil)
+        if (bugReport != nil && bugReport != NULL)
         {
             HogsBugsList bugList = bugReport.hbList;
             for(HogsBugs * bug in bugList)

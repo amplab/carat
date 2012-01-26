@@ -53,7 +53,7 @@ static BOOL isInternetActive;
     //internetReachable = [[Reachability reachabilityForInternetConnection] retain];
     internetReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
     [internetReachable startNotifier];
-    NSLog(@"%s Success.", __PRETTY_FUNCTION__);
+    NSLog(@"%s Success!", __PRETTY_FUNCTION__);
 }
 
 //
@@ -74,7 +74,7 @@ static BOOL isInternetActive;
         [[self service] release];
         [[self protocol] release];
         [[self transport] release];
-        NSLog(@"%s Successful.", __PRETTY_FUNCTION__);
+        NSLog(@"%s Success!", __PRETTY_FUNCTION__);
     }
     @catch (NSException *exception) {
         NSLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
@@ -98,7 +98,7 @@ static BOOL isInternetActive;
         [self setTransport:[[TSocketClient alloc] initWithHostname:caratServerIP port:caratServerPort]];
         [self setProtocol:[[TBinaryProtocol alloc] initWithTransport:transport strictRead:YES strictWrite:YES]];
         [self setService:[[CaratServiceClient alloc] initWithProtocol:protocol]];
-        NSLog(@"%s Successful.", __PRETTY_FUNCTION__);
+        NSLog(@"%s Success!", __PRETTY_FUNCTION__);
         return YES;
     }
     @catch (NSException *exception) 
