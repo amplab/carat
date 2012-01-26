@@ -9,9 +9,10 @@
     </entity>
     <entity name="CoreDataDetail" representedClassName="CoreDataDetail" syncable="YES">
         <attribute name="distance" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="distributionWith" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="distributionWithout" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="lastUpdatedTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="distributionXWith" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="distributionXWithout" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="distributionYWith" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="distributionYWithout" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="appReport" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataAppReport" inverseName="appDetails" inverseEntity="CoreDataAppReport" syncable="YES"/>
     </entity>
     <entity name="CoreDataMainReport" representedClassName="CoreDataMainReport" syncable="YES">
@@ -53,7 +54,7 @@
     </entity>
     <elements>
         <element name="CoreDataAppReport" positionX="-101" positionY="405" width="128" height="120"/>
-        <element name="CoreDataDetail" positionX="-288" positionY="369" width="128" height="120"/>
+        <element name="CoreDataDetail" positionX="-288" positionY="369" width="128" height="135"/>
         <element name="CoreDataMainReport" positionX="-45" positionY="36" width="128" height="105"/>
         <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
         <element name="CoreDataRegistration" positionX="-27" positionY="189" width="128" height="90"/>
