@@ -11,7 +11,6 @@
 #import "Thrift/protocol/TProtocolUtil.h"
 #import "Thrift/TProcessor.h"
 
-
 #import "CaratProtocol.h"
 
 
@@ -2916,15 +2915,18 @@
 
 @interface getReports_args : NSObject <NSCoding> {
   NSString * __uuId;
+  FeatureList __features;
 
   BOOL __uuId_isset;
+  BOOL __features_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, retain, getter=uuId, setter=setUuId:) NSString * uuId;
+@property (nonatomic, retain, getter=features, setter=setFeatures:) FeatureList features;
 #endif
 
-- (id) initWithUuId: (NSString *) uuId;
+- (id) initWithUuId: (NSString *) uuId features: (FeatureList) features;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -2933,15 +2935,21 @@
 - (void) setUuId: (NSString *) uuId;
 - (BOOL) uuIdIsSet;
 
+- (FeatureList) features;
+- (void) setFeatures: (FeatureList) features;
+- (BOOL) featuresIsSet;
+
 @end
 
 @implementation getReports_args
 
-- (id) initWithUuId: (NSString *) uuId
+- (id) initWithUuId: (NSString *) uuId features: (FeatureList) features
 {
   self = [super init];
   __uuId = [uuId retain];
   __uuId_isset = YES;
+  __features = [features retain];
+  __features_isset = YES;
   return self;
 }
 
@@ -2953,6 +2961,11 @@
     __uuId = [[decoder decodeObjectForKey: @"uuId"] retain];
     __uuId_isset = YES;
   }
+  if ([decoder containsValueForKey: @"features"])
+  {
+    __features = [[decoder decodeObjectForKey: @"features"] retain];
+    __features_isset = YES;
+  }
   return self;
 }
 
@@ -2962,11 +2975,16 @@
   {
     [encoder encodeObject: __uuId forKey: @"uuId"];
   }
+  if (__features_isset)
+  {
+    [encoder encodeObject: __features forKey: @"features"];
+  }
 }
 
 - (void) dealloc
 {
   [__uuId release];
+  [__features release];
   [super dealloc];
 }
 
@@ -2989,6 +3007,27 @@
   [__uuId release];
   __uuId = nil;
   __uuId_isset = NO;
+}
+
+- (NSArray *) features {
+  return [[__features retain] autorelease];
+}
+
+- (void) setFeatures: (NSArray *) features {
+  [features retain];
+  [__features release];
+  __features = features;
+  __features_isset = YES;
+}
+
+- (BOOL) featuresIsSet {
+  return __features_isset;
+}
+
+- (void) unsetFeatures {
+  [__features release];
+  __features = nil;
+  __features_isset = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -3014,6 +3053,26 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 2:
+        if (fieldType == TType_LIST) {
+          int _size40;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size40];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size40];
+          int _i41;
+          for (_i41 = 0; _i41 < _size40; ++_i41)
+          {
+            Feature *_elem42 = [[Feature alloc] init];
+            [_elem42 read: inProtocol];
+            [fieldValue addObject: _elem42];
+            [_elem42 release];
+          }
+          [inProtocol readListEnd];
+          [self setFeatures: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -3032,6 +3091,21 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__features_isset) {
+    if (__features != nil) {
+      [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
+      {
+        [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__features count]];
+        int i44;
+        for (i44 = 0; i44 < [__features count]; i44++)
+        {
+          [[__features objectAtIndex: i44] write: outProtocol];
+        }
+        [outProtocol writeListEnd];
+      }
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -3040,6 +3114,8 @@
   NSMutableString * ms = [NSMutableString stringWithString: @"getReports_args("];
   [ms appendString: @"uuId:"];
   [ms appendFormat: @"\"%@\"", __uuId];
+  [ms appendString: @",features:"];
+  [ms appendFormat: @"%@", __features];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -3323,16 +3399,16 @@
         break;
       case 2:
         if (fieldType == TType_LIST) {
-          int _size40;
-          [inProtocol readListBeginReturningElementType: NULL size: &_size40];
-          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size40];
-          int _i41;
-          for (_i41 = 0; _i41 < _size40; ++_i41)
+          int _size45;
+          [inProtocol readListBeginReturningElementType: NULL size: &_size45];
+          NSMutableArray * fieldValue = [[NSMutableArray alloc] initWithCapacity: _size45];
+          int _i46;
+          for (_i46 = 0; _i46 < _size45; ++_i46)
           {
-            Feature *_elem42 = [[Feature alloc] init];
-            [_elem42 read: inProtocol];
-            [fieldValue addObject: _elem42];
-            [_elem42 release];
+            Feature *_elem47 = [[Feature alloc] init];
+            [_elem47 read: inProtocol];
+            [fieldValue addObject: _elem47];
+            [_elem47 release];
           }
           [inProtocol readListEnd];
           [self setFeatures: fieldValue];
@@ -3364,10 +3440,10 @@
       [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
       {
         [outProtocol writeListBeginWithElementType: TType_STRUCT size: [__features count]];
-        int i44;
-        for (i44 = 0; i44 < [__features count]; i44++)
+        int i49;
+        for (i49 = 0; i49 < [__features count]; i49++)
         {
-          [[__features objectAtIndex: i44] write: outProtocol];
+          [[__features objectAtIndex: i49] write: outProtocol];
         }
         [outProtocol writeListEnd];
       }
@@ -3606,13 +3682,26 @@
   return [self recv_uploadSample];
 }
 
-- (void) send_getReports: (NSString *) uuId
+- (void) send_getReports: (NSString *) uuId : (FeatureList) features
 {
   [outProtocol writeMessageBeginWithName: @"getReports" type: TMessageType_CALL sequenceID: 0];
   [outProtocol writeStructBeginWithName: @"getReports_args"];
   if (uuId != nil)  {
     [outProtocol writeFieldBeginWithName: @"uuId" type: TType_STRING fieldID: 1];
     [outProtocol writeString: uuId];
+    [outProtocol writeFieldEnd];
+  }
+  if (features != nil)  {
+    [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
+    {
+      [outProtocol writeListBeginWithElementType: TType_STRUCT size: [features count]];
+      int i51;
+      for (i51 = 0; i51 < [features count]; i51++)
+      {
+        [[features objectAtIndex: i51] write: outProtocol];
+      }
+      [outProtocol writeListEnd];
+    }
     [outProtocol writeFieldEnd];
   }
   [outProtocol writeFieldStop];
@@ -3640,9 +3729,9 @@
                                            reason: @"getReports failed: unknown result"];
 }
 
-- (Reports *) getReports: (NSString *) uuId
+- (Reports *) getReports: (NSString *) uuId : (FeatureList) features
 {
-  [self send_getReports: uuId];
+  [self send_getReports: uuId : features];
   return [self recv_getReports];
 }
 
@@ -3659,10 +3748,10 @@
     [outProtocol writeFieldBeginWithName: @"features" type: TType_LIST fieldID: 2];
     {
       [outProtocol writeListBeginWithElementType: TType_STRUCT size: [features count]];
-      int i46;
-      for (i46 = 0; i46 < [features count]; i46++)
+      int i53;
+      for (i53 = 0; i53 < [features count]; i53++)
       {
-        [[features objectAtIndex: i46] write: outProtocol];
+        [[features objectAtIndex: i53] write: outProtocol];
       }
       [outProtocol writeListEnd];
     }
@@ -3807,7 +3896,7 @@
   [args read: inProtocol];
   [inProtocol readMessageEnd];
   GetReports_result * result = [[GetReports_result alloc] init];
-  [result setSuccess: [mService getReports: [args uuId]]];
+  [result setSuccess: [mService getReports: [args uuId]: [args features]]];
   [outProtocol writeMessageBeginWithName: @"getReports"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];

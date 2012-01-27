@@ -406,7 +406,7 @@ typedef NSArray * FeatureList;
 @protocol CaratService <NSObject>
 - (void) registerMe: (Registration *) registration;  // throws TException
 - (BOOL) uploadSample: (Sample *) sample;  // throws TException
-- (Reports *) getReports: (NSString *) uuId;  // throws TException
+- (Reports *) getReports: (NSString *) uuId : (FeatureList) features;  // throws TException
 - (HogBugReport *) getHogOrBugReport: (NSString *) uuId : (FeatureList) features;  // throws TException
 @end
 

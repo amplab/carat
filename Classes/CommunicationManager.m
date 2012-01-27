@@ -11,6 +11,7 @@
 #import "CommunicationManager.h"
 #import "Reachability.h"
 #import "Utilities.h"
+#import "UIDeviceHardware.h"
 
 @interface CommunicationManager() 
 @property (retain) TSocketClient *transport;
@@ -159,8 +160,17 @@ static BOOL isInternetActive;
     if ([self setupCaratService] == YES) 
     {
         @try {
-            return [service getReports:[[Globals instance] getUUID]];
-            DLog(@"%s Success!", __PRETTY_FUNCTION__);
+            Feature *feature1 = [[[Feature alloc] init] autorelease];
+            Feature *feature2 = [[[Feature alloc] init] autorelease];
+            [feature1 setKey:@"OS"];
+            [feature1 setValue:[UIDevice currentDevice].systemVersion];
+            [feature2 setKey:@"Model"];
+            UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
+            [feature2 setValue:[h platformString]];
+            [h release];
+            FeatureList featureList = [[NSArray alloc] initWithObjects:feature1, feature2, nil];
+            return [service getReports:[[Globals instance] getUUID]
+                                      :featureList];
         }
         @catch (NSException *exception) {
             DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
@@ -177,7 +187,6 @@ static BOOL isInternetActive;
         @try {
             return [service getHogOrBugReport:[[Globals instance] getUUID ]
                                              :featureList];
-            DLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
             DLog(@"%s Caught %@: %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
