@@ -299,8 +299,8 @@ static NSArray * SubReports = nil;
             NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
             [existing release];
             NSArray *new = [[NSArray alloc] initWithObjects:
-                            [NSNumber numberWithDouble:change],
-                            [NSNumber numberWithDouble:changePercentage], 
+                            [NSString stringWithFormat: @"%.2f", change],
+                            [NSString stringWithFormat: @"%.2f", changePercentage],
                             nil];
             cdataMainReport.changesSinceLastWeek = new;
             
