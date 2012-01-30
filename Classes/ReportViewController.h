@@ -26,6 +26,8 @@
 @property (retain, nonatomic) NSString *thisText;
 @property (retain, nonatomic) NSString *thatText;
 
+@property (retain, nonatomic) HogBugReport *report;
+
 @property (retain, nonatomic) IBOutlet UITableView *dataTable;
 
 - (DetailViewController *)getDetailView;

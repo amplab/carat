@@ -131,8 +131,12 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
     
-    [dvController setDetailDataThis:[[Sampler instance] getOSInfo:YES]];
-    [dvController setDetailDataThat:[[Sampler instance] getOSInfo:NO]];
+    DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getOSInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
     
     [FlurryAnalytics logEvent:@"selectedSameOS"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
@@ -152,8 +156,12 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
     
-    [dvController setDetailDataThis:[[Sampler instance] getModelInfo:YES]];
-    [dvController setDetailDataThat:[[Sampler instance] getModelInfo:NO]];
+    DetailScreenReport *dsr = [[Sampler instance] getModelInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getModelInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
     
     UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
     [FlurryAnalytics logEvent:@"selectedSameModel"
@@ -175,8 +183,12 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
     
-    [dvController setDetailDataThis:[[Sampler instance] getSimilarAppsInfo:YES]];
-    [dvController setDetailDataThat:[[Sampler instance] getSimilarAppsInfo:NO]];
+    DetailScreenReport *dsr = [[Sampler instance] getSimilarAppsInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getSimilarAppsInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
     
     [FlurryAnalytics logEvent:@"selectedSimilarApps"];
 }

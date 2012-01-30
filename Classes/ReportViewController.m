@@ -20,6 +20,8 @@
 @synthesize thisText;
 @synthesize thatText;
 
+@synthesize report;
+
 @synthesize dataTable = _dataTable;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -37,6 +39,7 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+// overridden by subclasses
 - (DetailViewController *)getDetailView
 {
     return nil;
@@ -72,7 +75,7 @@
     }
     
     // Set up the cell...
-    NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] pName];
+    NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] appName];
     cell.appName.text = appName;
     
     UIImage *img = [UIImage imageNamed:[appName stringByAppendingString:@".png"]];
@@ -118,12 +121,19 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thisText];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thatText];
     
+    HogsBugs *hb = [[self.report hbList] objectAtIndex:indexPath.row];
+    [dvController setXVals:[hb xVals]];
+    [dvController setYVals:[hb yVals]];
+    [dvController setXValsWithout:[hb xValsWithout]];
+    [dvController setYValsWithout:[hb yValsWithout]];
+    
     [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 
 #pragma mark - View lifecycle
 
+// overridden by subclasses
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -167,6 +177,9 @@
 {
     [dataTable release];
     [self setDataTable:nil];
+    [report release];
+    [self setReport:nil];
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

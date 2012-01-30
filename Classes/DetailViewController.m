@@ -12,7 +12,8 @@
 @implementation DetailViewController
 
 @synthesize navTitle;
-@synthesize detailDataThis, detailDataThat;
+
+@synthesize xVals, yVals, xValsWithout, yValsWithout;
 
 @synthesize detailGraphView = _hogDetailGraphView;
 @synthesize appName = _appName;
@@ -45,11 +46,11 @@
 
 - (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
-    if (self.detailDataThis != nil) {
+    if (self.xVals != nil) {
         if(plot.identifier == @"This Plot")
-        { return [[self.detailDataThis xVals] count]; }
+        { return [self.xVals count]; }
         else if (plot.identifier == @"That Plot")
-        { return [[self.detailDataThat xVals] count]; }
+        { return [self.xValsWithout count]; }
         else return 0;
     } else return 0;
 }
@@ -58,12 +59,12 @@
                       field:(NSUInteger)fieldEnum 
                 recordIndex:(NSUInteger)index
 {
-    if (self.detailDataThis != nil) {
+    if (self.xVals != nil) {
         if(fieldEnum == CPTScatterPlotFieldX) {
             if(plot.identifier == @"This Plot")
-            { return [[self.detailDataThis xVals] objectAtIndex:index]; }
+            { return [self.xVals objectAtIndex:index]; }
             else if (plot.identifier == @"That Plot")
-            { return [[self.detailDataThat xVals] objectAtIndex:index]; }
+            { return [self.xValsWithout objectAtIndex:index]; }
             else
             {
                 DLog(@"Unknown plot identifier.");
@@ -71,9 +72,9 @@
             }
         } else {
             if(plot.identifier == @"This Plot")
-            { return [[self.detailDataThis yVals] objectAtIndex:index]; }
+            { return [self.yVals objectAtIndex:index]; }
             else if (plot.identifier == @"That Plot")
-            { return [[self.detailDataThat yVals] objectAtIndex:index]; }
+            { return [self.yValsWithout objectAtIndex:index]; }
             else
             {
                 DLog(@"Unknown plot identifier.");
@@ -98,8 +99,8 @@
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
         NSNumber *maxRate;
-        if (self.detailDataThis != nil) {
-            maxRate = [[self.detailDataThis xVals] valueForKeyPath:@"@max.intValue"];
+        if (self.xVals != nil) {
+            maxRate = [self.xVals valueForKeyPath:@"@max.intValue"];
         } else maxRate = [NSNumber numberWithFloat:10.0f];
         
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
@@ -193,6 +194,14 @@
 
 - (void)viewDidUnload
 {
+    [xVals release];
+    [self setXVals:nil];
+    [yVals release];
+    [self setYVals:nil];
+    [xValsWithout release];
+    [self setXValsWithout:nil];
+    [yValsWithout release];
+    [self setYValsWithout:nil];
     [thisText release];
     [self setThisText:nil];
     [thatText release];
@@ -255,9 +264,10 @@
 
 - (void)dealloc {
     [navTitle release];
-    [detailDataThis release];
-    [detailDataThat release];
-    
+    [xVals release];
+    [yVals release];
+    [xValsWithout release];
+    [yValsWithout release];
     [thisText release];
     [thatText release];
     [appName release];
