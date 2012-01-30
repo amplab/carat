@@ -119,18 +119,17 @@
 
 - (void) orientationChanged:(id)object
 {  
-	UIDeviceOrientation interfaceOrientation = [[object object] orientation];
-	
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         self.view = self.portraitView;
-    } else if (interfaceOrientation == UIInterfaceOrientationPortrait || interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) 
-	{
-		self.view = self.portraitView;
-	} 
-	else 
-	{
-		self.view = self.landscapeView;
-	}
+    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
+            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
+        {
+            self.view = self.portraitView;
+        } else {
+            self.view = self.landscapeView;
+        }
+    }
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
