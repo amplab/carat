@@ -744,6 +744,7 @@ static NSArray * SubReports = nil;
                     DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
                 }
             }
+            [NSThread sleepForTimeInterval:0.1];
         }
         
     cleanup:
@@ -833,6 +834,7 @@ static NSArray * SubReports = nil;
                     DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
                 }
             }
+            [NSThread sleepForTimeInterval:0.1];
         }
         
     cleanup:
@@ -857,7 +859,7 @@ static NSArray * SubReports = nil;
     {
         DLog(@"%s Internet active", __PRETTY_FUNCTION__);
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self sendStoredDataToServer:100];
+            [self sendStoredDataToServer:5];
             dispatch_async( dispatch_get_main_queue(), ^{
                 DLog(@"%s Done!", __PRETTY_FUNCTION__);
             });
@@ -921,6 +923,8 @@ static NSArray * SubReports = nil;
             return nil;
         }
      
+        DLog(@"%s Found %d hogs, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
+        
         HogBugReport * hogs = [[[HogBugReport alloc] init] autorelease];
         NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
         [hogs setHbList:hbList];
@@ -964,6 +968,8 @@ static NSArray * SubReports = nil;
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             return nil;
         }
+        
+        DLog(@"%s Found %d bug, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
         
         HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
         NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
