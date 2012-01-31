@@ -500,6 +500,7 @@ static NSArray * SubReports = nil;
     CoreDataRegistration *cdataRegistration = (CoreDataRegistration *) [NSEntityDescription 
                                                                         insertNewObjectForEntityForName:@"CoreDataRegistration" 
                                                                         inManagedObjectContext:managedObjectContext];
+
     [cdataRegistration setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
     
     UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
@@ -892,10 +893,11 @@ static NSArray * SubReports = nil;
     if (self.LastUpdatedDate != nil)
     {
         NSDate *now = [[NSDate date] retain];
+        DLog(@"CurrentDate: %@ LastUpdatedDate: %@", now, self.LastUpdatedDate );
         interval = [now timeIntervalSinceDate:self.LastUpdatedDate];
         [now release];
     }
-    DLog(@"%s %f", __PRETTY_FUNCTION__, interval);
+    DLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:@"%g",interval]);
     return interval;
 }
 

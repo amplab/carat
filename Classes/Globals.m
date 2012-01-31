@@ -84,7 +84,8 @@ static id instance = nil;
 // Return seconds since epoch.
 //
 - (double) utcSecondsSinceEpoch {
-    NSDate* dateTimeInUTC = [self utcDateTime];
+    //NSDate* dateTimeInUTC = [self utcDateTime];
+    NSDate* dateTimeInUTC = [NSDate date];    // NSDate has no concept of timezone, so it always gives UTC.
     return (double) [dateTimeInUTC timeIntervalSince1970];
 }
 
