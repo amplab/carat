@@ -121,6 +121,15 @@
 {
     DetailViewController *dvController = [self getDetailView];
     
+    DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getOSInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
+    
+    [self.navigationController pushViewController:dvController animated:YES];
+    
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
     for (UIProgressView *pBar in [dvController appScore]) {
@@ -130,22 +139,22 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
     
-    DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getOSInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
     [FlurryAnalytics logEvent:@"selectedSameOS"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
 }
 
 - (IBAction)getSameModelDetail:(id)sender
 {
     DetailViewController *dvController = [self getDetailView];
+    
+    DetailScreenReport *dsr = [[Sampler instance] getModelInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getModelInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
+    
+    [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
@@ -156,24 +165,24 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
     
-    DetailScreenReport *dsr = [[Sampler instance] getModelInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getModelInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
     UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
     [FlurryAnalytics logEvent:@"selectedSameModel"
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[h platformString], @"Model", nil]];
     [h release];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
 }
 
 - (IBAction)getSimilarAppsDetail:(id)sender
 {
     DetailViewController *dvController = [self getDetailView];
+    
+    DetailScreenReport *dsr = [[Sampler instance] getSimilarAppsInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getSimilarAppsInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
+    
+    [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
     [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
@@ -184,16 +193,7 @@
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
     
-    DetailScreenReport *dsr = [[Sampler instance] getSimilarAppsInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getSimilarAppsInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
     [FlurryAnalytics logEvent:@"selectedSimilarApps"];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
 }
 
 - (IBAction)shareButtonHandlerAction
