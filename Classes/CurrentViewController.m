@@ -71,7 +71,7 @@
         sleep(1);
     }
 
-    // TODO UPDATE REPORT DATA
+    // UPDATE REPORT DATA
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
         [[Sampler instance] updateLocalReportsFromServer];
@@ -297,13 +297,11 @@
     // loads data while showing busy indicator
     if (![self isFresh]) {
         [self loadDataWithHUD];
-        
-        if ([self isFresh]) {
-            [self updateView];
-        }
-
-        [self.view setNeedsDisplay];
     }
+    
+    [self updateView];
+    [self.view setNeedsDisplay];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -321,7 +319,7 @@
 - (void)updateView
 {
     // J-Score
-    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[[Sampler instance] getJScore]] stringValue]];
+    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)([[Sampler instance] getJScore]*100)] stringValue]];
     
     // Last Updated
     NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
