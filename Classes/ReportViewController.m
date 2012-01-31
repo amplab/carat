@@ -103,6 +103,11 @@
     [selectedCell setSelected:NO animated:YES];
     
     DetailViewController *dvController = [self getDetailView];
+    HogsBugs *hb = [[self.report hbList] objectAtIndex:indexPath.row];
+    [dvController setXVals:[hb xVals]];
+    [dvController setYVals:[hb yVals]];
+    [dvController setXValsWithout:[hb xValsWithout]];
+    [dvController setYValsWithout:[hb yValsWithout]];
     [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
@@ -120,12 +125,6 @@
     
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thisText];
     [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thatText];
-    
-    HogsBugs *hb = [[self.report hbList] objectAtIndex:indexPath.row];
-    [dvController setXVals:[hb xVals]];
-    [dvController setYVals:[hb yVals]];
-    [dvController setXValsWithout:[hb xValsWithout]];
-    [dvController setYValsWithout:[hb yValsWithout]];
     
     [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];

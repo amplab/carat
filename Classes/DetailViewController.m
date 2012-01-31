@@ -98,10 +98,15 @@
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
-        NSNumber *maxRate;
+        float maxRate;
         if (self.xVals != nil) {
-            maxRate = [self.xVals valueForKeyPath:@"@max.intValue"];
-        } else maxRate = [NSNumber numberWithFloat:10.0f];
+            NSNumber *m1 = [self.xVals valueForKeyPath:@"@max.floatValue"];
+            NSNumber *m2 = [self.xValsWithout valueForKeyPath:@"@max.floatValue"];
+            maxRate = MAX([m1 floatValue], [m2 floatValue]);
+        } else {
+            DLog(@"xVals was nil");
+            maxRate = 10.0f;
+        }
         
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
@@ -112,11 +117,11 @@
         graph.paddingBottom = 0;
         
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
-        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-1)
-                                                        length:CPTDecimalFromFloat([maxRate floatValue]+([maxRate floatValue]*0.1))];
+        plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-(maxRate*0.1f))
+                                                        length:CPTDecimalFromFloat(maxRate+(maxRate*0.1f))];
         plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-0.1)
                                                         length:CPTDecimalFromFloat(1.15)];
-
+        
         CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
         
         CPTMutableLineStyle *axisLineStyle = [CPTMutableLineStyle lineStyle];
@@ -131,19 +136,20 @@
         
         CPTMutableTextStyle *axisTextStyle = [CPTMutableTextStyle textStyle];
         axisTextStyle.color = [CPTColor blackColor];
+        axisTextStyle.fontSize = 9.0;
         
         // X-Axis
-        axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat([maxRate floatValue]/10.0f);
-        axisSet.xAxis.minorTicksPerInterval = 2;
+        axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat(maxRate/3.0f);
+        axisSet.xAxis.minorTicksPerInterval = 1;
         axisSet.xAxis.majorTickLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLineStyle = axisLineStyle;
         axisSet.xAxis.axisLineStyle = axisLineStyle;
-        axisSet.xAxis.minorTickLength = 5.0f;
-        axisSet.xAxis.majorTickLength = 7.0f;
+        axisSet.xAxis.minorTickLength = 4.0f;
+        axisSet.xAxis.majorTickLength = 6.0f;
         axisSet.xAxis.labelOffset = 1.0f;
         axisSet.xAxis.titleTextStyle = axisTextStyle;
         axisSet.xAxis.title = @"Energy Rate";
-        NSString *xAxisTitleLocation = [NSString stringWithFormat:@"%f", ([maxRate floatValue]/2)];
+        NSString *xAxisTitleLocation = [NSString stringWithFormat:@"%f", (maxRate/2)];
         axisSet.xAxis.titleLocation = [[NSDecimalNumber decimalNumberWithString:xAxisTitleLocation] decimalValue];;
         NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -155,8 +161,8 @@
         axisSet.yAxis.majorTickLineStyle = axisLineStyle;
         axisSet.yAxis.minorTickLineStyle = axisLineStyle;
         axisSet.yAxis.axisLineStyle = axisLineStyle;
-        axisSet.yAxis.minorTickLength = 5.0f;
-        axisSet.yAxis.majorTickLength = 7.0f;
+        axisSet.yAxis.minorTickLength = 4.0f;
+        axisSet.yAxis.majorTickLength = 6.0f;
         axisSet.yAxis.labelOffset = 1.0f;
         
         CPTScatterPlot *thisPlot = [[[CPTScatterPlot alloc] init] autorelease];
