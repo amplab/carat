@@ -284,7 +284,7 @@ static NSArray * SubReports = nil;
 
         // Now let's get the report data from the server. First main reports.
         Reports *reports = [[CommunicationManager instance] getReports];
-        if (reports == nil || reports == NULL) return;  // Being extra-cautious.
+        //if (reports == nil || reports == NULL) return;  // Being extra-cautious.
         if (reports != nil && reports != NULL)
         {
             CoreDataMainReport *cdataMainReport = [fetchedObjects objectAtIndex:0];
@@ -343,7 +343,7 @@ static NSArray * SubReports = nil;
         [feature setValue:@"Hog"];
         FeatureList list = [[NSArray alloc] initWithObjects:feature, nil];
         HogBugReport *hogReport = [[CommunicationManager instance] getHogOrBugReport:list];
-        if (hogReport == nil || hogReport == NULL) return;
+        //if (hogReport == nil || hogReport == NULL) return;
         if (hogReport != nil && hogReport != NULL)
         {
             HogsBugsList hogList = hogReport.hbList;
@@ -374,7 +374,7 @@ static NSArray * SubReports = nil;
         [feature setValue:@"Bug"];
         list = [[NSArray alloc] initWithObjects:feature, nil];
         HogBugReport *bugReport = [[CommunicationManager instance] getHogOrBugReport:list];
-        if (bugReport == nil || bugReport == NULL) return;
+        //if (bugReport == nil || bugReport == NULL) return;
         if (bugReport != nil && bugReport != NULL)
         {
             HogsBugsList bugList = bugReport.hbList;
@@ -412,7 +412,7 @@ static NSArray * SubReports = nil;
         [self loadLocalReportsToMemory];
     }    
 }
-
+ 
 - (id) initWithCommManager:(id)cManager 
 {
     self = [super init];
