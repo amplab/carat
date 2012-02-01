@@ -41,7 +41,7 @@
 - (void)loadDataWithHUD;
 - (BOOL)isFresh;
 - (void)updateView;
-//- (void) checkNetworkStatus:(NSNotification *)notice;
+- (void)orientationChanged:(id)object;
 
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;

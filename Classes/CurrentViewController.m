@@ -119,28 +119,32 @@
 
 - (IBAction)getSameOSDetail:(id)sender
 {
-    DetailViewController *dvController = [self getDetailView];
-    
-    DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getOSInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
-    
-    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
-    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    for (UIProgressView *pBar in [dvController appScore]) {
-        [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
+    if ([[[[Sampler instance] getOSInfo:YES] xVals] count] == 0) {
+        
+    } else {
+        DetailViewController *dvController = [self getDetailView];
+        
+        DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
+        [dvController setXVals:[dsr xVals]];
+        [dvController setYVals:[dsr yVals]];
+        dsr = [[Sampler instance] getOSInfo:NO];
+        [dvController setXValsWithout:[dsr xVals]];
+        [dvController setYValsWithout:[dsr yVals]];
+        
+        [self.navigationController pushViewController:dvController animated:YES];
+        
+        [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+        for (UIProgressView *pBar in [dvController appScore]) {
+            [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
+        }
+        
+        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
+        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
+        
+        [FlurryAnalytics logEvent:@"selectedSameOS"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
     }
-    
-    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
-    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
-    
-    [FlurryAnalytics logEvent:@"selectedSameOS"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
 }
 
 - (IBAction)getSameModelDetail:(id)sender
@@ -223,24 +227,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
-    
-    for (UILabel *lastUp in self.lastUpdated) {
-        lastUp.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
-    }
-    
+
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
-        {
-            self.view = self.portraitView;
-        } else {
-            self.view = self.landscapeView;
-        }
-    }
 }
 
 - (void)viewDidUnload
@@ -273,19 +262,8 @@
     
     [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
 
-    if ([self isFresh]) {
-        [self updateView];
-    }
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
-        {
-            self.view = self.portraitView;
-        } else {
-            self.view = self.landscapeView;
-        }
-    }
+    [self updateView];
+    [self orientationChanged:nil];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }

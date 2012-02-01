@@ -99,13 +99,22 @@
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
         float maxRate;
-        if (self.xVals != nil) {
+        float maxProb;
+        if (self.xVals != nil && [self.xVals count] > 0 && self.xValsWithout != nil && [self.xValsWithout count] > 0) {
             NSNumber *m1 = [self.xVals valueForKeyPath:@"@max.floatValue"];
             NSNumber *m2 = [self.xValsWithout valueForKeyPath:@"@max.floatValue"];
             maxRate = MAX([m1 floatValue], [m2 floatValue]);
         } else {
-            DLog(@"xVals was nil");
+            DLog(@"xVals(Without) was nil or zero-length.");
             maxRate = 10.0f;
+        }
+        if (self.yVals != nil && [self.yVals count] > 0 && self.yValsWithout != nil && [self.yValsWithout count] > 0) {
+            NSNumber *m1 = [self.yVals valueForKeyPath:@"@max.floatValue"];
+            NSNumber *m2 = [self.yValsWithout valueForKeyPath:@"@max.floatValue"];
+            maxProb = MAX([m1 floatValue], [m2 floatValue]);
+        } else {
+            DLog(@"yVals(Without) was nil or zero-length.");
+            maxProb = 1.0f;
         }
         
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
@@ -119,8 +128,8 @@
         CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *)graph.defaultPlotSpace;
         plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-(maxRate*0.1f))
                                                         length:CPTDecimalFromFloat(maxRate+(maxRate*0.1f))];
-        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-0.1)
-                                                        length:CPTDecimalFromFloat(1.15)];
+        plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-(maxProb*0.1f))
+                                                        length:CPTDecimalFromFloat(maxProb+(maxProb*0.15f))];
         
         CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
         
