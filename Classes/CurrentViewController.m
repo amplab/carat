@@ -14,6 +14,7 @@
 #import "Sampler.h"
 #import "CommunicationManager.h"
 #import "UIDeviceHardware.h"
+#import "Globals.h"
 
 @implementation CurrentViewController
 
@@ -119,32 +120,28 @@
 
 - (IBAction)getSameOSDetail:(id)sender
 {
-    if ([[[[Sampler instance] getOSInfo:YES] xVals] count] == 0) {
-        
-    } else {
-        DetailViewController *dvController = [self getDetailView];
-        
-        DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
-        [dvController setXVals:[dsr xVals]];
-        [dvController setYVals:[dsr yVals]];
-        dsr = [[Sampler instance] getOSInfo:NO];
-        [dvController setXValsWithout:[dsr xVals]];
-        [dvController setYValsWithout:[dsr yVals]];
-        
-        [self.navigationController pushViewController:dvController animated:YES];
-        
-        [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-        for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
-        }
-        
-        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
-        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
-        
-        [FlurryAnalytics logEvent:@"selectedSameOS"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
+    DetailViewController *dvController = [self getDetailView];
+    
+    DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
+    [dvController setXVals:[dsr xVals]];
+    [dvController setYVals:[dsr yVals]];
+    dsr = [[Sampler instance] getOSInfo:NO];
+    [dvController setXValsWithout:[dsr xVals]];
+    [dvController setYValsWithout:[dsr yVals]];
+    
+    [self.navigationController pushViewController:dvController animated:YES];
+    
+    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+    for (UIProgressView *pBar in [dvController appScore]) {
+        [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
     }
+    
+    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
+    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
+    
+    [FlurryAnalytics logEvent:@"selectedSameOS"
+               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
 }
 
 - (IBAction)getSameModelDetail:(id)sender
@@ -228,6 +225,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
+    DLog(@"My UUID: %@", [[Globals instance] getUUID]);
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
@@ -297,7 +295,7 @@
 - (void)updateView
 {
     // J-Score
-    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)([[Sampler instance] getJScore]*100)] stringValue]];
+    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)(MIN( MAX([[Sampler instance] getJScore], -1.0), 1.0)*100)] stringValue]];
     
     // Last Updated
     NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
@@ -310,13 +308,13 @@
     
     // Progress Bars
     for (UIProgressView *scoreBar in scoreSameOSProgBar) {
-        [scoreBar setProgress:[[[Sampler instance] getOSInfo:YES] score] animated:NO];
+        [scoreBar setProgress:MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
     }
     for (UIProgressView *scoreBar in scoreSameModelProgBar) {
-        [scoreBar setProgress:[[[Sampler instance] getModelInfo:YES] score] animated:NO];
+        [scoreBar setProgress:MIN(MAX([[[Sampler instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
     }
     for (UIProgressView *scoreBar in scoreSimilarAppsProgBar) {
-        [scoreBar setProgress:[[[Sampler instance] getSimilarAppsInfo:YES] score] animated:NO];
+        [scoreBar setProgress:MIN(MAX([[[Sampler instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
     }
     
 }

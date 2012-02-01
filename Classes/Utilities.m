@@ -14,7 +14,7 @@
     // some custom strings for character
     if (timeInterval < 0) { return @"(Updated in the future. How did you do that?)"; }
     else if (timeInterval < 5) { return @"(Updated just now.)"; }
-    else if (timeInterval > 31536000) { return @"(Updated more than a year ago.)"; }
+    else if (timeInterval > 31536000) { return @"(Updated never.)"; }
     else {    
         // (Updated Dd Mm Ss ago)
         int days = (int)(timeInterval / 86400);

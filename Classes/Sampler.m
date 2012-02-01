@@ -293,7 +293,7 @@ static NSArray * SubReports = nil;
             [cdataMainReport setLastUpdated:[NSDate date]];
             double lastJScore = [[cdataMainReport valueForKey:@"jScore"] doubleValue];
             double change = reports.jScore - lastJScore;
-            double changePercentage = ((reports.jScore - lastJScore)*100.0) / lastJScore;
+            double changePercentage = ((reports.jScore - lastJScore)*100.0) / lastJScore; // TODO needs to handle lastJScore==0
             
             [cdataMainReport setJScore:[NSNumber numberWithDouble:reports.jScore]];
             NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];

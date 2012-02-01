@@ -209,13 +209,9 @@
 
 - (void)viewDidUnload
 {
-    [xVals release];
     [self setXVals:nil];
-    [yVals release];
     [self setYVals:nil];
-    [xValsWithout release];
     [self setXValsWithout:nil];
-    [yValsWithout release];
     [self setYValsWithout:nil];
     [thisText release];
     [self setThisText:nil];
@@ -278,10 +274,6 @@
 
 - (void)dealloc {
     [navTitle release];
-    [xVals release];
-    [yVals release];
-    [xValsWithout release];
-    [yValsWithout release];
     [thisText release];
     [thatText release];
     [appName release];
