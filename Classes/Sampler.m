@@ -295,7 +295,10 @@ static NSArray * SubReports = nil;
             [cdataMainReport setLastUpdated:[NSDate date]];
             double lastJScore = [[cdataMainReport valueForKey:@"jScore"] doubleValue];
             double change = reports.jScore - lastJScore;
-            double changePercentage = ((reports.jScore - lastJScore)*100.0) / lastJScore; // TODO needs to handle lastJScore==0
+            double changePercentage = 0.0;
+            if (lastJScore > 0.0) {
+                changePercentage = ((reports.jScore - lastJScore)*100.0) / lastJScore; 
+            }
             
             [cdataMainReport setJScore:[NSNumber numberWithDouble:reports.jScore]];
             NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
@@ -1003,34 +1006,41 @@ static NSArray * SubReports = nil;
 
 - (DetailScreenReport *) getOSInfo : (BOOL) with
 {
-    if (with == YES)
+    if (with == YES) {
         if (self.OSInfo != nil)
             return self.OSInfo;
-    else 
+    }
+    if (with == NO) { 
         if (self.OSInfoWithout != nil)
             return self.OSInfoWithout;
+    }
     return nil;
 }
 
 - (DetailScreenReport *) getModelInfo : (BOOL) with
 {
-    if (with == YES)
+    if (with == YES) {
         if (self.ModelInfo != nil)
             return self.ModelInfo;
-        else 
-            if (self.ModelInfoWithout != nil)
-                return self.ModelInfoWithout;
+    }
+    
+    if (with == NO) { 
+        if (self.ModelInfoWithout != nil)
+            return self.ModelInfoWithout;
+    }
     return nil;
 }
 
 - (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with
 {
-    if (with == YES)
+    if (with == YES) {
         if (self.SimilarAppsInfo != nil)
             return self.SimilarAppsInfo;
-        else 
-            if (self.SimilarAppsInfoWithout != nil)
-                return self.SimilarAppsInfoWithout;
+    }
+    if (with == NO) {
+        if (self.SimilarAppsInfoWithout != nil)
+            return self.SimilarAppsInfoWithout;
+    }
     return nil;
 }
 
