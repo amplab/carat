@@ -12,6 +12,7 @@
 #import "Utilities.h"
 #import "DetailViewController.h"
 #import "FlurryAnalytics.h"
+#import "UIImageDoNotCache.h"
 
 @implementation ReportViewController
 
@@ -78,11 +79,11 @@
     NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] appName];
     cell.appName.text = appName;
     
-    UIImage *img = [UIImage imageNamed:[appName stringByAppendingString:@".png"]];
+    UIImage *img = [UIImage newImageNotCached:[appName stringByAppendingString:@".png"]];
     if (img != nil) {
         cell.appIcon.image = img;
     } else {
-        cell.appIcon.image = [UIImage imageNamed:@"icon57.png"];
+        cell.appIcon.image = [UIImage newImageNotCached:@"icon57.png"];
     }
 
     cell.appScore.progress = [[[report hbList] objectAtIndex:indexPath.row] wDistance];    
@@ -112,11 +113,11 @@
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
 
-    UIImage *img = [UIImage imageNamed:[selectedCell.appName.text stringByAppendingString:@".png"]];
+    UIImage *img = [UIImage newImageNotCached:[selectedCell.appName.text stringByAppendingString:@".png"]];
     if (img != nil) {
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
     } else {
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage newImageNotCached:@"icon57.png"]];
     }
 
     for (UIProgressView *pBar in [dvController appScore]) {
