@@ -25,6 +25,7 @@
 		AB41CE1C1450BC060090CC09 /* hog.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE1A1450BC060090CC09 /* hog.png */; };
 		AB41CE201450BE620090CC09 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE1E1450BE620090CC09 /* clock.png */; };
 		AB41CE2E145229FE0090CC09 /* CurrentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE2D145229FE0090CC09 /* CurrentView.xib */; };
+		AB583D6E14DB27AD00480241 /* UIImageDoNotCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */; };
 		AB645DF41456F9520008244B /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF31456F9520008244B /* icon.png */; };
 		AB645DF61456F9EC0008244B /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF51456F9EC0008244B /* icon57.png */; };
 		AB645DF81456FCED0008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF71456FCED0008244B /* icon114.png */; };
@@ -189,6 +190,8 @@
 		AB41CE1A1450BC060090CC09 /* hog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hog.png; sourceTree = "<group>"; };
 		AB41CE1E1450BE620090CC09 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		AB41CE2D145229FE0090CC09 /* CurrentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentView.xib; sourceTree = "<group>"; };
+		AB583D6C14DB27AC00480241 /* UIImageDoNotCache.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UIImageDoNotCache.h; sourceTree = "<group>"; };
+		AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageDoNotCache.m; sourceTree = "<group>"; };
 		AB645DF31456F9520008244B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		AB645DF51456F9EC0008244B /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
 		AB645DF71456FCED0008244B /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
@@ -568,6 +571,8 @@
 				ABD31806148D8304000A8DC7 /* MBProgressHUD.m */,
 				AB91E432149162F7007786F0 /* Utilities.h */,
 				AB91E433149162F7007786F0 /* Utilities.m */,
+				AB583D6C14DB27AC00480241 /* UIImageDoNotCache.h */,
+				AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1466,6 +1471,7 @@
 				AB91E4461499266C007786F0 /* DetailViewController.m in Sources */,
 				ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */,
 				ABDB096814D110C900885FB7 /* UIDeviceHardware.m in Sources */,
+				AB583D6E14DB27AD00480241 /* UIImageDoNotCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
