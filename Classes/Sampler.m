@@ -1053,7 +1053,7 @@ static NSArray * SubReports = nil;
 {
     if (ChangesSinceLastWeek == nil)
     {
-        NSArray *dummy = [[NSArray alloc] initWithObjects:@"-6",@"-11", nil];
+        NSArray *dummy = [[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil];
         return dummy;
     }
     return ChangesSinceLastWeek;

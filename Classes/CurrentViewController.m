@@ -96,7 +96,7 @@
 
 - (BOOL) isFresh
 {
-    return [[Sampler instance] secondsSinceLastUpdate] < 86400; // 1 day
+    return [[Sampler instance] secondsSinceLastUpdate] < 600; // 10 minutes
 }
 
 #pragma mark - MBProgressHUDDelegate method

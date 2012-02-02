@@ -115,6 +115,11 @@
         maxProb = 1.0f;
     }
     
+    DLog([self.xVals description]);
+    DLog([self.yVals description]);
+    DLog([self.xValsWithout description]);
+    DLog([self.yValsWithout description]);
+    
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
