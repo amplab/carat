@@ -141,7 +141,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 			retVal->localWiFiRef = NO;
 		}
 	}
-	return retVal;
+	return [retVal autorelease];
 }
 
 + (Reachability*) reachabilityWithAddress: (const struct sockaddr_in*) hostAddress;
@@ -157,7 +157,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 			retVal->localWiFiRef = NO;
 		}
 	}
-	return retVal;
+	return [retVal autorelease];
 }
 
 + (Reachability*) reachabilityForInternetConnection;

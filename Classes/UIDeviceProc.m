@@ -75,8 +75,8 @@
     int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
     size_t miblen = 4;
     
-    size_t size;
-    int st = sysctl(mib, miblen, NULL, &size, NULL, 0);
+    size_t size = 1;
+    int st = -1;
     
     struct kinfo_proc * process = NULL;
     struct kinfo_proc * newprocess = NULL;
@@ -117,10 +117,13 @@
                     NSDictionary * dict = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:processID, processName, nil] 
                                                                         forKeys:[NSArray arrayWithObjects:@"ProcessID", @"ProcessName", nil]];
                     [array addObject:dict];
+                    [processID release];
+                    [processName release];
+                    [dict release];
                 }
                 
                 free(process);
-                return array;
+                return [array autorelease];
             }
         }
     }

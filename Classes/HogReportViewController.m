@@ -28,7 +28,7 @@
 
 - (DetailViewController *)getDetailView
 {
-    return [[HogDetailViewController alloc] initWithNibName:@"DetailView" bundle:nil];
+    return [[[HogDetailViewController alloc] initWithNibName:@"DetailView" bundle:nil] autorelease];
 }
 
 #pragma mark - View lifecycle
