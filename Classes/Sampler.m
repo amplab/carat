@@ -407,10 +407,15 @@ static NSArray * SubReports = nil;
         [list release];
     
         // Save the entire stuff.
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        {
-            DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
-            return;
+        @try {
+            if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+            {
+                DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+                return;
+            }
+        }
+        @catch (NSException *exception) {
+                
         }
         
         // Reload data in memory.
