@@ -301,8 +301,8 @@ static NSArray * SubReports = nil;
             }
             
             [cdataMainReport setJScore:[NSNumber numberWithDouble:reports.jScore]];
-            NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
-            [existing release];
+            //NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
+            //[existing release];
             NSArray *new = [[NSArray alloc] initWithObjects:
                             [NSString stringWithFormat: @"%.2f", change],
                             [NSString stringWithFormat: @"%.2f", changePercentage],
@@ -892,8 +892,8 @@ static NSArray * SubReports = nil;
     else
     {
         DLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
-        NSDate *now = [[NSDate date] retain];
-        return now;
+        //NSDate *now = [[NSDate date] retain];
+        return [NSDate date];
     }
 }
 
@@ -920,9 +920,10 @@ static NSArray * SubReports = nil;
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Hog"];
         [fetchRequest setPredicate:predicate];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"appScore" 
-                                                                      ascending:NO];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                      ascending:NO] autorelease];
+        //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [fetchRequest setSortDescriptors:sortDescriptors];
 
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
@@ -932,6 +933,8 @@ static NSArray * SubReports = nil;
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            //[sortDescriptors release];
+            //[sortDescriptor release];
             return nil;
         }
      
@@ -952,6 +955,9 @@ static NSArray * SubReports = nil;
             [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
             [hbList addObject:hog];
         }
+        
+        //[sortDescriptors release];
+        //[sortDescriptor release];
         return hogs;
     }
     return nil;
@@ -966,9 +972,10 @@ static NSArray * SubReports = nil;
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Bug"];
         [fetchRequest setPredicate:predicate];
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"appScore" 
-                                                                       ascending:NO];
-        NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                       ascending:NO] autorelease];
+        //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [fetchRequest setSortDescriptors:sortDescriptors];
         
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
@@ -978,6 +985,8 @@ static NSArray * SubReports = nil;
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            //[sortDescriptors release];
+            //[sortDescriptor release];
             return nil;
         }
         
@@ -998,6 +1007,9 @@ static NSArray * SubReports = nil;
             [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
             [hbList addObject:bug];
         }
+        
+        //[sortDescriptors release];
+        //[sortDescriptor release];
         return bugs;
     }
     return nil;
