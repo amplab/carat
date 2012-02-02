@@ -36,8 +36,7 @@ void onUncaughtException(NSException *exception)
 #pragma mark Application lifecycle
 
 - (id) init {
-    [super init];
-    if (self != nil) {
+    if (self = [super init]) {
         // custom init code
     }
     return self;
@@ -46,7 +45,7 @@ void onUncaughtException(NSException *exception)
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
    
     // UI
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
     UINavigationController *navController1, *navController2, *navController3;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
@@ -59,10 +58,19 @@ void onUncaughtException(NSException *exception)
     navController3 = [[UINavigationController alloc] initWithRootViewController:viewController3];
     navController3.navigationBarHidden = YES;
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
-    self.tabBarController = [[UITabBarController alloc] init];
+    self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
+    
+    // views have been added to hierarchy, so they can be released
+    [viewController1 release];
+    [viewController2 release];
+    [viewController3 release];
+    [viewController4 release];
+    [navController1 release];
+    [navController2 release];
+    [navController3 release];
 
     // Override point for customization after application launch.
     if (locationManager == nil && [CLLocationManager significantLocationChangeMonitoringAvailable]) {

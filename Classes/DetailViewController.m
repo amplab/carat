@@ -122,7 +122,7 @@
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
-        CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
+        CPTXYGraph *graph = [[[CPTXYGraph alloc] initWithFrame:CGRectZero] autorelease];
         hostingView.hostedGraph = graph;
         
         graph.paddingLeft = 0;

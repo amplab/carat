@@ -80,11 +80,11 @@
     cell.appName.text = appName;
     
     UIImage *img = [UIImage newImageNotCached:[appName stringByAppendingString:@".png"]];
-    if (img != nil) {
-        cell.appIcon.image = img;
-    } else {
-        cell.appIcon.image = [UIImage newImageNotCached:@"icon57.png"];
+    if (img == nil) {
+        img = [UIImage newImageNotCached:@"icon57.png"];
     }
+    cell.appIcon.image = img;
+    [img release];
 
     cell.appScore.progress = [[[report hbList] objectAtIndex:indexPath.row] wDistance];    
     return cell;
@@ -114,11 +114,11 @@
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
 
     UIImage *img = [UIImage newImageNotCached:[selectedCell.appName.text stringByAppendingString:@".png"]];
-    if (img != nil) {
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
-    } else {
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage newImageNotCached:@"icon57.png"]];
+    if (img == nil) {
+        img = [UIImage newImageNotCached:@"icon57.png"];
     }
+    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
+    [img release];
 
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:selectedCell.appScore.progress animated:NO];

@@ -67,9 +67,13 @@
     // this shouldn't trigger; just being defensive
     if ([self isFresh]) {
         // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage newImageNotCached:@"37x-Checkmark.png"]] autorelease];
-        HUD.mode = MBProgressHUDModeCustomView;
+        UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+        HUD.customView = imgView;
+        [HUD setMode:MBProgressHUDModeCustomView];
         HUD.labelText = @"Completed";
+        [icon release];
+        [imgView release];
         sleep(1);
     }
 
@@ -82,15 +86,23 @@
     // display result
     if ([self isFresh]) {
         // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage newImageNotCached:@"37x-Checkmark.png"]] autorelease];
-        HUD.mode = MBProgressHUDModeCustomView;
+        UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+        HUD.customView = imgView;
+        [HUD setMode:MBProgressHUDModeCustomView];
         HUD.labelText = @"Completed";
+        [icon release];
+        [imgView release];
         sleep(1);
     } else {
-        HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage newImageNotCached:@"37x-X.png"]] autorelease];
-        HUD.mode = MBProgressHUDModeCustomView;
+        UIImage *icon = [UIImage newImageNotCached:@"37x-X.png"];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+        HUD.customView = imgView;
+        [HUD setMode:MBProgressHUDModeCustomView];
         HUD.labelText = @"Update Failed";
         HUD.detailsLabelText = @"(showing stale data)";
+        [icon release];
+        [imgView release];
         sleep(2);
     }
 }
@@ -143,7 +155,9 @@
         [self.navigationController pushViewController:dvController animated:YES];
         
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage newImageNotCached:@"icon57.png"]];
+        UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
+        [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
             [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
         }
@@ -179,7 +193,9 @@
         [self.navigationController pushViewController:dvController animated:YES];
         
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage newImageNotCached:@"icon57.png"]];
+        UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
+        [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
             [pBar setProgress:((UIProgressView *)[self.scoreSameModelProgBar objectAtIndex:1]).progress animated:NO];
         }
@@ -217,7 +233,9 @@
         [self.navigationController pushViewController:dvController animated:YES];
         
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage newImageNotCached:@"icon57.png"]];
+        UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
+        [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
             [pBar setProgress:((UIProgressView *)[self.scoreSimilarAppsProgBar objectAtIndex:1]).progress animated:NO];
         }
