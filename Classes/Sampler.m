@@ -61,10 +61,10 @@ static NSArray * SubReports = nil;
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        cdataMainReport.lastUpdated = [[dateFormatter dateFromString:@"1970-01-01"] retain];
+        cdataMainReport.lastUpdated = [dateFormatter dateFromString:@"1970-01-01"];
         [dateFormatter release];
         
-        cdataMainReport.changesSinceLastWeek = [[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil];
+        cdataMainReport.changesSinceLastWeek = [[[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil] autorelease];
         
         for (NSString * subReportName in SubReports)
         {
@@ -657,9 +657,11 @@ static NSArray * SubReports = nil;
     // Note that the expiration handler block simply ends the task. It is important that we always
     // end tasks that we have started.
     
-    UIBackgroundTaskIdentifier bgTask = [[UIApplication sharedApplication]
+    UIApplication *app = [UIApplication sharedApplication];
+    UIBackgroundTaskIdentifier bgTask = 0;
+    bgTask = [app
               beginBackgroundTaskWithExpirationHandler:^{
-                  [[UIApplication sharedApplication] endBackgroundTask:bgTask];
+                  [app endBackgroundTask:bgTask];
               }];
     
     // ANY CODE WE PUT HERE IS OUR BACKGROUND TASK
@@ -922,7 +924,6 @@ static NSArray * SubReports = nil;
         [fetchRequest setPredicate:predicate];
         NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
                                                                       ascending:NO] autorelease];
-        //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [fetchRequest setSortDescriptors:sortDescriptors];
 
@@ -974,7 +975,6 @@ static NSArray * SubReports = nil;
         [fetchRequest setPredicate:predicate];
         NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
                                                                        ascending:NO] autorelease];
-        //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptor, nil];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [fetchRequest setSortDescriptors:sortDescriptors];
         
@@ -1065,8 +1065,7 @@ static NSArray * SubReports = nil;
 {
     if (ChangesSinceLastWeek == nil)
     {
-        NSArray *dummy = [[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil];
-        return dummy;
+        return [[[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil] autorelease];
     }
     return ChangesSinceLastWeek;
 }
