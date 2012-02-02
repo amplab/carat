@@ -95,28 +95,28 @@
     // Do any additional setup after loading the view from its nib.
     
     self.navigationItem.title = self.navTitle;
+
+    float maxRate;
+    float maxProb;
+    if (self.xVals != nil && [self.xVals count] > 0 && self.xValsWithout != nil && [self.xValsWithout count] > 0) {
+        NSNumber *m1 = [self.xVals valueForKeyPath:@"@max.floatValue"];
+        NSNumber *m2 = [self.xValsWithout valueForKeyPath:@"@max.floatValue"];
+        maxRate = MAX([m1 floatValue], [m2 floatValue]);
+    } else {
+        DLog(@"xVals(Without) was nil or zero-length.");
+        maxRate = 1.0f;
+    }
+    if (self.yVals != nil && [self.yVals count] > 0 && self.yValsWithout != nil && [self.yValsWithout count] > 0) {
+        NSNumber *m1 = [self.yVals valueForKeyPath:@"@max.floatValue"];
+        NSNumber *m2 = [self.yValsWithout valueForKeyPath:@"@max.floatValue"];
+        maxProb = MAX([m1 floatValue], [m2 floatValue]);
+    } else {
+        DLog(@"yVals(Without) was nil or zero-length.");
+        maxProb = 1.0f;
+    }
     
     // graph setup
     for (CPTGraphHostingView *hostingView in self.detailGraphView) {
-        float maxRate;
-        float maxProb;
-        if (self.xVals != nil && [self.xVals count] > 0 && self.xValsWithout != nil && [self.xValsWithout count] > 0) {
-            NSNumber *m1 = [self.xVals valueForKeyPath:@"@max.floatValue"];
-            NSNumber *m2 = [self.xValsWithout valueForKeyPath:@"@max.floatValue"];
-            maxRate = MAX([m1 floatValue], [m2 floatValue]);
-        } else {
-            DLog(@"xVals(Without) was nil or zero-length.");
-            maxRate = 10.0f;
-        }
-        if (self.yVals != nil && [self.yVals count] > 0 && self.yValsWithout != nil && [self.yValsWithout count] > 0) {
-            NSNumber *m1 = [self.yVals valueForKeyPath:@"@max.floatValue"];
-            NSNumber *m2 = [self.yValsWithout valueForKeyPath:@"@max.floatValue"];
-            maxProb = MAX([m1 floatValue], [m2 floatValue]);
-        } else {
-            DLog(@"yVals(Without) was nil or zero-length.");
-            maxProb = 1.0f;
-        }
-        
         CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:CGRectZero];
         hostingView.hostedGraph = graph;
         

@@ -120,81 +120,112 @@
 
 - (IBAction)getSameOSDetail:(id)sender
 {
-    DetailViewController *dvController = [self getDetailView];
-    
     DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getOSInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
-    
-    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
-    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    for (UIProgressView *pBar in [dvController appScore]) {
-        [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
+    if ([dsr xVals] == nil || [[dsr xVals] count] == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
+                                                        message:@"Please check back later; we should have results for your device soon." 
+                                                       delegate:nil 
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    } else {
+        DetailViewController *dvController = [self getDetailView];
+
+        [dvController setXVals:[dsr xVals]];
+        [dvController setYVals:[dsr yVals]];
+        
+        dsr = [[Sampler instance] getOSInfo:NO];
+        [dvController setXValsWithout:[dsr xVals]];
+        [dvController setYValsWithout:[dsr yVals]];
+        
+        [self.navigationController pushViewController:dvController animated:YES];
+        
+        [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+        for (UIProgressView *pBar in [dvController appScore]) {
+            [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
+        }
+        
+        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
+        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
+        
+        [FlurryAnalytics logEvent:@"selectedSameOS"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
     }
-    
-    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
-    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
-    
-    [FlurryAnalytics logEvent:@"selectedSameOS"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
 }
 
 - (IBAction)getSameModelDetail:(id)sender
 {
-    DetailViewController *dvController = [self getDetailView];
-    
     DetailScreenReport *dsr = [[Sampler instance] getModelInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getModelInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
-    
-    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
-    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    for (UIProgressView *pBar in [dvController appScore]) {
-        [pBar setProgress:((UIProgressView *)[self.scoreSameModelProgBar objectAtIndex:1]).progress animated:NO];
+    if ([dsr xVals] == nil || [[dsr xVals] count] == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
+                                                        message:@"Please check back later; we should have results for your device soon." 
+                                                       delegate:nil 
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    } else {
+        DetailViewController *dvController = [self getDetailView];
+
+        [dvController setXVals:[dsr xVals]];
+        [dvController setYVals:[dsr yVals]];
+        dsr = [[Sampler instance] getModelInfo:NO];
+        [dvController setXValsWithout:[dsr xVals]];
+        [dvController setYValsWithout:[dsr yVals]];
+        
+        [self.navigationController pushViewController:dvController animated:YES];
+        
+        [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+        for (UIProgressView *pBar in [dvController appScore]) {
+            [pBar setProgress:((UIProgressView *)[self.scoreSameModelProgBar objectAtIndex:1]).progress animated:NO];
+        }
+        
+        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
+        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
+        
+        UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
+        [FlurryAnalytics logEvent:@"selectedSameModel"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[h platformString], @"Model", nil]];
+        [h release];
     }
-    
-    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
-    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
-    
-    UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
-    [FlurryAnalytics logEvent:@"selectedSameModel"
-               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[h platformString], @"Model", nil]];
-    [h release];
 }
 
 - (IBAction)getSimilarAppsDetail:(id)sender
 {
-    DetailViewController *dvController = [self getDetailView];
-    
     DetailScreenReport *dsr = [[Sampler instance] getSimilarAppsInfo:YES];
-    [dvController setXVals:[dsr xVals]];
-    [dvController setYVals:[dsr yVals]];
-    dsr = [[Sampler instance] getSimilarAppsInfo:NO];
-    [dvController setXValsWithout:[dsr xVals]];
-    [dvController setYValsWithout:[dsr yVals]];
-    
-    [self.navigationController pushViewController:dvController animated:YES];
-    
-    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
-    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
-    for (UIProgressView *pBar in [dvController appScore]) {
-        [pBar setProgress:((UIProgressView *)[self.scoreSimilarAppsProgBar objectAtIndex:1]).progress animated:NO];
+    if ([dsr xVals] == nil || [[dsr xVals] count] == 0) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
+                                                        message:@"Please check back later; we should have results for your device soon." 
+                                                       delegate:nil 
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    } else {
+        DetailViewController *dvController = [self getDetailView];
+        
+        [dvController setXVals:[dsr xVals]];
+        [dvController setYVals:[dsr yVals]];
+        dsr = [[Sampler instance] getSimilarAppsInfo:NO];
+        [dvController setXValsWithout:[dsr xVals]];
+        [dvController setYValsWithout:[dsr yVals]];
+        
+        [self.navigationController pushViewController:dvController animated:YES];
+        
+        [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
+        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon57.png"]];
+        for (UIProgressView *pBar in [dvController appScore]) {
+            [pBar setProgress:((UIProgressView *)[self.scoreSimilarAppsProgBar objectAtIndex:1]).progress animated:NO];
+        }
+        
+        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
+        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
+        
+        [FlurryAnalytics logEvent:@"selectedSimilarApps"];
     }
-    
-    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
-    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
-    
-    [FlurryAnalytics logEvent:@"selectedSimilarApps"];
 }
 
 - (IBAction)shareButtonHandlerAction
@@ -224,7 +255,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
+    
     DLog(@"My UUID: %@", [[Globals instance] getUUID]);
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];

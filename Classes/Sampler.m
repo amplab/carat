@@ -248,6 +248,8 @@ static NSArray * SubReports = nil;
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
+    DLog(@"Updating local data from server.");
+    
     if (managedObjectContext != nil) 
     {
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
