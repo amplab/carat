@@ -75,8 +75,8 @@
     int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_ALL, 0};
     size_t miblen = 4;
     
-    size_t size = 1;
-    int st = -1;
+    size_t size;
+    int st = sysctl(mib, miblen, NULL, &size, NULL, 0);
     
     struct kinfo_proc * process = NULL;
     struct kinfo_proc * newprocess = NULL;
