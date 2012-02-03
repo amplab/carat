@@ -326,8 +326,6 @@
     }
     
     [self updateView];
-    [self.view setNeedsDisplay];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -357,16 +355,18 @@
     [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
     // Progress Bars
-    for (UIProgressView *scoreBar in scoreSameOSProgBar) {
+    for (UIProgressView *scoreBar in self.scoreSameOSProgBar) {
         [scoreBar setProgress:MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
     }
-    for (UIProgressView *scoreBar in scoreSameModelProgBar) {
+    for (UIProgressView *scoreBar in self.scoreSameModelProgBar) {
         [scoreBar setProgress:MIN(MAX([[[Sampler instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
     }
-    for (UIProgressView *scoreBar in scoreSimilarAppsProgBar) {
+    for (UIProgressView *scoreBar in self.scoreSimilarAppsProgBar) {
         [scoreBar setProgress:MIN(MAX([[[Sampler instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
     }
     
+    DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[Sampler instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0), [[[Sampler instance] getModelInfo:YES] score], [[[Sampler instance] getSimilarAppsInfo:YES] score]);
+    [self.view setNeedsDisplay];
 }
 
 - (void) orientationChanged:(id)object
