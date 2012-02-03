@@ -304,7 +304,7 @@ static NSArray * SubReports = nil;
             //NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
             //[existing release];
             NSArray *new = [[NSArray alloc] initWithObjects:
-                            [NSString stringWithFormat: @"%.2f", change],
+                            [NSString stringWithFormat: @"%.2f", change*100.0],
                             [NSString stringWithFormat: @"%.2f", changePercentage],
                             nil];
             cdataMainReport.changesSinceLastWeek = new;
@@ -894,7 +894,9 @@ static NSArray * SubReports = nil;
     else
     {
         DLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
-        return [NSDate date]; // ANAND: why is this correct behavior?
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc]init] autorelease];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        return [dateFormatter dateFromString:@"1970-01-01"];
     }
 }
 
