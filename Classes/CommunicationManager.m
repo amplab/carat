@@ -27,7 +27,7 @@
 
 static id instance = nil;
 static NSString* caratServerIP = nil;
-static int caratServerPort = 4444;
+static int caratServerPort = 8080;
 static BOOL isInternetActive;
 
 + (void) initialize {
