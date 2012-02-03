@@ -52,17 +52,6 @@
 		ABC07A281485A19800FCC2C2 /* house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A261485A19800FCC2C2 /* house.png */; };
 		ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A321486C21A00FCC2C2 /* 53-house.png */; };
 		ABC07A681487FC9F00FCC2C2 /* ReportItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */; };
-		ABD317D514881391000A8DC7 /* Angry Birds.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317CA14881391000A8DC7 /* Angry Birds.png */; };
-		ABD317D614881391000A8DC7 /* Camera+.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317CB14881391000A8DC7 /* Camera+.png */; };
-		ABD317D714881391000A8DC7 /* Cut the Rope.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317CC14881391000A8DC7 /* Cut the Rope.png */; };
-		ABD317D814881391000A8DC7 /* Facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317CD14881391000A8DC7 /* Facebook.png */; };
-		ABD317D914881391000A8DC7 /* Fruit Ninja.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317CE14881391000A8DC7 /* Fruit Ninja.png */; };
-		ABD317DA14881391000A8DC7 /* Pandora Radio.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317CF14881391000A8DC7 /* Pandora Radio.png */; };
-		ABD317DB14881391000A8DC7 /* Paper Toss.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D014881391000A8DC7 /* Paper Toss.png */; };
-		ABD317DC14881391000A8DC7 /* Shazam.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D114881391000A8DC7 /* Shazam.png */; };
-		ABD317DD14881391000A8DC7 /* Skype.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D214881391000A8DC7 /* Skype.png */; };
-		ABD317DE14881391000A8DC7 /* Twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D314881391000A8DC7 /* Twitter.png */; };
-		ABD317DF14881391000A8DC7 /* Words With Friends HD.png in Resources */ = {isa = PBXBuildFile; fileRef = ABD317D414881391000A8DC7 /* Words With Friends HD.png */; };
 		ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317E014882E93000A8DC7 /* DetailView.xib */; };
 		ABD317E514882F1C000A8DC7 /* HogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */; };
 		ABD317FD14884F6F000A8DC7 /* BugDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */; };
@@ -190,7 +179,7 @@
 		AB41CE1A1450BC060090CC09 /* hog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hog.png; sourceTree = "<group>"; };
 		AB41CE1E1450BE620090CC09 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		AB41CE2D145229FE0090CC09 /* CurrentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentView.xib; sourceTree = "<group>"; };
-		AB583D6C14DB27AC00480241 /* UIImageDoNotCache.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UIImageDoNotCache.h; sourceTree = "<group>"; };
+		AB583D6C14DB27AC00480241 /* UIImageDoNotCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageDoNotCache.h; sourceTree = "<group>"; };
 		AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageDoNotCache.m; sourceTree = "<group>"; };
 		AB645DF31456F9520008244B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		AB645DF51456F9EC0008244B /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
@@ -307,17 +296,6 @@
 		ABC07A321486C21A00FCC2C2 /* 53-house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "53-house.png"; sourceTree = "<group>"; };
 		ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportItemCell.h; sourceTree = "<group>"; };
 		ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportItemCell.m; sourceTree = "<group>"; };
-		ABD317CA14881391000A8DC7 /* Angry Birds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Angry Birds.png"; path = "appicons/Angry Birds.png"; sourceTree = "<group>"; };
-		ABD317CB14881391000A8DC7 /* Camera+.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Camera+.png"; path = "appicons/Camera+.png"; sourceTree = "<group>"; };
-		ABD317CC14881391000A8DC7 /* Cut the Rope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Cut the Rope.png"; path = "appicons/Cut the Rope.png"; sourceTree = "<group>"; };
-		ABD317CD14881391000A8DC7 /* Facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Facebook.png; path = appicons/Facebook.png; sourceTree = "<group>"; };
-		ABD317CE14881391000A8DC7 /* Fruit Ninja.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Fruit Ninja.png"; path = "appicons/Fruit Ninja.png"; sourceTree = "<group>"; };
-		ABD317CF14881391000A8DC7 /* Pandora Radio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Pandora Radio.png"; path = "appicons/Pandora Radio.png"; sourceTree = "<group>"; };
-		ABD317D014881391000A8DC7 /* Paper Toss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Paper Toss.png"; path = "appicons/Paper Toss.png"; sourceTree = "<group>"; };
-		ABD317D114881391000A8DC7 /* Shazam.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Shazam.png; path = appicons/Shazam.png; sourceTree = "<group>"; };
-		ABD317D214881391000A8DC7 /* Skype.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Skype.png; path = appicons/Skype.png; sourceTree = "<group>"; };
-		ABD317D314881391000A8DC7 /* Twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Twitter.png; path = appicons/Twitter.png; sourceTree = "<group>"; };
-		ABD317D414881391000A8DC7 /* Words With Friends HD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Words With Friends HD.png"; path = "appicons/Words With Friends HD.png"; sourceTree = "<group>"; };
 		ABD317E014882E93000A8DC7 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		ABD317E214882F1C000A8DC7 /* HogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HogDetailViewController.h; sourceTree = "<group>"; };
 		ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HogDetailViewController.m; sourceTree = "<group>"; };
@@ -799,17 +777,6 @@
 		ABC07A361486E09500FCC2C2 /* appicons */ = {
 			isa = PBXGroup;
 			children = (
-				ABD317CA14881391000A8DC7 /* Angry Birds.png */,
-				ABD317CB14881391000A8DC7 /* Camera+.png */,
-				ABD317CC14881391000A8DC7 /* Cut the Rope.png */,
-				ABD317CD14881391000A8DC7 /* Facebook.png */,
-				ABD317CE14881391000A8DC7 /* Fruit Ninja.png */,
-				ABD317CF14881391000A8DC7 /* Pandora Radio.png */,
-				ABD317D014881391000A8DC7 /* Paper Toss.png */,
-				ABD317D114881391000A8DC7 /* Shazam.png */,
-				ABD317D214881391000A8DC7 /* Skype.png */,
-				ABD317D314881391000A8DC7 /* Twitter.png */,
-				ABD317D414881391000A8DC7 /* Words With Friends HD.png */,
 			);
 			name = appicons;
 			sourceTree = "<group>";
@@ -1340,17 +1307,6 @@
 				ABC07A2014859E7600FCC2C2 /* AboutView.xib in Resources */,
 				ABC07A281485A19800FCC2C2 /* house.png in Resources */,
 				ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */,
-				ABD317D514881391000A8DC7 /* Angry Birds.png in Resources */,
-				ABD317D614881391000A8DC7 /* Camera+.png in Resources */,
-				ABD317D714881391000A8DC7 /* Cut the Rope.png in Resources */,
-				ABD317D814881391000A8DC7 /* Facebook.png in Resources */,
-				ABD317D914881391000A8DC7 /* Fruit Ninja.png in Resources */,
-				ABD317DA14881391000A8DC7 /* Pandora Radio.png in Resources */,
-				ABD317DB14881391000A8DC7 /* Paper Toss.png in Resources */,
-				ABD317DC14881391000A8DC7 /* Shazam.png in Resources */,
-				ABD317DD14881391000A8DC7 /* Skype.png in Resources */,
-				ABD317DE14881391000A8DC7 /* Twitter.png in Resources */,
-				ABD317DF14881391000A8DC7 /* Words With Friends HD.png in Resources */,
 				ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */,
 				ABD3180414899275000A8DC7 /* icon57.png in Resources */,
 				ABD318C1148D869A000A8DC7 /* SHKSharers.plist in Resources */,
@@ -1558,12 +1514,12 @@
 				);
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CLANG_WARN_OBJCPP_ARC_ABI = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Adam Oliner";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Adam Oliner";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "10BFB459-1B27-47D7-9BB2-98B8C31F1276";
+				"PROVISIONING_PROFILE[sdk=*]" = "715F7806-7C6B-4C74-8193-21BB9A3E4031";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
