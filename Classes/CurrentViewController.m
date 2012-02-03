@@ -83,6 +83,8 @@
         [[Sampler instance] updateLocalReportsFromServer];
     }
     
+    [self updateView];
+    
     // display result
     if ([self isFresh]) {
         // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
