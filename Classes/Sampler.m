@@ -894,8 +894,7 @@ static NSArray * SubReports = nil;
     else
     {
         DLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
-        //NSDate *now = [[NSDate date] retain];
-        return [NSDate date];
+        return [NSDate date]; // ANAND: why is this correct behavior?
     }
 }
 
@@ -904,10 +903,9 @@ static NSArray * SubReports = nil;
     NSTimeInterval interval = 0.0;
     if (self.LastUpdatedDate != nil)
     {
-        NSDate *now = [[NSDate date] retain];
+        NSDate *now = [NSDate date];
         DLog(@"CurrentDate: %@ LastUpdatedDate: %@", now, self.LastUpdatedDate );
         interval = [now timeIntervalSinceDate:self.LastUpdatedDate];
-        [now release];
     }
     DLog(@"%s %@", __PRETTY_FUNCTION__, [NSString stringWithFormat:@"%g",interval]);
     return interval;
@@ -934,8 +932,6 @@ static NSArray * SubReports = nil;
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-            //[sortDescriptors release];
-            //[sortDescriptor release];
             return nil;
         }
      
@@ -956,9 +952,7 @@ static NSArray * SubReports = nil;
             [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
             [hbList addObject:hog];
         }
-        
-        //[sortDescriptors release];
-        //[sortDescriptor release];
+
         return hogs;
     }
     return nil;
