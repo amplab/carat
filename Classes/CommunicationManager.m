@@ -202,6 +202,7 @@ static BOOL isInternetActive;
 
 - (void) checkNetworkStatus:(NSNotification *) notice
 {
+    DLog(@"%s", __PRETTY_FUNCTION__);
     NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
     switch (internetStatus)
     {
