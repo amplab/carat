@@ -214,26 +214,6 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     DLog(@"%@", errorData);
 }
 
-       
-#pragma mark -
-#pragma mark networking methods
-       
-- (void) checkNetworkStatus:(NSNotification *)notice
-{
-    // called after network status changes
-    //NetworkStatus internetStatus = [hostReachable currentReachabilityStatus];
-    //if (internetStatus == ReachableViaWiFi || internetStatus == ReachableViaWWAN) {
-    //    [self doSyncIfNeeded];
-    //}
-}
-
-- (void) doSyncIfNeeded {
-    // we've already checked that the host we need to talk to is reachable
-    // so see if there's enough data stored up to justify a sync
-    // if so, do it!
-    //[[Sampler instance] sendStoredDataToServer: 100];
-}
-
 #pragma mark -
 #pragma mark Memory management
 

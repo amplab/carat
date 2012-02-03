@@ -31,6 +31,5 @@
 
 - (void) checkNetworkStatus:(NSNotification *)notice;
 - (void) setupNotificationSubscriptions;
-- (void) doSyncIfNeeded;
 
 @end

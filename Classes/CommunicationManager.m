@@ -52,9 +52,8 @@ static BOOL isInternetActive;
                                              selector:@selector(checkNetworkStatus:) 
                                                  name:kReachabilityChangedNotification 
                                                object:nil];
-    internetReachable = [Reachability reachabilityWithHostName: @"www.apple.com"];
-    [internetReachable startNotifier];
-    DLog(@"%s Success!", __PRETTY_FUNCTION__);
+    internetReachable = [Reachability reachabilityWithHostName: @"www.apple.com"]; // ANAND: replace with our server address
+    if ([internetReachable startNotifier]) { DLog(@"%s Success!", __PRETTY_FUNCTION__); }
 }
 
 //
