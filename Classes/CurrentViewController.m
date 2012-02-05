@@ -309,8 +309,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
 
     [self updateView];
     [self orientationChanged:nil];
@@ -326,6 +324,10 @@
     if (![self isFresh]) {
         [self loadDataWithHUD];
     }
+    
+    // For this screen, let's put sending samples/registrations here so that we don't conflict
+    // with the report syncing (need to limit memory/CPU/thread usage so that we don't get killed).
+    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
     
     [self updateView];
 }
