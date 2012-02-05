@@ -720,7 +720,13 @@ static NSArray * SubReports = nil;
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataRegistration" 
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
-        [fetchRequest setFetchLimit:limitMessagesTo];  
+        
+	NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
+	if (!error) {
+	    DLog(@"%s Total registrations in store: %d", __PRETTY_FUNCTION__, count);
+	}
+	
+	[fetchRequest setFetchLimit:limitMessagesTo];  
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
@@ -752,10 +758,10 @@ static NSArray * SubReports = nil;
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:registration];
-                if (![managedObjectContext save:&error])
-                {
-                    DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-                }
+                //if (![managedObjectContext save:&error])
+                //{
+                //    DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                //}
             }
             [NSThread sleepForTimeInterval:0.1];
         }
@@ -763,6 +769,11 @@ static NSArray * SubReports = nil;
     cleanup:
         [sortDescriptors release];
         [sortDescriptor release];
+	
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) 
+        {
+            DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        }
     }
 }
 
@@ -785,6 +796,12 @@ static NSArray * SubReports = nil;
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataSample" 
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
+	
+	NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
+        if (!error) {
+            DLog(@"%s Total samples in store: %d", __PRETTY_FUNCTION__, count);
+        }
+
         [fetchRequest setFetchLimit:limitSamplesTo];  
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -842,10 +859,10 @@ static NSArray * SubReports = nil;
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:sample];
-                if (![managedObjectContext save:&error])
-                {
-                    DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-                }
+                //if (![managedObjectContext save:&error])
+                //{
+                //    DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                //}
             }
             [NSThread sleepForTimeInterval:0.1];
         }
@@ -853,6 +870,11 @@ static NSArray * SubReports = nil;
     cleanup:
         [sortDescriptors release];
         [sortDescriptor release];
+
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+        {
+            DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        } 
     }
 }
 
