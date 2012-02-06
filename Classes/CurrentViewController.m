@@ -252,7 +252,7 @@
 - (IBAction)shareButtonHandlerAction
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
-                                                    message:@"This feature is disabled until the Carat is live on the App Store." 
+                                                    message:@"This feature is disabled while Carat is in beta." 
                                                    delegate:nil 
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
