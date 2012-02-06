@@ -1532,6 +1532,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Adam Oliner";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Carat_Prefix.pch;
@@ -1546,6 +1547,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Carat;
+				"PROVISIONING_PROFILE[sdk=*]" = "3F1C24AB-0406-4BED-AB36-91DBB5312727";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
