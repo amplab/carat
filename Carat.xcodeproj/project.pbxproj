@@ -38,6 +38,7 @@
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
 		AB7A112D14E06520004D155C /* ActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7A112C14E06520004D155C /* ActionView.xib */; };
+		AB7A113414E1F738004D155C /* ActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7A113214E1F738004D155C /* ActionViewController.m */; };
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
 		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
 		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
@@ -198,6 +199,8 @@
 		AB7999131455C237000AE9FE /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		AB7999141455C23E000AE9FE /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
 		AB7A112C14E06520004D155C /* ActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionView.xib; sourceTree = "<group>"; };
+		AB7A113114E1F738004D155C /* ActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionViewController.h; sourceTree = "<group>"; };
+		AB7A113214E1F738004D155C /* ActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionViewController.m; sourceTree = "<group>"; };
 		AB91E432149162F7007786F0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AB91E433149162F7007786F0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		AB91E4411499264F007786F0 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
@@ -794,6 +797,8 @@
 				ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */,
 				AB91E4411499264F007786F0 /* ReportViewController.h */,
 				AB91E4421499264F007786F0 /* ReportViewController.m */,
+				AB7A113114E1F738004D155C /* ActionViewController.h */,
+				AB7A113214E1F738004D155C /* ActionViewController.m */,
 				AB91E4441499266A007786F0 /* DetailViewController.h */,
 				AB91E4451499266B007786F0 /* DetailViewController.m */,
 				28216C950DB411BC00E5133A /* BugReportViewController.h */,
@@ -1436,6 +1441,7 @@
 				ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */,
 				ABDB096814D110C900885FB7 /* UIDeviceHardware.m in Sources */,
 				AB583D6E14DB27AD00480241 /* UIImageDoNotCache.m in Sources */,
+				AB7A113414E1F738004D155C /* ActionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
