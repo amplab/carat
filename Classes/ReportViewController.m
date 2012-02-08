@@ -95,7 +95,7 @@
     NSDate *lastUpdated = [[Sampler instance] getLastReportUpdateTimestamp];
     NSDate *now = [NSDate date];
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
-    return [Utilities formatNSTimeIntervalAsNSString:howLong];
+    return [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
 }
 
 // loads the selected detail view

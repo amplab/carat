@@ -33,8 +33,8 @@
 {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-        self.title = @"Current State";
-        self.tabBarItem.image = [UIImage imageNamed:@"53-house"];
+        self.title = @"My Device";
+        self.tabBarItem.image = [UIImage imageNamed:@"32-iphone"];
     }
     
     return self;
@@ -352,7 +352,7 @@
     // Last Updated
     NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
     for (UILabel *lastUp in self.lastUpdated) {
-        lastUp.text = [Utilities formatNSTimeIntervalAsNSString:howLong];
+        lastUp.text = [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
     }
     
     // Change since last week

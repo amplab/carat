@@ -16,6 +16,7 @@
 
 @interface Utilities : NSObject
 
++ (NSString *)formatNSTimeIntervalAsUpdatedNSString:(NSTimeInterval)timeInterval;
 + (NSString *)formatNSTimeIntervalAsNSString:(NSTimeInterval)timeInterval;
 
 @end

@@ -22,7 +22,7 @@
 		AB41CDFD144E3B990090CC09 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDFC144E3B990090CC09 /* Reachability.m */; };
 		AB41CE06144F56D40090CC09 /* CaratAppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CE05144F56D40090CC09 /* CaratAppDelegate_iPhone.m */; };
 		AB41CE09144F56E90090CC09 /* CaratAppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CE08144F56E90090CC09 /* CaratAppDelegate_iPad.m */; };
-		AB41CE18144F78450090CC09 /* bug.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE16144F78450090CC09 /* bug.png */; };
+		AB41CE18144F78450090CC09 /* bug-old.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE16144F78450090CC09 /* bug-old.png */; };
 		AB41CE1C1450BC060090CC09 /* hog.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE1A1450BC060090CC09 /* hog.png */; };
 		AB41CE201450BE620090CC09 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE1E1450BE620090CC09 /* clock.png */; };
 		AB41CE2E145229FE0090CC09 /* CurrentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE2D145229FE0090CC09 /* CurrentView.xib */; };
@@ -39,6 +39,9 @@
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
 		AB7A112D14E06520004D155C /* ActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7A112C14E06520004D155C /* ActionView.xib */; };
 		AB7A113414E1F738004D155C /* ActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7A113214E1F738004D155C /* ActionViewController.m */; };
+		AB7A113714E1FE4B004D155C /* bug.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7A113614E1FE4B004D155C /* bug.png */; };
+		AB7A113914E1FEAB004D155C /* 32-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7A113814E1FEAB004D155C /* 32-iphone.png */; };
+		AB7A113D14E2049F004D155C /* ActionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7A113B14E2049F004D155C /* ActionItemCell.m */; };
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
 		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
 		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
@@ -179,7 +182,7 @@
 		AB41CE05144F56D40090CC09 /* CaratAppDelegate_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratAppDelegate_iPhone.m; sourceTree = "<group>"; };
 		AB41CE07144F56E90090CC09 /* CaratAppDelegate_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratAppDelegate_iPad.h; sourceTree = "<group>"; };
 		AB41CE08144F56E90090CC09 /* CaratAppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratAppDelegate_iPad.m; sourceTree = "<group>"; };
-		AB41CE16144F78450090CC09 /* bug.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bug.png; sourceTree = "<group>"; };
+		AB41CE16144F78450090CC09 /* bug-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-old.png"; sourceTree = "<group>"; };
 		AB41CE1A1450BC060090CC09 /* hog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hog.png; sourceTree = "<group>"; };
 		AB41CE1E1450BE620090CC09 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		AB41CE2D145229FE0090CC09 /* CurrentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentView.xib; sourceTree = "<group>"; };
@@ -201,6 +204,10 @@
 		AB7A112C14E06520004D155C /* ActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionView.xib; sourceTree = "<group>"; };
 		AB7A113114E1F738004D155C /* ActionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionViewController.h; sourceTree = "<group>"; };
 		AB7A113214E1F738004D155C /* ActionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionViewController.m; sourceTree = "<group>"; };
+		AB7A113614E1FE4B004D155C /* bug.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bug.png; sourceTree = "<group>"; };
+		AB7A113814E1FEAB004D155C /* 32-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "32-iphone.png"; sourceTree = "<group>"; };
+		AB7A113A14E2049F004D155C /* ActionItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionItemCell.h; sourceTree = "<group>"; };
+		AB7A113B14E2049F004D155C /* ActionItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionItemCell.m; sourceTree = "<group>"; };
 		AB91E432149162F7007786F0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AB91E433149162F7007786F0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		AB91E4411499264F007786F0 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
@@ -676,8 +683,10 @@
 				AB41CE1E1450BE620090CC09 /* clock.png */,
 				AB41CE1A1450BC060090CC09 /* hog.png */,
 				ABC07A261485A19800FCC2C2 /* house.png */,
+				AB7A113814E1FEAB004D155C /* 32-iphone.png */,
 				ABC07A321486C21A00FCC2C2 /* 53-house.png */,
-				AB41CE16144F78450090CC09 /* bug.png */,
+				AB7A113614E1FE4B004D155C /* bug.png */,
+				AB41CE16144F78450090CC09 /* bug-old.png */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -811,6 +820,8 @@
 				ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */,
 				AB7999131455C237000AE9FE /* CurrentViewController.h */,
 				AB7999141455C23E000AE9FE /* CurrentViewController.m */,
+				AB7A113A14E2049F004D155C /* ActionItemCell.h */,
+				AB7A113B14E2049F004D155C /* ActionItemCell.m */,
 				ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */,
 				ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */,
 			);
@@ -1300,7 +1311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */,
-				AB41CE18144F78450090CC09 /* bug.png in Resources */,
+				AB41CE18144F78450090CC09 /* bug-old.png in Resources */,
 				AB41CE1C1450BC060090CC09 /* hog.png in Resources */,
 				AB41CE201450BE620090CC09 /* clock.png in Resources */,
 				AB41CE2E145229FE0090CC09 /* CurrentView.xib in Resources */,
@@ -1328,6 +1339,8 @@
 				AB1E7AB414CF8ECE0010617A /* Entitlements.plist in Resources */,
 				AB7A112D14E06520004D155C /* ActionView.xib in Resources */,
 				AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */,
+				AB7A113714E1FE4B004D155C /* bug.png in Resources */,
+				AB7A113914E1FEAB004D155C /* 32-iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1442,6 +1455,7 @@
 				ABDB096814D110C900885FB7 /* UIDeviceHardware.m in Sources */,
 				AB583D6E14DB27AD00480241 /* UIImageDoNotCache.m in Sources */,
 				AB7A113414E1F738004D155C /* ActionViewController.m in Sources */,
+				AB7A113D14E2049F004D155C /* ActionItemCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,6 +13,7 @@
 #import "SHK.h"
 #import "Utilities.h"
 
+#import "ActionViewController.h"
 #import "CurrentViewController.h"
 #import "HogReportViewController.h"
 #import "BugReportViewController.h"
@@ -46,8 +47,11 @@ void onUncaughtException(NSException *exception)
    
     // UI
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    UIViewController *viewController1, *viewController2, *viewController3, *viewController4;
-    UINavigationController *navController1, *navController2, *navController3;
+    UIViewController *viewController0, *viewController1, *viewController2, *viewController3, *viewController4;
+    UINavigationController *navController0, *navController1, *navController2, *navController3;
+    viewController0 = [[ActionViewController alloc] initWithNibName:@"ActionView" bundle:nil];
+    navController0 = [[UINavigationController alloc] initWithRootViewController:viewController0];
+    navController0.navigationBarHidden = YES;
     viewController1 = [[CurrentViewController alloc] initWithNibName:@"CurrentView" bundle:nil];
     navController1 = [[UINavigationController alloc] initWithRootViewController:viewController1];
     navController1.navigationBarHidden = YES;
@@ -59,15 +63,17 @@ void onUncaughtException(NSException *exception)
     navController3.navigationBarHidden = YES;
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController1, navController2, navController3, viewController4, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
     // views have been added to hierarchy, so they can be released
+    [viewController0 release];
     [viewController1 release];
     [viewController2 release];
     [viewController3 release];
     [viewController4 release];
+    [navController0 release];
     [navController1 release];
     [navController2 release];
     [navController3 release];
@@ -93,6 +99,7 @@ void onUncaughtException(NSException *exception)
     // Analytics
     [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
     [FlurryAnalytics logAllPageViews:self.tabBarController];
+    [FlurryAnalytics logAllPageViews:navController0];
     [FlurryAnalytics logAllPageViews:navController1];
     [FlurryAnalytics logAllPageViews:navController2];
     [FlurryAnalytics logAllPageViews:navController3];
