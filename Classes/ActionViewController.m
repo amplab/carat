@@ -126,9 +126,9 @@
         //Add items
         [actionStrings addObject:@"Kill Pandora Radio"];
         [actionStrings addObject:@"Restart Facebook"];
-        [actionStrings addObject:@"Restart Paper Toss"];
-        [actionStrings addObject:@"Kill Shazam"];
-        [actionStrings addObject:@"Kill Angry Birds"];
+        [actionStrings addObject:@"Upgrade to iOS 5.0.1"];
+        [actionStrings addObject:@"Dim the screen"];
+        [actionStrings addObject:@"Turn off WiFi"];
         
         [actionValues addObject:[NSNumber numberWithInt:154400]];
         [actionValues addObject:[NSNumber numberWithInt:7990]];
