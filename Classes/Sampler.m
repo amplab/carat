@@ -28,6 +28,7 @@
 @synthesize SimilarAppsInfo;
 @synthesize SimilarAppsInfoWithout;
 @synthesize ChangesSinceLastWeek;
+@synthesize lockCoreDataStore;
 
 static id instance = nil;
 static double JScore;
@@ -38,6 +39,7 @@ static NSArray * SubReports = nil;
         instance = [[self alloc] init];
     }
     SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
+    [instance initLock];
     [instance loadLocalReportsToMemory];
     [[CommunicationManager instance] isInternetReachable]; // This is here just to make sure CommunicationManager subscribes 
                                                            // to reachability updates.
@@ -45,6 +47,11 @@ static NSArray * SubReports = nil;
 
 + (id) instance {
     return instance;
+}
+
+- (void) initLock
+{
+    self.lockCoreDataStore = [[NSLock alloc] init];
 }
 
 - (void) initLocalReportStore
@@ -243,7 +250,7 @@ static NSArray * SubReports = nil;
 //
 // Refresh all the local reports from server. 
 //
-- (void) updateLocalReportsFromServer
+- (void) updateReportsFromServer
 {
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
@@ -415,12 +422,20 @@ static NSArray * SubReports = nil;
             }
         }
         @catch (NSException *exception) {
-                
+            DLog(@"%s Exception while trying to save coredata, %@, %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
         
         // Reload data in memory.
         [self loadLocalReportsToMemory];
     }    
+}
+
+- (void) updateLocalReportsFromServer
+{
+    if ([lockCoreDataStore tryLock]) {
+        [self updateReportsFromServer];
+        [lockCoreDataStore unlock];
+    }
 }
  
 - (id) initWithCommManager:(id)cManager 
@@ -443,6 +458,7 @@ static NSArray * SubReports = nil;
     [SimilarAppsInfo release];
     [SimilarAppsInfoWithout release];
     [ChangesSinceLastWeek release];
+    [lockCoreDataStore release];
     [super dealloc];
 }
 
@@ -567,6 +583,8 @@ static NSArray * SubReports = nil;
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
+    if (managedObjectContext == nil) { return; }
+    
     CoreDataSample *cdataSample = (CoreDataSample *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataSample" 
                                                                                    inManagedObjectContext:managedObjectContext];
     [cdataSample setTriggeredBy:triggeredBy];
@@ -633,19 +651,23 @@ static NSArray * SubReports = nil;
         [cdataSample setMemoryUser:[NSNumber numberWithUnsignedInteger:[[UIDevice currentDevice] userMemory]]];
     }
     
+    
     //
     //  Now save the sample.
     //
-    if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+    @try 
     {
-        /*
-         Error is logged, but we soldier on without saving our sample. :-(
-         */
-        [FlurryAnalytics logEvent:@"sampleForeground Error"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
-        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-        
-    } 
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+        {
+            DLog(@"%s Could not save sample in coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+            [FlurryAnalytics logEvent:@"sampleForeground Error"
+                       withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
+        }
+    }
+    @catch (NSException *exception) {
+        DLog(@"%s Exception while trying to save coredata, details: %@, %@", 
+             __PRETTY_FUNCTION__, [exception name], [exception reason]);
+    }
 }
 
 - (void) sampleBackground : (NSString *) triggeredBy
@@ -683,22 +705,27 @@ static NSArray * SubReports = nil;
 
 - (void) sampleNow : (NSString *) triggeredBy
 {
-    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-    {
-        [FlurryAnalytics logEvent:@"sampleNowBackground"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"BG Sample Triggered", nil]
-                            timed:YES];
-        [self sampleBackground:triggeredBy];
-        [FlurryAnalytics endTimedEvent:@"sampleNowBackground" withParameters:nil];
-    }
-    else
-    {
-        [FlurryAnalytics logEvent:@"sampleNowForeround"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"FG Sample Triggered", nil]
-                            timed:YES];
-        [self sampleForeground:triggeredBy];
-        [FlurryAnalytics endTimedEvent:@"sampleNowForeround" withParameters:nil];
-    }
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([lockCoreDataStore tryLock]) {
+            if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+            {
+                [FlurryAnalytics logEvent:@"sampleNowBackground"
+                           withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"BG Sample Triggered", nil]
+                                    timed:YES];
+                [self sampleBackground:triggeredBy];
+                [FlurryAnalytics endTimedEvent:@"sampleNowBackground" withParameters:nil];
+            }
+            else
+            {
+                [FlurryAnalytics logEvent:@"sampleNowForeround"
+                           withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"FG Sample Triggered", nil]
+                                    timed:YES];
+                [self sampleForeground:triggeredBy];
+                [FlurryAnalytics endTimedEvent:@"sampleNowForeround" withParameters:nil];
+            }
+            [lockCoreDataStore unlock];
+        }    
+    });    
 }
 
 //
@@ -721,12 +748,12 @@ static NSArray * SubReports = nil;
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
         
-	NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
-	if (!error) {
-	    DLog(@"%s Total registrations in store: %d", __PRETTY_FUNCTION__, count);
-	}
-	
-	[fetchRequest setFetchLimit:limitMessagesTo];  
+        NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
+        if (!error) {
+            DLog(@"%s Total registrations in store: %d", __PRETTY_FUNCTION__, count);
+        }
+        
+        [fetchRequest setFetchLimit:limitMessagesTo];  
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
@@ -770,9 +797,16 @@ static NSArray * SubReports = nil;
         [sortDescriptors release];
         [sortDescriptor release];
 	
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) 
-        {
-            DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+        @try {
+            if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+            {
+                DLog(@"%s Could not delete registrations from coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+                return;
+            }
+        }
+        @catch (NSException *exception) {
+            DLog(@"%s Exception while trying to save coredata, details: %@, %@", 
+                 __PRETTY_FUNCTION__, [exception name], [exception reason]);
         }
     }
 }
@@ -797,7 +831,7 @@ static NSArray * SubReports = nil;
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
 	
-	NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
+        NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
         if (!error) {
             DLog(@"%s Total samples in store: %d", __PRETTY_FUNCTION__, count);
         }
@@ -837,6 +871,12 @@ static NSArray * SubReports = nil;
             DLog(@"%s\tbatteryState: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryState"]);
             DLog(@"%s\ttriggeredBy: %@",__PRETTY_FUNCTION__, sampleToSend.triggeredBy);
             
+            if (sample.processInfos == nil || sample.processInfos == NULL) {
+                DLog(@"%s Process Info list is Nil in the sample!!", __PRETTY_FUNCTION__);
+                [managedObjectContext deleteObject:sample];
+                continue;
+            }
+            
             //
             //  Get all the process info objects for this sample.
             //
@@ -871,10 +911,17 @@ static NSArray * SubReports = nil;
         [sortDescriptors release];
         [sortDescriptor release];
 
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-        {
-            DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-        } 
+        @try {
+            if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+            {
+                DLog(@"%s Could not delete samples, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+                return;
+            }
+        }
+        @catch (NSException *exception) {
+            DLog(@"%s Exception while trying to save coredata, details: %@, %@", 
+                 __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        }
     }
 }
 
@@ -884,8 +931,11 @@ static NSArray * SubReports = nil;
 //
 - (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo
 {
-    [self fetchAndSendRegistrations: limitEntriesTo];
-    [self fetchAndSendSamples:limitEntriesTo];
+    if ([lockCoreDataStore tryLock]) {
+        [self fetchAndSendRegistrations: limitEntriesTo];
+        [self fetchAndSendSamples:limitEntriesTo];
+        [lockCoreDataStore unlock];
+    }
 }
 
 - (void) checkConnectivityAndSendStoredDataToServer
@@ -896,9 +946,9 @@ static NSArray * SubReports = nil;
         //dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
             [self sendStoredDataToServer:10];
-            dispatch_async( dispatch_get_main_queue(), ^{
+            /*dispatch_async( dispatch_get_main_queue(), ^{
                 DLog(@"%s Done!", __PRETTY_FUNCTION__);
-            });
+            });*/
         });
     } 
     else 

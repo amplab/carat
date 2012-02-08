@@ -47,8 +47,10 @@
 @property (nonatomic, retain) DetailScreenReport * SimilarAppsInfo;
 @property (nonatomic, retain) DetailScreenReport * SimilarAppsInfoWithout;
 @property (nonatomic, retain) NSArray * ChangesSinceLastWeek;
+@property (nonatomic, retain) NSLock *lockCoreDataStore;
 
 + (id) instance;
+- (void) initLock;
 - (void) loadLocalReportsToMemory;
 - (void) updateLocalReportsFromServer;
 - (id) initWithCommManager : cManager;
