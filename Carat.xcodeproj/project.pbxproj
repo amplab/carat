@@ -22,12 +22,9 @@
 		AB41CDFD144E3B990090CC09 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDFC144E3B990090CC09 /* Reachability.m */; };
 		AB41CE06144F56D40090CC09 /* CaratAppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CE05144F56D40090CC09 /* CaratAppDelegate_iPhone.m */; };
 		AB41CE09144F56E90090CC09 /* CaratAppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CE08144F56E90090CC09 /* CaratAppDelegate_iPad.m */; };
-		AB41CE18144F78450090CC09 /* bug-old.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE16144F78450090CC09 /* bug-old.png */; };
 		AB41CE1C1450BC060090CC09 /* hog.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE1A1450BC060090CC09 /* hog.png */; };
-		AB41CE201450BE620090CC09 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE1E1450BE620090CC09 /* clock.png */; };
 		AB41CE2E145229FE0090CC09 /* CurrentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB41CE2D145229FE0090CC09 /* CurrentView.xib */; };
 		AB583D6E14DB27AD00480241 /* UIImageDoNotCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */; };
-		AB645DF41456F9520008244B /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF31456F9520008244B /* icon.png */; };
 		AB645DF61456F9EC0008244B /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF51456F9EC0008244B /* icon57.png */; };
 		AB645DF81456FCED0008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF71456FCED0008244B /* icon114.png */; };
 		AB645DFA1456FD0C0008244B /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF91456FD0C0008244B /* icon72.png */; };
@@ -55,7 +52,6 @@
 		ABC07A1B14859C7100FCC2C2 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A1914859C7100FCC2C2 /* about.png */; };
 		ABC07A2014859E7600FCC2C2 /* AboutView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A1F14859E7500FCC2C2 /* AboutView.xib */; };
 		ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */; };
-		ABC07A281485A19800FCC2C2 /* house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A261485A19800FCC2C2 /* house.png */; };
 		ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A321486C21A00FCC2C2 /* 53-house.png */; };
 		ABC07A681487FC9F00FCC2C2 /* ReportItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */; };
 		ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317E014882E93000A8DC7 /* DetailView.xib */; };
@@ -182,13 +178,10 @@
 		AB41CE05144F56D40090CC09 /* CaratAppDelegate_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratAppDelegate_iPhone.m; sourceTree = "<group>"; };
 		AB41CE07144F56E90090CC09 /* CaratAppDelegate_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratAppDelegate_iPad.h; sourceTree = "<group>"; };
 		AB41CE08144F56E90090CC09 /* CaratAppDelegate_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratAppDelegate_iPad.m; sourceTree = "<group>"; };
-		AB41CE16144F78450090CC09 /* bug-old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bug-old.png"; sourceTree = "<group>"; };
 		AB41CE1A1450BC060090CC09 /* hog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hog.png; sourceTree = "<group>"; };
-		AB41CE1E1450BE620090CC09 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		AB41CE2D145229FE0090CC09 /* CurrentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CurrentView.xib; sourceTree = "<group>"; };
 		AB583D6C14DB27AC00480241 /* UIImageDoNotCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageDoNotCache.h; sourceTree = "<group>"; };
 		AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageDoNotCache.m; sourceTree = "<group>"; };
-		AB645DF31456F9520008244B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		AB645DF51456F9EC0008244B /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
 		AB645DF71456FCED0008244B /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
 		AB645DF91456FD0C0008244B /* icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon72.png; sourceTree = "<group>"; };
@@ -306,7 +299,6 @@
 		ABC07A1F14859E7500FCC2C2 /* AboutView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutView.xib; sourceTree = "<group>"; };
 		ABC07A2114859EBE00FCC2C2 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		ABC07A261485A19800FCC2C2 /* house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = house.png; sourceTree = "<group>"; };
 		ABC07A321486C21A00FCC2C2 /* 53-house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "53-house.png"; sourceTree = "<group>"; };
 		ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportItemCell.h; sourceTree = "<group>"; };
 		ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportItemCell.m; sourceTree = "<group>"; };
@@ -676,17 +668,13 @@
 				ABC07A361486E09500FCC2C2 /* appicons */,
 				ABC07A151485828A00FCC2C2 /* amplab_logo.png */,
 				ABC07A1914859C7100FCC2C2 /* about.png */,
-				AB645DF31456F9520008244B /* icon.png */,
 				AB645DFB1456FDD50008244B /* icon57.png */,
 				AB645DFC1456FDD50008244B /* icon72.png */,
 				AB645DFD1456FDD50008244B /* icon114.png */,
-				AB41CE1E1450BE620090CC09 /* clock.png */,
 				AB41CE1A1450BC060090CC09 /* hog.png */,
-				ABC07A261485A19800FCC2C2 /* house.png */,
 				AB7A113814E1FEAB004D155C /* 32-iphone.png */,
 				ABC07A321486C21A00FCC2C2 /* 53-house.png */,
 				AB7A113614E1FE4B004D155C /* bug.png */,
-				AB41CE16144F78450090CC09 /* bug-old.png */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -1311,11 +1299,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */,
-				AB41CE18144F78450090CC09 /* bug-old.png in Resources */,
 				AB41CE1C1450BC060090CC09 /* hog.png in Resources */,
-				AB41CE201450BE620090CC09 /* clock.png in Resources */,
 				AB41CE2E145229FE0090CC09 /* CurrentView.xib in Resources */,
-				AB645DF41456F9520008244B /* icon.png in Resources */,
 				AB645DF61456F9EC0008244B /* icon57.png in Resources */,
 				AB645DF81456FCED0008244B /* icon114.png in Resources */,
 				AB645DFA1456FD0C0008244B /* icon72.png in Resources */,
@@ -1327,7 +1312,6 @@
 				ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */,
 				ABC07A1B14859C7100FCC2C2 /* about.png in Resources */,
 				ABC07A2014859E7600FCC2C2 /* AboutView.xib in Resources */,
-				ABC07A281485A19800FCC2C2 /* house.png in Resources */,
 				ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */,
 				ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */,
 				ABD3180414899275000A8DC7 /* icon57.png in Resources */,
