@@ -249,27 +249,6 @@
     }
 }
 
-- (IBAction)shareButtonHandlerAction
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
-                                                    message:@"This feature is disabled while Carat is in beta." 
-                                                   delegate:nil 
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-    [alert release];
-    // TODO reactivated before submitting to Apple
-//	// Create the item to share (in this example, a url)
-//	NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
-//	SHKItem *item = [SHKItem URL:url title:@"Learn about your mobile device's battery usage. For science! (Seriously.)"];
-//    
-//	// Get the ShareKit action sheet
-//	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-//    
-//	// Display the action sheet
-//	[actionSheet showFromTabBar:self.tabBarController.tabBar];
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

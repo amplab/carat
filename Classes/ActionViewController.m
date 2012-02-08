@@ -44,7 +44,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Action List";
+    return @"To improve battery life...";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -63,7 +63,11 @@
     
     // Set up the cell...
     cell.actionString.text = [actionStrings objectAtIndex:indexPath.row];
-    cell.actionValue.text = [Utilities formatNSTimeIntervalAsNSString:[[actionValues objectAtIndex:indexPath.row] doubleValue]];
+    if ([[actionValues objectAtIndex:indexPath.row] doubleValue] <= 0) {
+        cell.actionValue.text = @"+100 karma!";
+    } else {
+        cell.actionValue.text = [Utilities formatNSTimeIntervalAsNSString:[[actionValues objectAtIndex:indexPath.row] doubleValue]];
+    }
     
     return cell;
 }
@@ -109,6 +113,29 @@
 //               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 
+#pragma mark - button handlers
+
+- (IBAction)shareButtonHandler {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
+                                                    message:@"This feature is disabled while Carat is in beta." 
+                                                   delegate:nil 
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    [alert release];
+    // TODO reactivated before submitting to Apple
+    //	// Create the item to share (in this example, a url)
+    //	NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
+    //	SHKItem *item = [SHKItem URL:url title:@"Learn about your mobile device's battery usage. For science! (Seriously.)"];
+    //    
+    //	// Get the ShareKit action sheet
+    //	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+    //    
+    //	// Display the action sheet
+    //	[actionSheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -119,22 +146,24 @@
     
     // TODO Remove dummy data
     
-        //Initialize the arrays.
-        actionStrings = [[NSMutableArray alloc] init];
-        actionValues = [[NSMutableArray alloc] init];
+    //Initialize the arrays.
+    actionStrings = [[NSMutableArray alloc] init];
+    actionValues = [[NSMutableArray alloc] init];
+
+    //Add items
+    [actionStrings addObject:@"Kill Pandora Radio"];
+    [actionStrings addObject:@"Restart Facebook"];
+    [actionStrings addObject:@"Upgrade to iOS 5.0.1"];
+    [actionStrings addObject:@"Dim the screen"];
+    [actionStrings addObject:@"Turn off WiFi"];
+    [actionStrings addObject:@"Help Spread the Word!"];
     
-        //Add items
-        [actionStrings addObject:@"Kill Pandora Radio"];
-        [actionStrings addObject:@"Restart Facebook"];
-        [actionStrings addObject:@"Upgrade to iOS 5.0.1"];
-        [actionStrings addObject:@"Dim the screen"];
-        [actionStrings addObject:@"Turn off WiFi"];
-        
-        [actionValues addObject:[NSNumber numberWithInt:154400]];
-        [actionValues addObject:[NSNumber numberWithInt:7990]];
-        [actionValues addObject:[NSNumber numberWithInt:3583]];
-        [actionValues addObject:[NSNumber numberWithInt:1020]];
-        [actionValues addObject:[NSNumber numberWithInt:650]];
+    [actionValues addObject:[NSNumber numberWithInt:154400]];
+    [actionValues addObject:[NSNumber numberWithInt:7990]];
+    [actionValues addObject:[NSNumber numberWithInt:3583]];
+    [actionValues addObject:[NSNumber numberWithInt:1020]];
+    [actionValues addObject:[NSNumber numberWithInt:650]];
+    [actionValues addObject:[NSNumber numberWithInt:-1]];
 }
 
 - (void)viewDidUnload
@@ -145,10 +174,32 @@
     // e.g. self.myOutlet = nil;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)viewWillAppear:(BOOL)animated
 {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[super viewWillDisappear:animated];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
+}
+
+- (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+    return YES;
 }
 
 - (void)dealloc {
