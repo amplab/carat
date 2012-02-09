@@ -47,6 +47,8 @@
 		AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580C148FF31D004F92F2 /* 37x-X.png */; };
 		AB9B581014902467004F92F2 /* CoreDataDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9B580F14902467004F92F2 /* CoreDataDetail.m */; };
 		AB9B58131490247B004F92F2 /* CoreDataReport.m in Sources */ = {isa = PBXBuildFile; fileRef = AB9B58121490247A004F92F2 /* CoreDataReport.m */; };
+		ABA3A0F714E45711009B3D33 /* InstructionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA3A0F614E45711009B3D33 /* InstructionView.xib */; };
+		ABA3A0FA14E4592F009B3D33 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA3A0F914E4592F009B3D33 /* InstructionViewController.m */; };
 		ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */; };
 		ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A151485828A00FCC2C2 /* amplab_logo.png */; };
 		ABC07A1B14859C7100FCC2C2 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A1914859C7100FCC2C2 /* about.png */; };
@@ -293,6 +295,9 @@
 		AB9B580F14902467004F92F2 /* CoreDataDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataDetail.m; sourceTree = "<group>"; };
 		AB9B58111490247A004F92F2 /* CoreDataReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataReport.h; sourceTree = "<group>"; };
 		AB9B58121490247A004F92F2 /* CoreDataReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataReport.m; sourceTree = "<group>"; };
+		ABA3A0F614E45711009B3D33 /* InstructionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionView.xib; sourceTree = "<group>"; };
+		ABA3A0F814E4592F009B3D33 /* InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionViewController.h; sourceTree = "<group>"; };
+		ABA3A0F914E4592F009B3D33 /* InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionViewController.m; sourceTree = "<group>"; };
 		ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		ABC07A1914859C7100FCC2C2 /* about.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about.png; sourceTree = "<group>"; };
@@ -600,6 +605,7 @@
 			children = (
 				C18E107014665E230028095B /* Carat.xcdatamodeld */,
 				ABC07A1F14859E7500FCC2C2 /* AboutView.xib */,
+				ABA3A0F614E45711009B3D33 /* InstructionView.xib */,
 				AB7A112C14E06520004D155C /* ActionView.xib */,
 				AB244AF714E10D660055FCD6 /* ActionItemCell.xib */,
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
@@ -798,6 +804,8 @@
 				AB7A113214E1F738004D155C /* ActionViewController.m */,
 				AB91E4441499266A007786F0 /* DetailViewController.h */,
 				AB91E4451499266B007786F0 /* DetailViewController.m */,
+				ABA3A0F814E4592F009B3D33 /* InstructionViewController.h */,
+				ABA3A0F914E4592F009B3D33 /* InstructionViewController.m */,
 				28216C950DB411BC00E5133A /* BugReportViewController.h */,
 				28216C960DB411BC00E5133A /* BugReportViewController.m */,
 				ABD317FA14884F6F000A8DC7 /* BugDetailViewController.h */,
@@ -1325,6 +1333,7 @@
 				AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */,
 				AB7A113714E1FE4B004D155C /* bug.png in Resources */,
 				AB7A113914E1FEAB004D155C /* 32-iphone.png in Resources */,
+				ABA3A0F714E45711009B3D33 /* InstructionView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1440,6 +1449,7 @@
 				AB583D6E14DB27AD00480241 /* UIImageDoNotCache.m in Sources */,
 				AB7A113414E1F738004D155C /* ActionViewController.m in Sources */,
 				AB7A113D14E2049F004D155C /* ActionItemCell.m in Sources */,
+				ABA3A0FA14E4592F009B3D33 /* InstructionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
