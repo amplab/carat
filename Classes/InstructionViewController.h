@@ -8,6 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InstructionViewController : UIViewController
+typedef enum {
+    ActionTypeKillApp,
+    ActionTypeRestartApp,
+    ActionTypeUpgradeOS,
+    ActionTypeDimScreen,
+    ActionTypeSpreadTheWord
+    } ActionType;
+
+@interface InstructionViewController : UIViewController {
+    NSString *theHTML;
+    ActionType actionType;
+}
+
+@property (nonatomic, copy) NSString *theHTML;
+@property (nonatomic)       ActionType actionType;
 
 @end

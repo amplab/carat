@@ -8,8 +8,21 @@
 
 #import "InstructionViewController.h"
 #import "Sampler.h"
+#import "Utilities.h"
 
 @implementation InstructionViewController
+
+@synthesize theHTML = _theHTML;
+@synthesize actionType = _actionType;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil actionType:(ActionType)action
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self setActionType:action];
+    }
+    return self;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,6 +39,7 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+    [theHTML release];
 }
 
 #pragma mark - UIWebView
@@ -64,6 +78,34 @@
     [super viewDidLoad];
  
     self.navigationItem.title = @"Action Instructions";
+    
+    // TODO load the appropriate HTML into theHTML based on actionType
+    switch (self.actionType) {
+        case ActionTypeKillApp:
+            [self setTheHTML:@"Unrecognized Action Type!"];
+            break;
+            
+        case ActionTypeRestartApp:
+            [self setTheHTML:@"Unrecognized Action Type!"];
+            break;
+            
+        case ActionTypeUpgradeOS:
+            [self setTheHTML:@"Unrecognized Action Type!"];
+            break;
+            
+        case ActionTypeDimScreen:
+            [self setTheHTML:@"Unrecognized Action Type!"];
+            break;
+            
+        case ActionTypeSpreadTheWord:
+            DLog(@"Should not be loading InstructionView when ActionType is SpreadTheWord!");
+            [self setTheHTML:@"How did you get here?"];
+            break;
+            
+        default:
+            [self setTheHTML:@"Unrecognized Action Type!"];
+            break;
+    }
 }
 
 - (void)viewDidUnload
