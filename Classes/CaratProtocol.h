@@ -298,6 +298,8 @@ typedef NSArray * FeatureList;
   NSArray * __yVals;
   NSArray * __xValsWithout;
   NSArray * __yValsWithout;
+  double __expectedValue;
+  double __expectedValueWithout;
 
   BOOL __appName_isset;
   BOOL __wDistance_isset;
@@ -305,6 +307,8 @@ typedef NSArray * FeatureList;
   BOOL __yVals_isset;
   BOOL __xValsWithout_isset;
   BOOL __yValsWithout_isset;
+  BOOL __expectedValue_isset;
+  BOOL __expectedValueWithout_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -314,9 +318,11 @@ typedef NSArray * FeatureList;
 @property (nonatomic, retain, getter=yVals, setter=setYVals:) NSArray * yVals;
 @property (nonatomic, retain, getter=xValsWithout, setter=setXValsWithout:) NSArray * xValsWithout;
 @property (nonatomic, retain, getter=yValsWithout, setter=setYValsWithout:) NSArray * yValsWithout;
+@property (nonatomic, getter=expectedValue, setter=setExpectedValue:) double expectedValue;
+@property (nonatomic, getter=expectedValueWithout, setter=setExpectedValueWithout:) double expectedValueWithout;
 #endif
 
-- (id) initWithAppName: (NSString *) appName wDistance: (double) wDistance xVals: (NSArray *) xVals yVals: (NSArray *) yVals xValsWithout: (NSArray *) xValsWithout yValsWithout: (NSArray *) yValsWithout;
+- (id) initWithAppName: (NSString *) appName wDistance: (double) wDistance xVals: (NSArray *) xVals yVals: (NSArray *) yVals xValsWithout: (NSArray *) xValsWithout yValsWithout: (NSArray *) yValsWithout expectedValue: (double) expectedValue expectedValueWithout: (double) expectedValueWithout;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -344,6 +350,14 @@ typedef NSArray * FeatureList;
 - (NSArray *) yValsWithout;
 - (void) setYValsWithout: (NSArray *) yValsWithout;
 - (BOOL) yValsWithoutIsSet;
+
+- (double) expectedValue;
+- (void) setExpectedValue: (double) expectedValue;
+- (BOOL) expectedValueIsSet;
+
+- (double) expectedValueWithout;
+- (void) setExpectedValueWithout: (double) expectedValueWithout;
+- (BOOL) expectedValueWithoutIsSet;
 
 @end
 

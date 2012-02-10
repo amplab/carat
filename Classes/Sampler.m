@@ -366,6 +366,8 @@ static NSArray * SubReports = nil;
                                                                            inManagedObjectContext:managedObjectContext];
                 [cdataAppReport setAppName:hog.appName];
                 [cdataAppReport setAppScore:[NSNumber numberWithDouble:hog.wDistance]];
+                [cdataAppReport setExpectedValue:[NSNumber numberWithDouble:hog.expectedValue]];
+                [cdataAppReport setExpectedValueWithout:[NSNumber numberWithDouble:hog.expectedValueWithout]];
                 [cdataAppReport setReportType:@"Hog"];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
@@ -397,6 +399,8 @@ static NSArray * SubReports = nil;
                                                                            inManagedObjectContext:managedObjectContext];
                 [cdataAppReport setAppName:bug.appName];
                 [cdataAppReport setAppScore:[NSNumber numberWithDouble:bug.wDistance]];
+                [cdataAppReport setExpectedValue:[NSNumber numberWithDouble:bug.expectedValue]];
+                [cdataAppReport setExpectedValueWithout:[NSNumber numberWithDouble:bug.expectedValueWithout]];
                 [cdataAppReport setReportType:@"Bug"];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
@@ -966,9 +970,9 @@ static NSArray * SubReports = nil;
     } 
     else
     {
-        DLog(@"%s LastUpdateDate is null", __PRETTY_FUNCTION__);
         NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc]init] autorelease];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        DLog(@"%s LastUpdateDate null, defaulting to %@", __PRETTY_FUNCTION__, [dateFormatter dateFromString:@"1970-01-01"]);
         return [dateFormatter dateFromString:@"1970-01-01"];
     }
 }
@@ -1020,6 +1024,8 @@ static NSArray * SubReports = nil;
             HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
             [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
             [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            [hog setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
+            [hog setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
             CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
             [hog setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
             [hog setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
@@ -1069,6 +1075,8 @@ static NSArray * SubReports = nil;
             HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
             [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
             [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            [bug setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
+            [bug setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
             CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
             [bug setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
             [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
@@ -1216,9 +1224,14 @@ static NSArray * SubReports = nil;
         /*
          Error is logged, but we soldier on. Should probably implement one of the solutions above.
          */
+        
         [FlurryAnalytics logEvent:@"sampleForeground Error"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
-        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@, trying to fix by deleting persistent store", error, [error userInfo]], @"Error Info", nil]];
+        
+        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+        [__persistentStoreCoordinator release];
+        __persistentStoreCoordinator = nil;
+        DLog(@"%s Unresolved error %@, %@, trying to fix by deleting persistent store", __PRETTY_FUNCTION__,error, [error userInfo]);
     }    
     
     return __persistentStoreCoordinator;

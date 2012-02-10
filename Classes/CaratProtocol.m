@@ -11,6 +11,7 @@
 #import "Thrift/protocol/TProtocolUtil.h"
 #import "Thrift/TProcessor.h"
 
+
 #import "CaratProtocol.h"
 
 
@@ -1753,7 +1754,7 @@
 
 @implementation HogsBugs
 
-- (id) initWithAppName: (NSString *) appName wDistance: (double) wDistance xVals: (NSArray *) xVals yVals: (NSArray *) yVals xValsWithout: (NSArray *) xValsWithout yValsWithout: (NSArray *) yValsWithout
+- (id) initWithAppName: (NSString *) appName wDistance: (double) wDistance xVals: (NSArray *) xVals yVals: (NSArray *) yVals xValsWithout: (NSArray *) xValsWithout yValsWithout: (NSArray *) yValsWithout expectedValue: (double) expectedValue expectedValueWithout: (double) expectedValueWithout
 {
   self = [super init];
   __appName = [appName retain];
@@ -1768,6 +1769,10 @@
   __xValsWithout_isset = YES;
   __yValsWithout = [yValsWithout retain];
   __yValsWithout_isset = YES;
+  __expectedValue = expectedValue;
+  __expectedValue_isset = YES;
+  __expectedValueWithout = expectedValueWithout;
+  __expectedValueWithout_isset = YES;
   return self;
 }
 
@@ -1804,6 +1809,16 @@
     __yValsWithout = [[decoder decodeObjectForKey: @"yValsWithout"] retain];
     __yValsWithout_isset = YES;
   }
+  if ([decoder containsValueForKey: @"expectedValue"])
+  {
+    __expectedValue = [decoder decodeDoubleForKey: @"expectedValue"];
+    __expectedValue_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"expectedValueWithout"])
+  {
+    __expectedValueWithout = [decoder decodeDoubleForKey: @"expectedValueWithout"];
+    __expectedValueWithout_isset = YES;
+  }
   return self;
 }
 
@@ -1832,6 +1847,14 @@
   if (__yValsWithout_isset)
   {
     [encoder encodeObject: __yValsWithout forKey: @"yValsWithout"];
+  }
+  if (__expectedValue_isset)
+  {
+    [encoder encodeDouble: __expectedValue forKey: @"expectedValue"];
+  }
+  if (__expectedValueWithout_isset)
+  {
+    [encoder encodeDouble: __expectedValueWithout forKey: @"expectedValueWithout"];
   }
 }
 
@@ -1967,6 +1990,40 @@
   __yValsWithout_isset = NO;
 }
 
+- (double) expectedValue {
+  return __expectedValue;
+}
+
+- (void) setExpectedValue: (double) expectedValue {
+  __expectedValue = expectedValue;
+  __expectedValue_isset = YES;
+}
+
+- (BOOL) expectedValueIsSet {
+  return __expectedValue_isset;
+}
+
+- (void) unsetExpectedValue {
+  __expectedValue_isset = NO;
+}
+
+- (double) expectedValueWithout {
+  return __expectedValueWithout;
+}
+
+- (void) setExpectedValueWithout: (double) expectedValueWithout {
+  __expectedValueWithout = expectedValueWithout;
+  __expectedValueWithout_isset = YES;
+}
+
+- (BOOL) expectedValueWithoutIsSet {
+  return __expectedValueWithout_isset;
+}
+
+- (void) unsetExpectedValueWithout {
+  __expectedValueWithout_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -2070,6 +2127,22 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 7:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setExpectedValue: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 8:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setExpectedValueWithout: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -2153,6 +2226,16 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__expectedValue_isset) {
+    [outProtocol writeFieldBeginWithName: @"expectedValue" type: TType_DOUBLE fieldID: 7];
+    [outProtocol writeDouble: __expectedValue];
+    [outProtocol writeFieldEnd];
+  }
+  if (__expectedValueWithout_isset) {
+    [outProtocol writeFieldBeginWithName: @"expectedValueWithout" type: TType_DOUBLE fieldID: 8];
+    [outProtocol writeDouble: __expectedValueWithout];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -2171,6 +2254,10 @@
   [ms appendFormat: @"%@", __xValsWithout];
   [ms appendString: @",yValsWithout:"];
   [ms appendFormat: @"%@", __yValsWithout];
+  [ms appendString: @",expectedValue:"];
+  [ms appendFormat: @"%f", __expectedValue];
+  [ms appendString: @",expectedValueWithout:"];
+  [ms appendFormat: @"%f", __expectedValueWithout];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -3609,7 +3696,7 @@
 
 - (id) initWithInProtocol: (id <TProtocol>) anInProtocol outProtocol: (id <TProtocol>) anOutProtocol
 {
-  self = [super init];
+  [super init];
   inProtocol = [anInProtocol retain];
   outProtocol = [anOutProtocol retain];
   return self;
