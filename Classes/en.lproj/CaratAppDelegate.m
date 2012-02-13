@@ -33,6 +33,30 @@ void onUncaughtException(NSException *exception)
     NSLog(@"uncaught exception: %@", exception.description);
 }
 
+#pragma mark - notifications
+
+- (void)scheduleNotificationAfterInterval:(int)interval {
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    if (interval <= 0) { interval = 432000; } // 5 days
+    //if (interval <= 0) { interval = 10; }
+    
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    if (localNotif == nil)
+        return;
+    localNotif.fireDate = [[NSDate date] addTimeInterval:interval];
+    localNotif.timeZone = [NSTimeZone defaultTimeZone];
+    
+    localNotif.alertBody = @"Carat has discovered new battery-saving actions for you. Why don't you take a look?";
+    localNotif.alertAction = NSLocalizedString(@"Launch Carat", nil);
+    localNotif.repeatInterval = 0;
+    
+    //localNotif.soundName = UILocalNotificationDefaultSoundName; // TODO turn on sound after preventing night-time firing
+    //localNotif.applicationIconBadgeNumber = 1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    [localNotif release];
+}
+
 #pragma mark -
 #pragma mark Application lifecycle
 
@@ -86,6 +110,7 @@ void onUncaughtException(NSException *exception)
     
     // idempotent setup of notifications; also called in willResignActive
     [self setupNotificationSubscriptions];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications]; // so nothing fires while we're active
     
     // we do this to prompt the dialog asking for permission to share location info
     [locationManager startMonitoringSignificantLocationChanges];
@@ -116,7 +141,8 @@ void onUncaughtException(NSException *exception)
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    [self setupNotificationSubscriptions]; // we aren't seeing any battery events, and I don't know why
+    [self setupNotificationSubscriptions];
+    [self scheduleNotificationAfterInterval:-1]; // uses default of 5 days
 }
 
 
