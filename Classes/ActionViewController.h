@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
-@interface ActionViewController : UIViewController {
+@interface ActionViewController : UIViewController <MBProgressHUDDelegate> {
     
     NSMutableArray *actionStrings;
     NSMutableArray *actionValues;
+    MBProgressHUD *HUD;
     
     IBOutlet UIView *dataTable;
 }
@@ -20,5 +22,9 @@
 @property (retain, nonatomic) NSMutableArray *actionValues;
 
 @property (retain, nonatomic) IBOutlet UIView *dataTable;
+
+- (void)updateView;
+- (void)loadDataWithHUD;
+- (BOOL)isFresh;
 
 @end

@@ -10,6 +10,7 @@
 #import "Sampler.h"
 #import "Utilities.h"
 #import "ActionItemCell.h"
+#import "UIImageDoNotCache.h"
 
 @implementation ActionViewController
 
@@ -34,6 +35,85 @@
     
     // Release any cached data, images, etc that aren't in use.
 }
+
+#pragma mark - Data management
+
+- (void)loadDataWithHUD
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
+	[self.tabBarController.view addSubview:HUD];
+	
+	HUD.dimBackground = YES;
+	
+	// Register for HUD callbacks so we can remove it from the window at the right time
+    HUD.delegate = self;
+    HUD.labelText = @"Loading";
+	
+    [HUD showWhileExecuting:@selector(loadData) onTarget:self withObject:nil animated:YES];
+}
+
+- (void)loadData
+{    
+    // this shouldn't trigger; just being defensive
+    if ([self isFresh]) {
+        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+        UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+        HUD.customView = imgView;
+        [HUD setMode:MBProgressHUDModeCustomView];
+        HUD.labelText = @"Completed";
+        [icon release];
+        [imgView release];
+        sleep(1);
+    }
+    
+    // UPDATE REPORT DATA
+    if ([[CommunicationManager instance] isInternetReachable] == YES)
+    {
+        [[Sampler instance] updateLocalReportsFromServer];
+    }
+    
+    [self updateView];
+    
+    // display result
+    if ([self isFresh]) {
+        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+        UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+        HUD.customView = imgView;
+        [HUD setMode:MBProgressHUDModeCustomView];
+        HUD.labelText = @"Completed";
+        [icon release];
+        [imgView release];
+        sleep(1);
+    } else {
+        UIImage *icon = [UIImage newImageNotCached:@"37x-X.png"];
+        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+        HUD.customView = imgView;
+        [HUD setMode:MBProgressHUDModeCustomView];
+        HUD.labelText = @"Update Failed";
+        HUD.detailsLabelText = @"(showing stale data)";
+        [icon release];
+        [imgView release];
+        sleep(2);
+    }
+}
+
+- (BOOL) isFresh
+{
+    return [[Sampler instance] secondsSinceLastUpdate] < 600; // 10 minutes
+}
+
+#pragma mark - MBProgressHUDDelegate method
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    // Remove HUD from screen when the HUD was hidded
+    [HUD removeFromSuperview];
+    [HUD release];
+	HUD = nil;
+}
+
 
 #pragma mark - table methods
 
@@ -113,9 +193,9 @@
 //               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 
-#pragma mark - button handlers
+#pragma mark - share handler
 
-- (IBAction)shareButtonHandler {
+- (void)shareHandler {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
                                                     message:@"This feature is disabled while Carat is in beta." 
                                                    delegate:nil 
@@ -184,6 +264,17 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    // loads data while showing busy indicator
+    if (![self isFresh]) {
+        [self loadDataWithHUD];
+    } else {
+        // For this screen, let's put sending samples/registrations here so that we don't conflict
+        // with the report syncing (need to limit memory/CPU/thread usage so that we don't get killed).
+        [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+    }
+    
+    [self updateView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -200,6 +291,12 @@
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return YES;
+}
+
+- (void)updateView {
+    // TODO
+    
+    [self.view setNeedsDisplay];
 }
 
 - (void)dealloc {
