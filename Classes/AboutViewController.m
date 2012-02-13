@@ -10,7 +10,6 @@
 
 @implementation AboutViewController
 @synthesize aboutWebView;
-@synthesize theHTML = _theHTML;
 @synthesize portraitView, landscapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -19,19 +18,6 @@
 	if (self) {
         self.title = @"About";
         self.tabBarItem.image = [UIImage imageNamed:@"about"];
-        self.theHTML = @"<html> \
-        <head> \
-        </head> \
-        <body> \
-        <h3>Carat: collaborative detection of energy bugs</h3> \
-        <p>Carat is a research project from the AMP Lab at UC Berkeley that aims to perform collaborative detection of energy bugs.<p> \
-        <p><b><i>Bug</i></b> means an app that is using a lot of energy on a small number of devices, including yours. Restarting a buggy app may improve battery life.<p> \
-        <p><b><i>Hog</i></b> means an app that is correlated with higher energy use, across many devices. Closing this app may improve battery life.<p> \
-        <p>Carat collects and reports generic usage statistics about your phone that allow it to do its job; this process involves absolutely no personally identifying information. Period.<p> \
-        <p>Carat is under development, so please check back often to see new data and new analyses. The more you use it, the better it will get. You can read more about the research on the <a href=\"http://carat.cs.berkeley.edu\">Carat Project page</a>.<p> \
-        <p>You can also <a href=\"mailto:oliner+carat@eecs.berkeley.edu\">contact us directly</a>.<p> \
-        </body> \
-        </html>";
     }
     return self;
 }
@@ -72,7 +58,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     for (UIWebView *wv in self.aboutWebView) {
-        [wv loadHTMLString:self.theHTML baseURL:nil];
+        [wv loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
     }
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -93,8 +79,7 @@
 {
     [aboutWebView release];
     [self setAboutWebView:nil];
-    [theHTML release];
-    [self setTheHTML:nil];
+
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -138,7 +123,6 @@
 
 - (void)dealloc {
     [aboutWebView release];
-    [theHTML release];
     [super dealloc];
 }
 @end
