@@ -215,6 +215,32 @@
     //	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
+#pragma mark - notifications
+
+- (void)scheduleNotificationAfterInterval:(int)interval {
+    [self clearAllNotifications];
+    if (interval <= 0) { interval = 432000; } // 5 days
+    
+    UILocalNotification *localNotif = [[UILocalNotification alloc] init];
+    if (localNotif == nil)
+        return;
+    localNotif.fireDate = [[NSDate date] addTimeInterval:interval];
+    localNotif.timeZone = [NSTimeZone defaultTimeZone];
+    
+    localNotif.alertBody = @"Carat has discovered new battery-saving actions for you. Why don't you take a look?";
+    localNotif.alertAction = NSLocalizedString(@"Launch Carat", nil);
+    localNotif.repeatInterval = 0;
+    
+    //localNotif.soundName = UILocalNotificationDefaultSoundName; // TODO turn on sound after preventing night-time firing
+    //localNotif.applicationIconBadgeNumber = 1;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
+    [localNotif release];
+}
+
+- (void)clearAllNotifications {
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
 
 #pragma mark - View lifecycle
 
@@ -273,6 +299,8 @@
         // with the report syncing (need to limit memory/CPU/thread usage so that we don't get killed).
         [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
     }
+    
+    [self scheduleNotificationAfterInterval:-1]; // uses default of 5 days
     
     [self updateView];
 }

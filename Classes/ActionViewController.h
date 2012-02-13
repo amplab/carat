@@ -23,6 +23,7 @@
 
 @property (retain, nonatomic) IBOutlet UIView *dataTable;
 
+- (void)clearAllNotifications;
 - (void)updateView;
 - (void)loadDataWithHUD;
 - (BOOL)isFresh;
