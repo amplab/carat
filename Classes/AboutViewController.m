@@ -7,8 +7,10 @@
 //
 
 #import "AboutViewController.h"
+#import "Sampler.h"
 
 @implementation AboutViewController
+
 @synthesize aboutWebView;
 @synthesize portraitView, landscapeView;
 

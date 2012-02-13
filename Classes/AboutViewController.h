@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Sampler.h"
 
 @interface AboutViewController : UIViewController <UIWebViewDelegate> {
 

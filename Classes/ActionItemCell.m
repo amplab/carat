@@ -12,7 +12,7 @@
 
 @synthesize actionString;
 @synthesize actionValue;
-
+@synthesize actionType;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

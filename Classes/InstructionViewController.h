@@ -16,12 +16,14 @@ typedef enum {
     ActionTypeSpreadTheWord
     } ActionType;
 
-@interface InstructionViewController : UIViewController {
-    NSString *theHTML;
+@interface InstructionViewController : UIViewController <UIWebViewDelegate> {
     ActionType actionType;
+    UIWebView *webView;
 }
 
-@property (nonatomic, copy) NSString *theHTML;
-@property (nonatomic)       ActionType actionType;
+@property (nonatomic)         ActionType actionType;
+@property (retain, nonatomic) IBOutlet UIWebView *webView;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil actionType:(ActionType)action;
 
 @end

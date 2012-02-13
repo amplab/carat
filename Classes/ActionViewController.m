@@ -11,6 +11,8 @@
 #import "Utilities.h"
 #import "ActionItemCell.h"
 #import "UIImageDoNotCache.h"
+#import "InstructionViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation ActionViewController
 
@@ -145,8 +147,10 @@
     cell.actionString.text = [actionStrings objectAtIndex:indexPath.row];
     if ([[actionValues objectAtIndex:indexPath.row] doubleValue] <= 0) {
         cell.actionValue.text = @"+100 karma!";
+        cell.actionType = ActionTypeSpreadTheWord;
     } else {
         cell.actionValue.text = [Utilities formatNSTimeIntervalAsNSString:[[actionValues objectAtIndex:indexPath.row] doubleValue]];
+        cell.actionType = ActionTypeKillApp; // TODO per action type
     }
     
     return cell;
@@ -162,35 +166,17 @@
 
 // loads the selected detail view
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    ReportItemCell *selectedCell = (ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath];
-//    [selectedCell setSelected:NO animated:YES];
-//    
-//    DetailViewController *dvController = [self getDetailView];
-//    HogsBugs *hb = [[self.report hbList] objectAtIndex:indexPath.row];
-//    [dvController setXVals:[hb xVals]];
-//    [dvController setYVals:[hb yVals]];
-//    [dvController setXValsWithout:[hb xValsWithout]];
-//    [dvController setYValsWithout:[hb yValsWithout]];
-//    [self.navigationController pushViewController:dvController animated:YES];
-//    
-//    [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
-//    
-//    UIImage *img = [UIImage newImageNotCached:[selectedCell.appName.text stringByAppendingString:@".png"]];
-//    if (img == nil) {
-//        img = [UIImage newImageNotCached:@"icon57.png"];
-//    }
-//    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
-//    [img release];
-//    
-//    for (UIProgressView *pBar in [dvController appScore]) {
-//        [pBar setProgress:selectedCell.appScore.progress animated:NO];
-//    }
-//    
-//    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thisText];
-//    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thatText];
-//    
-//    [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
-//               withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
+    ActionItemCell *selectedCell = (ActionItemCell *)[tableView cellForRowAtIndexPath:indexPath];
+    [selectedCell setSelected:NO animated:YES];
+    
+    if (selectedCell.actionType == ActionTypeSpreadTheWord) {
+        [self shareHandler];
+    } else {
+        InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:selectedCell.actionType];
+        [self.navigationController pushViewController:ivController animated:YES];
+        [ivController release];
+        [FlurryAnalytics logEvent:@"selectedInstructionView"];
+    }
 }
 
 #pragma mark - share handler
@@ -203,6 +189,9 @@
                                           otherButtonTitles:nil];
     [alert show];
     [alert release];
+    
+    [FlurryAnalytics logEvent:@"selectedSpreadTheWord"];
+    
     // TODO reactivated before submitting to Apple
     //	// Create the item to share (in this example, a url)
     //	NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];

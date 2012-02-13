@@ -12,12 +12,12 @@
 
 @implementation InstructionViewController
 
-@synthesize theHTML = _theHTML;
 @synthesize actionType = _actionType;
+@synthesize webView = _webView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil actionType:(ActionType)action
+- (id)initWithNibName:(NSString *)nibNameOrNil actionType:(ActionType)action
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super initWithNibName:nibNameOrNil bundle:nil];
     if (self) {
         [self setActionType:action];
     }
@@ -39,7 +39,6 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
-    [theHTML release];
 }
 
 #pragma mark - UIWebView
@@ -65,14 +64,6 @@
 
 #pragma mark - View lifecycle
 
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView
-{
-}
-*/
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -82,34 +73,36 @@
     // TODO load the appropriate HTML into theHTML based on actionType
     switch (self.actionType) {
         case ActionTypeKillApp:
-            [self setTheHTML:@"Unrecognized Action Type!"];
+            DLog(@"Loading Kill App instructions:");
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"killapp.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeRestartApp:
-            [self setTheHTML:@"Unrecognized Action Type!"];
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"killapp" ofType:@"html"] isDirectory:NO]]];
             break;
             
         case ActionTypeUpgradeOS:
-            [self setTheHTML:@"Unrecognized Action Type!"];
-            break;
-            
         case ActionTypeDimScreen:
-            [self setTheHTML:@"Unrecognized Action Type!"];
+            DLog(@"These instructions not yet implemented.");
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
             break;
-            
         case ActionTypeSpreadTheWord:
             DLog(@"Should not be loading InstructionView when ActionType is SpreadTheWord!");
-            [self setTheHTML:@"How did you get here?"];
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
             break;
-            
+
         default:
-            [self setTheHTML:@"Unrecognized Action Type!"];
+            DLog(@"Unrecognized Action Type!");
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
             break;
     }
 }
 
 - (void)viewDidUnload
 {
+    [webView release];
+    [self setWebView:nil];
+    
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -128,5 +121,9 @@
     return YES;
 }
 
+- (void)dealloc {
+    [webView release];
+    [super dealloc];
+}
 
 @end
