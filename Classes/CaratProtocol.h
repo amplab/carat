@@ -183,19 +183,22 @@ typedef NSArray * FeatureList;
   double __score;
   NSArray * __xVals;
   NSArray * __yVals;
+  double __expectedValue;
 
   BOOL __score_isset;
   BOOL __xVals_isset;
   BOOL __yVals_isset;
+  BOOL __expectedValue_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
 @property (nonatomic, getter=score, setter=setScore:) double score;
 @property (nonatomic, retain, getter=xVals, setter=setXVals:) NSArray * xVals;
 @property (nonatomic, retain, getter=yVals, setter=setYVals:) NSArray * yVals;
+@property (nonatomic, getter=expectedValue, setter=setExpectedValue:) double expectedValue;
 #endif
 
-- (id) initWithScore: (double) score xVals: (NSArray *) xVals yVals: (NSArray *) yVals;
+- (id) initWithScore: (double) score xVals: (NSArray *) xVals yVals: (NSArray *) yVals expectedValue: (double) expectedValue;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -211,6 +214,10 @@ typedef NSArray * FeatureList;
 - (NSArray *) yVals;
 - (void) setYVals: (NSArray *) yVals;
 - (BOOL) yValsIsSet;
+
+- (double) expectedValue;
+- (void) setExpectedValue: (double) expectedValue;
+- (BOOL) expectedValueIsSet;
 
 @end
 

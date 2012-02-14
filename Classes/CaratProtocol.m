@@ -1012,7 +1012,7 @@
 
 @implementation DetailScreenReport
 
-- (id) initWithScore: (double) score xVals: (NSArray *) xVals yVals: (NSArray *) yVals
+- (id) initWithScore: (double) score xVals: (NSArray *) xVals yVals: (NSArray *) yVals expectedValue: (double) expectedValue
 {
   self = [super init];
   __score = score;
@@ -1021,6 +1021,8 @@
   __xVals_isset = YES;
   __yVals = [yVals retain];
   __yVals_isset = YES;
+  __expectedValue = expectedValue;
+  __expectedValue_isset = YES;
   return self;
 }
 
@@ -1042,6 +1044,11 @@
     __yVals = [[decoder decodeObjectForKey: @"yVals"] retain];
     __yVals_isset = YES;
   }
+  if ([decoder containsValueForKey: @"expectedValue"])
+  {
+    __expectedValue = [decoder decodeDoubleForKey: @"expectedValue"];
+    __expectedValue_isset = YES;
+  }
   return self;
 }
 
@@ -1058,6 +1065,10 @@
   if (__yVals_isset)
   {
     [encoder encodeObject: __yVals forKey: @"yVals"];
+  }
+  if (__expectedValue_isset)
+  {
+    [encoder encodeDouble: __expectedValue forKey: @"expectedValue"];
   }
 }
 
@@ -1127,6 +1138,23 @@
   __yVals_isset = NO;
 }
 
+- (double) expectedValue {
+  return __expectedValue;
+}
+
+- (void) setExpectedValue: (double) expectedValue {
+  __expectedValue = expectedValue;
+  __expectedValue_isset = YES;
+}
+
+- (BOOL) expectedValueIsSet {
+  return __expectedValue_isset;
+}
+
+- (void) unsetExpectedValue {
+  __expectedValue_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -1186,6 +1214,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 4:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setExpectedValue: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1232,6 +1268,11 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__expectedValue_isset) {
+    [outProtocol writeFieldBeginWithName: @"expectedValue" type: TType_DOUBLE fieldID: 4];
+    [outProtocol writeDouble: __expectedValue];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1244,6 +1285,8 @@
   [ms appendFormat: @"%@", __xVals];
   [ms appendString: @",yVals:"];
   [ms appendFormat: @"%@", __yVals];
+  [ms appendString: @",expectedValue:"];
+  [ms appendFormat: @"%f", __expectedValue];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }

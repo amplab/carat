@@ -80,6 +80,8 @@ static NSArray * SubReports = nil;
                                                                        inManagedObjectContext:managedObjectContext];
             cdataSubReport.name = subReportName;
             cdataSubReport.score = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.expectedValue = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.expectedValueWithout = [NSNumber numberWithDouble:0.0];
             cdataSubReport.distributionXWith = [[[NSArray alloc] init] autorelease];
             cdataSubReport.distributionXWithout = [[[NSArray alloc] init] autorelease];
             cdataSubReport.distributionYWith = [[[NSArray alloc] init] autorelease];
@@ -165,9 +167,11 @@ static NSArray * SubReports = nil;
                     OSInfo.score = [[subReport valueForKey:@"score"] doubleValue];
                     OSInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     OSInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    OSInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
                     if (OSInfoWithout == nil)
                         OSInfoWithout = [[DetailScreenReport alloc] init];
                     OSInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    OSInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
                     OSInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     OSInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 } 
@@ -178,10 +182,12 @@ static NSArray * SubReports = nil;
                     ModelInfo.score = [[subReport valueForKey:@"score"] doubleValue];
                     ModelInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     ModelInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    ModelInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
                     
                     if (ModelInfoWithout == nil)
                         ModelInfoWithout = [[DetailScreenReport alloc] init];
                     ModelInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    ModelInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
                     ModelInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     ModelInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 }
@@ -192,10 +198,12 @@ static NSArray * SubReports = nil;
                     SimilarAppsInfo.score = [[subReport valueForKey:@"score"] doubleValue];
                     SimilarAppsInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     SimilarAppsInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    SimilarAppsInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
                     
                     if (SimilarAppsInfoWithout == nil)
                         SimilarAppsInfoWithout = [[DetailScreenReport alloc] init];
                     SimilarAppsInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    SimilarAppsInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
                     SimilarAppsInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     SimilarAppsInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 }
@@ -241,6 +249,8 @@ static NSArray * SubReports = nil;
           andThatDetailReport: (DetailScreenReport *) detailScreenReportWithout
 {
     cdataSubReport.score = [NSNumber numberWithDouble:detailScreenReportWith.score];
+    cdataSubReport.expectedValue = [NSNumber numberWithDouble:detailScreenReportWith.expectedValue];
+    cdataSubReport.expectedValueWithout = [NSNumber numberWithDouble:detailScreenReportWithout.expectedValue];
     cdataSubReport.distributionXWith = detailScreenReportWith.xVals;
     cdataSubReport.distributionYWith = detailScreenReportWith.yVals;
     cdataSubReport.distributionXWithout = detailScreenReportWithout.xVals;
