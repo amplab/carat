@@ -213,7 +213,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
     [self updateView];
 }
 
@@ -250,7 +249,7 @@
         // with the report syncing (need to limit memory/CPU/thread usage so that we don't get killed).
         [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
     }
-    
+
     [self updateView];
 }
 
@@ -271,50 +270,60 @@
 }
 
 - (void)updateView {
-    [self setActionList:[[[NSMutableArray alloc] init] autorelease]];
+    NSMutableArray *myList = [[[NSMutableArray alloc] init] autorelease];
     
     ActionObject *tmpAction;
     
+    DLog(@"Loading Hogs");
     // get Hogs, filter negative actionBenefits, fill mutable array
     NSArray *tmp = [[Sampler instance] getHogs].hbList;
+    DLog(@"Got Hogs");
     if (tmp != nil) {
+        DLog(@"Hogs not nil");
         for (HogsBugs *hb in tmp) {
-            if ([hb appName] == nil ||
-                [hb expectedValue] <= 0 ||
-                [hb expectedValueWithout] <= 0) continue;
-            
-            NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
-            if (benefit <= 60) continue;
-            
-            tmpAction = [[ActionObject alloc] init];
-            [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
-            [tmpAction setActionType:ActionTypeKillApp];
-            [tmpAction setActionBenefit:benefit];
-            [self.actionList addObject:tmpAction];
-            [tmpAction release];
+            DLog(@"loop");
+            if ([hb appName] != nil &&
+                [hb expectedValue] > 0 &&
+                [hb expectedValueWithout] > 0) {
+                DLog(@"Loading App %s", [hb appName]);
+                
+                NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
+                if (benefit > 60) {
+                    tmpAction = [[ActionObject alloc] init];
+                    [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
+                    [tmpAction setActionType:ActionTypeKillApp];
+                    [tmpAction setActionBenefit:benefit];
+                    [myList addObject:tmpAction];
+                    [tmpAction release];
+                }
+            }
         }
     }
     
+    DLog(@"Loading Bugs");
     // get Bugs, add to array
     tmp = [[Sampler instance] getBugs].hbList;
     if (tmp != nil) {
         for (HogsBugs *hb in tmp) {
-            if ([hb appName] == nil ||
-                [hb expectedValue] <= 0 ||
-                [hb expectedValueWithout] <= 0) continue;
-            
-            NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
-            if (benefit <= 60) continue;
-            
-            tmpAction = [[ActionObject alloc] init];
-            [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
-            [tmpAction setActionType:ActionTypeRestartApp];
-            [tmpAction setActionBenefit:benefit];
-            [self.actionList addObject:tmpAction];
-            [tmpAction release];
+            if ([hb appName] != nil &&
+                [hb expectedValue] > 0 &&
+                [hb expectedValueWithout] > 0) {
+                DLog(@"Loading App %s", [hb appName]);
+                
+                NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
+                if (benefit > 60) {
+                    tmpAction = [[ActionObject alloc] init];
+                    [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
+                    [tmpAction setActionType:ActionTypeRestartApp];
+                    [tmpAction setActionBenefit:benefit];
+                    [myList addObject:tmpAction];
+                    [tmpAction release];
+                }
+            }
         }
     }
     
+    DLog(@"Loading OS");
     // get OS
     DetailScreenReport *dscWith = [[[Sampler instance] getOSInfo:YES] retain];
     DetailScreenReport *dscWithout = [[[Sampler instance] getOSInfo:NO] retain];
@@ -328,7 +337,7 @@
                 [tmpAction setActionText:@"Upgrade the Operating System"];
                 [tmpAction setActionType:ActionTypeUpgradeOS];
                 [tmpAction setActionBenefit:benefit];
-                [self.actionList addObject:tmpAction];
+                [myList addObject:tmpAction];
                 [tmpAction release];
             }
         }
@@ -337,17 +346,20 @@
     [dscWith release];
     [dscWithout release];
 
+    DLog(@"Loading Action");
     // sharing Action
     tmpAction = [[ActionObject alloc] init];
     [tmpAction setActionText:@"Help Spread the Word!"];
     [tmpAction setActionType:ActionTypeSpreadTheWord];
     [tmpAction setActionBenefit:-1];
-    [self.actionList addObject:tmpAction];
+    [myList addObject:tmpAction];
     [tmpAction release];
     
     //the "key" is the *name* of the @property as a string.  So you can also sort by @"label" if you'd like
-    [self.actionList sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"actionBenefit" ascending:NO]]];
+    [myList sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"actionBenefit" ascending:NO]]];
     
+    [self setActionList:nil];
+    [self setActionList:myList];
     [self.actionTable reloadData];
     [self.view setNeedsDisplay];
 }
