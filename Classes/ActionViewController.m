@@ -331,6 +331,7 @@
         if (dscWith.expectedValue > 0 &&
             dscWithout.expectedValue > 0) {
             NSInteger benefit = (int) (10000/dscWithout.expectedValue - 10000/dscWith.expectedValue);
+            DLog(@"OS benefit is %d", benefit);
             if (benefit > 60) {
                 tmpAction = [[ActionObject alloc] init];
                 [tmpAction setActionText:@"Upgrade the Operating System"];
