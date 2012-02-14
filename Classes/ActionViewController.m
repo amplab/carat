@@ -50,7 +50,7 @@
 	
 	// Register for HUD callbacks so we can remove it from the window at the right time
     HUD.delegate = self;
-    HUD.labelText = @"Loading";
+    HUD.labelText = @"Downloading Reports";
 	
     [HUD showWhileExecuting:@selector(loadData) onTarget:self withObject:nil animated:YES];
 }
@@ -281,13 +281,12 @@
     if (tmp != nil) {
         DLog(@"Hogs not nil");
         for (HogsBugs *hb in tmp) {
-            DLog(@"loop");
             if ([hb appName] != nil &&
                 [hb expectedValue] > 0 &&
                 [hb expectedValueWithout] > 0) {
-                DLog(@"Loading App %s", [hb appName]);
                 
-                NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
+                NSInteger benefit = (int) (10000/[hb expectedValueWithout] - 10000/[hb expectedValue]);
+                DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
@@ -308,9 +307,9 @@
             if ([hb appName] != nil &&
                 [hb expectedValue] > 0 &&
                 [hb expectedValueWithout] > 0) {
-                DLog(@"Loading App %s", [hb appName]);
                 
-                NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
+                NSInteger benefit = (int) (10000/[hb expectedValueWithout] - 10000/[hb expectedValue]);
+                DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
@@ -331,7 +330,7 @@
     if (dscWith != nil && dscWithout != nil) {
         if (dscWith.expectedValue > 0 &&
             dscWithout.expectedValue > 0) {
-            NSInteger benefit = (int) (10000/dscWith.expectedValue - 10000/dscWithout.expectedValue);
+            NSInteger benefit = (int) (10000/dscWithout.expectedValue - 10000/dscWith.expectedValue);
             if (benefit > 60) {
                 tmpAction = [[ActionObject alloc] init];
                 [tmpAction setActionText:@"Upgrade the Operating System"];
