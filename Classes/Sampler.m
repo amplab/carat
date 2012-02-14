@@ -446,10 +446,20 @@ static NSArray * SubReports = nil;
 
 - (void) updateLocalReportsFromServer
 {
-    if ([lockCoreDataStore tryLock]) {
+    /*if ([lockCoreDataStore tryLock]) {
         [self updateReportsFromServer];
         [lockCoreDataStore unlock];
-    }
+    }*/
+    dispatch_sync( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([lockCoreDataStore tryLock]) {
+            [self updateReportsFromServer];
+            [lockCoreDataStore unlock];
+        }
+        DLog(@"%s Done!", __PRETTY_FUNCTION__);
+        //dispatch_async( dispatch_get_main_queue(), ^{
+        //    DLog(@"%s Done!", __PRETTY_FUNCTION__);
+        //});
+    });
 }
  
 - (id) initWithCommManager:(id)cManager 
@@ -1000,8 +1010,9 @@ static NSArray * SubReports = nil;
     return interval;
 }
 
-- (HogBugReport *) getHogs 
+- (HogBugReport *) getHogsFromCoreData 
 {
+    DLog(@"Getting hogs from core data...");
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) 
@@ -1025,6 +1036,8 @@ static NSArray * SubReports = nil;
         }
      
         DLog(@"%s Found %d hogs, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
+        if ([fetchedObjects count] == 0)
+            return nil;
         
         HogBugReport * hogs = [[[HogBugReport alloc] init] autorelease];
         NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
@@ -1043,14 +1056,14 @@ static NSArray * SubReports = nil;
             [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
             [hbList addObject:hog];
         }
-
         return hogs;
     }
     return nil;
 }
 
-- (HogBugReport *) getBugs 
+- (HogBugReport *) getBugsFromCoreData 
 {
+    DLog(@"Getting bugs from core data...");
     NSError *error = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) 
@@ -1101,6 +1114,27 @@ static NSArray * SubReports = nil;
     }
     return nil;
 }
+
+- (HogBugReport *) getBugs
+{
+    HogBugReport* bugs = nil;
+    if ([lockCoreDataStore tryLock]) {
+        bugs = [self getBugsFromCoreData];
+        [lockCoreDataStore unlock];
+    } else {DLog(@"%s Cannot get a lock on coredata, sending nil for bug report.", __PRETTY_FUNCTION__);}
+    return bugs;
+}
+
+- (HogBugReport *) getHogs
+{
+    HogBugReport* hogs = nil;
+    if ([lockCoreDataStore tryLock]) {
+        hogs = [self getHogsFromCoreData];
+        [lockCoreDataStore unlock];
+    } else { DLog(@"%s Cannot get lock, sending nil for hog report.", __PRETTY_FUNCTION__);}
+    return hogs;
+}
+
 
 - (double) getJScore
 {
