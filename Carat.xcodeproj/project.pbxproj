@@ -50,9 +50,9 @@
 		ABA3A0F714E45711009B3D33 /* InstructionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABA3A0F614E45711009B3D33 /* InstructionView.xib */; };
 		ABA3A0FA14E4592F009B3D33 /* InstructionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA3A0F914E4592F009B3D33 /* InstructionViewController.m */; };
 		ABA3A10114E4A557009B3D33 /* killapp.html in Resources */ = {isa = PBXBuildFile; fileRef = ABA3A10014E4A557009B3D33 /* killapp.html */; };
-		ABA3A10614E4A606009B3D33 /* procmanager1.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA3A10414E4A606009B3D33 /* procmanager1.png */; };
-		ABA3A10714E4A606009B3D33 /* procmanager2.png in Resources */ = {isa = PBXBuildFile; fileRef = ABA3A10514E4A606009B3D33 /* procmanager2.png */; };
 		ABA3A10914E4A644009B3D33 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = ABA3A10814E4A644009B3D33 /* about.html */; };
+		ABB1221C14E9E7C300FE959A /* procmanager1.png in Resources */ = {isa = PBXBuildFile; fileRef = ABB1221A14E9E7C300FE959A /* procmanager1.png */; };
+		ABB1221D14E9E7C300FE959A /* procmanager2.png in Resources */ = {isa = PBXBuildFile; fileRef = ABB1221B14E9E7C300FE959A /* procmanager2.png */; };
 		ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */; };
 		ABC07A161485828A00FCC2C2 /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A151485828A00FCC2C2 /* amplab_logo.png */; };
 		ABC07A1B14859C7100FCC2C2 /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A1914859C7100FCC2C2 /* about.png */; };
@@ -303,9 +303,9 @@
 		ABA3A0F814E4592F009B3D33 /* InstructionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstructionViewController.h; sourceTree = "<group>"; };
 		ABA3A0F914E4592F009B3D33 /* InstructionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstructionViewController.m; sourceTree = "<group>"; };
 		ABA3A10014E4A557009B3D33 /* killapp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = killapp.html; path = html/killapp.html; sourceTree = "<group>"; };
-		ABA3A10414E4A606009B3D33 /* procmanager1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = procmanager1.png; path = html/img/procmanager1.png; sourceTree = "<group>"; };
-		ABA3A10514E4A606009B3D33 /* procmanager2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = procmanager2.png; path = html/img/procmanager2.png; sourceTree = "<group>"; };
 		ABA3A10814E4A644009B3D33 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = html/about.html; sourceTree = "<group>"; };
+		ABB1221A14E9E7C300FE959A /* procmanager1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = procmanager1.png; sourceTree = "<group>"; };
+		ABB1221B14E9E7C300FE959A /* procmanager2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = procmanager2.png; sourceTree = "<group>"; };
 		ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		ABC07A151485828A00FCC2C2 /* amplab_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = amplab_logo.png; sourceTree = "<group>"; };
 		ABC07A1914859C7100FCC2C2 /* about.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = about.png; sourceTree = "<group>"; };
@@ -807,8 +807,8 @@
 		ABA3A10314E4A570009B3D33 /* img */ = {
 			isa = PBXGroup;
 			children = (
-				ABA3A10414E4A606009B3D33 /* procmanager1.png */,
-				ABA3A10514E4A606009B3D33 /* procmanager2.png */,
+				ABB1221A14E9E7C300FE959A /* procmanager1.png */,
+				ABB1221B14E9E7C300FE959A /* procmanager2.png */,
 			);
 			name = img;
 			sourceTree = "<group>";
@@ -1355,9 +1355,9 @@
 				AB7A113914E1FEAB004D155C /* 32-iphone.png in Resources */,
 				ABA3A0F714E45711009B3D33 /* InstructionView.xib in Resources */,
 				ABA3A10114E4A557009B3D33 /* killapp.html in Resources */,
-				ABA3A10614E4A606009B3D33 /* procmanager1.png in Resources */,
-				ABA3A10714E4A606009B3D33 /* procmanager2.png in Resources */,
 				ABA3A10914E4A644009B3D33 /* about.html in Resources */,
+				ABB1221C14E9E7C300FE959A /* procmanager1.png in Resources */,
+				ABB1221D14E9E7C300FE959A /* procmanager2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
