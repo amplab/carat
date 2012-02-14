@@ -78,14 +78,20 @@
             break;
             
         case ActionTypeRestartApp:
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"killapp" ofType:@"html"] isDirectory:NO]]];
+            DLog(@"Loading Restart App instructions:");
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"killapp.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeUpgradeOS:
+            DLog(@"Loading Upgrade OS instructions:");
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"killapp.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
+            break;
+            
         case ActionTypeDimScreen:
             DLog(@"These instructions not yet implemented.");
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
             break;
+            
         case ActionTypeSpreadTheWord:
             DLog(@"Should not be loading InstructionView when ActionType is SpreadTheWord!");
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
