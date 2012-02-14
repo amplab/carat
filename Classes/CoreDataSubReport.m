@@ -16,6 +16,8 @@
 @dynamic distributionXWithout;
 @dynamic name;
 @dynamic score;
+@dynamic expectedValue;
+@dynamic expectedValueWithout;
 @dynamic distributionXWith;
 @dynamic distributionYWithout;
 @dynamic mainreport;

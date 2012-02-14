@@ -17,6 +17,8 @@
 @property (nonatomic, retain) id distributionXWithout;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * score;
+@property (nonatomic, retain) NSNumber * expectedValue;
+@property (nonatomic, retain) NSNumber * expectedValueWithout;
 @property (nonatomic, retain) id distributionXWith;
 @property (nonatomic, retain) id distributionYWithout;
 @property (nonatomic, retain) CoreDataMainReport *mainreport;
