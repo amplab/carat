@@ -1157,6 +1157,15 @@ static NSArray * SubReports = nil;
     return ChangesSinceLastWeek;
 }
 
+// TODO I temporarily abandoned this effort because this call blocks
+// I need to call it in a separate thread, but I don't want to spawn a dozen of them all at once. This belongs as a background task similar to uploading samples. Another day...
+- (UIImage *) getIconForApp: (NSString *)appName
+{
+    NSString *iconURL = [[@"https://s3.amazonaws.com/carat.icons/" stringByAppendingString:appName] stringByAppendingString:@".jpg"];
+    DLog(@"Getting icon at %s", iconURL);
+    return [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconURL]]] autorelease];
+}
+
 #pragma mark - Core Data stack
 
 /**
