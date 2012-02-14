@@ -11,16 +11,16 @@
 
 @interface ActionViewController : UIViewController <MBProgressHUDDelegate> {
     
-    NSMutableArray *actionStrings;
-    NSMutableArray *actionValues;
+    NSMutableArray *actionList;
     MBProgressHUD *HUD;
     
+    IBOutlet UITableView *actionTable;
     IBOutlet UIView *dataTable;
 }
 
-@property (retain, nonatomic) NSMutableArray *actionStrings;
-@property (retain, nonatomic) NSMutableArray *actionValues;
+@property (retain, nonatomic) NSMutableArray *actionList;
 
+@property (retain, nonatomic) IBOutlet UITableView *actionTable;
 @property (retain, nonatomic) IBOutlet UIView *dataTable;
 
 - (void)shareHandler;

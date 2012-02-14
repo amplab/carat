@@ -47,6 +47,7 @@
 		AB99EB0114EA6C130008E440 /* upgradeos.html in Resources */ = {isa = PBXBuildFile; fileRef = AB99EB0014EA6C130008E440 /* upgradeos.html */; };
 		AB99EB0414EA6CCD0008E440 /* deviceselect.png in Resources */ = {isa = PBXBuildFile; fileRef = AB99EB0214EA6CCD0008E440 /* deviceselect.png */; };
 		AB99EB0514EA6CCD0008E440 /* updatecheck.png in Resources */ = {isa = PBXBuildFile; fileRef = AB99EB0314EA6CCD0008E440 /* updatecheck.png */; };
+		AB99EB0814EA6E6F0008E440 /* ActionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = AB99EB0714EA6E6F0008E440 /* ActionObject.m */; };
 		AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */; };
 		AB9B580B148FEA10004F92F2 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */; };
 		AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */ = {isa = PBXBuildFile; fileRef = AB9B580C148FF31D004F92F2 /* 37x-X.png */; };
@@ -221,6 +222,8 @@
 		AB99EB0014EA6C130008E440 /* upgradeos.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = upgradeos.html; sourceTree = "<group>"; };
 		AB99EB0214EA6CCD0008E440 /* deviceselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deviceselect.png; sourceTree = "<group>"; };
 		AB99EB0314EA6CCD0008E440 /* updatecheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = updatecheck.png; sourceTree = "<group>"; };
+		AB99EB0614EA6E6F0008E440 /* ActionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionObject.h; sourceTree = "<group>"; };
+		AB99EB0714EA6E6F0008E440 /* ActionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionObject.m; sourceTree = "<group>"; };
 		AB9B57A3148EC504004F92F2 /* _CPTConstraintsFixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CPTConstraintsFixed.h; sourceTree = "<group>"; };
 		AB9B57A4148EC504004F92F2 /* _CPTConstraintsRelative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CPTConstraintsRelative.h; sourceTree = "<group>"; };
 		AB9B57A5148EC504004F92F2 /* _CPTDarkGradientTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _CPTDarkGradientTheme.h; sourceTree = "<group>"; };
@@ -831,6 +834,8 @@
 				AB91E4421499264F007786F0 /* ReportViewController.m */,
 				AB7A113114E1F738004D155C /* ActionViewController.h */,
 				AB7A113214E1F738004D155C /* ActionViewController.m */,
+				AB99EB0614EA6E6F0008E440 /* ActionObject.h */,
+				AB99EB0714EA6E6F0008E440 /* ActionObject.m */,
 				AB91E4441499266A007786F0 /* DetailViewController.h */,
 				AB91E4451499266B007786F0 /* DetailViewController.m */,
 				ABA3A0F814E4592F009B3D33 /* InstructionViewController.h */,
@@ -1486,6 +1491,7 @@
 				AB7A113414E1F738004D155C /* ActionViewController.m in Sources */,
 				AB7A113D14E2049F004D155C /* ActionItemCell.m in Sources */,
 				ABA3A0FA14E4592F009B3D33 /* InstructionViewController.m in Sources */,
+				AB99EB0814EA6E6F0008E440 /* ActionObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

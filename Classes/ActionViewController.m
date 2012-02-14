@@ -13,10 +13,11 @@
 #import "UIImageDoNotCache.h"
 #import "InstructionViewController.h"
 #import "FlurryAnalytics.h"
+#import "ActionObject.h"
 
 @implementation ActionViewController
 
-@synthesize actionStrings, actionValues;
+@synthesize actionList, actionTable;
 
 @synthesize dataTable;
 
@@ -121,7 +122,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [actionStrings count];
+    return [actionList count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -144,13 +145,14 @@
     }
     
     // Set up the cell...
-    cell.actionString.text = [actionStrings objectAtIndex:indexPath.row];
-    if ([[actionValues objectAtIndex:indexPath.row] doubleValue] <= 0) {
+    ActionObject *act = [self.actionList objectAtIndex:indexPath.row];
+    cell.actionString.text = act.actionText;
+    if (act.actionBenefit <= 0) { // already filtered out benefits < 60 seconds
         cell.actionValue.text = @"+100 karma!";
         cell.actionType = ActionTypeSpreadTheWord;
     } else {
-        cell.actionValue.text = [Utilities formatNSTimeIntervalAsNSString:[[actionValues objectAtIndex:indexPath.row] doubleValue]];
-        cell.actionType = ActionTypeKillApp; // TODO per action type
+        cell.actionValue.text = [Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionBenefit] doubleValue]];
+        cell.actionType = act.actionType;
     }
     
     return cell;
@@ -212,31 +214,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    
-    // TODO Remove dummy data
-    
-    //Initialize the arrays.
-    actionStrings = [[NSMutableArray alloc] init];
-    actionValues = [[NSMutableArray alloc] init];
-
-    //Add items
-    [actionStrings addObject:@"Kill Pandora Radio"];
-    [actionStrings addObject:@"Restart Facebook"];
-    [actionStrings addObject:@"Upgrade to iOS 5.0.1"];
-    [actionStrings addObject:@"Dim the screen"];
-    [actionStrings addObject:@"Turn off WiFi"];
-    [actionStrings addObject:@"Help Spread the Word!"];
-    
-    [actionValues addObject:[NSNumber numberWithInt:154400]];
-    [actionValues addObject:[NSNumber numberWithInt:7990]];
-    [actionValues addObject:[NSNumber numberWithInt:3583]];
-    [actionValues addObject:[NSNumber numberWithInt:1020]];
-    [actionValues addObject:[NSNumber numberWithInt:650]];
-    [actionValues addObject:[NSNumber numberWithInt:-1]];
+    [self updateView];
 }
 
 - (void)viewDidUnload
 {
+    [HUD release];
+    [actionList release];
+    [self setActionList:nil];
+    [actionTable release];
+    [self setActionTable:nil];
+    [dataTable release];
     [self setDataTable:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -283,13 +271,98 @@
 }
 
 - (void)updateView {
-    // TODO
+    [self setActionList:[[[NSMutableArray alloc] init] autorelease]];
     
+    ActionObject *tmpAction;
+    
+    // get Hogs, filter negative actionBenefits, fill mutable array
+    NSArray *tmp = [[Sampler instance] getHogs].hbList;
+    if (tmp != nil) {
+        for (HogsBugs *hb in tmp) {
+            if ([hb appName] == nil ||
+                [hb expectedValue] <= 0 ||
+                [hb expectedValueWithout] <= 0) continue;
+            
+            NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
+            if (benefit <= 60) continue;
+            
+            tmpAction = [[ActionObject alloc] init];
+            [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
+            [tmpAction setActionType:ActionTypeKillApp];
+            [tmpAction setActionBenefit:benefit];
+            [self.actionList addObject:tmpAction];
+            [tmpAction release];
+        }
+    }
+    
+    // get Bugs, add to array
+    tmp = [[Sampler instance] getBugs].hbList;
+    if (tmp != nil) {
+        for (HogsBugs *hb in tmp) {
+            if ([hb appName] == nil ||
+                [hb expectedValue] <= 0 ||
+                [hb expectedValueWithout] <= 0) continue;
+            
+            NSInteger benefit = (int) (10000/[hb expectedValue] - 10000/[hb expectedValueWithout]);
+            if (benefit <= 60) continue;
+            
+            tmpAction = [[ActionObject alloc] init];
+            [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
+            [tmpAction setActionType:ActionTypeRestartApp];
+            [tmpAction setActionBenefit:benefit];
+            [self.actionList addObject:tmpAction];
+            [tmpAction release];
+        }
+    }
+    
+    // get OS
+    DetailScreenReport *dscWith = [[[Sampler instance] getOSInfo:YES] retain];
+    DetailScreenReport *dscWithout = [[[Sampler instance] getOSInfo:NO] retain];
+    
+    if (dscWith != nil && dscWithout != nil) {
+        if (dscWith.expectedValue > 0 &&
+            dscWithout.expectedValue > 0) {
+            NSInteger benefit = (int) (10000/dscWith.expectedValue - 10000/dscWithout.expectedValue);
+            if (benefit > 60) {
+                tmpAction = [[ActionObject alloc] init];
+                [tmpAction setActionText:@"Upgrade the Operating System"];
+                [tmpAction setActionType:ActionTypeUpgradeOS];
+                [tmpAction setActionBenefit:benefit];
+                [self.actionList addObject:tmpAction];
+                [tmpAction release];
+            }
+        }
+    }
+    
+    [dscWith release];
+    [dscWithout release];
+
+    // sharing Action
+    tmpAction = [[ActionObject alloc] init];
+    [tmpAction setActionText:@"Help Spread the Word!"];
+    [tmpAction setActionType:ActionTypeSpreadTheWord];
+    [tmpAction setActionBenefit:-1];
+    [self.actionList addObject:tmpAction];
+    [tmpAction release];
+    
+    //the "key" is the *name* of the @property as a string.  So you can also sort by @"label" if you'd like
+    [self.actionList sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"actionBenefit" ascending:NO]]];
+    
+    [self.actionTable reloadData];
     [self.view setNeedsDisplay];
 }
 
 - (void)dealloc {
+    [HUD release];
+    [actionList release];
+    [actionTable release];
     [dataTable release];
     [super dealloc];
 }
 @end
+
+
+
+
+
+
