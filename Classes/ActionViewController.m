@@ -285,7 +285,7 @@
                 [hb expectedValue] > 0 &&
                 [hb expectedValueWithout] > 0) {
                 
-                NSInteger benefit = (int) (10000/[hb expectedValueWithout] - 10000/[hb expectedValue]);
+                NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
                 DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
@@ -308,7 +308,7 @@
                 [hb expectedValue] > 0 &&
                 [hb expectedValueWithout] > 0) {
                 
-                NSInteger benefit = (int) (10000/[hb expectedValueWithout] - 10000/[hb expectedValue]);
+                NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
                 DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
@@ -330,7 +330,7 @@
     if (dscWith != nil && dscWithout != nil) {
         if (dscWith.expectedValue > 0 &&
             dscWithout.expectedValue > 0) {
-            NSInteger benefit = (int) (10000/dscWithout.expectedValue - 10000/dscWith.expectedValue);
+            NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
             DLog(@"OS benefit is %d", benefit);
             if (benefit > 60) {
                 tmpAction = [[ActionObject alloc] init];
