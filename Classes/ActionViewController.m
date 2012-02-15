@@ -358,7 +358,6 @@
     //the "key" is the *name* of the @property as a string.  So you can also sort by @"label" if you'd like
     [myList sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"actionBenefit" ascending:NO]]];
     
-    [self setActionList:nil];
     [self setActionList:myList];
     [self.actionTable reloadData];
     [self.view setNeedsDisplay];

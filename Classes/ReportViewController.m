@@ -150,6 +150,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+    [self.dataTable reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
