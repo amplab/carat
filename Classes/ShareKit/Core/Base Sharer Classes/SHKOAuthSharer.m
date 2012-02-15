@@ -111,10 +111,9 @@
 	
 	if (ticket.didSucceed) 
 	{
-		NSString *responseBody = [[NSString alloc] initWithData:data
-													   encoding:NSUTF8StringEncoding];
-		self.requestToken = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
-		[responseBody release];
+		NSString *responseBody = [[[NSString alloc] initWithData:data
+													   encoding:NSUTF8StringEncoding] autorelease];
+		self.requestToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
 		
 		[self tokenAuthorize];
 	}
@@ -218,10 +217,9 @@
 	
 	if (ticket.didSucceed) 
 	{
-		NSString *responseBody = [[NSString alloc] initWithData:data
-													   encoding:NSUTF8StringEncoding];
-		self.accessToken = [[OAToken alloc] initWithHTTPResponseBody:responseBody];
-		[responseBody release];
+		NSString *responseBody = [[[NSString alloc] initWithData:data
+													   encoding:NSUTF8StringEncoding] autorelease];
+		self.accessToken = [[[OAToken alloc] initWithHTTPResponseBody:responseBody] autorelease];
 		
 		[self storeAccessToken];
 		
