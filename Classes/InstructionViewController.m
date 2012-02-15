@@ -84,7 +84,7 @@
             
         case ActionTypeUpgradeOS:
             DLog(@"Loading Upgrade OS instructions:");
-            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"killapp.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"upgradeos.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeDimScreen:
