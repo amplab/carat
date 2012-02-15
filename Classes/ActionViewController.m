@@ -14,6 +14,7 @@
 #import "InstructionViewController.h"
 #import "FlurryAnalytics.h"
 #import "ActionObject.h"
+#import "SHK.h"
 
 @implementation ActionViewController
 
@@ -184,26 +185,25 @@
 #pragma mark - share handler
 
 - (void)shareHandler {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
-                                                    message:@"This feature is disabled while Carat is in beta." 
-                                                   delegate:nil 
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
-    [alert show];
-    [alert release];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
+//                                                    message:@"This feature is disabled while Carat is in beta." 
+//                                                   delegate:nil 
+//                                          cancelButtonTitle:@"OK"
+//                                          otherButtonTitles:nil];
+//    [alert show];
+//    [alert release];
+
+    // Create the item to share (in this example, a url)
+    NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
+    SHKItem *item = [SHKItem URL:url title:@"Improve your mobile device's battery usage, for science! (Seriously.)"];
+    
+    // Get the ShareKit action sheet
+    SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+       
+    // Display the action sheet
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
     
     [FlurryAnalytics logEvent:@"selectedSpreadTheWord"];
-    
-    // TODO reactivated before submitting to Apple
-    //	// Create the item to share (in this example, a url)
-    //	NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
-    //	SHKItem *item = [SHKItem URL:url title:@"Learn about your mobile device's battery usage. For science! (Seriously.)"];
-    //    
-    //	// Get the ShareKit action sheet
-    //	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-    //    
-    //	// Display the action sheet
-    //	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
 

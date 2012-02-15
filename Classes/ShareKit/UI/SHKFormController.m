@@ -59,14 +59,14 @@
 	{
 		self.title = barTitle;
 		
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-																							  target:self
-																							  action:@selector(cancel)];
+		self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+			target:self
+			action:@selector(cancel)] autorelease];
 		
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:rightButtonTitle
-																				  style:UIBarButtonItemStyleDone
-																				 target:self
-																				 action:@selector(validateForm)];
+		self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:rightButtonTitle
+			style:UIBarButtonItemStyleDone
+			target:self
+			action:@selector(validateForm)] autorelease];
 		
 		self.values = [NSMutableDictionary dictionaryWithCapacity:0];
 	}
