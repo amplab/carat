@@ -11,6 +11,7 @@
 #import <CoreData/CoreData.h>
 #import "FlurryAnalytics.h"
 #import "SHK.h"
+#import "SHKFacebook.h"
 #import "Utilities.h"
 
 #import "ActionViewController.h"
@@ -179,6 +180,22 @@ void onUncaughtException(NSException *exception)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark -
+#pragma mark Facebook Connect methods
+
+- (BOOL)application:(UIApplication *)application 
+            openURL:(NSURL *)url 
+  sourceApplication:(NSString *)sourceApplication 
+         annotation:(id)annotation 
+{
+    return [SHKFacebook handleOpenURL:url];
+}
+
+- (BOOL)application:(UIApplication *)application 
+      handleOpenURL:(NSURL *)url 
+{
+    return [SHKFacebook handleOpenURL:url];
+}
 
 #pragma mark -
 #pragma mark UITabBarControllerDelegate methods

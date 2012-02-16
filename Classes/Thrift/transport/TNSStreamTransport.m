@@ -26,9 +26,11 @@
 - (id) initWithInputStream: (NSInputStream *) input
               outputStream: (NSOutputStream *) output
 {
-  [super init];
-  mInput = [input retain];
-  mOutput = [output retain];
+  self = [super init];
+    if (self != nil) {
+        mInput = [input retain];
+        mOutput = [output retain];
+    }
   return self;
 }
 

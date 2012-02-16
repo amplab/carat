@@ -8,6 +8,17 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string></string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb${FACEBOOK_APP_ID}</string>
+            </array>
+        </dict>
+    </array>
 	<key>CFBundleIconFiles</key>
 	<array>
 		<string>icon114.png</string>

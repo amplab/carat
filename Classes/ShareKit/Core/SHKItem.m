@@ -43,19 +43,19 @@
 - (void)dealloc
 {
 	[URL release];
-	
+    
 	[image release];
-	
+    
 	[title release];
 	[text release];
 	[tags release];
-	
+    
 	[data release];
 	[mimeType release];
 	[filename release];
-	
+    
 	[custom release];
-	
+    
 	[super dealloc];
 }
 
@@ -71,7 +71,7 @@
 	item.shareType = SHKShareTypeURL;
 	item.URL = url;
 	item.title = title;
-	
+    
 	return [item autorelease];
 }
 
@@ -86,7 +86,7 @@
 	item.shareType = SHKShareTypeImage;
 	item.image = image;
 	item.title = title;
-	
+    
 	return [item autorelease];
 }
 
@@ -95,7 +95,7 @@
 	SHKItem *item = [[SHKItem alloc] init];
 	item.shareType = SHKShareTypeText;
 	item.text = text;
-	
+    
 	return [item autorelease];
 }
 
@@ -107,7 +107,7 @@
 	item.filename = filename;
 	item.mimeType = mimeType;
 	item.title = title;
-	
+    
 	return [item autorelease];
 }
 
@@ -117,10 +117,10 @@
 {
 	if (custom == nil)
 		self.custom = [NSMutableDictionary dictionaryWithCapacity:0];
-	
+    
 	if (value == nil)
 		[custom removeObjectForKey:key];
-		
+    
 	else
 		[custom setObject:value forKey:key];
 }
@@ -142,43 +142,53 @@
 {
 	SHKItem *item = [[SHKItem alloc] init];
 	item.shareType = [[dictionary objectForKey:@"shareType"] intValue];	
-	
+    
 	if ([dictionary objectForKey:@"URL"] != nil)
 		item.URL = [NSURL URLWithString:[dictionary objectForKey:@"URL"]];
-	
+    
 	item.title = [dictionary objectForKey:@"title"];
 	item.text = [dictionary objectForKey:@"text"];
 	item.tags = [dictionary objectForKey:@"tags"];	
-		
+    
+    NSData *imageData = [dictionary objectForKey:@"image"];
+    if (imageData) {
+        item.image = [UIImage imageWithData:imageData];
+    }
+    
 	if ([dictionary objectForKey:@"custom"] != nil)
 		item.custom = [[[dictionary objectForKey:@"custom"] mutableCopy] autorelease];
-	
+    
 	return [item autorelease];
 }
 
 - (NSDictionary *)dictionaryRepresentation
 {
 	NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithCapacity:0];
-		
+    
 	[dictionary setObject:[NSNumber numberWithInt:shareType] forKey:@"shareType"];
-	
+    
 	if (custom != nil)
 		[dictionary setObject:custom forKey:@"custom"];
-	
+    
 	if (URL != nil)
 		[dictionary setObject:[URL.absoluteString stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding] forKey:@"URL"];
-	 
-	 if (title != nil)
+    
+    if (title != nil)
 		[dictionary setObject:title forKey:@"title"];
-	 
-	 if (text != nil)		 
-		 [dictionary setObject:text forKey:@"text"];
-	
+    
+    if (text != nil)		 
+        [dictionary setObject:text forKey:@"text"];
+    
 	if (tags != nil)
 		[dictionary setObject:tags forKey:@"tags"];
-	
+    
+    if (image != nil)
+    {
+        NSData *imageData = UIImagePNGRepresentation(image);
+        [dictionary setObject:imageData forKey:@"image"];
+    }
 	// If you add anymore, make sure to add a method for retrieving them to the itemWithDictionary function too
-	
+    
 	return dictionary;
 }
 
