@@ -30,7 +30,7 @@
 
 void onUncaughtException(NSException *exception)
 {
-    [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
+    [FlurryAnalytics logError:@"Uncaught" message:[[exception callStackSymbols] componentsJoinedByString:@"\n"] exception:exception];
     NSLog(@"uncaught exception: %@", exception.description);
 }
 
