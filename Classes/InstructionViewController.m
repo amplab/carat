@@ -7,7 +7,7 @@
 //
 
 #import "InstructionViewController.h"
-#import "Sampler.h"
+#import "CoreDataManager.h"
 #import "Utilities.h"
 
 @implementation InstructionViewController
@@ -123,7 +123,7 @@
 {
     [super viewWillAppear:animated];
     
-    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+    [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

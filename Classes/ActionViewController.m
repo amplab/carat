@@ -7,7 +7,6 @@
 //
 
 #import "ActionViewController.h"
-#import "Sampler.h"
 #import "Utilities.h"
 #import "ActionItemCell.h"
 #import "UIImageDoNotCache.h"
@@ -15,6 +14,7 @@
 #import "FlurryAnalytics.h"
 #import "ActionObject.h"
 #import "SHK.h"
+#import "CoreDataManager.h"
 
 @implementation ActionViewController
 
@@ -74,7 +74,7 @@
     // UPDATE REPORT DATA
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
-        [[Sampler instance] updateLocalReportsFromServer];
+        [[CoreDataManager instance] updateLocalReportsFromServer];
     }
     
     [self updateView];
@@ -105,7 +105,7 @@
 
 - (BOOL) isFresh
 {
-    return [[Sampler instance] secondsSinceLastUpdate] < 600; // 10 minutes
+    return [[CoreDataManager instance] secondsSinceLastUpdate] < 600; // 10 minutes
 }
 
 #pragma mark - MBProgressHUDDelegate method
@@ -161,7 +161,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSDate *lastUpdated = [[Sampler instance] getLastReportUpdateTimestamp];
+    NSDate *lastUpdated = [[CoreDataManager instance] getLastReportUpdateTimestamp];
     NSDate *now = [NSDate date];
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
     return [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
@@ -247,7 +247,7 @@
     } else {
         // For this screen, let's put sending samples/registrations here so that we don't conflict
         // with the report syncing (need to limit memory/CPU/thread usage so that we don't get killed).
-        [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+        [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     }
 
     [self updateView];
@@ -276,7 +276,7 @@
     
     DLog(@"Loading Hogs");
     // get Hogs, filter negative actionBenefits, fill mutable array
-    NSArray *tmp = [[Sampler instance] getHogs].hbList;
+    NSArray *tmp = [[CoreDataManager instance] getHogs].hbList;
     DLog(@"Got Hogs");
     if (tmp != nil) {
         DLog(@"Hogs not nil");
@@ -301,7 +301,7 @@
     
     DLog(@"Loading Bugs");
     // get Bugs, add to array
-    tmp = [[Sampler instance] getBugs].hbList;
+    tmp = [[CoreDataManager instance] getBugs].hbList;
     if (tmp != nil) {
         for (HogsBugs *hb in tmp) {
             if ([hb appName] != nil &&
@@ -324,8 +324,8 @@
     
     DLog(@"Loading OS");
     // get OS
-    DetailScreenReport *dscWith = [[[Sampler instance] getOSInfo:YES] retain];
-    DetailScreenReport *dscWithout = [[[Sampler instance] getOSInfo:NO] retain];
+    DetailScreenReport *dscWith = [[[CoreDataManager instance] getOSInfo:YES] retain];
+    DetailScreenReport *dscWithout = [[[CoreDataManager instance] getOSInfo:NO] retain];
     
     if (dscWith != nil && dscWithout != nil) {
         if (dscWith.expectedValue > 0 &&

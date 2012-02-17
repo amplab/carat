@@ -249,7 +249,7 @@
         }
     }
     
-    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+    [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (void)viewDidAppear:(BOOL)animated

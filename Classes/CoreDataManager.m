@@ -1192,8 +1192,8 @@ static NSString * reportUpdateStatus = nil;
     Sample *sample = [[[Sample alloc] init] autorelease];
     [sample setUuId:[[Globals instance] getUUID]];
     [sample setTimestamp:[[Globals instance] utcSecondsSinceEpoch]];
-    [sample setBatteryLevel:[UIDevice currentDevice].getBatteryLevel];
-    [sample setBatteryState:[UIDevice currentDevice].getBatteryState];
+    [sample setBatteryLevel:[UIDevice currentDevice].batteryLevel];
+    [sample setBatteryState:[UIDevice currentDevice].batteryState];
     [sample setPiList: [[[NSMutableArray alloc] init] autorelease]];
     return sample;
 }

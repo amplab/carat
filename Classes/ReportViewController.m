@@ -92,7 +92,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSDate *lastUpdated = [[Sampler instance] getLastReportUpdateTimestamp];
+    NSDate *lastUpdated = [[CoreDataManager instance] getLastReportUpdateTimestamp];
     NSDate *now = [NSDate date];
     NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
     return [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
@@ -149,7 +149,7 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
-    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+    [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     [self.dataTable reloadData];
 }
 

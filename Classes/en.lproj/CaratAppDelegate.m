@@ -13,6 +13,7 @@
 #import "SHK.h"
 #import "SHKFacebook.h"
 #import "Utilities.h"
+#import "CoreDataManager.h"
 
 #import "ActionViewController.h"
 #import "CurrentViewController.h"
@@ -168,7 +169,7 @@ void onUncaughtException(NSException *exception)
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [[Sampler instance] sampleNow:@"applicationDidBecomeActive"];
+    [[CoreDataManager instance] sampleNow:@"applicationDidBecomeActive"];
 }
 
 
@@ -230,16 +231,16 @@ void onUncaughtException(NSException *exception)
 }
 
 - (void)batteryLevelChanged:(NSNotification *)notification {
-    [[Sampler instance] sampleNow:@"batteryLevelChanged"];
+    [[CoreDataManager instance] sampleNow:@"batteryLevelChanged"];
 }
 
 - (void)batteryStateChanged:(NSNotification *)notification {
-    [[Sampler instance] sampleNow:@"batteryStateChanged"];
+    [[CoreDataManager instance] sampleNow:@"batteryStateChanged"];
 }
 
 - (void)application:(UIApplication *)application 
 didReceiveLocalNotification:(UILocalNotification *)notification {
-    [[Sampler instance] sampleNow:@"didReceiveLocalNotification"];
+    [[CoreDataManager instance] sampleNow:@"didReceiveLocalNotification"];
 }
 
 #pragma mark -
@@ -250,7 +251,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     [FlurryAnalytics setLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude horizontalAccuracy:newLocation.horizontalAccuracy            verticalAccuracy:newLocation.verticalAccuracy]; 
     // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
     
-    [[Sampler instance] sampleNow:@"didUpdateToLocation"];
+    [[CoreDataManager instance] sampleNow:@"didUpdateToLocation"];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
