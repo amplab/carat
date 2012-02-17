@@ -11,7 +11,7 @@
 #import "Utilities.h"
 #import "DetailViewController.h"
 #import "FlurryAnalytics.h"
-#import "Sampler.h"
+#import "CoreDataManager.h"
 #import "CommunicationManager.h"
 #import "UIDeviceHardware.h"
 #import "Globals.h"
@@ -66,7 +66,7 @@
 
 - (IBAction)getSameOSDetail:(id)sender
 {
-    DetailScreenReport *dsr = [[Sampler instance] getOSInfo:YES];
+    DetailScreenReport *dsr = [[CoreDataManager instance] getOSInfo:YES];
     if ([dsr xVals] == nil || [[dsr xVals] count] == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
@@ -81,7 +81,7 @@
         [dvController setXVals:[dsr xVals]];
         [dvController setYVals:[dsr yVals]];
         
-        dsr = [[Sampler instance] getOSInfo:NO];
+        dsr = [[CoreDataManager instance] getOSInfo:NO];
         [dvController setXValsWithout:[dsr xVals]];
         [dvController setYValsWithout:[dsr yVals]];
         
@@ -92,7 +92,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
+            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
@@ -105,7 +105,7 @@
 
 - (IBAction)getSameModelDetail:(id)sender
 {
-    DetailScreenReport *dsr = [[Sampler instance] getModelInfo:YES];
+    DetailScreenReport *dsr = [[CoreDataManager instance] getModelInfo:YES];
     if ([dsr xVals] == nil || [[dsr xVals] count] == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
@@ -119,7 +119,7 @@
 
         [dvController setXVals:[dsr xVals]];
         [dvController setYVals:[dsr yVals]];
-        dsr = [[Sampler instance] getModelInfo:NO];
+        dsr = [[CoreDataManager instance] getModelInfo:NO];
         [dvController setXValsWithout:[dsr xVals]];
         [dvController setYValsWithout:[dsr yVals]];
         
@@ -130,7 +130,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[Sampler instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
+            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
@@ -145,7 +145,7 @@
 
 - (IBAction)getSimilarAppsDetail:(id)sender
 {
-    DetailScreenReport *dsr = [[Sampler instance] getSimilarAppsInfo:YES];
+    DetailScreenReport *dsr = [[CoreDataManager instance] getSimilarAppsInfo:YES];
     if ([dsr xVals] == nil || [[dsr xVals] count] == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
@@ -159,7 +159,7 @@
         
         [dvController setXVals:[dsr xVals]];
         [dvController setYVals:[dsr yVals]];
-        dsr = [[Sampler instance] getSimilarAppsInfo:NO];
+        dsr = [[CoreDataManager instance] getSimilarAppsInfo:NO];
         [dvController setXValsWithout:[dsr xVals]];
         [dvController setYValsWithout:[dsr yVals]];
         
@@ -170,7 +170,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[Sampler instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
+            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
@@ -241,18 +241,18 @@
 - (void)updateView
 {
     // J-Score
-    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)(MIN( MAX([[Sampler instance] getJScore], -1.0), 1.0)*100)] stringValue]];
+    [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]];
     
     // Last Updated
-    NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[Sampler instance] getLastReportUpdateTimestamp]];
+    NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]];
     for (UILabel *lastUp in self.lastUpdated) {
         lastUp.text = [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
     }
     
     // Change since last week
-    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
+    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
-    DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[Sampler instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0), [[[Sampler instance] getModelInfo:YES] score], [[[Sampler instance] getSimilarAppsInfo:YES] score]);
+    DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]);
     
     //  Memory info.
     mach_msg_type_number_t count = HOST_VM_INFO_COUNT;

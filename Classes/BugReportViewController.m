@@ -9,7 +9,7 @@
 #import "BugReportViewController.h"
 #import "BugDetailViewController.h"
 #import "ReportItemCell.h"
-#import "Sampler.h"
+#import "CoreDataManager.h"
 
 @implementation BugReportViewController
 
@@ -39,7 +39,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
-    [self setReport:[[Sampler instance] getBugs]];
+    [self setReport:[[CoreDataManager instance] getBugs]];
     
 //    //Initialize the arrays.
 //    listOfAppNames = [[NSMutableArray alloc] init];

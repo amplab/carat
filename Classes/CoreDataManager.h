@@ -1,13 +1,13 @@
 //
-//  Sampler.h
+//  CoreDataManager.h
 //  Carat
 //
 //  Created by Anand Padmanabha Iyer on 11/5/11.
 //  Copyright (c) 2011 UC Berkeley. All rights reserved.
 //
 
-#ifndef Carat_Sampler_h
-#define Carat_Sampler_h
+#ifndef Carat_CoreDataManager_h
+#define Carat_CoreDataManager_h
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
@@ -23,7 +23,7 @@
 #import "CoreDataRegistration.h"
 #import "CommunicationManager.h"
 
-@interface Sampler : NSObject 
+@interface CoreDataManager : NSObject 
 {
     NSDate * LastUpdatedDate;
     DetailScreenReport * OSInfo;
@@ -53,7 +53,6 @@
 - (void) initLock;
 - (void) loadLocalReportsToMemory;
 - (void) updateLocalReportsFromServer;
-- (id) initWithCommManager : cManager;
 - (void) generateSaveRegistration;
 - (void) sampleNow : (NSString *) triggeredBy;
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
@@ -70,6 +69,8 @@
 - (DetailScreenReport *) getModelInfo : (BOOL) with;
 - (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with;
 - (NSArray *) getChangeSinceLastWeek;
+- (Sample *) getSample;
+- (NSString *) getReportUpdateStatus;
 @end
 
 #endif

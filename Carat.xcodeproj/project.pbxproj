@@ -149,6 +149,7 @@
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
 		C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C14F5C32145BD54800087F74 /* CFNetwork.framework */; };
 		C14F5C36145BDA9900087F74 /* AsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C35145BDA9900087F74 /* AsyncUdpSocket.m */; };
+		C18B00E614EEF3EC008ED60F /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C18B00E414EEF3EC008ED60F /* CoreDataManager.m */; };
 		C18E106E1466591A0028095B /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C18E106D1466591A0028095B /* CoreData.framework */; };
 		C18E107214665E230028095B /* Carat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C18E107014665E230028095B /* Carat.xcdatamodeld */; };
 		C19D41FD146D2386004C842A /* CoreDataProcessInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C19D41FA146D2385004C842A /* CoreDataProcessInfo.m */; };
@@ -490,6 +491,8 @@
 		C14F5C32145BD54800087F74 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C14F5C34145BDA9900087F74 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
 		C14F5C35145BDA9900087F74 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
+		C18B00E414EEF3EC008ED60F /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
+		C18B00E514EEF3EC008ED60F /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		C18E106D1466591A0028095B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C18E107114665E230028095B /* Carat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Carat.xcdatamodel; sourceTree = "<group>"; };
 		C19D41F9146D2385004C842A /* CoreDataProcessInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataProcessInfo.h; sourceTree = "<group>"; };
@@ -559,6 +562,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C18B00E414EEF3EC008ED60F /* CoreDataManager.m */,
+				C18B00E514EEF3EC008ED60F /* CoreDataManager.h */,
 				AB41CE0A144F572D0090CC09 /* iPhone */,
 				AB41CE0C144F574A0090CC09 /* iPad */,
 				AB9B57A2148EC504004F92F2 /* CorePlotHeaders */,
@@ -1522,6 +1527,7 @@
 				ABEF5E5314EDE470002AB4DE /* FBXMLHandler.m in Sources */,
 				ABEF5E5414EDE470002AB4DE /* SHKFacebook.m in Sources */,
 				ABEF5E5514EDE470002AB4DE /* SHKFBStreamDialog.m in Sources */,
+				C18B00E614EEF3EC008ED60F /* CoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

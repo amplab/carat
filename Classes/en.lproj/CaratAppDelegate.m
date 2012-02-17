@@ -120,7 +120,7 @@ void onUncaughtException(NSException *exception)
     // Everytime the CARAT app is launched, we will send a registration message. 
     // Right at this point, we are unsure if there is network connectivity, so 
     // save the message in core data. 
-    [[Sampler instance] generateSaveRegistration];
+    [[CoreDataManager instance] generateSaveRegistration];
     
     // Analytics
     [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];

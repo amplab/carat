@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import "MBProgressHUD.h"
-#import "Sampler.h"
+#import "CoreDataManager.h"
 
 @interface DetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {

@@ -1,20 +1,19 @@
 //
-//  Sampler.m
+//  CoreDataManager.m
 //  Carat
 //
-//  Handles the sampling. Does sampling (foreground & background) and stores
-//  them in core data. This is also the controller for core data.
+//  Manages the core data store.
 //
 //  Created by Anand Padmanabha Iyer on 11/5/11.
 //  Copyright (c) 2011 UC Berkeley. All rights reserved.
 //
 
-#import "Sampler.h"
+#import "CoreDataManager.h"
 #import "FlurryAnalytics.h"
 #import "UIDeviceHardware.h"
 #import "Utilities.h"
 
-@implementation Sampler
+@implementation CoreDataManager
 
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
@@ -33,9 +32,10 @@
 static id instance = nil;
 static double JScore;
 static NSArray * SubReports = nil;
+static NSString * reportUpdateStatus = nil;
 
 + (void) initialize {
-    if (self == [Sampler class]) {
+    if (self == [CoreDataManager class]) {
         instance = [[self alloc] init];
     }
     SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
@@ -460,12 +460,6 @@ static NSArray * SubReports = nil;
         //    DLog(@"%s Done!", __PRETTY_FUNCTION__);
         //});
     });
-}
- 
-- (id) initWithCommManager:(id)cManager 
-{
-    self = [super init];
-    return self;
 }
 
 - (void) dealloc
@@ -1189,6 +1183,27 @@ static NSArray * SubReports = nil;
         return [[[NSArray alloc] initWithObjects:@"0.0",@"0.0", nil] autorelease];
     }
     return ChangesSinceLastWeek;
+}
+
+// This call will result in a new sample being generated and sent
+// to back. This method is called by the UI.
+- (Sample *) getSample
+{
+    Sample *sample = [[[Sample alloc] init] autorelease];
+    [sample setUuId:[[Globals instance] getUUID]];
+    [sample setTimestamp:[[Globals instance] utcSecondsSinceEpoch]];
+    [sample setBatteryLevel:[UIDevice currentDevice].getBatteryLevel];
+    [sample setBatteryState:[UIDevice currentDevice].getBatteryState];
+    [sample setPiList: [[[NSMutableArray alloc] init] autorelease]];
+    return sample;
+}
+
+/**
+ *  The current status of the local reports. 
+ */
+- (NSString *) getReportUpdateStatus
+{
+    return reportUpdateStatus;
 }
 
 // TODO I temporarily abandoned this effort because this call blocks

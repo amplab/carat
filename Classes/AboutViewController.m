@@ -7,7 +7,7 @@
 //
 
 #import "AboutViewController.h"
-#import "Sampler.h"
+#import "CoreDataManager.h"
 
 @implementation AboutViewController
 
@@ -101,7 +101,7 @@
         }
     }
     
-    [[Sampler instance] checkConnectivityAndSendStoredDataToServer];
+    [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (void) orientationChanged:(id)object

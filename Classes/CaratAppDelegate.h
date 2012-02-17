@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
 #import "CaratProtocol.h"
-#import "Sampler.h"
+#import "CoreDataManager.h"
 #import "Globals.h"
 #import "CommunicationManager.h"
 #import "Thrift/transport/TSocketClient.h"

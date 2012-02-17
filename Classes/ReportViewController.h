@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Sampler.h"
+#import "CoreDataManager.h"
 @class DetailViewController;
 
 @interface ReportViewController : UIViewController {
