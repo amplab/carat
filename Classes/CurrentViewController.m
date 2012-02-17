@@ -16,6 +16,7 @@
 #import "UIDeviceHardware.h"
 #import "Globals.h"
 #import "UIImageDoNotCache.h"
+#import "InstructionViewController.h"
 
 @implementation CurrentViewController
 
@@ -47,6 +48,14 @@
 
 
 #pragma mark - button actions
+
+- (IBAction)getJScoreInfo:(id)sender
+{
+    InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeJScoreInfo];
+    [self.navigationController pushViewController:ivController animated:YES];
+    [ivController release];
+    [FlurryAnalytics logEvent:@"selectedJScoreInfo"];
+}
 
 - (DetailViewController *)getDetailView
 {

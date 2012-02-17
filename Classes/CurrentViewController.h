@@ -34,5 +34,6 @@
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;
 - (IBAction)getSimilarAppsDetail:(id)sender;
+- (IBAction)getJScoreInfo:(id)sender;
 
 @end

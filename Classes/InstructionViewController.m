@@ -70,21 +70,26 @@
  
     self.navigationItem.title = @"Action Instructions";
     
-    // TODO load the appropriate HTML into theHTML based on actionType
     switch (self.actionType) {
         case ActionTypeKillApp:
-            DLog(@"Loading Kill App instructions:");
+            DLog(@"Loading Kill App instructions");
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"killapp.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeRestartApp:
-            DLog(@"Loading Restart App instructions:");
+            DLog(@"Loading Restart App instructions");
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"killapp.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeUpgradeOS:
-            DLog(@"Loading Upgrade OS instructions:");
+            DLog(@"Loading Upgrade OS instructions");
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"upgradeos.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
+            break;
+            
+        case ActionTypeJScoreInfo:
+            DLog(@"Loading J-Score info");
+            self.navigationItem.title = @"J-Score Info";
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"jscoreinfo.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeDimScreen:

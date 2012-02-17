@@ -8,7 +8,7 @@
 
 #import "ProcessItemCell.h"
 
-@implementation ReportItemCell
+@implementation ProcessItemCell
 
 @synthesize appName;
 @synthesize appIcon;

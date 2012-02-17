@@ -13,7 +13,8 @@ typedef enum {
     ActionTypeRestartApp,
     ActionTypeUpgradeOS,
     ActionTypeDimScreen,
-    ActionTypeSpreadTheWord
+    ActionTypeSpreadTheWord,
+    ActionTypeJScoreInfo
     } ActionType;
 
 @interface InstructionViewController : UIViewController <UIWebViewDelegate> {
