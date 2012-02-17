@@ -25,6 +25,9 @@
 		AB105EBD14EDCA57000DB145 /* ProcessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */; };
 		AB105EBF14EDCCD2000DB145 /* jscoreinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */; };
 		AB105EC114EDD0CE000DB145 /* jscoreplot.png in Resources */ = {isa = PBXBuildFile; fileRef = AB105EC014EDD0CE000DB145 /* jscoreplot.png */; };
+		AB105EC314EDD2D3000DB145 /* ProcessItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB105EC214EDD2D2000DB145 /* ProcessItemCell.xib */; };
+		AB105EC514EDD362000DB145 /* ProcessItemCell.h in Resources */ = {isa = PBXBuildFile; fileRef = AB105EC414EDD362000DB145 /* ProcessItemCell.h */; };
+		AB105EC714EDD37A000DB145 /* ProcessItemCell.m in Resources */ = {isa = PBXBuildFile; fileRef = AB105EC614EDD37A000DB145 /* ProcessItemCell.m */; };
 		AB1E7AB414CF8ECE0010617A /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB1E7AB314CF8ECD0010617A /* Entitlements.plist */; };
 		AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB244AF714E10D660055FCD6 /* ActionItemCell.xib */; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
@@ -208,6 +211,9 @@
 		AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcessListViewController.m; sourceTree = "<group>"; };
 		AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = jscoreinfo.html; sourceTree = "<group>"; };
 		AB105EC014EDD0CE000DB145 /* jscoreplot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jscoreplot.png; sourceTree = "<group>"; };
+		AB105EC214EDD2D2000DB145 /* ProcessItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessItemCell.xib; sourceTree = "<group>"; };
+		AB105EC414EDD362000DB145 /* ProcessItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessItemCell.h; sourceTree = "<group>"; };
+		AB105EC614EDD37A000DB145 /* ProcessItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcessItemCell.m; sourceTree = "<group>"; };
 		AB1E7AB314CF8ECD0010617A /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		AB244AF714E10D660055FCD6 /* ActionItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionItemCell.xib; sourceTree = "<group>"; };
 		AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceProc.h; sourceTree = "<group>"; };
@@ -663,6 +669,7 @@
 				AB105EB914EDC9E2000DB145 /* ProcessListView.xib */,
 				2840D7CD1179279E00D7F93C /* ReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
+				AB105EC214EDD2D2000DB145 /* ProcessItemCell.xib */,
 				ABD317E014882E93000A8DC7 /* DetailView.xib */,
 				AB41CE15144F78450090CC09 /* img */,
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
@@ -912,6 +919,8 @@
 				AB7A113B14E2049F004D155C /* ActionItemCell.m */,
 				ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */,
 				ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */,
+				AB105EC414EDD362000DB145 /* ProcessItemCell.h */,
+				AB105EC614EDD37A000DB145 /* ProcessItemCell.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -1441,6 +1450,9 @@
 				AB105EBA14EDC9E2000DB145 /* ProcessListView.xib in Resources */,
 				AB105EBF14EDCCD2000DB145 /* jscoreinfo.html in Resources */,
 				AB105EC114EDD0CE000DB145 /* jscoreplot.png in Resources */,
+				AB105EC314EDD2D3000DB145 /* ProcessItemCell.xib in Resources */,
+				AB105EC514EDD362000DB145 /* ProcessItemCell.h in Resources */,
+				AB105EC714EDD37A000DB145 /* ProcessItemCell.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

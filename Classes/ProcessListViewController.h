@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIDeviceProc.h"
 
-@interface ProcessListViewController : UIViewController
+@interface ProcessListViewController : UIViewController {
+    NSArray *processList;
+    UITableView *procTable;
+    NSDate *lastUpdate;
+}
+
+@property (retain, nonatomic) NSDate *lastUpdate;
+@property (retain, nonatomic) NSArray *processList;
+@property (retain, nonatomic) IBOutlet UITableView *procTable;
+
+- (void) updateView;
 
 @end
