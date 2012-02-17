@@ -21,6 +21,10 @@
 		AB105EB614ED8A2F000DB145 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EAC14ED8A2F000DB145 /* SBJsonBase.m */; };
 		AB105EB714ED8A2F000DB145 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EAE14ED8A2F000DB145 /* SBJsonParser.m */; };
 		AB105EB814ED8A2F000DB145 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EB014ED8A2F000DB145 /* SBJsonWriter.m */; };
+		AB105EBA14EDC9E2000DB145 /* ProcessListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB105EB914EDC9E2000DB145 /* ProcessListView.xib */; };
+		AB105EBD14EDCA57000DB145 /* ProcessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */; };
+		AB105EBF14EDCCD2000DB145 /* jscoreinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */; };
+		AB105EC114EDD0CE000DB145 /* jscoreplot.png in Resources */ = {isa = PBXBuildFile; fileRef = AB105EC014EDD0CE000DB145 /* jscoreplot.png */; };
 		AB1E7AB414CF8ECE0010617A /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB1E7AB314CF8ECD0010617A /* Entitlements.plist */; };
 		AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB244AF714E10D660055FCD6 /* ActionItemCell.xib */; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
@@ -199,6 +203,11 @@
 		AB105EAE14ED8A2F000DB145 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
 		AB105EAF14ED8A2F000DB145 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		AB105EB014ED8A2F000DB145 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		AB105EB914EDC9E2000DB145 /* ProcessListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessListView.xib; sourceTree = "<group>"; };
+		AB105EBB14EDCA57000DB145 /* ProcessListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProcessListViewController.h; sourceTree = "<group>"; };
+		AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProcessListViewController.m; sourceTree = "<group>"; };
+		AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = jscoreinfo.html; sourceTree = "<group>"; };
+		AB105EC014EDD0CE000DB145 /* jscoreplot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jscoreplot.png; sourceTree = "<group>"; };
 		AB1E7AB314CF8ECD0010617A /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		AB244AF714E10D660055FCD6 /* ActionItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionItemCell.xib; sourceTree = "<group>"; };
 		AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceProc.h; sourceTree = "<group>"; };
@@ -651,6 +660,7 @@
 				AB7A112C14E06520004D155C /* ActionView.xib */,
 				AB244AF714E10D660055FCD6 /* ActionItemCell.xib */,
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
+				AB105EB914EDC9E2000DB145 /* ProcessListView.xib */,
 				2840D7CD1179279E00D7F93C /* ReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
 				ABD317E014882E93000A8DC7 /* DetailView.xib */,
@@ -853,6 +863,7 @@
 				AB99EB0014EA6C130008E440 /* upgradeos.html */,
 				AB9525AD14EA1B5900343418 /* about.html */,
 				AB9525AF14EA1B6F00343418 /* killapp.html */,
+				AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */,
 				ABA3A10314E4A570009B3D33 /* img */,
 			);
 			name = html;
@@ -865,6 +876,7 @@
 				AB99EB0314EA6CCD0008E440 /* updatecheck.png */,
 				ABB1221A14E9E7C300FE959A /* procmanager1.png */,
 				ABB1221B14E9E7C300FE959A /* procmanager2.png */,
+				AB105EC014EDD0CE000DB145 /* jscoreplot.png */,
 			);
 			name = img;
 			sourceTree = "<group>";
@@ -894,6 +906,8 @@
 				ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */,
 				AB7999131455C237000AE9FE /* CurrentViewController.h */,
 				AB7999141455C23E000AE9FE /* CurrentViewController.m */,
+				AB105EBB14EDCA57000DB145 /* ProcessListViewController.h */,
+				AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */,
 				AB7A113A14E2049F004D155C /* ActionItemCell.h */,
 				AB7A113B14E2049F004D155C /* ActionItemCell.m */,
 				ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */,
@@ -1424,6 +1438,9 @@
 				AB99EB0414EA6CCD0008E440 /* deviceselect.png in Resources */,
 				AB99EB0514EA6CCD0008E440 /* updatecheck.png in Resources */,
 				AB105EB214ED8A2F000DB145 /* FBDialog.bundle in Resources */,
+				AB105EBA14EDC9E2000DB145 /* ProcessListView.xib in Resources */,
+				AB105EBF14EDCCD2000DB145 /* jscoreinfo.html in Resources */,
+				AB105EC114EDD0CE000DB145 /* jscoreplot.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1548,6 +1565,7 @@
 				AB105EB614ED8A2F000DB145 /* SBJsonBase.m in Sources */,
 				AB105EB714ED8A2F000DB145 /* SBJsonParser.m in Sources */,
 				AB105EB814ED8A2F000DB145 /* SBJsonWriter.m in Sources */,
+				AB105EBD14EDCA57000DB145 /* ProcessListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1639,6 +1657,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-all_load";
 				"PROVISIONING_PROFILE[sdk=*]" = "715F7806-7C6B-4C74-8193-21BB9A3E4031";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1685,6 +1704,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-all_load";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1704,6 +1724,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "-all_load";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

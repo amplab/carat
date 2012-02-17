@@ -22,9 +22,8 @@
 @synthesize jscore = _jscore;
 @synthesize lastUpdated = _lastUpdated;
 @synthesize sinceLastWeekString = _sinceLastWeekString;
-@synthesize scoreSameOSProgBar = _scoreSameOSProgBar;
-@synthesize scoreSameModelProgBar = _scoreSameModelProgBar;
-@synthesize scoreSimilarAppsProgBar = _scoreSimilarAppsProgBar;
+@synthesize osVersion = _osVersion;
+@synthesize deviceModel = _deviceModel;
 @synthesize portraitView, landscapeView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -84,7 +83,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:((UIProgressView *)[self.scoreSameOSProgBar objectAtIndex:1]).progress animated:NO];
+            [pBar setProgress:MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
@@ -122,7 +121,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:((UIProgressView *)[self.scoreSameModelProgBar objectAtIndex:1]).progress animated:NO];
+            [pBar setProgress:MIN(MAX([[[Sampler instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
@@ -162,7 +161,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:((UIProgressView *)[self.scoreSimilarAppsProgBar objectAtIndex:1]).progress animated:NO];
+            [pBar setProgress:MIN(MAX([[[Sampler instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
@@ -186,12 +185,6 @@
 
 - (void)viewDidUnload
 {
-    [scoreSameOSProgBar release];
-    [self setScoreSameOSProgBar:nil];
-    [scoreSameModelProgBar release];
-    [self setScoreSameModelProgBar:nil];
-    [scoreSimilarAppsProgBar release];
-    [self setScoreSimilarAppsProgBar:nil];
     [jscore release];
     [self setJscore:nil];
     [lastUpdated release];
@@ -250,18 +243,37 @@
     // Change since last week
     [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[Sampler instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
-    // Progress Bars
-    for (UIProgressView *scoreBar in self.scoreSameOSProgBar) {
-        [scoreBar setProgress:MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
+    DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[Sampler instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0), [[[Sampler instance] getModelInfo:YES] score], [[[Sampler instance] getSimilarAppsInfo:YES] score]);
+    
+    //  Memory info.
+    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+    vm_statistics_data_t vmstat;
+    if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) == KERN_SUCCESS)
+    {
+        int pagesize = [[UIDevice currentDevice] pageSize];
+        int wired = vmstat.wire_count * pagesize;
+        int active = vmstat.active_count * pagesize;
+        int inactive = vmstat.inactive_count * pagesize;
+        int free = vmstat.free_count * pagesize;
+        int used = wired+active+inactive;
+        float frac_used = (float)(used) / (float)(used+free);
+        float frac_active = (float)(active) / (float)(used);
+        
+        
+        
+    } // TODO hook to ui
+
+    // Device info
+    UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
+    for (UILabel *mod in self.deviceModel) {
+        mod.text = [h platformString];
     }
-    for (UIProgressView *scoreBar in self.scoreSameModelProgBar) {
-        [scoreBar setProgress:MIN(MAX([[[Sampler instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
-    }
-    for (UIProgressView *scoreBar in self.scoreSimilarAppsProgBar) {
-        [scoreBar setProgress:MIN(MAX([[[Sampler instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
+    [h release];
+    
+    for (UILabel *os in self.osVersion) {
+        os.text = [UIDevice currentDevice].systemVersion;
     }
     
-    DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[Sampler instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[Sampler instance] getOSInfo:YES] score],0.0),1.0), [[[Sampler instance] getModelInfo:YES] score], [[[Sampler instance] getSimilarAppsInfo:YES] score]);
     [self.view setNeedsDisplay];
 }
 
@@ -285,9 +297,6 @@
 }
 
 - (void)dealloc {
-    [scoreSameOSProgBar release];
-    [scoreSameModelProgBar release];
-    [scoreSimilarAppsProgBar release];
     [jscore release];
     [lastUpdated release];
     [sinceLastWeekString release];
