@@ -79,12 +79,16 @@
     NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] appName];
     cell.appName.text = appName;
     
-    UIImage *img = [UIImage newImageNotCached:[appName stringByAppendingString:@".png"]];
+    /*UIImage *img = [UIImage newImageNotCached:[appName stringByAppendingString:@".png"]];
     if (img == nil) {
         img = [UIImage newImageNotCached:@"icon57.png"];
     }
     cell.appIcon.image = img;
-    [img release];
+    [img release];*/
+    
+    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" stringByAppendingString:appName] stringByAppendingString:@".jpg"];
+    cell.appIconURL = imageURL;
+    cell.appIcon.image = [[JMImageCache sharedCache] imageForURL:imageURL delegate:cell]; 
 
     cell.appScore.progress = [[[report hbList] objectAtIndex:indexPath.row] wDistance];    
     return cell;

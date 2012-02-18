@@ -13,6 +13,7 @@
 @synthesize appName;
 @synthesize appIcon;
 @synthesize appScore;
+@synthesize appIconURL;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -29,6 +30,15 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void) cache:(JMImageCache *)c didDownloadImage:(UIImage *)i forURL:(NSString *)url 
+{
+	//DLog(@"%s didDownloadImage for URL = %@", __PRETTY_FUNCTION__, url);
+	if([url isEqualToString:appIconURL]) {
+		self.appIcon.image = i;
+		[self setNeedsLayout];
+	}
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "CoreDataManager.h"
+#import "JMImageCache.h"
+
 @class DetailViewController;
 
 @interface ReportViewController : UIViewController {
