@@ -155,14 +155,14 @@
         axisSet.xAxis.axisLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLength = 4.0f;
         axisSet.xAxis.majorTickLength = 6.0f;
-        axisSet.xAxis.labelOffset = 1.0f;
+//        axisSet.xAxis.labelOffset = 1.0f;
         axisSet.xAxis.titleTextStyle = axisTextStyle;
         axisSet.xAxis.title = @"Energy Rate";
         NSString *xAxisTitleLocation = [NSString stringWithFormat:@"%f", (maxRate/2)];
         axisSet.xAxis.titleLocation = [[NSDecimalNumber decimalNumberWithString:xAxisTitleLocation] decimalValue];;
-        NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        axisSet.xAxis.labelFormatter = formatter;
+//        NSNumberFormatter* formatter = [[[NSNumberFormatter alloc] init] autorelease];
+//        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//        axisSet.xAxis.labelFormatter = formatter;
         
         // Y-Axis
         axisSet.yAxis.majorIntervalLength = [[NSDecimalNumber decimalNumberWithString:@"1"] decimalValue];
