@@ -147,6 +147,9 @@
         axisTextStyle.color = [CPTColor blackColor];
         axisTextStyle.fontSize = 9.0;
         
+        CPTMutableTextStyle *xAxisTextStyle = [CPTMutableTextStyle textStyle];
+        xAxisTextStyle.color = [CPTColor whiteColor];
+        
         // X-Axis
         axisSet.xAxis.majorIntervalLength = CPTDecimalFromFloat(maxRate/3.0f);
         axisSet.xAxis.minorTicksPerInterval = 1;
@@ -155,6 +158,7 @@
         axisSet.xAxis.axisLineStyle = axisLineStyle;
         axisSet.xAxis.minorTickLength = 4.0f;
         axisSet.xAxis.majorTickLength = 6.0f;
+        axisSet.xAxis.labelTextStyle = xAxisTextStyle;
 //        axisSet.xAxis.labelOffset = 1.0f;
         axisSet.xAxis.titleTextStyle = axisTextStyle;
         axisSet.xAxis.title = @"Energy Rate";
