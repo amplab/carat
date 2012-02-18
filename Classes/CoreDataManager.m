@@ -927,6 +927,7 @@ static id instance = nil;
     [SimilarAppsInfoWithout release];
     [ChangesSinceLastWeek release];
     [lockReportSync release];
+    dispatch_release(sendStoreDataToServerSemaphore);
     [super dealloc];
 }
 
@@ -1003,8 +1004,15 @@ static id instance = nil;
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
         DLog(@"%s Internet connection active", __PRETTY_FUNCTION__);
+        
+        long available = dispatch_semaphore_wait(sendStoreDataToServerSemaphore, DISPATCH_TIME_NOW);
+        if (available != 0)
+        {
+            DLog(@"%s Not enough resources available, aborting %u.", __PRETTY_FUNCTION__);
+            return;
+        }
+        
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            dispatch_semaphore_wait(sendStoreDataToServerSemaphore, DISPATCH_TIME_FOREVER);
             [self fetchAndSendRegistrations:10];
             [self fetchAndSendSamples:10];
             dispatch_semaphore_signal(sendStoreDataToServerSemaphore);
