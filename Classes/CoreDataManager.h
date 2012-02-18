@@ -47,18 +47,13 @@
 @property (nonatomic, retain) DetailScreenReport * SimilarAppsInfo;
 @property (nonatomic, retain) DetailScreenReport * SimilarAppsInfoWithout;
 @property (nonatomic, retain) NSArray * ChangesSinceLastWeek;
-@property (nonatomic, retain) NSLock *lockCoreDataStore;
+@property (nonatomic, retain) NSLock *lockReportSync;
 
 + (id) instance;
-- (void) initLock;
-- (void) loadLocalReportsToMemory;
-- (void) updateLocalReportsFromServer;
 - (void) generateSaveRegistration;
 - (void) sampleNow : (NSString *) triggeredBy;
-- (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo;
-- (void) fetchAndSendRegistrations : (NSUInteger) limitMessagesTo;
-- (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo;
 - (void) checkConnectivityAndSendStoredDataToServer;
+- (void) updateLocalReportsFromServer;
 - (NSURL *) applicationDocumentsDirectory;
 - (NSDate *) getLastReportUpdateTimestamp; 
 - (double) secondsSinceLastUpdate;

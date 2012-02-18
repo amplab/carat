@@ -13,51 +13,20 @@
 #import "UIDeviceHardware.h"
 #import "Utilities.h"
 
-@implementation CoreDataManager
+@implementation CoreDataManager (hidden)
 
-@synthesize managedObjectContext = __managedObjectContext;
-@synthesize managedObjectModel = __managedObjectModel;
-@synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
-@synthesize fetchedResultsController = __fetchResultsController;
-@synthesize LastUpdatedDate;
-@synthesize OSInfo;
-@synthesize OSInfoWithout;
-@synthesize ModelInfo;
-@synthesize ModelInfoWithout;
-@synthesize SimilarAppsInfo;
-@synthesize SimilarAppsInfoWithout;
-@synthesize ChangesSinceLastWeek;
-@synthesize lockCoreDataStore;
-
-static id instance = nil;
-static double JScore;
 static NSArray * SubReports = nil;
+static double JScore;
 static NSString * reportUpdateStatus = nil;
+static dispatch_semaphore_t sendStoreDataToServerSemaphore;
 
-+ (void) initialize {
-    if (self == [CoreDataManager class]) {
-        instance = [[self alloc] init];
-    }
-    SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
-    [instance initLock];
-    [instance loadLocalReportsToMemory];
-    [[CommunicationManager instance] isInternetReachable]; // This is here just to make sure CommunicationManager subscribes 
-                                                           // to reachability updates.
-}
-
-+ (id) instance {
-    return instance;
-}
-
-- (void) initLock
-{
-    self.lockCoreDataStore = [[NSLock alloc] init];
-}
-
-- (void) initLocalReportStore
+/**
+ *  Initialize the core data store reports table.
+ */
+- (void) initLocalReportStore : (NSManagedObjectContext *) managedObjectContext
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     if (managedObjectContext != nil) 
     {
@@ -90,7 +59,7 @@ static NSString * reportUpdateStatus = nil;
             [cdataMainReport addSubreportsObject:cdataSubReport];
         }
     }
-
+    
     if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
     {
         DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
@@ -98,14 +67,14 @@ static NSString * reportUpdateStatus = nil;
     }
 }
 
-//
-// Load the report data (except bug and hog report) to memory so that 
-// we don't have to keep going to the core data store.
-//
-- (void) loadLocalReportsToMemory 
+/** 
+ *  Load the report data (except bug and hog report) to memory so that 
+ *  we don't have to keep going to the core data store.
+ */
+- (void) loadLocalReportsToMemory : (NSManagedObjectContext *) managedObjectContext
 {    
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     if (managedObjectContext != nil) 
     {
@@ -129,7 +98,7 @@ static NSString * reportUpdateStatus = nil;
         if ([fetchedObjects count] == 0)
         {
             DLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
-            [self initLocalReportStore];
+            [self initLocalReportStore : managedObjectContext];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }
         else if ([fetchedObjects count] > 1)    // This should not happen!!!!
@@ -140,10 +109,10 @@ static NSString * reportUpdateStatus = nil;
                 [managedObjectContext deleteObject:mainReport];
                 [managedObjectContext save:nil];
             }
-            [self initLocalReportStore];
+            [self initLocalReportStore : managedObjectContext];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }
-                
+        
         for (CoreDataMainReport *mainReport in fetchedObjects)
         {
             if (mainReport == nil)
@@ -209,16 +178,30 @@ static NSString * reportUpdateStatus = nil;
                 }
             }
         }
-                
+        
     cleanup:
         return;
     }
 }
 
-- (BOOL) clearLocalAppReports
+- (void) initialize
+{
+    self.lockReportSync = [[NSLock alloc] init];
+    
+    //  We don't want to create huge number of threads to send 
+    //  registrations/samples, so limit them.
+    sendStoreDataToServerSemaphore = dispatch_semaphore_create(3);
+    
+    [self loadLocalReportsToMemory:self.managedObjectContext];
+}
+
+#pragma mark - Report Syncing
+/**
+ */
+- (BOOL) clearLocalAppReports : (NSManagedObjectContext *) managedObjectContext
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) 
     {
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
@@ -244,8 +227,10 @@ static NSString * reportUpdateStatus = nil;
     return NO;
 }
 
+/**
+ */
 - (void) updateLocalSubReport: (CoreDataSubReport *) cdataSubReport 
-          withThisDetailReport: (DetailScreenReport *) detailScreenReportWith 
+         withThisDetailReport: (DetailScreenReport *) detailScreenReportWith 
           andThatDetailReport: (DetailScreenReport *) detailScreenReportWithout
 {
     cdataSubReport.score = [NSNumber numberWithDouble:detailScreenReportWith.score];
@@ -257,15 +242,18 @@ static NSString * reportUpdateStatus = nil;
     cdataSubReport.distributionYWithout = detailScreenReportWithout.yVals;
 }
 
-//
-// Refresh all the local reports from server. 
-//
+/**
+ * Refresh all the local reports from server. 
+ */
 - (void) updateReportsFromServer
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
-    DLog(@"Updating local data from server.");
+    NSManagedObjectContext *managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+    [managedObjectContext setUndoManager:nil];
+    [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+    
+    DLog(@"%s Initilializing report syncing...", __PRETTY_FUNCTION__);
     
     if (managedObjectContext != nil) 
     {
@@ -280,13 +268,13 @@ static NSString * reportUpdateStatus = nil;
             return;
         } 
         
-        DLog(@"%s Number of main reports fetched: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+        DLog(@"%s Number of main reports in reports core data store: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
         
         // Check for sanity.
         if ([fetchedObjects count] == 0)
         {
             DLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
-            [self initLocalReportStore];
+            [self initLocalReportStore : managedObjectContext];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }
         else if ([fetchedObjects count] > 1)    // This should not happen!!!!
@@ -297,11 +285,13 @@ static NSString * reportUpdateStatus = nil;
                 [managedObjectContext deleteObject:mainReport];
                 [managedObjectContext save:nil];
             }
-            [self initLocalReportStore];
+            [self initLocalReportStore : managedObjectContext];
             fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         }
-
+        
         // Now let's get the report data from the server. First main reports.
+        DLog(@"%s Updating main reports...", __PRETTY_FUNCTION__);
+        reportUpdateStatus = @"Updating main reports...";
         Reports *reports = [[CommunicationManager instance] getReports];
         //if (reports == nil || reports == NULL) return;  // Being extra-cautious.
         if (reports != nil && reports != NULL)
@@ -311,10 +301,10 @@ static NSString * reportUpdateStatus = nil;
             
             [cdataMainReport setLastUpdated:[NSDate date]];
             double lastJScore = [[cdataMainReport valueForKey:@"jScore"] doubleValue];
-            double change = reports.jScore - lastJScore;
+            double change = round(reports.jScore - lastJScore);
             double changePercentage = 0.0;
             if (lastJScore > 0.0) {
-                changePercentage = ((reports.jScore - lastJScore)*100.0) / lastJScore; 
+                changePercentage = (change*100.0) / lastJScore; 
             }
             
             [cdataMainReport setJScore:[NSNumber numberWithDouble:reports.jScore]];
@@ -337,13 +327,13 @@ static NSString * reportUpdateStatus = nil;
                 if ([subReportName isEqualToString:@"OSInfo"]) 
                 {
                     [self updateLocalSubReport:cdataSubReport 
-                           withThisDetailReport:reports.os 
+                          withThisDetailReport:reports.os 
                            andThatDetailReport:reports.osWithout];
                 } 
                 else if ([subReportName isEqualToString:@"ModelInfo"]) 
                 {
                     [self updateLocalSubReport:cdataSubReport 
-                           withThisDetailReport:reports.model 
+                          withThisDetailReport:reports.model 
                            andThatDetailReport:reports.modelWithout];
                 }
                 else if ([subReportName isEqualToString:@"SimilarAppsInfo"])
@@ -353,13 +343,15 @@ static NSString * reportUpdateStatus = nil;
                            andThatDetailReport:reports.similarAppsWithout];
                 }
             }
-        }
+        } else { DLog(@"%s Main report update failed.", __PRETTY_FUNCTION__); }
         
         // Clear local app reports.
-        if ([self clearLocalAppReports] == NO)
+        if ([self clearLocalAppReports : managedObjectContext] == NO)
             return;
         
         // Hog report
+        DLog(@"%s Updating hog report...", __PRETTY_FUNCTION__);
+        reportUpdateStatus = @"Updating hog report...";
         Feature *feature = [[[Feature alloc] init] autorelease];
         [feature setKey:@"ReportType"];
         [feature setValue:@"Hog"];
@@ -391,10 +383,12 @@ static NSString * reportUpdateStatus = nil;
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
-        }
+        } else { DLog(@"%s Hog report update failed!", __PRETTY_FUNCTION__); }
         [list release];
         
         // Bug report
+        DLog(@"%s Updating bug report...", __PRETTY_FUNCTION__);
+        reportUpdateStatus = @"Updating bug report...";
         [feature setValue:@"Bug"];
         list = [[NSArray alloc] initWithObjects:feature, nil];
         HogBugReport *bugReport = [[CommunicationManager instance] getHogOrBugReport:list];
@@ -414,8 +408,8 @@ static NSString * reportUpdateStatus = nil;
                 [cdataAppReport setReportType:@"Bug"];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
-                                                                           insertNewObjectForEntityForName:@"CoreDataDetail" 
-                                                                           inManagedObjectContext:managedObjectContext];
+                                                                  insertNewObjectForEntityForName:@"CoreDataDetail" 
+                                                                  inManagedObjectContext:managedObjectContext];
                 [cdataDetail setDistance:[NSNumber numberWithDouble:bug.wDistance]];
                 cdataDetail.distributionXWith = bug.xVals;
                 cdataDetail.distributionXWithout = bug.xValsWithout;
@@ -424,9 +418,9 @@ static NSString * reportUpdateStatus = nil;
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
-        }
+        } else { DLog(@"%s Bug report update failed.", __PRETTY_FUNCTION__); }
         [list release];
-    
+        
         // Save the entire stuff.
         @try {
             if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
@@ -440,141 +434,20 @@ static NSString * reportUpdateStatus = nil;
         }
         
         // Reload data in memory.
-        [self loadLocalReportsToMemory];
+        [self loadLocalReportsToMemory : managedObjectContext];
     }    
 }
 
-- (void) updateLocalReportsFromServer
+#pragma mark - Registration & Sampling
+/**
+ *  Get the list of running processes and put it in core data. Note that we
+ *  don't call save on the managed object here, as we will do a final call to
+ *  save the entire sample.
+ */
+- (void) sampleProcessInfo : (CoreDataSample *) currentCDSample 
+  withManagedObjectContext : (NSManagedObjectContext *) managedObjectContext
 {
-    /*if ([lockCoreDataStore tryLock]) {
-        [self updateReportsFromServer];
-        [lockCoreDataStore unlock];
-    }*/
-    dispatch_sync( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if ([lockCoreDataStore tryLock]) {
-            [self updateReportsFromServer];
-            [lockCoreDataStore unlock];
-        }
-        DLog(@"%s Done!", __PRETTY_FUNCTION__);
-        //dispatch_async( dispatch_get_main_queue(), ^{
-        //    DLog(@"%s Done!", __PRETTY_FUNCTION__);
-        //});
-    });
-}
-
-- (void) dealloc
-{
-    [__managedObjectContext release];
-    [__managedObjectModel release];
-    [__persistentStoreCoordinator release];
-    [__fetchResultsController release];
-    [LastUpdatedDate release];
-    [OSInfo release];
-    [OSInfoWithout release];
-    [ModelInfo release];
-    [ModelInfoWithout release];
-    [SimilarAppsInfo release];
-    [SimilarAppsInfoWithout release];
-    [ChangesSinceLastWeek release];
-    [lockCoreDataStore release];
-    [super dealloc];
-}
-
-//
-//  Get information about the memory.
-//
-- (void) printMemoryInfo
-{
-    int pagesize = [[UIDevice currentDevice] pageSize];
-    DLog(@"Memory Info");
-    DLog(@"-----------");
-    DLog(@"Page size = %d bytes", pagesize);
-    
-    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
-    
-    vm_statistics_data_t vmstat;
-    if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) != KERN_SUCCESS)
-    {
-        DLog(@"Failed to get VM statistics.");
-    }
-    
-    double total = vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count;
-    double wired = vmstat.wire_count / total;
-    double active = vmstat.active_count / total;
-    double inactive = vmstat.inactive_count / total;
-    double free = vmstat.free_count / total;
-    
-    DLog(@"Total =    %8d pages", vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count);
-    
-    DLog(@"Wired =    %8d bytes", vmstat.wire_count * pagesize);
-    DLog(@"Active =   %8d bytes", vmstat.active_count * pagesize);
-    DLog(@"Inactive = %8d bytes", vmstat.inactive_count * pagesize);
-    DLog(@"Free =     %8d bytes", vmstat.free_count * pagesize);
-    
-    DLog(@"Total =    %8d bytes", (vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count) * pagesize);
-    
-    DLog(@"Wired =    %0.2f %%", wired * 100.0);
-    DLog(@"Active =   %0.2f %%", active * 100.0);
-    DLog(@"Inactive = %0.2f %%", inactive * 100.0);
-    DLog(@"Free =     %0.2f %%", free * 100.0);
-    
-    DLog(@"Physical memory = %8d bytes", [[UIDevice currentDevice] totalMemory]);
-    DLog(@"User memory =     %8d bytes", [[UIDevice currentDevice] userMemory]);
-}
-
-- (void) printProcessorInfo
-{
-    DLog(@"Processor Info");
-    DLog(@"--------------");
-    DLog(@"CPU Frequency = %d hz", [[UIDevice currentDevice] cpuFrequency]);
-    DLog(@"Bus Frequency = %d hz", [[UIDevice currentDevice] busFrequency]);
-}
-
-//
-// Generate and save registration information in core data.
-//
-- (void) generateSaveRegistration 
-{
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    
-    //
-    // Store registration information.
-    //
-    CoreDataRegistration *cdataRegistration = (CoreDataRegistration *) [NSEntityDescription 
-                                                                        insertNewObjectForEntityForName:@"CoreDataRegistration" 
-                                                                        inManagedObjectContext:managedObjectContext];
-
-    [cdataRegistration setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
-    
-    UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
-    [cdataRegistration setPlatformId:[h platformString]];
-    [h release];
-    
-    [cdataRegistration setSystemVersion:[UIDevice currentDevice].systemVersion];
-    
-    //
-    //  Now save it.
-    //
-    if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
-    {
-        /*
-         Error is logged, but we soldier on without saving our registration. :-(
-         */
-        [FlurryAnalytics logEvent:@"generateSaveRegistration Error"
-                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
-        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-    } 
-}
-
-//
-//  Get the list of running processes and put it in core data. Note that we 
-//  don't call save on the managed object here, as we will do a final call to 
-//  save the entire sample.
-//
-- (void) sampleProcessInfo : (CoreDataSample *) currentCDSample
-{
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     if (managedObjectContext != nil)
     {
@@ -582,7 +455,6 @@ static NSString * reportUpdateStatus = nil;
         
         for (NSDictionary *dict in processes)
         {
-            //DLog(@"%@ - %@", [dict objectForKey:@"ProcessID"], [dict objectForKey:@"ProcessName"]);
             CoreDataProcessInfo *cdataProcessInfo = (CoreDataProcessInfo *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataProcessInfo" inManagedObjectContext:managedObjectContext];
             [cdataProcessInfo setId: [NSNumber numberWithInt:[[dict objectForKey:@"ProcessID"] intValue]]];
             [cdataProcessInfo setName:[dict objectForKey:@"ProcessName"]];
@@ -592,59 +464,38 @@ static NSString * reportUpdateStatus = nil;
     }
 }
 
-//
-//  Do a sampling while the app is in the foreground. There shouldn't be any
-//  restrictions on CPU usage as we are active.
-//
+/**
+ *  Do a sampling while the app is in the foreground. There shouldn't be any
+ *  restrictions on CPU usage as we are active. 
+ *  NOTE: This method is called on a new thread.
+ */
 - (void) sampleForeground : (NSString *) triggeredBy
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    NSManagedObjectContext *managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+    [managedObjectContext setUndoManager:nil];
+    [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
     
     if (managedObjectContext == nil) { return; }
     
     CoreDataSample *cdataSample = (CoreDataSample *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataSample" 
                                                                                    inManagedObjectContext:managedObjectContext];
     [cdataSample setTriggeredBy:triggeredBy];
-    [cdataSample setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
+    [cdataSample setTimestamp:[NSNumber numberWithDouble:
+                               [[Globals instance] utcSecondsSinceEpoch]]];
     
     //
     //  Running processes.
     //
-    [self sampleProcessInfo:cdataSample];
+    [self sampleProcessInfo:cdataSample withManagedObjectContext:managedObjectContext];
     
     //
     //  Battery state and level.
     //
-    if ([UIDevice currentDevice].batteryMonitoringEnabled) 
-    {
-        DLog(@"%f", [UIDevice currentDevice].batteryLevel);
-        [cdataSample setBatteryLevel:[NSNumber numberWithFloat:[UIDevice currentDevice].batteryLevel]];
-        
-        NSString* batteryStateString = @"None";
-        switch ([UIDevice currentDevice].batteryState) 
-        {
-            case UIDeviceBatteryStateUnknown:
-                DLog(@"%@", @"Unknown");
-                batteryStateString = @"Unknown";
-                break;
-            case UIDeviceBatteryStateUnplugged:
-                DLog(@"%@", @"Unplugged");
-                batteryStateString = @"Unplugged";
-                break;
-            case UIDeviceBatteryStateCharging:
-                DLog(@"%@", @"Charging");
-                batteryStateString = @"Charging";
-                break;
-            case UIDeviceBatteryStateFull:
-                DLog(@"%@", @"Full");
-                batteryStateString = @"Full";
-                break;
-            default:
-                break;
-        }
-        [cdataSample setBatteryState:batteryStateString];
-    }
+    [cdataSample setBatteryLevel:[NSNumber numberWithFloat:
+                                  [UIDevice currentDevice].batteryLevel]];
+    [cdataSample setBatteryState:[UIDevice currentDevice].batteryStateString];
     
     //
     //  Memory info.
@@ -720,39 +571,18 @@ static NSString * reportUpdateStatus = nil;
     }
 }
 
-
-- (void) sampleNow : (NSString *) triggeredBy
-{
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if ([lockCoreDataStore tryLock]) {
-            if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
-            {
-                [FlurryAnalytics logEvent:@"sampleNowBackground"
-                           withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"BG Sample Triggered", nil]
-                                    timed:YES];
-                [self sampleBackground:triggeredBy];
-                [FlurryAnalytics endTimedEvent:@"sampleNowBackground" withParameters:nil];
-            }
-            else
-            {
-                [FlurryAnalytics logEvent:@"sampleNowForeround"
-                           withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"FG Sample Triggered", nil]
-                                    timed:YES];
-                [self sampleForeground:triggeredBy];
-                [FlurryAnalytics endTimedEvent:@"sampleNowForeround" withParameters:nil];
-            }
-            [lockCoreDataStore unlock];
-        }    
-    });    
-}
-
-//
-// Retrieve and send registration messages to the server.
-//
+/**
+ *  Retrieve and send registration messages to the server. Assumes that this 
+ *  method is called in a different thread, so creates its own 
+ *  managedobjectcontext. 
+ */
 - (void) fetchAndSendRegistrations : (NSUInteger) limitMessagesTo
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    NSManagedObjectContext *managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+    [managedObjectContext setUndoManager:nil];
+    [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
     
     if (managedObjectContext != nil) 
     {
@@ -803,10 +633,6 @@ static NSString * reportUpdateStatus = nil;
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:registration];
-                //if (![managedObjectContext save:&error])
-                //{
-                //    DLog(@"%s Could not delete registration from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-                //}
             }
             [NSThread sleepForTimeInterval:0.1];
         }
@@ -814,7 +640,7 @@ static NSString * reportUpdateStatus = nil;
     cleanup:
         [sortDescriptors release];
         [sortDescriptor release];
-	
+        
         @try {
             if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
             {
@@ -829,13 +655,17 @@ static NSString * reportUpdateStatus = nil;
     }
 }
 
-//
-//  Retrieve and send some samples to the server.
-//
+/**
+ *  Retrieve and send samples to the server. Assumes that this method is called
+ *  in a different thread, so creates its own managedobjectcontext. 
+ */
 - (void) fetchAndSendSamples : (NSUInteger) limitSamplesTo
 {
     NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    NSManagedObjectContext *managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+    [managedObjectContext setUndoManager:nil];
+    [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
     
     if (managedObjectContext != nil) 
     {
@@ -848,12 +678,12 @@ static NSString * reportUpdateStatus = nil;
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataSample" 
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
-	
+        
         NSUInteger count = [managedObjectContext countForFetchRequest:fetchRequest error:&error];
         if (!error) {
             DLog(@"%s Total samples in store: %d", __PRETTY_FUNCTION__, count);
         }
-
+        
         [fetchRequest setFetchLimit:limitSamplesTo];  
         
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -917,6 +747,7 @@ static NSString * reportUpdateStatus = nil;
             if (ret == YES) 
             {
                 [managedObjectContext deleteObject:sample];
+                // Lock core data and delete stuff.
                 //if (![managedObjectContext save:&error])
                 //{
                 //    DLog(@"%s Could not delete sample from coredata, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
@@ -928,7 +759,7 @@ static NSString * reportUpdateStatus = nil;
     cleanup:
         [sortDescriptors release];
         [sortDescriptor release];
-
+        
         @try {
             if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
             {
@@ -943,38 +774,290 @@ static NSString * reportUpdateStatus = nil;
     }
 }
 
-//
-// Send stored data in coredatastore to the server. First, we 
-// send all the registration messages. Then we send samples.
-//
-- (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo
+/*#pragma mark - Hogs & Bugs
+- (HogBugReport *) getBugsFromCoreData 
 {
-    if ([lockCoreDataStore tryLock]) {
-        [self fetchAndSendRegistrations: limitEntriesTo];
-        [self fetchAndSendSamples:limitEntriesTo];
-        [lockCoreDataStore unlock];
+    DLog(@"Getting bugs from core data...");
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Bug"];
+        [fetchRequest setPredicate:predicate];
+        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                        ascending:NO] autorelease];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            return nil;
+        }
+        
+        DLog(@"%s Found %d bug, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
+        
+        HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
+        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
+        [bugs setHbList:hbList];
+        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
+        {
+            HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
+            [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
+            [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            [bug setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
+            [bug setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
+            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
+            [bug setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
+            [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
+            [bug setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
+            [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            [hbList addObject:bug];
+        }
+        return bugs;
     }
+    return nil;
 }
 
+- (HogBugReport *) getHogsFromCoreData 
+{
+    DLog(@"Getting hogs from core data...");
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Hog"];
+        [fetchRequest setPredicate:predicate];
+        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                        ascending:NO] autorelease];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            return nil;
+        }
+        
+        DLog(@"%s Found %d hogs, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
+        if ([fetchedObjects count] == 0)
+            return nil;
+        
+        HogBugReport * hogs = [[[HogBugReport alloc] init] autorelease];
+        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
+        [hogs setHbList:hbList];
+        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
+        {
+            HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
+            [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
+            [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            [hog setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
+            [hog setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
+            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
+            [hog setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
+            [hog setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
+            [hog setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
+            [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            [hbList addObject:hog];
+        }
+        return hogs;
+    }
+    return nil;
+}*/
+
+@end
+
+#pragma mark -
+
+@implementation CoreDataManager
+
+@synthesize managedObjectContext = __managedObjectContext;
+@synthesize managedObjectModel = __managedObjectModel;
+@synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+@synthesize fetchedResultsController = __fetchResultsController;
+@synthesize LastUpdatedDate;
+@synthesize OSInfo;
+@synthesize OSInfoWithout;
+@synthesize ModelInfo;
+@synthesize ModelInfoWithout;
+@synthesize SimilarAppsInfo;
+@synthesize SimilarAppsInfoWithout;
+@synthesize ChangesSinceLastWeek;
+@synthesize lockReportSync;
+
+static id instance = nil;
+
++ (void) initialize {
+    if (self == [CoreDataManager class]) {
+        instance = [[self alloc] init];
+    }
+    SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
+    [instance initialize];
+    //[instance loadLocalReportsToMemory];
+    [[CommunicationManager instance] isInternetReachable]; // This is here just to make sure CommunicationManager subscribes 
+                                                           // to reachability updates.
+}
+
++ (id) instance {
+    return instance;
+}
+
+- (void) dealloc
+{
+    [__managedObjectContext release];
+    [__managedObjectModel release];
+    [__persistentStoreCoordinator release];
+    [__fetchResultsController release];
+    [LastUpdatedDate release];
+    [OSInfo release];
+    [OSInfoWithout release];
+    [ModelInfo release];
+    [ModelInfoWithout release];
+    [SimilarAppsInfo release];
+    [SimilarAppsInfoWithout release];
+    [ChangesSinceLastWeek release];
+    [lockReportSync release];
+    [super dealloc];
+}
+
+#pragma mark - Registration & Sampling
+/**
+ * Generate and save registration information in the database.
+ */
+- (void) generateSaveRegistration 
+{
+    NSError *error = nil;
+    
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
+    //
+    // Store registration information.
+    //
+    CoreDataRegistration *cdataRegistration = (CoreDataRegistration *) [NSEntityDescription 
+                                                                        insertNewObjectForEntityForName:@"CoreDataRegistration" 
+                                                                        inManagedObjectContext:managedObjectContext];
+    
+    [cdataRegistration setTimestamp:[NSNumber numberWithDouble:[[Globals instance] utcSecondsSinceEpoch]]];
+    
+    UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
+    [cdataRegistration setPlatformId:[h platformString]];
+    [h release];
+    
+    [cdataRegistration setSystemVersion:[UIDevice currentDevice].systemVersion];
+    
+    //
+    //  Now save it.
+    //
+    if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+    {
+        /*
+         Error is logged, but we soldier on without saving our registration. :-(
+         */
+        [FlurryAnalytics logEvent:@"generateSaveRegistration Error"
+                   withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
+        DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+    } 
+}
+
+/**
+ *  Take a sample.
+ */
+- (void) sampleNow : (NSString *) triggeredBy
+{
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+        {
+            [FlurryAnalytics logEvent:@"sampleNowBackground"
+                       withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"BG Sample Triggered", nil]
+                                timed:YES];
+            [self sampleBackground:triggeredBy];
+            [FlurryAnalytics endTimedEvent:@"sampleNowBackground" withParameters:nil];
+        }
+        else
+        {
+            [FlurryAnalytics logEvent:@"sampleNowForeround"
+                       withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"FG Sample Triggered", nil]
+                                timed:YES];
+            [self sampleForeground:triggeredBy];
+            [FlurryAnalytics endTimedEvent:@"sampleNowForeround" withParameters:nil];
+        }
+    });    
+}
+
+/**
+ *  Check for internet connectivity and send sample & registration messages to 
+ *  the server.
+ */
 - (void) checkConnectivityAndSendStoredDataToServer
 {
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
-        DLog(@"%s Internet active", __PRETTY_FUNCTION__);
-        //dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-            [self sendStoredDataToServer:10];
+        DLog(@"%s Internet connection active", __PRETTY_FUNCTION__);
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            dispatch_semaphore_wait(sendStoreDataToServerSemaphore, DISPATCH_TIME_FOREVER);
+            [self fetchAndSendRegistrations:10];
+            [self fetchAndSendSamples:10];
+            dispatch_semaphore_signal(sendStoreDataToServerSemaphore);
             /*dispatch_async( dispatch_get_main_queue(), ^{
-                DLog(@"%s Done!", __PRETTY_FUNCTION__);
-            });*/
+             DLog(@"%s Done!", __PRETTY_FUNCTION__);
+             });*/
         });
     } 
-    else 
-    {
-        DLog(@"%s No connectivity", __PRETTY_FUNCTION__);
-    }
+    else { DLog(@"%s No connectivity", __PRETTY_FUNCTION__); }
 }
 
+#pragma mark - Report Syncing
+
+//
+// Send stored data in coredatastore to the server. First, we 
+// send all the registration messages. Then we send samples.
+//
+/*- (void) sendStoredDataToServer : (NSUInteger) limitEntriesTo
+ {
+ //if ([lockCoreDataStore tryLock]) {
+ [self fetchAndSendRegistrations: limitEntriesTo];
+ [self fetchAndSendSamples:limitEntriesTo];
+ //  [lockCoreDataStore unlock];
+ //}
+ }*/
+
+/**
+ *  Update reports from Carat Server.
+ */
+- (void) updateLocalReportsFromServer
+{
+    /*if ([lockCoreDataStore tryLock]) {
+        [self updateReportsFromServer];
+        [lockCoreDataStore unlock];
+    }*/
+    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([lockReportSync tryLock]) {
+            [self updateReportsFromServer];
+            reportUpdateStatus = nil;
+            [lockReportSync unlock];
+        } else {
+            DLog(@"%s Could not get a lock on report syncing module. Perhaps an update is already in progress?", __PRETTY_FUNCTION__);
+        }
+        dispatch_async( dispatch_get_main_queue(), ^{
+            DLog(@"%s Report fetching thread completed!", __PRETTY_FUNCTION__);
+        });
+    });
+}
+
+#pragma mark - UI APIs
+/**
+ * Get the time stamp from the last successful report update.
+ */
 - (NSDate *) getLastReportUpdateTimestamp
 {
     if (self.LastUpdatedDate != nil) 
@@ -991,9 +1074,12 @@ static NSString * reportUpdateStatus = nil;
     }
 }
 
+/**
+ * Return number of seconds since last successful report update.
+ */
 - (double) secondsSinceLastUpdate
 {
-    NSTimeInterval interval = 0.0;
+    NSTimeInterval interval = 1000000.0;
     if (self.LastUpdatedDate != nil)
     {
         NSDate *now = [NSDate date];
@@ -1004,7 +1090,72 @@ static NSString * reportUpdateStatus = nil;
     return interval;
 }
 
-- (HogBugReport *) getHogsFromCoreData 
+/**
+ * Fetch the list of bugs from core data.
+ */
+- (HogBugReport *) getBugs
+{
+    DLog(@"Getting bugs from core data...");
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) 
+    {
+        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Bug"];
+        [fetchRequest setPredicate:predicate];
+        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
+                                                                        ascending:NO] autorelease];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        [fetchRequest setSortDescriptors:sortDescriptors];
+        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
+                                                  inManagedObjectContext:managedObjectContext];
+        [fetchRequest setEntity:entity];
+        
+        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects == nil) {
+            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
+            return nil;
+        }
+        
+        DLog(@"%s Found %d bug, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
+        
+        HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
+        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
+        [bugs setHbList:hbList];
+        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
+        {
+            HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
+            [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
+            [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
+            [bug setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
+            [bug setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
+            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
+            [bug setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
+            [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
+            [bug setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
+            [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            [hbList addObject:bug];
+        }
+        return bugs;
+    }
+    return nil;
+}
+/*- (HogBugReport *) getBugs
+{
+    //HogBugReport* bugs = nil;
+    //if ([lockCoreDataStore tryLock]) {
+    //    bugs = [self getBugsFromCoreData];
+    //    [lockCoreDataStore unlock];
+    //} else {DLog(@"%s Cannot get a lock on coredata, sending nil for bug report.", __PRETTY_FUNCTION__);}
+    //return bugs;
+    return [self getBugsFromCoreData];
+}*/
+
+/**
+ * Fetch the list of hogs from core data.
+ */
+- (HogBugReport *) getHogs
 {
     DLog(@"Getting hogs from core data...");
     NSError *error = nil;
@@ -1015,10 +1166,10 @@ static NSString * reportUpdateStatus = nil;
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Hog"];
         [fetchRequest setPredicate:predicate];
         NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
-                                                                      ascending:NO] autorelease];
+                                                                        ascending:NO] autorelease];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [fetchRequest setSortDescriptors:sortDescriptors];
-
+        
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
@@ -1028,7 +1179,7 @@ static NSString * reportUpdateStatus = nil;
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
             return nil;
         }
-     
+        
         DLog(@"%s Found %d hogs, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
         if ([fetchedObjects count] == 0)
             return nil;
@@ -1054,81 +1205,16 @@ static NSString * reportUpdateStatus = nil;
     }
     return nil;
 }
-
-- (HogBugReport *) getBugsFromCoreData 
+/*- (HogBugReport *) getHogs
 {
-    DLog(@"Getting bugs from core data...");
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) 
-    {
-        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Bug"];
-        [fetchRequest setPredicate:predicate];
-        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
-                                                                       ascending:NO] autorelease];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
-                                                  inManagedObjectContext:managedObjectContext];
-        [fetchRequest setEntity:entity];
-        
-        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (fetchedObjects == nil) {
-            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-            //[sortDescriptors release];
-            //[sortDescriptor release];
-            return nil;
-        }
-        
-        DLog(@"%s Found %d bug, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
-        
-        HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
-        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
-        [bugs setHbList:hbList];
-        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
-        {
-            HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
-            [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
-            [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
-            [bug setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
-            [bug setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
-            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
-            [bug setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
-            [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
-            [bug setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
-            [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
-            [hbList addObject:bug];
-        }
-        
-        //[sortDescriptors release];
-        //[sortDescriptor release];
-        return bugs;
-    }
-    return nil;
-}
-
-- (HogBugReport *) getBugs
-{
-    HogBugReport* bugs = nil;
-    if ([lockCoreDataStore tryLock]) {
-        bugs = [self getBugsFromCoreData];
-        [lockCoreDataStore unlock];
-    } else {DLog(@"%s Cannot get a lock on coredata, sending nil for bug report.", __PRETTY_FUNCTION__);}
-    return bugs;
-}
-
-- (HogBugReport *) getHogs
-{
-    HogBugReport* hogs = nil;
-    if ([lockCoreDataStore tryLock]) {
-        hogs = [self getHogsFromCoreData];
-        [lockCoreDataStore unlock];
-    } else { DLog(@"%s Cannot get lock, sending nil for hog report.", __PRETTY_FUNCTION__);}
-    return hogs;
-}
-
+    //HogBugReport* hogs = nil;
+    //if ([lockCoreDataStore tryLock]) {
+    //    hogs = [self getHogsFromCoreData];
+    //    [lockCoreDataStore unlock];
+    //} else { DLog(@"%s Cannot get lock, sending nil for hog report.", __PRETTY_FUNCTION__);}
+    //return hogs;
+    return [self getHogsFromCoreData];
+}*/
 
 - (double) getJScore
 {
@@ -1193,7 +1279,7 @@ static NSString * reportUpdateStatus = nil;
     [sample setUuId:[[Globals instance] getUUID]];
     [sample setTimestamp:[[Globals instance] utcSecondsSinceEpoch]];
     [sample setBatteryLevel:[UIDevice currentDevice].batteryLevel];
-    [sample setBatteryState:[UIDevice currentDevice].batteryState];
+    [sample setBatteryState:[UIDevice currentDevice].batteryStateString];
     [sample setPiList: [[[NSMutableArray alloc] init] autorelease]];
     return sample;
 }
@@ -1213,6 +1299,49 @@ static NSString * reportUpdateStatus = nil;
     NSString *iconURL = [[@"https://s3.amazonaws.com/carat.icons/" stringByAppendingString:appName] stringByAppendingString:@".jpg"];
     DLog(@"Getting icon at %s", iconURL);
     return [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconURL]]] autorelease];
+}
+
+
+//
+//  Get information about the memory.
+//
+- (void) printMemoryInfo
+{
+    int pagesize = [[UIDevice currentDevice] pageSize];
+    DLog(@"Memory Info");
+    DLog(@"-----------");
+    DLog(@"Page size = %d bytes", pagesize);
+    
+    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+    
+    vm_statistics_data_t vmstat;
+    if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) != KERN_SUCCESS)
+    {
+        DLog(@"Failed to get VM statistics.");
+    }
+    
+    double total = vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count;
+    double wired = vmstat.wire_count / total;
+    double active = vmstat.active_count / total;
+    double inactive = vmstat.inactive_count / total;
+    double free = vmstat.free_count / total;
+    
+    DLog(@"Total =    %8d pages", vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count);
+    
+    DLog(@"Wired =    %8d bytes", vmstat.wire_count * pagesize);
+    DLog(@"Active =   %8d bytes", vmstat.active_count * pagesize);
+    DLog(@"Inactive = %8d bytes", vmstat.inactive_count * pagesize);
+    DLog(@"Free =     %8d bytes", vmstat.free_count * pagesize);
+    
+    DLog(@"Total =    %8d bytes", (vmstat.wire_count + vmstat.active_count + vmstat.inactive_count + vmstat.free_count) * pagesize);
+    
+    DLog(@"Wired =    %0.2f %%", wired * 100.0);
+    DLog(@"Active =   %0.2f %%", active * 100.0);
+    DLog(@"Inactive = %0.2f %%", inactive * 100.0);
+    DLog(@"Free =     %0.2f %%", free * 100.0);
+    
+    DLog(@"Physical memory = %8d bytes", [[UIDevice currentDevice] totalMemory]);
+    DLog(@"User memory =     %8d bytes", [[UIDevice currentDevice] userMemory]);
 }
 
 #pragma mark - Core Data stack

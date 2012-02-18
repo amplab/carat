@@ -131,4 +131,33 @@
     return nil;
 }
 
+/**
+ * Returns the battery state string.
+ */
+- (NSString *) batteryStateString
+{
+    NSString * batteryStateString = @"Unknown";
+    if ([UIDevice currentDevice].batteryMonitoringEnabled) 
+    {
+        switch ([UIDevice currentDevice].batteryState) 
+        {
+            case UIDeviceBatteryStateUnknown:
+                batteryStateString = @"Unknown";
+                break;
+            case UIDeviceBatteryStateUnplugged:
+                batteryStateString = @"Unplugged";
+                break;
+            case UIDeviceBatteryStateCharging:
+                batteryStateString = @"Charging";
+                break;
+            case UIDeviceBatteryStateFull:
+                batteryStateString = @"Full";
+                break;
+            default:
+                break;
+        }
+    }
+    return batteryStateString;
+}
+
 @end

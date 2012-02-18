@@ -18,4 +18,5 @@
 - (NSUInteger) maxSocketBufferSize;
 - (NSNumber *) totalDiskSpace;
 - (NSNumber *) freeDiskSpace;
+- (NSString *) batteryStateString;
 @end
