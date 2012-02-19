@@ -276,7 +276,7 @@
     
     DLog(@"Loading Hogs");
     // get Hogs, filter negative actionBenefits, fill mutable array
-    NSArray *tmp = [[CoreDataManager instance] getHogs].hbList;
+    NSArray *tmp = [[CoreDataManager instance] getHogs:YES].hbList;
     DLog(@"Got Hogs");
     if (tmp != nil) {
         DLog(@"Hogs not nil");
@@ -301,7 +301,7 @@
     
     DLog(@"Loading Bugs");
     // get Bugs, add to array
-    tmp = [[CoreDataManager instance] getBugs].hbList;
+    tmp = [[CoreDataManager instance] getBugs:YES].hbList;
     if (tmp != nil) {
         for (HogsBugs *hb in tmp) {
             if ([hb appName] != nil &&

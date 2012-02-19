@@ -607,6 +607,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C12F3A8014F07D01007504BA /* SDWebImage */,
 				C18B00E414EEF3EC008ED60F /* CoreDataManager.m */,
 				C18B00E514EEF3EC008ED60F /* CoreDataManager.h */,
 				AB41CE0A144F572D0090CC09 /* iPhone */,
@@ -657,7 +658,6 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
-				C12F3A8014F07D01007504BA /* SDWebImage */,
 				AB1E7AB314CF8ECD0010617A /* Entitlements.plist */,
 				AB645E031456FF1F0008244B /* Default@2x.png */,
 				AB645E011456FE530008244B /* Default.png */,
@@ -1405,8 +1405,7 @@
 				C12F3A9114F07D01007504BA /* UIImageView+WebCache.h */,
 				C12F3A9214F07D01007504BA /* UIImageView+WebCache.m */,
 			);
-			name = SDWebImage;
-			path = Classes/SDWebImage;
+			path = SDWebImage;
 			sourceTree = "<group>";
 		};
 		C1D52F0C1465F85A008D6D09 /* Thrift */ = {

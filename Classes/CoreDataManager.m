@@ -351,12 +351,22 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         
         // Hog report
         DLog(@"%s Updating hog report...", __PRETTY_FUNCTION__);
+        
         reportUpdateStatus = @"Updating hog report...";
-        Feature *feature = [[[Feature alloc] init] autorelease];
-        [feature setKey:@"ReportType"];
-        [feature setValue:@"Hog"];
-        FeatureList list = [[NSArray alloc] initWithObjects:feature, nil];
+        
+        Feature *feature1 = [[[Feature alloc] init] autorelease];
+        [feature1 setKey:@"ReportType"];
+        [feature1 setValue:@"Hog"];
+        
+        Feature *feature2 = [[[Feature alloc] init] autorelease];
+        [feature2 setKey:@"Model"];
+        UIDeviceHardware *h =[[[UIDeviceHardware alloc] init] autorelease];
+        [feature2 setValue: [h platformString]];
+        
+        FeatureList list = [[NSArray alloc] initWithObjects:feature1,feature1, nil];
+        
         HogBugReport *hogReport = [[CommunicationManager instance] getHogOrBugReport:list];
+        
         //if (hogReport == nil || hogReport == NULL) return;
         if (hogReport != nil && hogReport != NULL)
         {
@@ -389,8 +399,10 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         // Bug report
         DLog(@"%s Updating bug report...", __PRETTY_FUNCTION__);
         reportUpdateStatus = @"Updating bug report...";
-        [feature setValue:@"Bug"];
-        list = [[NSArray alloc] initWithObjects:feature, nil];
+        
+        [feature1 setValue:@"Bug"];
+        list = [[NSArray alloc] initWithObjects:feature1, feature2, nil];
+        
         HogBugReport *bugReport = [[CommunicationManager instance] getHogOrBugReport:list];
         //if (bugReport == nil || bugReport == NULL) return;
         if (bugReport != nil && bugReport != NULL)
@@ -1101,11 +1113,13 @@ static id instance = nil;
 /**
  * Fetch the list of bugs from core data.
  */
-- (HogBugReport *) getBugs
+- (HogBugReport *) getBugs : (BOOL) filterNonRunning
 {
     DLog(@"Getting bugs from core data...");
     NSError *error = nil;
+    NSArray *runningProcessNames = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    
     if (managedObjectContext != nil) 
     {
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
@@ -1128,11 +1142,21 @@ static id instance = nil;
         
         DLog(@"%s Found %d bug, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
         
+        if (filterNonRunning) { runningProcessNames = [[UIDevice currentDevice] runningProcessNames]; }
+        
         HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
         NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
         [bugs setHbList:hbList];
         for (CoreDataAppReport *cdataAppReport in fetchedObjects)
         {
+            if ((filterNonRunning) && (![runningProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
+            {
+                DLog(@"%s %s not in running processes, filtering it out.", 
+                     __PRETTY_FUNCTION__,
+                     [cdataAppReport valueForKey:@"appName"]);
+                continue; 
+            }
+            
             HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
             [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
             [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
@@ -1163,10 +1187,11 @@ static id instance = nil;
 /**
  * Fetch the list of hogs from core data.
  */
-- (HogBugReport *) getHogs
+- (HogBugReport *) getHogs : (BOOL) filterNonRunning
 {
     DLog(@"Getting hogs from core data...");
     NSError *error = nil;
+    NSArray *runningProcessNames = nil;
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) 
     {
@@ -1192,11 +1217,21 @@ static id instance = nil;
         if ([fetchedObjects count] == 0)
             return nil;
         
+        if (filterNonRunning) { runningProcessNames = [[UIDevice currentDevice] runningProcessNames]; }
+        
         HogBugReport * hogs = [[[HogBugReport alloc] init] autorelease];
         NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
         [hogs setHbList:hbList];
         for (CoreDataAppReport *cdataAppReport in fetchedObjects)
         {
+            if ((filterNonRunning) && (![runningProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
+            {
+                DLog(@"%s %s not in running processes, filtering it out.", 
+                     __PRETTY_FUNCTION__,
+                     [cdataAppReport valueForKey:@"appName"]);
+                continue; 
+            }
+            
             HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
             [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
             [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
@@ -1279,8 +1314,10 @@ static id instance = nil;
     return ChangesSinceLastWeek;
 }
 
-// This call will result in a new sample being generated and sent
-// to back. This method is called by the UI.
+/**
+ *  Generate and return a sample. 
+ *  TODO: add memory related stuff.
+ */
 - (Sample *) getSample
 {
     Sample *sample = [[[Sample alloc] init] autorelease];
@@ -1288,7 +1325,18 @@ static id instance = nil;
     [sample setTimestamp:[[Globals instance] utcSecondsSinceEpoch]];
     [sample setBatteryLevel:[UIDevice currentDevice].batteryLevel];
     [sample setBatteryState:[UIDevice currentDevice].batteryStateString];
-    [sample setPiList: [[[NSMutableArray alloc] init] autorelease]];
+    
+    NSMutableArray *pInfoList = [[[NSMutableArray alloc] init] autorelease];
+    [sample setPiList: pInfoList];
+    
+    NSArray *processes = [[UIDevice currentDevice] runningProcesses];
+    for (NSDictionary *dict in processes)
+    {
+        ProcessInfo *pInfo = [[[ProcessInfo alloc] init] autorelease];
+        pInfo.pId = [[dict objectForKey:@"ProcessID"] intValue];
+        pInfo.pName = (NSString *)[dict objectForKey:@"ProcessName"];
+        [pInfoList addObject:pInfo];
+    }
     return sample;
 }
 

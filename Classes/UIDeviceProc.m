@@ -131,6 +131,17 @@
     return nil;
 }
 
+- (NSArray *) runningProcessNames 
+{    
+    NSMutableArray *runningProcessNamesArray = [[[NSMutableArray alloc] init ] autorelease];
+    NSArray *processes = [[UIDevice currentDevice] runningProcesses];
+    for (NSDictionary *dict in processes)
+    {
+        [runningProcessNamesArray addObject:[dict objectForKey:@"ProcessName"]];
+    }
+    return runningProcessNamesArray;
+}
+
 /**
  * Returns the battery state string.
  */

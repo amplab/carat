@@ -10,6 +10,7 @@
 
 @interface UIDevice (ProcessesAdditions) 
 - (NSArray *) runningProcesses;
+- (NSArray *) runningProcessNames;
 - (NSUInteger) cpuFrequency;
 - (NSUInteger) busFrequency;
 - (NSUInteger) totalMemory;
