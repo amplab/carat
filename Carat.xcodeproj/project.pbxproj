@@ -49,15 +49,7 @@
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
 		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
 		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
-		AB92023C14EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92022214EF01FF003966B8 /* Localizable.strings */; };
 		AB92023D14EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92022514EF01FF003966B8 /* Localizable.strings */; };
-		AB92023E14EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92022814EF01FF003966B8 /* Localizable.strings */; };
-		AB92023F14EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92022B14EF01FF003966B8 /* Localizable.strings */; };
-		AB92024014EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92022E14EF01FF003966B8 /* Localizable.strings */; };
-		AB92024114EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92023114EF01FF003966B8 /* Localizable.strings */; };
-		AB92024214EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92023414EF01FF003966B8 /* Localizable.strings */; };
-		AB92024314EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92023714EF01FF003966B8 /* Localizable.strings */; };
-		AB92024414EF01FF003966B8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = AB92023A14EF01FF003966B8 /* Localizable.strings */; };
 		AB9525AE14EA1B5900343418 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = AB9525AD14EA1B5900343418 /* about.html */; };
 		AB9525B014EA1B6F00343418 /* killapp.html in Resources */ = {isa = PBXBuildFile; fileRef = AB9525AF14EA1B6F00343418 /* killapp.html */; };
 		AB99EB0114EA6C130008E440 /* upgradeos.html in Resources */ = {isa = PBXBuildFile; fileRef = AB99EB0014EA6C130008E440 /* upgradeos.html */; };
@@ -152,13 +144,6 @@
 		ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD31902148EC41B000A8DC7 /* QuartzCore.framework */; };
 		ABDB096814D110C900885FB7 /* UIDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDB096714D110C900885FB7 /* UIDeviceHardware.m */; };
 		ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF64FE814C8D8DF00C21D8E /* PGTableViewWithEmptyView.m */; };
-		C12F3A9314F07D01007504BA /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A8214F07D01007504BA /* SDImageCache.m */; };
-		C12F3A9414F07D01007504BA /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A8614F07D01007504BA /* SDWebImageDecoder.m */; };
-		C12F3A9514F07D01007504BA /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A8814F07D01007504BA /* SDWebImageDownloader.m */; };
-		C12F3A9614F07D01007504BA /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A8B14F07D01007504BA /* SDWebImageManager.m */; };
-		C12F3A9714F07D01007504BA /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A8E14F07D01007504BA /* SDWebImagePrefetcher.m */; };
-		C12F3A9814F07D01007504BA /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A9014F07D01007504BA /* UIButton+WebCache.m */; };
-		C12F3A9914F07D01007504BA /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C12F3A9214F07D01007504BA /* UIImageView+WebCache.m */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
 		C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C14F5C32145BD54800087F74 /* CFNetwork.framework */; };
@@ -1573,15 +1558,7 @@
 				ABD1E61F14EEFDA400A03C40 /* SHKSharers.plist in Resources */,
 				ABD1E62414EEFDA400A03C40 /* Localizable.strings in Resources */,
 				ABD1E63D14EEFDA400A03C40 /* FBDialog.bundle in Resources */,
-				AB92023C14EF01FF003966B8 /* Localizable.strings in Resources */,
 				AB92023D14EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92023E14EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92023F14EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92024014EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92024114EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92024214EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92024314EF01FF003966B8 /* Localizable.strings in Resources */,
-				AB92024414EF01FF003966B8 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1699,13 +1676,6 @@
 				ABD1E65414EEFDA400A03C40 /* SHKOAuthView.m in Sources */,
 				ABD1E65514EEFDA400A03C40 /* SHKShareMenu.m in Sources */,
 				ABD1E65614EEFDA400A03C40 /* SHKViewControllerWrapper.m in Sources */,
-				C12F3A9314F07D01007504BA /* SDImageCache.m in Sources */,
-				C12F3A9414F07D01007504BA /* SDWebImageDecoder.m in Sources */,
-				C12F3A9514F07D01007504BA /* SDWebImageDownloader.m in Sources */,
-				C12F3A9614F07D01007504BA /* SDWebImageManager.m in Sources */,
-				C12F3A9714F07D01007504BA /* SDWebImagePrefetcher.m in Sources */,
-				C12F3A9814F07D01007504BA /* UIButton+WebCache.m in Sources */,
-				C12F3A9914F07D01007504BA /* UIImageView+WebCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
