@@ -85,11 +85,13 @@
     }
     cell.appIcon.image = img;
     [img release];*/
+    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" 
+                           stringByAppendingString:appName] 
+                          stringByAppendingString:@".jpg"];
     
-    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" stringByAppendingString:appName] stringByAppendingString:@".jpg"];
-    cell.appIconURL = imageURL;
-    cell.appIcon.image = [[JMImageCache sharedCache] imageForURL:imageURL delegate:cell]; 
-
+    [cell.appIcon setImageWithURL:[NSURL URLWithString:imageURL]
+                 placeholderImage:[UIImage imageNamed:@"icon57.png"]];
+    
     cell.appScore.progress = [[[report hbList] objectAtIndex:indexPath.row] wDistance];    
     return cell;
 }

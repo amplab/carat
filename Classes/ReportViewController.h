@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CoreDataManager.h"
-#import "JMImageCache.h"
+#import "UIImageView+WebCache.h"
 
 @class DetailViewController;
 

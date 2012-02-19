@@ -7,19 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JMImageCache.h"
 
-@interface ReportItemCell : UITableViewCell <JMImageCacheDelegate>
+@interface ReportItemCell : UITableViewCell
 {
     IBOutlet UILabel *appName;
     IBOutlet UIImageView *appIcon;
     IBOutlet UIProgressView *appScore;
-    NSString * appIconURL; 
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *appName;
 @property (retain, nonatomic) IBOutlet UIImageView *appIcon;
 @property (retain, nonatomic) IBOutlet UIProgressView *appScore;
-@property (retain, nonatomic) NSString * appIconURL;
 
 @end
