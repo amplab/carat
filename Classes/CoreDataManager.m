@@ -291,7 +291,7 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         
         // Now let's get the report data from the server. First main reports.
         DLog(@"%s Updating main reports...", __PRETTY_FUNCTION__);
-        reportUpdateStatus = @"Updating main reports...";
+        reportUpdateStatus = @"(Updating main reports...)";
         Reports *reports = [[CommunicationManager instance] getReports];
         //if (reports == nil || reports == NULL) return;  // Being extra-cautious.
         if (reports != nil && reports != NULL)
@@ -352,7 +352,7 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         // Hog report
         DLog(@"%s Updating hog report...", __PRETTY_FUNCTION__);
         
-        reportUpdateStatus = @"Updating hog report...";
+        reportUpdateStatus = @"(Updating hog report...)";
         
         Feature *feature1 = [[[Feature alloc] init] autorelease];
         [feature1 setKey:@"ReportType"];
@@ -398,7 +398,7 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         
         // Bug report
         DLog(@"%s Updating bug report...", __PRETTY_FUNCTION__);
-        reportUpdateStatus = @"Updating bug report...";
+        reportUpdateStatus = @"(Updating bug report...)";
         
         [feature1 setValue:@"Bug"];
         list = [[NSArray alloc] initWithObjects:feature1, feature2, nil];
