@@ -39,7 +39,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
-    [self setReport:[[CoreDataManager instance] getBugs]];
+    [self setReport:[[CoreDataManager instance] getBugs:NO]];
     
 //    //Initialize the arrays.
 //    listOfAppNames = [[NSMutableArray alloc] init];
