@@ -190,7 +190,7 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
     
     //  We don't want to create huge number of threads to send 
     //  registrations/samples, so limit them.
-    sendStoreDataToServerSemaphore = dispatch_semaphore_create(3);
+    sendStoreDataToServerSemaphore = dispatch_semaphore_create(2);
     
     [self loadLocalReportsToMemory:self.managedObjectContext];
 }
@@ -363,7 +363,7 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         UIDeviceHardware *h =[[[UIDeviceHardware alloc] init] autorelease];
         [feature2 setValue: [h platformString]];
         
-        FeatureList list = [[NSArray alloc] initWithObjects:feature1,feature1, nil];
+        FeatureList list = [[NSArray alloc] initWithObjects:feature1,feature2, nil];
         
         HogBugReport *hogReport = [[CommunicationManager instance] getHogOrBugReport:list];
         
