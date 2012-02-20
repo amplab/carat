@@ -510,7 +510,7 @@
 						<reference key="IBUIFontDescription" ref="244504842"/>
 						<reference key="IBUIFont" ref="265680228"/>
 					</object>
-					<object class="IBUIImageView" id="881454362">
+					<object class="IBUIImageView" id="640265424">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">269</int>
 						<string key="NSFrame">{{18, 325}, {285, 66}}</string>
@@ -519,7 +519,7 @@
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<object class="NSCustomResource" key="IBUIImage" id="312529674">
+						<object class="NSCustomResource" key="IBUIImage" id="801734431">
 							<string key="NSClassName">NSImage</string>
 							<string key="NSResourceName">amplab_logo.png</string>
 						</object>
@@ -601,7 +601,7 @@
 						<string key="NSReuseIdentifierKey">_NS:567</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<reference key="IBUIImage" ref="312529674"/>
+						<reference key="IBUIImage" ref="801734431"/>
 					</object>
 					<object class="IBUILabel" id="456223185">
 						<reference key="NSNextResponder" ref="552361349"/>
@@ -1180,6 +1180,24 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">getProcessList:</string>
+						<reference key="source" ref="236972087"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">140</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">getProcessList:</string>
+						<reference key="source" ref="931880393"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">141</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">getJScoreInfo:</string>
 						<reference key="source" ref="460563192"/>
 						<reference key="destination" ref="372490531"/>
@@ -1232,7 +1250,7 @@
 							<reference ref="807204668"/>
 							<reference ref="586058563"/>
 							<reference ref="460563192"/>
-							<reference ref="881454362"/>
+							<reference ref="640265424"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">portrait</string>
@@ -1476,7 +1494,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">139</int>
-						<reference key="object" ref="881454362"/>
+						<reference key="object" ref="640265424"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</object>
@@ -1594,7 +1612,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">139</int>
+			<int key="maxID">141</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1607,12 +1625,14 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>getJScoreInfo:</string>
+							<string>getProcessList:</string>
 							<string>getSameModelDetail:</string>
 							<string>getSameOSDetail:</string>
 							<string>getSimilarAppsDetail:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1624,6 +1644,7 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>getJScoreInfo:</string>
+							<string>getProcessList:</string>
 							<string>getSameModelDetail:</string>
 							<string>getSameOSDetail:</string>
 							<string>getSimilarAppsDetail:</string>
@@ -1632,6 +1653,10 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">getJScoreInfo:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">getProcessList:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

@@ -35,7 +35,6 @@
 
 - (void)didReceiveMemoryWarning
 {
-    // TODO release icons and whatnot; add checks to ensure this is loaded before displaying
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
     

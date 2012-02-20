@@ -51,58 +51,24 @@
 	
 	// Register for HUD callbacks so we can remove it from the window at the right time
     HUD.delegate = self;
-    HUD.labelText = @"Downloading Reports";
+    HUD.labelText = @"Updating Action List";
 	
     [HUD showWhileExecuting:@selector(loadData) onTarget:self withObject:nil animated:YES];
 }
 
 - (void)loadData
 {    
-    // this shouldn't trigger; just being defensive
-    if ([self isFresh]) {
-        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-        UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
-        HUD.customView = imgView;
-        [HUD setMode:MBProgressHUDModeCustomView];
-        HUD.labelText = @"Completed";
-        [icon release];
-        [imgView release];
-        sleep(1);
-    }
-    
-    // UPDATE REPORT DATA
-    if ([[CommunicationManager instance] isInternetReachable] == YES && // online
-        ![self isFresh] && // need to update
-        [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
-    {
-        [[CoreDataManager instance] updateLocalReportsFromServer];
-    }
-    
     [self updateView];
     
-    // display result
-    if ([self isFresh]) {
-        // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-        UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
-        HUD.customView = imgView;
-        [HUD setMode:MBProgressHUDModeCustomView];
-        HUD.labelText = @"Completed";
-        [icon release];
-        [imgView release];
-        sleep(1);
-    } else {
-        UIImage *icon = [UIImage newImageNotCached:@"37x-X.png"];
-        UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
-        HUD.customView = imgView;
-        [HUD setMode:MBProgressHUDModeCustomView];
-        HUD.labelText = @"Update Failed";
-        HUD.detailsLabelText = @"(showing stale data)";
-        [icon release];
-        [imgView release];
-        sleep(2);
-    }
+    // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+    UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+    HUD.customView = imgView;
+    [HUD setMode:MBProgressHUDModeCustomView];
+    HUD.labelText = @"List Update Complete";
+    [icon release];
+    [imgView release];
+    sleep(1);
 }
 
 - (BOOL) isFresh
@@ -239,22 +205,27 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    // UPDATE REPORT DATA
+    if ([[CommunicationManager instance] isInternetReachable] == YES && // online
+        ![self isFresh] && // need to update
+        [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
+    {
+        [[CoreDataManager instance] updateLocalReportsFromServer];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    // loads data while showing busy indicator
-    if (![self isFresh]) {
-        [self loadDataWithHUD];
-    } else {
+    if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
         // For this screen, let's put sending samples/registrations here so that we don't conflict
         // with the report syncing (need to limit memory/CPU/thread usage so that we don't get killed).
         [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     }
-
-    [self updateView];
+    
+    [self loadDataWithHUD];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -278,77 +249,79 @@
     
     ActionObject *tmpAction;
     
-    DLog(@"Loading Hogs");
-    // get Hogs, filter negative actionBenefits, fill mutable array
-    NSArray *tmp = [[CoreDataManager instance] getHogs:YES].hbList;
-    DLog(@"Got Hogs");
-    if (tmp != nil) {
-        DLog(@"Hogs not nil");
-        for (HogsBugs *hb in tmp) {
-            if ([hb appName] != nil &&
-                [hb expectedValue] > 0 &&
-                [hb expectedValueWithout] > 0) {
-                
-                NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
+    if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
+        DLog(@"Loading Hogs");
+        // get Hogs, filter negative actionBenefits, fill mutable array
+        NSArray *tmp = [[CoreDataManager instance] getHogs:YES].hbList;
+        DLog(@"Got Hogs");
+        if (tmp != nil) {
+            DLog(@"Hogs not nil");
+            for (HogsBugs *hb in tmp) {
+                if ([hb appName] != nil &&
+                    [hb expectedValue] > 0 &&
+                    [hb expectedValueWithout] > 0) {
+                    
+                    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+                    DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
+                    if (benefit > 60) {
+                        tmpAction = [[ActionObject alloc] init];
+                        [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
+                        [tmpAction setActionType:ActionTypeKillApp];
+                        [tmpAction setActionBenefit:benefit];
+                        [myList addObject:tmpAction];
+                        [tmpAction release];
+                    }
+                }
+            }
+        }
+        
+        DLog(@"Loading Bugs");
+        // get Bugs, add to array
+        tmp = [[CoreDataManager instance] getBugs:YES].hbList;
+        if (tmp != nil) {
+            for (HogsBugs *hb in tmp) {
+                if ([hb appName] != nil &&
+                    [hb expectedValue] > 0 &&
+                    [hb expectedValueWithout] > 0) {
+                    
+                    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+                    DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
+                    if (benefit > 60) {
+                        tmpAction = [[ActionObject alloc] init];
+                        [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
+                        [tmpAction setActionType:ActionTypeRestartApp];
+                        [tmpAction setActionBenefit:benefit];
+                        [myList addObject:tmpAction];
+                        [tmpAction release];
+                    }
+                }
+            }
+        }
+        
+        DLog(@"Loading OS");
+        // get OS
+        DetailScreenReport *dscWith = [[[CoreDataManager instance] getOSInfo:YES] retain];
+        DetailScreenReport *dscWithout = [[[CoreDataManager instance] getOSInfo:NO] retain];
+        
+        if (dscWith != nil && dscWithout != nil) {
+            if (dscWith.expectedValue > 0 &&
+                dscWithout.expectedValue > 0) {
+                NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
+                DLog(@"OS benefit is %d", benefit);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
-                    [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
-                    [tmpAction setActionType:ActionTypeKillApp];
+                    [tmpAction setActionText:@"Upgrade the Operating System"];
+                    [tmpAction setActionType:ActionTypeUpgradeOS];
                     [tmpAction setActionBenefit:benefit];
                     [myList addObject:tmpAction];
                     [tmpAction release];
                 }
             }
         }
+        
+        [dscWith release];
+        [dscWithout release];
     }
-    
-    DLog(@"Loading Bugs");
-    // get Bugs, add to array
-    tmp = [[CoreDataManager instance] getBugs:YES].hbList;
-    if (tmp != nil) {
-        for (HogsBugs *hb in tmp) {
-            if ([hb appName] != nil &&
-                [hb expectedValue] > 0 &&
-                [hb expectedValueWithout] > 0) {
-                
-                NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
-                if (benefit > 60) {
-                    tmpAction = [[ActionObject alloc] init];
-                    [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
-                    [tmpAction setActionType:ActionTypeRestartApp];
-                    [tmpAction setActionBenefit:benefit];
-                    [myList addObject:tmpAction];
-                    [tmpAction release];
-                }
-            }
-        }
-    }
-    
-    DLog(@"Loading OS");
-    // get OS
-    DetailScreenReport *dscWith = [[[CoreDataManager instance] getOSInfo:YES] retain];
-    DetailScreenReport *dscWithout = [[[CoreDataManager instance] getOSInfo:NO] retain];
-    
-    if (dscWith != nil && dscWithout != nil) {
-        if (dscWith.expectedValue > 0 &&
-            dscWithout.expectedValue > 0) {
-            NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
-            DLog(@"OS benefit is %d", benefit);
-            if (benefit > 60) {
-                tmpAction = [[ActionObject alloc] init];
-                [tmpAction setActionText:@"Upgrade the Operating System"];
-                [tmpAction setActionType:ActionTypeUpgradeOS];
-                [tmpAction setActionBenefit:benefit];
-                [myList addObject:tmpAction];
-                [tmpAction release];
-            }
-        }
-    }
-    
-    [dscWith release];
-    [dscWithout release];
 
     DLog(@"Loading Action");
     // sharing Action

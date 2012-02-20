@@ -17,6 +17,7 @@
 #import "Globals.h"
 #import "UIImageDoNotCache.h"
 #import "InstructionViewController.h"
+#import "ProcessListViewController.h"
 
 @implementation CurrentViewController
 
@@ -48,6 +49,14 @@
 
 
 #pragma mark - button actions
+
+- (IBAction)getProcessList:(id)sender
+{
+    ProcessListViewController *plvController = [[ProcessListViewController alloc] initWithNibName:@"ProcessListView" bundle:nil];
+    [self.navigationController pushViewController:plvController animated:YES];
+    [plvController release];
+    [FlurryAnalytics logEvent:@"selectedProcessList"];
+}
 
 - (IBAction)getJScoreInfo:(id)sender
 {

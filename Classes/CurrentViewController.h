@@ -35,5 +35,6 @@
 - (IBAction)getSameModelDetail:(id)sender;
 - (IBAction)getSimilarAppsDetail:(id)sender;
 - (IBAction)getJScoreInfo:(id)sender;
+- (IBAction)getProcessList:(id)sender;
 
 @end

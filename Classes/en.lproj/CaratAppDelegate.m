@@ -255,8 +255,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 }
 
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    NSString *errorData = [NSString stringWithFormat:@"%@",[error localizedDescription]];
-    DLog(@"%@", errorData);
+    DLog(@"%@", [NSString stringWithFormat:@"%@",[error localizedDescription]]);
 }
 
 #pragma mark -
