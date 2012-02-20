@@ -177,16 +177,6 @@
 		C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		ABEC9B5F14F1CA71005CE813 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ABEC9B4214F1CA71005CE813 /* SDWebImage.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 53922D6F148C55820056699D;
-			remoteInfo = SDWebImage;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* CaratAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratAppDelegate.h; sourceTree = "<group>"; };
@@ -514,7 +504,6 @@
 		ABEC9B3F14F1CA71005CE813 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
 		ABEC9B4014F1CA71005CE813 /* SDImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDImageCache.m; sourceTree = "<group>"; };
 		ABEC9B4114F1CA71005CE813 /* SDImageCacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCacheDelegate.h; sourceTree = "<group>"; };
-		ABEC9B4214F1CA71005CE813 /* SDWebImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = SDWebImage.xcodeproj; sourceTree = "<group>"; };
 		ABEC9B4514F1CA71005CE813 /* SDWebImageCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageCompat.h; sourceTree = "<group>"; };
 		ABEC9B4614F1CA71005CE813 /* SDWebImageDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWebImageDecoder.h; sourceTree = "<group>"; };
 		ABEC9B4714F1CA71005CE813 /* SDWebImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDecoder.m; sourceTree = "<group>"; };
@@ -1377,14 +1366,6 @@
 			path = FlurryAnalytics;
 			sourceTree = "<group>";
 		};
-		ABEC9B4314F1CA71005CE813 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ABEC9B6014F1CA71005CE813 /* libSDWebImage.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		ABF64FE614C8D8DE00C21D8E /* PGTableWithEmptyView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1400,7 +1381,6 @@
 				ABEC9B3F14F1CA71005CE813 /* SDImageCache.h */,
 				ABEC9B4014F1CA71005CE813 /* SDImageCache.m */,
 				ABEC9B4114F1CA71005CE813 /* SDImageCacheDelegate.h */,
-				ABEC9B4214F1CA71005CE813 /* SDWebImage.xcodeproj */,
 				ABEC9B4514F1CA71005CE813 /* SDWebImageCompat.h */,
 				ABEC9B4614F1CA71005CE813 /* SDWebImageDecoder.h */,
 				ABEC9B4714F1CA71005CE813 /* SDWebImageDecoder.m */,
@@ -1532,28 +1512,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Carat */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = ABEC9B4314F1CA71005CE813 /* Products */;
-					ProjectRef = ABEC9B4214F1CA71005CE813 /* SDWebImage.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Carat */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		ABEC9B6014F1CA71005CE813 /* libSDWebImage.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSDWebImage.a;
-			remoteRef = ABEC9B5F14F1CA71005CE813 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
