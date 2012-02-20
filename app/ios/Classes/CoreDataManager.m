@@ -1151,7 +1151,7 @@ static id instance = nil;
         {
             if ((filterNonRunning) && (![runningProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
             {
-                DLog(@"%s %s not in running processes, filtering it out.", 
+                DLog(@"%s '%@' not in running processes, filtering it out.", 
                      __PRETTY_FUNCTION__,
                      [cdataAppReport valueForKey:@"appName"]);
                 continue; 
@@ -1226,7 +1226,7 @@ static id instance = nil;
         {
             if ((filterNonRunning) && (![runningProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
             {
-                DLog(@"%s %s not in running processes, filtering it out.", 
+                DLog(@"%s '%@' not in running processes, filtering it out.", 
                      __PRETTY_FUNCTION__,
                      [cdataAppReport valueForKey:@"appName"]);
                 continue; 
