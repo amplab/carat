@@ -57,7 +57,7 @@
     if (cell == nil) {
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ProcessItemCell" owner:nil options:nil];
         for (id currentObject in topLevelObjects) {
-            if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+            if ([currentObject isKindOfClass:[ProcessItemCell class]]) {
                 cell = (ProcessItemCell *)currentObject;
                 break;
             }

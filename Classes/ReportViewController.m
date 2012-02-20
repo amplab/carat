@@ -68,7 +68,7 @@
     if (cell == nil) {
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ReportItemCell" owner:nil options:nil];
         for (id currentObject in topLevelObjects) {
-            if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+            if ([currentObject isKindOfClass:[ReportItemCell class]]) {
                 cell = (ReportItemCell *)currentObject;
                 break;
             }

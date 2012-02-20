@@ -106,7 +106,7 @@
     if (cell == nil) {
         NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ActionItemCell" owner:nil options:nil];
         for (id currentObject in topLevelObjects) {
-            if ([currentObject isKindOfClass:[UITableViewCell class]]) {
+            if ([currentObject isKindOfClass:[ActionItemCell class]]) {
                 cell = (ActionItemCell *)currentObject;
                 break;
             }
