@@ -149,6 +149,7 @@
     self.navigationItem.title = self.tableTitle;
 }
 
+// overridden by subclasses
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

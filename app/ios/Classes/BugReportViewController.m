@@ -40,23 +40,18 @@
 	// Do any additional setup after loading the view, typically from a nib.
 
     [self setReport:[[CoreDataManager instance] getBugs:NO]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
-//    //Initialize the arrays.
-//    listOfAppNames = [[NSMutableArray alloc] init];
-//    listOfAppScores = [[NSMutableArray alloc] init];
-//    
-//    //Add items
-//    [listOfAppNames addObject:@"Pandora Radio"];
-//    [listOfAppNames addObject:@"Facebook"];
-//    [listOfAppNames addObject:@"Paper Toss"];
-//    [listOfAppNames addObject:@"Shazam"];
-//    [listOfAppNames addObject:@"Angry Birds"];
-//    
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.95f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.93f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.47f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.29f]];
-//    [listOfAppScores addObject:[NSNumber numberWithFloat:0.1f]];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self setReport:[[CoreDataManager instance] getBugs:NO]];
+    
+    [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
+    [self.dataTable reloadData];
 }
 
 @end
