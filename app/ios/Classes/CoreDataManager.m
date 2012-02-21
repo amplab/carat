@@ -1027,10 +1027,10 @@ static id instance = nil;
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self fetchAndSendRegistrations:10];
             [self fetchAndSendSamples:10];
-            dispatch_semaphore_signal(sendStoreDataToServerSemaphore);
-            /*dispatch_async( dispatch_get_main_queue(), ^{
-             DLog(@"%s Done!", __PRETTY_FUNCTION__);
-             });*/
+            dispatch_async( dispatch_get_main_queue(), ^{
+                dispatch_semaphore_signal(sendStoreDataToServerSemaphore);
+                DLog(@"%s Done!", __PRETTY_FUNCTION__);
+            });
         });
     } 
     else { DLog(@"%s No connectivity", __PRETTY_FUNCTION__); }
