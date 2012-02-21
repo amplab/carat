@@ -33,6 +33,8 @@
     DetailScreenReport * SimilarAppsInfo;
     DetailScreenReport * SimilarAppsInfoWithout;
     NSArray * ChangesSinceLastWeek;
+    NSURLConnection *connection;
+    NSMutableData *receivedData;
 }
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext *managedObjectContext;
@@ -47,7 +49,10 @@
 @property (nonatomic, retain) DetailScreenReport * SimilarAppsInfo;
 @property (nonatomic, retain) DetailScreenReport * SimilarAppsInfoWithout;
 @property (nonatomic, retain) NSArray * ChangesSinceLastWeek;
+@property (nonatomic, retain) NSURLConnection *connection;
+@property (nonatomic, retain) NSMutableData *receivedData;
 @property (nonatomic, retain) NSLock *lockReportSync;
+@property (nonatomic, retain) NSString * daemonsFilePath;
 
 + (id) instance;
 - (void) generateSaveRegistration;
