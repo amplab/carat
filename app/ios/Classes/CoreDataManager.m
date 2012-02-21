@@ -347,7 +347,7 @@ static NSMutableDictionary * daemonsList = nil;
     
     //  We don't want to create huge number of threads to send 
     //  registrations/samples, so limit them.
-    sendStoreDataToServerSemaphore = dispatch_semaphore_create(1);
+    sendStoredDataToServerSemaphore = dispatch_semaphore_create(1);
     
     [self loadLocalReportsToMemory:self.managedObjectContext];
     

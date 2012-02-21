@@ -61,14 +61,14 @@
     [self updateView];
     
     // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-    UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
-    UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
-    HUD.customView = imgView;
-    [HUD setMode:MBProgressHUDModeCustomView];
-    HUD.labelText = @"List Update Complete";
-    [icon release];
-    [imgView release];
-    sleep(1);
+//    UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
+//    UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
+//    HUD.customView = imgView;
+//    [HUD setMode:MBProgressHUDModeCustomView];
+//    HUD.labelText = @"List Update Complete";
+//    [icon release];
+//    [imgView release];
+//    sleep(1);
 }
 
 - (BOOL) isFresh
