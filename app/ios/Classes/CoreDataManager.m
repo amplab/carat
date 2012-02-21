@@ -190,7 +190,7 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
     
     //  We don't want to create huge number of threads to send 
     //  registrations/samples, so limit them.
-    sendStoreDataToServerSemaphore = dispatch_semaphore_create(2);
+    sendStoreDataToServerSemaphore = dispatch_semaphore_create(1);
     
     [self loadLocalReportsToMemory:self.managedObjectContext];
 }

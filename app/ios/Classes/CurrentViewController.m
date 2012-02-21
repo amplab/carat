@@ -26,6 +26,8 @@
 @synthesize sinceLastWeekString = _sinceLastWeekString;
 @synthesize osVersion = _osVersion;
 @synthesize deviceModel = _deviceModel;
+@synthesize memUsed = _memUsed;
+@synthesize memActive = _memActive;
 @synthesize portraitView, landscapeView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -268,18 +270,19 @@
     vm_statistics_data_t vmstat;
     if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) == KERN_SUCCESS)
     {
-        int pagesize = [[UIDevice currentDevice] pageSize];
-        int wired = vmstat.wire_count * pagesize;
-        int active = vmstat.active_count * pagesize;
-        int inactive = vmstat.inactive_count * pagesize;
-        int free = vmstat.free_count * pagesize;
-        int used = wired+active+inactive;
-        float frac_used = (float)(used) / (float)(used+free);
-        float frac_active = (float)(active) / (float)(used);
-        
-        
-        
-    } // TODO hook to ui
+        int active = vmstat.active_count;
+        int free = vmstat.free_count;
+        int used = vmstat.wire_count+active+vmstat.inactive_count;
+        float frac_used = ((float)(used) / (float)(used+free));
+        float frac_active = ((float)(active) / (float)(used));
+        DLog(@"Active memory: %f, Used memory: %f", frac_active, frac_used);
+        for (UIProgressView *memUsedProg in self.memUsed) {
+            memUsedProg.progress = frac_used;
+        }
+        for (UIProgressView *memActiveProg in self.memActive) {
+            memActiveProg.progress = frac_active;
+        }
+    }
 
     // Device info
     UIDeviceHardware *h =[[UIDeviceHardware alloc] init];

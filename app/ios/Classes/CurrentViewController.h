@@ -15,6 +15,9 @@
     NSArray *osVersion;
     NSArray *deviceModel;
     
+    NSArray *memUsed;
+    NSArray *memActive;
+    
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
 }
@@ -24,6 +27,9 @@
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *sinceLastWeekString;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *osVersion;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *deviceModel;
+
+@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *memUsed;
+@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *memActive;
 
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
