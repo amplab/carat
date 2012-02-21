@@ -18,7 +18,9 @@
 static NSArray * SubReports = nil;
 static double JScore;
 static NSString * reportUpdateStatus = nil;
-static dispatch_semaphore_t sendStoreDataToServerSemaphore;
+static dispatch_semaphore_t sendStoredDataToServerSemaphore;
+//static NSString * daemonsFilePath = nil;
+static NSMutableDictionary * daemonsList = nil;
 
 /**
  *  Initialize the core data store reports table.
@@ -183,16 +185,173 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
         return;
     }
 }
+#pragma mark - Daemons list syncing
+/**
+ * Gets the modification date for a file.
+ */
+- (NSDate *) getFileModificationDate : (NSString *) filePath
+{
+    DLog(@"%s getting modification date for %@", __PRETTY_FUNCTION__, filePath);
+    NSDate *fileModificationDate = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
+    NSError *error = nil;
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) 
+    {
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath 
+                                                                                    error:&error];
+        
+        if (attributes != nil) { fileModificationDate = [attributes fileModificationDate]; }
+        else { DLog(@"%s Could not retrieve file modification date, %@", __PRETTY_FUNCTION__, error); }
+    }
+    
+    return fileModificationDate;
+}
 
+- (void) connectionDidFinishLoading: (NSURLConnection *) connection
+{   
+    NSString * responseString = [[NSString alloc] initWithData:self.receivedData 
+                                                   encoding:NSUTF8StringEncoding];
+    DLog(@"%s Daemon list received from server: [%@]", __PRETTY_FUNCTION__, responseString);
+    if ([responseString length] > 0) 
+    {
+        [daemonsList removeAllObjects];
+        for (NSString *line in [responseString componentsSeparatedByString:@"\n"]) 
+        {
+            DLog(@"%s %@", __PRETTY_FUNCTION__, line);
+            [daemonsList setObject:@"1" forKey:line];
+        }
+    }
+    
+    //
+    // Remove the file.
+    //
+    if (![[NSFileManager defaultManager] removeItemAtPath:self.daemonsFilePath 
+                                                    error:nil]) 
+    {
+        DLog(@"%s Could not remove the cached file.", __PRETTY_FUNCTION__);
+        return;
+    }
+    
+    //
+    // Recreate it
+    //
+    if (![[NSFileManager defaultManager] createFileAtPath:self.daemonsFilePath
+                                            contents:self.receivedData
+                                          attributes:nil])
+    {
+        DLog(@"%s Could not create cache file.", __PRETTY_FUNCTION__);
+        return;
+    }
+    
+    //
+    // Set modification date.
+    //
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:[NSDate date], NSFileModificationDate, nil];
+    if (![[NSFileManager defaultManager] setAttributes:dict 
+                                          ofItemAtPath:self.daemonsFilePath 
+                                                 error:nil]) 
+    {
+        DLog(@"%s Could not set modification date for the cached file.", __PRETTY_FUNCTION__);
+        return;    
+    }
+}
+
+- (void) connection:(NSURLConnection *) connection didFailWithError:(NSError *)error 
+{
+    DLog(@"%s %@", __PRETTY_FUNCTION__, error);
+}
+
+- (void) connection:(NSURLConnection *) connection didReceiveData:(NSData *)data
+{
+    [self.receivedData appendData:data];
+}
+
+- (void) connection:(NSURLConnection *) connection didReceiveResponse:(NSURLResponse *)response
+{
+    long long contentLength = [response expectedContentLength];
+    if (contentLength == NSURLResponseUnknownLength) { contentLength = 0; }
+    self.receivedData = [NSMutableData dataWithLength:(NSUInteger) contentLength];
+}
+
+- (void) checkStalenessAndSyncDaemons
+{
+    NSDate * fileDate = [self getFileModificationDate:self.daemonsFilePath];
+    NSTimeInterval time = fabs([fileDate timeIntervalSinceNow]);
+    if ((time > 86400.0) &&  ([[CommunicationManager instance] isInternetReachable] == YES))
+    {
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://carat.cs.berkeley.edu/daemons.txt"]
+                                                    cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
+                                                timeoutInterval:60];
+        self.connection = [NSURLConnection connectionWithRequest:urlRequest delegate:self];
+        if (self.connection == nil) { DLog(@"%s Could not initialize NSURLConnection", __PRETTY_FUNCTION__); }
+    } else { DLog(@"%s Cache up-to-date (%@), skipping update.", __PRETTY_FUNCTION__, fileDate); }
+}
+
+- (void) initDaemonCache
+{
+    NSError *error = nil;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 
+                                                         NSUserDomainMask, 
+                                                         YES);
+    self.daemonsFilePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"daemons.txt"];
+    
+    //
+    // Already existing, load that daemons from file.
+    //
+    if ([[NSFileManager defaultManager] fileExistsAtPath:self.daemonsFilePath]) 
+    {
+        [daemonsList removeAllObjects];
+        
+        NSString *fh = [NSString stringWithContentsOfFile:self.daemonsFilePath 
+                                                 encoding:NSUTF8StringEncoding 
+                                                    error:NULL];
+        DLog(@"%s Cache file already exists with contents %s, loading...", __PRETTY_FUNCTION__, fh); 
+        for (NSString *line in [fh componentsSeparatedByString:@"\n"]) {
+            [daemonsList setObject:@"1" forKey:line];
+        }
+        return; 
+    }
+    
+    //
+    // Try to create one.
+    //
+    if (![[NSFileManager defaultManager] createFileAtPath:self.daemonsFilePath 
+                                                 contents:nil 
+                                               attributes:nil])
+    {
+        DLog(@"%s Could not create daemon cache. %@", __PRETTY_FUNCTION__, error);
+        return;
+    }
+    
+    //
+    // Set the modification date to a very old date.
+    //
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate* oldDate = [dateFormatter dateFromString:@"1970-01-01"];
+    [dateFormatter release];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:oldDate, NSFileModificationDate, nil];
+    if (![[NSFileManager defaultManager] setAttributes:dict 
+                                          ofItemAtPath:self.daemonsFilePath 
+                                                 error:nil]) 
+    {
+        DLog(@"%s Could not set modification date for the daemon cache.", __PRETTY_FUNCTION__);
+        return;    
+    }
+
+}
+#pragma mark -
 - (void) initialize
 {
     self.lockReportSync = [[NSLock alloc] init];
     
     //  We don't want to create huge number of threads to send 
     //  registrations/samples, so limit them.
-    sendStoreDataToServerSemaphore = dispatch_semaphore_create(2);
+    sendStoredDataToServerSemaphore = dispatch_semaphore_create(1);
     
     [self loadLocalReportsToMemory:self.managedObjectContext];
+    
+    [self initDaemonCache];
 }
 
 #pragma mark - Report Syncing
@@ -458,15 +617,14 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
  */
 - (void) sampleProcessInfo : (CoreDataSample *) currentCDSample 
   withManagedObjectContext : (NSManagedObjectContext *) managedObjectContext
-{
-    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    
+{   
     if (managedObjectContext != nil)
     {
         NSArray *processes = [[UIDevice currentDevice] runningProcesses];
         
         for (NSDictionary *dict in processes)
         {
+            if([daemonsList objectForKey:[dict objectForKey:@"ProcessName"]] != nil) { continue; }
             CoreDataProcessInfo *cdataProcessInfo = (CoreDataProcessInfo *) [NSEntityDescription insertNewObjectForEntityForName:@"CoreDataProcessInfo" inManagedObjectContext:managedObjectContext];
             [cdataProcessInfo setId: [NSNumber numberWithInt:[[dict objectForKey:@"ProcessID"] intValue]]];
             [cdataProcessInfo setName:[dict objectForKey:@"ProcessName"]];
@@ -905,7 +1063,10 @@ static dispatch_semaphore_t sendStoreDataToServerSemaphore;
 @synthesize SimilarAppsInfo;
 @synthesize SimilarAppsInfoWithout;
 @synthesize ChangesSinceLastWeek;
+@synthesize connection;
+@synthesize receivedData;
 @synthesize lockReportSync;
+@synthesize daemonsFilePath;
 
 static id instance = nil;
 
@@ -914,6 +1075,7 @@ static id instance = nil;
         instance = [[self alloc] init];
     }
     SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
+    daemonsList = [[NSMutableDictionary alloc] init];
     [instance initialize];
     //[instance loadLocalReportsToMemory];
     [[CommunicationManager instance] isInternetReachable]; // This is here just to make sure CommunicationManager subscribes 
@@ -939,7 +1101,9 @@ static id instance = nil;
     [SimilarAppsInfoWithout release];
     [ChangesSinceLastWeek release];
     [lockReportSync release];
-    dispatch_release(sendStoreDataToServerSemaphore);
+    [daemonsFilePath release];
+    [daemonsList release];
+    dispatch_release(sendStoredDataToServerSemaphore);
     [super dealloc];
 }
 
@@ -1016,8 +1180,7 @@ static id instance = nil;
     if ([[CommunicationManager instance] isInternetReachable] == YES)
     {
         DLog(@"%s Internet connection active", __PRETTY_FUNCTION__);
-        
-        long available = dispatch_semaphore_wait(sendStoreDataToServerSemaphore, DISPATCH_TIME_NOW);
+        long available = dispatch_semaphore_wait(sendStoredDataToServerSemaphore, DISPATCH_TIME_NOW);
         if (available != 0)
         {
             DLog(@"%s Not enough resources available, aborting %u.", __PRETTY_FUNCTION__);
@@ -1027,10 +1190,10 @@ static id instance = nil;
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self fetchAndSendRegistrations:10];
             [self fetchAndSendSamples:10];
-            dispatch_semaphore_signal(sendStoreDataToServerSemaphore);
-            /*dispatch_async( dispatch_get_main_queue(), ^{
-             DLog(@"%s Done!", __PRETTY_FUNCTION__);
-             });*/
+            dispatch_async( dispatch_get_main_queue(), ^{
+                dispatch_semaphore_signal(sendStoredDataToServerSemaphore);
+                DLog(@"%s Done!", __PRETTY_FUNCTION__);
+            });
         });
     } 
     else { DLog(@"%s No connectivity", __PRETTY_FUNCTION__); }
@@ -1060,8 +1223,10 @@ static id instance = nil;
         [self updateReportsFromServer];
         [lockCoreDataStore unlock];
     }*/
-    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    //
+    /*dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([lockReportSync tryLock]) {
+            [self checkStalenessAndSyncDaemons];
             [self updateReportsFromServer];
             reportUpdateStatus = nil;
             [lockReportSync unlock];
@@ -1071,7 +1236,24 @@ static id instance = nil;
         dispatch_async( dispatch_get_main_queue(), ^{
             DLog(@"%s Report fetching thread completed!", __PRETTY_FUNCTION__);
         });
-    });
+    });*/
+    if ([lockReportSync tryLock]) 
+    {
+        dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self updateReportsFromServer];
+                reportUpdateStatus = nil;
+            
+                dispatch_async( dispatch_get_main_queue(), ^{
+                    [lockReportSync unlock];
+                    [self checkStalenessAndSyncDaemons];
+                    DLog(@"%s Report fetching thread completed!", __PRETTY_FUNCTION__);
+                });
+        });
+    } 
+    else 
+    { 
+        DLog(@"%s Could not get a lock on report syncing module. Perhaps an update is already in progress?", __PRETTY_FUNCTION__);
+    }
 }
 
 #pragma mark - UI APIs
@@ -1151,7 +1333,7 @@ static id instance = nil;
         {
             if ((filterNonRunning) && (![runningProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
             {
-                DLog(@"%s %s not in running processes, filtering it out.", 
+                DLog(@"%s '%@' not in running processes, filtering it out.", 
                      __PRETTY_FUNCTION__,
                      [cdataAppReport valueForKey:@"appName"]);
                 continue; 
@@ -1226,7 +1408,7 @@ static id instance = nil;
         {
             if ((filterNonRunning) && (![runningProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
             {
-                DLog(@"%s %s not in running processes, filtering it out.", 
+                DLog(@"%s '%@' not in running processes, filtering it out.", 
                      __PRETTY_FUNCTION__,
                      [cdataAppReport valueForKey:@"appName"]);
                 continue; 
