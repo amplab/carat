@@ -460,17 +460,19 @@ static NSMutableDictionary * daemonsList = nil;
             
             [cdataMainReport setLastUpdated:[NSDate date]];
             double lastJScore = [[cdataMainReport valueForKey:@"jScore"] doubleValue];
-            double change = round(reports.jScore - lastJScore);
+            double change = round((reports.jScore - lastJScore)*100.0);
             double changePercentage = 0.0;
             if (lastJScore > 0.0) {
-                changePercentage = (change*100.0) / lastJScore; 
+                //changePercentage = (change*100.0) / lastJScore; 
+                changePercentage = change / lastJScore; 
             }
             
             [cdataMainReport setJScore:[NSNumber numberWithDouble:reports.jScore]];
             //NSArray *existing = (NSArray *) [cdataMainReport valueForKey:@"changesSinceLastWeek"];
             //[existing release];
             NSArray *new = [[NSArray alloc] initWithObjects:
-                            [NSString stringWithFormat: @"%.2f", change*100.0],
+                            //[NSString stringWithFormat: @"%.2f", change*100.0],
+                            [NSString stringWithFormat: @"%.2f", change],
                             [NSString stringWithFormat: @"%.2f", changePercentage],
                             nil];
             cdataMainReport.changesSinceLastWeek = new;
