@@ -118,13 +118,16 @@
     [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
-
-    UIImage *img = [UIImage newImageNotCached:[selectedCell.appName.text stringByAppendingString:@".png"]];
-    if (img == nil) {
-        img = [UIImage newImageNotCached:@"icon57.png"];
+    
+    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" 
+                           stringByAppendingString:selectedCell.appName.text] 
+                          stringByAppendingString:@".jpg"];
+    DLog(imageURL);
+    
+    for (UIImageView *appimg in dvController.appIcon) {
+        [appimg setImageWithURL:[NSURL URLWithString:imageURL]
+               placeholderImage:[UIImage imageNamed:@"icon57.png"]];
     }
-    [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
-    [img release];
 
     for (UIProgressView *pBar in [dvController appScore]) {
         [pBar setProgress:selectedCell.appScore.progress animated:NO];

@@ -10,6 +10,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "MBProgressHUD.h"
 #import "CoreDataManager.h"
+#import "UIImageView+WebCache.h"
 
 @interface DetailViewController : UIViewController <CPTPlotDataSource,MBProgressHUDDelegate>
 {
