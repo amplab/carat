@@ -8,6 +8,8 @@
 
 #import "DetailViewController.h"
 #import "Utilities.h"
+#import "InstructionViewController.h"
+#import "FlurryAnalytics.h"
 
 @implementation DetailViewController
 
@@ -39,6 +41,16 @@
     [super didReceiveMemoryWarning];
     
     // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - button actions
+
+- (IBAction)getDetailViewInfo:(id)sender
+{
+    InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeDetailInfo];
+    [self.navigationController pushViewController:ivController animated:YES];
+    [ivController release];
+    [FlurryAnalytics logEvent:@"selectedDetailScreenInfo"];
 }
 
 #pragma mark - CPTPlotDataSource protocol

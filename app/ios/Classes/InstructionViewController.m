@@ -92,11 +92,16 @@
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"jscoreinfo.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
-            
         case ActionTypeMemoryInfo:
             DLog(@"Loading Memory info");
             self.navigationItem.title = @"Memory Info";
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"memoryinfo.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
+            break;
+
+        case ActionTypeDetailInfo:
+            DLog(@"Loading Detail info");
+            self.navigationItem.title = @"Distribution Info";
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"detailinfo.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
         case ActionTypeDimScreen:

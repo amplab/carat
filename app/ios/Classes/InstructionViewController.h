@@ -15,7 +15,8 @@ typedef enum {
     ActionTypeDimScreen,
     ActionTypeSpreadTheWord,
     ActionTypeJScoreInfo,
-    ActionTypeMemoryInfo
+    ActionTypeMemoryInfo,
+    ActionTypeDetailInfo
     } ActionType;
 
 @interface InstructionViewController : UIViewController <UIWebViewDelegate> {

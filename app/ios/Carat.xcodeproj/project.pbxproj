@@ -154,6 +154,8 @@
 		ABEF5E5E14F47044002AB4DE /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = ABEF5E5D14F47044002AB4DE /* Default-Landscape~ipad.png */; };
 		ABF64FE914C8D8DF00C21D8E /* PGTableViewWithEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = ABF64FE814C8D8DF00C21D8E /* PGTableViewWithEmptyView.m */; };
 		ABFCF9F814F6CDF600A508E0 /* memoryinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = ABFCF9F714F6CDF600A508E0 /* memoryinfo.html */; };
+		ABFCF9FA14F6DAAE00A508E0 /* energyratedist.png in Resources */ = {isa = PBXBuildFile; fileRef = ABFCF9F914F6DAAE00A508E0 /* energyratedist.png */; };
+		ABFCF9FC14F6DE4B00A508E0 /* detailinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = ABFCF9FB14F6DE4B00A508E0 /* detailinfo.html */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
 		C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C14F5C32145BD54800087F74 /* CFNetwork.framework */; };
@@ -528,6 +530,8 @@
 		ABF64FE714C8D8DF00C21D8E /* PGTableViewWithEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PGTableViewWithEmptyView.h; sourceTree = "<group>"; };
 		ABF64FE814C8D8DF00C21D8E /* PGTableViewWithEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PGTableViewWithEmptyView.m; sourceTree = "<group>"; };
 		ABFCF9F714F6CDF600A508E0 /* memoryinfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = memoryinfo.html; sourceTree = "<group>"; };
+		ABFCF9F914F6DAAE00A508E0 /* energyratedist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = energyratedist.png; sourceTree = "<group>"; };
+		ABFCF9FB14F6DE4B00A508E0 /* detailinfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = detailinfo.html; sourceTree = "<group>"; };
 		C136F09914662E5600F0A292 /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
 		C136F09A14662E5600F0A292 /* CommunicationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunicationManager.m; sourceTree = "<group>"; };
 		C14F5C2C145BD4D300087F74 /* AsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncSocket.h; sourceTree = "<group>"; };
@@ -951,6 +955,7 @@
 				AB9525AF14EA1B6F00343418 /* killapp.html */,
 				AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */,
 				ABFCF9F714F6CDF600A508E0 /* memoryinfo.html */,
+				ABFCF9FB14F6DE4B00A508E0 /* detailinfo.html */,
 				ABA3A10314E4A570009B3D33 /* img */,
 			);
 			name = html;
@@ -964,6 +969,7 @@
 				ABB1221A14E9E7C300FE959A /* procmanager1.png */,
 				ABB1221B14E9E7C300FE959A /* procmanager2.png */,
 				AB105EC014EDD0CE000DB145 /* jscoreplot.png */,
+				ABFCF9F914F6DAAE00A508E0 /* energyratedist.png */,
 			);
 			name = img;
 			sourceTree = "<group>";
@@ -1579,6 +1585,8 @@
 				ABEF5E5C14F4700C002AB4DE /* Default-Portrait~ipad.png in Resources */,
 				ABEF5E5E14F47044002AB4DE /* Default-Landscape~ipad.png in Resources */,
 				ABFCF9F814F6CDF600A508E0 /* memoryinfo.html in Resources */,
+				ABFCF9FA14F6DAAE00A508E0 /* energyratedist.png in Resources */,
+				ABFCF9FC14F6DE4B00A508E0 /* detailinfo.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

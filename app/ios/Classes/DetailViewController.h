@@ -47,4 +47,6 @@
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
+- (IBAction)getDetailViewInfo:(id)sender;
+
 @end
