@@ -187,7 +187,7 @@
         axisSet.yAxis.axisLineStyle = axisLineStyle;
         axisSet.yAxis.minorTickLength = 4.0f;
         axisSet.yAxis.majorTickLength = 6.0f;
-        axisSet.yAxis.labelOffset = 1.0f;
+        axisSet.yAxis.labelOffset = 100.0f; // TODO fix this properly
         
         CPTScatterPlot *thisPlot = [[[CPTScatterPlot alloc] init] autorelease];
         thisPlot.identifier = @"This Plot";
