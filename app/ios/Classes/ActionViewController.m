@@ -249,79 +249,77 @@
     
     ActionObject *tmpAction;
     
-    if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
-        DLog(@"Loading Hogs");
-        // get Hogs, filter negative actionBenefits, fill mutable array
-        NSArray *tmp = [[CoreDataManager instance] getHogs:YES].hbList;
-        DLog(@"Got Hogs");
-        if (tmp != nil) {
-            DLog(@"Hogs not nil");
-            for (HogsBugs *hb in tmp) {
-                if ([hb appName] != nil &&
-                    [hb expectedValue] > 0 &&
-                    [hb expectedValueWithout] > 0) {
-                    
-                    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                    DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
-                    if (benefit > 60) {
-                        tmpAction = [[ActionObject alloc] init];
-                        [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
-                        [tmpAction setActionType:ActionTypeKillApp];
-                        [tmpAction setActionBenefit:benefit];
-                        [myList addObject:tmpAction];
-                        [tmpAction release];
-                    }
-                }
-            }
-        }
-        
-        DLog(@"Loading Bugs");
-        // get Bugs, add to array
-        tmp = [[CoreDataManager instance] getBugs:YES].hbList;
-        if (tmp != nil) {
-            for (HogsBugs *hb in tmp) {
-                if ([hb appName] != nil &&
-                    [hb expectedValue] > 0 &&
-                    [hb expectedValueWithout] > 0) {
-                    
-                    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                    DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
-                    if (benefit > 60) {
-                        tmpAction = [[ActionObject alloc] init];
-                        [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
-                        [tmpAction setActionType:ActionTypeRestartApp];
-                        [tmpAction setActionBenefit:benefit];
-                        [myList addObject:tmpAction];
-                        [tmpAction release];
-                    }
-                }
-            }
-        }
-        
-        DLog(@"Loading OS");
-        // get OS
-        DetailScreenReport *dscWith = [[[CoreDataManager instance] getOSInfo:YES] retain];
-        DetailScreenReport *dscWithout = [[[CoreDataManager instance] getOSInfo:NO] retain];
-        
-        if (dscWith != nil && dscWithout != nil) {
-            if (dscWith.expectedValue > 0 &&
-                dscWithout.expectedValue > 0) {
-                NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
-                DLog(@"OS benefit is %d", benefit);
+    DLog(@"Loading Hogs");
+    // get Hogs, filter negative actionBenefits, fill mutable array
+    NSArray *tmp = [[CoreDataManager instance] getHogs:YES].hbList;
+    DLog(@"Got Hogs");
+    if (tmp != nil) {
+        DLog(@"Hogs not nil");
+        for (HogsBugs *hb in tmp) {
+            if ([hb appName] != nil &&
+                [hb expectedValue] > 0 &&
+                [hb expectedValueWithout] > 0) {
+                
+                NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+                DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
-                    [tmpAction setActionText:@"Upgrade the Operating System"];
-                    [tmpAction setActionType:ActionTypeUpgradeOS];
+                    [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
+                    [tmpAction setActionType:ActionTypeKillApp];
                     [tmpAction setActionBenefit:benefit];
                     [myList addObject:tmpAction];
                     [tmpAction release];
                 }
             }
         }
-        
-        [dscWith release];
-        [dscWithout release];
     }
+    
+    DLog(@"Loading Bugs");
+    // get Bugs, add to array
+    tmp = [[CoreDataManager instance] getBugs:YES].hbList;
+    if (tmp != nil) {
+        for (HogsBugs *hb in tmp) {
+            if ([hb appName] != nil &&
+                [hb expectedValue] > 0 &&
+                [hb expectedValueWithout] > 0) {
+                
+                NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+                DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
+                if (benefit > 60) {
+                    tmpAction = [[ActionObject alloc] init];
+                    [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
+                    [tmpAction setActionType:ActionTypeRestartApp];
+                    [tmpAction setActionBenefit:benefit];
+                    [myList addObject:tmpAction];
+                    [tmpAction release];
+                }
+            }
+        }
+    }
+    
+    DLog(@"Loading OS");
+    // get OS
+    DetailScreenReport *dscWith = [[[CoreDataManager instance] getOSInfo:YES] retain];
+    DetailScreenReport *dscWithout = [[[CoreDataManager instance] getOSInfo:NO] retain];
+    
+    if (dscWith != nil && dscWithout != nil) {
+        if (dscWith.expectedValue > 0 &&
+            dscWithout.expectedValue > 0) {
+            NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
+            DLog(@"OS benefit is %d", benefit);
+            if (benefit > 60) {
+                tmpAction = [[ActionObject alloc] init];
+                [tmpAction setActionText:@"Upgrade the Operating System"];
+                [tmpAction setActionType:ActionTypeUpgradeOS];
+                [tmpAction setActionBenefit:benefit];
+                [myList addObject:tmpAction];
+                [tmpAction release];
+            }
+        }
+    }
+    
+    [dscWith release];
+    [dscWithout release];
 
     DLog(@"Loading Action");
     // sharing Action
