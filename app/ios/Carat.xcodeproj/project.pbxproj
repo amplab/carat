@@ -1856,7 +1856,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Carat;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
 				VALIDATE_PRODUCT = YES;
 			};
