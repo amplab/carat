@@ -68,6 +68,14 @@
     [FlurryAnalytics logEvent:@"selectedJScoreInfo"];
 }
 
+- (IBAction)getMemoryInfo:(id)sender
+{
+    InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeMemoryInfo];
+    [self.navigationController pushViewController:ivController animated:YES];
+    [ivController release];
+    [FlurryAnalytics logEvent:@"selectedMemoryInfo"];
+}
+
 - (DetailViewController *)getDetailView
 {
     DetailViewController *detailView = [[[DetailViewController alloc] initWithNibName:@"DetailView" bundle:nil] autorelease];

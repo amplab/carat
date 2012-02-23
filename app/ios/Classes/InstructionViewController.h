@@ -14,7 +14,8 @@ typedef enum {
     ActionTypeUpgradeOS,
     ActionTypeDimScreen,
     ActionTypeSpreadTheWord,
-    ActionTypeJScoreInfo
+    ActionTypeJScoreInfo,
+    ActionTypeMemoryInfo
     } ActionType;
 
 @interface InstructionViewController : UIViewController <UIWebViewDelegate> {

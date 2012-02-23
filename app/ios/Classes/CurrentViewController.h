@@ -42,5 +42,6 @@
 - (IBAction)getSimilarAppsDetail:(id)sender;
 - (IBAction)getJScoreInfo:(id)sender;
 - (IBAction)getProcessList:(id)sender;
+- (IBAction)getMemoryInfo:(id)sender;
 
 @end
