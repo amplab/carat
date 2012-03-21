@@ -1532,6 +1532,18 @@ static id instance = nil;
     return reportUpdateStatus;
 }
 
+/* 
+ * Wipe the database.
+ */
+- (void) wipeDB
+{
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Carat.sqlite"];
+    DLog(@"%s Wiping database at location: %@", __PRETTY_FUNCTION__, storeURL);
+    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+    [__persistentStoreCoordinator release];
+    __persistentStoreCoordinator = nil; 
+}
+
 // TODO I temporarily abandoned this effort because this call blocks
 // I need to call it in a separate thread, but I don't want to spawn a dozen of them all at once. This belongs as a background task similar to uploading samples. Another day...
 - (UIImage *) getIconForApp: (NSString *)appName
