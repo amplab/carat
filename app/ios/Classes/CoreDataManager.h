@@ -71,6 +71,7 @@
 - (NSArray *) getChangeSinceLastWeek;
 - (Sample *) getSample;
 - (NSString *) getReportUpdateStatus;
+- (void) wipeDB;
 @end
 
 #endif
