@@ -25,6 +25,7 @@
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
+@synthesize consented;
 
 #pragma mark -
 #pragma mark utility
@@ -69,8 +70,14 @@ void onUncaughtException(NSException *exception)
     return self;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-   
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+//    [self setConsented:NO];
+//    // test for consent
+//    if (![[Globals instance] hasUserConsented]) {
+//        
+//    }
+    
     // UI
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UIViewController *viewController0, *viewController1, *viewController2, *viewController3, *viewController4;
