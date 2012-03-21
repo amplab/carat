@@ -20,6 +20,8 @@
 		AB105EC314EDD2D3000DB145 /* ProcessItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB105EC214EDD2D2000DB145 /* ProcessItemCell.xib */; };
 		AB1E7AB414CF8ECE0010617A /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB1E7AB314CF8ECD0010617A /* Entitlements.plist */; };
 		AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB244AF714E10D660055FCD6 /* ActionItemCell.xib */; };
+		AB34BBE9151A3E85006C4C76 /* ConsentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB34BBE8151A3E85006C4C76 /* ConsentView.xib */; };
+		AB34BBEE151A3EB8006C4C76 /* ConsentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB34BBEC151A3EB8006C4C76 /* ConsentViewController.m */; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
 		AB41CDF4144E1E520090CC09 /* CaratAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */; };
 		AB41CDF8144E27200090CC09 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB41CDF7144E27200090CC09 /* CoreLocation.framework */; };
@@ -202,6 +204,9 @@
 		AB105EC214EDD2D2000DB145 /* ProcessItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessItemCell.xib; sourceTree = "<group>"; };
 		AB1E7AB314CF8ECD0010617A /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		AB244AF714E10D660055FCD6 /* ActionItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionItemCell.xib; sourceTree = "<group>"; };
+		AB34BBE8151A3E85006C4C76 /* ConsentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsentView.xib; sourceTree = "<group>"; };
+		AB34BBEB151A3EB8006C4C76 /* ConsentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsentViewController.h; sourceTree = "<group>"; };
+		AB34BBEC151A3EB8006C4C76 /* ConsentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsentViewController.m; sourceTree = "<group>"; };
 		AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceProc.h; sourceTree = "<group>"; };
 		AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDeviceProc.m; sourceTree = "<group>"; };
 		AB41CDF5144E1E520090CC09 /* en */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = en; path = en.lproj/CaratAppDelegate.m; sourceTree = "<group>"; };
@@ -701,6 +706,7 @@
 				2840D7CD1179279E00D7F93C /* ReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
 				AB105EC214EDD2D2000DB145 /* ProcessItemCell.xib */,
+				AB34BBE8151A3E85006C4C76 /* ConsentView.xib */,
 				ABD317E014882E93000A8DC7 /* DetailView.xib */,
 				AB41CE15144F78450090CC09 /* img */,
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
@@ -1336,6 +1342,8 @@
 				AB7A113214E1F738004D155C /* ActionViewController.m */,
 				AB99EB0614EA6E6F0008E440 /* ActionObject.h */,
 				AB99EB0714EA6E6F0008E440 /* ActionObject.m */,
+				AB34BBEB151A3EB8006C4C76 /* ConsentViewController.h */,
+				AB34BBEC151A3EB8006C4C76 /* ConsentViewController.m */,
 				AB91E4441499266A007786F0 /* DetailViewController.h */,
 				AB91E4451499266B007786F0 /* DetailViewController.m */,
 				ABA3A0F814E4592F009B3D33 /* InstructionViewController.h */,
@@ -1587,6 +1595,7 @@
 				ABFCF9F814F6CDF600A508E0 /* memoryinfo.html in Resources */,
 				ABFCF9FA14F6DAAE00A508E0 /* energyratedist.png in Resources */,
 				ABFCF9FC14F6DE4B00A508E0 /* detailinfo.html in Resources */,
+				AB34BBE9151A3E85006C4C76 /* ConsentView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1712,6 +1721,7 @@
 				ABEC9B5C14F1CA71005CE813 /* UIButton+WebCache.m in Sources */,
 				ABEC9B5D14F1CA71005CE813 /* UIImageView+WebCache.m in Sources */,
 				ABEC9B6614F1CFA7005CE813 /* ProcessItemCell.m in Sources */,
+				AB34BBEE151A3EB8006C4C76 /* ConsentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
