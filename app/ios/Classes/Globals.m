@@ -89,6 +89,23 @@ static id instance = nil;
     return (double) [dateTimeInUTC timeIntervalSince1970];
 }
 
+//
+//  Update user consent value.
+//
+- (void) userHasConsented {
+    [defaults setBool:YES forKey:@"CaratUserConsented"];
+    [defaults synchronize];
+}
+
+//
+//  Get the value of user consent.
+//
+- (BOOL) hasUserConsented { 
+    if (self.defaults != nil)
+        return [[self defaults] boolForKey:@"CaratUserConsented"];
+    return NO;
+}
+
 - (void) dealloc
 {
     [myUUID release];
