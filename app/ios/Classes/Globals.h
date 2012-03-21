@@ -22,5 +22,7 @@
 - (NSString*) getUUID;
 - (NSDate *) utcDateTime;
 - (double) utcSecondsSinceEpoch;
+- (void) userHasConsented;
+- (BOOL) hasUserConsented;
 @end
 #endif
