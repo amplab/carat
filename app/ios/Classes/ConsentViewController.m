@@ -7,6 +7,7 @@
 //
 
 #import "ConsentViewController.h"
+#import "CoreDataManager.h"
 
 @implementation ConsentViewController
 
@@ -73,6 +74,8 @@
 - (IBAction)refusedConsent:(id)sender
 {
     // purge the database and quit
+    [CoreDataManager wipeDB];
+    
 }
 
 #pragma mark - View lifecycle

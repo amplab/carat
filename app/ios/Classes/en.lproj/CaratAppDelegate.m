@@ -156,12 +156,16 @@ void onUncaughtException(NSException *exception)
     
     // flush any sharing actions that were performed offline and cached
     [SHK flushOfflineQueue];
+    
+    [[CoreDataManager instance] sampleNow:@"applicationDidBecomeActive"];
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    [self setupNotificationSubscriptions];
-    [self scheduleNotificationAfterInterval:-1]; // uses default of 5 days
+    if ([[Globals instance] hasUserConsented]) {
+        [self setupNotificationSubscriptions];
+        [self scheduleNotificationAfterInterval:-1]; // uses default of 5 days
+    }
 }
 
 
@@ -170,7 +174,7 @@ void onUncaughtException(NSException *exception)
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
      */
-    [locationManager startMonitoringSignificantLocationChanges];
+    if ([[Globals instance] hasUserConsented]) [locationManager startMonitoringSignificantLocationChanges];
 }
 
 
@@ -178,7 +182,7 @@ void onUncaughtException(NSException *exception)
     /*
      Called as part of  transition from the background to the inactive state: here you can undo many of the changes made on entering the background.
      */
-    [locationManager stopMonitoringSignificantLocationChanges];
+    if ([[Globals instance] hasUserConsented]) [locationManager stopMonitoringSignificantLocationChanges];
 }
 
 
@@ -186,7 +190,6 @@ void onUncaughtException(NSException *exception)
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
-    [[CoreDataManager instance] sampleNow:@"applicationDidBecomeActive"];
 }
 
 
