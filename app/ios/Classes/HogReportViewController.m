@@ -33,6 +33,7 @@
 
 - (void)loadDataWithHUD:(id)obj
 {
+    dispatch_semaphore_wait(self->update_sema, DISPATCH_TIME_FOREVER);
     HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
 	[self.tabBarController.view addSubview:HUD];
 	
@@ -49,6 +50,7 @@
     [self setReport:[[CoreDataManager instance] getHogs:NO]];
     [self.dataTable reloadData];
     [self.view setNeedsDisplay];
+    dispatch_semaphore_signal(self->update_sema);
 }
 
 #pragma mark - View lifecycle
@@ -57,7 +59,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
+    self->update_sema = dispatch_semaphore_create(1);
     [self setReport:[[CoreDataManager instance] getHogs:NO]];
 }
 

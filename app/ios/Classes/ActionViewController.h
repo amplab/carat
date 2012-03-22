@@ -13,6 +13,7 @@
     
     NSMutableArray *actionList;
     MBProgressHUD *HUD;
+    dispatch_semaphore_t update_sema;
     
     IBOutlet UITableView *actionTable;
     IBOutlet UIView *dataTable;

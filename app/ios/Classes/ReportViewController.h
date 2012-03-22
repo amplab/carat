@@ -19,6 +19,7 @@
     NSString *thisText;
     NSString *thatText;
     MBProgressHUD *HUD;
+    dispatch_semaphore_t update_sema;
     
     HogBugReport *report;
     

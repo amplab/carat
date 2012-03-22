@@ -48,6 +48,7 @@
 
 - (void)loadDataWithHUD
 {
+    dispatch_semaphore_wait(self->update_sema, DISPATCH_TIME_FOREVER);
     HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
 	[self.tabBarController.view addSubview:HUD];
 	
@@ -77,7 +78,7 @@
 
 - (BOOL) isFresh
 {
-    return [[CoreDataManager instance] secondsSinceLastUpdate] < 600; // 10 minutes
+    return [[CoreDataManager instance] secondsSinceLastUpdate] < 20; // 600 == 10 minutes
 }
 
 #pragma mark - MBProgressHUDDelegate method
@@ -187,6 +188,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self->update_sema = dispatch_semaphore_create(1);
     [self updateView];
 }
 
@@ -346,6 +348,7 @@
     [self setActionList:myList];
     [self.actionTable reloadData];
     [self.view setNeedsDisplay];
+    dispatch_semaphore_signal(self->update_sema);
 }
 
 - (void)dealloc {

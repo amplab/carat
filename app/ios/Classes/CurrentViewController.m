@@ -49,6 +49,30 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (void)loadDataWithHUD:(id)obj
+{
+    dispatch_semaphore_wait(self->update_sema, DISPATCH_TIME_FOREVER);
+    HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
+	[self.tabBarController.view addSubview:HUD];
+	
+	HUD.dimBackground = YES;
+	
+	// Register for HUD callbacks so we can remove it from the window at the right time
+    HUD.delegate = self;
+    HUD.labelText = @"Updating Device Data";
+	
+    [HUD showWhileExecuting:@selector(updateView) onTarget:self withObject:nil animated:YES];
+}
+
+#pragma mark - MBProgressHUDDelegate method
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    // Remove HUD from screen when the HUD was hidded
+    [HUD removeFromSuperview];
+    [HUD release];
+	HUD = nil;
+}
 
 #pragma mark - button actions
 
@@ -205,7 +229,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
+    self->update_sema = dispatch_semaphore_create(1);
     DLog(@"My UUID: %@", [[Globals instance] getUUID]);
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -243,12 +267,18 @@
 {
     [super viewDidAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadDataWithHUD:) 
+                                                 name:@"CCDMReportUpdateStatusNotification"
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"CCDMReportUpdateStatusNotification" object:nil];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
@@ -304,6 +334,7 @@
     }
     
     [self.view setNeedsDisplay];
+    dispatch_semaphore_signal(self->update_sema);
 }
 
 - (void) orientationChanged:(id)object

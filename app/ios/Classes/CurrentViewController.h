@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 
-@interface CurrentViewController : UIViewController {
+@interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
     NSArray *jscore;
     NSArray *lastUpdated;
     NSArray *sinceLastWeekString;
@@ -17,6 +18,9 @@
     
     NSArray *memUsed;
     NSArray *memActive;
+    
+    MBProgressHUD *HUD;
+    dispatch_semaphore_t update_sema;
     
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
@@ -34,6 +38,7 @@
 @property (nonatomic, retain) IBOutlet UIView *portraitView;
 @property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
+- (void)loadDataWithHUD:(id)obj;
 - (void)updateView;
 - (void)orientationChanged:(id)object;
 
