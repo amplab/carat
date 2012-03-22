@@ -29,8 +29,8 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tabBarController;
 
-- (void)proceedWithConsent;
-- (void)acquireConsentWithCallbackTarget:(CaratAppDelegate *)delegate withSelector:(SEL)selector;
+- (BOOL)proceedWithConsent;
+- (BOOL)acquireConsentWithCallbackTarget:(CaratAppDelegate *)delegate withSelector:(SEL)selector;
 - (void) setupNotificationSubscriptions;
 
 @end

@@ -73,28 +73,30 @@ void onUncaughtException(NSException *exception)
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     // test for consent
-    if ([[Globals instance] hasUserConsented]) [self proceedWithConsent];
-    else [self acquireConsentWithCallbackTarget:self
-                                   withSelector:@selector(proceedWithConsent)];
-    
-    // to help track down where exceptions are being raised
-    NSSetUncaughtExceptionHandler(&onUncaughtException);
-        
-    return YES;
+    if ([[Globals instance] hasUserConsented]) return [self proceedWithConsent];
+    else return [self acquireConsentWithCallbackTarget:self
+                                          withSelector:@selector(proceedWithConsent)];
 }
 
-- (void)acquireConsentWithCallbackTarget:(CaratAppDelegate *)delegate withSelector:(SEL)selector {
+- (BOOL)acquireConsentWithCallbackTarget:(CaratAppDelegate *)delegate withSelector:(SEL)selector {
     // UI
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UIViewController *viewController = [[ConsentViewController alloc] initWithNibName:@"ConsentView" bundle:nil callbackTo:delegate withSelector:selector];
     self.window.rootViewController = viewController;
     [self.window makeKeyAndVisible];
     [viewController release];
+    
+    // to help track down where exceptions are being raised
+    NSSetUncaughtExceptionHandler(&onUncaughtException);
+    
+    return YES;
 }
 
 
 // called when the user has accepted the EULA
-- (void)proceedWithConsent {
+- (BOOL)proceedWithConsent {
+    DLog(@"Proceeding with consent");
+    if (self.window == nil) self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UIViewController *viewController0, *viewController1, *viewController2, *viewController3, *viewController4;
     UINavigationController *navController0, *navController1, *navController2, *navController3;
     viewController0 = [[ActionViewController alloc] initWithNibName:@"ActionView" bundle:nil];
@@ -114,7 +116,9 @@ void onUncaughtException(NSException *exception)
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-
+    DLog(@"Set root view controller; is nil? %s",
+         self.tabBarController==nil ? @"yes" : @"no");
+    
     // views have been added to hierarchy, so they can be released
     [viewController0 release];
     [viewController1 release];
@@ -132,13 +136,13 @@ void onUncaughtException(NSException *exception)
         locationManager.delegate = self;
     }
     
-    // idempotent setup of notifications; also called in willResignActive
-    [self setupNotificationSubscriptions];
-    [[UIApplication sharedApplication] cancelAllLocalNotifications]; // so nothing fires while we're active
-
     // we do this to prompt the dialog asking for permission to share location info
     [locationManager startMonitoringSignificantLocationChanges];
     [locationManager stopMonitoringSignificantLocationChanges];
+        
+    // idempotent setup of notifications; also called in willResignActive
+    [self setupNotificationSubscriptions];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications]; // so nothing fires while we're active
     
     // Everytime the CARAT app is launched, we will send a registration message. 
     // Right at this point, we are unsure if there is network connectivity, so 
@@ -158,6 +162,11 @@ void onUncaughtException(NSException *exception)
     [SHK flushOfflineQueue];
     
     [[CoreDataManager instance] sampleNow:@"applicationDidBecomeActive"];
+    
+    // to help track down where exceptions are being raised
+    NSSetUncaughtExceptionHandler(&onUncaughtException);
+    
+    return YES;
 }
 
 
