@@ -78,7 +78,7 @@
 
 - (BOOL) isFresh
 {
-    return [[CoreDataManager instance] secondsSinceLastUpdate] < 20; // 600 == 10 minutes
+    return [[CoreDataManager instance] secondsSinceLastUpdate] < 600; // 600 == 10 minutes
 }
 
 #pragma mark - MBProgressHUDDelegate method
