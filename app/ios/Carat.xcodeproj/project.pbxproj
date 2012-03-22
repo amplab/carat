@@ -39,6 +39,7 @@
 		AB645E001456FDD50008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFD1456FDD50008244B /* icon114.png */; };
 		AB645E021456FE530008244B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E011456FE530008244B /* Default.png */; };
 		AB645E041456FF1F0008244B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E031456FF1F0008244B /* Default@2x.png */; };
+		AB7568D8151B0DAC0082AEE9 /* consent.html in Resources */ = {isa = PBXBuildFile; fileRef = AB7568D7151B0DAC0082AEE9 /* consent.html */; };
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
 		AB7A112D14E06520004D155C /* ActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7A112C14E06520004D155C /* ActionView.xib */; };
@@ -230,6 +231,7 @@
 		AB645DFD1456FDD50008244B /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
 		AB645E011456FE530008244B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		AB645E031456FF1F0008244B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		AB7568D7151B0DAC0082AEE9 /* consent.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = consent.html; sourceTree = "<group>"; };
 		AB7999101455C1BC000AE9FE /* HogReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HogReportViewController.h; sourceTree = "<group>"; };
 		AB7999111455C1C5000AE9FE /* HogReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HogReportViewController.m; sourceTree = "<group>"; };
 		AB7999131455C237000AE9FE /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
@@ -958,6 +960,7 @@
 			children = (
 				AB99EB0014EA6C130008E440 /* upgradeos.html */,
 				AB9525AD14EA1B5900343418 /* about.html */,
+				AB7568D7151B0DAC0082AEE9 /* consent.html */,
 				AB9525AF14EA1B6F00343418 /* killapp.html */,
 				AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */,
 				ABFCF9F714F6CDF600A508E0 /* memoryinfo.html */,
@@ -1596,6 +1599,7 @@
 				ABFCF9FA14F6DAAE00A508E0 /* energyratedist.png in Resources */,
 				ABFCF9FC14F6DE4B00A508E0 /* detailinfo.html in Resources */,
 				AB34BBE9151A3E85006C4C76 /* ConsentView.xib in Resources */,
+				AB7568D8151B0DAC0082AEE9 /* consent.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,7 +25,6 @@
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
-@synthesize consented;
 
 #pragma mark -
 #pragma mark utility
@@ -72,14 +71,36 @@ void onUncaughtException(NSException *exception)
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    [self setConsented:NO];
-//    // test for consent
-//    if (![[Globals instance] hasUserConsented]) {
-//        
-//    }
+    self->consented = NO;
+    // test for consent
+    if ([[Globals instance] hasUserConsented]) {
+        [self proceedWithConsent];
+    } else {
+        [self acquireConsentWithCallbackTarget:self withSelector:@selector(proceedWithConsent)];
+    }
     
+    // to help track down where exceptions are being raised
+    NSSetUncaughtExceptionHandler(&onUncaughtException);
+        
+    return YES;
+}
+
+- (void)acquireConsentWithCallbackTarget:(CaratAppDelegate *)delegate withSelector:(SEL)selector {
     // UI
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
+    self.window.rootViewController = self.tabBarController;
+    [self.window makeKeyAndVisible];
+    
+    
+    
+    
+    // [delegate performSelector:selector]; // pass to ConsentView
+}
+
+
+// called when the user has accepted the EULA
+- (void)proceedWithConsent {
     UIViewController *viewController0, *viewController1, *viewController2, *viewController3, *viewController4;
     UINavigationController *navController0, *navController1, *navController2, *navController3;
     viewController0 = [[ActionViewController alloc] initWithNibName:@"ActionView" bundle:nil];
@@ -99,7 +120,7 @@ void onUncaughtException(NSException *exception)
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-    
+
     // views have been added to hierarchy, so they can be released
     [viewController0 release];
     [viewController1 release];
@@ -110,7 +131,7 @@ void onUncaughtException(NSException *exception)
     [navController1 release];
     [navController2 release];
     [navController3 release];
-
+    
     // Override point for customization after application launch.
     if (locationManager == nil && [CLLocationManager significantLocationChangeMonitoringAvailable]) {
         locationManager = [[CLLocationManager alloc] init];
@@ -120,7 +141,7 @@ void onUncaughtException(NSException *exception)
     // idempotent setup of notifications; also called in willResignActive
     [self setupNotificationSubscriptions];
     [[UIApplication sharedApplication] cancelAllLocalNotifications]; // so nothing fires while we're active
-    
+
     // we do this to prompt the dialog asking for permission to share location info
     [locationManager startMonitoringSignificantLocationChanges];
     [locationManager stopMonitoringSignificantLocationChanges];
@@ -141,11 +162,6 @@ void onUncaughtException(NSException *exception)
     
     // flush any sharing actions that were performed offline and cached
     [SHK flushOfflineQueue];
-    
-    // to help track down where exceptions are being raised
-    NSSetUncaughtExceptionHandler(&onUncaughtException);
-        
-    return YES;
 }
 
 

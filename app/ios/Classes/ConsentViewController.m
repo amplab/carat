@@ -12,12 +12,24 @@
 
 @synthesize consentWebView;
 @synthesize portraitView, landscapeView;
+@synthesize callbackDelegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+    }
+    return self;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil callbackTo:(id)delegate withSelector:(SEL)selector
+{
+    self = [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+        [self setCallbackDelegate:delegate];
+        self->callbackSelector = selector;
     }
     return self;
 }
@@ -51,6 +63,18 @@
     // Normal error handling…
 }
 
+#pragma mark - button actions
+
+- (IBAction)gaveConsent:(id)sender
+{
+    // callback to delegate
+}
+
+- (IBAction)refusedConsent:(id)sender
+{
+    // purge the database and quit
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -58,7 +82,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     for (UIWebView *wv in self.consentWebView) {
-        [wv loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
+        [wv loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"consent" ofType:@"html"] isDirectory:NO]]];
     }
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
