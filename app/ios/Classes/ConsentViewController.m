@@ -8,6 +8,7 @@
 
 #import "ConsentViewController.h"
 #import "CoreDataManager.h"
+#import "Globals.h"
 
 @implementation ConsentViewController
 
@@ -69,13 +70,8 @@
 - (IBAction)gaveConsent:(id)sender
 {
     // callback to delegate
-}
-
-- (IBAction)refusedConsent:(id)sender
-{
-    // purge the database and quit
-    [CoreDataManager wipeDB];
-    
+    [[Globals instance] userHasConsented];
+    [self.callbackDelegate performSelector:self->callbackSelector];
 }
 
 #pragma mark - View lifecycle

@@ -22,4 +22,6 @@
 
 @property (nonatomic, retain) id callbackDelegate;
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil callbackTo:(id)delegate withSelector:(SEL)selector;
+
 @end
