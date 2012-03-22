@@ -10,4 +10,7 @@
 
 @interface HogReportViewController : ReportViewController
 
+- (void)loadDataWithHUD:(id)obj;
+- (void)updateView;
+
 @end

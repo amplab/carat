@@ -32,6 +32,26 @@
     return [[[BugDetailViewController alloc] initWithNibName:@"DetailView" bundle:nil] autorelease];
 }
 
+- (void)loadDataWithHUD:(id)obj
+{
+    HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
+	[self.tabBarController.view addSubview:HUD];
+	
+	HUD.dimBackground = YES;
+	
+	// Register for HUD callbacks so we can remove it from the window at the right time
+    HUD.delegate = self;
+    HUD.labelText = @"Updating Bug List";
+	
+    [HUD showWhileExecuting:@selector(updateView) onTarget:self withObject:nil animated:YES];
+}
+
+- (void)updateView {
+    [self setReport:[[CoreDataManager instance] getBugs:NO]];
+    [self.dataTable reloadData];
+    [self.view setNeedsDisplay];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

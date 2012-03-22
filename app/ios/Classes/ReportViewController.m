@@ -46,6 +46,19 @@
     return nil;
 }
 
+// overridden by subclasses
+- (void)loadDataWithHUD:(id)obj { }
+
+#pragma mark - MBProgressHUDDelegate method
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    // Remove HUD from screen when the HUD was hidded
+    [HUD removeFromSuperview];
+    [HUD release];
+	HUD = nil;
+}
+
 #pragma mark - table methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -166,12 +179,18 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadDataWithHUD:) 
+                                                 name:@"CCDMReportUpdateStatusNotification"
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:@"CCDMReportUpdateStatusNotification" object:nil];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 

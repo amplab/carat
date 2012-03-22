@@ -9,14 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "CoreDataManager.h"
 #import "UIImageView+WebCache.h"
+#import "MBProgressHUD.h"
 
 @class DetailViewController;
 
-@interface ReportViewController : UIViewController {
+@interface ReportViewController : UIViewController <MBProgressHUDDelegate> {
     NSString *detailViewName;
     NSString *tableTitle;
     NSString *thisText;
     NSString *thatText;
+    MBProgressHUD *HUD;
     
     HogBugReport *report;
     
@@ -32,6 +34,7 @@
 
 @property (retain, nonatomic) IBOutlet UITableView *dataTable;
 
+- (void)loadDataWithHUD:(id)obj;
 - (DetailViewController *)getDetailView;
 
 @end

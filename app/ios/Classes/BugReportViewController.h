@@ -10,4 +10,7 @@
 
 @interface BugReportViewController : ReportViewController
 
+- (void)loadDataWithHUD:(id)obj;
+- (void)updateView;
+
 @end

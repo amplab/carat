@@ -42,6 +42,10 @@
 
 #pragma mark - Data management
 
+- (void)loadDataWithHUD:(id)obj {
+    [self loadDataWithHUD];
+}
+
 - (void)loadDataWithHUD
 {
     HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
@@ -226,12 +230,18 @@
     }
     
     [self loadDataWithHUD];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(loadDataWithHUD:) 
+                                                 name:@"CCDMReportUpdateStatusNotification"
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                            name:@"CCDMReportUpdateStatusNotification" object:nil];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 

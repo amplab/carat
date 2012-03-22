@@ -26,6 +26,7 @@
 - (void)shareHandler;
 - (void)updateView;
 - (void)loadDataWithHUD;
+- (void)loadDataWithHUD:(id)obj;
 - (BOOL)isFresh;
 
 @end
