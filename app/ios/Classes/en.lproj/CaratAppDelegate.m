@@ -19,6 +19,7 @@
 #import "CurrentViewController.h"
 #import "HogReportViewController.h"
 #import "BugReportViewController.h"
+#import "ConsentViewController.h"
 #import "AboutViewController.h"
 
 @implementation CaratAppDelegate
@@ -70,14 +71,11 @@ void onUncaughtException(NSException *exception)
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    self->consented = NO;
+
     // test for consent
-    if ([[Globals instance] hasUserConsented]) {
-        [self proceedWithConsent];
-    } else {
-        [self acquireConsentWithCallbackTarget:self withSelector:@selector(proceedWithConsent)];
-    }
+    if ([[Globals instance] hasUserConsented]) [self proceedWithConsent];
+    else [self acquireConsentWithCallbackTarget:self
+                                   withSelector:@selector(proceedWithConsent)];
     
     // to help track down where exceptions are being raised
     NSSetUncaughtExceptionHandler(&onUncaughtException);
@@ -88,14 +86,10 @@ void onUncaughtException(NSException *exception)
 - (void)acquireConsentWithCallbackTarget:(CaratAppDelegate *)delegate withSelector:(SEL)selector {
     // UI
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-    
-    self.window.rootViewController = self.tabBarController;
+    UIViewController *viewController = [[ConsentViewController alloc] initWithNibName:@"ConsentView" bundle:nil callbackTo:delegate withSelector:selector];
+    self.window.rootViewController = viewController;
     [self.window makeKeyAndVisible];
-    
-    
-    
-    
-    // [delegate performSelector:selector]; // pass to ConsentView
+    [viewController release];
 }
 
 

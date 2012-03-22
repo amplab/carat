@@ -24,7 +24,6 @@
     CLLocationManager *locationManager;
     //Reachability *hostReachable;
     UIBackgroundTaskIdentifier bgTask;
-    BOOL consented;
 }
 
 @property (strong, nonatomic) UIWindow *window;
