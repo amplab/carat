@@ -48,7 +48,6 @@
 
 - (void)loadDataWithHUD
 {
-    dispatch_semaphore_wait(self->update_sema, DISPATCH_TIME_FOREVER);
     HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
 	[self.tabBarController.view addSubview:HUD];
 	
@@ -188,7 +187,6 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self->update_sema = dispatch_semaphore_create(1);
     [self updateView];
 }
 
@@ -348,7 +346,6 @@
     [self setActionList:myList];
     [self.actionTable reloadData];
     [self.view setNeedsDisplay];
-    dispatch_semaphore_signal(self->update_sema);
 }
 
 - (void)dealloc {

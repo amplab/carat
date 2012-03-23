@@ -53,7 +53,6 @@
 
 - (void)loadDataWithHUD:(id)obj
 {
-    dispatch_semaphore_wait(self->update_sema, DISPATCH_TIME_FOREVER);
     HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
 	[self.tabBarController.view addSubview:HUD];
 	
@@ -231,7 +230,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    self->update_sema = dispatch_semaphore_create(1);
     DLog(@"My UUID: %@", [[Globals instance] getUUID]);
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
@@ -349,7 +347,6 @@
     }
     
     [self.view setNeedsDisplay];
-    dispatch_semaphore_signal(self->update_sema);
 }
 
 - (void) orientationChanged:(id)object

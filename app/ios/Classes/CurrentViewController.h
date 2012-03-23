@@ -23,7 +23,6 @@
     NSArray *memActive;
     
     MBProgressHUD *HUD;
-    dispatch_semaphore_t update_sema;
     
     IBOutlet UIView *portraitView;
 	IBOutlet UIView *landscapeView;
