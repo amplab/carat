@@ -22,8 +22,9 @@
 @implementation CurrentViewController
 
 @synthesize jscore = _jscore;
+@synthesize expectedLife = _expectedLife;
 @synthesize lastUpdated = _lastUpdated;
-@synthesize sinceLastWeekString = _sinceLastWeekString;
+//@synthesize sinceLastWeekString = _sinceLastWeekString;
 @synthesize osVersion = _osVersion;
 @synthesize deviceModel = _deviceModel;
 @synthesize memUsed = _memUsed;
@@ -38,6 +39,7 @@
 	if (self) {
         self.title = @"My Device";
         self.tabBarItem.image = [UIImage imageNamed:@"32-iphone"];
+        self->MAX_LIFE = 1209600;
     }
     
     return self;
@@ -84,7 +86,7 @@
     [FlurryAnalytics logEvent:@"selectedProcessList"];
 }
 
-- (IBAction)getJScoreInfo:(id)sender
+- (IBAction)getJScoreInfoScreen:(id)sender
 {
     InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeJScoreInfo];
     [self.navigationController pushViewController:ivController animated:YES];
@@ -241,12 +243,16 @@
     [self setJscore:nil];
     [lastUpdated release];
     [self setLastUpdated:nil];
-    [sinceLastWeekString release];
-    [self setSinceLastWeekString:nil];
+    [expectedLife release];
+    [self setExpectedLife:nil];
     [portraitView release];
     [self setPortraitView:nil];
     [landscapeView release];
     [self setLandscapeView:nil];
+    [memUsed release];
+    [self setMemUsed:nil];
+    [memActive release];
+    [self setMemActive:nil];
     
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -292,6 +298,15 @@
     // J-Score
     [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]];
     
+    // Expected Battery Life
+    NSTimeInterval eb; // expected life in seconds
+    double jev = [[[CoreDataManager instance] getJScoreInfo:YES] expectedValue];
+    if (jev > 0) eb = MIN(MAX_LIFE,1/jev);
+    else eb = MAX_LIFE;
+    for (UILabel *el in self.expectedLife) {
+        el.text = [Utilities formatNSTimeIntervalAsUpdatedNSString:eb];
+    }
+    
     // Last Updated
     NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]];
     for (UILabel *lastUp in self.lastUpdated) {
@@ -299,7 +314,7 @@
     }
     
     // Change since last week
-    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
+//    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
     DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]);
     
@@ -359,9 +374,11 @@
 - (void)dealloc {
     [jscore release];
     [lastUpdated release];
-    [sinceLastWeekString release];
+    [expectedLife release];
     [portraitView release];
     [landscapeView release];
+    [memUsed release];
+    [memActive release];
     [super dealloc];
 }
 

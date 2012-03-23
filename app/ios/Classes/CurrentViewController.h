@@ -10,9 +10,12 @@
 #import "MBProgressHUD.h"
 
 @interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
+    NSTimeInterval MAX_LIFE; // max battery life in seconds
+    
     NSArray *jscore;
+    NSArray *expectedLife;
     NSArray *lastUpdated;
-    NSArray *sinceLastWeekString;
+    //NSArray *sinceLastWeekString;
     NSArray *osVersion;
     NSArray *deviceModel;
     
@@ -27,8 +30,9 @@
 }
 
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *jscore;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *expectedLife;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *lastUpdated;
-@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *sinceLastWeekString;
+//@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *sinceLastWeekString;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *osVersion;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *deviceModel;
 
@@ -45,7 +49,7 @@
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;
 - (IBAction)getSimilarAppsDetail:(id)sender;
-- (IBAction)getJScoreInfo:(id)sender;
+- (IBAction)getJScoreInfoScreen:(id)sender;
 - (IBAction)getProcessList:(id)sender;
 - (IBAction)getMemoryInfo:(id)sender;
 
