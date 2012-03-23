@@ -27,5 +27,6 @@
 - (Reports *) getReports;
 - (HogBugReport *) getHogOrBugReport:(FeatureList) featureList;
 - (BOOL) isInternetReachable; 
+- (NSString *) networkStatusString;
 - (void) checkNetworkStatus:(NSNotification *)notice;
 @end

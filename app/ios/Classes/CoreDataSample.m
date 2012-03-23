@@ -2,7 +2,7 @@
 //  CoreDataSample.m
 //  Carat
 //
-//  Created by Anand Padmanabha Iyer on 1/24/12.
+//  Created by Anand Padmanabha Iyer on 3/22/12.
 //  Copyright (c) 2012 UC Berkeley. All rights reserved.
 //
 
@@ -21,6 +21,7 @@
 @dynamic memoryWired;
 @dynamic timestamp;
 @dynamic triggeredBy;
+@dynamic networkStatus;
 @dynamic processInfos;
 
 @end

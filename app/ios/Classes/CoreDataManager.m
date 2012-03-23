@@ -19,7 +19,6 @@ static NSArray * SubReports = nil;
 static double JScore;
 static NSString * reportUpdateStatus = nil;
 static dispatch_semaphore_t sendStoredDataToServerSemaphore;
-//static NSString * daemonsFilePath = nil;
 static NSMutableDictionary * daemonsList = nil;
 
 - (void) postNotification
@@ -89,7 +88,6 @@ static NSMutableDictionary * daemonsList = nil;
 - (void) loadLocalReportsToMemory : (NSManagedObjectContext *) managedObjectContext
 {    
     NSError *error = nil;
-    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     if (managedObjectContext != nil) 
     {
@@ -144,7 +142,22 @@ static NSMutableDictionary * daemonsList = nil;
             for (CoreDataSubReport *subReport in subReportsArray)
             {
                 NSString *subReportName = (NSString *) [subReport valueForKey:@"name"];
-                if ([subReportName isEqualToString:@"OSInfo"]) 
+                if ([subReportName isEqualToString:@"JScoreInfo"]) 
+                {
+                    if (JScoreInfo == nil)
+                        JScoreInfo = [[DetailScreenReport alloc] init];
+                    JScoreInfo.score = [[subReport valueForKey:@"score"] doubleValue];
+                    JScoreInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
+                    JScoreInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
+                    JScoreInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
+                    if (JScoreInfoWithout == nil)
+                        JScoreInfoWithout = [[DetailScreenReport alloc] init];
+                    JScoreInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
+                    JScoreInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
+                    JScoreInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    JScoreInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
+                }
+                else if ([subReportName isEqualToString:@"OSInfo"]) 
                 {
                     if (OSInfo == nil)
                         OSInfo = [[DetailScreenReport alloc] init];
@@ -500,7 +513,13 @@ static NSMutableDictionary * daemonsList = nil;
             for (CoreDataSubReport *cdataSubReport in subReportsArray)
             {
                 NSString *subReportName = (NSString *) [cdataSubReport valueForKey:@"name"];
-                if ([subReportName isEqualToString:@"OSInfo"]) 
+                if ([subReportName isEqualToString:@"JScoreInfo"]) 
+                {
+                    [self updateLocalSubReport:cdataSubReport 
+                          withThisDetailReport:reports.jScoreWith 
+                           andThatDetailReport:reports.jScoreWithout];
+                }
+                else if ([subReportName isEqualToString:@"OSInfo"]) 
                 {
                     [self updateLocalSubReport:cdataSubReport 
                           withThisDetailReport:reports.os 
@@ -672,6 +691,7 @@ static NSMutableDictionary * daemonsList = nil;
     [cdataSample setTriggeredBy:triggeredBy];
     [cdataSample setTimestamp:[NSNumber numberWithDouble:
                                [[Globals instance] utcSecondsSinceEpoch]]];
+    [cdataSample setNetworkStatus:[[CommunicationManager instance] networkStatusString]];
     
     //
     //  Running processes.
@@ -898,6 +918,7 @@ static NSMutableDictionary * daemonsList = nil;
             sampleToSend.memoryFree = (int) [sample valueForKey:@"memoryFree"];
             sampleToSend.memoryUser = (int) [sample valueForKey:@"memoryUser"];
             sampleToSend.triggeredBy = (NSString *) [sample valueForKey:@"triggeredBy"];
+            sampleToSend.networkStatus = (NSString *) [sample valueForKey:@"networkStatus"];
             
             NSMutableArray *pInfoList = [[[NSMutableArray alloc] init] autorelease];
             sampleToSend.piList = pInfoList;
@@ -906,6 +927,7 @@ static NSMutableDictionary * daemonsList = nil;
             DLog(@"%s\tbatteryLevel: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryLevel"]);
             DLog(@"%s\tbatteryState: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryState"]);
             DLog(@"%s\ttriggeredBy: %@",__PRETTY_FUNCTION__, sampleToSend.triggeredBy);
+            DLog(@"%s\tnetworkStatus: %@",__PRETTY_FUNCTION__, sampleToSend.networkStatus);
             
             if (sample.processInfos == nil || sample.processInfos == NULL) {
                 DLog(@"%s Process Info list is Nil in the sample!!", __PRETTY_FUNCTION__);
@@ -1074,6 +1096,8 @@ static NSMutableDictionary * daemonsList = nil;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
 @synthesize fetchedResultsController = __fetchResultsController;
 @synthesize LastUpdatedDate;
+@synthesize JScoreInfo;
+@synthesize JScoreInfoWithout;
 @synthesize OSInfo;
 @synthesize OSInfoWithout;
 @synthesize ModelInfo;
@@ -1092,7 +1116,7 @@ static id instance = nil;
     if (self == [CoreDataManager class]) {
         instance = [[self alloc] init];
     }
-    SubReports = [[NSArray alloc] initWithObjects:@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
+    SubReports = [[NSArray alloc] initWithObjects:@"JScoreInfo",@"OSInfo",@"ModelInfo",@"SimilarAppsInfo", nil];
     daemonsList = [[NSMutableDictionary alloc] init];
     [instance initialize];
     //[instance loadLocalReportsToMemory];
@@ -1111,6 +1135,8 @@ static id instance = nil;
     [__persistentStoreCoordinator release];
     [__fetchResultsController release];
     [LastUpdatedDate release];
+    [JScoreInfo release];
+    [JScoreInfoWithout release];
     [OSInfo release];
     [OSInfoWithout release];
     [ModelInfo release];
@@ -1464,6 +1490,21 @@ static id instance = nil;
 {
     DLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
     return JScore;
+}
+
+- (DetailScreenReport *) getJScoreInfo : (BOOL) with
+{
+    if (with) 
+    {
+        if (self.JScoreInfo != nil)
+            return self.JScoreInfo;
+    } 
+    else 
+    {
+        if (self.JScoreInfoWithout != nil)
+            return self.JScoreInfoWithout;
+    }
+    return nil;
 }
 
 - (DetailScreenReport *) getOSInfo : (BOOL) with

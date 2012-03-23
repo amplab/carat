@@ -26,16 +26,18 @@
 @synthesize service;
 
 static id instance = nil;
-static NSString* caratServerIP = nil;
+static NSString * caratServerAddress = nil;
 static int caratServerPort = 8080;
 static BOOL isInternetActive;
+static NSString * networkStatusString;
 
 + (void) initialize {
     if (self == [CommunicationManager class]) {
         instance = [[self alloc] init];
     }
-    //caratServerIP = @"localhost";
-    caratServerIP = @"50.18.127.4";
+    
+    //caratServerAddress = @"50.18.127.4";
+    caratServerAddress = @"CaratLoadBalancer-462502324.us-west-1.elb.amazonaws.com";
     
     [instance setupReachabilityNotifications];
 }
@@ -47,6 +49,7 @@ static BOOL isInternetActive;
 - (void) setupReachabilityNotifications
 {
     isInternetActive = NO;
+    networkStatusString = @"NotReachable";
     
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(checkNetworkStatus:) 
@@ -95,7 +98,7 @@ static BOOL isInternetActive;
     //
     @try 
     {
-        [self setTransport:[[TSocketClient alloc] initWithHostname:caratServerIP port:caratServerPort]];
+        [self setTransport:[[TSocketClient alloc] initWithHostname:caratServerAddress port:caratServerPort]];
         [self setProtocol:[[TBinaryProtocol alloc] initWithTransport:transport strictRead:YES strictWrite:YES]];
         [self setService:[[CaratServiceClient alloc] initWithProtocol:protocol]];
         DLog(@"%s Success!", __PRETTY_FUNCTION__);
@@ -200,6 +203,12 @@ static BOOL isInternetActive;
     return isInternetActive;
 }
 
+- (NSString *) networkStatusString
+{
+    DLog(@"%s %s", __PRETTY_FUNCTION__, networkStatusString);
+    return networkStatusString;
+}
+
 - (void) checkNetworkStatus:(NSNotification *) notice
 {
     DLog(@"%s", __PRETTY_FUNCTION__);
@@ -210,18 +219,21 @@ static BOOL isInternetActive;
         {
             DLog(@"%s NetworkStatus changed to NotReachable", __PRETTY_FUNCTION__);
             isInternetActive = NO;
+            networkStatusString = @"NotReachable";
             break;
         }
         case ReachableViaWiFi:
         {
             DLog(@"%s NetworkStatus changed to ReachableViaWiFi", __PRETTY_FUNCTION__);
             isInternetActive = YES;
+            networkStatusString = @"ReachableViaWiFi";
             break;
         }
         case ReachableViaWWAN:
         {
             DLog(@"%s NetworkStatus changed to ReachableViaWWAN", __PRETTY_FUNCTION__);
             isInternetActive = YES;
+            networkStatusString = @"ReachableViaWWAN";
             break;
         }
     }

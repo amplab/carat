@@ -100,6 +100,7 @@ typedef NSArray * FeatureList;
   int32_t __memoryFree;
   int32_t __memoryUser;
   NSString * __triggeredBy;
+  NSString * __networkStatus;
 
   BOOL __uuId_isset;
   BOOL __timestamp_isset;
@@ -112,6 +113,7 @@ typedef NSArray * FeatureList;
   BOOL __memoryFree_isset;
   BOOL __memoryUser_isset;
   BOOL __triggeredBy_isset;
+  BOOL __networkStatus_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -126,9 +128,10 @@ typedef NSArray * FeatureList;
 @property (nonatomic, getter=memoryFree, setter=setMemoryFree:) int32_t memoryFree;
 @property (nonatomic, getter=memoryUser, setter=setMemoryUser:) int32_t memoryUser;
 @property (nonatomic, retain, getter=triggeredBy, setter=setTriggeredBy:) NSString * triggeredBy;
+@property (nonatomic, retain, getter=networkStatus, setter=setNetworkStatus:) NSString * networkStatus;
 #endif
 
-- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy;
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy networkStatus: (NSString *) networkStatus;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -176,6 +179,10 @@ typedef NSArray * FeatureList;
 - (NSString *) triggeredBy;
 - (void) setTriggeredBy: (NSString *) triggeredBy;
 - (BOOL) triggeredByIsSet;
+
+- (NSString *) networkStatus;
+- (void) setNetworkStatus: (NSString *) networkStatus;
+- (BOOL) networkStatusIsSet;
 
 @end
 
@@ -231,6 +238,8 @@ typedef NSArray * FeatureList;
   DetailScreenReport * __similarAppsWithout;
   double __changeSinceLastWeek;
   double __changeSinceLastWeekPercentage;
+  DetailScreenReport * __jScoreWith;
+  DetailScreenReport * __jScoreWithout;
 
   BOOL __jScore_isset;
   BOOL __os_isset;
@@ -241,6 +250,8 @@ typedef NSArray * FeatureList;
   BOOL __similarAppsWithout_isset;
   BOOL __changeSinceLastWeek_isset;
   BOOL __changeSinceLastWeekPercentage_isset;
+  BOOL __jScoreWith_isset;
+  BOOL __jScoreWithout_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -253,9 +264,11 @@ typedef NSArray * FeatureList;
 @property (nonatomic, retain, getter=similarAppsWithout, setter=setSimilarAppsWithout:) DetailScreenReport * similarAppsWithout;
 @property (nonatomic, getter=changeSinceLastWeek, setter=setChangeSinceLastWeek:) double changeSinceLastWeek;
 @property (nonatomic, getter=changeSinceLastWeekPercentage, setter=setChangeSinceLastWeekPercentage:) double changeSinceLastWeekPercentage;
+@property (nonatomic, retain, getter=jScoreWith, setter=setJScoreWith:) DetailScreenReport * jScoreWith;
+@property (nonatomic, retain, getter=jScoreWithout, setter=setJScoreWithout:) DetailScreenReport * jScoreWithout;
 #endif
 
-- (id) initWithJScore: (double) jScore os: (DetailScreenReport *) os osWithout: (DetailScreenReport *) osWithout model: (DetailScreenReport *) model modelWithout: (DetailScreenReport *) modelWithout similarApps: (DetailScreenReport *) similarApps similarAppsWithout: (DetailScreenReport *) similarAppsWithout changeSinceLastWeek: (double) changeSinceLastWeek changeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage;
+- (id) initWithJScore: (double) jScore os: (DetailScreenReport *) os osWithout: (DetailScreenReport *) osWithout model: (DetailScreenReport *) model modelWithout: (DetailScreenReport *) modelWithout similarApps: (DetailScreenReport *) similarApps similarAppsWithout: (DetailScreenReport *) similarAppsWithout changeSinceLastWeek: (double) changeSinceLastWeek changeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage jScoreWith: (DetailScreenReport *) jScoreWith jScoreWithout: (DetailScreenReport *) jScoreWithout;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -295,6 +308,14 @@ typedef NSArray * FeatureList;
 - (double) changeSinceLastWeekPercentage;
 - (void) setChangeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage;
 - (BOOL) changeSinceLastWeekPercentageIsSet;
+
+- (DetailScreenReport *) jScoreWith;
+- (void) setJScoreWith: (DetailScreenReport *) jScoreWith;
+- (BOOL) jScoreWithIsSet;
+
+- (DetailScreenReport *) jScoreWithout;
+- (void) setJScoreWithout: (DetailScreenReport *) jScoreWithout;
+- (BOOL) jScoreWithoutIsSet;
 
 @end
 

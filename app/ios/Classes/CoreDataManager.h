@@ -26,6 +26,8 @@
 @interface CoreDataManager : NSObject 
 {
     NSDate * LastUpdatedDate;
+    DetailScreenReport * JScoreInfo;
+    DetailScreenReport * JScoreInfoWithout;
     DetailScreenReport * OSInfo;
     DetailScreenReport * OSInfoWithout;
     DetailScreenReport * ModelInfo;
@@ -42,6 +44,8 @@
 @property (readonly, strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, retain) NSDate * LastUpdatedDate;
+@property (nonatomic, retain) DetailScreenReport * JScoreInfo;
+@property (nonatomic, retain) DetailScreenReport * JScoreInfoWithout;
 @property (nonatomic, retain) DetailScreenReport * OSInfo;
 @property (nonatomic, retain) DetailScreenReport * OSInfoWithout;
 @property (nonatomic, retain) DetailScreenReport * ModelInfo;
@@ -65,6 +69,7 @@
 - (HogBugReport *) getHogs : (BOOL) filterNonRunning;
 - (HogBugReport *) getBugs : (BOOL) filterNonRunning;
 - (double) getJScore;
+- (DetailScreenReport *) getJScoreInfo : (BOOL) with;
 - (DetailScreenReport *) getOSInfo : (BOOL) with;
 - (DetailScreenReport *) getModelInfo : (BOOL) with;
 - (DetailScreenReport *) getSimilarAppsInfo : (BOOL) with;

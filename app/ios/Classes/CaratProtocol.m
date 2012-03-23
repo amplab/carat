@@ -430,7 +430,7 @@
 
 @implementation Sample
 
-- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy networkStatus: (NSString *) networkStatus
 {
   self = [super init];
   __uuId = [uuId retain];
@@ -455,6 +455,8 @@
   __memoryUser_isset = YES;
   __triggeredBy = [triggeredBy retain];
   __triggeredBy_isset = YES;
+  __networkStatus = [networkStatus retain];
+  __networkStatus_isset = YES;
   return self;
 }
 
@@ -516,6 +518,11 @@
     __triggeredBy = [[decoder decodeObjectForKey: @"triggeredBy"] retain];
     __triggeredBy_isset = YES;
   }
+  if ([decoder containsValueForKey: @"networkStatus"])
+  {
+    __networkStatus = [[decoder decodeObjectForKey: @"networkStatus"] retain];
+    __networkStatus_isset = YES;
+  }
   return self;
 }
 
@@ -565,6 +572,10 @@
   {
     [encoder encodeObject: __triggeredBy forKey: @"triggeredBy"];
   }
+  if (__networkStatus_isset)
+  {
+    [encoder encodeObject: __networkStatus forKey: @"networkStatus"];
+  }
 }
 
 - (void) dealloc
@@ -573,6 +584,7 @@
   [__piList release];
   [__batteryState release];
   [__triggeredBy release];
+  [__networkStatus release];
   [super dealloc];
 }
 
@@ -779,6 +791,27 @@
   __triggeredBy_isset = NO;
 }
 
+- (NSString *) networkStatus {
+  return [[__networkStatus retain] autorelease];
+}
+
+- (void) setNetworkStatus: (NSString *) networkStatus {
+  [networkStatus retain];
+  [__networkStatus release];
+  __networkStatus = networkStatus;
+  __networkStatus_isset = YES;
+}
+
+- (BOOL) networkStatusIsSet {
+  return __networkStatus_isset;
+}
+
+- (void) unsetNetworkStatus {
+  [__networkStatus release];
+  __networkStatus = nil;
+  __networkStatus_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -894,6 +927,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 12:
+        if (fieldType == TType_STRING) {
+          NSString * fieldValue = [inProtocol readString];
+          [self setNetworkStatus: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -976,6 +1017,13 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__networkStatus_isset) {
+    if (__networkStatus != nil) {
+      [outProtocol writeFieldBeginWithName: @"networkStatus" type: TType_STRING fieldID: 12];
+      [outProtocol writeString: __networkStatus];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1004,6 +1052,8 @@
   [ms appendFormat: @"%i", __memoryUser];
   [ms appendString: @",triggeredBy:"];
   [ms appendFormat: @"\"%@\"", __triggeredBy];
+  [ms appendString: @",networkStatus:"];
+  [ms appendFormat: @"\"%@\"", __networkStatus];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -1295,7 +1345,7 @@
 
 @implementation Reports
 
-- (id) initWithJScore: (double) jScore os: (DetailScreenReport *) os osWithout: (DetailScreenReport *) osWithout model: (DetailScreenReport *) model modelWithout: (DetailScreenReport *) modelWithout similarApps: (DetailScreenReport *) similarApps similarAppsWithout: (DetailScreenReport *) similarAppsWithout changeSinceLastWeek: (double) changeSinceLastWeek changeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage
+- (id) initWithJScore: (double) jScore os: (DetailScreenReport *) os osWithout: (DetailScreenReport *) osWithout model: (DetailScreenReport *) model modelWithout: (DetailScreenReport *) modelWithout similarApps: (DetailScreenReport *) similarApps similarAppsWithout: (DetailScreenReport *) similarAppsWithout changeSinceLastWeek: (double) changeSinceLastWeek changeSinceLastWeekPercentage: (double) changeSinceLastWeekPercentage jScoreWith: (DetailScreenReport *) jScoreWith jScoreWithout: (DetailScreenReport *) jScoreWithout
 {
   self = [super init];
   __jScore = jScore;
@@ -1316,6 +1366,10 @@
   __changeSinceLastWeek_isset = YES;
   __changeSinceLastWeekPercentage = changeSinceLastWeekPercentage;
   __changeSinceLastWeekPercentage_isset = YES;
+  __jScoreWith = [jScoreWith retain];
+  __jScoreWith_isset = YES;
+  __jScoreWithout = [jScoreWithout retain];
+  __jScoreWithout_isset = YES;
   return self;
 }
 
@@ -1367,6 +1421,16 @@
     __changeSinceLastWeekPercentage = [decoder decodeDoubleForKey: @"changeSinceLastWeekPercentage"];
     __changeSinceLastWeekPercentage_isset = YES;
   }
+  if ([decoder containsValueForKey: @"jScoreWith"])
+  {
+    __jScoreWith = [[decoder decodeObjectForKey: @"jScoreWith"] retain];
+    __jScoreWith_isset = YES;
+  }
+  if ([decoder containsValueForKey: @"jScoreWithout"])
+  {
+    __jScoreWithout = [[decoder decodeObjectForKey: @"jScoreWithout"] retain];
+    __jScoreWithout_isset = YES;
+  }
   return self;
 }
 
@@ -1408,6 +1472,14 @@
   {
     [encoder encodeDouble: __changeSinceLastWeekPercentage forKey: @"changeSinceLastWeekPercentage"];
   }
+  if (__jScoreWith_isset)
+  {
+    [encoder encodeObject: __jScoreWith forKey: @"jScoreWith"];
+  }
+  if (__jScoreWithout_isset)
+  {
+    [encoder encodeObject: __jScoreWithout forKey: @"jScoreWithout"];
+  }
 }
 
 - (void) dealloc
@@ -1418,6 +1490,8 @@
   [__modelWithout release];
   [__similarApps release];
   [__similarAppsWithout release];
+  [__jScoreWith release];
+  [__jScoreWithout release];
   [super dealloc];
 }
 
@@ -1598,6 +1672,48 @@
   __changeSinceLastWeekPercentage_isset = NO;
 }
 
+- (DetailScreenReport *) jScoreWith {
+  return [[__jScoreWith retain] autorelease];
+}
+
+- (void) setJScoreWith: (DetailScreenReport *) jScoreWith {
+  [jScoreWith retain];
+  [__jScoreWith release];
+  __jScoreWith = jScoreWith;
+  __jScoreWith_isset = YES;
+}
+
+- (BOOL) jScoreWithIsSet {
+  return __jScoreWith_isset;
+}
+
+- (void) unsetJScoreWith {
+  [__jScoreWith release];
+  __jScoreWith = nil;
+  __jScoreWith_isset = NO;
+}
+
+- (DetailScreenReport *) jScoreWithout {
+  return [[__jScoreWithout retain] autorelease];
+}
+
+- (void) setJScoreWithout: (DetailScreenReport *) jScoreWithout {
+  [jScoreWithout retain];
+  [__jScoreWithout release];
+  __jScoreWithout = jScoreWithout;
+  __jScoreWithout_isset = YES;
+}
+
+- (BOOL) jScoreWithoutIsSet {
+  return __jScoreWithout_isset;
+}
+
+- (void) unsetJScoreWithout {
+  [__jScoreWithout release];
+  __jScoreWithout = nil;
+  __jScoreWithout_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -1697,6 +1813,26 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 10:
+        if (fieldType == TType_STRUCT) {
+          DetailScreenReport *fieldValue = [[DetailScreenReport alloc] init];
+          [fieldValue read: inProtocol];
+          [self setJScoreWith: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 11:
+        if (fieldType == TType_STRUCT) {
+          DetailScreenReport *fieldValue = [[DetailScreenReport alloc] init];
+          [fieldValue read: inProtocol];
+          [self setJScoreWithout: fieldValue];
+          [fieldValue release];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1765,6 +1901,20 @@
     [outProtocol writeDouble: __changeSinceLastWeekPercentage];
     [outProtocol writeFieldEnd];
   }
+  if (__jScoreWith_isset) {
+    if (__jScoreWith != nil) {
+      [outProtocol writeFieldBeginWithName: @"jScoreWith" type: TType_STRUCT fieldID: 10];
+      [__jScoreWith write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__jScoreWithout_isset) {
+    if (__jScoreWithout != nil) {
+      [outProtocol writeFieldBeginWithName: @"jScoreWithout" type: TType_STRUCT fieldID: 11];
+      [__jScoreWithout write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1789,6 +1939,10 @@
   [ms appendFormat: @"%f", __changeSinceLastWeek];
   [ms appendString: @",changeSinceLastWeekPercentage:"];
   [ms appendFormat: @"%f", __changeSinceLastWeekPercentage];
+  [ms appendString: @",jScoreWith:"];
+  [ms appendFormat: @"%@", __jScoreWith];
+  [ms appendString: @",jScoreWithout:"];
+  [ms appendFormat: @"%@", __jScoreWithout];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }
@@ -3739,11 +3893,9 @@
 
 - (id) initWithInProtocol: (id <TProtocol>) anInProtocol outProtocol: (id <TProtocol>) anOutProtocol
 {
-  self = [super init];
-    if (self != nil) {
-        inProtocol = [anInProtocol retain];
-        outProtocol = [anOutProtocol retain];
-    }
+  [super init];
+  inProtocol = [anInProtocol retain];
+  outProtocol = [anOutProtocol retain];
   return self;
 }
 

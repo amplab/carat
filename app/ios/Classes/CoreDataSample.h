@@ -2,7 +2,7 @@
 //  CoreDataSample.h
 //  Carat
 //
-//  Created by Anand Padmanabha Iyer on 1/24/12.
+//  Created by Anand Padmanabha Iyer on 3/22/12.
 //  Copyright (c) 2012 UC Berkeley. All rights reserved.
 //
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber * memoryWired;
 @property (nonatomic, retain) NSNumber * timestamp;
 @property (nonatomic, retain) NSString * triggeredBy;
+@property (nonatomic, retain) NSString * networkStatus;
 @property (nonatomic, retain) NSSet *processInfos;
 @end
 
@@ -31,4 +32,5 @@
 - (void)removeProcessInfosObject:(CoreDataProcessInfo *)value;
 - (void)addProcessInfos:(NSSet *)values;
 - (void)removeProcessInfos:(NSSet *)values;
+
 @end
