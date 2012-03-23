@@ -24,13 +24,15 @@ static NSMutableDictionary * daemonsList = nil;
 
 - (void) postNotification
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CCDMReportUpdateStatusNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CCDMReportUpdateStatusNotification" 
+                                                        object:nil];
 }
 
 - (void) postNotificationOnMainThread
 {
-    [self performSelectorOnMainThread:@selector(postNotification) withObject:nil waitUntilDone:YES];
-    
+    [self performSelectorOnMainThread:@selector(postNotification) 
+                           withObject:nil 
+                        waitUntilDone:YES];
 }
 
 /**
@@ -462,7 +464,7 @@ static NSMutableDictionary * daemonsList = nil;
         // Now let's get the report data from the server. First main reports.
         DLog(@"%s Updating main reports...", __PRETTY_FUNCTION__);
         reportUpdateStatus = @"(Updating main reports...)";
-        postNotificationOnMainThread();
+        [self postNotificationOnMainThread];
         
         Reports *reports = [[CommunicationManager instance] getReports];
         //if (reports == nil || reports == NULL) return;  // Being extra-cautious.
@@ -526,7 +528,7 @@ static NSMutableDictionary * daemonsList = nil;
         // Hog report
         DLog(@"%s Updating hog report...", __PRETTY_FUNCTION__);
         reportUpdateStatus = @"(Updating hog report...)";
-        postNotificationOnMainThread();
+        [self postNotificationOnMainThread];
         
         Feature *feature1 = [[[Feature alloc] init] autorelease];
         [feature1 setKey:@"ReportType"];
@@ -573,7 +575,7 @@ static NSMutableDictionary * daemonsList = nil;
         // Bug report
         DLog(@"%s Updating bug report...", __PRETTY_FUNCTION__);
         reportUpdateStatus = @"(Updating bug report...)";
-        postNotificationOnMainThread();
+        [self postNotificationOnMainThread];
         
         [feature1 setValue:@"Bug"];
         list = [[NSArray alloc] initWithObjects:feature1, feature2, nil];
@@ -1258,7 +1260,7 @@ static id instance = nil;
         dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [self updateReportsFromServer];
                 reportUpdateStatus = nil;
-                postNotificationOnMainThread();
+                [self postNotificationOnMainThread];
                 
                 dispatch_async( dispatch_get_main_queue(), ^{
                     [lockReportSync unlock];
