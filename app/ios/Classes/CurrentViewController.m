@@ -299,10 +299,10 @@
     // Expected Battery Life
     NSTimeInterval eb; // expected life in seconds
     double jev = [[[CoreDataManager instance] getJScoreInfo:YES] expectedValue];
-    if (jev > 0) eb = MIN(MAX_LIFE,1/jev);
+    if (jev > 0) eb = MIN(MAX_LIFE,100/jev);
     else eb = MAX_LIFE;
     for (UILabel *el in self.expectedLife) {
-        el.text = [Utilities formatNSTimeIntervalAsUpdatedNSString:eb];
+        el.text = [Utilities formatNSTimeIntervalAsNSString:eb];
     }
     
     // Last Updated
