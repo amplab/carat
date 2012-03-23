@@ -36,8 +36,7 @@ static NSString * networkStatusString;
         instance = [[self alloc] init];
     }
     
-    //caratServerAddress = @"50.18.127.4";
-    caratServerAddress = @"CaratLoadBalancer-462502324.us-west-1.elb.amazonaws.com";
+    caratServerAddress = @"server.caratproject.com";
     
     [instance setupReachabilityNotifications];
 }
