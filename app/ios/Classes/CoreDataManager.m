@@ -247,6 +247,7 @@ static NSMutableDictionary * daemonsList = nil;
             [daemonsList setObject:@"1" forKey:line];
         }
     }
+    [responseString release];
     
     //
     // Remove the file.
@@ -272,7 +273,7 @@ static NSMutableDictionary * daemonsList = nil;
     //
     // Set modification date.
     //
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:[NSDate date], NSFileModificationDate, nil];
+    NSDictionary *dict = [[[NSDictionary alloc] initWithObjectsAndKeys:[NSDate date], NSFileModificationDate, nil] autorelease];
     if (![[NSFileManager defaultManager] setAttributes:dict 
                                           ofItemAtPath:self.daemonsFilePath 
                                                  error:nil]) 
@@ -356,7 +357,7 @@ static NSMutableDictionary * daemonsList = nil;
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSDate* oldDate = [dateFormatter dateFromString:@"1970-01-01"];
     [dateFormatter release];
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:oldDate, NSFileModificationDate, nil];
+    NSDictionary *dict = [[[NSDictionary alloc] initWithObjectsAndKeys:oldDate, NSFileModificationDate, nil] autorelease];
     if (![[NSFileManager defaultManager] setAttributes:dict 
                                           ofItemAtPath:self.daemonsFilePath 
                                                  error:nil]) 
@@ -1434,6 +1435,7 @@ static id instance = nil;
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
         
+        DLog(@"... about to execute fetch request.");
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
@@ -1472,8 +1474,10 @@ static id instance = nil;
             [hbList addObject:hog];
         }
         return hogs;
+    } else {
+        DLog(@"... managed object context was nil.");
+        return nil;
     }
-    return nil;
 }
 /*- (HogBugReport *) getHogs
 {
