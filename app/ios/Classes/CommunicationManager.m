@@ -54,7 +54,7 @@ static NSString * networkStatusString;
                                              selector:@selector(checkNetworkStatus:) 
                                                  name:kReachabilityChangedNotification 
                                                object:nil];
-    internetReachable = [Reachability reachabilityWithHostName: @"www.apple.com"]; // ANAND: replace with our server address
+    internetReachable = [Reachability reachabilityWithHostName:caratServerAddress];
     if ([internetReachable startNotifier]) { DLog(@"%s Success!", __PRETTY_FUNCTION__); }
 }
 

@@ -48,16 +48,26 @@
 
 - (void)loadDataWithHUD
 {
-    HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
-	[self.tabBarController.view addSubview:HUD];
-	
-	HUD.dimBackground = YES;
-	
-	// Register for HUD callbacks so we can remove it from the window at the right time
-    HUD.delegate = self;
-    HUD.labelText = @"Updating Action List";
-	
-    [HUD showWhileExecuting:@selector(loadData) onTarget:self withObject:nil animated:YES];
+    if ([[CoreDataManager instance] getReportUpdateStatus] != nil) {
+        // update in progress, only update footer
+        [self.actionTable reloadData];
+        [self.view setNeedsDisplay];
+    } else {
+        // *probably* no update in progress, reload table data while locking out view
+        HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
+        [self.tabBarController.view addSubview:HUD];
+        
+        HUD.dimBackground = YES;
+        
+        // Register for HUD callbacks so we can remove it from the window at the right time
+        HUD.delegate = self;
+        HUD.labelText = @"Updating Action List";
+        
+        [HUD showWhileExecuting:@selector(loadData)
+                       onTarget:self
+                     withObject:nil
+                       animated:YES];
+    }
 }
 
 - (void)loadData
