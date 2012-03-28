@@ -116,7 +116,7 @@ void onUncaughtException(NSException *exception)
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-    DLog(@"Set root view controller; is nil? %s",
+    DLog(@"Set root view controller; is nil? %@",
          self.tabBarController==nil ? @"yes" : @"no");
     
     // views have been added to hierarchy, so they can be released

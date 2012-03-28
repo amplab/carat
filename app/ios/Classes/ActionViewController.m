@@ -281,7 +281,7 @@
                 [hb expectedValueWithout] > 0) {
                 
                 NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                DLog(@"Benefit is %d for hog %s", benefit, [hb appName]);
+                DLog(@"Benefit is %d for hog '%@'", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
@@ -304,7 +304,7 @@
                 [hb expectedValueWithout] > 0) {
                 
                 NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                DLog(@"Benefit is %d for bug %s", benefit, [hb appName]);
+                DLog(@"Benefit is %d for bug '%@'", benefit, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
