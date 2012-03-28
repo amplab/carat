@@ -35,8 +35,6 @@
 		AB645DF61456F9EC0008244B /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF51456F9EC0008244B /* icon57.png */; };
 		AB645DF81456FCED0008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF71456FCED0008244B /* icon114.png */; };
 		AB645DFA1456FD0C0008244B /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DF91456FD0C0008244B /* icon72.png */; };
-		AB645DFF1456FDD50008244B /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFC1456FDD50008244B /* icon72.png */; };
-		AB645E001456FDD50008244B /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFD1456FDD50008244B /* icon114.png */; };
 		AB645E021456FE530008244B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E011456FE530008244B /* Default.png */; };
 		AB645E041456FF1F0008244B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645E031456FF1F0008244B /* Default@2x.png */; };
 		AB7568D8151B0DAC0082AEE9 /* consent.html in Resources */ = {isa = PBXBuildFile; fileRef = AB7568D7151B0DAC0082AEE9 /* consent.html */; };
@@ -138,7 +136,6 @@
 		ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317E014882E93000A8DC7 /* DetailView.xib */; };
 		ABD317E514882F1C000A8DC7 /* HogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */; };
 		ABD317FD14884F6F000A8DC7 /* BugDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */; };
-		ABD3180414899275000A8DC7 /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = AB645DFB1456FDD50008244B /* icon57.png */; };
 		ABD31807148D8304000A8DC7 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD31806148D8304000A8DC7 /* MBProgressHUD.m */; };
 		ABD318EA148D8703000A8DC7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318E9148D8703000A8DC7 /* Security.framework */; };
 		ABD318EC148D8733000A8DC7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318EB148D8732000A8DC7 /* MessageUI.framework */; };
@@ -1558,8 +1555,6 @@
 				AB645DF61456F9EC0008244B /* icon57.png in Resources */,
 				AB645DF81456FCED0008244B /* icon114.png in Resources */,
 				AB645DFA1456FD0C0008244B /* icon72.png in Resources */,
-				AB645DFF1456FDD50008244B /* icon72.png in Resources */,
-				AB645E001456FDD50008244B /* icon114.png in Resources */,
 				AB645E021456FE530008244B /* Default.png in Resources */,
 				AB645E041456FF1F0008244B /* Default@2x.png in Resources */,
 				ABC07A14148569F200FCC2C2 /* ReportItemCell.xib in Resources */,
@@ -1568,7 +1563,6 @@
 				ABC07A2014859E7600FCC2C2 /* AboutView.xib in Resources */,
 				ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */,
 				ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */,
-				ABD3180414899275000A8DC7 /* icon57.png in Resources */,
 				AB9B580B148FEA10004F92F2 /* 37x-Checkmark.png in Resources */,
 				AB9B580D148FF31D004F92F2 /* 37x-X.png in Resources */,
 				AB1E7AB414CF8ECE0010617A /* Entitlements.plist in Resources */,
