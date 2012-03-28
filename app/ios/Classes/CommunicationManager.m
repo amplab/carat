@@ -204,7 +204,7 @@ static NSString * networkStatusString;
 
 - (NSString *) networkStatusString
 {
-    DLog(@"%s %s", __PRETTY_FUNCTION__, networkStatusString);
+    DLog(@"%s %@", __PRETTY_FUNCTION__, networkStatusString);
     return networkStatusString;
 }
 
