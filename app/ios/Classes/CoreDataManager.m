@@ -1435,7 +1435,6 @@ static id instance = nil;
                                                   inManagedObjectContext:managedObjectContext];
         [fetchRequest setEntity:entity];
         
-        DLog(@"... about to execute fetch request.");
         NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
         if (fetchedObjects == nil) {
             DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
