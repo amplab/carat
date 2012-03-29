@@ -16,13 +16,10 @@
 #import "Thrift/transport/TSocketClient.h"
 #import "Thrift/protocol/TBinaryProtocol.h"
 
-//@class Reachability;
-
 @interface CaratAppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate> {
     UIWindow *window;
     UITabBarController *tabBarController;
     CLLocationManager *locationManager;
-    //Reachability *hostReachable;
     UIBackgroundTaskIdentifier bgTask;
 }
 

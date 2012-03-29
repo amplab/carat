@@ -15,6 +15,7 @@
 #import "ActionObject.h"
 #import "SHK.h"
 #import "CoreDataManager.h"
+#import "Reachability.h"
 
 @implementation ActionViewController
 
@@ -166,6 +167,52 @@
     }
 }
 
+#pragma mark - reachability
+
+- (void) setupReachabilityNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(checkForUpdatable:) 
+                                                 name:kReachabilityChangedNotification 
+                                               object:nil];
+    internetReachable = [Reachability reachabilityWithHostName:@"server.caratproject.com"];
+    if ([internetReachable startNotifier]) { DLog(@"%s Success!", __PRETTY_FUNCTION__); }
+}
+
+- (void) teardownReachabilityNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                name:kReachabilityChangedNotification
+                                              object:nil];
+    [internetReachable stopNotifier];
+}
+
+- (void) checkForUpdatable:(NSNotification *) notice
+{
+    DLog(@"%s", __PRETTY_FUNCTION__);
+    NetworkStatus internetStatus = [internetReachable currentReachabilityStatus];
+    switch (internetStatus)
+    {
+        case NotReachable:
+        {
+            break;
+        }
+        case ReachableViaWiFi:
+        case ReachableViaWWAN:
+        {
+            DLog(@"Checking if update needed with new reachability status...");
+            if (![self isFresh] && // need to update
+                [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
+            {
+                DLog(@"Update possible; initiating.");
+                [[CoreDataManager instance] updateLocalReportsFromServer];
+            }
+            break;
+        }
+    }
+
+}
+
 #pragma mark - share handler
 
 - (void)shareHandler {
@@ -226,6 +273,9 @@
         [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
     {
         [[CoreDataManager instance] updateLocalReportsFromServer];
+    } else if ([[CommunicationManager instance] isInternetReachable] == NO) {
+        DLog(@"Starting without reachability; setting notification.");
+        [self setupReachabilityNotifications];
     }
 }
 
@@ -252,6 +302,7 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                             name:@"CCDMReportUpdateStatusNotification" object:nil];
+    [self teardownReachabilityNotifications];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
