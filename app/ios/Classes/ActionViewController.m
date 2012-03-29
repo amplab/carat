@@ -34,7 +34,6 @@
 - (void)didReceiveMemoryWarning
 {
     DLog(@"Memory warning.");
-    [actionList release];
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
 }
