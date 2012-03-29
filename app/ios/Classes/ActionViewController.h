@@ -18,13 +18,11 @@
     Reachability* internetReachable;
     
     IBOutlet UITableView *actionTable;
-    IBOutlet UIView *dataTable;
 }
 
 @property (retain, nonatomic) NSMutableArray *actionList;
 
 @property (retain, nonatomic) IBOutlet UITableView *actionTable;
-@property (retain, nonatomic) IBOutlet UIView *dataTable;
 
 - (void)shareHandler;
 - (void)updateView;

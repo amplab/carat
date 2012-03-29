@@ -21,8 +21,6 @@
 
 @synthesize actionList, actionTable;
 
-@synthesize dataTable;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -35,10 +33,10 @@
 
 - (void)didReceiveMemoryWarning
 {
+    DLog(@"Memory warning.");
+    [actionList release];
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - Data management
@@ -254,8 +252,6 @@
     [self setActionList:nil];
     [actionTable release];
     [self setActionTable:nil];
-    [dataTable release];
-    [self setDataTable:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -413,7 +409,7 @@
     [HUD release];
     [actionList release];
     [actionTable release];
-    [dataTable release];
+    [internetReachable release];
     [super dealloc];
 }
 @end
