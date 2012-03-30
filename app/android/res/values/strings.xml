@@ -3,5 +3,17 @@
 
     <string name="hello">Hello World, CaratSuggestionsActivity!</string>
     <string name="app_name">Carat</string>
+    <string name="hellohome">Hello Home Screen!</string>
+    <string name="jscore">Your J-Score:</string>
+    <string name="since">Since last time:</string>
+    <string name="osver">OS version:</string>
+    <string name="dev">Device model:</string>
+    <string name="apps">Running apps:</string>
+    <string name="memused">Memory used:</string>
+    <string name="memactive">Memory active:</string>
+    <string name="updated0">(Updated 0m 0s ago)</string>
+    <string name="brown">#744618</string>
+    <string name="green">#127112</string>
+    <string name="orange">#ff8331</string>
 
 </resources>
