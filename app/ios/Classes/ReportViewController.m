@@ -144,7 +144,7 @@
     }
 
     for (UIProgressView *pBar in [dvController appScore]) {
-        [pBar setProgress:selectedCell.appScore.progress animated:NO];
+        [pBar setProgress:selectedCell.appScore.progress];
     }
     
     [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thisText];

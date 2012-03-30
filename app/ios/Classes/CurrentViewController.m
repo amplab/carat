@@ -140,7 +140,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0) animated:NO];
+            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0)];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
@@ -178,7 +178,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getModelInfo:YES] score],0.0),1.0) animated:NO];
+            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getModelInfo:YES] score],0.0),1.0)];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
@@ -218,7 +218,7 @@
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
         for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getSimilarAppsInfo:YES] score],0.0),1.0) animated:NO];
+            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getSimilarAppsInfo:YES] score],0.0),1.0)];
         }
         
         [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
