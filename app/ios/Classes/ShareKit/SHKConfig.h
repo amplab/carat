@@ -14,8 +14,8 @@
 // App Description
 // These values are used by any service that shows 'shared from XYZ'
 
-#define SHKMyAppName			@"My App Name"
-#define SHKMyAppURL				@"http://example.com"
+#define SHKMyAppName			@"Carat"
+#define SHKMyAppURL				@"http://carat.cs.berkeley.edu"
 
 
 
@@ -72,7 +72,7 @@
  */
 #define SHKTwitterConsumerKey		@"JkGB6jsTAAfitYT6xASvxA"
 #define SHKTwitterSecret			@"crj455prhsA22L48VmxH2aEimR8Rmi0yYJgoclQpwPw"
-#define SHKTwitterCallbackUrl		@"http://carat.eecs.berkeley.edu/callback" // You need to set this if using OAuth, see note above (xAuth users can skip it)
+#define SHKTwitterCallbackUrl		@"http://carat.cs.berkeley.edu/callback" // You need to set this if using OAuth, see note above (xAuth users can skip it)
 #define SHKTwitterUseXAuth			0 // To use xAuth, set to 1
 #define SHKTwitterUsername			@"" // Enter your app's twitter account if you'd like to ask the user to follow it when logging in. (Only for xAuth)
 

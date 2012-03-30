@@ -223,8 +223,10 @@
 
     // Create the item to share (in this example, a url)
     NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
-    SHKItem *item = [SHKItem URL:url title:@"Improve your mobile device's battery usage, for science! (Seriously.)"];
-    
+    SHKItem *item = [SHKItem URL:url title:[[@"My J-Score is "
+             stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]]
+             stringByAppendingString:@". Find out yours and improve your battery life!"]];
+                                            
     // Get the ShareKit action sheet
     SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
        
