@@ -15,5 +15,7 @@
     <string name="brown">#744618</string>
     <string name="green">#127112</string>
     <string name="orange">#ff8331</string>
+    <string name="zeropercent">0.00 (0.00 %)</string>
+    <string name="viewprocess">View Process List</string>
 
 </resources>

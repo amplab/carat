@@ -7,7 +7,9 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:stretchColumns="2" >
 
         <TableRow
             android:id="@+id/tableRow1"
@@ -19,6 +21,7 @@
                 android:id="@+id/textView1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="fill_horizontal"
                 android:layout_weight="1"
                 android:text="@string/jscore"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -32,25 +35,173 @@
                 android:text="0"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@string/green" />
+
+            <ImageButton
+                android:id="@+id/imageButton1"
+                android:layout_gravity="center_vertical"
+                android:background="#000000"
+                android:src="@drawable/infoicon"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                />
+                
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@string/brown"
+                android:text="@string/updated0" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/since"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/brown" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/zeropercent"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/green" />
+
         </TableRow>
 
         <TableRow
             android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/osver"
+                android:textColor="@string/brown"
+                android:layout_weight="1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="4.0.3"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/green" />
+
         </TableRow>
+
+        <TableRow
+            android:id="@+id/TableRow01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/dev"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/brown" />
+
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="Galaxy Nexus"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/green" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/TableRow02"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView04"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/apps"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/brown" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="@string/viewprocess"
+                android:textColor="@string/green"
+                 />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/TableRow03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView06"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/memused"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/brown" />
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/TableRow04"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/TextView08"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/memactive"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@string/brown" />
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+        
     </TableLayout>
 
 </LinearLayout>
