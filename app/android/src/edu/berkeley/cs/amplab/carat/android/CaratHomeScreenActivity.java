@@ -47,8 +47,6 @@ public class CaratHomeScreenActivity extends Activity {
     toggleColors();
   }
 
-  private int lastColor = R.color.black;
-
   private void setModelAndVersion() {
     // Device model
     String model = android.os.Build.MODEL;
@@ -92,7 +90,7 @@ public class CaratHomeScreenActivity extends Activity {
     Window win = this.getWindow();
     // Set memory values to the progress bar.
     ProgressBar mText = (ProgressBar) win.findViewById(R.id.progressBar1);
-    int[] totalAndUsed = readMeminfo();
+    int[] totalAndUsed = SamplingLibrary.readMeminfo();
     mText.setMax(totalAndUsed[0]);
     mText.setProgress(totalAndUsed[1]);
     mText = (ProgressBar) win.findViewById(R.id.progressBar2);
@@ -104,116 +102,12 @@ public class CaratHomeScreenActivity extends Activity {
     
     /* CPU usage */
     mText = (ProgressBar) win.findViewById(R.id.cpubar);
-    int cpu = (int) (readUsage() * 100);
+    int cpu = (int) (SamplingLibrary.readUsage() * 100);
     mText.setMax(100);
     mText.setProgress(cpu);
   }
   
-  
-  private int[] readMeminfo() {
-    try {
-    RandomAccessFile reader = new RandomAccessFile("/proc/meminfo", "r");
-    String load = reader.readLine();
-
-    String[] toks = load.split("\\s+");
-    Log.i("meminfo", "Load: " + load +" 1:" + toks[1]);
-    int total = Integer.parseInt(toks[1]);
-    load = reader.readLine();
-    toks = load.split("\\s+");
-    Log.i("meminfo", "Load: " + load +" 1:" + toks[1]);
-    int free = Integer.parseInt(toks[1]);
-    load = reader.readLine();
-    load = reader.readLine();
-    load = reader.readLine();
-    load = reader.readLine();
-    toks = load.split("\\s+");
-    Log.i("meminfo", "Load: " + load +" 1:" + toks[1]);
-    int act = Integer.parseInt(toks[1]);
-    load = reader.readLine();
-    toks = load.split("\\s+");
-    Log.i("meminfo", "Load: " + load +" 1:" + toks[1]);
-    int inact = Integer.parseInt(toks[1]);
-    reader.close();
-    return new int[]{total, total-free, act+inact, act};
-    } catch (IOException ex) {
-        ex.printStackTrace();
-    }
-
-    return new int[]{0,0};
-  }
-  
-  private int[] readMemory(){
-    ActivityManager man = (ActivityManager) this.getApplicationContext().getSystemService(
-        ACTIVITY_SERVICE);
-    /* Get available (free) memory */
-    ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
-    man.getMemoryInfo(info);
-    int totalMem = (int) info.availMem;
-
-    /* Get memory used by all running processes. */
-
-    /* Step 1: gather pids */
-    List<ActivityManager.RunningAppProcessInfo> procs = man.getRunningAppProcesses();
-    List<ActivityManager.RunningServiceInfo> servs = man.getRunningServices(Integer.MAX_VALUE);
-    int[] pids = new int[procs.size() + servs.size()];
-    int i = 0;
-    for (ActivityManager.RunningAppProcessInfo pinfo : procs) {
-      pids[i] = pinfo.pid;
-      i++;
-    }
-    for (ActivityManager.RunningServiceInfo pinfo : servs) {
-      pids[i] = pinfo.pid;
-      i++;
-    }
-
-    /*
-     * Step 2: Sum up Pss values (weighted memory usage, taking into account
-     * shared page usage)
-     */
-    android.os.Debug.MemoryInfo[] mems = man.getProcessMemoryInfo(pids);
-    int memUsed = 0;
-    for (android.os.Debug.MemoryInfo mem : mems) {
-      memUsed += mem.getTotalPss();
-    }
-    Log.i("Mem", "Total mem:" + totalMem);
-    Log.i("Mem", "Mem Used:" + memUsed);
-    return new int[]{totalMem, memUsed};
-  }
-  
-  private float readUsage() {
-    try {
-        RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
-        String load = reader.readLine();
-
-        String[] toks = load.split(" ");
-
-        long idle1 = Long.parseLong(toks[5]);
-        long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[4])
-              + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-
-        try {
-            Thread.sleep(360);
-        } catch (Exception e) {}
-
-        reader.seek(0);
-        load = reader.readLine();
-        reader.close();
-
-        toks = load.split(" ");
-
-        long idle2 = Long.parseLong(toks[5]);
-        long cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[4])
-            + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-
-        return (float)(cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
-
-    } catch (IOException ex) {
-        ex.printStackTrace();
-    }
-
-    return 0;
-}
-
+  private int lastColor = R.color.black;
 
   private void toggleColors() {
     /*
