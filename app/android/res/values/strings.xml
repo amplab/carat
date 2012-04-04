@@ -11,11 +11,21 @@
     <string name="apps">Running apps:</string>
     <string name="memused">Memory used:</string>
     <string name="memactive">Memory active:</string>
+    <string name="cpu">CPU Usage:</string>
     <string name="updated0">(Updated 0m 0s ago)</string>
-    <string name="brown">#744618</string>
-    <string name="green">#127112</string>
-    <string name="orange">#ff8331</string>
     <string name="zeropercent">0.00 (0.00 %)</string>
+    <string name="zero">0</string>
+    <string name="fake_os">4.0.3</string>
+    <string name="fake_dev">Samsung Galaxy Nexus</string>
     <string name="viewprocess">View Process List</string>
+    <string name="alogo">AmpLab Logo</string>
+    <string name="moreinfo">More Information</string>
+    <color name="brown">#744618</color>
+    <color name="brown_dark">#ac8159</color>
+    <color name="green_dark">#51a551</color>
+    <color name="orange">#ff8331</color>
+    <color name="green">#127112</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>
