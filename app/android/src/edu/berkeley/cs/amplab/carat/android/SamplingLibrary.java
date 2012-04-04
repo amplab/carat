@@ -21,6 +21,32 @@ public final class SamplingLibrary {
   /** Library class, prevent instantiation */
   private SamplingLibrary() {
   }
+  
+  /**
+   * Returns the model of the device running Carat, for example "sdk" for the emulator,
+   * Galaxy Nexus for Samsung Galaxy Nexus.
+   * @return the model of the device running Carat, for example "sdk" for the emulator,
+   * Galaxy Nexus for Samsung Galaxy Nexus.
+   */
+  public static String getModel(){
+    return android.os.Build.MODEL;
+  }
+  
+  /**
+   * Returns the manufacturer of the device running Carat, for example "google" or "samsung".
+   * @return the manufacturer of the device running Carat, for example "google" or "samsung".
+   */
+  public static String getManufacturer(){
+    return android.os.Build.MANUFACTURER;
+  }
+  
+  /**
+   * Returns the OS version of the device running Carat, for example 2.3.3 or 4.0.2.
+   * @return the OS version of the device running Carat, for example 2.3.3 or 4.0.2.
+   */
+  public static String getOsVersion(){
+    return android.os.Build.VERSION.RELEASE;
+  }
 
   /**
    * Read memory information from /proc/meminfo. Return total, used,

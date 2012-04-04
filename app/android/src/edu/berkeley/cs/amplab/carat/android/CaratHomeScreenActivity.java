@@ -49,10 +49,10 @@ public class CaratHomeScreenActivity extends Activity {
 
   private void setModelAndVersion() {
     // Device model
-    String model = android.os.Build.MODEL;
+    String model = SamplingLibrary.getModel();
 
     // Android version
-    String version = android.os.Build.VERSION.RELEASE;
+    String version = SamplingLibrary.getOsVersion();
 
     Window win = this.getWindow();
     // The info icon needs to change from dark to light.
