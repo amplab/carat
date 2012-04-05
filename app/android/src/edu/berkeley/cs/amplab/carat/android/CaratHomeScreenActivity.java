@@ -1,9 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import android.app.Activity;
-import android.app.ActivityManager;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,11 +8,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
-
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.List;
-import java.util.ArrayList;
 
 public class CaratHomeScreenActivity extends Activity {
   /** Called when the activity is first created. */
