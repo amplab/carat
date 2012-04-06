@@ -25,25 +25,25 @@ import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields>, java.io.Serializable, Cloneable {
-  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Feature");
+public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, ProcessInfo._Fields>, java.io.Serializable, Cloneable {
+  private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ProcessInfo");
 
-  private static final org.apache.thrift.protocol.TField KEY_FIELD_DESC = new org.apache.thrift.protocol.TField("key", org.apache.thrift.protocol.TType.STRING, (short)1);
-  private static final org.apache.thrift.protocol.TField VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("value", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField P_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("pId", org.apache.thrift.protocol.TType.I32, (short)1);
+  private static final org.apache.thrift.protocol.TField P_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("pName", org.apache.thrift.protocol.TType.STRING, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
-    schemes.put(StandardScheme.class, new FeatureStandardSchemeFactory());
-    schemes.put(TupleScheme.class, new FeatureTupleSchemeFactory());
+    schemes.put(StandardScheme.class, new ProcessInfoStandardSchemeFactory());
+    schemes.put(TupleScheme.class, new ProcessInfoTupleSchemeFactory());
   }
 
-  public String key; // optional
-  public String value; // optional
+  public int pId; // optional
+  public String pName; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-    KEY((short)1, "key"),
-    VALUE((short)2, "value");
+    P_ID((short)1, "pId"),
+    P_NAME((short)2, "pName");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -58,10 +58,10 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
      */
     public static _Fields findByThriftId(int fieldId) {
       switch(fieldId) {
-        case 1: // KEY
-          return KEY;
-        case 2: // VALUE
-          return VALUE;
+        case 1: // P_ID
+          return P_ID;
+        case 2: // P_NAME
+          return P_NAME;
         default:
           return null;
       }
@@ -102,106 +102,108 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
   }
 
   // isset id assignments
-  private _Fields optionals[] = {_Fields.KEY,_Fields.VALUE};
+  private static final int __PID_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
+  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-    tmpMap.put(_Fields.KEY, new org.apache.thrift.meta_data.FieldMetaData("key", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.VALUE, new org.apache.thrift.meta_data.FieldMetaData("value", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+    tmpMap.put(_Fields.P_ID, new org.apache.thrift.meta_data.FieldMetaData("pId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.P_NAME, new org.apache.thrift.meta_data.FieldMetaData("pName", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Feature.class, metaDataMap);
+    org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ProcessInfo.class, metaDataMap);
   }
 
-  public Feature() {
+  public ProcessInfo() {
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Feature(Feature other) {
-    if (other.isSetKey()) {
-      this.key = other.key;
-    }
-    if (other.isSetValue()) {
-      this.value = other.value;
+  public ProcessInfo(ProcessInfo other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
+    this.pId = other.pId;
+    if (other.isSetPName()) {
+      this.pName = other.pName;
     }
   }
 
-  public Feature deepCopy() {
-    return new Feature(this);
+  public ProcessInfo deepCopy() {
+    return new ProcessInfo(this);
   }
 
   @Override
   public void clear() {
-    this.key = null;
-    this.value = null;
+    setPIdIsSet(false);
+    this.pId = 0;
+    this.pName = null;
   }
 
-  public String getKey() {
-    return this.key;
+  public int getPId() {
+    return this.pId;
   }
 
-  public Feature setKey(String key) {
-    this.key = key;
+  public ProcessInfo setPId(int pId) {
+    this.pId = pId;
+    setPIdIsSet(true);
     return this;
   }
 
-  public void unsetKey() {
-    this.key = null;
+  public void unsetPId() {
+    __isset_bit_vector.clear(__PID_ISSET_ID);
   }
 
-  /** Returns true if field key is set (has been assigned a value) and false otherwise */
-  public boolean isSetKey() {
-    return this.key != null;
+  /** Returns true if field pId is set (has been assigned a value) and false otherwise */
+  public boolean isSetPId() {
+    return __isset_bit_vector.get(__PID_ISSET_ID);
   }
 
-  public void setKeyIsSet(boolean value) {
-    if (!value) {
-      this.key = null;
-    }
+  public void setPIdIsSet(boolean value) {
+    __isset_bit_vector.set(__PID_ISSET_ID, value);
   }
 
-  public String getValue() {
-    return this.value;
+  public String getPName() {
+    return this.pName;
   }
 
-  public Feature setValue(String value) {
-    this.value = value;
+  public ProcessInfo setPName(String pName) {
+    this.pName = pName;
     return this;
   }
 
-  public void unsetValue() {
-    this.value = null;
+  public void unsetPName() {
+    this.pName = null;
   }
 
-  /** Returns true if field value is set (has been assigned a value) and false otherwise */
-  public boolean isSetValue() {
-    return this.value != null;
+  /** Returns true if field pName is set (has been assigned a value) and false otherwise */
+  public boolean isSetPName() {
+    return this.pName != null;
   }
 
-  public void setValueIsSet(boolean value) {
+  public void setPNameIsSet(boolean value) {
     if (!value) {
-      this.value = null;
+      this.pName = null;
     }
   }
 
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
-    case KEY:
+    case P_ID:
       if (value == null) {
-        unsetKey();
+        unsetPId();
       } else {
-        setKey((String)value);
+        setPId((Integer)value);
       }
       break;
 
-    case VALUE:
+    case P_NAME:
       if (value == null) {
-        unsetValue();
+        unsetPName();
       } else {
-        setValue((String)value);
+        setPName((String)value);
       }
       break;
 
@@ -210,11 +212,11 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
 
   public Object getFieldValue(_Fields field) {
     switch (field) {
-    case KEY:
-      return getKey();
+    case P_ID:
+      return Integer.valueOf(getPId());
 
-    case VALUE:
-      return getValue();
+    case P_NAME:
+      return getPName();
 
     }
     throw new IllegalStateException();
@@ -227,10 +229,10 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
     }
 
     switch (field) {
-    case KEY:
-      return isSetKey();
-    case VALUE:
-      return isSetValue();
+    case P_ID:
+      return isSetPId();
+    case P_NAME:
+      return isSetPName();
     }
     throw new IllegalStateException();
   }
@@ -239,30 +241,30 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Feature)
-      return this.equals((Feature)that);
+    if (that instanceof ProcessInfo)
+      return this.equals((ProcessInfo)that);
     return false;
   }
 
-  public boolean equals(Feature that) {
+  public boolean equals(ProcessInfo that) {
     if (that == null)
       return false;
 
-    boolean this_present_key = true && this.isSetKey();
-    boolean that_present_key = true && that.isSetKey();
-    if (this_present_key || that_present_key) {
-      if (!(this_present_key && that_present_key))
+    boolean this_present_pId = true && this.isSetPId();
+    boolean that_present_pId = true && that.isSetPId();
+    if (this_present_pId || that_present_pId) {
+      if (!(this_present_pId && that_present_pId))
         return false;
-      if (!this.key.equals(that.key))
+      if (this.pId != that.pId)
         return false;
     }
 
-    boolean this_present_value = true && this.isSetValue();
-    boolean that_present_value = true && that.isSetValue();
-    if (this_present_value || that_present_value) {
-      if (!(this_present_value && that_present_value))
+    boolean this_present_pName = true && this.isSetPName();
+    boolean that_present_pName = true && that.isSetPName();
+    if (this_present_pName || that_present_pName) {
+      if (!(this_present_pName && that_present_pName))
         return false;
-      if (!this.value.equals(that.value))
+      if (!this.pName.equals(that.pName))
         return false;
     }
 
@@ -274,30 +276,30 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
     return 0;
   }
 
-  public int compareTo(Feature other) {
+  public int compareTo(ProcessInfo other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Feature typedOther = (Feature)other;
+    ProcessInfo typedOther = (ProcessInfo)other;
 
-    lastComparison = Boolean.valueOf(isSetKey()).compareTo(typedOther.isSetKey());
+    lastComparison = Boolean.valueOf(isSetPId()).compareTo(typedOther.isSetPId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetKey()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.key, typedOther.key);
+    if (isSetPId()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pId, typedOther.pId);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetValue()).compareTo(typedOther.isSetValue());
+    lastComparison = Boolean.valueOf(isSetPName()).compareTo(typedOther.isSetPName());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetValue()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.value, typedOther.value);
+    if (isSetPName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.pName, typedOther.pName);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -319,25 +321,21 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Feature(");
+    StringBuilder sb = new StringBuilder("ProcessInfo(");
     boolean first = true;
 
-    if (isSetKey()) {
-      sb.append("key:");
-      if (this.key == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.key);
-      }
+    if (isSetPId()) {
+      sb.append("pId:");
+      sb.append(this.pId);
       first = false;
     }
-    if (isSetValue()) {
+    if (isSetPName()) {
       if (!first) sb.append(", ");
-      sb.append("value:");
-      if (this.value == null) {
+      sb.append("pName:");
+      if (this.pName == null) {
         sb.append("null");
       } else {
-        sb.append(this.value);
+        sb.append(this.pName);
       }
       first = false;
     }
@@ -353,27 +351,29 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
     try {
       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
     } catch (org.apache.thrift.TException te) {
-      throw new java.io.IOException(te);
+      throw new java.io.IOException(te.getMessage());
     }
   }
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
-      throw new java.io.IOException(te);
+      throw new java.io.IOException(te.getMessage());
     }
   }
 
-  private static class FeatureStandardSchemeFactory implements SchemeFactory {
-    public FeatureStandardScheme getScheme() {
-      return new FeatureStandardScheme();
+  private static class ProcessInfoStandardSchemeFactory implements SchemeFactory {
+    public ProcessInfoStandardScheme getScheme() {
+      return new ProcessInfoStandardScheme();
     }
   }
 
-  private static class FeatureStandardScheme extends StandardScheme<Feature> {
+  private static class ProcessInfoStandardScheme extends StandardScheme<ProcessInfo> {
 
-    public void read(org.apache.thrift.protocol.TProtocol iprot, Feature struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol iprot, ProcessInfo struct) throws org.apache.thrift.TException {
       org.apache.thrift.protocol.TField schemeField;
       iprot.readStructBegin();
       while (true)
@@ -383,18 +383,18 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
           break;
         }
         switch (schemeField.id) {
-          case 1: // KEY
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.key = iprot.readString();
-              struct.setKeyIsSet(true);
+          case 1: // P_ID
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.pId = iprot.readI32();
+              struct.setPIdIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 2: // VALUE
+          case 2: // P_NAME
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.value = iprot.readString();
-              struct.setValueIsSet(true);
+              struct.pName = iprot.readString();
+              struct.setPNameIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -410,21 +410,19 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
       struct.validate();
     }
 
-    public void write(org.apache.thrift.protocol.TProtocol oprot, Feature struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol oprot, ProcessInfo struct) throws org.apache.thrift.TException {
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.key != null) {
-        if (struct.isSetKey()) {
-          oprot.writeFieldBegin(KEY_FIELD_DESC);
-          oprot.writeString(struct.key);
-          oprot.writeFieldEnd();
-        }
+      if (struct.isSetPId()) {
+        oprot.writeFieldBegin(P_ID_FIELD_DESC);
+        oprot.writeI32(struct.pId);
+        oprot.writeFieldEnd();
       }
-      if (struct.value != null) {
-        if (struct.isSetValue()) {
-          oprot.writeFieldBegin(VALUE_FIELD_DESC);
-          oprot.writeString(struct.value);
+      if (struct.pName != null) {
+        if (struct.isSetPName()) {
+          oprot.writeFieldBegin(P_NAME_FIELD_DESC);
+          oprot.writeString(struct.pName);
           oprot.writeFieldEnd();
         }
       }
@@ -434,44 +432,44 @@ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields
 
   }
 
-  private static class FeatureTupleSchemeFactory implements SchemeFactory {
-    public FeatureTupleScheme getScheme() {
-      return new FeatureTupleScheme();
+  private static class ProcessInfoTupleSchemeFactory implements SchemeFactory {
+    public ProcessInfoTupleScheme getScheme() {
+      return new ProcessInfoTupleScheme();
     }
   }
 
-  private static class FeatureTupleScheme extends TupleScheme<Feature> {
+  private static class ProcessInfoTupleScheme extends TupleScheme<ProcessInfo> {
 
     @Override
-    public void write(org.apache.thrift.protocol.TProtocol prot, Feature struct) throws org.apache.thrift.TException {
+    public void write(org.apache.thrift.protocol.TProtocol prot, ProcessInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol oprot = (TTupleProtocol) prot;
       BitSet optionals = new BitSet();
-      if (struct.isSetKey()) {
+      if (struct.isSetPId()) {
         optionals.set(0);
       }
-      if (struct.isSetValue()) {
+      if (struct.isSetPName()) {
         optionals.set(1);
       }
       oprot.writeBitSet(optionals, 2);
-      if (struct.isSetKey()) {
-        oprot.writeString(struct.key);
+      if (struct.isSetPId()) {
+        oprot.writeI32(struct.pId);
       }
-      if (struct.isSetValue()) {
-        oprot.writeString(struct.value);
+      if (struct.isSetPName()) {
+        oprot.writeString(struct.pName);
       }
     }
 
     @Override
-    public void read(org.apache.thrift.protocol.TProtocol prot, Feature struct) throws org.apache.thrift.TException {
+    public void read(org.apache.thrift.protocol.TProtocol prot, ProcessInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.key = iprot.readString();
-        struct.setKeyIsSet(true);
+        struct.pId = iprot.readI32();
+        struct.setPIdIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.value = iprot.readString();
-        struct.setValueIsSet(true);
+        struct.pName = iprot.readString();
+        struct.setPNameIsSet(true);
       }
     }
   }

@@ -513,7 +513,7 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
     try {
       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
     } catch (org.apache.thrift.TException te) {
-      throw new java.io.IOException(te);
+      throw new java.io.IOException(te.getMessage());
     }
   }
 
@@ -523,7 +523,7 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       __isset_bit_vector = new BitSet(1);
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
-      throw new java.io.IOException(te);
+      throw new java.io.IOException(te.getMessage());
     }
   }
 
