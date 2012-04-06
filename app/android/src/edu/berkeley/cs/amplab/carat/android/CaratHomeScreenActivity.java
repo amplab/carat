@@ -67,7 +67,8 @@ public class CaratHomeScreenActivity extends Activity {
     Log.i("SetModel", "manufacturer:" + android.os.Build.MANUFACTURER);
     Log.i("SetModel", "prod:" + android.os.Build.PRODUCT);
     Log.i("SetModel", "radio:" + android.os.Build.RADIO);
-    Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
+    // FIXME: SERIAL not available on 2.2
+    //Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
     Log.i("SetModel", "tags:" + android.os.Build.TAGS);
     Log.i("SetModel", "time:" + android.os.Build.TIME);
     Log.i("SetModel", "type:" + android.os.Build.TYPE);
