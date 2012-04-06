@@ -1,5 +1,14 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.thrift.TException;
+
+import edu.berkeley.cs.amplab.carat.android.protocol.ProtocolClient;
+import edu.berkeley.cs.amplab.carat.thrift.CaratService;
+import edu.berkeley.cs.amplab.carat.thrift.Feature;
+import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +18,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 
+/**
+ * 
+ * @author Eemil Lagerspetz
+ *
+ */
 public class CaratHomeScreenActivity extends Activity {
+  
+  CaratService.Client c = null;
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -24,6 +40,9 @@ public class CaratHomeScreenActivity extends Activity {
    */
   @Override
   protected void onResume() {
+    if (c == null){
+      c = ProtocolClient.getInstance(getApplicationContext());
+    }
     setModelAndVersion();
     setMemory();
     super.onResume();
@@ -36,7 +55,32 @@ public class CaratHomeScreenActivity extends Activity {
    *          The source of the click.
    */
   public void onClickViewProcessList(View v) {
+    try {
+      getAndPrintFakeReports();
+    } catch (TException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     toggleColors();
+  }
+  
+  private void getAndPrintFakeReports() throws TException {
+    String uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
+    List<Feature> features = new ArrayList<Feature>();
+    
+    Feature feature = new Feature();
+    feature.setKey("Model");
+    String model = "iPhone 3GS";
+    feature.setValue(model);
+    features.add(feature);
+    
+    feature = new Feature();
+    feature.setKey("OS");
+    String OS = "5.0.1";
+    feature.setValue(OS);
+    features.add(feature);
+    Reports r = c.getReports(uuId, features);
+    Log.i("Reports", "JScore="+r.jScore);
   }
 
   private void setModelAndVersion() {
