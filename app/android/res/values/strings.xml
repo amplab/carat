@@ -31,5 +31,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <string name="zeroh">0h 0m 0s</string>
+    <string name="tab_actions">Actions</string>
+    <string name="tab_bugs">Bugs</string>
 
 </resources>

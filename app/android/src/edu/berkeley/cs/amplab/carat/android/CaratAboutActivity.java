@@ -6,9 +6,7 @@ import java.util.Scanner;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Window;
 import android.webkit.WebView;
-import android.widget.TextView;
 
 public class CaratAboutActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
