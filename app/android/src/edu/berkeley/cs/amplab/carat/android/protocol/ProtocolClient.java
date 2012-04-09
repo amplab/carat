@@ -27,7 +27,16 @@ public class ProtocolClient {
   public static String SERVER_ADDRESS = null;
 
   private static CaratService.Client instance = null;
+  private static TSocket soc = null;
 
+  /**
+   * FIXME: this needs to come from a factory, so that connections are not kept
+   * open unnecessarily, and that they do not become stale, and that we handle
+   * disconnections gracefully.
+   * 
+   * @param c
+   * @return
+   */
   public static CaratService.Client getInstance(Context c) {
     if (SERVER_ADDRESS == null) {
       Properties properties = new Properties();
@@ -48,19 +57,24 @@ public class ProtocolClient {
       }
     }
 
-    if (instance == null) {
-      // Initialize server port and address
-      try {
-        TSocket s = new TSocket(SERVER_ADDRESS, SERVER_PORT);
-        s.open();
-        TProtocol p = new TBinaryProtocol(s, true, true);
-        instance = new CaratService.Client(p);
-      } catch (Exception e) {
-        Log.e("CaratProtocol", "Could not create instance!");
-        e.printStackTrace();
-      }
+    // Initialize server port and address
+    try {
+      if (soc == null)
+        soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
+      else
+        soc.close();
+      soc.open();
+      TProtocol p = new TBinaryProtocol(soc, true, true);
+      instance = new CaratService.Client(p);
+    } catch (Exception e) {
+      Log.e("CaratProtocol", "Could not create instance!");
+      e.printStackTrace();
     }
     return instance;
+  }
+
+  public static void close() {
+    soc.close();
   }
 
   /**

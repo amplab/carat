@@ -86,21 +86,21 @@ Carat "Home" or My Device Screen layout
             android:layout_marginBottom="10dip" >
 
             <TextView
-                android:id="@+id/since"
+                android:id="@+id/batterylife"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/since"
+                android:text="@string/batterylife"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/brown_dark" />
 
             <TextView
-                android:id="@+id/percent"
+                android:id="@+id/batterylife_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                  android:gravity="right"
-                android:text="@string/zeropercent"
+                android:text="@string/zeroh"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/green_dark" />
         </TableRow>

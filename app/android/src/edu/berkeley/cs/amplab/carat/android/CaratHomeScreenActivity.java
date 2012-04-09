@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.thrift.TException;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.ProtocolClient;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
@@ -21,11 +22,18 @@ import android.widget.ProgressBar;
 /**
  * 
  * @author Eemil Lagerspetz
- *
+ * 
  */
 public class CaratHomeScreenActivity extends Activity {
-  
+
+  // Freshness timeout. Default: one hour
+  public static final long FRESHNESS_TIMEOUT = 3600000L;
+  // 1 minute
+  // public static final long FRESHNESS_TIMEOUT = 60000L;
+
   CaratService.Client c = null;
+  CaratDataStorage s = null;
+
   /** Called when the activity is first created. */
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -40,11 +48,11 @@ public class CaratHomeScreenActivity extends Activity {
    */
   @Override
   protected void onResume() {
-    if (c == null){
-      c = ProtocolClient.getInstance(getApplicationContext());
-    }
+    this.setTitle(getString(R.string.app_name) +" " + getString(R.string.version_name) + " - " +  getString(R.string.tab_my_device));
+    s = new CaratDataStorage(this);
     setModelAndVersion();
     setMemory();
+    setReportData();
     super.onResume();
   }
 
@@ -55,32 +63,31 @@ public class CaratHomeScreenActivity extends Activity {
    *          The source of the click.
    */
   public void onClickViewProcessList(View v) {
-    try {
-      getAndPrintFakeReports();
-    } catch (TException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
     toggleColors();
   }
-  
-  private void getAndPrintFakeReports() throws TException {
-    String uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
-    List<Feature> features = new ArrayList<Feature>();
-    
-    Feature feature = new Feature();
-    feature.setKey("Model");
-    String model = "iPhone 3GS";
-    feature.setValue(model);
-    features.add(feature);
-    
-    feature = new Feature();
-    feature.setKey("OS");
-    String OS = "5.0.1";
-    feature.setValue(OS);
-    features.add(feature);
-    Reports r = c.getReports(uuId, features);
-    Log.i("Reports", "JScore="+r.jScore);
+
+  private void refreshReports() throws TException {
+    if (System.currentTimeMillis() - s.getFreshness() > FRESHNESS_TIMEOUT) {
+      String uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
+      List<Feature> features = new ArrayList<Feature>();
+
+      Feature feature = new Feature();
+      feature.setKey("Model");
+      String model = "iPhone 3GS";
+      feature.setValue(model);
+      features.add(feature);
+
+      feature = new Feature();
+      feature.setKey("OS");
+      String OS = "5.0.1";
+      feature.setValue(OS);
+      features.add(feature);
+      c = ProtocolClient.getInstance(getApplicationContext());
+      Reports r = c.getReports(uuId, features);
+      ProtocolClient.close();
+      s.writeReports(r);
+      s.writeFreshness();
+    }
   }
 
   private void setModelAndVersion() {
@@ -112,7 +119,7 @@ public class CaratHomeScreenActivity extends Activity {
     Log.i("SetModel", "prod:" + android.os.Build.PRODUCT);
     Log.i("SetModel", "radio:" + android.os.Build.RADIO);
     // FIXME: SERIAL not available on 2.2
-    //Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
+    // Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
     Log.i("SetModel", "tags:" + android.os.Build.TAGS);
     Log.i("SetModel", "time:" + android.os.Build.TIME);
     Log.i("SetModel", "type:" + android.os.Build.TYPE);
@@ -131,19 +138,58 @@ public class CaratHomeScreenActivity extends Activity {
     mText.setMax(totalAndUsed[0]);
     mText.setProgress(totalAndUsed[1]);
     mText = (ProgressBar) win.findViewById(R.id.progressBar2);
-    
-    if (totalAndUsed.length > 2){
+
+    if (totalAndUsed.length > 2) {
       mText.setMax(totalAndUsed[2]);
       mText.setProgress(totalAndUsed[3]);
     }
-    
+
     /* CPU usage */
     mText = (ProgressBar) win.findViewById(R.id.cpubar);
     int cpu = (int) (SamplingLibrary.readUsage() * 100);
     mText.setMax(100);
     mText.setProgress(cpu);
   }
-  
+
+  private void setReportData() {
+    Thread th = new Thread() {
+      public void run() {
+        try {
+          refreshReports();
+        } catch (TException e) {
+          e.printStackTrace();
+        }
+        final Reports r = s.getReports();
+        Log.i("CaratHomeScreen", "Got reports: " + r);
+        long l = System.currentTimeMillis() - s.getFreshness();
+        final long min = l / 60000;
+        final long sec = (l - min * 60000) / 1000;
+        
+        double bl = 100 / r.getModel().expectedValue;
+        int blh = (int) (bl / 3600);
+        bl -= blh*3600;
+        int blmin = (int) (bl / 60);
+        int bls = (int) (bl - blmin*60);
+        final String blS = blh +"h " + blmin +"m " + bls +"s";
+
+        runOnUiThread(new Runnable() {
+          public void run() {
+            setText(R.id.jscore_value, ((int) (r.getJScore() * 100)) + "");
+            setText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
+            setText(R.id.batterylife_value, blS);
+          }
+        });
+      }
+    };
+    th.start();
+  }
+
+  private void setText(int viewId, String text) {
+    Window win = this.getWindow();
+    TextView t = (TextView) win.findViewById(viewId);
+    t.setText(text);
+  }
+
   private int lastColor = R.color.black;
 
   private void toggleColors() {
@@ -151,10 +197,10 @@ public class CaratHomeScreenActivity extends Activity {
      * Use arrays to make code easier to understand below. These elements need
      * to change from a shade of brown/green to another.
      */
-    int[] browns = { R.id.jscore, R.id.updated, R.id.since, R.id.apps, R.id.memactive,
+    int[] browns = { R.id.jscore, R.id.updated, R.id.batterylife, R.id.apps, R.id.memactive,
         R.id.memused, R.id.dev, R.id.os_ver, R.id.cpu };
 
-    int[] greens = { R.id.jscore_value, R.id.percent, R.id.dev_value, R.id.os_ver_value };
+    int[] greens = { R.id.jscore_value, R.id.batterylife_value, R.id.dev_value, R.id.os_ver_value };
 
     Window win = this.getWindow();
     // The info icon needs to change from dark to light.

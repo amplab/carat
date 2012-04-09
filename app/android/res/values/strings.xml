@@ -3,9 +3,10 @@
 
     <string name="hello">Hello World, CaratSuggestionsActivity!</string>
     <string name="app_name">Carat</string>
+    <string name="version_name">0.2</string>
     <string name="hellohome">Hello Home Screen!</string>
     <string name="jscore">Your J-Score:</string>
-    <string name="since">Since last time:</string>
+    <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
     <string name="dev">Device model:</string>
     <string name="apps">Running apps:</string>
@@ -13,13 +14,15 @@
     <string name="memactive">Memory active:</string>
     <string name="cpu">CPU Usage:</string>
     <string name="updated0">(Updated 0m 0s ago)</string>
-    <string name="zeropercent">0.00 (0.00 %)</string>
     <string name="zero">0</string>
     <string name="fake_os">4.0.3</string>
     <string name="fake_dev">Samsung Galaxy Nexus</string>
     <string name="viewprocess">View Process List</string>
     <string name="alogo">AmpLab Logo</string>
     <string name="moreinfo">More Information</string>
+    
+    <string name="tab_my_device">My Device</string>
+    
     <color name="brown">#744618</color>
     <color name="brown_dark">#ac8159</color>
     <color name="green_dark">#51a551</color>
@@ -27,5 +30,6 @@
     <color name="green">#127112</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <string name="zeroh">0h 0m 0s</string>
 
 </resources>
