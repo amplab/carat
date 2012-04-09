@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
  * @author Eemil Lagerspetz
  * 
  */
-public class CaratHomeScreenActivity extends Activity {
+public class CaratMyDeviceActivity extends Activity {
 
   // Freshness timeout. Default: one hour
   //public static final long FRESHNESS_TIMEOUT = 3600000L;
