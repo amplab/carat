@@ -10,6 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
@@ -18,12 +19,12 @@ public class CaratDataStorage {
 
   public static final String FILENAME = "carat-reports.dat";
   public static final String FRESHNESS = "carat-freshness.dat";
-  private Activity a = null;
+  private Application a = null;
   
   private long freshness = 0;
   private Reports caratData = null;
 
-  public CaratDataStorage(Activity a) {
+  public CaratDataStorage(Application a) {
     this.a = a;
     freshness = readFreshness();
     caratData = readReports();
