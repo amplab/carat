@@ -11,8 +11,6 @@ import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Application;
-import android.view.Window;
-import android.widget.ProgressBar;
 
 public class CaratApplication extends Application {
 
@@ -24,7 +22,15 @@ public class CaratApplication extends Application {
 	public CaratService.Client c = null;
 	public CaratDataStorage s = null;
 
+	/* 
+	 * FIXME: Storing and retrieving totalAndused here only for testing.
+	 * They should really be stored in CaratDataStorage and retrieved as part of sampling.
+	 */
 	public int[] totalAndUsed = null;
+	/* 
+	 * FIXME: Storing and retrieving CPU here only for testing.
+	 * It should really be stored in CaratDataStorage and retrieved as part of sampling.
+	 */
 	public int cpu = 0;
 
 	/**

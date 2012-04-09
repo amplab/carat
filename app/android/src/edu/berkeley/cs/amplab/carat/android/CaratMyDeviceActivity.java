@@ -1,14 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.thrift.TException;
-
-import edu.berkeley.cs.amplab.carat.android.protocol.ProtocolClient;
-import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
-import edu.berkeley.cs.amplab.carat.thrift.CaratService;
-import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Activity;
 import android.os.Bundle;
