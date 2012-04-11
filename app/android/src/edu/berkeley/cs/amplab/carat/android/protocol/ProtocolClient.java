@@ -3,13 +3,11 @@ package edu.berkeley.cs.amplab.carat.android.protocol;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import java.util.Scanner;
 
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 
-import android.R;
 import android.content.Context;
 import android.util.Log;
 
