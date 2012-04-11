@@ -3,7 +3,7 @@
 
     <string name="hello">Hello World, CaratSuggestionsActivity!</string>
     <string name="app_name">Carat</string>
-    <string name="version_name">0.2</string>
+    <string name="version_name">0.3</string>
     <string name="hellohome">Hello Home Screen!</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
