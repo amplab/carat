@@ -48,6 +48,7 @@ Carat "Home" or My Device Screen layout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:layout_gravity="center_vertical"
                             android:text="@string/jscore"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textColor="@color/brown_dark" />
@@ -56,19 +57,24 @@ Carat "Home" or My Device Screen layout
                             android:id="@+id/jscore_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:text="@string/zero"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textColor="@color/green_dark" />
-
-                        <ImageView
-                            android:id="@+id/moreinfo"
-                            android:layout_width="18dip"
+<!--  android:layout_width="18dip"
                             android:layout_height="18dip"
+                            android:background="@null" -->
+
+                        <ImageButton
+                            android:id="@+id/moreinfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dip"
-                            android:background="@null"
                             android:contentDescription="@string/moreinfo"
-                            android:src="@drawable/infoicon_dark" />
+                            android:onClick="showJscoreInfo"
+                            android:src="@drawable/ic_info" />
+
                     </LinearLayout>
                 </TableRow>
 
@@ -146,16 +152,17 @@ Carat "Home" or My Device Screen layout
 
                     <TextView
                         android:id="@+id/dev"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
+                        android:layout_weight="1"
                         android:text="@string/dev"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/brown_dark" />
 
                     <TextView
                         android:id="@+id/dev_value"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|right"
                         android:layout_weight="1"

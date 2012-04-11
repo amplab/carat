@@ -9,6 +9,9 @@ public class CaratAboutActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.about);
 		WebView webview = (WebView) findViewById(R.id.aboutView);
+		//Fixes the white flash when showing the page for the first time.
+		webview.setBackgroundColor(0);
+		
 		/*
 		 * getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		 * 
