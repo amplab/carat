@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Carat "Home" or My Device Screen layout
+@author Eemil Lagerspetz
+-->
+<!--
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/jscore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jscore"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/brown_dark" />
+
+                <TextView
+                    android:id="@+id/updated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/updated0"
+                    android:textColor="@color/brown_dark" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/jscore_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/zero"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/green_dark" />
+            <!--
+      android:layout_width="18dip"
+                            android:layout_height="18dip"
+                            android:background="@null"
+            -->
+
+            <ImageButton
+                android:id="@+id/moreinfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dip"
+                android:contentDescription="@string/moreinfo"
+                android:onClick="showJscoreInfo"
+                android:src="@drawable/ic_info" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/batterylife"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/batterylife"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/brown_dark" />
+
+            <TextView
+                android:id="@+id/batterylife_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:text="@string/zeroh"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green_dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/os_ver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/osver"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/brown_dark" />
+
+            <TextView
+                android:id="@+id/os_ver_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="@string/fake_os"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green_dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/dev"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="@string/dev"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/brown_dark" />
+
+            <TextView
+                android:id="@+id/dev_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/fake_dev"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/green_dark" />
+        </LinearLayout>
+
+        <TableLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dip"
+            android:layout_weight="1"
+            android:stretchColumns="2" >
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:gravity="left|right" >
+
+                <TextView
+                    android:id="@+id/apps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/apps"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/brown_dark" />
+
+                <Button
+                    android:id="@+id/button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="-3dip"
+                    android:onClick="onClickViewProcessList"
+                    android:text="@string/viewprocess"
+                    android:textColor="@color/green_dark" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:gravity="left|right" >
+
+                <TextView
+                    android:id="@+id/memused"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/memused"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/brown_dark" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:progress="56" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:gravity="left|right" >
+
+                <TextView
+                    android:id="@+id/memactive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/memactive"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/brown_dark" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar2"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:progress="5" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dip"
+                android:gravity="left|right" >
+
+                <TextView
+                    android:id="@+id/cpu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/cpu"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/brown_dark" />
+
+                <ProgressBar
+                    android:id="@+id/cpubar"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:progress="5" />
+            </TableRow>
+        </TableLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:contentDescription="@string/alogo"
+            android:src="@drawable/amplab_logo" />
+    </LinearLayout>
+
+</ScrollView>

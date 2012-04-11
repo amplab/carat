@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,7 @@ public class CaratMyDeviceActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.home);
+		setContentView(R.layout.mydevice);
 		app = (CaratApplication) this.getApplication();
 	}
 
@@ -52,6 +53,17 @@ public class CaratMyDeviceActivity extends Activity {
 	 */
 	public void onClickViewProcessList(View v) {
 		toggleColors();
+	}
+	
+	/**
+	 * Called when Jscore additional info button is clicked.
+	 * 
+	 * @param v
+	 *            The source of the click.
+	 */
+	public void showJscoreInfo(View v) {
+		 Intent myIntent = new Intent(v.getContext(), CaratJscoreActivity.class);
+         startActivityForResult(myIntent, 0);
 	}
 
 	private void setModelAndVersion() {
