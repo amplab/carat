@@ -1,0 +1,9 @@
+body {
+    background: black;
+    color: white;
+}
+
+a:link, a:active, a:visited {
+    color: #99f;
+}
+
