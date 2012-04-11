@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -23,6 +21,8 @@ public class CaratMainActivity extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        this.setTitle(getString(R.string.app_name) + " "
+				+ getString(R.string.version_name));
 
         Resources res = getResources(); // Resource object to get Drawables
         tabHost = getTabHost();  // The activity TabHost

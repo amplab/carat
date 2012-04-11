@@ -36,9 +36,6 @@ public class CaratMyDeviceActivity extends Activity {
 	 */
 	@Override
 	protected void onResume() {
-		this.setTitle(getString(R.string.app_name) + " "
-				+ getString(R.string.version_name) + " - "
-				+ getString(R.string.tab_my_device));
 		new Thread(){
 			public void run(){
 				app.c.refreshReports();
