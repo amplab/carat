@@ -66,5 +66,6 @@ public class CaratSuggestionsActivity extends ListActivity {
 		          Toast.LENGTH_SHORT).show();
 		    }
 		  });*/
+		  lv.setOnTouchListener(SwipeListener.instance);
 	}
 }

@@ -5,6 +5,12 @@ import android.os.Bundle;
 import android.webkit.WebView;
 
 public class CaratJscoreActivity extends Activity {
+	@Override
+	public void finish() {
+		findViewById(R.id.jscoreView).startAnimation(CaratMainActivity.outtoRight);
+		super.finish();
+	}
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.jscoreinfo);
@@ -23,5 +29,7 @@ public class CaratJscoreActivity extends Activity {
 		 * avoids it.
 		 */
 		webview.loadUrl("file:///android_asset/jscoreinfo.html");
+		findViewById(R.id.jscoreView).startAnimation(CaratMainActivity.inFromRight);
+		webview.setOnTouchListener(new BackSwipeListener(this));
 	}
 }

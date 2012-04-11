@@ -26,6 +26,7 @@ public class CaratMyDeviceActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.mydevice);
 		app = (CaratApplication) this.getApplication();
+		findViewById(R.id.scrollView1).setOnTouchListener(SwipeListener.instance);
 	}
 
 	/**
@@ -68,7 +69,18 @@ public class CaratMyDeviceActivity extends Activity {
 	 */
 	public void showJscoreInfo(View v) {
 		 Intent myIntent = new Intent(v.getContext(), CaratJscoreActivity.class);
+		 findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.outtoLeft);
          startActivityForResult(myIntent, 0);
+	}
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.inFromLeft);
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void setModelAndVersion() {

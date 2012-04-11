@@ -23,6 +23,7 @@ public class CaratAboutActivity extends Activity {
 		 * avoids it.
 		 */
 		webview.loadUrl("file:///android_asset/about.html");
+		webview.setOnTouchListener(SwipeListener.instance);
 	}
 
 	/**

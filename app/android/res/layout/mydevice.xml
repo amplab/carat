@@ -73,6 +73,7 @@ Carat "Home" or My Device Screen layout
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dip"
+                android:layout_marginRight="-3dip"
                 android:contentDescription="@string/moreinfo"
                 android:onClick="showJscoreInfo"
                 android:src="@drawable/ic_info" />

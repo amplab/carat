@@ -15,6 +15,9 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
 public class CaratMainActivity extends TabActivity {
+	
+	static TabHost tabHost = null;
+	
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,7 @@ public class CaratMainActivity extends TabActivity {
         setContentView(R.layout.main);
 
         Resources res = getResources(); // Resource object to get Drawables
-        final TabHost tabHost = getTabHost();  // The activity TabHost
+        tabHost = getTabHost();  // The activity TabHost
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
         Intent intent;  // Reusable Intent for each tab
 
@@ -60,43 +63,6 @@ public class CaratMainActivity extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
         
-        final OnTouchListener touchListener = new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View arg0, MotionEvent arg1) {
-				int action = arg1.getActionMasked();
-						if (action == MotionEvent.ACTION_MOVE){
-							int hs = arg1.getHistorySize();
-							float oldX  = arg1.getHistoricalX(hs);
-							float oldY  = arg1.getHistoricalY(hs);
-							float x  = arg1.getX();
-							float y  = arg1.getY();
-							
-							boolean left = false;
-							float xDiff = x - oldX;
-							if (x < oldX){
-								xDiff = oldX - x;
-								left = true;
-							}
-							
-							float yDiff = y - oldY;
-							if (y < oldY)
-								yDiff = oldY - y;
-							
-							if (xDiff > yDiff){
-								// moved horizontally. Lets change tabs to the right direction:
-								int c = tabHost.getCurrentTab();
-								if (left && c > 0)
-									tabHost.setCurrentTab(c-1);
-								else if (!left && c+1 < tabHost.getChildCount())
-									tabHost.setCurrentTab(c+1);
-							}
-						}
-				return false;
-			}
-        	
-        };
-        
         // Bind animations to tab changes:
         tabHost.setOnTabChangedListener(new OnTabChangeListener(){
         	int oldTab = tabHost.getCurrentTab();
@@ -110,11 +76,11 @@ public class CaratMainActivity extends TabActivity {
 				
 				if (old != null && newView != null) {
 					if (oldTab < newTab) {
-						old.setAnimation(outToLeftAnimation());
-						newView.setAnimation(inFromRightAnimation());
+						old.startAnimation(outtoLeft);
+						newView.startAnimation(inFromRight);
 					} else {
-						newView.setAnimation(inFromLeftAnimation());
-						old.setAnimation(outToRightAnimation());
+						newView.startAnimation(inFromLeft);
+						old.startAnimation(outtoRight);
 					}
 				}
 				oldTab = newTab;
@@ -124,52 +90,71 @@ public class CaratMainActivity extends TabActivity {
         tabHost.setCurrentTab(0);
     }
     
-    // 100 ms
+    public static void changeTab(int tab){
+    	tabHost.setCurrentTab(tab);
+    }
+    
+    // 250 ms
     public static final long ANIMATION_DURATION = 250;
     
-    public Animation inFromRightAnimation() {
-        Animation inFromRight = new TranslateAnimation(
+    
+    /**
+     * Animation for sliding a screen in from the right.
+     * @return
+     */
+    public static Animation inFromRight = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, +1.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f);
+    {
         inFromRight.setDuration(ANIMATION_DURATION);
         inFromRight.setInterpolator(new AccelerateInterpolator());
-        return inFromRight;
     }
 
-    public Animation outToLeftAnimation() {
-        Animation outtoLeft = new TranslateAnimation(
+    /**
+     * Animation for sliding a screen out to the left.
+     * @return
+     */
+    public static Animation outtoLeft = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, -1.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f);
+    {
         outtoLeft.setDuration(ANIMATION_DURATION);
         outtoLeft.setInterpolator(new AccelerateInterpolator());
-        return outtoLeft;
     }
     
-    public Animation inFromLeftAnimation() {
-        Animation inFromLeft = new TranslateAnimation(
+    /**
+     * Animation for sliding a screen in from the left.
+     * @return
+     */
+    public static Animation inFromLeft = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, -1.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f);
+    {
         inFromLeft.setDuration(ANIMATION_DURATION);
         inFromLeft.setInterpolator(new AccelerateInterpolator());
-        return inFromLeft;
     }
 
-    public Animation outToRightAnimation() {
-        Animation outtoRight = new TranslateAnimation(
+    /**
+     * Animation for sliding a screen out to the right.
+     * @return
+     */
+    
+    public static Animation outtoRight = new TranslateAnimation(
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, +1.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f,
                 Animation.RELATIVE_TO_PARENT, 0.0f);
-        outtoRight.setDuration(ANIMATION_DURATION);
+    {
+    	outtoRight.setDuration(ANIMATION_DURATION);
         outtoRight.setInterpolator(new AccelerateInterpolator());
-        return outtoRight;
     }
+    
 
     /* (non-Javadoc)
      * @see android.app.Activity#onResume()
