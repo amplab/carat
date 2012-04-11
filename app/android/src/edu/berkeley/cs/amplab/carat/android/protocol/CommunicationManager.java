@@ -53,6 +53,10 @@ public class CommunicationManager {
 
 		try {
 			c = ProtocolClient.getInstance(a.getApplicationContext());
+			if (c == null){
+				Log.e("refreshReports", "We are disconnected, not refreshing.");
+				return;
+			}
 			refreshMainReports(uuId, OS, model);
 			refreshBugReports(uuId, model);
 			refreshHogReports(uuId, model);
@@ -68,7 +72,10 @@ public class CommunicationManager {
 			throws TException {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
-
+		if (c == null){
+			Log.e("refreshReports", "We are disconnected, not refreshing.");
+			return;
+		}
 		Reports r = c.getReports(uuid, getFeatures("Model", model, "OS", os));
 		// Assume multiple invocations, do not close
 		// ProtocolClient.close();
@@ -80,7 +87,10 @@ public class CommunicationManager {
 	public void refreshBugReports(String uuid, String model) throws TException {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
-
+		if (c == null){
+			Log.e("refreshReports", "We are disconnected, not refreshing.");
+			return;
+		}
 		HogBugReport r = c.getHogOrBugReport(uuid,
 				getFeatures("ReportType", "Bug", "Model", model));
 		// Assume multiple invocations, do not close
@@ -93,7 +103,10 @@ public class CommunicationManager {
 	public void refreshHogReports(String uuid, String model) throws TException {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
-
+		if (c == null){
+			Log.e("refreshReports", "We are disconnected, not refreshing.");
+			return;
+		}
 		HogBugReport r = c.getHogOrBugReport(uuid,
 				getFeatures("ReportType", "Hog", "Model", model));
 

@@ -38,7 +38,12 @@ public class CaratMyDeviceActivity extends Activity {
 		this.setTitle(getString(R.string.app_name) + " "
 				+ getString(R.string.version_name) + " - "
 				+ getString(R.string.tab_my_device));
-		// s = new CaratDataStorage(this);
+		new Thread(){
+			public void run(){
+				app.c.refreshReports();
+			}
+		}.start();
+		
 		setModelAndVersion();
 		setMemory();
 		setReportData();
@@ -133,14 +138,18 @@ public class CaratMyDeviceActivity extends Activity {
 		long l = System.currentTimeMillis() - app.s.getFreshness();
 		final long min = l / 60000;
 		final long sec = (l - min * 60000) / 1000;
-
-		double bl = 100 / r.getModel().expectedValue;
+		double bl = 0;
+		int jscore = 0;
+		if (r != null){
+			bl = 100 / r.getModel().expectedValue;
+			jscore = ((int) (r.getJScore() * 100));
+		}
 		int blh = (int) (bl / 3600);
 		bl -= blh * 3600;
 		int blmin = (int) (bl / 60);
 		int bls = (int) (bl - blmin * 60);
 		final String blS = blh + "h " + blmin + "m " + bls + "s";
-		setText(R.id.jscore_value, ((int) (r.getJScore() * 100)) + "");
+		setText(R.id.jscore_value, jscore + "");
 		setText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
 		setText(R.id.batterylife_value, blS);
 	}
