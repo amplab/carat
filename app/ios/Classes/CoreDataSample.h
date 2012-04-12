@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSNumber * timestamp;
 @property (nonatomic, retain) NSString * triggeredBy;
 @property (nonatomic, retain) NSString * networkStatus;
+@property (nonatomic, retain) NSNumber * distanceTraveled;
 @property (nonatomic, retain) NSSet *processInfos;
 @end
 

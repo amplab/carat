@@ -101,6 +101,7 @@ typedef NSArray * FeatureList;
   int32_t __memoryUser;
   NSString * __triggeredBy;
   NSString * __networkStatus;
+  double __distanceTraveled;
 
   BOOL __uuId_isset;
   BOOL __timestamp_isset;
@@ -114,6 +115,7 @@ typedef NSArray * FeatureList;
   BOOL __memoryUser_isset;
   BOOL __triggeredBy_isset;
   BOOL __networkStatus_isset;
+  BOOL __distanceTraveled_isset;
 }
 
 #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_5)
@@ -129,9 +131,10 @@ typedef NSArray * FeatureList;
 @property (nonatomic, getter=memoryUser, setter=setMemoryUser:) int32_t memoryUser;
 @property (nonatomic, retain, getter=triggeredBy, setter=setTriggeredBy:) NSString * triggeredBy;
 @property (nonatomic, retain, getter=networkStatus, setter=setNetworkStatus:) NSString * networkStatus;
+@property (nonatomic, getter=distanceTraveled, setter=setDistanceTraveled:) double distanceTraveled;
 #endif
 
-- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy networkStatus: (NSString *) networkStatus;
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy networkStatus: (NSString *) networkStatus distanceTraveled: (double) distanceTraveled;
 
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
@@ -183,6 +186,10 @@ typedef NSArray * FeatureList;
 - (NSString *) networkStatus;
 - (void) setNetworkStatus: (NSString *) networkStatus;
 - (BOOL) networkStatusIsSet;
+
+- (double) distanceTraveled;
+- (void) setDistanceTraveled: (double) distanceTraveled;
+- (BOOL) distanceTraveledIsSet;
 
 @end
 

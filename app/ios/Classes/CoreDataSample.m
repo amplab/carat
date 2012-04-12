@@ -22,6 +22,7 @@
 @dynamic timestamp;
 @dynamic triggeredBy;
 @dynamic networkStatus;
+@dynamic distanceTraveled;
 @dynamic processInfos;
 
 @end

@@ -36,6 +36,7 @@
     <entity name="CoreDataSample" representedClassName="CoreDataSample" syncable="YES">
         <attribute name="batteryLevel" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="batteryState" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="distanceTraveled" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="memoryActive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="memoryFree" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="memoryInactive" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -63,7 +64,7 @@
         <element name="CoreDataMainReport" positionX="-45" positionY="36" width="128" height="105"/>
         <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
         <element name="CoreDataRegistration" positionX="-27" positionY="189" width="128" height="90"/>
-        <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="210"/>
+        <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="225"/>
         <element name="CoreDataSubReport" positionX="-333" positionY="117" width="128" height="180"/>
     </elements>
 </model>

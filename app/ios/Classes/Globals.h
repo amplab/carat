@@ -10,8 +10,8 @@
 #define Globals_h
 @interface Globals : NSObject
 {
-    NSString* myUUID;
-    NSUserDefaults* defaults; 
+    NSString * myUUID;
+    NSUserDefaults * defaults; 
 }
 
 @property (nonatomic, retain) NSString * myUUID;
@@ -24,5 +24,8 @@
 - (double) utcSecondsSinceEpoch;
 - (void) userHasConsented;
 - (BOOL) hasUserConsented;
+- (void) setDistanceTraveled : (double) distance;
+- (double) getDistanceTraveled;
+
 @end
 #endif

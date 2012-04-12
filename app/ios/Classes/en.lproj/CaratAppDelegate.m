@@ -275,11 +275,17 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
 #pragma mark -
 #pragma mark location awareness
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+- (void)locationManager:(CLLocationManager *)manager 
+    didUpdateToLocation:(CLLocation *)newLocation 
+           fromLocation:(CLLocation *)oldLocation
 {
-    [FlurryAnalytics setLatitude:newLocation.coordinate.latitude longitude:newLocation.coordinate.longitude horizontalAccuracy:newLocation.horizontalAccuracy            verticalAccuracy:newLocation.verticalAccuracy]; 
-    // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
+    [FlurryAnalytics setLatitude:newLocation.coordinate.latitude 
+                       longitude:newLocation.coordinate.longitude 
+              horizontalAccuracy:newLocation.horizontalAccuracy            
+                verticalAccuracy:newLocation.verticalAccuracy]; 
     
+    // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
+    [[Globals instance] setDistanceTraveled:[newLocation distanceFromLocation:oldLocation]];
     [[CoreDataManager instance] sampleNow:@"didUpdateToLocation"];
 }
 

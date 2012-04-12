@@ -430,7 +430,7 @@
 
 @implementation Sample
 
-- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy networkStatus: (NSString *) networkStatus
+- (id) initWithUuId: (NSString *) uuId timestamp: (double) timestamp piList: (ProcessInfoList) piList batteryState: (NSString *) batteryState batteryLevel: (double) batteryLevel memoryWired: (int32_t) memoryWired memoryActive: (int32_t) memoryActive memoryInactive: (int32_t) memoryInactive memoryFree: (int32_t) memoryFree memoryUser: (int32_t) memoryUser triggeredBy: (NSString *) triggeredBy networkStatus: (NSString *) networkStatus distanceTraveled: (double) distanceTraveled
 {
   self = [super init];
   __uuId = [uuId retain];
@@ -457,6 +457,8 @@
   __triggeredBy_isset = YES;
   __networkStatus = [networkStatus retain];
   __networkStatus_isset = YES;
+  __distanceTraveled = distanceTraveled;
+  __distanceTraveled_isset = YES;
   return self;
 }
 
@@ -523,6 +525,11 @@
     __networkStatus = [[decoder decodeObjectForKey: @"networkStatus"] retain];
     __networkStatus_isset = YES;
   }
+  if ([decoder containsValueForKey: @"distanceTraveled"])
+  {
+    __distanceTraveled = [decoder decodeDoubleForKey: @"distanceTraveled"];
+    __distanceTraveled_isset = YES;
+  }
   return self;
 }
 
@@ -575,6 +582,10 @@
   if (__networkStatus_isset)
   {
     [encoder encodeObject: __networkStatus forKey: @"networkStatus"];
+  }
+  if (__distanceTraveled_isset)
+  {
+    [encoder encodeDouble: __distanceTraveled forKey: @"distanceTraveled"];
   }
 }
 
@@ -812,6 +823,23 @@
   __networkStatus_isset = NO;
 }
 
+- (double) distanceTraveled {
+  return __distanceTraveled;
+}
+
+- (void) setDistanceTraveled: (double) distanceTraveled {
+  __distanceTraveled = distanceTraveled;
+  __distanceTraveled_isset = YES;
+}
+
+- (BOOL) distanceTraveledIsSet {
+  return __distanceTraveled_isset;
+}
+
+- (void) unsetDistanceTraveled {
+  __distanceTraveled_isset = NO;
+}
+
 - (void) read: (id <TProtocol>) inProtocol
 {
   NSString * fieldName;
@@ -935,6 +963,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 13:
+        if (fieldType == TType_DOUBLE) {
+          double fieldValue = [inProtocol readDouble];
+          [self setDistanceTraveled: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -1024,6 +1060,11 @@
       [outProtocol writeFieldEnd];
     }
   }
+  if (__distanceTraveled_isset) {
+    [outProtocol writeFieldBeginWithName: @"distanceTraveled" type: TType_DOUBLE fieldID: 13];
+    [outProtocol writeDouble: __distanceTraveled];
+    [outProtocol writeFieldEnd];
+  }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
 }
@@ -1054,6 +1095,8 @@
   [ms appendFormat: @"\"%@\"", __triggeredBy];
   [ms appendString: @",networkStatus:"];
   [ms appendFormat: @"\"%@\"", __networkStatus];
+  [ms appendString: @",distanceTraveled:"];
+  [ms appendFormat: @"%f", __distanceTraveled];
   [ms appendString: @")"];
   return [NSString stringWithString: ms];
 }

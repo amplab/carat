@@ -106,6 +106,25 @@ static id instance = nil;
     return NO;
 }
 
+//
+// Save distance traveled.
+//
+- (void) setDistanceTraveled:(double)distance 
+{
+    [defaults setDouble:distance forKey:@"CaratDistanceTraveled"];
+    [defaults synchronize];
+}
+
+//
+// Get the value of distance traveled.
+//
+- (double) getDistanceTraveled
+{
+    if (self.defaults != nil)
+        return [[self defaults] doubleForKey:@"CaratDistanceTraveled"];
+    return 0.0;
+}
+
 - (void) dealloc
 {
     [myUUID release];

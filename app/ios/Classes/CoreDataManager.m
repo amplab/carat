@@ -694,6 +694,10 @@ static NSMutableDictionary * daemonsList = nil;
                                [[Globals instance] utcSecondsSinceEpoch]]];
     [cdataSample setNetworkStatus:[[CommunicationManager instance] networkStatusString]];
     
+    [cdataSample setDistanceTraveled:0];
+    if ([triggeredBy isEqualToString:@"didUpdateToLocation"])
+        [cdataSample setDistanceTraveled:[NSNumber numberWithDouble:[[Globals instance] getDistanceTraveled]]];
+    
     //
     //  Running processes.
     //
@@ -920,6 +924,7 @@ static NSMutableDictionary * daemonsList = nil;
             sampleToSend.memoryUser = (int) [sample valueForKey:@"memoryUser"];
             sampleToSend.triggeredBy = (NSString *) [sample valueForKey:@"triggeredBy"];
             sampleToSend.networkStatus = (NSString *) [sample valueForKey:@"networkStatus"];
+            sampleToSend.distanceTraveled = (double) [[sample valueForKey:@"distanceTraveled"] doubleValue];
             
             NSMutableArray *pInfoList = [[[NSMutableArray alloc] init] autorelease];
             sampleToSend.piList = pInfoList;
@@ -929,6 +934,8 @@ static NSMutableDictionary * daemonsList = nil;
             DLog(@"%s\tbatteryState: %@",__PRETTY_FUNCTION__, [sample valueForKey:@"batteryState"]);
             DLog(@"%s\ttriggeredBy: %@",__PRETTY_FUNCTION__, sampleToSend.triggeredBy);
             DLog(@"%s\tnetworkStatus: %@",__PRETTY_FUNCTION__, sampleToSend.networkStatus);
+            DLog(@"%s\tdistanceTraveled: %f",__PRETTY_FUNCTION__, sampleToSend.distanceTraveled);
+
             
             if (sample.processInfos == nil || sample.processInfos == NULL) {
                 DLog(@"%s Process Info list is Nil in the sample!!", __PRETTY_FUNCTION__);
