@@ -75,9 +75,12 @@ public class BatteryInfoMonitorActivity extends Activity {
 		   registerReceiver(batteryBroadcastRecv, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		   batteryRecver();
 		}
-		});*/
-	} 
-	
+		});*/	 
+		
+		// Allow swipe to change tabs
+		findViewById(R.id.sampleScroll).setOnTouchListener(SwipeListener.instance);
+	}
+
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		// TODO Auto-generated method stub
 		if(keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0){
