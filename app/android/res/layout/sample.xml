@@ -3,27 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="164dp"
-        android:layout_height="35dp"
-        android:gravity="center_horizontal"
-        android:text="CheckCpuUseDetails" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:gravity="center_horizontal"
-        android:text="CheckBatteryUseDetails" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="35dp"
-        android:text="CheckMemoryUseDetails" />
-
+
+    <TextView
+        android:id="@+id/Notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="The result will be changed once a minute:"
+        android:textColor="@color/white"/>
+
     <TextView
         android:id="@+id/CpuResult"
         android:layout_width="match_parent"
