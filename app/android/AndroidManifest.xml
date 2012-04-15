@@ -46,6 +46,10 @@
             android:name=".CaratAboutActivity"
             android:label="@string/app_name" >
         </activity>
+         <activity
+            android:name=".BatteryInfoMonitorActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>
