@@ -33,44 +33,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/green" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="164dp"
-            android:layout_height="35dp"
-            android:gravity="center_horizontal"
-            android:text="CheckCpuUseDetails" />
-
-        <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:gravity="center_horizontal"
-            android:text="CheckBatteryUseDetails" />
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:text="CheckMemoryUseDetails" />
-
+       
+   <TextView
+        android:id="@+id/RuningProcessResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/orange" />
+    
         <TextView
             android:id="@+id/CpuResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/brown_dark" />
-
+
         <TextView
             android:id="@+id/MemoryResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/brown" />
-
+
         <TextView
             android:id="@+id/Result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/green" />
+        
+        <TextView
+	        android:id="@+id/RuningProcessResult"
+	        android:layout_width="match_parent"
+        	android:layout_height="wrap_content"
+        	android:textColor="@color/orange" />
+
     </LinearLayout>
 
 </ScrollView>

@@ -3,8 +3,13 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
+
+import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
-//import android.app.Application;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +17,9 @@ import android.content.IntentFilter;
 
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.SystemClock;
 import android.view.KeyEvent;
-//import android.view.View;
-//import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -24,10 +27,10 @@ public class BatteryInfoMonitorActivity extends Activity {
    
   /** Called when the activity is first created. */
 
-	Button batteryInfoDetails;
 	TextView  batteryResult;
 	TextView  CpuResult;
 	TextView  MemoryResult;
+	TextView  RunningProcessResult;
 	private int  year;
 	private int month;
 	private int day;
@@ -39,9 +42,10 @@ public class BatteryInfoMonitorActivity extends Activity {
 	long totalIdleTime=0;
 	long totalCpuUsage=0;
 	long myProcessCpuUsage=0;
+	private ActivityManager pActivityManager = null;
+	private List<RunningAppProcessInfo> RunningProcList =null;
+	Sample mySample = new Sample();
 	
-	// used for Carat data Storage?
-	//private Application app = getApplication();
 	@Override
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -50,33 +54,22 @@ public class BatteryInfoMonitorActivity extends Activity {
      
         CpuResult =(TextView)findViewById(R.id.CpuResult);
         MemoryResult = (TextView)findViewById(R.id.MemoryResult);
-        batteryResult= (TextView)findViewById(R.id.Result); 
+        batteryResult= (TextView)findViewById(R.id.Result);
+        RunningProcessResult =(TextView)findViewById(R.id.RuningProcessResult); 
         
         IntentFilter tIntentFilter = new IntentFilter();
         tIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         tIntentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
-        tIntentFilter.addAction(Intent.ACTION_SCREEN_ON);
            
         IntentFilter bIntentFilter = new IntentFilter();
         bIntentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
         bIntentFilter.addAction(Intent.ACTION_BATTERY_LOW);
         bIntentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
-        bIntentFilter.addAction(Intent.ACTION_TIME_TICK);
+        //bIntentFilter.addAction(Intent.ACTION_TIME_TICK);
             
         registerReceiver(memoryBroadcastRecv, tIntentFilter);
         registerReceiver(batteryBroadcastRecv, bIntentFilter);
-            
-	
-       /* batteryInfoDetails.setOnClickListener(new OnClickListener(){	
-		@Override
-		
-		public void onClick(View v) {
-			// TODO Auto-generated method stub
-		   registerReceiver(batteryBroadcastRecv, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-		   batteryRecver();
-		}
-		});*/	 
-		
+            	
 		// Allow swipe to change tabs
 		findViewById(R.id.sampleScroll).setOnTouchListener(SwipeListener.instance);
 	}
@@ -93,16 +86,20 @@ public class BatteryInfoMonitorActivity extends Activity {
         super.onResume();
         cpuInfo();
         memoryInfo();
+        getRunningProcess();
     }
 	
 	protected void onRestart() {
         super.onRestart();
         cpuInfo();
         memoryInfo();
+        getRunningProcess();
     }
 	
 	protected void onDestroy() {
         super.onDestroy();
+        CaratApplication app = (CaratApplication) this.getApplication();
+        app.s.writeObject(mySample, CaratDataStorage.SAMPLE_FILE);
         unregisterReceiver(batteryBroadcastRecv);
         unregisterReceiver(memoryBroadcastRecv);
         System.exit(0);
@@ -114,6 +111,8 @@ public class BatteryInfoMonitorActivity extends Activity {
 		
 	}
 	
+	
+	   
 	private BroadcastReceiver memoryBroadcastRecv = 
 			new BroadcastReceiver() {  
 			 @Override  
@@ -121,10 +120,11 @@ public class BatteryInfoMonitorActivity extends Activity {
 				 
 				 final String ac=intent.getAction();
 				 
-			  if (ac.equals(Intent.ACTION_TIME_TICK)||ac.equals(Intent.ACTION_TIMEZONE_CHANGED)||ac.equals(Intent.ACTION_SCREEN_ON)) {  
+			  if (ac.equals(Intent.ACTION_TIME_TICK)||ac.equals(Intent.ACTION_TIMEZONE_CHANGED)) {  
 					/* The tick interval is ONE MINUTE only and can not be changed. */
 				  memoryInfo();
 				  cpuInfo();
+				  getRunningProcess();
 			  }  
 			 }  
 			};  
@@ -165,6 +165,30 @@ public class BatteryInfoMonitorActivity extends Activity {
 
 	}
 	
+public void getRunningProcess(){
+		
+		pActivityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+		RunningProcList = pActivityManager.getRunningAppProcesses();
+		int processNUM=RunningProcList.size();
+		
+		StringBuffer rProcess = new StringBuffer();
+		rProcess.append("Running Process Details:\n").append("Current total number of processes:").append(processNUM);
+		
+			for(int i = 0; i< RunningProcList.size(); i++){
+			
+						int processPID=RunningProcList.get(i).pid;
+						int userUID=RunningProcList.get(i).uid;
+						String processNAME=RunningProcList.get(i).processName;
+						
+						int[] procMem = new int[] { processPID };
+						Debug.MemoryInfo[] memoryInfo = pActivityManager.getProcessMemoryInfo(procMem);  
+						int memeorySIZE = memoryInfo[0].dalvikPrivateDirty;
+						
+						rProcess.append("\nProcess ID:").append(processPID).append("\nUser ID:").append(userUID).append("\nProcess Name:").append(processNAME).append("\nOccupied memory size:").append(memeorySIZE).append("kb\n");
+						RunningProcessResult.setText(rProcess);
+						}
+				}
+	
 	private BroadcastReceiver batteryBroadcastRecv= 
 			new BroadcastReceiver(){
 		
@@ -173,24 +197,24 @@ public class BatteryInfoMonitorActivity extends Activity {
 				
 			String ac = intent.getAction();
 			
-			if(ac.equals(Intent.ACTION_BATTERY_CHANGED)||ac.equals(Intent.ACTION_TIME_TICK)) {
+			if(ac.equals(Intent.ACTION_BATTERY_CHANGED)) {
 					
 				StringBuilder sbattery = new StringBuilder();
 					
-				int initiallevel = intent.getIntExtra("level", 0);
+				double initiallevel = intent.getIntExtra("level", 0);
 				int health= intent.getIntExtra("health", 0);
-				int scale = intent.getIntExtra("scale", 100);
+				double scale = intent.getIntExtra("scale", 100);
 				int status = intent.getIntExtra("status", 0);
 				int voltage= intent.getIntExtra("voltage", 0);
 				int temperature = intent.getIntExtra("temperature", 0);
 				int plugged = intent.getIntExtra("plugged", 0);
-				int level = 0;
+				double level = 0;
 					
 					if (initiallevel>0 && scale >0){
 						level=(initiallevel*100/scale);
 						}
 					
-					sbattery.append("The battery level is:").append(level);
+					sbattery.append("The battery level is:").append(level).append("%");
 					
 					String Batteryhealth = null;
 					
@@ -272,12 +296,14 @@ public class BatteryInfoMonitorActivity extends Activity {
 				    Integer.toString(day)+","+Integer.toString(hour)+":"+Integer.toString(minute)+ ":" +
 				    Integer.toString(second)+ "\n"+ sbattery + "\n";
 					batteryResult.setText(tmp);
+					mySample.setBatteryLevel(level);
+					mySample.setBatteryState(Batterystatus);
 				}
 				
 	  }	
 	};	
-		}
-
+}
+	
 	
 
 	

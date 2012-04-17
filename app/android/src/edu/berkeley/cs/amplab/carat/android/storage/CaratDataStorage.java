@@ -22,7 +22,8 @@ public class CaratDataStorage {
 	public static final String FILENAME = "carat-reports.dat";
 	public static final String BUGFILE = "carat-bugs.dat";
 	public static final String HOGFILE = "carat-hogs.dat";
-
+	public static final String SAMPLE_FILE = "carat-samples.dat";
+			
 	public static final String FRESHNESS = "carat-freshness.dat";
 	private Application a = null;
 
