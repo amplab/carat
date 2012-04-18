@@ -7,3 +7,7 @@ a:link, a:active, a:visited {
     color: #99f;
 }
 
+#chartContainer {
+    background: black;
+    color: white;
+}
