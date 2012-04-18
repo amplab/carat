@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.provider.Settings.Secure;
 import android.util.Log;
 
 /**
@@ -20,6 +21,16 @@ public final class SamplingLibrary {
   
   /** Library class, prevent instantiation */
   private SamplingLibrary() {
+  }
+  
+  /**
+   * Returns a randomly generated unique identifier that stays constant for the lifetime of the device.
+   * (May change if wiped). This is probably our best choice for a UUID across the Android landscape,
+   * since it is present on both phones and non-phones.
+   * @return a String that uniquely identifies this device.
+   */
+  public static String getUuid(Context c){
+	  return Secure.getString(c.getContentResolver(), Secure.ANDROID_ID); 
   }
   
   /**
