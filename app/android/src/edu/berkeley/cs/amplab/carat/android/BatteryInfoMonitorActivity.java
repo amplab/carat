@@ -52,7 +52,7 @@ public class BatteryInfoMonitorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sample);
         TextView uuid =(TextView)findViewById(R.id.uuid);
-        uuid.setText(SamplingLibrary.getUuid(getApplicationContext()));
+        uuid.setText("UUID: " + SamplingLibrary.getUuid(getApplicationContext()));
         
         CpuResult =(TextView)findViewById(R.id.CpuResult);
         MemoryResult = (TextView)findViewById(R.id.MemoryResult);
