@@ -5,14 +5,18 @@ import java.util.List;
 
 import org.apache.thrift.TException;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.Registration;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
+import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 public class CommunicationManager {
 
@@ -21,15 +25,22 @@ public class CommunicationManager {
 	// 5 minutes
 	public static final long FRESHNESS_TIMEOUT = 300000L;
 
+	public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
+
 	private CaratService.Client c = null;
 
 	private CaratApplication a = null;
 
+	private boolean register = true;
+	private SharedPreferences p = null;
+
 	public CommunicationManager(CaratApplication a) {
 		this.a = a;
+		p = PreferenceManager.getDefaultSharedPreferences(this.a);
+		register = p.getBoolean(PREFERENCE_FIRST_RUN, true);
 	}
 
-	public void registerMe(String uuId, String os, String model)
+	private void registerMe(String uuId, String os, String model)
 			throws TException {
 		if (uuId == null || os == null || model == null) {
 			Log.e("registerMe", "Null uuId, os, or model given to registerMe!");
@@ -43,9 +54,50 @@ public class CommunicationManager {
 		c.registerMe(registration);
 	}
 
+	public void uploadSample(Sample sample) throws TException {
+		registerOnFirstRun();
+		if (c == null) {
+			c = ProtocolClient.getInstance(a.getApplicationContext());
+		}
+		if (c == null) {
+			Log.e("uploadSample", "We are disconnected, not uploading.");
+			return;
+		}
+		c.uploadSample(sample);
+		ProtocolClient.close();
+	}
+
+	public void registerOnFirstRun() {
+		if (register) {
+			String uuId = SamplingLibrary.getUuid(a.getApplicationContext());
+			String os = SamplingLibrary.getOsVersion();
+			String model = SamplingLibrary.getModel();
+			Log.i("CommunicationManager",
+					"First run, registering this device: " + uuId + ", " + os
+							+ ", " + model);
+			try {
+				if (c == null) {
+					c = ProtocolClient.getInstance(a.getApplicationContext());
+				}
+				if (c == null) {
+					Log.e("register",
+							"We are disconnected, not registering.");
+					return;
+				}
+				registerMe(uuId, os, model);
+				p.edit().putBoolean(PREFERENCE_FIRST_RUN, false).commit();
+			} catch (TException e) {
+				Log.e("CommunicationManager",
+						"Registration failed, will try again next time: " + e);
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void refreshReports() {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
+		registerOnFirstRun();
 		// FIXME: Fake data for now
 		String uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
 		String model = "iPhone 3GS";
@@ -53,7 +105,7 @@ public class CommunicationManager {
 
 		try {
 			c = ProtocolClient.getInstance(a.getApplicationContext());
-			if (c == null){
+			if (c == null) {
 				Log.e("refreshReports", "We are disconnected, not refreshing.");
 				return;
 			}
@@ -68,11 +120,11 @@ public class CommunicationManager {
 		}
 	}
 
-	public void refreshMainReports(String uuid, String os, String model)
+	private void refreshMainReports(String uuid, String os, String model)
 			throws TException {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
-		if (c == null){
+		if (c == null) {
 			Log.e("refreshReports", "We are disconnected, not refreshing.");
 			return;
 		}
@@ -84,10 +136,10 @@ public class CommunicationManager {
 		// s.writeFreshness();
 	}
 
-	public void refreshBugReports(String uuid, String model) throws TException {
+	private void refreshBugReports(String uuid, String model) throws TException {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
-		if (c == null){
+		if (c == null) {
 			Log.e("refreshReports", "We are disconnected, not refreshing.");
 			return;
 		}
@@ -100,10 +152,10 @@ public class CommunicationManager {
 		// s.writeFreshness();
 	}
 
-	public void refreshHogReports(String uuid, String model) throws TException {
+	private void refreshHogReports(String uuid, String model) throws TException {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
-		if (c == null){
+		if (c == null) {
 			Log.e("refreshReports", "We are disconnected, not refreshing.");
 			return;
 		}
@@ -117,7 +169,7 @@ public class CommunicationManager {
 		// s.writeFreshness();
 	}
 
-	public List<Feature> getFeatures(String key1, String val1, String key2,
+	private List<Feature> getFeatures(String key1, String val1, String key2,
 			String val2) {
 		List<Feature> features = new ArrayList<Feature>();
 		if (key1 == null || val1 == null || key2 == null || val2 == null) {
