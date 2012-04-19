@@ -26,10 +26,16 @@
             android:name=".CaratSuggestionsActivity"
             android:label="@string/app_name" >
         </activity>
+        <!-- Info and later button to kill apps -->
+        <activity
+            android:name=".CaratKillAppActivity"
+            android:label="@string/app_name" >
+        </activity>
         <activity
             android:name=".CaratMyDeviceActivity"
             android:label="@string/app_name" >
         </activity>
+        <!-- Info on JScore -->
         <activity
             android:name=".CaratJscoreActivity"
             android:label="@string/app_name" >
