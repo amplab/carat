@@ -37,9 +37,8 @@ public class MemoryInfoDetails {
 		e.printStackTrace();
 	}
     sMemory.append("\n").append(tmp).append("\n");
-    String result="Memery Status:\n"+sMemory;
+    String result="Memory Status:\n"+sMemory;
     return result;
 	}
-		 
 	
 }

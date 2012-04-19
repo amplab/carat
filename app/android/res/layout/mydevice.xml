@@ -13,7 +13,8 @@ Carat "Home" or My Device Screen layout
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/background" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,7 +24,8 @@ Carat "Home" or My Device Screen layout
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:background="@color/background" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,14 +45,14 @@ Carat "Home" or My Device Screen layout
                     android:layout_height="wrap_content"
                     android:text="@string/jscore"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/brown_dark" />
+                    android:textColor="@color/brown" />
 
                 <TextView
                     android:id="@+id/updated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/updated0"
-                    android:textColor="@color/brown_dark" />
+                    android:textColor="@color/brown" />
             </LinearLayout>
 
             <TextView
@@ -60,7 +62,7 @@ Carat "Home" or My Device Screen layout
                 android:layout_gravity="center_vertical"
                 android:text="@string/zero"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/green_dark" />
+                android:textColor="@color/green" />
             <!--
       android:layout_width="18dip"
                             android:layout_height="18dip"
@@ -94,7 +96,7 @@ Carat "Home" or My Device Screen layout
                 android:layout_weight="1"
                 android:text="@string/batterylife"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/brown_dark" />
+                android:textColor="@color/brown" />
 
             <TextView
                 android:id="@+id/batterylife_value"
@@ -104,7 +106,7 @@ Carat "Home" or My Device Screen layout
                 android:gravity="right"
                 android:text="@string/zeroh"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/green_dark" />
+                android:textColor="@color/green" />
         </LinearLayout>
 
         <LinearLayout
@@ -121,7 +123,7 @@ Carat "Home" or My Device Screen layout
                 android:layout_weight="1"
                 android:text="@string/osver"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/brown_dark" />
+                android:textColor="@color/brown" />
 
             <TextView
                 android:id="@+id/os_ver_value"
@@ -131,7 +133,7 @@ Carat "Home" or My Device Screen layout
                 android:gravity="right"
                 android:text="@string/fake_os"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/green_dark" />
+                android:textColor="@color/green" />
         </LinearLayout>
 
         <LinearLayout
@@ -149,7 +151,7 @@ Carat "Home" or My Device Screen layout
                 android:layout_weight="1"
                 android:text="@string/dev"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/brown_dark" />
+                android:textColor="@color/brown" />
 
             <TextView
                 android:id="@+id/dev_value"
@@ -160,7 +162,7 @@ Carat "Home" or My Device Screen layout
                 android:gravity="right"
                 android:text="@string/fake_dev"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/green_dark" />
+                android:textColor="@color/green" />
         </LinearLayout>
 
         <TableLayout
@@ -186,7 +188,7 @@ Carat "Home" or My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/apps"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown_dark" />
+                    android:textColor="@color/brown" />
 
                 <Button
                     android:id="@+id/button1"
@@ -196,7 +198,7 @@ Carat "Home" or My Device Screen layout
                     android:layout_marginRight="-3dip"
                     android:onClick="onClickViewProcessList"
                     android:text="@string/viewprocess"
-                    android:textColor="@color/green_dark" />
+                    android:textColor="@color/green" />
             </TableRow>
 
             <TableRow
@@ -214,7 +216,7 @@ Carat "Home" or My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/memused"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown_dark" />
+                    android:textColor="@color/brown" />
 
                 <ProgressBar
                     android:id="@+id/progressBar1"
@@ -239,7 +241,7 @@ Carat "Home" or My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/memactive"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown_dark" />
+                    android:textColor="@color/brown" />
 
                 <ProgressBar
                     android:id="@+id/progressBar2"
@@ -264,7 +266,7 @@ Carat "Home" or My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/cpu"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown_dark" />
+                    android:textColor="@color/brown" />
 
                 <ProgressBar
                     android:id="@+id/cpubar"

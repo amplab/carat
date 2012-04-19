@@ -7,7 +7,7 @@ import android.webkit.WebView;
 public class CaratJscoreActivity extends Activity {
 	@Override
 	public void finish() {
-		findViewById(R.id.jscoreView).startAnimation(CaratMainActivity.outtoRight);
+		//findViewById(R.id.jscoreView).startAnimation(CaratMainActivity.outtoRight);
 		super.finish();
 	}
 
@@ -16,7 +16,8 @@ public class CaratJscoreActivity extends Activity {
 		setContentView(R.layout.jscoreinfo);
 		WebView webview = (WebView) findViewById(R.id.jscoreView);
 		//Fixes the white flash when showing the page for the first time.
-		webview.setBackgroundColor(0);
+		if (getString(R.string.blackBackground).equals("true"))
+			webview.setBackgroundColor(0);
 		
 		/*
 		 * getWindow().requestFeature(Window.FEATURE_PROGRESS);
@@ -29,7 +30,7 @@ public class CaratJscoreActivity extends Activity {
 		 * avoids it.
 		 */
 		webview.loadUrl("file:///android_asset/jscoreinfo.html");
-		findViewById(R.id.jscoreView).startAnimation(CaratMainActivity.inFromRight);
+		//findViewById(R.id.jscoreView).startAnimation(CaratMainActivity.inFromRight);
 		webview.setOnTouchListener(new BackSwipeListener(this));
 	}
 }

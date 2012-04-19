@@ -55,7 +55,7 @@ public class CaratMyDeviceActivity extends Activity {
 	 *            The source of the click.
 	 */
 	public void onClickViewProcessList(View v) {
-		toggleColors();
+		//toggleColors();
 	}
 	
 	/**
@@ -66,7 +66,7 @@ public class CaratMyDeviceActivity extends Activity {
 	 */
 	public void showJscoreInfo(View v) {
 		 Intent myIntent = new Intent(v.getContext(), CaratJscoreActivity.class);
-		 findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.outtoLeft);
+		 //findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.outtoLeft);
          startActivityForResult(myIntent, 0);
 	}
 
@@ -187,7 +187,7 @@ public class CaratMyDeviceActivity extends Activity {
 		// The info icon needs to change from dark to light.
 		ImageView infoIcon = (ImageView) win.findViewById(R.id.moreinfo);
 
-		int green = R.color.green_dark;
+		int green = R.color.green;
 		int brown = R.color.brown_dark;
 		int w = R.color.white;
 		int b = R.color.black;

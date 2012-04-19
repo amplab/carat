@@ -1,13 +1,13 @@
 body {
-    background: black;
-    color: white;
+    background: white;
+    color: black;
 }
 
 a:link, a:active, a:visited {
-    color: #99f;
+    color: #0000FF;
 }
 
 #chartContainer {
-    background: black;
-    color: white;
+    background: white;
+    color: black;
 }

@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sampleScroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/background"  >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -13,20 +14,20 @@
         android:id="@+id/Notice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="The result will be changed once a minute:"
-        android:textColor="@color/white"/>
+        android:text="Updates once a minute."
+        android:textColor="@color/text"/>
 
     <TextView
         android:id="@+id/uuid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/green_dark" />
+        android:textColor="@color/green" />
     
     <TextView
         android:id="@+id/CpuResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/brown_dark" />
+        android:textColor="@color/brown" />
 
     <TextView
         android:id="@+id/MemoryResult"
@@ -50,7 +51,7 @@
             android:id="@+id/CpuResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/brown_dark" />
+            android:textColor="@color/brown" />
 
         <TextView
             android:id="@+id/MemoryResult"

@@ -20,6 +20,7 @@
     <string name="viewprocess">View Process List</string>
     <string name="alogo">AmpLab Logo</string>
     <string name="moreinfo">More Information</string>
+    <string name="appicon">App Icon</string>
     
     <string name="tab_my_device">My Device</string>
     
@@ -34,5 +35,8 @@
     <string name="tab_actions">Actions</string>
     <string name="tab_bugs">Bugs</string>
     <string name="tab_sample">Sample</string>
+    <string name="blackBackground">false</string>
+    <color name="background">#FFFFFFFF</color>
+    <color name="text">#000000</color>
 
 </resources>
