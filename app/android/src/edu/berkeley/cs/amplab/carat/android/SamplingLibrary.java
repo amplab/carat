@@ -6,7 +6,9 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
+import android.os.Debug;
 import android.provider.Settings.Secure;
 import android.util.Log;
 
@@ -142,7 +144,12 @@ public final class SamplingLibrary {
     Log.i("Mem", "Mem Used:" + memUsed);
     return new int[] { totalMem, memUsed };
   }
-
+  
+  public static List<RunningAppProcessInfo> getRunningProcessInfo(Context c) {
+	  	ActivityManager man = (ActivityManager) c.getSystemService(Activity.ACTIVITY_SERVICE);
+	  	 return  man.getRunningAppProcesses();
+  }
+  
   /**
    * Read CPU usage from /proc/stat, return a fraction of usage/(usage+idletime)
    * 
