@@ -3,8 +3,6 @@ package edu.berkeley.cs.amplab.carat.android;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class CaratBugsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {

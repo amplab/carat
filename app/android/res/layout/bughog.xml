@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="App Name"
+            android:text="@string/appname"
             android:layout_gravity="left"
             android:textColor="@color/brown" />
         
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="left|center_vertical"
-                android:text="Confidence:"
+                android:text="@string/confidence"
                 android:textColor="@color/green" />
 
             <ProgressBar

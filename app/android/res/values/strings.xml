@@ -37,5 +37,10 @@
     <string name="blackBackground">false</string>
     <color name="background">#FFFFFFFF</color>
     <color name="text">#000000</color>
+    <string name="expected">Expected improvement:</string>
+    <string name="killappname">Kill App Name</string>
+    <string name="benefitdefault">1d 9h 15m 40s</string>
+    <string name="confidence">Confidence:</string>
+    <string name="appname">App Name</string>
 
 </resources>

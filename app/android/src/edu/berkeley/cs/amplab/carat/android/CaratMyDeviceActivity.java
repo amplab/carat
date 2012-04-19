@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 
@@ -167,56 +166,5 @@ public class CaratMyDeviceActivity extends Activity {
 		Window win = this.getWindow();
 		TextView t = (TextView) win.findViewById(viewId);
 		t.setText(text);
-	}
-
-	private int lastColor = R.color.black;
-
-	private void toggleColors() {
-		/*
-		 * Use arrays to make code easier to understand below. These elements
-		 * need to change from a shade of brown/green to another.
-		 */
-		int[] browns = { R.id.jscore, R.id.updated, R.id.batterylife,
-				R.id.apps, R.id.memactive, R.id.memused, R.id.dev, R.id.os_ver,
-				R.id.cpu };
-
-		int[] greens = { R.id.jscore_value, R.id.batterylife_value,
-				R.id.dev_value, R.id.os_ver_value };
-
-		Window win = this.getWindow();
-		// The info icon needs to change from dark to light.
-		ImageView infoIcon = (ImageView) win.findViewById(R.id.moreinfo);
-
-		int green = R.color.green;
-		int brown = R.color.brown_dark;
-		int w = R.color.white;
-		int b = R.color.black;
-
-		/* Change from dark to light or the other way */
-		if (lastColor == b) {
-			green = R.color.green;
-			brown = R.color.brown;
-			win.setBackgroundDrawableResource(w);
-			infoIcon.setImageResource(R.drawable.infoicon);
-			lastColor = w;
-		} else {
-			win.setBackgroundDrawableResource(b);
-			infoIcon.setImageResource(R.drawable.infoicon_dark);
-			lastColor = b;
-		}
-
-		/* Handle the green/brown shades */
-		for (int k : browns)
-			changeColor(win, k, brown);
-		for (int k : greens)
-			changeColor(win, k, green);
-	}
-
-	/**
-	 * Utility method to change the textColor
-	 */
-	private void changeColor(Window w, int viewId, int colorId) {
-		TextView target = ((TextView) w.findViewById(viewId));
-		target.setTextColor(getResources().getColor(colorId));
 	}
 }

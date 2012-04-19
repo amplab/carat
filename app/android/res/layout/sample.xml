@@ -8,7 +8,7 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical" >
     <TextView
         android:id="@+id/Notice"
@@ -46,30 +46,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/orange" />
-    
-        <TextView
-            android:id="@+id/CpuResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/brown" />
-
-        <TextView
-            android:id="@+id/MemoryResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/brown" />
-
-        <TextView
-            android:id="@+id/Result"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/green" />
-        
-        <TextView
-	        android:id="@+id/RuningProcessResult"
-	        android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:textColor="@color/orange" />
 
     </LinearLayout>
 

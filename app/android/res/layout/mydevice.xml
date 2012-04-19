@@ -90,7 +90,7 @@ Carat "Home" or My Device Screen layout
 
             <TextView
                 android:id="@+id/batterylife"
-                android:layout_width="match_parent"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
@@ -118,7 +118,7 @@ Carat "Home" or My Device Screen layout
 
             <TextView
                 android:id="@+id/os_ver"
-                android:layout_width="wrap_content"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/osver"

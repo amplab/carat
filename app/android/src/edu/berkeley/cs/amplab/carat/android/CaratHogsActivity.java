@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import edu.berkeley.cs.amplab.carat.android.suggestions.Hog;
 import edu.berkeley.cs.amplab.carat.android.suggestions.HogAdapter;
-import edu.berkeley.cs.amplab.carat.android.suggestions.SuggestionAdapter;
-import android.app.Activity;
 import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 

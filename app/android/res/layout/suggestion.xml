@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Kill appname"
+            android:text="@string/killappname"
             android:layout_gravity="left"
             android:textColor="@color/brown" />
         
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_weight="1"
-                android:text="Expected improvement:"
+                android:text="@string/expected"
                 android:textColor="@color/green" />
 
             <TextView
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="1d 9h 15m 40s"
+                android:text="@string/benefitdefault"
                 android:textColor="@color/green" />
         </LinearLayout>
 
