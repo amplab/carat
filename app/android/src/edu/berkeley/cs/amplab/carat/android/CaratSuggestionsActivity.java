@@ -1,71 +1,105 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import edu.berkeley.cs.amplab.carat.android.suggestions.*;
 
 public class CaratSuggestionsActivity extends ListActivity {
-	 static final String[] COUNTRIES = new String[] {
-		    "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra",
-		    "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina",
-		    "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
-		    "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
-		    "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia",
-		    "Bosnia and Herzegovina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory",
-		    "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
-		    "Cote d'Ivoire", "Cambodia", "Cameroon", "Canada", "Cape Verde",
-		    "Cayman Islands", "Central African Republic", "Chad", "Chile", "China",
-		    "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo",
-		    "Cook Islands", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
-		    "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic",
-		    "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea",
-		    "Estonia", "Ethiopia", "Faeroe Islands", "Falkland Islands", "Fiji", "Finland",
-		    "Former Yugoslav Republic of Macedonia", "France", "French Guiana", "French Polynesia",
-		    "French Southern Territories", "Gabon", "Georgia", "Germany", "Ghana", "Gibraltar",
-		    "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau",
-		    "Guyana", "Haiti", "Heard Island and McDonald Islands", "Honduras", "Hong Kong", "Hungary",
-		    "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica",
-		    "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos",
-		    "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
-		    "Macau", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands",
-		    "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia", "Moldova",
-		    "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia",
-		    "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand",
-		    "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "North Korea", "Northern Marianas",
-		    "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru",
-		    "Philippines", "Pitcairn Islands", "Poland", "Portugal", "Puerto Rico", "Qatar",
-		    "Reunion", "Romania", "Russia", "Rwanda", "Sqo Tome and Principe", "Saint Helena",
-		    "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon",
-		    "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Saudi Arabia", "Senegal",
-		    "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands",
-		    "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "South Korea",
-		    "Spain", "Sri Lanka", "Sudan", "Suriname", "Svalbard and Jan Mayen", "Swaziland", "Sweden",
-		    "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "The Bahamas",
-		    "The Gambia", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
-		    "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Virgin Islands", "Uganda",
-		    "Ukraine", "United Arab Emirates", "United Kingdom",
-		    "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan",
-		    "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Wallis and Futuna", "Western Sahara",
-		    "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"
-		  };
-	 
+
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.suggestions);
 
-		  setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, COUNTRIES));
+		//setListAdapter(new ArrayAdapter<String>(this, R.layout.listitem2,
+		//		R.id.list_content, COUNTRIES));
 
-		  ListView lv = getListView();
-		  lv.setTextFilterEnabled(true);
-/*
-		  lv.setOnItemClickListener(new OnItemClickListener() {
-		    public void onItemClick(AdapterView<?> parent, View view,
-		        int position, long id) {
-		      // When clicked, show a toast with the TextView text
-		      Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-		          Toast.LENGTH_SHORT).show();
-		    }
-		  });*/
-		  lv.setOnTouchListener(SwipeListener.instance);
-	}
+		
+		//lv.setTextFilterEnabled(true);
+		
+		final ListView lv = getListView();
+		lv.setCacheColorHint(0);
+	
+	   ArrayList<Suggestion> searchResults = getSuggestions();
+       
+       lv.setAdapter(new SuggestionAdapter(this, searchResults));
+      
+       lv.setOnItemClickListener(new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+         Object o = lv.getItemAtPosition(position);
+         Suggestion fullObject = (Suggestion)o;
+         Toast.makeText(CaratSuggestionsActivity.this, "You have chosen: " + " " + fullObject.getName(), Toast.LENGTH_LONG).show();
+         Intent myIntent = new Intent(v.getContext(), CaratKillAppActivity.class);
+		 //findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.outtoLeft);
+         startActivityForResult(myIntent, 0);
+        } 
+       });
+       
+       lv.setOnTouchListener(SwipeListener.instance);
+   }
+  
+   private ArrayList<Suggestion> getSuggestions(){
+    ArrayList<Suggestion> results = new ArrayList<Suggestion>();
+    
+    Suggestion sr1 = new Suggestion();
+    sr1.setName("John Smith");
+    sr1.setBenefit("1d 17h 30m 8s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Jane Doe");
+    sr1.setBenefit("1d 5h 22m 6s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Steve Young");
+    sr1.setBenefit("12h 54m 12s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Fred Jones");
+    sr1.setBenefit("8h 31m 6s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Facebook");
+    sr1.setBenefit("3h 31m 6s");
+   
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Twitter");
+    sr1.setBenefit("1h 10m 6s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Angry Birds");
+    sr1.setBenefit("1h 2m");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Microsoft");
+    sr1.setBenefit("1h 0m 1s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Google");
+    sr1.setBenefit("0h 54m 10s");
+    results.add(sr1);
+    
+    sr1 = new Suggestion();
+    sr1.setName("Amazon");
+    sr1.setBenefit("0h 46m 12s");
+    results.add(sr1);
+    
+    return results;
+   }
 }
