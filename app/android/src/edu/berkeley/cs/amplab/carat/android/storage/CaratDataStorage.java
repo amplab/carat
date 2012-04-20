@@ -36,6 +36,8 @@ public class CaratDataStorage {
 		this.a = a;
 		freshness = readFreshness();
 		caratData = readReports();
+		bugData = readBugReport();
+		hogData = readBugReport();
 	}
 
 	public void writeReports(Reports reports) {
@@ -199,5 +201,25 @@ public class CaratDataStorage {
 		hogData = r;
 		writeObject(r, HOGFILE);
 
+	}
+	
+	public HogBugReport readBugReport() {
+		Object o = readObject(BUGFILE);
+		Log.i("CaratDataStorage", "Read Bugs: " + o);
+		if (o == null)
+			return null;
+		HogBugReport r = (HogBugReport) o;
+		bugData = r;
+		return r;
+	}
+
+	public HogBugReport readHogReport() {
+		Object o = readObject(HOGFILE);
+		Log.i("CaratDataStorage", "Read Hogs: " + o);
+		if (o == null)
+			return null;
+		HogBugReport r = (HogBugReport) o;
+		hogData = r;
+		return r;
 	}
 }
