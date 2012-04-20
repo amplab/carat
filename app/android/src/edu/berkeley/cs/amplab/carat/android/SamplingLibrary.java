@@ -1,16 +1,23 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
-import android.os.Debug;
 import android.provider.Settings.Secure;
 import android.util.Log;
+import android.os.Debug;
+import android.os.SystemClock;
 
 /**
  * Library class for methods that obtain information about the phone that is
@@ -21,6 +28,8 @@ import android.util.Log;
  */
 public final class SamplingLibrary {
   
+	 
+	
   /** Library class, prevent instantiation */
   private SamplingLibrary() {
   }
@@ -144,12 +153,7 @@ public final class SamplingLibrary {
     Log.i("Mem", "Mem Used:" + memUsed);
     return new int[] { totalMem, memUsed };
   }
-  
-  public static List<RunningAppProcessInfo> getRunningProcessInfo(Context c) {
-	  	ActivityManager man = (ActivityManager) c.getSystemService(Activity.ACTIVITY_SERVICE);
-	  	 return  man.getRunningAppProcesses();
-  }
-  
+
   /**
    * Read CPU usage from /proc/stat, return a fraction of usage/(usage+idletime)
    * 
@@ -189,4 +193,179 @@ public final class SamplingLibrary {
 
     return 0;
   }
+  
+  public static List<RunningAppProcessInfo> getRunningProcessInfo(Context context){
+	  
+	 ActivityManager pActivityManager = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);	  
+	 List<RunningAppProcessInfo> RunningProcList =null;
+	 RunningProcList = pActivityManager.getRunningAppProcesses();
+			
+	 return RunningProcList;
+		
+  }
+
+  public static long getTotalCpuTime() throws IOException{
+		long totalCpuTime = 0;
+		File file = new File("/proc/stat");   
+		FileInputStream in= new FileInputStream(file);
+	    BufferedReader br = new BufferedReader(new InputStreamReader(in));   
+	    String str = br.readLine(); 
+	    String[] cpuTotal = str.split(" ");
+		 br.close();
+		 
+		 totalCpuTime= Long.parseLong(cpuTotal[2])+Long.parseLong(cpuTotal[3])+Long.parseLong(cpuTotal[4])+ Long.parseLong(cpuTotal[6])+Long.parseLong(cpuTotal[7])+Long.parseLong(cpuTotal[8]);
+		 totalCpuTime/=100;
+		 return totalCpuTime;
+	}
+	 
+  public static long getTotalIdleTime() throws IOException{
+		long totalIdleTime = 0;
+		File file = new File("/proc/stat");   
+		FileInputStream in= new FileInputStream(file);
+	    BufferedReader br = new BufferedReader(new InputStreamReader(in));   
+	    String str = br.readLine(); 
+	    String[] idleTotal = str.split(" ");
+	    br.close();
+	    
+	    totalIdleTime=Long.parseLong(idleTotal[5]);
+	    totalIdleTime/=100; 
+		return totalIdleTime;
+	}
+	
+  public static long getTotalCpuUsage(){
+		
+	  		String[] cpuUsage;
+	  		long totalCpuUsage = 0;
+	   try {
+			File file = new File("/proc/stat");   
+			FileInputStream in= new FileInputStream(file);
+		    BufferedReader br = new BufferedReader(new InputStreamReader(in));   
+		    String str = br.readLine(); 
+		    cpuUsage = str.split(" ");
+		    br.close();
+		   
+		    long idle1 =Long.parseLong(cpuUsage[5]);
+		    long cpu1 = getTotalCpuTime();
+		   
+		    try {
+				Thread.sleep(300);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+			File file2 = new File("/proc/stat");   
+			FileInputStream in2= new FileInputStream(file2);
+			BufferedReader br2 = new BufferedReader(new InputStreamReader(in2));   
+			str = br2.readLine(); 
+			cpuUsage = str.split(" ");
+			br2.close();
+
+			long idle2 = Long.parseLong(cpuUsage[5]);
+			long cpu2 = getTotalCpuTime();
+		   
+			totalCpuUsage=(100*(cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1)));
+			Log.v("CPUusage",String.valueOf(totalCpuUsage));
+			return totalCpuUsage;
+		}   		
+	   catch (IOException ex) { ex.printStackTrace();
+	   return -1;}
+	   }
+	
+  public static String getMemoryInfo(){
+		String tmp=null;
+		BufferedReader br=null;
+
+		try {
+			File file = new File("/proc/meminfo");   
+			FileInputStream in=new FileInputStream(file);
+			br = new BufferedReader(new InputStreamReader(in));  
+    
+		} catch (FileNotFoundException e1) {
+		// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+		tmp = br.readLine();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		
+		StringBuilder sMemory = new StringBuilder();
+		sMemory.append(tmp);
+		
+		try {
+		tmp=br.readLine();
+		br.close();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		
+		sMemory.append("\n").append(tmp).append("\n");
+		String result="Memery Status:\n"+sMemory;
+		return result;
+	
+	}
+  
+  public static String getMemoryTotal(){
+		String tmp=null;
+		BufferedReader br=null;
+
+		try {
+			File file = new File("/proc/meminfo");   
+			FileInputStream in=new FileInputStream(file);
+			br = new BufferedReader(new InputStreamReader(in));  
+  
+		} catch (FileNotFoundException e1) {
+		// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+		tmp = br.readLine();
+		br.close();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		return tmp;
+	}
+
+  public static String getMemoryFree(){
+		String tmp=null;
+		BufferedReader br=null;
+
+		try {
+			File file = new File("/proc/meminfo");   
+			FileInputStream in=new FileInputStream(file);
+			br = new BufferedReader(new InputStreamReader(in));  
+  
+		} catch (FileNotFoundException e1) {
+		// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+		tmp = br.readLine();
+		tmp = br.readLine();
+		br.close();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		return tmp;
+	}
+ 
+  public static String getUptime(){
+		long uptime=SystemClock.elapsedRealtime();
+		int seconds = (int)(uptime /1000) % 60;
+		int minutes = (int)(uptime /(1000*60) % 60);
+		int hours   = (int)(uptime /(1000*60*60) % 24);
+		String tmp="\nThe uptime is :" + hours +"hr:"+minutes+"mins:"+seconds+"sec.\n";
+		return tmp;
+		
+	}
 }

@@ -42,11 +42,11 @@
         android:textColor="@color/green" />
        
    <TextView
-        android:id="@+id/RuningProcessResult"
+        android:id="@+id/RuningProcResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/orange" />
-
+   
     </LinearLayout>
 
 </ScrollView>
