@@ -3,7 +3,6 @@ package edu.berkeley.cs.amplab.carat.android;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.suggestions.ProcessInfoAdapter;
-import edu.berkeley.cs.amplab.carat.android.suggestions.Suggestion;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Activity;
 import android.app.ActivityManager.RunningAppProcessInfo;

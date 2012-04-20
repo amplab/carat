@@ -7,13 +7,12 @@ Carat My Device Screen layout
      android:id="@+id/viewFlipper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#ffffff" >  
+    android:background="@color/background" >  
         
 <ScrollView 
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/background" >
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -28,7 +27,6 @@ Carat My Device Screen layout
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <LinearLayout
@@ -83,7 +81,6 @@ Carat My Device Screen layout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
@@ -111,7 +108,6 @@ Carat My Device Screen layout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
@@ -138,7 +134,6 @@ Carat My Device Screen layout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
-            android:layout_weight="1"
             android:orientation="horizontal" >
 
             <TextView
