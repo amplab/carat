@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -20,10 +21,13 @@ public class CaratMainActivity extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // If we want a progress bar for loading some screens at the top of the title bar
+        // This does not show if it is not updated
+        getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
         this.setTitle(getString(R.string.app_name) + " "
 				+ getString(R.string.version_name));
-
+        
         Resources res = getResources(); // Resource object to get Drawables
         tabHost = getTabHost();  // The activity TabHost
         TabHost.TabSpec spec;  // Resusable TabSpec for each tab
