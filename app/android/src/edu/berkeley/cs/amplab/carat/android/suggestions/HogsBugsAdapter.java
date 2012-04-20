@@ -2,12 +2,11 @@ package edu.berkeley.cs.amplab.carat.android.suggestions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,16 +18,16 @@ import android.widget.TextView;
 
 public class HogsBugsAdapter extends BaseAdapter {
 	private List<HogsBugs> allBugsOrHogs = null;
-	private Map<String, Drawable> appToIcon = null;
 
 	private LayoutInflater mInflater;
+	private CaratApplication a = null;
 
-	public HogsBugsAdapter(Context context, List<HogsBugs> results, Map<String, Drawable> icons) {
+	public HogsBugsAdapter(CaratApplication a, List<HogsBugs> results) {
+		this.a = a;
 		allBugsOrHogs = results;
 		if (allBugsOrHogs == null)
 			allBugsOrHogs = new ArrayList<HogsBugs>();
-		appToIcon = icons;
-		mInflater = LayoutInflater.from(context);
+		mInflater = LayoutInflater.from(a.getApplicationContext());
 	}
 
 	public int getCount() {
@@ -60,9 +59,7 @@ public class HogsBugsAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		HogsBugs item = allBugsOrHogs.get(position);
-		Drawable icon = appToIcon.get(item.getAppName());
-		if (icon == null)
-			icon = appToIcon.get("edu.berkeley.cs.amplab.carat.android");
+		Drawable icon = a.iconForApp(item.getAppName());
 
 		holder.txtName.setText(item.getAppName());
 		holder.appIcon.setImageDrawable(icon);

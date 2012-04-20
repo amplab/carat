@@ -1,14 +1,9 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import edu.berkeley.cs.amplab.carat.android.suggestions.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
@@ -19,10 +14,6 @@ import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CaratBugsActivity extends Activity {
-
-	// Using drawables might be slow. Think about using the int icon and hope it
-	// loads.
-	private Map<String, Drawable> appToIcon = new HashMap<String, Drawable>();
 	
 	private ViewFlipper vf = null;
 	private int baseViewIndex = 0;
@@ -30,14 +21,6 @@ public class CaratBugsActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bugs);
-
-		List<android.content.pm.PackageInfo> packagelist = getPackageManager()
-				.getInstalledPackages(0);
-		for (android.content.pm.PackageInfo p : packagelist) {
-			String pname = p.applicationInfo.packageName;
-			Drawable icon = p.applicationInfo.loadIcon(getPackageManager());
-			appToIcon.put(pname, icon);
-		}
 
 		vf = (ViewFlipper) findViewById(R.id.bugsFlipper);
 		View baseView = findViewById(R.id.bugsList);
@@ -91,10 +74,11 @@ public class CaratBugsActivity extends Activity {
 	protected void onResume(){
 		CaratApplication app = (CaratApplication) getApplication();
 		final ListView lv = (ListView) findViewById(R.id.bugsList);
-		lv.setAdapter(new HogsBugsAdapter(this, app.s.getBugReport(), appToIcon));
+		lv.setAdapter(new HogsBugsAdapter(app, app.s.getBugReport()));
 		super.onResume();
 	}
 	
+	@Override
 	public void onBackPressed() {
 		if (vf.getDisplayedChild() != baseViewIndex) {
 			vf.setOutAnimation(CaratMainActivity.outtoRight);
