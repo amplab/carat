@@ -132,7 +132,7 @@ public class CaratMyDeviceActivity extends Activity {
 		// prepare content:
 		ListView lv = (ListView) findViewById(R.id.processList);
 		List<RunningAppProcessInfo> searchResults = SamplingLibrary.getRunningProcessInfo(getApplicationContext());
-		lv.setAdapter(new ProcessInfoAdapter(this, searchResults));
+		lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
 		// switch views:
 		View target = findViewById(R.id.processList);
 		vf.setOutAnimation(CaratMainActivity.outtoLeft);

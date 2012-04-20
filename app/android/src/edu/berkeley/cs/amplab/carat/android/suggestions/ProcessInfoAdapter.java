@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
@@ -11,12 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProcessInfoAdapter extends BaseAdapter {
 	private static List<RunningAppProcessInfo> searchArrayList;
 
 	private LayoutInflater mInflater;
+	
+	private CaratApplication app = null;
 
 	private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
 	{
@@ -32,8 +36,13 @@ public class ProcessInfoAdapter extends BaseAdapter {
 				"Foreground app");
 	}
 
+	public static String importanceString(int importance) {
+		return importanceToString.get(importance);
+	}
+
 	public ProcessInfoAdapter(Context context,
-			List<RunningAppProcessInfo> results) {
+			List<RunningAppProcessInfo> results, CaratApplication app) {
+		this.app = app;
 		searchArrayList = results;
 		mInflater = LayoutInflater.from(context);
 	}
@@ -55,6 +64,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.process, null);
 			holder = new ViewHolder();
+			holder.appIcon = (ImageView) convertView.findViewById(R.id.app_icon);
 			holder.txtName = (TextView) convertView
 					.findViewById(R.id.processName);
 			holder.txtBenefit = (TextView) convertView
@@ -67,6 +77,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		RunningAppProcessInfo x = searchArrayList.get(position);
+		holder.appIcon.setImageDrawable(app.iconForApp(x.processName));
 		holder.txtName.setText(x.processName);
 		holder.txtBenefit.setText(importanceToString.get(x.importance));
 		// holder.moreInfo...
@@ -75,6 +86,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
 	}
 
 	static class ViewHolder {
+		ImageView appIcon;
 		TextView txtName;
 		TextView txtBenefit;
 		// ImageView moreInfo;

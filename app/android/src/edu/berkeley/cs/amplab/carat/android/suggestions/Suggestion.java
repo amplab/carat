@@ -12,6 +12,10 @@ public class Suggestion {
 		return "Kill " + name;
 	}
 
+	public String getAppName() {
+		return name;
+	}
+
 	public void setBenefit(String benefit) {
 		this.benefit = benefit;
 	}

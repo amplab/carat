@@ -7,7 +7,7 @@ Carat My Device Screen layout
      android:id="@+id/viewFlipper"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-    android:background="@color/background" >  
+    android:background="@color/background" >
         
 <ScrollView 
     android:id="@+id/scrollView1"
