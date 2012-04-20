@@ -42,5 +42,7 @@
     <string name="benefitdefault">1d 9h 15m 40s</string>
     <string name="confidence">Confidence:</string>
     <string name="appname">App Name</string>
+    <string name="priority">Priority:</string>
+    <string name="priorityDefault">Not running</string>
 
 </resources>

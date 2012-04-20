@@ -35,11 +35,6 @@
             android:name=".CaratMyDeviceActivity"
             android:label="@string/app_name" >
         </activity>
-        <!-- Info on JScore -->
-        <activity
-            android:name=".CaratJscoreActivity"
-            android:label="@string/app_name" >
-        </activity>
         <activity
             android:name=".CaratBugsActivity"
             android:label="@string/app_name" >
