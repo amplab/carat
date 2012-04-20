@@ -1,8 +1,13 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import android.app.Application;
+import android.graphics.drawable.Drawable;
 
 public class CaratApplication extends Application {
 
@@ -12,6 +17,11 @@ public class CaratApplication extends Application {
 	// NOTE: The CommunicationManager requires a working instance of CaratDataStorage.
 	public CommunicationManager c = null;
 
+	// TODO: This may not be the best place for the icon map. 
+	private Map<String, Drawable> appToIcon = new HashMap<String, Drawable>();
+	// default icon:
+	public static String CARAT_PACKAGE = "edu.berkeley.cs.amplab.carat.android";
+	
 	/*
 	 * FIXME: Storing and retrieving totalAndused here only for testing. They
 	 * should really be stored in CaratDataStorage and retrieved as part of
@@ -23,6 +33,24 @@ public class CaratApplication extends Application {
 	 * be stored in CaratDataStorage and retrieved as part of sampling.
 	 */
 	public int cpu = 0;
+	
+	// Utility methods
+	
+	/**
+	 * Return a Drawable that contains an app icon for the named app.
+	 * If not found, return the Drawable for the Carat icon.
+	 * @param appName the application name
+	 * @return the Drawable for the application's icon
+	 */
+	public Drawable iconForApp(String appName){
+		if (appToIcon.containsKey(appName))
+			return appToIcon.get(appName);
+		else
+			return appToIcon.get(CARAT_PACKAGE);
+	}
+	
+	
+	// Application overrides
 
 	/**
 	 * 1. Create CaratDataStorage and read reports from disk
@@ -49,6 +77,14 @@ public class CaratApplication extends Application {
 			public void run() {
 				totalAndUsed = SamplingLibrary.readMeminfo();
 				cpu = (int) (SamplingLibrary.readUsage() * 100);
+				// Also do the icon assignment here
+				List<android.content.pm.PackageInfo> packagelist = getPackageManager()
+						.getInstalledPackages(0);
+				for (android.content.pm.PackageInfo p : packagelist) {
+					String pname = p.applicationInfo.packageName;
+					Drawable icon = p.applicationInfo.loadIcon(getPackageManager());
+					appToIcon.put(pname, icon);
+				}
 			}
 		}.start();
 
