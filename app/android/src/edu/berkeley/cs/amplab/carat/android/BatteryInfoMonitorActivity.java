@@ -70,9 +70,7 @@ public class BatteryInfoMonitorActivity extends Activity {
 		batteryResult = (TextView) findViewById(R.id.Result);
 		RunProcResult = (TextView) findViewById(R.id.runningProcesses);
 
-		// new Thread() {
-		// public void run() {
-		BatteryInfoMonitorActivity.this.runOnUiThread(new Runnable() {
+		 new Thread() {
 			public void run() {
 				IntentFilter tIntentFilter = new IntentFilter();
 				tIntentFilter.addAction(Intent.ACTION_TIME_TICK);
@@ -96,8 +94,7 @@ public class BatteryInfoMonitorActivity extends Activity {
 				registerReceiver(memoryBroadcastRecv, tIntentFilter);
 				registerReceiver(batteryBroadcastRecv, bIntentFilter);
 			}
-		});// }
-			// }.start();
+		}.start();
 
 		// Allow swipe to change tabs
 		findViewById(R.id.sampleScroll).setOnTouchListener(

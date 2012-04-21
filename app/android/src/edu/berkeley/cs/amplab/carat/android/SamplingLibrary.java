@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -425,6 +426,14 @@ public final class SamplingLibrary {
 		try {
 			tmp = br.readLine();
 			tmp = br.readLine();
+			if (tmp != null){
+				// split by whitespace and take 2nd element, so that in:
+				// MemoryFree: x kb
+				// the x remains.
+				String[] arr = tmp.split("\\s+");
+				if (arr.length > 1)
+					tmp = arr[1];
+			}
 			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

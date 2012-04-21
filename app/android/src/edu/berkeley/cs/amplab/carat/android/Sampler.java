@@ -6,6 +6,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class Sampler extends BroadcastReceiver {
 	private CaratApplication app = null;
@@ -18,6 +19,7 @@ public class Sampler extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// FIXME: or create a takeSample(...) with more features returned than
 		// in the basic Sample class
+		Log.i("Sampler", "Took a sample because of: " +intent.getAction());
 		Sample s = SamplingLibrary.getSample(context, intent,
 				app.s.getLastSample()); 
 		
