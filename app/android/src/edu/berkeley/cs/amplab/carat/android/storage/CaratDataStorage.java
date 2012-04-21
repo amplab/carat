@@ -40,6 +40,7 @@ public class CaratDataStorage {
 		caratData = readReports();
 		bugData = readBugReport();
 		hogData = readBugReport();
+		lastSample = readSample();
 	}
 
 	public void writeReports(Reports reports) {
@@ -228,6 +229,15 @@ public class CaratDataStorage {
 	public void writeSample(Sample s) {
 		lastSample = s;
 		writeObject(s, SAMPLE_FILE);
+	}
+	
+	public Sample readSample(){
+		Object o = readObject(SAMPLE_FILE);
+		Log.i("CaratDataStorage", "Read Sample: " + o);
+		if (o == null)
+			return null;
+		lastSample = (Sample) o;
+		return lastSample;
 	}
 	
 	public Sample getLastSample(){
