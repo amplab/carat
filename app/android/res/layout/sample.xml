@@ -42,7 +42,7 @@
         android:textColor="@color/green" />
        
    <TextView
-        android:id="@+id/RuningProcResult"
+        android:id="@+id/runningProcesses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/orange" />
