@@ -16,6 +16,7 @@ import android.util.Log;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
+import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 public class CaratDataStorage {
 
@@ -31,6 +32,7 @@ public class CaratDataStorage {
 	private Reports caratData = null;
 	private HogBugReport bugData = null;
 	private HogBugReport hogData = null;
+	private Sample lastSample = null;
 
 	public CaratDataStorage(Application a) {
 		this.a = a;
@@ -221,5 +223,14 @@ public class CaratDataStorage {
 		HogBugReport r = (HogBugReport) o;
 		hogData = r;
 		return r;
+	}
+	
+	public void writeSample(Sample s) {
+		lastSample = s;
+		writeObject(s, SAMPLE_FILE);
+	}
+	
+	public Sample getLastSample(){
+		return lastSample;
 	}
 }
