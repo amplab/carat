@@ -3,18 +3,22 @@
 Carat Bugs screen layout
 @author Eemil Lagerspetz
 -->
- <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
-     android:id="@+id/bugsFlipper"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bugsFlipper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/background" >
-    <ListView android:id="@+id/bugsList" android:layout_width="fill_parent"
-    android:layout_height="wrap_content"/>
-     
-<WebView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-   android:id="@+id/graphView" >
-   
-</WebView>
+
+    <ListView
+        android:id="@+id/bugsList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <WebView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/graphView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </WebView>
+
 </ViewFlipper>
