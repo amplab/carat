@@ -1263,6 +1263,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     }
   }
 
+
   private static class SampleTupleScheme extends TupleScheme<Sample> {
 
     @Override
@@ -1396,6 +1397,13 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         struct.setTriggeredByIsSet(true);
       }
     }
+    
+   /* public AndroidSample extends Serializable{
+        Sample iOSSample=null;
+        Map<String, String> androidSampleExtras = new HashMap<String,String>();
+        return;
+    }*/
+    
   }
 
 }

@@ -29,6 +29,9 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.util.Log;
+import android.widget.TextView;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Debug;
 import android.os.SystemClock;
@@ -452,6 +455,21 @@ public final class SamplingLibrary {
 		return tmp;
 
 	}
+	
+	public static String getWifiSignalStrength(Context context){
+	    
+	    WifiManager myWifiManager=(WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        WifiInfo myWifiInfo=myWifiManager.getConnectionInfo();
+        int wifiRssi=myWifiInfo.getRssi();
+        int linkSpeed=myWifiInfo.getLinkSpeed();
+        
+        Log.i("WifiRssi", "Rssi:" + wifiRssi);
+        Log.i("linkSpeed", "Link speed:" + linkSpeed);
+        String tmp="Current wifi signal strength is:"+String.valueOf(wifiRssi)+"Current wifi link speed is:"+String.valueOf(linkSpeed); 
+	    
+        return tmp;
+	    
+	}
 
 	public static Sample getSample(Context context, Intent intent,
 			Sample lastSample) {
@@ -482,6 +500,8 @@ public final class SamplingLibrary {
 		List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
 		mySample.setPiList(processes);
 
+		String wifiSignalStrength=SamplingLibrary.getWifiSignalStrength(context);
+		
 		double level = intent.getIntExtra("level", 0);
 		int health = intent.getIntExtra("health", 0);
 		double scale = intent.getIntExtra("scale", 100);
@@ -567,4 +587,12 @@ public final class SamplingLibrary {
 
 		return mySample;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -15,7 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class CaratBugsActivity extends Activity {
 	
-	private ViewFlipper vf = null;
+    private ViewFlipper vf = null;
 	private int baseViewIndex = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
