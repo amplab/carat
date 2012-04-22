@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -1396,13 +1397,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         struct.triggeredBy = iprot.readString();
         struct.setTriggeredByIsSet(true);
       }
-    }
-    
-   /* public AndroidSample extends Serializable{
-        Sample iOSSample=null;
-        Map<String, String> androidSampleExtras = new HashMap<String,String>();
-        return;
-    }*/
+    }   
     
   }
 

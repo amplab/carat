@@ -18,11 +18,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-
-import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Debug;
-import android.view.KeyEvent;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.TextView;
 
 public class BatteryInfoMonitorActivity extends Activity {
@@ -34,6 +34,7 @@ public class BatteryInfoMonitorActivity extends Activity {
 	TextView MemoryResult;
 	TextView RunProcResult;
 	TextView WifiSignalResult;
+
 	private int year;
 	private int month;
 	private int day;
@@ -62,7 +63,7 @@ public class BatteryInfoMonitorActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sample);
-
+		
 		TextView uuid = (TextView) findViewById(R.id.uuid);
 		uuid.setText("UUID: "
 				+ SamplingLibrary.getUuid(getApplicationContext()));
@@ -70,31 +71,25 @@ public class BatteryInfoMonitorActivity extends Activity {
 		MemoryResult = (TextView) findViewById(R.id.MemoryResult);
 		batteryResult = (TextView) findViewById(R.id.Result);
 		RunProcResult = (TextView) findViewById(R.id.runningProcesses);
-		WifiSignalResult =(TextView)findViewById(R.id.WifiSignalStrength);
-
+		//WifiSignalResult =(TextView)findViewById(R.id.WifiSignalStrength);
+	    
+		//TelephonyManager TM = ( TelephonyManager )getSystemService(Context.TELEPHONY_SERVICE);
+        //MyPhoneStateListener cdmaStregnthInfo= new MyPhoneStateListener();
+        //TM.listen(cdmaStregnthInfo ,PhoneStateListener.LISTEN_SIGNAL_STRENGTHS); 
+        
 		 new Thread() {
 			public void run() {
-				IntentFilter tIntentFilter = new IntentFilter();
-				tIntentFilter.addAction(Intent.ACTION_TIME_TICK);
-				tIntentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
-
-				IntentFilter bIntentFilter = new IntentFilter();
-				bIntentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-				bIntentFilter.addAction(Intent.ACTION_BATTERY_LOW);
-				bIntentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
-
 				IntentFilter totalIntentFilter = new IntentFilter();
 				totalIntentFilter.addAction(Intent.ACTION_TIME_TICK);
 				totalIntentFilter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
 				totalIntentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 				totalIntentFilter.addAction(Intent.ACTION_BATTERY_LOW);
 				totalIntentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
+
 				// Register a Sampler that keeps sampling stuff on the
 				// background
 				registerReceiver(new Sampler(
 						(CaratApplication) getApplication()), totalIntentFilter);
-				//registerReceiver(memoryBroadcastRecv, tIntentFilter);
-				//registerReceiver(batteryBroadcastRecv, bIntentFilter);
 			}
 		}.start();
 
@@ -104,5 +99,17 @@ public class BatteryInfoMonitorActivity extends Activity {
 
 	}
 	
+	/*private class MyPhoneStateListener extends PhoneStateListener
+    {
+      @Override
+      public void onSignalStrengthsChanged(SignalStrength ss)
+      {
+         super.onSignalStrengthsChanged(ss);
+         int ecio= ss.getCdmaEcio();
+         int strength = ss.getCdmaDbm();
+         Log.v("cdmaSignal","CDMA:"+strength+"CDMA ecio:"+ecio);
+      }
+
+    }*/
 
 }
