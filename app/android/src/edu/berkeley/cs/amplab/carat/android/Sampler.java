@@ -1,7 +1,14 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import org.apache.thrift.TException;
+
+import edu.berkeley.cs.amplab.carat.android.protocol.ProtocolClient;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDB;
+import edu.berkeley.cs.amplab.carat.thrift.CaratService.Client;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,16 +27,31 @@ public class Sampler extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		final Context c = context;
 		final Intent i = intent;
+		if (i.getAction().equals(Intent.ACTION_BOOT_COMPLETED)){
+			// start alarm to keep Sampler sampling
+			/*
+			 * Schedule recurring sampling event:*/
+			// What to start when the event fires (this is unused at the moment)
+			 Intent in = new Intent(context, Sampler.class);
+			 in.setAction(CaratApplication.ACTION_CARAT_SAMPLE);
+			 // In reality, you would want to have a static variable for the request code instead of 192837
+			 PendingIntent sender = PendingIntent.getBroadcast(context, 192837, in, PendingIntent.FLAG_UPDATE_CURRENT);
+			 
+			 // Get the AlarmManager service
+			 AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+			 // 1 min first, 15 min intervals
+			 am.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+1*60*1000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, sender);
+		}
+		
 		final Sample s = getSample(c, i);
 		/* Communications are not allowed in main thread on real devices.
 		 * Also, this object may be killed when we return from onReceive().
 		 */
-		/*
 		new Thread() {
 			public void run() {
-				sendSample(s);
+				sendSample(c, s);
 			}
-		}.start();*/
+		}.start();
 	}
 
 	private Sample getSample(Context context, Intent intent) {
@@ -48,8 +70,8 @@ public class Sampler extends BroadcastReceiver {
 		return s;
 	}
 
-	/*
-	private void sendSample(Sample s) {
+	
+	private void sendSample(Context c, Sample s) {
 		// Tell GUI to update itself if running...
 		// app.reloadSample();
 		// The GUI would then reload sample data in a new thread and update
@@ -61,12 +83,13 @@ public class Sampler extends BroadcastReceiver {
 		 * we don't constantly use network bandwidth when sampling happens in
 		 * the background.
 		 */
-	/*
+	
 		try {
-			CaratApplication.instance.c.uploadSample(s);
+			Client instance = ProtocolClient.getInstance(c);
+			instance.uploadSample(s);
 		} catch (TException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 }
