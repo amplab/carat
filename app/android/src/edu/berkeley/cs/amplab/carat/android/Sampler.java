@@ -47,11 +47,20 @@ public class Sampler extends BroadcastReceiver {
 		/* Communications are not allowed in main thread on real devices.
 		 * Also, this object may be killed when we return from onReceive().
 		 */
-		new Thread() {
+		Thread sender = new Thread() {
 			public void run() {
 				sendSample(c, s);
 			}
-		}.start();
+		};
+		sender.start();
+		
+		try {
+			sender.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// all done
 	}
 
 	private Sample getSample(Context context, Intent intent) {
