@@ -40,6 +40,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final org.apache.thrift.protocol.TField MEMORY_FREE_FIELD_DESC = new org.apache.thrift.protocol.TField("memoryFree", org.apache.thrift.protocol.TType.I32, (short)9);
   private static final org.apache.thrift.protocol.TField MEMORY_USER_FIELD_DESC = new org.apache.thrift.protocol.TField("memoryUser", org.apache.thrift.protocol.TType.I32, (short)10);
   private static final org.apache.thrift.protocol.TField TRIGGERED_BY_FIELD_DESC = new org.apache.thrift.protocol.TField("triggeredBy", org.apache.thrift.protocol.TType.STRING, (short)11);
+  private static final org.apache.thrift.protocol.TField NETWORK_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("networkStatus", org.apache.thrift.protocol.TType.STRING, (short)12);
+  private static final org.apache.thrift.protocol.TField DISTANCE_TRAVELED_FIELD_DESC = new org.apache.thrift.protocol.TField("distanceTraveled", org.apache.thrift.protocol.TType.DOUBLE, (short)13);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -58,6 +60,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   public int memoryFree; // optional
   public int memoryUser; // optional
   public String triggeredBy; // optional
+  public String networkStatus; // optional
+  public double distanceTraveled; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -71,7 +75,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     MEMORY_INACTIVE((short)8, "memoryInactive"),
     MEMORY_FREE((short)9, "memoryFree"),
     MEMORY_USER((short)10, "memoryUser"),
-    TRIGGERED_BY((short)11, "triggeredBy");
+    TRIGGERED_BY((short)11, "triggeredBy"),
+    NETWORK_STATUS((short)12, "networkStatus"),
+    DISTANCE_TRAVELED((short)13, "distanceTraveled");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -108,6 +114,10 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           return MEMORY_USER;
         case 11: // TRIGGERED_BY
           return TRIGGERED_BY;
+        case 12: // NETWORK_STATUS
+          return NETWORK_STATUS;
+        case 13: // DISTANCE_TRAVELED
+          return DISTANCE_TRAVELED;
         default:
           return null;
       }
@@ -155,8 +165,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final int __MEMORYINACTIVE_ISSET_ID = 4;
   private static final int __MEMORYFREE_ISSET_ID = 5;
   private static final int __MEMORYUSER_ISSET_ID = 6;
-  private BitSet __isset_bit_vector = new BitSet(7);
-  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY};
+  private static final int __DISTANCETRAVELED_ISSET_ID = 7;
+  private BitSet __isset_bit_vector = new BitSet(8);
+  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -182,6 +193,10 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.TRIGGERED_BY, new org.apache.thrift.meta_data.FieldMetaData("triggeredBy", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.NETWORK_STATUS, new org.apache.thrift.meta_data.FieldMetaData("networkStatus", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.DISTANCE_TRAVELED, new org.apache.thrift.meta_data.FieldMetaData("distanceTraveled", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Sample.class, metaDataMap);
   }
@@ -221,6 +236,10 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     if (other.isSetTriggeredBy()) {
       this.triggeredBy = other.triggeredBy;
     }
+    if (other.isSetNetworkStatus()) {
+      this.networkStatus = other.networkStatus;
+    }
+    this.distanceTraveled = other.distanceTraveled;
   }
 
   public Sample deepCopy() {
@@ -247,6 +266,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     setMemoryUserIsSet(false);
     this.memoryUser = 0;
     this.triggeredBy = null;
+    this.networkStatus = null;
+    setDistanceTraveledIsSet(false);
+    this.distanceTraveled = 0.0;
   }
 
   public String getUuId() {
@@ -521,6 +543,53 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     }
   }
 
+  public String getNetworkStatus() {
+    return this.networkStatus;
+  }
+
+  public Sample setNetworkStatus(String networkStatus) {
+    this.networkStatus = networkStatus;
+    return this;
+  }
+
+  public void unsetNetworkStatus() {
+    this.networkStatus = null;
+  }
+
+  /** Returns true if field networkStatus is set (has been assigned a value) and false otherwise */
+  public boolean isSetNetworkStatus() {
+    return this.networkStatus != null;
+  }
+
+  public void setNetworkStatusIsSet(boolean value) {
+    if (!value) {
+      this.networkStatus = null;
+    }
+  }
+
+  public double getDistanceTraveled() {
+    return this.distanceTraveled;
+  }
+
+  public Sample setDistanceTraveled(double distanceTraveled) {
+    this.distanceTraveled = distanceTraveled;
+    setDistanceTraveledIsSet(true);
+    return this;
+  }
+
+  public void unsetDistanceTraveled() {
+    __isset_bit_vector.clear(__DISTANCETRAVELED_ISSET_ID);
+  }
+
+  /** Returns true if field distanceTraveled is set (has been assigned a value) and false otherwise */
+  public boolean isSetDistanceTraveled() {
+    return __isset_bit_vector.get(__DISTANCETRAVELED_ISSET_ID);
+  }
+
+  public void setDistanceTraveledIsSet(boolean value) {
+    __isset_bit_vector.set(__DISTANCETRAVELED_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case UU_ID:
@@ -611,6 +680,22 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       break;
 
+    case NETWORK_STATUS:
+      if (value == null) {
+        unsetNetworkStatus();
+      } else {
+        setNetworkStatus((String)value);
+      }
+      break;
+
+    case DISTANCE_TRAVELED:
+      if (value == null) {
+        unsetDistanceTraveled();
+      } else {
+        setDistanceTraveled((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -649,6 +734,12 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     case TRIGGERED_BY:
       return getTriggeredBy();
 
+    case NETWORK_STATUS:
+      return getNetworkStatus();
+
+    case DISTANCE_TRAVELED:
+      return Double.valueOf(getDistanceTraveled());
+
     }
     throw new IllegalStateException();
   }
@@ -682,6 +773,10 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       return isSetMemoryUser();
     case TRIGGERED_BY:
       return isSetTriggeredBy();
+    case NETWORK_STATUS:
+      return isSetNetworkStatus();
+    case DISTANCE_TRAVELED:
+      return isSetDistanceTraveled();
     }
     throw new IllegalStateException();
   }
@@ -795,6 +890,24 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (!(this_present_triggeredBy && that_present_triggeredBy))
         return false;
       if (!this.triggeredBy.equals(that.triggeredBy))
+        return false;
+    }
+
+    boolean this_present_networkStatus = true && this.isSetNetworkStatus();
+    boolean that_present_networkStatus = true && that.isSetNetworkStatus();
+    if (this_present_networkStatus || that_present_networkStatus) {
+      if (!(this_present_networkStatus && that_present_networkStatus))
+        return false;
+      if (!this.networkStatus.equals(that.networkStatus))
+        return false;
+    }
+
+    boolean this_present_distanceTraveled = true && this.isSetDistanceTraveled();
+    boolean that_present_distanceTraveled = true && that.isSetDistanceTraveled();
+    if (this_present_distanceTraveled || that_present_distanceTraveled) {
+      if (!(this_present_distanceTraveled && that_present_distanceTraveled))
+        return false;
+      if (this.distanceTraveled != that.distanceTraveled)
         return false;
     }
 
@@ -924,6 +1037,26 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetNetworkStatus()).compareTo(typedOther.isSetNetworkStatus());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetNetworkStatus()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.networkStatus, typedOther.networkStatus);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetDistanceTraveled()).compareTo(typedOther.isSetDistanceTraveled());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDistanceTraveled()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.distanceTraveled, typedOther.distanceTraveled);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -1021,6 +1154,22 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       } else {
         sb.append(this.triggeredBy);
       }
+      first = false;
+    }
+    if (isSetNetworkStatus()) {
+      if (!first) sb.append(", ");
+      sb.append("networkStatus:");
+      if (this.networkStatus == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.networkStatus);
+      }
+      first = false;
+    }
+    if (isSetDistanceTraveled()) {
+      if (!first) sb.append(", ");
+      sb.append("distanceTraveled:");
+      sb.append(this.distanceTraveled);
       first = false;
     }
     sb.append(")");
@@ -1169,6 +1318,22 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 12: // NETWORK_STATUS
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.networkStatus = iprot.readString();
+              struct.setNetworkStatusIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 13: // DISTANCE_TRAVELED
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.distanceTraveled = iprot.readDouble();
+              struct.setDistanceTraveledIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -1252,6 +1417,18 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           oprot.writeFieldEnd();
         }
       }
+      if (struct.networkStatus != null) {
+        if (struct.isSetNetworkStatus()) {
+          oprot.writeFieldBegin(NETWORK_STATUS_FIELD_DESC);
+          oprot.writeString(struct.networkStatus);
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.isSetDistanceTraveled()) {
+        oprot.writeFieldBegin(DISTANCE_TRAVELED_FIELD_DESC);
+        oprot.writeDouble(struct.distanceTraveled);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1263,7 +1440,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       return new SampleTupleScheme();
     }
   }
-
 
   private static class SampleTupleScheme extends TupleScheme<Sample> {
 
@@ -1302,7 +1478,13 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetTriggeredBy()) {
         optionals.set(9);
       }
-      oprot.writeBitSet(optionals, 10);
+      if (struct.isSetNetworkStatus()) {
+        optionals.set(10);
+      }
+      if (struct.isSetDistanceTraveled()) {
+        optionals.set(11);
+      }
+      oprot.writeBitSet(optionals, 12);
       if (struct.isSetTimestamp()) {
         oprot.writeDouble(struct.timestamp);
       }
@@ -1339,6 +1521,12 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetTriggeredBy()) {
         oprot.writeString(struct.triggeredBy);
       }
+      if (struct.isSetNetworkStatus()) {
+        oprot.writeString(struct.networkStatus);
+      }
+      if (struct.isSetDistanceTraveled()) {
+        oprot.writeDouble(struct.distanceTraveled);
+      }
     }
 
     @Override
@@ -1346,7 +1534,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       TTupleProtocol iprot = (TTupleProtocol) prot;
       struct.uuId = iprot.readString();
       struct.setUuIdIsSet(true);
-      BitSet incoming = iprot.readBitSet(10);
+      BitSet incoming = iprot.readBitSet(12);
       if (incoming.get(0)) {
         struct.timestamp = iprot.readDouble();
         struct.setTimestampIsSet(true);
@@ -1397,8 +1585,15 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         struct.triggeredBy = iprot.readString();
         struct.setTriggeredByIsSet(true);
       }
-    }   
-    
+      if (incoming.get(10)) {
+        struct.networkStatus = iprot.readString();
+        struct.setNetworkStatusIsSet(true);
+      }
+      if (incoming.get(11)) {
+        struct.distanceTraveled = iprot.readDouble();
+        struct.setDistanceTraveledIsSet(true);
+      }
+    }
   }
 
 }

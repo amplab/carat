@@ -75,8 +75,9 @@ public class BatteryInfoMonitorActivity extends Activity {
 	    
 		//TelephonyManager TM = ( TelephonyManager )getSystemService(Context.TELEPHONY_SERVICE);
         //MyPhoneStateListener cdmaStregnthInfo= new MyPhoneStateListener();
-        //TM.listen(cdmaStregnthInfo ,PhoneStateListener.LISTEN_SIGNAL_STRENGTHS); 
-        
+        //TM.listen(cdmaStregnthInfo ,PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+		// Move reg to Manifest so it is active when the app is not 
+        /*
 		 new Thread() {
 			public void run() {
 				IntentFilter totalIntentFilter = new IntentFilter();
@@ -85,14 +86,15 @@ public class BatteryInfoMonitorActivity extends Activity {
 				totalIntentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 				totalIntentFilter.addAction(Intent.ACTION_BATTERY_LOW);
 				totalIntentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
+				totalIntentFilter.addAction(Intent.ACTION_BOOT_COMPLETED);
+				totalIntentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
+				totalIntentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
 
 				// Register a Sampler that keeps sampling stuff on the
 				// background
-				registerReceiver(new Sampler(
-						(CaratApplication) getApplication()), totalIntentFilter);
+				registerReceiver(new Sampler(), totalIntentFilter);
 			}
-		}.start();
-
+		}.start();*/
 		// Allow swipe to change tabs
 		findViewById(R.id.sampleScroll).setOnTouchListener(
 				SwipeListener.instance);

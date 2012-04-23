@@ -3,12 +3,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
     android:background="@color/background"
+    android:orientation="horizontal"
+    android:paddingBottom="10dip"
     android:paddingLeft="10dip"
     android:paddingRight="10dip"
-    android:paddingBottom="10dip"
-    android:paddingTop="10dip">
+    android:paddingTop="10dip" >
+
+    <ImageView
+        android:id="@+id/suggestion_app_icon"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="11dip"
+        android:contentDescription="@string/appicon"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,11 +32,19 @@
             android:id="@+id/actionName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/killappname"
             android:layout_gravity="left"
+            android:text="@string/killappname"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/brown" />
-        
+
+         <TextView
+                android:id="@+id/suggestion_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/default_type"
+                android:textColor="@color/brown" />
+         
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
@@ -50,7 +68,6 @@
                 android:text="@string/benefitdefault"
                 android:textColor="@color/green" />
         </LinearLayout>
-
     </LinearLayout>
 
     <ImageView

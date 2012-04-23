@@ -4,26 +4,30 @@
     android:versionCode="4"
     android:versionName="@string/version_name" >
 
-    <uses-sdk android:minSdkVersion="8"
+    <uses-sdk
+        android:minSdkVersion="8"
         android:targetSdkVersion="10" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.BATTERY_STATS"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
+        android:name="CaratApplication"
+        android:enabled="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" android:name="CaratApplication">
-        
+        android:label="@string/app_name" >
         <activity
             android:name=".CaratMainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name=".CaratSuggestionsActivity"
             android:label="@string/app_name" >
@@ -41,7 +45,7 @@
             android:name=".CaratBugsActivity"
             android:label="@string/app_name" >
         </activity>
-         <activity
+        <activity
             android:name=".CaratHogsActivity"
             android:label="@string/app_name" >
         </activity>
@@ -49,10 +53,32 @@
             android:name=".CaratAboutActivity"
             android:label="@string/app_name" >
         </activity>
-         <activity
+        <activity
             android:name=".BatteryInfoMonitorActivity"
             android:label="@string/app_name" >
         </activity>
+
+        <receiver
+            android:name="edu.berkeley.cs.amplab.carat.android.Sampler"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Carat Sampler" >
+            <intent-filter>
+                <!-- It is not possible to schedule TIME_TICK outside of the program.
+                Also, using AlarmManager with setRepeatingInexact saves battery if the interval
+                is 15 mins or more. -->
+                <!-- 
+                 <action android:name="android.intent.action.TIME_TICK" />  -->
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.BATTERY_CHANGED" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

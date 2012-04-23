@@ -40,7 +40,9 @@ public class SuggestionAdapter extends BaseAdapter {
 	  if (convertView == null) {
 	   convertView = mInflater.inflate(R.layout.suggestion, null);
 	   holder = new ViewHolder();
+	   holder.icon = (ImageView) convertView.findViewById(R.id.suggestion_app_icon);
 	   holder.txtName = (TextView) convertView.findViewById(R.id.actionName);
+	   holder.txtType = (TextView) convertView.findViewById(R.id.suggestion_type);
 	   holder.txtBenefit = (TextView) convertView.findViewById(R.id.expectedBenefit);
 	   holder.moreInfo = (ImageView) convertView.findViewById(R.id.moreinfo);
 
@@ -48,8 +50,11 @@ public class SuggestionAdapter extends BaseAdapter {
 	  } else {
 	   holder = (ViewHolder) convertView.getTag();
 	  }
+	  Suggestion s = searchArrayList.get(position);
 	  
-	  holder.txtName.setText(searchArrayList.get(position).getName());
+	  holder.icon.setImageDrawable(s.getIcon());
+	  holder.txtName.setText(s.getAction() +" "+ s.getAppName());
+	  holder.txtType.setText(s.getType());
 	  holder.txtBenefit.setText(searchArrayList.get(position).getBenefit());
 	  //holder.moreInfo...
 
@@ -57,7 +62,9 @@ public class SuggestionAdapter extends BaseAdapter {
 	 }
 
 	 static class ViewHolder {
+		 ImageView icon;
 	  TextView txtName;
+	  TextView txtType;
 	  TextView txtBenefit;
 	  ImageView moreInfo;
 	 }

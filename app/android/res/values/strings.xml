@@ -20,6 +20,7 @@
     <string name="alogo">AmpLab Logo</string>
     <string name="moreinfo">More Information</string>
     <string name="appicon">App Icon</string>
+    <string name="default_type">Foreground App</string>
     
     <string name="tab_my_device">My Device</string>
     

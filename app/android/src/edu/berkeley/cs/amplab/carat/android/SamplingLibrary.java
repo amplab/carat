@@ -535,6 +535,7 @@ public final class SamplingLibrary {
         // if we have real data, change old value
         if (level > 0 && scale > 0) {
             batteryLevel = (level * 100 / scale);
+            Log.i("SamplingLibrary", "BatteryLevel: " + batteryLevel);
         }
 
         // FIXED: Not used yet, Sample needs more fields
