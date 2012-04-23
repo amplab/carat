@@ -37,6 +37,8 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
   private static final org.apache.thrift.protocol.TField SIMILAR_APPS_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("similarAppsWithout", org.apache.thrift.protocol.TType.STRUCT, (short)7);
   private static final org.apache.thrift.protocol.TField CHANGE_SINCE_LAST_WEEK_FIELD_DESC = new org.apache.thrift.protocol.TField("changeSinceLastWeek", org.apache.thrift.protocol.TType.DOUBLE, (short)8);
   private static final org.apache.thrift.protocol.TField CHANGE_SINCE_LAST_WEEK_PERCENTAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("changeSinceLastWeekPercentage", org.apache.thrift.protocol.TType.DOUBLE, (short)9);
+  private static final org.apache.thrift.protocol.TField J_SCORE_WITH_FIELD_DESC = new org.apache.thrift.protocol.TField("jScoreWith", org.apache.thrift.protocol.TType.STRUCT, (short)10);
+  private static final org.apache.thrift.protocol.TField J_SCORE_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("jScoreWithout", org.apache.thrift.protocol.TType.STRUCT, (short)11);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -53,6 +55,8 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
   public DetailScreenReport similarAppsWithout; // optional
   public double changeSinceLastWeek; // optional
   public double changeSinceLastWeekPercentage; // optional
+  public DetailScreenReport jScoreWith; // optional
+  public DetailScreenReport jScoreWithout; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -64,7 +68,9 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
     SIMILAR_APPS((short)6, "similarApps"),
     SIMILAR_APPS_WITHOUT((short)7, "similarAppsWithout"),
     CHANGE_SINCE_LAST_WEEK((short)8, "changeSinceLastWeek"),
-    CHANGE_SINCE_LAST_WEEK_PERCENTAGE((short)9, "changeSinceLastWeekPercentage");
+    CHANGE_SINCE_LAST_WEEK_PERCENTAGE((short)9, "changeSinceLastWeekPercentage"),
+    J_SCORE_WITH((short)10, "jScoreWith"),
+    J_SCORE_WITHOUT((short)11, "jScoreWithout");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -97,6 +103,10 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
           return CHANGE_SINCE_LAST_WEEK;
         case 9: // CHANGE_SINCE_LAST_WEEK_PERCENTAGE
           return CHANGE_SINCE_LAST_WEEK_PERCENTAGE;
+        case 10: // J_SCORE_WITH
+          return J_SCORE_WITH;
+        case 11: // J_SCORE_WITHOUT
+          return J_SCORE_WITHOUT;
         default:
           return null;
       }
@@ -141,7 +151,7 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
   private static final int __CHANGESINCELASTWEEK_ISSET_ID = 1;
   private static final int __CHANGESINCELASTWEEKPERCENTAGE_ISSET_ID = 2;
   private BitSet __isset_bit_vector = new BitSet(3);
-  private _Fields optionals[] = {_Fields.J_SCORE,_Fields.OS,_Fields.OS_WITHOUT,_Fields.MODEL,_Fields.MODEL_WITHOUT,_Fields.SIMILAR_APPS,_Fields.SIMILAR_APPS_WITHOUT,_Fields.CHANGE_SINCE_LAST_WEEK,_Fields.CHANGE_SINCE_LAST_WEEK_PERCENTAGE};
+  private _Fields optionals[] = {_Fields.J_SCORE,_Fields.OS,_Fields.OS_WITHOUT,_Fields.MODEL,_Fields.MODEL_WITHOUT,_Fields.SIMILAR_APPS,_Fields.SIMILAR_APPS_WITHOUT,_Fields.CHANGE_SINCE_LAST_WEEK,_Fields.CHANGE_SINCE_LAST_WEEK_PERCENTAGE,_Fields.J_SCORE_WITH,_Fields.J_SCORE_WITHOUT};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -163,6 +173,10 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.CHANGE_SINCE_LAST_WEEK_PERCENTAGE, new org.apache.thrift.meta_data.FieldMetaData("changeSinceLastWeekPercentage", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.J_SCORE_WITH, new org.apache.thrift.meta_data.FieldMetaData("jScoreWith", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, DetailScreenReport.class)));
+    tmpMap.put(_Fields.J_SCORE_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("jScoreWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, DetailScreenReport.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Reports.class, metaDataMap);
   }
@@ -197,6 +211,12 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
     }
     this.changeSinceLastWeek = other.changeSinceLastWeek;
     this.changeSinceLastWeekPercentage = other.changeSinceLastWeekPercentage;
+    if (other.isSetJScoreWith()) {
+      this.jScoreWith = new DetailScreenReport(other.jScoreWith);
+    }
+    if (other.isSetJScoreWithout()) {
+      this.jScoreWithout = new DetailScreenReport(other.jScoreWithout);
+    }
   }
 
   public Reports deepCopy() {
@@ -217,6 +237,8 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
     this.changeSinceLastWeek = 0.0;
     setChangeSinceLastWeekPercentageIsSet(false);
     this.changeSinceLastWeekPercentage = 0.0;
+    this.jScoreWith = null;
+    this.jScoreWithout = null;
   }
 
   public double getJScore() {
@@ -432,6 +454,54 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
     __isset_bit_vector.set(__CHANGESINCELASTWEEKPERCENTAGE_ISSET_ID, value);
   }
 
+  public DetailScreenReport getJScoreWith() {
+    return this.jScoreWith;
+  }
+
+  public Reports setJScoreWith(DetailScreenReport jScoreWith) {
+    this.jScoreWith = jScoreWith;
+    return this;
+  }
+
+  public void unsetJScoreWith() {
+    this.jScoreWith = null;
+  }
+
+  /** Returns true if field jScoreWith is set (has been assigned a value) and false otherwise */
+  public boolean isSetJScoreWith() {
+    return this.jScoreWith != null;
+  }
+
+  public void setJScoreWithIsSet(boolean value) {
+    if (!value) {
+      this.jScoreWith = null;
+    }
+  }
+
+  public DetailScreenReport getJScoreWithout() {
+    return this.jScoreWithout;
+  }
+
+  public Reports setJScoreWithout(DetailScreenReport jScoreWithout) {
+    this.jScoreWithout = jScoreWithout;
+    return this;
+  }
+
+  public void unsetJScoreWithout() {
+    this.jScoreWithout = null;
+  }
+
+  /** Returns true if field jScoreWithout is set (has been assigned a value) and false otherwise */
+  public boolean isSetJScoreWithout() {
+    return this.jScoreWithout != null;
+  }
+
+  public void setJScoreWithoutIsSet(boolean value) {
+    if (!value) {
+      this.jScoreWithout = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case J_SCORE:
@@ -506,6 +576,22 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       }
       break;
 
+    case J_SCORE_WITH:
+      if (value == null) {
+        unsetJScoreWith();
+      } else {
+        setJScoreWith((DetailScreenReport)value);
+      }
+      break;
+
+    case J_SCORE_WITHOUT:
+      if (value == null) {
+        unsetJScoreWithout();
+      } else {
+        setJScoreWithout((DetailScreenReport)value);
+      }
+      break;
+
     }
   }
 
@@ -538,6 +624,12 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
     case CHANGE_SINCE_LAST_WEEK_PERCENTAGE:
       return Double.valueOf(getChangeSinceLastWeekPercentage());
 
+    case J_SCORE_WITH:
+      return getJScoreWith();
+
+    case J_SCORE_WITHOUT:
+      return getJScoreWithout();
+
     }
     throw new IllegalStateException();
   }
@@ -567,6 +659,10 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       return isSetChangeSinceLastWeek();
     case CHANGE_SINCE_LAST_WEEK_PERCENTAGE:
       return isSetChangeSinceLastWeekPercentage();
+    case J_SCORE_WITH:
+      return isSetJScoreWith();
+    case J_SCORE_WITHOUT:
+      return isSetJScoreWithout();
     }
     throw new IllegalStateException();
   }
@@ -662,6 +758,24 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       if (!(this_present_changeSinceLastWeekPercentage && that_present_changeSinceLastWeekPercentage))
         return false;
       if (this.changeSinceLastWeekPercentage != that.changeSinceLastWeekPercentage)
+        return false;
+    }
+
+    boolean this_present_jScoreWith = true && this.isSetJScoreWith();
+    boolean that_present_jScoreWith = true && that.isSetJScoreWith();
+    if (this_present_jScoreWith || that_present_jScoreWith) {
+      if (!(this_present_jScoreWith && that_present_jScoreWith))
+        return false;
+      if (!this.jScoreWith.equals(that.jScoreWith))
+        return false;
+    }
+
+    boolean this_present_jScoreWithout = true && this.isSetJScoreWithout();
+    boolean that_present_jScoreWithout = true && that.isSetJScoreWithout();
+    if (this_present_jScoreWithout || that_present_jScoreWithout) {
+      if (!(this_present_jScoreWithout && that_present_jScoreWithout))
+        return false;
+      if (!this.jScoreWithout.equals(that.jScoreWithout))
         return false;
     }
 
@@ -771,6 +885,26 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetJScoreWith()).compareTo(typedOther.isSetJScoreWith());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetJScoreWith()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.jScoreWith, typedOther.jScoreWith);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetJScoreWithout()).compareTo(typedOther.isSetJScoreWithout());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetJScoreWithout()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.jScoreWithout, typedOther.jScoreWithout);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -866,6 +1000,26 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       if (!first) sb.append(", ");
       sb.append("changeSinceLastWeekPercentage:");
       sb.append(this.changeSinceLastWeekPercentage);
+      first = false;
+    }
+    if (isSetJScoreWith()) {
+      if (!first) sb.append(", ");
+      sb.append("jScoreWith:");
+      if (this.jScoreWith == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.jScoreWith);
+      }
+      first = false;
+    }
+    if (isSetJScoreWithout()) {
+      if (!first) sb.append(", ");
+      sb.append("jScoreWithout:");
+      if (this.jScoreWithout == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.jScoreWithout);
+      }
       first = false;
     }
     sb.append(")");
@@ -990,6 +1144,24 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 10: // J_SCORE_WITH
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.jScoreWith = new DetailScreenReport();
+              struct.jScoreWith.read(iprot);
+              struct.setJScoreWithIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 11: // J_SCORE_WITHOUT
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.jScoreWithout = new DetailScreenReport();
+              struct.jScoreWithout.read(iprot);
+              struct.setJScoreWithoutIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -1062,6 +1234,20 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
         oprot.writeDouble(struct.changeSinceLastWeekPercentage);
         oprot.writeFieldEnd();
       }
+      if (struct.jScoreWith != null) {
+        if (struct.isSetJScoreWith()) {
+          oprot.writeFieldBegin(J_SCORE_WITH_FIELD_DESC);
+          struct.jScoreWith.write(oprot);
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.jScoreWithout != null) {
+        if (struct.isSetJScoreWithout()) {
+          oprot.writeFieldBegin(J_SCORE_WITHOUT_FIELD_DESC);
+          struct.jScoreWithout.write(oprot);
+          oprot.writeFieldEnd();
+        }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1107,7 +1293,13 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       if (struct.isSetChangeSinceLastWeekPercentage()) {
         optionals.set(8);
       }
-      oprot.writeBitSet(optionals, 9);
+      if (struct.isSetJScoreWith()) {
+        optionals.set(9);
+      }
+      if (struct.isSetJScoreWithout()) {
+        optionals.set(10);
+      }
+      oprot.writeBitSet(optionals, 11);
       if (struct.isSetJScore()) {
         oprot.writeDouble(struct.jScore);
       }
@@ -1135,12 +1327,18 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       if (struct.isSetChangeSinceLastWeekPercentage()) {
         oprot.writeDouble(struct.changeSinceLastWeekPercentage);
       }
+      if (struct.isSetJScoreWith()) {
+        struct.jScoreWith.write(oprot);
+      }
+      if (struct.isSetJScoreWithout()) {
+        struct.jScoreWithout.write(oprot);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, Reports struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(9);
+      BitSet incoming = iprot.readBitSet(11);
       if (incoming.get(0)) {
         struct.jScore = iprot.readDouble();
         struct.setJScoreIsSet(true);
@@ -1182,6 +1380,16 @@ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields
       if (incoming.get(8)) {
         struct.changeSinceLastWeekPercentage = iprot.readDouble();
         struct.setChangeSinceLastWeekPercentageIsSet(true);
+      }
+      if (incoming.get(9)) {
+        struct.jScoreWith = new DetailScreenReport();
+        struct.jScoreWith.read(iprot);
+        struct.setJScoreWithIsSet(true);
+      }
+      if (incoming.get(10)) {
+        struct.jScoreWithout = new DetailScreenReport();
+        struct.jScoreWithout.read(iprot);
+        struct.setJScoreWithoutIsSet(true);
       }
     }
   }
