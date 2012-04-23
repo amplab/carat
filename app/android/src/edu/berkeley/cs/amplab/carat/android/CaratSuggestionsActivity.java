@@ -29,10 +29,6 @@ public class CaratSuggestionsActivity extends ListActivity {
 		final ListView lv = getListView();
 		lv.setCacheColorHint(0);
 
-		ArrayList<Suggestion> searchResults = getSuggestions();
-
-		lv.setAdapter(new SuggestionAdapter(this, searchResults));
-
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int position,
@@ -52,17 +48,40 @@ public class CaratSuggestionsActivity extends ListActivity {
 
 		lv.setOnTouchListener(SwipeListener.instance);
 	}
+	
+	
+	
+
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		final ListView lv = getListView();
+		ArrayList<Suggestion> searchResults = getSuggestions();
+		lv.setAdapter(new SuggestionAdapter(this, searchResults));
+		super.onResume();
+	}
 
 	private ArrayList<Suggestion> getSuggestions() {
 		ArrayList<Suggestion> results = new ArrayList<Suggestion>();
 		List<RunningAppProcessInfo> rapps = SamplingLibrary
 				.getRunningProcessInfo(getApplicationContext());
+		
+		CaratApplication app = (CaratApplication) getApplication();
+		
 		for (RunningAppProcessInfo pi : rapps) {
-			Suggestion sr1 = new Suggestion();
-			sr1.setName(pi.processName);
-			sr1.setBenefit("You get to kill a"
-					+ ProcessInfoAdapter.importanceString(pi.importance));
-			results.add(sr1);
+			/* Skip stuff that is not running (should not show in this list)
+			 * and Services that will just spring back up when killed
+			 * TODO: Figure out how to skip stuff like keyboards and notification icons
+			 */
+			if (pi.importance == RunningAppProcessInfo.IMPORTANCE_EMPTY || 
+					pi.importance == RunningAppProcessInfo.IMPORTANCE_SERVICE)
+				continue;
+			Suggestion sugg = new Suggestion("Kill", app.labelForApp(pi.processName), CaratApplication.importanceString(pi.importance));
+			sugg.setIcon(app.iconForApp(pi.processName));
+			sugg.setBenefit(((int) (Math.random()*24)) + "h");
+			results.add(sugg);
 		}
 		return results;
 	}

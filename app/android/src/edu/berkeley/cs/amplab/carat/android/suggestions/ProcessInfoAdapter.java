@@ -22,24 +22,6 @@ public class ProcessInfoAdapter extends BaseAdapter {
 	
 	private CaratApplication app = null;
 
-	private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
-	{
-		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY,
-				"Not running");
-		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_BACKGROUND,
-				"Background process");
-		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_SERVICE,
-				"Service");
-		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_VISIBLE,
-				"Visible task");
-		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_FOREGROUND,
-				"Foreground app");
-	}
-
-	public static String importanceString(int importance) {
-		return importanceToString.get(importance);
-	}
-
 	public ProcessInfoAdapter(Context context,
 			List<RunningAppProcessInfo> results, CaratApplication app) {
 		this.app = app;
@@ -79,7 +61,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
 		RunningAppProcessInfo x = searchArrayList.get(position);
 		holder.appIcon.setImageDrawable(app.iconForApp(x.processName));
 		holder.txtName.setText(app.labelForApp(x.processName));
-		holder.txtBenefit.setText(importanceToString.get(x.importance));
+		holder.txtBenefit.setText(CaratApplication.importanceString(x.importance));
 		// holder.moreInfo...
 
 		return convertView;
