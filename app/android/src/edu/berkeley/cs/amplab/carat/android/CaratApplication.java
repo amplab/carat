@@ -1,16 +1,21 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 
 public class CaratApplication extends Application {
 
+	public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
 	
 	// NOTE: This needs to be initialized before CommunicationManager.
 	public CaratDataStorage s = null;
@@ -19,6 +24,7 @@ public class CaratApplication extends Application {
 
 	// TODO: This may not be the best place for the icon map. 
 	private Map<String, Drawable> appToIcon = new HashMap<String, Drawable>();
+	private Map<String, String> appToLabel = new HashMap<String, String>();
 	// default icon:
 	public static String CARAT_PACKAGE = "edu.berkeley.cs.amplab.carat.android";
 	
@@ -49,6 +55,18 @@ public class CaratApplication extends Application {
 			return appToIcon.get(CARAT_PACKAGE);
 	}
 	
+	/**
+	 * Return a human readable application label for the named app.
+	 * If not found, return appName.
+	 * @param appName the application name
+	 * @return the human readable application label
+	 */
+	public String labelForApp(String appName){
+		if (appToLabel.containsKey(appName))
+			return appToLabel.get(appName);
+		else
+			return appName;
+	}
 	
 	// Application overrides
 
@@ -82,8 +100,10 @@ public class CaratApplication extends Application {
 						.getInstalledPackages(0);
 				for (android.content.pm.PackageInfo p : packagelist) {
 					String pname = p.applicationInfo.packageName;
+					String label = getPackageManager().getApplicationLabel(p.applicationInfo).toString();
 					Drawable icon = p.applicationInfo.loadIcon(getPackageManager());
 					appToIcon.put(pname, icon);
+					appToLabel.put(pname, label);
 				}
 			}
 		}.start();
@@ -94,9 +114,26 @@ public class CaratApplication extends Application {
 				c.refreshReports();
 			}
 		}.start();
-
+		
+		/*
+		 * Schedule recurring sampling event:*/
+		// get a Calendar object with current time
+		 Calendar cal = Calendar.getInstance();
+		 // add 5 minutes to the calendar object
+		 cal.add(Calendar.MINUTE, 5);
+		 Intent intent = new Intent(getApplicationContext(), Sampler.class);
+		 intent.setAction(ACTION_CARAT_SAMPLE);
+		 // In reality, you would want to have a static variable for the request code instead of 192837
+		 PendingIntent sender = PendingIntent.getBroadcast(this, 192837, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		 
+		 // Get the AlarmManager service
+		 AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		 // 1 min
+		 am.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 1*60*1000, sender);
+		 
 		super.onCreate();
 	}
+	
 
 	@Override
 	public void onLowMemory() {

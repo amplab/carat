@@ -56,9 +56,9 @@ public class CommunicationManager {
 
 	public void uploadSample(Sample sample) throws TException {
 		registerOnFirstRun();
-		if (c == null) {
-			c = ProtocolClient.getInstance(a.getApplicationContext());
-		}
+		// FIXME: This may be stupid, but always use a new connection.
+		// Alternative: Make sure c opens the connection if it is stale/closed/nonexistent.
+		c = ProtocolClient.getInstance(a.getApplicationContext());
 		if (c == null) {
 			Log.e("uploadSample", "We are disconnected, not uploading.");
 			return;
