@@ -1,0 +1,390 @@
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/CaratService.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/CaratService.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/CaratService.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/CaratService.java	2012-04-23 13:18:49.872902442 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class CaratService {
+ 
+@@ -310,7 +308,7 @@
+   }
+ 
+   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
+-    private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class.getName());
++    //private static final Logger LOGGER = LoggerFactory.getLogger(Processor.class.getName());
+     public Processor(I iface) {
+       super(iface, getProcessMap(new HashMap<String, org.apache.thrift.ProcessFunction<I, ? extends org.apache.thrift.TBase>>()));
+     }
+@@ -648,7 +646,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -656,7 +654,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -1003,7 +1001,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -1011,7 +1009,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -1357,7 +1355,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -1365,7 +1363,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -1800,7 +1798,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -1808,7 +1806,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -2210,7 +2208,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -2218,7 +2216,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -2657,7 +2655,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -2665,7 +2663,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -3067,7 +3065,7 @@
+       try {
+         write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+@@ -3075,7 +3073,7 @@
+       try {
+         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+       } catch (org.apache.thrift.TException te) {
+-        throw new java.io.IOException(te);
++        throw new java.io.IOException(te.getMessage());
+       }
+     }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/DetailScreenReport.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/DetailScreenReport.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/DetailScreenReport.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/DetailScreenReport.java	2012-04-23 13:18:49.876902465 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenReport, DetailScreenReport._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("DetailScreenReport");
+@@ -542,7 +540,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -552,7 +550,7 @@
+       __isset_bit_vector = new BitSet(1);
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/Feature.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/Feature.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/Feature.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/Feature.java	2012-04-23 13:18:49.876902465 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class Feature implements org.apache.thrift.TBase<Feature, Feature._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Feature");
+@@ -355,7 +353,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -363,7 +361,7 @@
+     try {
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/HogBugReport.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/HogBugReport.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/HogBugReport.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/HogBugReport.java	2012-04-23 13:18:49.876902465 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class HogBugReport implements org.apache.thrift.TBase<HogBugReport, HogBugReport._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("HogBugReport");
+@@ -378,7 +376,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -386,7 +384,7 @@
+     try {
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/HogsBugs.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/HogsBugs.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/HogsBugs.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/HogsBugs.java	2012-04-23 13:18:49.876902465 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("HogsBugs");
+@@ -885,7 +883,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -895,7 +893,7 @@
+       __isset_bit_vector = new BitSet(1);
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/ProcessInfo.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/ProcessInfo.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/ProcessInfo.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/ProcessInfo.java	2012-04-23 13:18:49.876902465 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, ProcessInfo._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("ProcessInfo");
+@@ -353,7 +351,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -363,7 +361,7 @@
+       __isset_bit_vector = new BitSet(1);
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/Registration.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/Registration.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/Registration.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/Registration.java	2012-04-23 13:18:49.876902465 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class Registration implements org.apache.thrift.TBase<Registration, Registration._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Registration");
+@@ -515,7 +513,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -525,7 +523,7 @@
+       __isset_bit_vector = new BitSet(1);
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/Reports.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/Reports.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/Reports.java	2012-04-23 13:34:20.525517297 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/Reports.java	2012-04-23 13:34:22.877528975 -0700
+@@ -24,8 +24,6 @@
+ import java.util.BitSet;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class Reports implements org.apache.thrift.TBase<Reports, Reports._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Reports");
+@@ -1036,7 +1034,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -1046,7 +1044,7 @@
+       __isset_bit_vector = new BitSet(1);
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+diff -Naur thrift/edu/berkeley/cs/amplab/carat/thrift/Sample.java thrift-android/edu/berkeley/cs/amplab/carat/thrift/Sample.java
+--- thrift/edu/berkeley/cs/amplab/carat/thrift/Sample.java	2012-04-23 13:19:30.881105800 -0700
++++ thrift-android/edu/berkeley/cs/amplab/carat/thrift/Sample.java	2012-04-23 13:35:00.273714403 -0700
+@@ -22,10 +22,9 @@
+ import java.util.EnumSet;
+ import java.util.Collections;
+ import java.util.BitSet;
++import java.io.Serializable;
+ import java.nio.ByteBuffer;
+ import java.util.Arrays;
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
+ 
+ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, java.io.Serializable, Cloneable {
+   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("Sample");
+@@ -1188,7 +1187,7 @@
+     try {
+       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
+@@ -1198,7 +1197,7 @@
+       __isset_bit_vector = new BitSet(1);
+       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+     } catch (org.apache.thrift.TException te) {
+-      throw new java.io.IOException(te);
++      throw new java.io.IOException(te.getMessage());
+     }
+   }
+ 
