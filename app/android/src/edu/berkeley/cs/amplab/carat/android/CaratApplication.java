@@ -128,7 +128,9 @@ public class CaratApplication extends Application {
 
 		SharedPreferences p = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		if (p.getBoolean(PREFERENCE_SAMPLE_FIRST_RUN, true)) {
+		boolean firstRun = p.getBoolean(PREFERENCE_SAMPLE_FIRST_RUN, true);
+		// do this always for now:
+		//if (firstRun) {
 			/*
 			 * Schedule recurring sampling event:
 			 */
@@ -148,8 +150,8 @@ public class CaratApplication extends Application {
 					System.currentTimeMillis() + 1 * 60 * 1000,
 					AlarmManager.INTERVAL_FIFTEEN_MINUTES, sender);
 
-			p.edit().putBoolean(PREFERENCE_SAMPLE_FIRST_RUN, false).commit();
-		}
+			//p.edit().putBoolean(PREFERENCE_SAMPLE_FIRST_RUN, false).commit();
+		//}
 		super.onCreate();
 	}
 
