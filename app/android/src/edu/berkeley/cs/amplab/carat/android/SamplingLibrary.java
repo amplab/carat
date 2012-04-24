@@ -34,6 +34,8 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.TextView;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
@@ -48,6 +50,11 @@ import android.telephony.TelephonyManager;
  * 
  */
 public final class SamplingLibrary {
+	private static final int READ_BUFFER_SIZE = 2*1024;
+	public static String NETWORKSTATUS_DISCONNECTED = "disconnected";
+	public static String NETWORKSTATUS_DISCONNECTING = "disconnecting";
+	public static String NETWORKSTATUS_CONNECTED = "connected";
+	public static String NETWORKSTATUS_CONNECTING = "connecting";
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -99,10 +106,10 @@ public final class SamplingLibrary {
     }
 
     /**
-     * Read memory information from /proc/meminfo. Return total, used,
-     * active+inactive, and active memory.
+     * Read memory information from /proc/meminfo. Return used, free,
+     * inactive, and active memory.
      * 
-     * @return an int[] with total, used, active+inactive, and active memory, in
+     * @return an int[] with used, free, inactive, and active memory, in
      *         kB, in that order.
      */
     public static int[] readMeminfo() {
@@ -129,7 +136,7 @@ public final class SamplingLibrary {
             Log.i("meminfo", "Load: " + load + " 1:" + toks[1]);
             int inact = Integer.parseInt(toks[1]);
             reader.close();
-            return new int[] { total, total - free, act + inact, act };
+            return new int[] { total-free, free, inact, act };
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -286,7 +293,7 @@ public final class SamplingLibrary {
         long totalCpuTime = 0;
         File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
         String str = br.readLine();
         String[] cpuTotal = str.split(" ");
         br.close();
@@ -303,7 +310,7 @@ public final class SamplingLibrary {
         long totalIdleTime = 0;
         File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        BufferedReader br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
         String str = br.readLine();
         String[] idleTotal = str.split(" ");
         br.close();
@@ -320,7 +327,7 @@ public final class SamplingLibrary {
         try {
             File file = new File("/proc/stat");
             FileInputStream in = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            BufferedReader br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
             String str = br.readLine();
             cpuUsage = str.split(" ");
             br.close();
@@ -344,8 +351,8 @@ public final class SamplingLibrary {
 
             long idle2 = Long.parseLong(cpuUsage[5]);
             long cpu2 = getTotalCpuTime();
-
-            totalCpuUsage = (100 * (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1)));
+            if (cpu2+idle2 - (cpu1+idle1) > 0)
+            	totalCpuUsage = (100 * (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1)));
             Log.v("CPUusage", String.valueOf(totalCpuUsage));
             return totalCpuUsage;
         } catch (IOException ex) {
@@ -361,7 +368,7 @@ public final class SamplingLibrary {
         try {
             File file = new File("/proc/meminfo");
             FileInputStream in = new FileInputStream(file);
-            br = new BufferedReader(new InputStreamReader(in));
+            br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
 
         } catch (FileNotFoundException e1) {
             // TODO Auto-generated catch block
@@ -392,30 +399,10 @@ public final class SamplingLibrary {
 
     }
 
-    public static String getMemoryTotal() {
-        String tmp = null;
-        BufferedReader br = null;
-
-        try {
-            File file = new File("/proc/meminfo");
-            FileInputStream in = new FileInputStream(file);
-            br = new BufferedReader(new InputStreamReader(in));
-
-        } catch (FileNotFoundException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-
-        try {
-            tmp = br.readLine();
-            br.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return tmp;
-    }
-
+    /*
+     * Deprecated, use readMemInfo()[1]
+     */
+    @Deprecated
     public static String getMemoryFree() {
         String tmp = null;
         BufferedReader br = null;
@@ -423,7 +410,7 @@ public final class SamplingLibrary {
         try {
             File file = new File("/proc/meminfo");
             FileInputStream in = new FileInputStream(file);
-            br = new BufferedReader(new InputStreamReader(in));
+            br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
 
         } catch (FileNotFoundException e1) {
             // TODO Auto-generated catch block
@@ -458,6 +445,26 @@ public final class SamplingLibrary {
                 + seconds + "sec.\n";
         return tmp;
 
+    }
+    
+    public static String getNetworkStatus(Context context){
+    	ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    	if (cm == null)
+    		return NETWORKSTATUS_DISCONNECTED;
+    	NetworkInfo i = cm.getActiveNetworkInfo();
+    	if (i == null)
+    		return NETWORKSTATUS_DISCONNECTED;
+    	NetworkInfo.State s = i.getState();
+    	if (s == NetworkInfo.State.CONNECTED)
+    		return NETWORKSTATUS_CONNECTED;
+    	if (s == NetworkInfo.State.DISCONNECTED)
+    		return NETWORKSTATUS_DISCONNECTED;
+    	if (s == NetworkInfo.State.CONNECTING)
+    		return NETWORKSTATUS_CONNECTING;
+    	if (s == NetworkInfo.State.DISCONNECTING)
+    		return NETWORKSTATUS_DISCONNECTING;
+    	else
+    		return NETWORKSTATUS_DISCONNECTED;
     }
 
     public static int getWifiSignalStrength(Context context) {
@@ -519,7 +526,7 @@ public final class SamplingLibrary {
         int wifiLinkSpeed = SamplingLibrary
                 .getWifiLinkSpeed(context);
         
-        double level = intent.getIntExtra("level", 0);
+        double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
         double scale = intent.getIntExtra("scale", 100);
         int status = intent.getIntExtra("status", 0);
@@ -540,7 +547,7 @@ public final class SamplingLibrary {
 
         // FIXED: Not used yet, Sample needs more fields
         String Batteryhealth = "";
-        String Batterystatus = "";
+        String Batterystatus = "Unknown";
 
         switch (health) {
 
@@ -609,10 +616,24 @@ public final class SamplingLibrary {
         otherInfo.setBatteryStatus(Batterystatus);
         otherInfo.setBatteryPlugged(Batteryplugged);
         otherInfo.setBatteryHealth(Batteryhealth);
+        // Required in new Carat protocol
         
+        
+        mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
         mySample.setBatteryLevel(batteryLevel);
         mySample.setBatteryState(Batterystatus);
-        mySample.setMemoryFree(Integer.parseInt(SamplingLibrary.getMemoryFree()));
+        
+        int[] usedFreeActiveInactive = SamplingLibrary.readMeminfo();
+        if (usedFreeActiveInactive != null && usedFreeActiveInactive.length == 4){
+        	mySample.setMemoryUser(usedFreeActiveInactive[0]);
+        	mySample.setMemoryFree(usedFreeActiveInactive[1]);
+        	mySample.setMemoryActive(usedFreeActiveInactive[2]);
+        	mySample.setMemoryInactive(usedFreeActiveInactive[3]);
+        }
+        //TODO: Memory Wired should have memory that is "unevictable", that will always be used even when all apps are killed
+        
+        //Deprecated, readMeminfo gives all the 4 values
+        //mySample.setMemoryFree(Integer.parseInt(SamplingLibrary.getMemoryFree()));
  
         return mySample;
     }
