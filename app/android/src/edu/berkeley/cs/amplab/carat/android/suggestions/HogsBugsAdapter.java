@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-public class HogsBugsAdapter extends BaseAdapter {
+public abstract class HogsBugsAdapter extends BaseAdapter {
 	private List<HogsBugs> allBugsOrHogs = null;
 
 	private LayoutInflater mInflater;
@@ -41,11 +41,14 @@ public class HogsBugsAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
+	
+	
+	protected abstract int getId();
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.bughog, null);
+			convertView = mInflater.inflate(getId(), null);
 			holder = new ViewHolder();
 			holder.appIcon = (ImageView) convertView.findViewById(R.id.appIcon);
 			holder.txtName = (TextView) convertView.findViewById(R.id.bugName);

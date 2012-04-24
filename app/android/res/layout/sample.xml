@@ -14,7 +14,7 @@
         android:id="@+id/Notice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Updates once a minute."
+        android:text="Shows locally stored samples."
         android:textColor="@color/text"/>
 
     <TextView

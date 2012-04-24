@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import edu.berkeley.cs.amplab.carat.android.suggestions.BugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.suggestions.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
@@ -74,7 +75,7 @@ public class CaratBugsActivity extends Activity {
 	protected void onResume(){
 		CaratApplication app = (CaratApplication) getApplication();
 		final ListView lv = (ListView) findViewById(R.id.bugsList);
-		lv.setAdapter(new HogsBugsAdapter(app, app.s.getBugReport()));
+		lv.setAdapter(new BugsAdapter(app, app.s.getBugReport()));
 		super.onResume();
 	}
 	

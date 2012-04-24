@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Carat Bugs screen layout
+@author Eemil Lagerspetz
+-->
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hogsFlipper"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background" >
+
+    <ListView
+        android:id="@+id/hogsList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <WebView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/hogsGraphView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </WebView>
+
+</ViewFlipper>

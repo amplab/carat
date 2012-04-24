@@ -1,8 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.suggestions;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
