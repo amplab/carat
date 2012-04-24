@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, CaratSuggestionsActivity!</string>
     <string name="app_name">Carat</string>
-    <string name="version_name">0.32</string>
+    <string name="version_name">0.34</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
@@ -21,9 +20,8 @@
     <string name="moreinfo">More Information</string>
     <string name="appicon">App Icon</string>
     <string name="default_type">Foreground App</string>
-    
     <string name="tab_my_device">My Device</string>
-    
+
     <color name="brown">#744618</color>
     <color name="brown_dark">#ac8159</color>
     <color name="green_dark">#51a551</color>
@@ -31,13 +29,16 @@
     <color name="green">#127112</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
     <string name="zeroh">0h 0m 0s</string>
     <string name="tab_actions">Actions</string>
     <string name="tab_bugs">Bugs</string>
     <string name="tab_sample">Sample</string>
     <string name="blackBackground">false</string>
+
     <color name="background">#FFFFFFFF</color>
     <color name="text">#000000</color>
+
     <string name="expected">Expected improvement:</string>
     <string name="killappname">Kill App Name</string>
     <string name="benefitdefault">1d 9h 15m 40s</string>
