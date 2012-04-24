@@ -66,6 +66,20 @@ public class CommunicationManager {
 		c.uploadSample(sample);
 		ProtocolClient.close();
 	}
+	
+	public void uploadSamples(Sample[] samples) throws TException {
+		registerOnFirstRun();
+		// FIXME: This may be stupid, but always use a new connection.
+		// Alternative: Make sure c opens the connection if it is stale/closed/nonexistent.
+		c = ProtocolClient.getInstance(a.getApplicationContext());
+		if (c == null) {
+			Log.e("uploadSample", "We are disconnected, not uploading.");
+			return;
+		}
+		for (Sample s: samples)
+			c.uploadSample(s);
+		ProtocolClient.close();
+	}
 
 	public void registerOnFirstRun() {
 		if (register) {
@@ -76,9 +90,7 @@ public class CommunicationManager {
 					"First run, registering this device: " + uuId + ", " + os
 							+ ", " + model);
 			try {
-				if (c == null) {
-					c = ProtocolClient.getInstance(a.getApplicationContext());
-				}
+				c = ProtocolClient.getInstance(a.getApplicationContext());
 				if (c == null) {
 					Log.e("register",
 							"We are disconnected, not registering.");
@@ -86,6 +98,7 @@ public class CommunicationManager {
 				}
 				registerMe(uuId, os, model);
 				p.edit().putBoolean(PREFERENCE_FIRST_RUN, false).commit();
+				register = false;
 			} catch (TException e) {
 				Log.e("CommunicationManager",
 						"Registration failed, will try again next time: " + e);
