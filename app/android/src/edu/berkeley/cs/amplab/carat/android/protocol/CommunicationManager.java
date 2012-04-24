@@ -57,7 +57,8 @@ public class CommunicationManager {
 	public void uploadSample(Sample sample) throws TException {
 		registerOnFirstRun();
 		// FIXME: This may be stupid, but always use a new connection.
-		// Alternative: Make sure c opens the connection if it is stale/closed/nonexistent.
+		// Alternative: Make sure c opens the connection if it is
+		// stale/closed/nonexistent.
 		c = ProtocolClient.getInstance(a.getApplicationContext());
 		if (c == null) {
 			Log.e("uploadSample", "We are disconnected, not uploading.");
@@ -66,17 +67,18 @@ public class CommunicationManager {
 		c.uploadSample(sample);
 		ProtocolClient.close();
 	}
-	
+
 	public void uploadSamples(Sample[] samples) throws TException {
 		registerOnFirstRun();
 		// FIXME: This may be stupid, but always use a new connection.
-		// Alternative: Make sure c opens the connection if it is stale/closed/nonexistent.
+		// Alternative: Make sure c opens the connection if it is
+		// stale/closed/nonexistent.
 		c = ProtocolClient.getInstance(a.getApplicationContext());
 		if (c == null) {
 			Log.e("uploadSample", "We are disconnected, not uploading.");
 			return;
 		}
-		for (Sample s: samples)
+		for (Sample s : samples)
 			c.uploadSample(s);
 		ProtocolClient.close();
 	}
@@ -92,8 +94,7 @@ public class CommunicationManager {
 			try {
 				c = ProtocolClient.getInstance(a.getApplicationContext());
 				if (c == null) {
-					Log.e("register",
-							"We are disconnected, not registering.");
+					Log.e("register", "We are disconnected, not registering.");
 					return;
 				}
 				registerMe(uuId, os, model);
@@ -111,10 +112,16 @@ public class CommunicationManager {
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
 		registerOnFirstRun();
+
+		String uuId = SamplingLibrary.getUuid(a);
+		String model = SamplingLibrary.getModel();
+		String OS = SamplingLibrary.getOsVersion();
+
 		// FIXME: Fake data for now
-		String uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
-		String model = "iPhone 3GS";
-		String OS = "5.0.1";
+
+		uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
+		model = "iPhone 3GS";
+		OS = "5.0.1";
 
 		try {
 			c = ProtocolClient.getInstance(a.getApplicationContext());
