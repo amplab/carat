@@ -11,6 +11,7 @@ import android.app.Application;
 import android.app.PendingIntent;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
@@ -20,6 +21,7 @@ public class CaratApplication extends Application {
 	// 1 min first, then 15 min intervals
 	public static final long FIRST_SAMPLE_DELAY_MS = 60*1000;
 	public static final long SAMPLE_INTERVAL_MS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+	//public static final long SAMPLE_INTERVAL_MS = FIRST_SAMPLE_DELAY_MS;
 	
 	public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
 
@@ -58,13 +60,13 @@ public class CaratApplication extends Application {
 
 	/*
 	 * FIXME: Storing and retrieving totalAndused here only for testing. They
-	 * should really be stored in CaratDataStorage and retrieved as part of
+	 * should really be stored in CaratDB and retrieved as part of
 	 * sampling.
 	 */
 	public int[] totalAndUsed = null;
 	/*
 	 * FIXME: Storing and retrieving CPU here only for testing. It should really
-	 * be stored in CaratDataStorage and retrieved as part of sampling.
+	 * be stored in CaratDB and retrieved as part of sampling.
 	 */
 	public int cpu = 0;
 
@@ -103,21 +105,21 @@ public class CaratApplication extends Application {
 	// Application overrides
 
 	/**
-	 * 1. Create CaratDataStorage and read reports from disk TODO: this may need
-	 * to be done in a separate thread if it is slow
+	 * 1. Create CaratDataStorage and read reports from disk.
+	 * Does not seem too slow.
 	 * 
-	 * 2. Take a sample in a new thread so that the GUI has fresh data TODO:
-	 * Sampling not implemented yet
+	 * 2. Take a sample in a new thread so that the GUI has fresh data
+	 * TODO: Sampling is currently delayed until we get battery stats.
+	 * What to do on the first time?
 	 * 
 	 * 3. Create CommunicationManager for communicating with the Carat server
 	 * TODO: Uses fake data at the moment. TODO: When and by which class to
 	 * record UUID, OS, MODEL for this?
 	 * 
 	 * 4. Communicate with the server to fetch new reports if current ones are
-	 * outdated, and to send old stored and the new just-recorded sample. TODO:
-	 * Design data storage of multiple samples. Perhaps just a single file with
-	 * repeated writeObject() and readObject() calls, with a separate file for
-	 * the latest sample for GUI usage.
+	 * outdated, and to send old stored and the new just-recorded sample.
+	 * See CaratMainActivity for this task.
+	 * TODO: latest sample for GUI usage.
 	 */
 	@Override
 	public void onCreate() {
@@ -154,7 +156,9 @@ public class CaratApplication extends Application {
 
 				// p.edit().putBoolean(PREFERENCE_SAMPLE_FIRST_RUN, false).commit();
 				// }
-				
+				IntentFilter intentFilter = new IntentFilter();
+				intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+				registerReceiver(new Sampler(), intentFilter);
 			}
 		}.start();
 
