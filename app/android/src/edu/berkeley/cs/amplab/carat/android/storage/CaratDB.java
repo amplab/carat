@@ -42,6 +42,7 @@ public class CaratDB {
 	public static final String COLUMN_DISTANCE_TRAVELED = "distancetraveled";
 	public static final String COLUMN_MEMORY_ACTIVE = "memoryactive";
 	public static final String COLUMN_MEMORY_USER = "memoryuser";
+	public static final String COLUMN_MEMORY_FREE = "memoryfree";
 	public static final String COLUMN_MEMORY_INACTIVE = "memoryinactive";
 	public static final String COLUMN_PILIST = "pilist";
 
@@ -86,6 +87,7 @@ public class CaratDB {
 		map.put(COLUMN_MEMORY_ACTIVE, COLUMN_MEMORY_ACTIVE);
 		map.put(COLUMN_MEMORY_INACTIVE, COLUMN_MEMORY_INACTIVE);
 		map.put(COLUMN_MEMORY_USER, COLUMN_MEMORY_USER);
+		map.put(COLUMN_MEMORY_FREE, COLUMN_MEMORY_FREE);
 		map.put(COLUMN_MEMORY_WIRED, COLUMN_MEMORY_WIRED);
 		map.put(COLUMN_NETWORKSTATUS, COLUMN_NETWORKSTATUS);
 		map.put(COLUMN_PILIST, COLUMN_PILIST);
@@ -247,6 +249,8 @@ public class CaratDB {
 				.getColumnIndex(CaratDB.COLUMN_MEMORY_INACTIVE)));
 		s.setMemoryUser(cursor.getInt(cursor
 				.getColumnIndex(CaratDB.COLUMN_MEMORY_USER)));
+		s.setMemoryFree(cursor.getInt(cursor
+				.getColumnIndex(CaratDB.COLUMN_MEMORY_FREE)));
 		s.setMemoryWired(cursor.getInt(cursor
 				.getColumnIndex(CaratDB.COLUMN_MEMORY_WIRED)));
 		s.setDistanceTraveled(cursor.getDouble(cursor
@@ -367,6 +371,7 @@ public class CaratDB {
 					.put(COLUMN_DISTANCE_TRAVELED, s.getDistanceTraveled());
 			initialValues.put(COLUMN_MEMORY_WIRED, s.getMemoryWired());
 			initialValues.put(COLUMN_MEMORY_USER, s.getMemoryUser());
+			initialValues.put(COLUMN_MEMORY_FREE, s.getMemoryFree());
 			initialValues.put(COLUMN_MEMORY_ACTIVE, s.getMemoryActive());
 			initialValues.put(COLUMN_MEMORY_INACTIVE, s.getMemoryInactive());
 			initialValues.put(COLUMN_TRIGGERED_BY, s.getTriggeredBy());

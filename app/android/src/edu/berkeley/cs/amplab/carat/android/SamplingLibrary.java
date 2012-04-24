@@ -541,7 +541,7 @@ public final class SamplingLibrary {
             batteryLevel = lastSample.getBatteryLevel();
         // if we have real data, change old value
         if (level > 0 && scale > 0) {
-            batteryLevel = (level * 100 / scale);
+            batteryLevel = (level / scale);
             Log.i("SamplingLibrary", "BatteryLevel: " + batteryLevel);
         }
 

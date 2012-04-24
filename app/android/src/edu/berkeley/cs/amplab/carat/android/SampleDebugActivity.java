@@ -93,7 +93,7 @@ public class SampleDebugActivity extends Activity {
 			String trig = s.getTriggeredBy().replace("android.intent.action.", "").replace("edu.berkeley.cs.amplab.carat.android.", "");
 			sb.append(df.format(new Date((long) (s.getTimestamp() * 1000)))
 					+ "\n" + trig + "\n" + "Battery "
-					+ s.getBatteryState() + ", " + s.getBatteryLevel() + "%\n"
+					+ s.getBatteryState() + ", " + s.getBatteryLevel() + "\n"
 					+ "Network " + s.getNetworkStatus() + "\n" + "memoryUser="
 					+ s.getMemoryUser() + " Free=" + s.getMemoryFree() + "\n"
 					+ "Active=" + s.getMemoryActive() + " Inactive="
