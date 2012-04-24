@@ -16,14 +16,12 @@ import android.util.Log;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
-import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 public class CaratDataStorage {
 
 	public static final String FILENAME = "carat-reports.dat";
 	public static final String BUGFILE = "carat-bugs.dat";
 	public static final String HOGFILE = "carat-hogs.dat";
-	public static final String SAMPLE_FILE = "carat-samples.dat";
 			
 	public static final String FRESHNESS = "carat-freshness.dat";
 	private Application a = null;
@@ -32,7 +30,6 @@ public class CaratDataStorage {
 	private Reports caratData = null;
 	private HogBugReport bugData = null;
 	private HogBugReport hogData = null;
-	private Sample lastSample = null;
 
 	public CaratDataStorage(Application a) {
 		this.a = a;
@@ -40,7 +37,6 @@ public class CaratDataStorage {
 		caratData = readReports();
 		bugData = readBugReport();
 		hogData = readBugReport();
-		lastSample = readSample();
 	}
 
 	public void writeReports(Reports reports) {
@@ -224,23 +220,5 @@ public class CaratDataStorage {
 		HogBugReport r = (HogBugReport) o;
 		hogData = r;
 		return r;
-	}
-	
-	public void writeSample(Sample s) {
-		lastSample = s;
-		writeObject(s, SAMPLE_FILE);
-	}
-	
-	public Sample readSample(){
-		Object o = readObject(SAMPLE_FILE);
-		Log.i("CaratDataStorage", "Read Sample: " + o);
-		if (o == null)
-			return null;
-		lastSample = (Sample) o;
-		return lastSample;
-	}
-	
-	public Sample getLastSample(){
-		return lastSample;
 	}
 }
