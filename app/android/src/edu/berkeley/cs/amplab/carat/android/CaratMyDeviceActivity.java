@@ -199,13 +199,13 @@ public class CaratMyDeviceActivity extends Activity {
 		Window win = this.getWindow();
 		// Set memory values to the progress bar.
 		ProgressBar mText = (ProgressBar) win.findViewById(R.id.progressBar1);
-		mText.setMax(app.totalAndUsed[0]);
-		mText.setProgress(app.totalAndUsed[1]);
+		mText.setMax(app.totalAndUsed[0]+app.totalAndUsed[1]);
+		mText.setProgress(app.totalAndUsed[0]);
 		mText = (ProgressBar) win.findViewById(R.id.progressBar2);
 
 		if (app.totalAndUsed.length > 2) {
-			mText.setMax(app.totalAndUsed[2]);
-			mText.setProgress(app.totalAndUsed[3]);
+			mText.setMax(app.totalAndUsed[2]+app.totalAndUsed[3]);
+			mText.setProgress(app.totalAndUsed[2]);
 		}
 
 		/* CPU usage */
