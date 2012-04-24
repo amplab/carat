@@ -29,11 +29,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
+import android.provider.Settings.SettingNotFoundException;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.TextView;
+import android.location.GpsStatus;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
@@ -42,6 +46,7 @@ import android.os.BatteryManager;
 import android.os.Debug;
 import android.os.SystemClock;
 import android.telephony.TelephonyManager;
+
 /**
  * Library class for methods that obtain information about the phone that is
  * running Carat.
@@ -50,11 +55,11 @@ import android.telephony.TelephonyManager;
  * 
  */
 public final class SamplingLibrary {
-	private static final int READ_BUFFER_SIZE = 2*1024;
-	public static String NETWORKSTATUS_DISCONNECTED = "disconnected";
-	public static String NETWORKSTATUS_DISCONNECTING = "disconnecting";
-	public static String NETWORKSTATUS_CONNECTED = "connected";
-	public static String NETWORKSTATUS_CONNECTING = "connecting";
+    private static final int READ_BUFFER_SIZE = 2 * 1024;
+    public static String NETWORKSTATUS_DISCONNECTED = "disconnected";
+    public static String NETWORKSTATUS_DISCONNECTING = "disconnecting";
+    public static String NETWORKSTATUS_CONNECTED = "connected";
+    public static String NETWORKSTATUS_CONNECTING = "connecting";
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -106,11 +111,11 @@ public final class SamplingLibrary {
     }
 
     /**
-     * Read memory information from /proc/meminfo. Return used, free,
-     * inactive, and active memory.
+     * Read memory information from /proc/meminfo. Return used, free, inactive,
+     * and active memory.
      * 
-     * @return an int[] with used, free, inactive, and active memory, in
-     *         kB, in that order.
+     * @return an int[] with used, free, inactive, and active memory, in kB, in
+     *         that order.
      */
     public static int[] readMeminfo() {
         try {
@@ -136,7 +141,7 @@ public final class SamplingLibrary {
             Log.i("meminfo", "Load: " + load + " 1:" + toks[1]);
             int inact = Integer.parseInt(toks[1]);
             reader.close();
-            return new int[] { total-free, free, inact, act };
+            return new int[] { total - free, free, inact, act };
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -293,7 +298,8 @@ public final class SamplingLibrary {
         long totalCpuTime = 0;
         File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in),
+                READ_BUFFER_SIZE);
         String str = br.readLine();
         String[] cpuTotal = str.split(" ");
         br.close();
@@ -310,7 +316,8 @@ public final class SamplingLibrary {
         long totalIdleTime = 0;
         File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
+        BufferedReader br = new BufferedReader(new InputStreamReader(in),
+                READ_BUFFER_SIZE);
         String str = br.readLine();
         String[] idleTotal = str.split(" ");
         br.close();
@@ -327,7 +334,8 @@ public final class SamplingLibrary {
         try {
             File file = new File("/proc/stat");
             FileInputStream in = new FileInputStream(file);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in), READ_BUFFER_SIZE);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in),
+                    READ_BUFFER_SIZE);
             String str = br.readLine();
             cpuUsage = str.split(" ");
             br.close();
@@ -351,8 +359,8 @@ public final class SamplingLibrary {
 
             long idle2 = Long.parseLong(cpuUsage[5]);
             long cpu2 = getTotalCpuTime();
-            if (cpu2+idle2 - (cpu1+idle1) > 0)
-            	totalCpuUsage = (100 * (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1)));
+            if (cpu2 + idle2 - (cpu1 + idle1) > 0)
+                totalCpuUsage = (100 * (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1)));
             Log.v("CPUusage", String.valueOf(totalCpuUsage));
             return totalCpuUsage;
         } catch (IOException ex) {
@@ -446,27 +454,29 @@ public final class SamplingLibrary {
         return tmp;
 
     }
-    
-    public static String getNetworkStatus(Context context){
-    	ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    	if (cm == null)
-    		return NETWORKSTATUS_DISCONNECTED;
-    	NetworkInfo i = cm.getActiveNetworkInfo();
-    	if (i == null)
-    		return NETWORKSTATUS_DISCONNECTED;
-    	NetworkInfo.State s = i.getState();
-    	if (s == NetworkInfo.State.CONNECTED)
-    		return NETWORKSTATUS_CONNECTED;
-    	if (s == NetworkInfo.State.DISCONNECTED)
-    		return NETWORKSTATUS_DISCONNECTED;
-    	if (s == NetworkInfo.State.CONNECTING)
-    		return NETWORKSTATUS_CONNECTING;
-    	if (s == NetworkInfo.State.DISCONNECTING)
-    		return NETWORKSTATUS_DISCONNECTING;
-    	else
-    		return NETWORKSTATUS_DISCONNECTED;
+
+    public static String getNetworkStatus(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null)
+            return NETWORKSTATUS_DISCONNECTED;
+        NetworkInfo i = cm.getActiveNetworkInfo();
+        if (i == null)
+            return NETWORKSTATUS_DISCONNECTED;
+        NetworkInfo.State s = i.getState();
+        if (s == NetworkInfo.State.CONNECTED)
+            return NETWORKSTATUS_CONNECTED;
+        if (s == NetworkInfo.State.DISCONNECTED)
+            return NETWORKSTATUS_DISCONNECTED;
+        if (s == NetworkInfo.State.CONNECTING)
+            return NETWORKSTATUS_CONNECTING;
+        if (s == NetworkInfo.State.DISCONNECTING)
+            return NETWORKSTATUS_DISCONNECTING;
+        else
+            return NETWORKSTATUS_DISCONNECTED;
     }
 
+    /* Get current WiFi signal Strength */
     public static int getWifiSignalStrength(Context context) {
 
         WifiManager myWifiManager = (WifiManager) context
@@ -477,6 +487,8 @@ public final class SamplingLibrary {
         return wifiRssi;
 
     }
+
+    /* Get current WiFi link speed */
     public static int getWifiLinkSpeed(Context context) {
 
         WifiManager myWifiManager = (WifiManager) context
@@ -488,12 +500,51 @@ public final class SamplingLibrary {
         return linkSpeed;
     }
 
- 
+    /* Get Current Screen Brightness Value */
+    public static float getScreenBrightness(Context context) {
+
+        float screenBrightnessValue = 0;
+        try {
+            screenBrightnessValue = android.provider.Settings.System.getInt(
+                    context.getContentResolver(),
+                    android.provider.Settings.System.SCREEN_BRIGHTNESS);
+        } catch (SettingNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        Log.i("ScreenBrightness", "Screen brightness value:"
+                + screenBrightnessValue);
+        return screenBrightnessValue;
+    }
+
+    /* Check whether GPS are enabled */
+    public static boolean getGpsEnabled(Context context) {
+        boolean gpsEnabled= false;
+        LocationManager myLocationManager = (LocationManager) context  
+                .getSystemService(Context.LOCATION_SERVICE);  
+        gpsEnabled=myLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        Log.i("GPS", "GPS is :" +gpsEnabled);        
+        return gpsEnabled;
+    }
+
+    /* Check the maximum number of satellites can be used in the satellite list */
+    public static int getMaxNumSatellite(Context context) {
+
+        LocationManager locationManager = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+        GpsStatus gpsStatus = locationManager.getGpsStatus(null);
+        int maxNumSatellite = gpsStatus.getMaxSatellites();
+
+        Log.i("maxNumStatellite", "Maxmium number of satellites:"
+                + maxNumSatellite);
+        return maxNumSatellite;
+    }
 
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
         String action = intent.getAction();
-        
+
         // Construct sample and return it in the end
         Sample mySample = new Sample();
         AndroidSample otherInfo = new AndroidSample();
@@ -521,11 +572,14 @@ public final class SamplingLibrary {
         List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
         mySample.setPiList(processes);
 
-        int wifiSignalStrength = SamplingLibrary
-                .getWifiSignalStrength(context);
-        int wifiLinkSpeed = SamplingLibrary
-                .getWifiLinkSpeed(context);
-        
+        int wifiSignalStrength = SamplingLibrary.getWifiSignalStrength(context);
+        int wifiLinkSpeed = SamplingLibrary.getWifiLinkSpeed(context);
+
+        float screenbrightnessVal = SamplingLibrary
+                .getScreenBrightness(context);
+        boolean gpsEnabled=SamplingLibrary.getGpsEnabled(context);
+        int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
+
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
         double scale = intent.getIntExtra("scale", 100);
@@ -617,26 +671,26 @@ public final class SamplingLibrary {
         otherInfo.setBatteryPlugged(Batteryplugged);
         otherInfo.setBatteryHealth(Batteryhealth);
         // Required in new Carat protocol
-        
-        
+
         mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
         mySample.setBatteryLevel(batteryLevel);
         mySample.setBatteryState(Batterystatus);
-        
+
         int[] usedFreeActiveInactive = SamplingLibrary.readMeminfo();
-        if (usedFreeActiveInactive != null && usedFreeActiveInactive.length == 4){
-        	mySample.setMemoryUser(usedFreeActiveInactive[0]);
-        	mySample.setMemoryFree(usedFreeActiveInactive[1]);
-        	mySample.setMemoryActive(usedFreeActiveInactive[2]);
-        	mySample.setMemoryInactive(usedFreeActiveInactive[3]);
+        if (usedFreeActiveInactive != null
+                && usedFreeActiveInactive.length == 4) {
+            mySample.setMemoryUser(usedFreeActiveInactive[0]);
+            mySample.setMemoryFree(usedFreeActiveInactive[1]);
+            mySample.setMemoryActive(usedFreeActiveInactive[2]);
+            mySample.setMemoryInactive(usedFreeActiveInactive[3]);
         }
-        //TODO: Memory Wired should have memory that is "unevictable", that will always be used even when all apps are killed
-        
-        //Deprecated, readMeminfo gives all the 4 values
-        //mySample.setMemoryFree(Integer.parseInt(SamplingLibrary.getMemoryFree()));
- 
+        // TODO: Memory Wired should have memory that is "unevictable", that
+        // will always be used even when all apps are killed
+
+        // Deprecated, readMeminfo gives all the 4 values
+        // mySample.setMemoryFree(Integer.parseInt(SamplingLibrary.getMemoryFree()));
+
         return mySample;
     }
-    
-    
+
 }
