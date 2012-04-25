@@ -500,6 +500,11 @@ public final class SamplingLibrary {
         else
             return NETWORKSTATUS_DISCONNECTED;
     }
+    
+    public static boolean networkAvailable(Context c){
+		String network = getNetworkStatus(c);
+		return network.equals(NETWORKSTATUS_CONNECTED);
+	}
 
     /* Get current WiFi signal Strength */
     public static int getWifiSignalStrength(Context context) {
