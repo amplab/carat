@@ -32,6 +32,8 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
   private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.DOUBLE, (short)2);
   private static final org.apache.thrift.protocol.TField PLATFORM_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("platformId", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField SYSTEM_VERSION_FIELD_DESC = new org.apache.thrift.protocol.TField("systemVersion", org.apache.thrift.protocol.TType.STRING, (short)4);
+  private static final org.apache.thrift.protocol.TField SYSTEM_DISTRIBUTION_FIELD_DESC = new org.apache.thrift.protocol.TField("systemDistribution", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField KERNEL_VERSION_FIELD_DESC = new org.apache.thrift.protocol.TField("kernelVersion", org.apache.thrift.protocol.TType.STRING, (short)6);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -43,13 +45,17 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
   public double timestamp; // optional
   public String platformId; // optional
   public String systemVersion; // optional
+  public String systemDistribution; // optional
+  public String kernelVersion; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     UU_ID((short)1, "uuId"),
     TIMESTAMP((short)2, "timestamp"),
     PLATFORM_ID((short)3, "platformId"),
-    SYSTEM_VERSION((short)4, "systemVersion");
+    SYSTEM_VERSION((short)4, "systemVersion"),
+    SYSTEM_DISTRIBUTION((short)5, "systemDistribution"),
+    KERNEL_VERSION((short)6, "kernelVersion");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -72,6 +78,10 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
           return PLATFORM_ID;
         case 4: // SYSTEM_VERSION
           return SYSTEM_VERSION;
+        case 5: // SYSTEM_DISTRIBUTION
+          return SYSTEM_DISTRIBUTION;
+        case 6: // KERNEL_VERSION
+          return KERNEL_VERSION;
         default:
           return null;
       }
@@ -114,7 +124,7 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
   // isset id assignments
   private static final int __TIMESTAMP_ISSET_ID = 0;
   private BitSet __isset_bit_vector = new BitSet(1);
-  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PLATFORM_ID,_Fields.SYSTEM_VERSION};
+  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PLATFORM_ID,_Fields.SYSTEM_VERSION,_Fields.SYSTEM_DISTRIBUTION,_Fields.KERNEL_VERSION};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -125,6 +135,10 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
     tmpMap.put(_Fields.PLATFORM_ID, new org.apache.thrift.meta_data.FieldMetaData("platformId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.SYSTEM_VERSION, new org.apache.thrift.meta_data.FieldMetaData("systemVersion", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SYSTEM_DISTRIBUTION, new org.apache.thrift.meta_data.FieldMetaData("systemDistribution", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.KERNEL_VERSION, new org.apache.thrift.meta_data.FieldMetaData("kernelVersion", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Registration.class, metaDataMap);
@@ -156,6 +170,12 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
     if (other.isSetSystemVersion()) {
       this.systemVersion = other.systemVersion;
     }
+    if (other.isSetSystemDistribution()) {
+      this.systemDistribution = other.systemDistribution;
+    }
+    if (other.isSetKernelVersion()) {
+      this.kernelVersion = other.kernelVersion;
+    }
   }
 
   public Registration deepCopy() {
@@ -169,6 +189,8 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
     this.timestamp = 0.0;
     this.platformId = null;
     this.systemVersion = null;
+    this.systemDistribution = null;
+    this.kernelVersion = null;
   }
 
   public String getUuId() {
@@ -266,6 +288,54 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
     }
   }
 
+  public String getSystemDistribution() {
+    return this.systemDistribution;
+  }
+
+  public Registration setSystemDistribution(String systemDistribution) {
+    this.systemDistribution = systemDistribution;
+    return this;
+  }
+
+  public void unsetSystemDistribution() {
+    this.systemDistribution = null;
+  }
+
+  /** Returns true if field systemDistribution is set (has been assigned a value) and false otherwise */
+  public boolean isSetSystemDistribution() {
+    return this.systemDistribution != null;
+  }
+
+  public void setSystemDistributionIsSet(boolean value) {
+    if (!value) {
+      this.systemDistribution = null;
+    }
+  }
+
+  public String getKernelVersion() {
+    return this.kernelVersion;
+  }
+
+  public Registration setKernelVersion(String kernelVersion) {
+    this.kernelVersion = kernelVersion;
+    return this;
+  }
+
+  public void unsetKernelVersion() {
+    this.kernelVersion = null;
+  }
+
+  /** Returns true if field kernelVersion is set (has been assigned a value) and false otherwise */
+  public boolean isSetKernelVersion() {
+    return this.kernelVersion != null;
+  }
+
+  public void setKernelVersionIsSet(boolean value) {
+    if (!value) {
+      this.kernelVersion = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case UU_ID:
@@ -300,6 +370,22 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       }
       break;
 
+    case SYSTEM_DISTRIBUTION:
+      if (value == null) {
+        unsetSystemDistribution();
+      } else {
+        setSystemDistribution((String)value);
+      }
+      break;
+
+    case KERNEL_VERSION:
+      if (value == null) {
+        unsetKernelVersion();
+      } else {
+        setKernelVersion((String)value);
+      }
+      break;
+
     }
   }
 
@@ -316,6 +402,12 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
 
     case SYSTEM_VERSION:
       return getSystemVersion();
+
+    case SYSTEM_DISTRIBUTION:
+      return getSystemDistribution();
+
+    case KERNEL_VERSION:
+      return getKernelVersion();
 
     }
     throw new IllegalStateException();
@@ -336,6 +428,10 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       return isSetPlatformId();
     case SYSTEM_VERSION:
       return isSetSystemVersion();
+    case SYSTEM_DISTRIBUTION:
+      return isSetSystemDistribution();
+    case KERNEL_VERSION:
+      return isSetKernelVersion();
     }
     throw new IllegalStateException();
   }
@@ -386,6 +482,24 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       if (!(this_present_systemVersion && that_present_systemVersion))
         return false;
       if (!this.systemVersion.equals(that.systemVersion))
+        return false;
+    }
+
+    boolean this_present_systemDistribution = true && this.isSetSystemDistribution();
+    boolean that_present_systemDistribution = true && that.isSetSystemDistribution();
+    if (this_present_systemDistribution || that_present_systemDistribution) {
+      if (!(this_present_systemDistribution && that_present_systemDistribution))
+        return false;
+      if (!this.systemDistribution.equals(that.systemDistribution))
+        return false;
+    }
+
+    boolean this_present_kernelVersion = true && this.isSetKernelVersion();
+    boolean that_present_kernelVersion = true && that.isSetKernelVersion();
+    if (this_present_kernelVersion || that_present_kernelVersion) {
+      if (!(this_present_kernelVersion && that_present_kernelVersion))
+        return false;
+      if (!this.kernelVersion.equals(that.kernelVersion))
         return false;
     }
 
@@ -445,6 +559,26 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetSystemDistribution()).compareTo(typedOther.isSetSystemDistribution());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSystemDistribution()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.systemDistribution, typedOther.systemDistribution);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetKernelVersion()).compareTo(typedOther.isSetKernelVersion());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetKernelVersion()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.kernelVersion, typedOther.kernelVersion);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -495,6 +629,26 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
         sb.append("null");
       } else {
         sb.append(this.systemVersion);
+      }
+      first = false;
+    }
+    if (isSetSystemDistribution()) {
+      if (!first) sb.append(", ");
+      sb.append("systemDistribution:");
+      if (this.systemDistribution == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.systemDistribution);
+      }
+      first = false;
+    }
+    if (isSetKernelVersion()) {
+      if (!first) sb.append(", ");
+      sb.append("kernelVersion:");
+      if (this.kernelVersion == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.kernelVersion);
       }
       first = false;
     }
@@ -577,6 +731,22 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 5: // SYSTEM_DISTRIBUTION
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.systemDistribution = iprot.readString();
+              struct.setSystemDistributionIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 6: // KERNEL_VERSION
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.kernelVersion = iprot.readString();
+              struct.setKernelVersionIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -616,6 +786,20 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
           oprot.writeFieldEnd();
         }
       }
+      if (struct.systemDistribution != null) {
+        if (struct.isSetSystemDistribution()) {
+          oprot.writeFieldBegin(SYSTEM_DISTRIBUTION_FIELD_DESC);
+          oprot.writeString(struct.systemDistribution);
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.kernelVersion != null) {
+        if (struct.isSetKernelVersion()) {
+          oprot.writeFieldBegin(KERNEL_VERSION_FIELD_DESC);
+          oprot.writeString(struct.kernelVersion);
+          oprot.writeFieldEnd();
+        }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -644,7 +828,13 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       if (struct.isSetSystemVersion()) {
         optionals.set(2);
       }
-      oprot.writeBitSet(optionals, 3);
+      if (struct.isSetSystemDistribution()) {
+        optionals.set(3);
+      }
+      if (struct.isSetKernelVersion()) {
+        optionals.set(4);
+      }
+      oprot.writeBitSet(optionals, 5);
       if (struct.isSetTimestamp()) {
         oprot.writeDouble(struct.timestamp);
       }
@@ -654,6 +844,12 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       if (struct.isSetSystemVersion()) {
         oprot.writeString(struct.systemVersion);
       }
+      if (struct.isSetSystemDistribution()) {
+        oprot.writeString(struct.systemDistribution);
+      }
+      if (struct.isSetKernelVersion()) {
+        oprot.writeString(struct.kernelVersion);
+      }
     }
 
     @Override
@@ -661,7 +857,7 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       TTupleProtocol iprot = (TTupleProtocol) prot;
       struct.uuId = iprot.readString();
       struct.setUuIdIsSet(true);
-      BitSet incoming = iprot.readBitSet(3);
+      BitSet incoming = iprot.readBitSet(5);
       if (incoming.get(0)) {
         struct.timestamp = iprot.readDouble();
         struct.setTimestampIsSet(true);
@@ -673,6 +869,14 @@ public class Registration implements org.apache.thrift.TBase<Registration, Regis
       if (incoming.get(2)) {
         struct.systemVersion = iprot.readString();
         struct.setSystemVersionIsSet(true);
+      }
+      if (incoming.get(3)) {
+        struct.systemDistribution = iprot.readString();
+        struct.setSystemDistributionIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.kernelVersion = iprot.readString();
+        struct.setKernelVersionIsSet(true);
       }
     }
   }

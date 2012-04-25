@@ -30,6 +30,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
 
   private static final org.apache.thrift.protocol.TField P_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("pId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField P_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("pName", org.apache.thrift.protocol.TType.STRING, (short)2);
+  private static final org.apache.thrift.protocol.TField APPLICATION_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("applicationLabel", org.apache.thrift.protocol.TType.STRING, (short)3);
+  private static final org.apache.thrift.protocol.TField IS_SYSTEM_APP_FIELD_DESC = new org.apache.thrift.protocol.TField("isSystemApp", org.apache.thrift.protocol.TType.BOOL, (short)4);
+  private static final org.apache.thrift.protocol.TField IMPORTANCE_FIELD_DESC = new org.apache.thrift.protocol.TField("importance", org.apache.thrift.protocol.TType.STRING, (short)5);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -39,11 +42,17 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
 
   public int pId; // optional
   public String pName; // optional
+  public String applicationLabel; // optional
+  public boolean isSystemApp; // optional
+  public String importance; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     P_ID((short)1, "pId"),
-    P_NAME((short)2, "pName");
+    P_NAME((short)2, "pName"),
+    APPLICATION_LABEL((short)3, "applicationLabel"),
+    IS_SYSTEM_APP((short)4, "isSystemApp"),
+    IMPORTANCE((short)5, "importance");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -62,6 +71,12 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
           return P_ID;
         case 2: // P_NAME
           return P_NAME;
+        case 3: // APPLICATION_LABEL
+          return APPLICATION_LABEL;
+        case 4: // IS_SYSTEM_APP
+          return IS_SYSTEM_APP;
+        case 5: // IMPORTANCE
+          return IMPORTANCE;
         default:
           return null;
       }
@@ -103,14 +118,21 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
 
   // isset id assignments
   private static final int __PID_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
-  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME};
+  private static final int __ISSYSTEMAPP_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
+  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME,_Fields.APPLICATION_LABEL,_Fields.IS_SYSTEM_APP,_Fields.IMPORTANCE};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.P_ID, new org.apache.thrift.meta_data.FieldMetaData("pId", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.P_NAME, new org.apache.thrift.meta_data.FieldMetaData("pName", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.APPLICATION_LABEL, new org.apache.thrift.meta_data.FieldMetaData("applicationLabel", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.IS_SYSTEM_APP, new org.apache.thrift.meta_data.FieldMetaData("isSystemApp", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
+    tmpMap.put(_Fields.IMPORTANCE, new org.apache.thrift.meta_data.FieldMetaData("importance", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ProcessInfo.class, metaDataMap);
@@ -129,6 +151,13 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     if (other.isSetPName()) {
       this.pName = other.pName;
     }
+    if (other.isSetApplicationLabel()) {
+      this.applicationLabel = other.applicationLabel;
+    }
+    this.isSystemApp = other.isSystemApp;
+    if (other.isSetImportance()) {
+      this.importance = other.importance;
+    }
   }
 
   public ProcessInfo deepCopy() {
@@ -140,6 +169,10 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     setPIdIsSet(false);
     this.pId = 0;
     this.pName = null;
+    this.applicationLabel = null;
+    setIsSystemAppIsSet(false);
+    this.isSystemApp = false;
+    this.importance = null;
   }
 
   public int getPId() {
@@ -189,6 +222,77 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     }
   }
 
+  public String getApplicationLabel() {
+    return this.applicationLabel;
+  }
+
+  public ProcessInfo setApplicationLabel(String applicationLabel) {
+    this.applicationLabel = applicationLabel;
+    return this;
+  }
+
+  public void unsetApplicationLabel() {
+    this.applicationLabel = null;
+  }
+
+  /** Returns true if field applicationLabel is set (has been assigned a value) and false otherwise */
+  public boolean isSetApplicationLabel() {
+    return this.applicationLabel != null;
+  }
+
+  public void setApplicationLabelIsSet(boolean value) {
+    if (!value) {
+      this.applicationLabel = null;
+    }
+  }
+
+  public boolean isIsSystemApp() {
+    return this.isSystemApp;
+  }
+
+  public ProcessInfo setIsSystemApp(boolean isSystemApp) {
+    this.isSystemApp = isSystemApp;
+    setIsSystemAppIsSet(true);
+    return this;
+  }
+
+  public void unsetIsSystemApp() {
+    __isset_bit_vector.clear(__ISSYSTEMAPP_ISSET_ID);
+  }
+
+  /** Returns true if field isSystemApp is set (has been assigned a value) and false otherwise */
+  public boolean isSetIsSystemApp() {
+    return __isset_bit_vector.get(__ISSYSTEMAPP_ISSET_ID);
+  }
+
+  public void setIsSystemAppIsSet(boolean value) {
+    __isset_bit_vector.set(__ISSYSTEMAPP_ISSET_ID, value);
+  }
+
+  public String getImportance() {
+    return this.importance;
+  }
+
+  public ProcessInfo setImportance(String importance) {
+    this.importance = importance;
+    return this;
+  }
+
+  public void unsetImportance() {
+    this.importance = null;
+  }
+
+  /** Returns true if field importance is set (has been assigned a value) and false otherwise */
+  public boolean isSetImportance() {
+    return this.importance != null;
+  }
+
+  public void setImportanceIsSet(boolean value) {
+    if (!value) {
+      this.importance = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case P_ID:
@@ -207,6 +311,30 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       }
       break;
 
+    case APPLICATION_LABEL:
+      if (value == null) {
+        unsetApplicationLabel();
+      } else {
+        setApplicationLabel((String)value);
+      }
+      break;
+
+    case IS_SYSTEM_APP:
+      if (value == null) {
+        unsetIsSystemApp();
+      } else {
+        setIsSystemApp((Boolean)value);
+      }
+      break;
+
+    case IMPORTANCE:
+      if (value == null) {
+        unsetImportance();
+      } else {
+        setImportance((String)value);
+      }
+      break;
+
     }
   }
 
@@ -217,6 +345,15 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
 
     case P_NAME:
       return getPName();
+
+    case APPLICATION_LABEL:
+      return getApplicationLabel();
+
+    case IS_SYSTEM_APP:
+      return Boolean.valueOf(isIsSystemApp());
+
+    case IMPORTANCE:
+      return getImportance();
 
     }
     throw new IllegalStateException();
@@ -233,6 +370,12 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       return isSetPId();
     case P_NAME:
       return isSetPName();
+    case APPLICATION_LABEL:
+      return isSetApplicationLabel();
+    case IS_SYSTEM_APP:
+      return isSetIsSystemApp();
+    case IMPORTANCE:
+      return isSetImportance();
     }
     throw new IllegalStateException();
   }
@@ -265,6 +408,33 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (!(this_present_pName && that_present_pName))
         return false;
       if (!this.pName.equals(that.pName))
+        return false;
+    }
+
+    boolean this_present_applicationLabel = true && this.isSetApplicationLabel();
+    boolean that_present_applicationLabel = true && that.isSetApplicationLabel();
+    if (this_present_applicationLabel || that_present_applicationLabel) {
+      if (!(this_present_applicationLabel && that_present_applicationLabel))
+        return false;
+      if (!this.applicationLabel.equals(that.applicationLabel))
+        return false;
+    }
+
+    boolean this_present_isSystemApp = true && this.isSetIsSystemApp();
+    boolean that_present_isSystemApp = true && that.isSetIsSystemApp();
+    if (this_present_isSystemApp || that_present_isSystemApp) {
+      if (!(this_present_isSystemApp && that_present_isSystemApp))
+        return false;
+      if (this.isSystemApp != that.isSystemApp)
+        return false;
+    }
+
+    boolean this_present_importance = true && this.isSetImportance();
+    boolean that_present_importance = true && that.isSetImportance();
+    if (this_present_importance || that_present_importance) {
+      if (!(this_present_importance && that_present_importance))
+        return false;
+      if (!this.importance.equals(that.importance))
         return false;
     }
 
@@ -304,6 +474,36 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetApplicationLabel()).compareTo(typedOther.isSetApplicationLabel());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetApplicationLabel()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.applicationLabel, typedOther.applicationLabel);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetIsSystemApp()).compareTo(typedOther.isSetIsSystemApp());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetIsSystemApp()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.isSystemApp, typedOther.isSystemApp);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetImportance()).compareTo(typedOther.isSetImportance());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetImportance()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.importance, typedOther.importance);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -336,6 +536,32 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         sb.append("null");
       } else {
         sb.append(this.pName);
+      }
+      first = false;
+    }
+    if (isSetApplicationLabel()) {
+      if (!first) sb.append(", ");
+      sb.append("applicationLabel:");
+      if (this.applicationLabel == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.applicationLabel);
+      }
+      first = false;
+    }
+    if (isSetIsSystemApp()) {
+      if (!first) sb.append(", ");
+      sb.append("isSystemApp:");
+      sb.append(this.isSystemApp);
+      first = false;
+    }
+    if (isSetImportance()) {
+      if (!first) sb.append(", ");
+      sb.append("importance:");
+      if (this.importance == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.importance);
       }
       first = false;
     }
@@ -399,6 +625,30 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 3: // APPLICATION_LABEL
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.applicationLabel = iprot.readString();
+              struct.setApplicationLabelIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 4: // IS_SYSTEM_APP
+            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
+              struct.isSystemApp = iprot.readBool();
+              struct.setIsSystemAppIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 5: // IMPORTANCE
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.importance = iprot.readString();
+              struct.setImportanceIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -426,6 +676,25 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
           oprot.writeFieldEnd();
         }
       }
+      if (struct.applicationLabel != null) {
+        if (struct.isSetApplicationLabel()) {
+          oprot.writeFieldBegin(APPLICATION_LABEL_FIELD_DESC);
+          oprot.writeString(struct.applicationLabel);
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.isSetIsSystemApp()) {
+        oprot.writeFieldBegin(IS_SYSTEM_APP_FIELD_DESC);
+        oprot.writeBool(struct.isSystemApp);
+        oprot.writeFieldEnd();
+      }
+      if (struct.importance != null) {
+        if (struct.isSetImportance()) {
+          oprot.writeFieldBegin(IMPORTANCE_FIELD_DESC);
+          oprot.writeString(struct.importance);
+          oprot.writeFieldEnd();
+        }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -450,19 +719,37 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (struct.isSetPName()) {
         optionals.set(1);
       }
-      oprot.writeBitSet(optionals, 2);
+      if (struct.isSetApplicationLabel()) {
+        optionals.set(2);
+      }
+      if (struct.isSetIsSystemApp()) {
+        optionals.set(3);
+      }
+      if (struct.isSetImportance()) {
+        optionals.set(4);
+      }
+      oprot.writeBitSet(optionals, 5);
       if (struct.isSetPId()) {
         oprot.writeI32(struct.pId);
       }
       if (struct.isSetPName()) {
         oprot.writeString(struct.pName);
       }
+      if (struct.isSetApplicationLabel()) {
+        oprot.writeString(struct.applicationLabel);
+      }
+      if (struct.isSetIsSystemApp()) {
+        oprot.writeBool(struct.isSystemApp);
+      }
+      if (struct.isSetImportance()) {
+        oprot.writeString(struct.importance);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, ProcessInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(2);
+      BitSet incoming = iprot.readBitSet(5);
       if (incoming.get(0)) {
         struct.pId = iprot.readI32();
         struct.setPIdIsSet(true);
@@ -470,6 +757,18 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (incoming.get(1)) {
         struct.pName = iprot.readString();
         struct.setPNameIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.applicationLabel = iprot.readString();
+        struct.setApplicationLabelIsSet(true);
+      }
+      if (incoming.get(3)) {
+        struct.isSystemApp = iprot.readBool();
+        struct.setIsSystemAppIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.importance = iprot.readString();
+        struct.setImportanceIsSet(true);
       }
     }
   }

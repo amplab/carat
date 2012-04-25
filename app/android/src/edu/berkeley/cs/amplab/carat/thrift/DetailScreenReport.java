@@ -583,13 +583,13 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
           case 2: // X_VALS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                struct.xVals = new ArrayList<Double>(_list8.size);
-                for (int _i9 = 0; _i9 < _list8.size; ++_i9)
+                org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+                struct.xVals = new ArrayList<Double>(_list16.size);
+                for (int _i17 = 0; _i17 < _list16.size; ++_i17)
                 {
-                  double _elem10; // required
-                  _elem10 = iprot.readDouble();
-                  struct.xVals.add(_elem10);
+                  double _elem18; // required
+                  _elem18 = iprot.readDouble();
+                  struct.xVals.add(_elem18);
                 }
                 iprot.readListEnd();
               }
@@ -601,13 +601,13 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
           case 3: // Y_VALS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list11 = iprot.readListBegin();
-                struct.yVals = new ArrayList<Double>(_list11.size);
-                for (int _i12 = 0; _i12 < _list11.size; ++_i12)
+                org.apache.thrift.protocol.TList _list19 = iprot.readListBegin();
+                struct.yVals = new ArrayList<Double>(_list19.size);
+                for (int _i20 = 0; _i20 < _list19.size; ++_i20)
                 {
-                  double _elem13; // required
-                  _elem13 = iprot.readDouble();
-                  struct.yVals.add(_elem13);
+                  double _elem21; // required
+                  _elem21 = iprot.readDouble();
+                  struct.yVals.add(_elem21);
                 }
                 iprot.readListEnd();
               }
@@ -649,9 +649,9 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
           oprot.writeFieldBegin(X_VALS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, struct.xVals.size()));
-            for (double _iter14 : struct.xVals)
+            for (double _iter22 : struct.xVals)
             {
-              oprot.writeDouble(_iter14);
+              oprot.writeDouble(_iter22);
             }
             oprot.writeListEnd();
           }
@@ -663,9 +663,9 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
           oprot.writeFieldBegin(Y_VALS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, struct.yVals.size()));
-            for (double _iter15 : struct.yVals)
+            for (double _iter23 : struct.yVals)
             {
-              oprot.writeDouble(_iter15);
+              oprot.writeDouble(_iter23);
             }
             oprot.writeListEnd();
           }
@@ -714,18 +714,18 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       if (struct.isSetXVals()) {
         {
           oprot.writeI32(struct.xVals.size());
-          for (double _iter16 : struct.xVals)
+          for (double _iter24 : struct.xVals)
           {
-            oprot.writeDouble(_iter16);
+            oprot.writeDouble(_iter24);
           }
         }
       }
       if (struct.isSetYVals()) {
         {
           oprot.writeI32(struct.yVals.size());
-          for (double _iter17 : struct.yVals)
+          for (double _iter25 : struct.yVals)
           {
-            oprot.writeDouble(_iter17);
+            oprot.writeDouble(_iter25);
           }
         }
       }
@@ -744,26 +744,26 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       }
       if (incoming.get(1)) {
         {
-          org.apache.thrift.protocol.TList _list18 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
-          struct.xVals = new ArrayList<Double>(_list18.size);
-          for (int _i19 = 0; _i19 < _list18.size; ++_i19)
+          org.apache.thrift.protocol.TList _list26 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
+          struct.xVals = new ArrayList<Double>(_list26.size);
+          for (int _i27 = 0; _i27 < _list26.size; ++_i27)
           {
-            double _elem20; // required
-            _elem20 = iprot.readDouble();
-            struct.xVals.add(_elem20);
+            double _elem28; // required
+            _elem28 = iprot.readDouble();
+            struct.xVals.add(_elem28);
           }
         }
         struct.setXValsIsSet(true);
       }
       if (incoming.get(2)) {
         {
-          org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
-          struct.yVals = new ArrayList<Double>(_list21.size);
-          for (int _i22 = 0; _i22 < _list21.size; ++_i22)
+          org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
+          struct.yVals = new ArrayList<Double>(_list29.size);
+          for (int _i30 = 0; _i30 < _list29.size; ++_i30)
           {
-            double _elem23; // required
-            _elem23 = iprot.readDouble();
-            struct.yVals.add(_elem23);
+            double _elem31; // required
+            _elem31 = iprot.readDouble();
+            struct.yVals.add(_elem31);
           }
         }
         struct.setYValsIsSet(true);

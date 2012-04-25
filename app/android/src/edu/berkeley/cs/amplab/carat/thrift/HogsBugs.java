@@ -934,13 +934,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           case 3: // X_VALS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
-                struct.xVals = new ArrayList<Double>(_list24.size);
-                for (int _i25 = 0; _i25 < _list24.size; ++_i25)
+                org.apache.thrift.protocol.TList _list32 = iprot.readListBegin();
+                struct.xVals = new ArrayList<Double>(_list32.size);
+                for (int _i33 = 0; _i33 < _list32.size; ++_i33)
                 {
-                  double _elem26; // required
-                  _elem26 = iprot.readDouble();
-                  struct.xVals.add(_elem26);
+                  double _elem34; // required
+                  _elem34 = iprot.readDouble();
+                  struct.xVals.add(_elem34);
                 }
                 iprot.readListEnd();
               }
@@ -952,13 +952,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           case 4: // Y_VALS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list27 = iprot.readListBegin();
-                struct.yVals = new ArrayList<Double>(_list27.size);
-                for (int _i28 = 0; _i28 < _list27.size; ++_i28)
+                org.apache.thrift.protocol.TList _list35 = iprot.readListBegin();
+                struct.yVals = new ArrayList<Double>(_list35.size);
+                for (int _i36 = 0; _i36 < _list35.size; ++_i36)
                 {
-                  double _elem29; // required
-                  _elem29 = iprot.readDouble();
-                  struct.yVals.add(_elem29);
+                  double _elem37; // required
+                  _elem37 = iprot.readDouble();
+                  struct.yVals.add(_elem37);
                 }
                 iprot.readListEnd();
               }
@@ -970,13 +970,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           case 5: // X_VALS_WITHOUT
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
-                struct.xValsWithout = new ArrayList<Double>(_list30.size);
-                for (int _i31 = 0; _i31 < _list30.size; ++_i31)
+                org.apache.thrift.protocol.TList _list38 = iprot.readListBegin();
+                struct.xValsWithout = new ArrayList<Double>(_list38.size);
+                for (int _i39 = 0; _i39 < _list38.size; ++_i39)
                 {
-                  double _elem32; // required
-                  _elem32 = iprot.readDouble();
-                  struct.xValsWithout.add(_elem32);
+                  double _elem40; // required
+                  _elem40 = iprot.readDouble();
+                  struct.xValsWithout.add(_elem40);
                 }
                 iprot.readListEnd();
               }
@@ -988,13 +988,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           case 6: // Y_VALS_WITHOUT
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list33 = iprot.readListBegin();
-                struct.yValsWithout = new ArrayList<Double>(_list33.size);
-                for (int _i34 = 0; _i34 < _list33.size; ++_i34)
+                org.apache.thrift.protocol.TList _list41 = iprot.readListBegin();
+                struct.yValsWithout = new ArrayList<Double>(_list41.size);
+                for (int _i42 = 0; _i42 < _list41.size; ++_i42)
                 {
-                  double _elem35; // required
-                  _elem35 = iprot.readDouble();
-                  struct.yValsWithout.add(_elem35);
+                  double _elem43; // required
+                  _elem43 = iprot.readDouble();
+                  struct.yValsWithout.add(_elem43);
                 }
                 iprot.readListEnd();
               }
@@ -1051,9 +1051,9 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           oprot.writeFieldBegin(X_VALS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, struct.xVals.size()));
-            for (double _iter36 : struct.xVals)
+            for (double _iter44 : struct.xVals)
             {
-              oprot.writeDouble(_iter36);
+              oprot.writeDouble(_iter44);
             }
             oprot.writeListEnd();
           }
@@ -1065,9 +1065,9 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           oprot.writeFieldBegin(Y_VALS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, struct.yVals.size()));
-            for (double _iter37 : struct.yVals)
+            for (double _iter45 : struct.yVals)
             {
-              oprot.writeDouble(_iter37);
+              oprot.writeDouble(_iter45);
             }
             oprot.writeListEnd();
           }
@@ -1079,9 +1079,9 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           oprot.writeFieldBegin(X_VALS_WITHOUT_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, struct.xValsWithout.size()));
-            for (double _iter38 : struct.xValsWithout)
+            for (double _iter46 : struct.xValsWithout)
             {
-              oprot.writeDouble(_iter38);
+              oprot.writeDouble(_iter46);
             }
             oprot.writeListEnd();
           }
@@ -1093,9 +1093,9 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           oprot.writeFieldBegin(Y_VALS_WITHOUT_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, struct.yValsWithout.size()));
-            for (double _iter39 : struct.yValsWithout)
+            for (double _iter47 : struct.yValsWithout)
             {
-              oprot.writeDouble(_iter39);
+              oprot.writeDouble(_iter47);
             }
             oprot.writeListEnd();
           }
@@ -1164,36 +1164,36 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (struct.isSetXVals()) {
         {
           oprot.writeI32(struct.xVals.size());
-          for (double _iter40 : struct.xVals)
+          for (double _iter48 : struct.xVals)
           {
-            oprot.writeDouble(_iter40);
+            oprot.writeDouble(_iter48);
           }
         }
       }
       if (struct.isSetYVals()) {
         {
           oprot.writeI32(struct.yVals.size());
-          for (double _iter41 : struct.yVals)
+          for (double _iter49 : struct.yVals)
           {
-            oprot.writeDouble(_iter41);
+            oprot.writeDouble(_iter49);
           }
         }
       }
       if (struct.isSetXValsWithout()) {
         {
           oprot.writeI32(struct.xValsWithout.size());
-          for (double _iter42 : struct.xValsWithout)
+          for (double _iter50 : struct.xValsWithout)
           {
-            oprot.writeDouble(_iter42);
+            oprot.writeDouble(_iter50);
           }
         }
       }
       if (struct.isSetYValsWithout()) {
         {
           oprot.writeI32(struct.yValsWithout.size());
-          for (double _iter43 : struct.yValsWithout)
+          for (double _iter51 : struct.yValsWithout)
           {
-            oprot.writeDouble(_iter43);
+            oprot.writeDouble(_iter51);
           }
         }
       }
@@ -1219,52 +1219,52 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       }
       if (incoming.get(2)) {
         {
-          org.apache.thrift.protocol.TList _list44 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
-          struct.xVals = new ArrayList<Double>(_list44.size);
-          for (int _i45 = 0; _i45 < _list44.size; ++_i45)
+          org.apache.thrift.protocol.TList _list52 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
+          struct.xVals = new ArrayList<Double>(_list52.size);
+          for (int _i53 = 0; _i53 < _list52.size; ++_i53)
           {
-            double _elem46; // required
-            _elem46 = iprot.readDouble();
-            struct.xVals.add(_elem46);
+            double _elem54; // required
+            _elem54 = iprot.readDouble();
+            struct.xVals.add(_elem54);
           }
         }
         struct.setXValsIsSet(true);
       }
       if (incoming.get(3)) {
         {
-          org.apache.thrift.protocol.TList _list47 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
-          struct.yVals = new ArrayList<Double>(_list47.size);
-          for (int _i48 = 0; _i48 < _list47.size; ++_i48)
+          org.apache.thrift.protocol.TList _list55 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
+          struct.yVals = new ArrayList<Double>(_list55.size);
+          for (int _i56 = 0; _i56 < _list55.size; ++_i56)
           {
-            double _elem49; // required
-            _elem49 = iprot.readDouble();
-            struct.yVals.add(_elem49);
+            double _elem57; // required
+            _elem57 = iprot.readDouble();
+            struct.yVals.add(_elem57);
           }
         }
         struct.setYValsIsSet(true);
       }
       if (incoming.get(4)) {
         {
-          org.apache.thrift.protocol.TList _list50 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
-          struct.xValsWithout = new ArrayList<Double>(_list50.size);
-          for (int _i51 = 0; _i51 < _list50.size; ++_i51)
+          org.apache.thrift.protocol.TList _list58 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
+          struct.xValsWithout = new ArrayList<Double>(_list58.size);
+          for (int _i59 = 0; _i59 < _list58.size; ++_i59)
           {
-            double _elem52; // required
-            _elem52 = iprot.readDouble();
-            struct.xValsWithout.add(_elem52);
+            double _elem60; // required
+            _elem60 = iprot.readDouble();
+            struct.xValsWithout.add(_elem60);
           }
         }
         struct.setXValsWithoutIsSet(true);
       }
       if (incoming.get(5)) {
         {
-          org.apache.thrift.protocol.TList _list53 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
-          struct.yValsWithout = new ArrayList<Double>(_list53.size);
-          for (int _i54 = 0; _i54 < _list53.size; ++_i54)
+          org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.DOUBLE, iprot.readI32());
+          struct.yValsWithout = new ArrayList<Double>(_list61.size);
+          for (int _i62 = 0; _i62 < _list61.size; ++_i62)
           {
-            double _elem55; // required
-            _elem55 = iprot.readDouble();
-            struct.yValsWithout.add(_elem55);
+            double _elem63; // required
+            _elem63 = iprot.readDouble();
+            struct.yValsWithout.add(_elem63);
           }
         }
         struct.setYValsWithoutIsSet(true);

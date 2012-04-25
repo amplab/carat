@@ -1839,14 +1839,14 @@ public class CaratService {
             case 2: // FEATURES
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list64 = iprot.readListBegin();
-                  struct.features = new ArrayList<Feature>(_list64.size);
-                  for (int _i65 = 0; _i65 < _list64.size; ++_i65)
+                  org.apache.thrift.protocol.TList _list72 = iprot.readListBegin();
+                  struct.features = new ArrayList<Feature>(_list72.size);
+                  for (int _i73 = 0; _i73 < _list72.size; ++_i73)
                   {
-                    Feature _elem66; // required
-                    _elem66 = new Feature();
-                    _elem66.read(iprot);
-                    struct.features.add(_elem66);
+                    Feature _elem74; // required
+                    _elem74 = new Feature();
+                    _elem74.read(iprot);
+                    struct.features.add(_elem74);
                   }
                   iprot.readListEnd();
                 }
@@ -1879,9 +1879,9 @@ public class CaratService {
           oprot.writeFieldBegin(FEATURES_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.features.size()));
-            for (Feature _iter67 : struct.features)
+            for (Feature _iter75 : struct.features)
             {
-              _iter67.write(oprot);
+              _iter75.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -1918,9 +1918,9 @@ public class CaratService {
         if (struct.isSetFeatures()) {
           {
             oprot.writeI32(struct.features.size());
-            for (Feature _iter68 : struct.features)
+            for (Feature _iter76 : struct.features)
             {
-              _iter68.write(oprot);
+              _iter76.write(oprot);
             }
           }
         }
@@ -1936,14 +1936,14 @@ public class CaratService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list69 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.features = new ArrayList<Feature>(_list69.size);
-            for (int _i70 = 0; _i70 < _list69.size; ++_i70)
+            org.apache.thrift.protocol.TList _list77 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.features = new ArrayList<Feature>(_list77.size);
+            for (int _i78 = 0; _i78 < _list77.size; ++_i78)
             {
-              Feature _elem71; // required
-              _elem71 = new Feature();
-              _elem71.read(iprot);
-              struct.features.add(_elem71);
+              Feature _elem79; // required
+              _elem79 = new Feature();
+              _elem79.read(iprot);
+              struct.features.add(_elem79);
             }
           }
           struct.setFeaturesIsSet(true);
@@ -2696,14 +2696,14 @@ public class CaratService {
             case 2: // FEATURES
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list72 = iprot.readListBegin();
-                  struct.features = new ArrayList<Feature>(_list72.size);
-                  for (int _i73 = 0; _i73 < _list72.size; ++_i73)
+                  org.apache.thrift.protocol.TList _list80 = iprot.readListBegin();
+                  struct.features = new ArrayList<Feature>(_list80.size);
+                  for (int _i81 = 0; _i81 < _list80.size; ++_i81)
                   {
-                    Feature _elem74; // required
-                    _elem74 = new Feature();
-                    _elem74.read(iprot);
-                    struct.features.add(_elem74);
+                    Feature _elem82; // required
+                    _elem82 = new Feature();
+                    _elem82.read(iprot);
+                    struct.features.add(_elem82);
                   }
                   iprot.readListEnd();
                 }
@@ -2736,9 +2736,9 @@ public class CaratService {
           oprot.writeFieldBegin(FEATURES_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.features.size()));
-            for (Feature _iter75 : struct.features)
+            for (Feature _iter83 : struct.features)
             {
-              _iter75.write(oprot);
+              _iter83.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -2775,9 +2775,9 @@ public class CaratService {
         if (struct.isSetFeatures()) {
           {
             oprot.writeI32(struct.features.size());
-            for (Feature _iter76 : struct.features)
+            for (Feature _iter84 : struct.features)
             {
-              _iter76.write(oprot);
+              _iter84.write(oprot);
             }
           }
         }
@@ -2793,14 +2793,14 @@ public class CaratService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list77 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.features = new ArrayList<Feature>(_list77.size);
-            for (int _i78 = 0; _i78 < _list77.size; ++_i78)
+            org.apache.thrift.protocol.TList _list85 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.features = new ArrayList<Feature>(_list85.size);
+            for (int _i86 = 0; _i86 < _list85.size; ++_i86)
             {
-              Feature _elem79; // required
-              _elem79 = new Feature();
-              _elem79.read(iprot);
-              struct.features.add(_elem79);
+              Feature _elem87; // required
+              _elem87 = new Feature();
+              _elem87.read(iprot);
+              struct.features.add(_elem87);
             }
           }
           struct.setFeaturesIsSet(true);
