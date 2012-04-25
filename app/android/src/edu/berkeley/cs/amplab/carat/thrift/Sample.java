@@ -48,19 +48,18 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final org.apache.thrift.protocol.TField MOBILE_DATA_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("mobileDataStatus", org.apache.thrift.protocol.TType.STRING, (short)17);
   private static final org.apache.thrift.protocol.TField MOBILE_DATA_ACTIVITY_FIELD_DESC = new org.apache.thrift.protocol.TField("mobileDataActivity", org.apache.thrift.protocol.TType.STRING, (short)18);
   private static final org.apache.thrift.protocol.TField ROAMING_ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("roamingEnabled", org.apache.thrift.protocol.TType.BOOL, (short)19);
-  private static final org.apache.thrift.protocol.TField BACKGROUND_DATA_ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("backgroundDataEnabled", org.apache.thrift.protocol.TType.BOOL, (short)20);
-  private static final org.apache.thrift.protocol.TField BATTERY_CHARGER_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryCharger", org.apache.thrift.protocol.TType.STRING, (short)21);
-  private static final org.apache.thrift.protocol.TField BATTERY_HEALTH_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryHealth", org.apache.thrift.protocol.TType.STRING, (short)22);
-  private static final org.apache.thrift.protocol.TField BATTERY_VOLTAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryVoltage", org.apache.thrift.protocol.TType.DOUBLE, (short)23);
-  private static final org.apache.thrift.protocol.TField BATTERY_TEMPERATURE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTemperature", org.apache.thrift.protocol.TType.DOUBLE, (short)24);
-  private static final org.apache.thrift.protocol.TField BATTERY_TECHNOLOGY_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTechnology", org.apache.thrift.protocol.TType.STRING, (short)25);
-  private static final org.apache.thrift.protocol.TField CPU_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("cpuTime", org.apache.thrift.protocol.TType.DOUBLE, (short)26);
-  private static final org.apache.thrift.protocol.TField IDLE_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("idleTime", org.apache.thrift.protocol.TType.DOUBLE, (short)27);
-  private static final org.apache.thrift.protocol.TField UPTIME_FIELD_DESC = new org.apache.thrift.protocol.TField("uptime", org.apache.thrift.protocol.TType.DOUBLE, (short)28);
-  private static final org.apache.thrift.protocol.TField WIFI_ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiEnabled", org.apache.thrift.protocol.TType.BOOL, (short)29);
-  private static final org.apache.thrift.protocol.TField WIFI_SIGNAL_STRENGTH_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiSignalStrength", org.apache.thrift.protocol.TType.I32, (short)30);
-  private static final org.apache.thrift.protocol.TField WIFI_LINK_SPEED_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiLinkSpeed", org.apache.thrift.protocol.TType.I32, (short)31);
-  private static final org.apache.thrift.protocol.TField LOCATION_PROVIDERS_FIELD_DESC = new org.apache.thrift.protocol.TField("locationProviders", org.apache.thrift.protocol.TType.LIST, (short)32);
+  private static final org.apache.thrift.protocol.TField BATTERY_CHARGER_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryCharger", org.apache.thrift.protocol.TType.STRING, (short)20);
+  private static final org.apache.thrift.protocol.TField BATTERY_HEALTH_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryHealth", org.apache.thrift.protocol.TType.STRING, (short)21);
+  private static final org.apache.thrift.protocol.TField BATTERY_VOLTAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryVoltage", org.apache.thrift.protocol.TType.DOUBLE, (short)22);
+  private static final org.apache.thrift.protocol.TField BATTERY_TEMPERATURE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTemperature", org.apache.thrift.protocol.TType.DOUBLE, (short)23);
+  private static final org.apache.thrift.protocol.TField BATTERY_TECHNOLOGY_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTechnology", org.apache.thrift.protocol.TType.STRING, (short)24);
+  private static final org.apache.thrift.protocol.TField CPU_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("cpuTime", org.apache.thrift.protocol.TType.DOUBLE, (short)25);
+  private static final org.apache.thrift.protocol.TField IDLE_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("idleTime", org.apache.thrift.protocol.TType.DOUBLE, (short)26);
+  private static final org.apache.thrift.protocol.TField UPTIME_FIELD_DESC = new org.apache.thrift.protocol.TField("uptime", org.apache.thrift.protocol.TType.DOUBLE, (short)27);
+  private static final org.apache.thrift.protocol.TField WIFI_ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiEnabled", org.apache.thrift.protocol.TType.BOOL, (short)28);
+  private static final org.apache.thrift.protocol.TField WIFI_SIGNAL_STRENGTH_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiSignalStrength", org.apache.thrift.protocol.TType.I32, (short)29);
+  private static final org.apache.thrift.protocol.TField WIFI_LINK_SPEED_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiLinkSpeed", org.apache.thrift.protocol.TType.I32, (short)30);
+  private static final org.apache.thrift.protocol.TField LOCATION_PROVIDERS_FIELD_DESC = new org.apache.thrift.protocol.TField("locationProviders", org.apache.thrift.protocol.TType.LIST, (short)31);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -87,7 +86,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   public String mobileDataStatus; // optional
   public String mobileDataActivity; // optional
   public boolean roamingEnabled; // optional
-  public boolean backgroundDataEnabled; // optional
   public String batteryCharger; // optional
   public String batteryHealth; // optional
   public double batteryVoltage; // optional
@@ -122,19 +120,18 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     MOBILE_DATA_STATUS((short)17, "mobileDataStatus"),
     MOBILE_DATA_ACTIVITY((short)18, "mobileDataActivity"),
     ROAMING_ENABLED((short)19, "roamingEnabled"),
-    BACKGROUND_DATA_ENABLED((short)20, "backgroundDataEnabled"),
-    BATTERY_CHARGER((short)21, "batteryCharger"),
-    BATTERY_HEALTH((short)22, "batteryHealth"),
-    BATTERY_VOLTAGE((short)23, "batteryVoltage"),
-    BATTERY_TEMPERATURE((short)24, "batteryTemperature"),
-    BATTERY_TECHNOLOGY((short)25, "batteryTechnology"),
-    CPU_TIME((short)26, "cpuTime"),
-    IDLE_TIME((short)27, "idleTime"),
-    UPTIME((short)28, "uptime"),
-    WIFI_ENABLED((short)29, "wifiEnabled"),
-    WIFI_SIGNAL_STRENGTH((short)30, "wifiSignalStrength"),
-    WIFI_LINK_SPEED((short)31, "wifiLinkSpeed"),
-    LOCATION_PROVIDERS((short)32, "locationProviders");
+    BATTERY_CHARGER((short)20, "batteryCharger"),
+    BATTERY_HEALTH((short)21, "batteryHealth"),
+    BATTERY_VOLTAGE((short)22, "batteryVoltage"),
+    BATTERY_TEMPERATURE((short)23, "batteryTemperature"),
+    BATTERY_TECHNOLOGY((short)24, "batteryTechnology"),
+    CPU_TIME((short)25, "cpuTime"),
+    IDLE_TIME((short)26, "idleTime"),
+    UPTIME((short)27, "uptime"),
+    WIFI_ENABLED((short)28, "wifiEnabled"),
+    WIFI_SIGNAL_STRENGTH((short)29, "wifiSignalStrength"),
+    WIFI_LINK_SPEED((short)30, "wifiLinkSpeed"),
+    LOCATION_PROVIDERS((short)31, "locationProviders");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -187,31 +184,29 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           return MOBILE_DATA_ACTIVITY;
         case 19: // ROAMING_ENABLED
           return ROAMING_ENABLED;
-        case 20: // BACKGROUND_DATA_ENABLED
-          return BACKGROUND_DATA_ENABLED;
-        case 21: // BATTERY_CHARGER
+        case 20: // BATTERY_CHARGER
           return BATTERY_CHARGER;
-        case 22: // BATTERY_HEALTH
+        case 21: // BATTERY_HEALTH
           return BATTERY_HEALTH;
-        case 23: // BATTERY_VOLTAGE
+        case 22: // BATTERY_VOLTAGE
           return BATTERY_VOLTAGE;
-        case 24: // BATTERY_TEMPERATURE
+        case 23: // BATTERY_TEMPERATURE
           return BATTERY_TEMPERATURE;
-        case 25: // BATTERY_TECHNOLOGY
+        case 24: // BATTERY_TECHNOLOGY
           return BATTERY_TECHNOLOGY;
-        case 26: // CPU_TIME
+        case 25: // CPU_TIME
           return CPU_TIME;
-        case 27: // IDLE_TIME
+        case 26: // IDLE_TIME
           return IDLE_TIME;
-        case 28: // UPTIME
+        case 27: // UPTIME
           return UPTIME;
-        case 29: // WIFI_ENABLED
+        case 28: // WIFI_ENABLED
           return WIFI_ENABLED;
-        case 30: // WIFI_SIGNAL_STRENGTH
+        case 29: // WIFI_SIGNAL_STRENGTH
           return WIFI_SIGNAL_STRENGTH;
-        case 31: // WIFI_LINK_SPEED
+        case 30: // WIFI_LINK_SPEED
           return WIFI_LINK_SPEED;
-        case 32: // LOCATION_PROVIDERS
+        case 31: // LOCATION_PROVIDERS
           return LOCATION_PROVIDERS;
         default:
           return null;
@@ -263,17 +258,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final int __DISTANCETRAVELED_ISSET_ID = 7;
   private static final int __SCREENBRIGHTNESS_ISSET_ID = 8;
   private static final int __ROAMINGENABLED_ISSET_ID = 9;
-  private static final int __BACKGROUNDDATAENABLED_ISSET_ID = 10;
-  private static final int __BATTERYVOLTAGE_ISSET_ID = 11;
-  private static final int __BATTERYTEMPERATURE_ISSET_ID = 12;
-  private static final int __CPUTIME_ISSET_ID = 13;
-  private static final int __IDLETIME_ISSET_ID = 14;
-  private static final int __UPTIME_ISSET_ID = 15;
-  private static final int __WIFIENABLED_ISSET_ID = 16;
-  private static final int __WIFISIGNALSTRENGTH_ISSET_ID = 17;
-  private static final int __WIFILINKSPEED_ISSET_ID = 18;
-  private BitSet __isset_bit_vector = new BitSet(19);
-  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED,_Fields.SCREEN_BRIGHTNESS,_Fields.NETWORK_TYPE,_Fields.MOBILE_NETWORK_TYPE,_Fields.MOBILE_DATA_STATUS,_Fields.MOBILE_DATA_ACTIVITY,_Fields.ROAMING_ENABLED,_Fields.BACKGROUND_DATA_ENABLED,_Fields.BATTERY_CHARGER,_Fields.BATTERY_HEALTH,_Fields.BATTERY_VOLTAGE,_Fields.BATTERY_TEMPERATURE,_Fields.BATTERY_TECHNOLOGY,_Fields.CPU_TIME,_Fields.IDLE_TIME,_Fields.UPTIME,_Fields.WIFI_ENABLED,_Fields.WIFI_SIGNAL_STRENGTH,_Fields.WIFI_LINK_SPEED,_Fields.LOCATION_PROVIDERS};
+  private static final int __BATTERYVOLTAGE_ISSET_ID = 10;
+  private static final int __BATTERYTEMPERATURE_ISSET_ID = 11;
+  private static final int __CPUTIME_ISSET_ID = 12;
+  private static final int __IDLETIME_ISSET_ID = 13;
+  private static final int __UPTIME_ISSET_ID = 14;
+  private static final int __WIFIENABLED_ISSET_ID = 15;
+  private static final int __WIFISIGNALSTRENGTH_ISSET_ID = 16;
+  private static final int __WIFILINKSPEED_ISSET_ID = 17;
+  private BitSet __isset_bit_vector = new BitSet(18);
+  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED,_Fields.SCREEN_BRIGHTNESS,_Fields.NETWORK_TYPE,_Fields.MOBILE_NETWORK_TYPE,_Fields.MOBILE_DATA_STATUS,_Fields.MOBILE_DATA_ACTIVITY,_Fields.ROAMING_ENABLED,_Fields.BATTERY_CHARGER,_Fields.BATTERY_HEALTH,_Fields.BATTERY_VOLTAGE,_Fields.BATTERY_TEMPERATURE,_Fields.BATTERY_TECHNOLOGY,_Fields.CPU_TIME,_Fields.IDLE_TIME,_Fields.UPTIME,_Fields.WIFI_ENABLED,_Fields.WIFI_SIGNAL_STRENGTH,_Fields.WIFI_LINK_SPEED,_Fields.LOCATION_PROVIDERS};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -314,8 +308,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     tmpMap.put(_Fields.MOBILE_DATA_ACTIVITY, new org.apache.thrift.meta_data.FieldMetaData("mobileDataActivity", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.ROAMING_ENABLED, new org.apache.thrift.meta_data.FieldMetaData("roamingEnabled", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.BACKGROUND_DATA_ENABLED, new org.apache.thrift.meta_data.FieldMetaData("backgroundDataEnabled", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.BATTERY_CHARGER, new org.apache.thrift.meta_data.FieldMetaData("batteryCharger", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -399,7 +391,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       this.mobileDataActivity = other.mobileDataActivity;
     }
     this.roamingEnabled = other.roamingEnabled;
-    this.backgroundDataEnabled = other.backgroundDataEnabled;
     if (other.isSetBatteryCharger()) {
       this.batteryCharger = other.batteryCharger;
     }
@@ -461,8 +452,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     this.mobileDataActivity = null;
     setRoamingEnabledIsSet(false);
     this.roamingEnabled = false;
-    setBackgroundDataEnabledIsSet(false);
-    this.backgroundDataEnabled = false;
     this.batteryCharger = null;
     this.batteryHealth = null;
     setBatteryVoltageIsSet(false);
@@ -946,29 +935,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     __isset_bit_vector.set(__ROAMINGENABLED_ISSET_ID, value);
   }
 
-  public boolean isBackgroundDataEnabled() {
-    return this.backgroundDataEnabled;
-  }
-
-  public Sample setBackgroundDataEnabled(boolean backgroundDataEnabled) {
-    this.backgroundDataEnabled = backgroundDataEnabled;
-    setBackgroundDataEnabledIsSet(true);
-    return this;
-  }
-
-  public void unsetBackgroundDataEnabled() {
-    __isset_bit_vector.clear(__BACKGROUNDDATAENABLED_ISSET_ID);
-  }
-
-  /** Returns true if field backgroundDataEnabled is set (has been assigned a value) and false otherwise */
-  public boolean isSetBackgroundDataEnabled() {
-    return __isset_bit_vector.get(__BACKGROUNDDATAENABLED_ISSET_ID);
-  }
-
-  public void setBackgroundDataEnabledIsSet(boolean value) {
-    __isset_bit_vector.set(__BACKGROUNDDATAENABLED_ISSET_ID, value);
-  }
-
   public String getBatteryCharger() {
     return this.batteryCharger;
   }
@@ -1418,14 +1384,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       break;
 
-    case BACKGROUND_DATA_ENABLED:
-      if (value == null) {
-        unsetBackgroundDataEnabled();
-      } else {
-        setBackgroundDataEnabled((Boolean)value);
-      }
-      break;
-
     case BATTERY_CHARGER:
       if (value == null) {
         unsetBatteryCharger();
@@ -1584,9 +1542,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     case ROAMING_ENABLED:
       return Boolean.valueOf(isRoamingEnabled());
 
-    case BACKGROUND_DATA_ENABLED:
-      return Boolean.valueOf(isBackgroundDataEnabled());
-
     case BATTERY_CHARGER:
       return getBatteryCharger();
 
@@ -1672,8 +1627,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       return isSetMobileDataActivity();
     case ROAMING_ENABLED:
       return isSetRoamingEnabled();
-    case BACKGROUND_DATA_ENABLED:
-      return isSetBackgroundDataEnabled();
     case BATTERY_CHARGER:
       return isSetBatteryCharger();
     case BATTERY_HEALTH:
@@ -1883,15 +1836,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (!(this_present_roamingEnabled && that_present_roamingEnabled))
         return false;
       if (this.roamingEnabled != that.roamingEnabled)
-        return false;
-    }
-
-    boolean this_present_backgroundDataEnabled = true && this.isSetBackgroundDataEnabled();
-    boolean that_present_backgroundDataEnabled = true && that.isSetBackgroundDataEnabled();
-    if (this_present_backgroundDataEnabled || that_present_backgroundDataEnabled) {
-      if (!(this_present_backgroundDataEnabled && that_present_backgroundDataEnabled))
-        return false;
-      if (this.backgroundDataEnabled != that.backgroundDataEnabled)
         return false;
     }
 
@@ -2209,16 +2153,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetBackgroundDataEnabled()).compareTo(typedOther.isSetBackgroundDataEnabled());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBackgroundDataEnabled()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.backgroundDataEnabled, typedOther.backgroundDataEnabled);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetBatteryCharger()).compareTo(typedOther.isSetBatteryCharger());
     if (lastComparison != 0) {
       return lastComparison;
@@ -2504,12 +2438,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (!first) sb.append(", ");
       sb.append("roamingEnabled:");
       sb.append(this.roamingEnabled);
-      first = false;
-    }
-    if (isSetBackgroundDataEnabled()) {
-      if (!first) sb.append(", ");
-      sb.append("backgroundDataEnabled:");
-      sb.append(this.backgroundDataEnabled);
       first = false;
     }
     if (isSetBatteryCharger()) {
@@ -2810,15 +2738,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 20: // BACKGROUND_DATA_ENABLED
-            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-              struct.backgroundDataEnabled = iprot.readBool();
-              struct.setBackgroundDataEnabledIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 21: // BATTERY_CHARGER
+          case 20: // BATTERY_CHARGER
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.batteryCharger = iprot.readString();
               struct.setBatteryChargerIsSet(true);
@@ -2826,7 +2746,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 22: // BATTERY_HEALTH
+          case 21: // BATTERY_HEALTH
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.batteryHealth = iprot.readString();
               struct.setBatteryHealthIsSet(true);
@@ -2834,7 +2754,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 23: // BATTERY_VOLTAGE
+          case 22: // BATTERY_VOLTAGE
             if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
               struct.batteryVoltage = iprot.readDouble();
               struct.setBatteryVoltageIsSet(true);
@@ -2842,7 +2762,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 24: // BATTERY_TEMPERATURE
+          case 23: // BATTERY_TEMPERATURE
             if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
               struct.batteryTemperature = iprot.readDouble();
               struct.setBatteryTemperatureIsSet(true);
@@ -2850,7 +2770,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 25: // BATTERY_TECHNOLOGY
+          case 24: // BATTERY_TECHNOLOGY
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.batteryTechnology = iprot.readString();
               struct.setBatteryTechnologyIsSet(true);
@@ -2858,7 +2778,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 26: // CPU_TIME
+          case 25: // CPU_TIME
             if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
               struct.cpuTime = iprot.readDouble();
               struct.setCpuTimeIsSet(true);
@@ -2866,7 +2786,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 27: // IDLE_TIME
+          case 26: // IDLE_TIME
             if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
               struct.idleTime = iprot.readDouble();
               struct.setIdleTimeIsSet(true);
@@ -2874,7 +2794,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 28: // UPTIME
+          case 27: // UPTIME
             if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
               struct.uptime = iprot.readDouble();
               struct.setUptimeIsSet(true);
@@ -2882,7 +2802,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 29: // WIFI_ENABLED
+          case 28: // WIFI_ENABLED
             if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
               struct.wifiEnabled = iprot.readBool();
               struct.setWifiEnabledIsSet(true);
@@ -2890,7 +2810,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 30: // WIFI_SIGNAL_STRENGTH
+          case 29: // WIFI_SIGNAL_STRENGTH
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.wifiSignalStrength = iprot.readI32();
               struct.setWifiSignalStrengthIsSet(true);
@@ -2898,7 +2818,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 31: // WIFI_LINK_SPEED
+          case 30: // WIFI_LINK_SPEED
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
               struct.wifiLinkSpeed = iprot.readI32();
               struct.setWifiLinkSpeedIsSet(true);
@@ -2906,7 +2826,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 32: // LOCATION_PROVIDERS
+          case 31: // LOCATION_PROVIDERS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
@@ -3057,11 +2977,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         oprot.writeBool(struct.roamingEnabled);
         oprot.writeFieldEnd();
       }
-      if (struct.isSetBackgroundDataEnabled()) {
-        oprot.writeFieldBegin(BACKGROUND_DATA_ENABLED_FIELD_DESC);
-        oprot.writeBool(struct.backgroundDataEnabled);
-        oprot.writeFieldEnd();
-      }
       if (struct.batteryCharger != null) {
         if (struct.isSetBatteryCharger()) {
           oprot.writeFieldBegin(BATTERY_CHARGER_FIELD_DESC);
@@ -3210,46 +3125,43 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetRoamingEnabled()) {
         optionals.set(17);
       }
-      if (struct.isSetBackgroundDataEnabled()) {
+      if (struct.isSetBatteryCharger()) {
         optionals.set(18);
       }
-      if (struct.isSetBatteryCharger()) {
+      if (struct.isSetBatteryHealth()) {
         optionals.set(19);
       }
-      if (struct.isSetBatteryHealth()) {
+      if (struct.isSetBatteryVoltage()) {
         optionals.set(20);
       }
-      if (struct.isSetBatteryVoltage()) {
+      if (struct.isSetBatteryTemperature()) {
         optionals.set(21);
       }
-      if (struct.isSetBatteryTemperature()) {
+      if (struct.isSetBatteryTechnology()) {
         optionals.set(22);
       }
-      if (struct.isSetBatteryTechnology()) {
+      if (struct.isSetCpuTime()) {
         optionals.set(23);
       }
-      if (struct.isSetCpuTime()) {
+      if (struct.isSetIdleTime()) {
         optionals.set(24);
       }
-      if (struct.isSetIdleTime()) {
+      if (struct.isSetUptime()) {
         optionals.set(25);
       }
-      if (struct.isSetUptime()) {
+      if (struct.isSetWifiEnabled()) {
         optionals.set(26);
       }
-      if (struct.isSetWifiEnabled()) {
+      if (struct.isSetWifiSignalStrength()) {
         optionals.set(27);
       }
-      if (struct.isSetWifiSignalStrength()) {
+      if (struct.isSetWifiLinkSpeed()) {
         optionals.set(28);
       }
-      if (struct.isSetWifiLinkSpeed()) {
+      if (struct.isSetLocationProviders()) {
         optionals.set(29);
       }
-      if (struct.isSetLocationProviders()) {
-        optionals.set(30);
-      }
-      oprot.writeBitSet(optionals, 31);
+      oprot.writeBitSet(optionals, 30);
       if (struct.isSetTimestamp()) {
         oprot.writeDouble(struct.timestamp);
       }
@@ -3310,9 +3222,6 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetRoamingEnabled()) {
         oprot.writeBool(struct.roamingEnabled);
       }
-      if (struct.isSetBackgroundDataEnabled()) {
-        oprot.writeBool(struct.backgroundDataEnabled);
-      }
       if (struct.isSetBatteryCharger()) {
         oprot.writeString(struct.batteryCharger);
       }
@@ -3362,7 +3271,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       TTupleProtocol iprot = (TTupleProtocol) prot;
       struct.uuId = iprot.readString();
       struct.setUuIdIsSet(true);
-      BitSet incoming = iprot.readBitSet(31);
+      BitSet incoming = iprot.readBitSet(30);
       if (incoming.get(0)) {
         struct.timestamp = iprot.readDouble();
         struct.setTimestampIsSet(true);
@@ -3446,54 +3355,50 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         struct.setRoamingEnabledIsSet(true);
       }
       if (incoming.get(18)) {
-        struct.backgroundDataEnabled = iprot.readBool();
-        struct.setBackgroundDataEnabledIsSet(true);
-      }
-      if (incoming.get(19)) {
         struct.batteryCharger = iprot.readString();
         struct.setBatteryChargerIsSet(true);
       }
-      if (incoming.get(20)) {
+      if (incoming.get(19)) {
         struct.batteryHealth = iprot.readString();
         struct.setBatteryHealthIsSet(true);
       }
-      if (incoming.get(21)) {
+      if (incoming.get(20)) {
         struct.batteryVoltage = iprot.readDouble();
         struct.setBatteryVoltageIsSet(true);
       }
-      if (incoming.get(22)) {
+      if (incoming.get(21)) {
         struct.batteryTemperature = iprot.readDouble();
         struct.setBatteryTemperatureIsSet(true);
       }
-      if (incoming.get(23)) {
+      if (incoming.get(22)) {
         struct.batteryTechnology = iprot.readString();
         struct.setBatteryTechnologyIsSet(true);
       }
-      if (incoming.get(24)) {
+      if (incoming.get(23)) {
         struct.cpuTime = iprot.readDouble();
         struct.setCpuTimeIsSet(true);
       }
-      if (incoming.get(25)) {
+      if (incoming.get(24)) {
         struct.idleTime = iprot.readDouble();
         struct.setIdleTimeIsSet(true);
       }
-      if (incoming.get(26)) {
+      if (incoming.get(25)) {
         struct.uptime = iprot.readDouble();
         struct.setUptimeIsSet(true);
       }
-      if (incoming.get(27)) {
+      if (incoming.get(26)) {
         struct.wifiEnabled = iprot.readBool();
         struct.setWifiEnabledIsSet(true);
       }
-      if (incoming.get(28)) {
+      if (incoming.get(27)) {
         struct.wifiSignalStrength = iprot.readI32();
         struct.setWifiSignalStrengthIsSet(true);
       }
-      if (incoming.get(29)) {
+      if (incoming.get(28)) {
         struct.wifiLinkSpeed = iprot.readI32();
         struct.setWifiLinkSpeedIsSet(true);
       }
-      if (incoming.get(30)) {
+      if (incoming.get(29)) {
         {
           org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
           struct.locationProviders = new ArrayList<String>(_list13.size);
