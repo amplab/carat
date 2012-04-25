@@ -10,14 +10,14 @@
     android:paddingTop="5dip"
     android:paddingBottom="5dip">
     
-        <ImageView
+    <ImageView
         android:id="@+id/appIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="fill"
-        android:layout_marginRight="5dip"
-        android:background="@null"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="11dip"
         android:contentDescription="@string/appicon"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_launcher" />
 
     <LinearLayout

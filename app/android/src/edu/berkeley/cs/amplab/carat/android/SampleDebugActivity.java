@@ -96,10 +96,9 @@ public class SampleDebugActivity extends Activity {
                     .replace("edu.berkeley.cs.amplab.carat.android.", "");
             sb.append(df.format(new Date((long) (s.getTimestamp() * 1000)))
                     + " " + trig + "\n");
-            
+            int i = 0;
             try {
                 Field[] sampleFields = s.getClass().getFields();
-                int i = 0;
                 for (Field f : sampleFields) {
                     // Skip Thrift internal stuff and already shown fields
                     if (f.getName().equals("metaDataMap"))
@@ -115,10 +114,10 @@ public class SampleDebugActivity extends Activity {
                         val = ((List) val).size() + " items";
                     sb.append(f.getName() + " = " + val.toString());
                     i++;
-                    if (i == 2){
+                    if (i == 2) {
                         sb.append('\n');
-                        i=0;
-                    }else
+                        i = 0;
+                    } else
                         sb.append(" ");
                 }
             } catch (IllegalArgumentException e) {
@@ -128,6 +127,8 @@ public class SampleDebugActivity extends Activity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            if (i != 0)
+                sb.append('\n');
             sb.append('\n');
         }
 
