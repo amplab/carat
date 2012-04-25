@@ -68,7 +68,7 @@ public class CommunicationManager {
 		ProtocolClient.close();
 	}
 
-	public void uploadSamples(Sample[] samples) throws TException {
+	public boolean uploadSamples(Sample[] samples) throws TException {
 		registerOnFirstRun();
 		// FIXME: This may be stupid, but always use a new connection.
 		// Alternative: Make sure c opens the connection if it is
@@ -76,11 +76,12 @@ public class CommunicationManager {
 		c = ProtocolClient.getInstance(a.getApplicationContext());
 		if (c == null) {
 			Log.e("uploadSample", "We are disconnected, not uploading.");
-			return;
+			return false;
 		}
 		for (Sample s : samples)
 			c.uploadSample(s);
 		ProtocolClient.close();
+		return true;
 	}
 
 	public void registerOnFirstRun() {
@@ -109,6 +110,9 @@ public class CommunicationManager {
 	}
 
 	public void refreshReports() {
+		// Do not refresh if not connected
+		if (!SamplingLibrary.networkAvailable(a.getApplicationContext()))
+			return;
 		if (System.currentTimeMillis() - a.s.getFreshness() < FRESHNESS_TIMEOUT)
 			return;
 		registerOnFirstRun();

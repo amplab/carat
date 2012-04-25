@@ -252,18 +252,22 @@ public class CaratMainActivity extends TabActivity {
 							for (Sample s : samples) {
 								timestamps.append(" " + s.getTimestamp());
 							}
-							Log.i("CommsThread", "Uploading " + samples.length
-									+ " samples, timestamps:" + timestamps);
-							app.c.uploadSamples(samples);
-							Sample last = samples[samples.length - 1];
-							Log.i("CommsThread",
-									"Deleting " + samples.length
-											+ " samples older than "
-											+ last.getTimestamp());
-							int deleted = CaratDB.getInstance(c)
-									.deleteOldestSamples(last.getTimestamp());
-							Log.i("CommsThread", "Deleted " + deleted
-									+ " samples.");
+							boolean success = app.c.uploadSamples(samples);
+							if (success) {
+								Log.i("CommsThread", "Uploaded "
+										+ samples.length
+										+ " samples, timestamps:" + timestamps);
+								Sample last = samples[samples.length - 1];
+								Log.i("CommsThread",
+										"Deleting " + samples.length
+												+ " samples older than "
+												+ last.getTimestamp());
+								int deleted = CaratDB.getInstance(c)
+										.deleteOldestSamples(
+												last.getTimestamp());
+								Log.i("CommsThread", "Deleted " + deleted
+										+ " samples.");
+							}
 						} catch (TException e1) {
 							Log.w("CommsThread", "Failed to send samples,"
 									+ TRY_AGAIN);
