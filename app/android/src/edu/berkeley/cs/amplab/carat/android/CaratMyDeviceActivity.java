@@ -70,7 +70,8 @@ public class CaratMyDeviceActivity extends Activity {
 	private void initProcessListView() {
 		final ListView lv = (ListView) findViewById(R.id.processList);
 		lv.setCacheColorHint(0);
-
+		// Ignore clicks here.
+/*
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int position,
@@ -80,12 +81,8 @@ public class CaratMyDeviceActivity extends Activity {
 				Toast.makeText(CaratMyDeviceActivity.this,
 						"You have chosen: " + " " + fullObject.processName,
 						Toast.LENGTH_LONG).show();
-				//Intent myIntent = new Intent(v.getContext(),
-				//		CaratKillAppActivity.class);
-				// findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.outtoLeft);
-				//startActivityForResult(myIntent, 0);
 			}
-		});
+		});*/
 		lv.setOnTouchListener(new FlipperBackListener(vf, vf
 				.indexOfChild(findViewById(R.id.scrollView1))));
 	}
@@ -167,32 +164,6 @@ public class CaratMyDeviceActivity extends Activity {
 		mText.setText(model);
 		mText = (TextView) win.findViewById(R.id.os_ver_value);
 		mText.setText(version);
-
-		/*
-		 * Log.i("SetModel", "board:" + android.os.Build.BOARD);
-		 * Log.i("SetModel", "bootloader:" + android.os.Build.BOOTLOADER);
-		 * Log.i("SetModel", "brand:" + android.os.Build.BRAND);
-		 * Log.i("SetModel", "CPU_ABI 1 and 2:" + android.os.Build.CPU_ABI +
-		 * ", " + android.os.Build.CPU_ABI2); Log.i("SetModel", "dev:" +
-		 * android.os.Build.DEVICE); Log.i("SetModel", "disp:" +
-		 * android.os.Build.DISPLAY); Log.i("SetModel", "FP:" +
-		 * android.os.Build.FINGERPRINT); Log.i("SetModel", "HW:" +
-		 * android.os.Build.HARDWARE); Log.i("SetModel", "host:" +
-		 * android.os.Build.HOST); Log.i("SetModel", "ID:" +
-		 * android.os.Build.ID); Log.i("SetModel", "manufacturer:" +
-		 * android.os.Build.MANUFACTURER); Log.i("SetModel", "prod:" +
-		 * android.os.Build.PRODUCT); Log.i("SetModel", "radio:" +
-		 * android.os.Build.RADIO); // FIXME: SERIAL not available on 2.2 //
-		 * Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
-		 * Log.i("SetModel", "tags:" + android.os.Build.TAGS); Log.i("SetModel",
-		 * "time:" + android.os.Build.TIME); Log.i("SetModel", "type:" +
-		 * android.os.Build.TYPE); Log.i("SetModel", "unknown:" +
-		 * android.os.Build.UNKNOWN); Log.i("SetModel", "user:" +
-		 * android.os.Build.USER); Log.i("SetModel", "model:" +
-		 * android.os.Build.MODEL); Log.i("SetModel", "codename:" +
-		 * android.os.Build.VERSION.CODENAME); Log.i("SetModel", "release:" +
-		 * android.os.Build.VERSION.RELEASE);
-		 */
 	}
 
 	private void setMemory() {

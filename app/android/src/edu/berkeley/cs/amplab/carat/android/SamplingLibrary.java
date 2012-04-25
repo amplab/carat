@@ -8,15 +8,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.thrift.TException;
-
-import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import edu.berkeley.cs.amplab.carat.thrift.AndroidSample;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -24,17 +19,14 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.widget.TextView;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -45,7 +37,6 @@ import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Debug;
 import android.os.SystemClock;
-import android.telephony.TelephonyManager;
 
 /**
  * Library class for methods that obtain information about the phone that is
@@ -109,6 +100,40 @@ public final class SamplingLibrary {
     public static String getOsVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
+    
+    public static Map<String, String> getSystemDetails(){
+		Map<String, String> results = new HashMap<String, String>();
+		// TODO: Some of this should be added to registration to identify the device and OS.
+		// Cyanogenmod and others may have different kernels etc that affect performance.
+		
+		/*
+		 * Log.i("SetModel", "board:" + android.os.Build.BOARD);
+		 * Log.i("SetModel", "bootloader:" + android.os.Build.BOOTLOADER);
+		 * Log.i("SetModel", "brand:" + android.os.Build.BRAND);
+		 * Log.i("SetModel", "CPU_ABI 1 and 2:" + android.os.Build.CPU_ABI +
+		 * ", " + android.os.Build.CPU_ABI2); Log.i("SetModel", "dev:" +
+		 * android.os.Build.DEVICE); Log.i("SetModel", "disp:" +
+		 * android.os.Build.DISPLAY); Log.i("SetModel", "FP:" +
+		 * android.os.Build.FINGERPRINT); Log.i("SetModel", "HW:" +
+		 * android.os.Build.HARDWARE); Log.i("SetModel", "host:" +
+		 * android.os.Build.HOST); Log.i("SetModel", "ID:" +
+		 * android.os.Build.ID); Log.i("SetModel", "manufacturer:" +
+		 * android.os.Build.MANUFACTURER); Log.i("SetModel", "prod:" +
+		 * android.os.Build.PRODUCT); Log.i("SetModel", "radio:" +
+		 * android.os.Build.RADIO); // FIXME: SERIAL not available on 2.2 //
+		 * Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
+		 * Log.i("SetModel", "tags:" + android.os.Build.TAGS); Log.i("SetModel",
+		 * "time:" + android.os.Build.TIME); Log.i("SetModel", "type:" +
+		 * android.os.Build.TYPE); Log.i("SetModel", "unknown:" +
+		 * android.os.Build.UNKNOWN); Log.i("SetModel", "user:" +
+		 * android.os.Build.USER); Log.i("SetModel", "model:" +
+		 * android.os.Build.MODEL); Log.i("SetModel", "codename:" +
+		 * android.os.Build.VERSION.CODENAME); Log.i("SetModel", "release:" +
+		 * android.os.Build.VERSION.RELEASE);
+		 */
+		
+		return results;
+	}
 
     /**
      * Read memory information from /proc/meminfo. Return used, free, inactive,
