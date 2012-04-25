@@ -22,7 +22,7 @@ public class CaratDataStorage {
 	public static final String FILENAME = "carat-reports.dat";
 	public static final String BUGFILE = "carat-bugs.dat";
 	public static final String HOGFILE = "carat-hogs.dat";
-			
+
 	public static final String FRESHNESS = "carat-freshness.dat";
 	private Application a = null;
 
@@ -176,6 +176,9 @@ public class CaratDataStorage {
 	 * @return the bug reports
 	 */
 	public List<HogsBugs> getBugReport() {
+		if (bugData == null) {
+			readBugReport();
+		}
 		if (bugData == null)
 			return null;
 		return bugData.getHbList();
@@ -185,6 +188,9 @@ public class CaratDataStorage {
 	 * @return the hog reports
 	 */
 	public List<HogsBugs> getHogReport() {
+		if (hogData == null) {
+			readHogReport();
+		}
 		if (hogData == null)
 			return null;
 		return hogData.getHbList();
@@ -201,7 +207,7 @@ public class CaratDataStorage {
 		writeObject(r, HOGFILE);
 
 	}
-	
+
 	public HogBugReport readBugReport() {
 		Object o = readObject(BUGFILE);
 		Log.i("CaratDataStorage", "Read Bugs: " + o);

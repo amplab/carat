@@ -21,6 +21,9 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
@@ -49,10 +52,16 @@ import android.os.SystemClock;
  */
 public final class SamplingLibrary {
     private static final int READ_BUFFER_SIZE = 2 * 1024;
+    // Network status constants
     public static String NETWORKSTATUS_DISCONNECTED = "disconnected";
     public static String NETWORKSTATUS_DISCONNECTING = "disconnecting";
     public static String NETWORKSTATUS_CONNECTED = "connected";
     public static String NETWORKSTATUS_CONNECTING = "connecting";
+    // Network type constants
+    public static String TYPE_UNKNOWN = "unknown";
+    public static String TYPE_WIFI = "wifi";
+    public static String TYPE_MOBILE = "mobile";
+    public static String TYPE_WIMAX = "wimax";
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -102,40 +111,42 @@ public final class SamplingLibrary {
     public static String getOsVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
-    
-    public static Map<String, String> getSystemDetails(){
-		Map<String, String> results = new HashMap<String, String>();
-		// TODO: Some of this should be added to registration to identify the device and OS.
-		// Cyanogenmod and others may have different kernels etc that affect performance.
-		
-		/*
-		 * Log.i("SetModel", "board:" + android.os.Build.BOARD);
-		 * Log.i("SetModel", "bootloader:" + android.os.Build.BOOTLOADER);
-		 * Log.i("SetModel", "brand:" + android.os.Build.BRAND);
-		 * Log.i("SetModel", "CPU_ABI 1 and 2:" + android.os.Build.CPU_ABI +
-		 * ", " + android.os.Build.CPU_ABI2); Log.i("SetModel", "dev:" +
-		 * android.os.Build.DEVICE); Log.i("SetModel", "disp:" +
-		 * android.os.Build.DISPLAY); Log.i("SetModel", "FP:" +
-		 * android.os.Build.FINGERPRINT); Log.i("SetModel", "HW:" +
-		 * android.os.Build.HARDWARE); Log.i("SetModel", "host:" +
-		 * android.os.Build.HOST); Log.i("SetModel", "ID:" +
-		 * android.os.Build.ID); Log.i("SetModel", "manufacturer:" +
-		 * android.os.Build.MANUFACTURER); Log.i("SetModel", "prod:" +
-		 * android.os.Build.PRODUCT); Log.i("SetModel", "radio:" +
-		 * android.os.Build.RADIO); // FIXME: SERIAL not available on 2.2 //
-		 * Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
-		 * Log.i("SetModel", "tags:" + android.os.Build.TAGS); Log.i("SetModel",
-		 * "time:" + android.os.Build.TIME); Log.i("SetModel", "type:" +
-		 * android.os.Build.TYPE); Log.i("SetModel", "unknown:" +
-		 * android.os.Build.UNKNOWN); Log.i("SetModel", "user:" +
-		 * android.os.Build.USER); Log.i("SetModel", "model:" +
-		 * android.os.Build.MODEL); Log.i("SetModel", "codename:" +
-		 * android.os.Build.VERSION.CODENAME); Log.i("SetModel", "release:" +
-		 * android.os.Build.VERSION.RELEASE);
-		 */
-		
-		return results;
-	}
+
+    public static Map<String, String> getSystemDetails() {
+        Map<String, String> results = new HashMap<String, String>();
+        // TODO: Some of this should be added to registration to identify the
+        // device and OS.
+        // Cyanogenmod and others may have different kernels etc that affect
+        // performance.
+
+        /*
+         * Log.i("SetModel", "board:" + android.os.Build.BOARD);
+         * Log.i("SetModel", "bootloader:" + android.os.Build.BOOTLOADER);
+         * Log.i("SetModel", "brand:" + android.os.Build.BRAND);
+         * Log.i("SetModel", "CPU_ABI 1 and 2:" + android.os.Build.CPU_ABI +
+         * ", " + android.os.Build.CPU_ABI2); Log.i("SetModel", "dev:" +
+         * android.os.Build.DEVICE); Log.i("SetModel", "disp:" +
+         * android.os.Build.DISPLAY); Log.i("SetModel", "FP:" +
+         * android.os.Build.FINGERPRINT); Log.i("SetModel", "HW:" +
+         * android.os.Build.HARDWARE); Log.i("SetModel", "host:" +
+         * android.os.Build.HOST); Log.i("SetModel", "ID:" +
+         * android.os.Build.ID); Log.i("SetModel", "manufacturer:" +
+         * android.os.Build.MANUFACTURER); Log.i("SetModel", "prod:" +
+         * android.os.Build.PRODUCT); Log.i("SetModel", "radio:" +
+         * android.os.Build.RADIO); // FIXME: SERIAL not available on 2.2 //
+         * Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
+         * Log.i("SetModel", "tags:" + android.os.Build.TAGS); Log.i("SetModel",
+         * "time:" + android.os.Build.TIME); Log.i("SetModel", "type:" +
+         * android.os.Build.TYPE); Log.i("SetModel", "unknown:" +
+         * android.os.Build.UNKNOWN); Log.i("SetModel", "user:" +
+         * android.os.Build.USER); Log.i("SetModel", "model:" +
+         * android.os.Build.MODEL); Log.i("SetModel", "codename:" +
+         * android.os.Build.VERSION.CODENAME); Log.i("SetModel", "release:" +
+         * android.os.Build.VERSION.RELEASE);
+         */
+
+        return results;
+    }
 
     /**
      * Read memory information from /proc/meminfo. Return used, free, inactive,
@@ -289,11 +300,34 @@ public final class SamplingLibrary {
         List<RunningAppProcessInfo> list = getRunningProcessInfo(context);
         List<ProcessInfo> result = new ArrayList<ProcessInfo>();
 
+        PackageManager pm = context.getPackageManager();
+        List<android.content.pm.PackageInfo> packagelist = pm
+                .getInstalledPackages(0);
+
+        Map<String, PackageInfo> packages = new HashMap<String, PackageInfo>();
+        for (PackageInfo pak : packagelist) {
+            packages.put(pak.applicationInfo.name, pak);
+        }
+
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
 
         for (RunningAppProcessInfo pi : list) {
             ProcessInfo item = new ProcessInfo();
+            /*
+             * pi.importance; pi.lru; pi.uid;
+             */
+            PackageInfo pak = packages.get(pi.processName);
+            if (pak != null) {
+                ApplicationInfo info = pak.applicationInfo;
+                String label = pm.getApplicationLabel(info).toString();
+                // TODO: get application details and assign to item
+                //item.setApplicationLabel(label);
+
+                int flags = pak.applicationInfo.flags;
+                // TODO: check if it is a system app
+                // if (flags & pak.applicationInfo)
+            }
             item.setPId(pi.pid);
             item.setPName(pi.processName);
             procMem[list.indexOf(pi)] = pi.pid;
@@ -321,6 +355,8 @@ public final class SamplingLibrary {
         return result;
     }
 
+    // FIXME: Describe this. Why are there so many fields? Why is it divided by
+    // 100?
     public static long getTotalCpuTime() throws IOException {
         long totalCpuTime = 0;
         File file = new File("/proc/stat");
@@ -339,6 +375,8 @@ public final class SamplingLibrary {
         return totalCpuTime;
     }
 
+    // FIXME: Describe this. Why is it divided by 100?
+    // on my Linux, the 6th field never changes -> idletime never changes?
     public static long getTotalIdleTime() throws IOException {
         long totalIdleTime = 0;
         File file = new File("/proc/stat");
@@ -396,6 +434,11 @@ public final class SamplingLibrary {
         }
     }
 
+    /**
+     * Depratecated, use int[] meminfo = readMemInfo(); int totalMemory =
+     * meminfo[0] + meminfo[1];
+     */
+    @Deprecated
     public static String getMemoryInfo() {
         String tmp = null;
         BufferedReader br = null;
@@ -502,11 +545,29 @@ public final class SamplingLibrary {
         else
             return NETWORKSTATUS_DISCONNECTED;
     }
-    
-    public static boolean networkAvailable(Context c){
-		String network = getNetworkStatus(c);
-		return network.equals(NETWORKSTATUS_CONNECTED);
-	}
+
+    public static String getNetworkType(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (cm == null || cm.getActiveNetworkInfo() == null)
+            return TYPE_UNKNOWN;
+        int type = cm.getActiveNetworkInfo().getType();
+        switch (type) {
+        case ConnectivityManager.TYPE_MOBILE:
+            return TYPE_MOBILE;
+        case ConnectivityManager.TYPE_WIFI:
+            return TYPE_WIFI;
+        case ConnectivityManager.TYPE_WIMAX:
+            return TYPE_WIMAX;
+        default:
+            return TYPE_UNKNOWN;
+        }
+    }
+
+    public static boolean networkAvailable(Context c) {
+        String network = getNetworkStatus(c);
+        return network.equals(NETWORKSTATUS_CONNECTED);
+    }
 
     /* Get current WiFi signal Strength */
     public static int getWifiSignalStrength(Context context) {
@@ -577,9 +638,9 @@ public final class SamplingLibrary {
     }
     
     /* Get Current Screen Brightness Value */
-    public static float getScreenBrightness(Context context) {
+    public static int getScreenBrightness(Context context) {
 
-        float screenBrightnessValue = 0;
+        int screenBrightnessValue = 0;
         try {
             screenBrightnessValue = android.provider.Settings.System.getInt(
                     context.getContentResolver(),
@@ -596,12 +657,33 @@ public final class SamplingLibrary {
 
     /* Check whether GPS are enabled */
     public static boolean getGpsEnabled(Context context) {
-        boolean gpsEnabled= false;
-        LocationManager myLocationManager = (LocationManager) context  
-                .getSystemService(Context.LOCATION_SERVICE);  
-        gpsEnabled=myLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Log.i("GPS", "GPS is :" +gpsEnabled);        
+        boolean gpsEnabled = false;
+        LocationManager myLocationManager = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+
+        gpsEnabled = myLocationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+        Log.i("GPS", "GPS is :" + gpsEnabled);
         return gpsEnabled;
+    }
+
+    /**
+     * Return a list of enabled LocationProviders, such as GPS, Network, etc.
+     * 
+     * @param context
+     *            from onReceive or app.
+     * @return
+     */
+    public static List<String> getEnabledLocationProviders(Context context) {
+        List<String> res = new ArrayList<String>();
+        LocationManager lm = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+        List<String> allProviders = lm.getAllProviders();
+        for (String provider : allProviders)
+            if (lm.isProviderEnabled(provider))
+                res.add(provider);
+
+        return res;
     }
 
     /* Check the maximum number of satellites can be used in the satellite list */
@@ -634,7 +716,7 @@ public final class SamplingLibrary {
      * 8: NETWORK_TYPE_HSDPA 9: NETWORK_TYPE_HSUPA 10: NETWORK_TYPE_HSPA 
      * 11: NETWORK_TYPE_IDEN 12: NETWORK_TYPE_EVDO_B 13: NETWORK_TYPE_LTE 
      * 14: NETWORK_TYPE_EHRPD 15: NETWORK_TYPE_HSPAP*/      
-    public static String getNetworkType(Context context){
+    public static String getMobileNetworkType(Context context){
          TelephonyManager telManager = (TelephonyManager) context
                  .getSystemService(Context.TELEPHONY_SERVICE);
             
@@ -700,8 +782,8 @@ public final class SamplingLibrary {
         // required always
         mySample.setTimestamp(System.currentTimeMillis() / 1000.0);
 
-        // FIXED: Not used yet, Sample needs more fields
-        String MemoryTotalInfo = SamplingLibrary.getMemoryInfo();
+        // This is the same as readMemInfo[0]+[1]
+        // String MemoryTotalInfo = SamplingLibrary.getMemoryInfo();
 
         // FIXED: Not used yet, Sample needs more fields
         long totalCpuTime = 0, totalIdleTime = 0;
@@ -724,7 +806,7 @@ public final class SamplingLibrary {
 
         float screenbrightnessVal = SamplingLibrary
                 .getScreenBrightness(context);
-        boolean gpsEnabled=SamplingLibrary.getGpsEnabled(context);
+        boolean gpsEnabled = SamplingLibrary.getGpsEnabled(context);
         int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
         int callState=SamplingLibrary.getCallState(context);
         String networkType=SamplingLibrary.getNetworkType(context);
@@ -757,7 +839,7 @@ public final class SamplingLibrary {
         }
 
         // FIXED: Not used yet, Sample needs more fields
-        String Batteryhealth = "";
+        String Batteryhealth = "Unknown";
         String Batterystatus = "Unknown";
 
         switch (health) {
@@ -806,26 +888,28 @@ public final class SamplingLibrary {
         }
 
         // FIXED: Not used yet, Sample needs more fields
-        String Batteryplugged = "Unplugged";
+        String batteryCharger = "unplugged";
         switch (plugged) {
 
         case BatteryManager.BATTERY_PLUGGED_AC:
-            Batteryplugged = "Plugged AC";
+            batteryCharger = "ac";
             break;
         case BatteryManager.BATTERY_PLUGGED_USB:
-            Batteryplugged = "Plugged USB";
+            batteryCharger = "usb";
             break;
         }
         otherInfo.setCPUTotalTime(totalCpuTime);
         otherInfo.setCPUIdleTime(totalIdleTime);
-        otherInfo.setMemoryTotalInfo(MemoryTotalInfo);
+        // This is the same as readMeminfo[0]+[1]
+        // otherInfo.setMemoryTotalInfo(MemoryTotalInfo);
         otherInfo.setBatteryTemperature(temperature);
         otherInfo.setBatteryVoltage(voltage);
         otherInfo.setCPUUsage(totalCpuUsage);
         otherInfo.setWifiSignalStrength(wifiSignalStrength);
         otherInfo.setWifiLinkSpeed(wifiLinkSpeed);
-        otherInfo.setBatteryStatus(Batterystatus);
-        otherInfo.setBatteryPlugged(Batteryplugged);
+        // already used in Sample
+        // otherInfo.setBatteryStatus(Batterystatus);
+        otherInfo.setBatteryPlugged(batteryCharger);
         otherInfo.setBatteryHealth(Batteryhealth);
         // Required in new Carat protocol
 
