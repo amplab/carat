@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
+import android.telephony.CellLocation;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
@@ -570,7 +571,82 @@ public final class SamplingLibrary {
                 + maxNumSatellite);
         return maxNumSatellite;
     }
+    
+    /* Get call status: value 0: CALL_STATE_IDLE 1: CALL_STATE_RINGING 2: 
+    CALL_STATE_OFFHOOK */
+    public static int getCallState(Context context){
+        TelephonyManager telManager = (TelephonyManager) context
+               .getSystemService(Context.TELEPHONY_SERVICE);
+            
+        int callState=telManager.getCallState();
+        Log.i("callstate","Call state:"+ callState);
+            
+        return callState;       
+        }
+        
+    /* Get network type: value 0: NETWORK_TYPE_UNKNOWN 1: NETWORK_TYPE_GPRS 
+     * 2: NETWORK_TYPE_EDGE 3: NETWORK_TYPE_UMTS 4: NETWORK_TYPE_CDMA 
+     * 5: NETWORK_TYPE_EVDO_0 6: NETWORK_TYPE_EVDO_A 7: NETWORK_TYPE_1xRTT 
+     * 8: NETWORK_TYPE_HSDPA 9: NETWORK_TYPE_HSUPA 10: NETWORK_TYPE_HSPA 
+     * 11: NETWORK_TYPE_IDEN 12: NETWORK_TYPE_EVDO_B 13: NETWORK_TYPE_LTE 
+     * 14: NETWORK_TYPE_EHRPD 15: NETWORK_TYPE_HSPAP*/      
+    public static int getNetworkType(Context context){
+         TelephonyManager telManager = (TelephonyManager) context
+                 .getSystemService(Context.TELEPHONY_SERVICE);
+            
+         int netType=telManager.getNetworkType();
+         Log.i("NetworkType","Network type:"+ netType);      
+            
+         return netType;
+        }
+        
+    /* Check is it network roaming*/
+    public static boolean getRoamingStatus(Context context){
+          boolean roamStatus=false;
+     
+          TelephonyManager telManager = (TelephonyManager) context
+                  .getSystemService(Context.TELEPHONY_SERVICE);
+            
+          roamStatus=telManager.isNetworkRoaming();
+          Log.i("RoamingStatus","Roaming status:"+ roamStatus);          
+          return roamStatus;
+        }
 
+    /* Get data state: 0: DATA_DISCONNECTED 1: DATA_CONNECTING 2: 
+    DATA_CONNECTED 3: DATA_SUSPENDED*/
+    public static int getDataState(Context context){
+           TelephonyManager telManager = (TelephonyManager) context
+                   .getSystemService(Context.TELEPHONY_SERVICE);
+            
+           int dataState=telManager.getDataState();
+           Log.i("DataState","Data state:"+ dataState); 
+           
+           return dataState;
+        }
+        
+    /* Get data activity: 0: DATA_ACTIVITY_NONE 1: DATA_ACTIVITY_IN 
+    * 2: DATA_ACTIVITY_OUT 3: DATA_ACTIVITY_INOUT 4: DATA_ACTIVITY_DORMANT*/
+    public static int getDataActivity(Context context){
+           TelephonyManager telManager = (TelephonyManager) context
+                   .getSystemService(Context.TELEPHONY_SERVICE);
+            
+           int dataActivity=telManager.getDataActivity();
+           Log.i("DataActivity","Data activity:"+ dataActivity); 
+           
+           return dataActivity;
+        }
+        
+    /* Get the current location of the device */
+    public static CellLocation getDeviceLocation(Context context){
+           TelephonyManager telManager = (TelephonyManager) context
+                   .getSystemService(Context.TELEPHONY_SERVICE);
+            
+           CellLocation LocDevice=telManager.getCellLocation();
+           
+           Log.i("DeviceLocation","Device Location:"+ LocDevice); 
+           return LocDevice;
+        }
+  
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
         String action = intent.getAction();
@@ -609,6 +685,12 @@ public final class SamplingLibrary {
                 .getScreenBrightness(context);
         boolean gpsEnabled=SamplingLibrary.getGpsEnabled(context);
         int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
+        int callState=SamplingLibrary.getCallState(context);
+        int networkType=SamplingLibrary.getNetworkType(context);
+        boolean roamStatus=SamplingLibrary.getRoamingStatus(context);
+        int dataState=SamplingLibrary.getDataState(context);
+        int dataActivity=SamplingLibrary.getDataActivity(context);
+        CellLocation deviceLoc=SamplingLibrary.getDeviceLocation(context);
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
