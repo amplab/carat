@@ -14,17 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.suggestions.*;
+import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class CaratSuggestionsActivity extends ListActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggestions);
-
-		// setListAdapter(new ArrayAdapter<String>(this, R.layout.listitem2,
-		// R.id.list_content, COUNTRIES));
-
-		// lv.setTextFilterEnabled(true);
 
 		final ListView lv = getListView();
 		lv.setCacheColorHint(0);
@@ -34,7 +30,7 @@ public class CaratSuggestionsActivity extends ListActivity {
 			public void onItemClick(AdapterView<?> a, View v, int position,
 					long id) {
 				Object o = lv.getItemAtPosition(position);
-				Suggestion fullObject = (Suggestion) o;
+				HogsBugs fullObject = (HogsBugs) o;
 				killApp(fullObject.getAppName());
 				Toast.makeText(CaratSuggestionsActivity.this,
 						"Killing: " + " " + fullObject.getAppName(),
@@ -50,20 +46,23 @@ public class CaratSuggestionsActivity extends ListActivity {
 	}
 	
 	
-	
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
 	protected void onResume() {
-		final ListView lv = getListView();
-		ArrayList<Suggestion> searchResults = getSuggestions();
-		lv.setAdapter(new SuggestionAdapter(this, searchResults));
+		getRealSuggestions();
 		super.onResume();
 	}
+	
+	private void getRealSuggestions(){
+		CaratApplication app = (CaratApplication) getApplication();
+		final ListView lv = getListView();
+		lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(), app.s.getBugReport()));
+	}
 
-	private ArrayList<Suggestion> getSuggestions() {
+	private void getFakeSuggestions() {
 		ArrayList<Suggestion> results = new ArrayList<Suggestion>();
 		List<RunningAppProcessInfo> rapps = SamplingLibrary
 				.getRunningProcessInfo(getApplicationContext());
@@ -83,7 +82,8 @@ public class CaratSuggestionsActivity extends ListActivity {
 			sugg.setBenefit(((int) (Math.random()*24)) + "h");
 			results.add(sugg);
 		}
-		return results;
+		final ListView lv = getListView();
+		lv.setAdapter(new SuggestionAdapter(this, results));
 	}
 
 	public void killApp(String appName) {
