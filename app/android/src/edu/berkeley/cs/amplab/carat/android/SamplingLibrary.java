@@ -21,6 +21,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.CellLocation;
@@ -509,7 +510,6 @@ public final class SamplingLibrary {
 
     /* Get current WiFi signal Strength */
     public static int getWifiSignalStrength(Context context) {
-
         WifiManager myWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
@@ -521,7 +521,6 @@ public final class SamplingLibrary {
 
     /* Get current WiFi link speed */
     public static int getWifiLinkSpeed(Context context) {
-
         WifiManager myWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
@@ -530,7 +529,53 @@ public final class SamplingLibrary {
         Log.i("linkSpeed", "Link speed:" + linkSpeed);
         return linkSpeed;
     }
-
+    
+    /* Check whether WiFi is enabled*/
+    public static boolean getWifiEnabled(Context context){
+        boolean wifiEnabled=false;
+        
+        WifiManager myWifiManager = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        wifiEnabled=myWifiManager.isWifiEnabled();   
+        Log.i("WifiEnabled", "Wifi is enabled:" +wifiEnabled); 
+        return wifiEnabled;
+    }
+    
+    /* Get Wifi state: 0: WIFI_STATE_DISABLING 1: WIFI_STATE_DISABLED  2. WIFI_STATE_ENABLING 
+     * 3: WIFI_STATE_ENABLED 4: WIFI_STATE_UNKNOWN*/
+    public static int getWifiState(Context context){
+        WifiManager myWifiManager = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        int wifiState=myWifiManager.getWifiState();
+        Log.i("WifiState", "Wifi state:" +wifiState); 
+        return wifiState;
+    }
+    
+    public static WifiInfo getWifiInfo(Context context){
+        WifiManager myWifiManager = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        WifiInfo connectionInfo=myWifiManager.getConnectionInfo(); 
+        Log.i("WifiInfo", "Wifi information:" +connectionInfo); 
+        return connectionInfo; 
+        
+    }
+    
+    /* Check whether background data are enabled*/
+    public static boolean getBackgroundDataEnabled(Context context){
+        boolean bacDataEnabled=false;
+        try {
+            if (Settings.Secure.getInt(context.getContentResolver(), 
+                    Settings.Secure.BACKGROUND_DATA) == 1 ){
+            bacDataEnabled=true;
+            }
+        } catch (SettingNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Log.i("BacakgroundDataEnabled", "Background data are enabled :" +bacDataEnabled); 
+        return bacDataEnabled;
+    }
+    
     /* Get Current Screen Brightness Value */
     public static float getScreenBrightness(Context context) {
 
@@ -579,8 +624,7 @@ public final class SamplingLibrary {
                .getSystemService(Context.TELEPHONY_SERVICE);
             
         int callState=telManager.getCallState();
-        Log.i("callstate","Call state:"+ callState);
-            
+        Log.i("callstate","Call state:"+ callState);          
         return callState;       
         }
         
@@ -590,14 +634,13 @@ public final class SamplingLibrary {
      * 8: NETWORK_TYPE_HSDPA 9: NETWORK_TYPE_HSUPA 10: NETWORK_TYPE_HSPA 
      * 11: NETWORK_TYPE_IDEN 12: NETWORK_TYPE_EVDO_B 13: NETWORK_TYPE_LTE 
      * 14: NETWORK_TYPE_EHRPD 15: NETWORK_TYPE_HSPAP*/      
-    public static int getNetworkType(Context context){
+    public static String getNetworkType(Context context){
          TelephonyManager telManager = (TelephonyManager) context
                  .getSystemService(Context.TELEPHONY_SERVICE);
             
          int netType=telManager.getNetworkType();
-         Log.i("NetworkType","Network type:"+ netType);      
-            
-         return netType;
+         Log.i("NetworkType","Network type:"+ String.valueOf(netType));               
+         return String.valueOf(netType);
         }
         
     /* Check is it network roaming*/
@@ -612,19 +655,18 @@ public final class SamplingLibrary {
           return roamStatus;
         }
 
-    /* Get data state: 0: DATA_DISCONNECTED 1: DATA_CONNECTING 2: 
+    /* Get data state: value 0: DATA_DISCONNECTED 1: DATA_CONNECTING 2: 
     DATA_CONNECTED 3: DATA_SUSPENDED*/
     public static int getDataState(Context context){
            TelephonyManager telManager = (TelephonyManager) context
                    .getSystemService(Context.TELEPHONY_SERVICE);
             
            int dataState=telManager.getDataState();
-           Log.i("DataState","Data state:"+ dataState); 
-           
+           Log.i("DataState","Data state:"+ dataState);    
            return dataState;
         }
         
-    /* Get data activity: 0: DATA_ACTIVITY_NONE 1: DATA_ACTIVITY_IN 
+    /* Get data activity: value 0: DATA_ACTIVITY_NONE 1: DATA_ACTIVITY_IN 
     * 2: DATA_ACTIVITY_OUT 3: DATA_ACTIVITY_INOUT 4: DATA_ACTIVITY_DORMANT*/
     public static int getDataActivity(Context context){
            TelephonyManager telManager = (TelephonyManager) context
@@ -632,7 +674,6 @@ public final class SamplingLibrary {
             
            int dataActivity=telManager.getDataActivity();
            Log.i("DataActivity","Data activity:"+ dataActivity); 
-           
            return dataActivity;
         }
         
@@ -686,11 +727,15 @@ public final class SamplingLibrary {
         boolean gpsEnabled=SamplingLibrary.getGpsEnabled(context);
         int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
         int callState=SamplingLibrary.getCallState(context);
-        int networkType=SamplingLibrary.getNetworkType(context);
+        String networkType=SamplingLibrary.getNetworkType(context);
         boolean roamStatus=SamplingLibrary.getRoamingStatus(context);
         int dataState=SamplingLibrary.getDataState(context);
         int dataActivity=SamplingLibrary.getDataActivity(context);
         CellLocation deviceLoc=SamplingLibrary.getDeviceLocation(context);
+        boolean wifiEnabled=SamplingLibrary.getWifiEnabled(context);
+        int wifiState=SamplingLibrary.getWifiState(context);
+        WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
+        boolean bacDataEnabled=SamplingLibrary.getBackgroundDataEnabled(context);
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
