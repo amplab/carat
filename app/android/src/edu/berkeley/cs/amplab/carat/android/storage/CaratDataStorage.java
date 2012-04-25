@@ -35,8 +35,8 @@ public class CaratDataStorage {
 		this.a = a;
 		freshness = readFreshness();
 		caratData = readReports();
-		bugData = readBugReport();
-		hogData = readBugReport();
+		readBugReport();
+		readHogReport();
 	}
 
 	public void writeReports(Reports reports) {
