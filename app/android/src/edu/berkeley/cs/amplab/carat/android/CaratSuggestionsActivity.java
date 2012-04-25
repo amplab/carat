@@ -1,28 +1,36 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.ListActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ViewFlipper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.suggestions.*;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
-public class CaratSuggestionsActivity extends ListActivity {
+public class CaratSuggestionsActivity extends Activity {
+
+    private ViewFlipper vf = null;
+    private int baseViewIndex = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.suggestions);
+		vf = (ViewFlipper) findViewById(R.id.suggestionsFlipper);
+        View baseView = findViewById(R.id.list);
+        baseView.setOnTouchListener(
+                SwipeListener.instance);
+        vf.setOnTouchListener(SwipeListener.instance);
+        baseViewIndex = vf.indexOfChild(baseView);
 
-		final ListView lv = getListView();
+		final ListView lv = (ListView) findViewById(R.id.list);
 		lv.setCacheColorHint(0);
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -31,21 +39,31 @@ public class CaratSuggestionsActivity extends ListActivity {
 					long id) {
 				Object o = lv.getItemAtPosition(position);
 				HogsBugs fullObject = (HogsBugs) o;
-				killApp(fullObject.getAppName());
-				Toast.makeText(CaratSuggestionsActivity.this,
-						"Killing: " + " " + fullObject.getAppName(),
-						Toast.LENGTH_SHORT).show();
-				// Intent myIntent = new Intent(v.getContext(),
-				// CaratKillAppActivity.class);
-				// findViewById(R.id.scrollView1).startAnimation(CaratMainActivity.outtoLeft);
-				// startActivityForResult(myIntent, 0);
+				View target = findViewById(R.id.killAppView);
+                vf.setOutAnimation(CaratMainActivity.outtoLeft);
+                vf.setInAnimation(CaratMainActivity.inFromRight);
+                vf.setDisplayedChild(vf.indexOfChild(target));
+				//killApp(fullObject.getAppName());
 			}
 		});
 
-		lv.setOnTouchListener(SwipeListener.instance);
+		initKillView();
 	}
 	
-	
+	private void initKillView(){
+	    WebView webview = (WebView) findViewById(R.id.killAppView);
+        // Fixes the white flash when showing the page for the first time.
+        if (getString(R.string.blackBackground).equals("true"))
+            webview.setBackgroundColor(0);
+        String osVer = SamplingLibrary.getOsVersion();
+        // FIXME: KLUDGE. Should be smarter with the version number.
+        if (osVer.startsWith("2."))
+            webview.loadUrl("file:///android_asset/killapp-2.2.html");
+        else
+            webview.loadUrl("file:///android_asset/killapp.html");
+        webview.setOnTouchListener(new FlipperBackListener(vf, vf
+                .indexOfChild(findViewById(R.id.list))));
+	}
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onResume()
@@ -58,7 +76,7 @@ public class CaratSuggestionsActivity extends ListActivity {
 	
 	private void getRealSuggestions(){
 		CaratApplication app = (CaratApplication) getApplication();
-		final ListView lv = getListView();
+		final ListView lv = (ListView) findViewById(R.id.list);
 		lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(), app.s.getBugReport()));
 	}
 
@@ -74,4 +92,14 @@ public class CaratSuggestionsActivity extends ListActivity {
 			}
 		}
 	}
+	
+	@Override
+    public void onBackPressed() {
+        if (vf.getDisplayedChild() != baseViewIndex) {
+            vf.setOutAnimation(CaratMainActivity.outtoRight);
+            vf.setInAnimation(CaratMainActivity.inFromLeft);
+            vf.setDisplayedChild(baseViewIndex);
+        } else
+            finish();
+    }
 }

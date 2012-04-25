@@ -104,16 +104,16 @@ public class CaratMainActivity extends TabActivity {
 				Log.i("onTabChanged", "oldTab=" + oldTab + " old=" + old
 						+ " newTabId=" + tabId + " newTab=" + newTab
 						+ " newView=" + newView);
-
+/*
 				if (old != null && newView != null) {
 					if (oldTab < newTab) {
-						old.startAnimation(outtoLeft);
-						newView.startAnimation(inFromRight);
+						old.setAnimation(outtoLeft);
+						newView.setAnimation(inFromRight);
 					} else {
-						newView.startAnimation(inFromLeft);
-						old.startAnimation(outtoRight);
+						newView.setAnimation(inFromLeft);
+						old.setAnimation(outtoRight);
 					}
-				}
+				}*/
 				oldTab = newTab;
 			}
 		});
