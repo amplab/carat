@@ -62,30 +62,6 @@ public class CaratSuggestionsActivity extends ListActivity {
 		lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(), app.s.getBugReport()));
 	}
 
-	private void getFakeSuggestions() {
-		ArrayList<Suggestion> results = new ArrayList<Suggestion>();
-		List<RunningAppProcessInfo> rapps = SamplingLibrary
-				.getRunningProcessInfo(getApplicationContext());
-		
-		CaratApplication app = (CaratApplication) getApplication();
-		
-		for (RunningAppProcessInfo pi : rapps) {
-			/* Skip stuff that is not running (should not show in this list)
-			 * and Services that will just spring back up when killed
-			 * TODO: Figure out how to skip stuff like keyboards and notification icons
-			 */
-			if (pi.importance == RunningAppProcessInfo.IMPORTANCE_EMPTY || 
-					pi.importance == RunningAppProcessInfo.IMPORTANCE_SERVICE)
-				continue;
-			Suggestion sugg = new Suggestion("Kill", app.labelForApp(pi.processName), CaratApplication.importanceString(pi.importance));
-			sugg.setIcon(app.iconForApp(pi.processName));
-			sugg.setBenefit(((int) (Math.random()*24)) + "h");
-			results.add(sugg);
-		}
-		final ListView lv = getListView();
-		lv.setAdapter(new SuggestionAdapter(this, results));
-	}
-
 	public void killApp(String appName) {
 		List<ActivityManager.RunningAppProcessInfo> list = SamplingLibrary
 				.getRunningProcessInfo(getApplicationContext());
