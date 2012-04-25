@@ -2,7 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import org.apache.thrift.TException;
 
-import edu.berkeley.cs.amplab.carat.android.storage.CaratDB;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.AlarmManager;
 import android.app.TabActivity;
@@ -244,7 +244,7 @@ public class CaratMainActivity extends TabActivity {
 			while (isRunning) {
 				String networkStatus = SamplingLibrary.getNetworkStatus(c);
 				if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED) {
-					Sample[] samples = CaratDB.getInstance(c)
+					Sample[] samples = CaratSampleDB.getInstance(c)
 							.queryOldestSamples(COMMS_MAX_UPLOAD_BATCH);
 					if (samples.length > 0) {
 						try {
@@ -262,7 +262,7 @@ public class CaratMainActivity extends TabActivity {
 										"Deleting " + samples.length
 												+ " samples older than "
 												+ last.getTimestamp());
-								int deleted = CaratDB.getInstance(c)
+								int deleted = CaratSampleDB.getInstance(c)
 										.deleteOldestSamples(
 												last.getTimestamp());
 								Log.i("CommsThread", "Deleted " + deleted

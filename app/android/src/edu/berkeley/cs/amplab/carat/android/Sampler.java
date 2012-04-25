@@ -1,6 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import edu.berkeley.cs.amplab.carat.android.storage.CaratDB;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -14,12 +14,12 @@ import android.widget.Toast;
 
 public class Sampler extends BroadcastReceiver {
 
-	CaratDB ds = null;
+	CaratSampleDB ds = null;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (ds == null) {
-			ds = new CaratDB(context);
+			ds = new CaratSampleDB(context);
 		}
 		final Context c = context;
 		final Intent i = intent;
