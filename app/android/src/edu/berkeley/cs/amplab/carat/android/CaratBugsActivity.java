@@ -27,6 +27,7 @@ public class CaratBugsActivity extends Activity {
 		View baseView = findViewById(R.id.bugsList);
 		baseView.setOnTouchListener(
 				SwipeListener.instance);
+		vf.setOnTouchListener(SwipeListener.instance);
 		baseViewIndex = vf.indexOfChild(baseView);
 		initBugsView();
 		initGraphView();

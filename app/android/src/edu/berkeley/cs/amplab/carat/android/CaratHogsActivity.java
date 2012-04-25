@@ -27,6 +27,7 @@ public class CaratHogsActivity extends Activity {
 		View baseView = findViewById(R.id.hogsList);
 		baseView.setOnTouchListener(
 				SwipeListener.instance);
+		vf.setOnTouchListener(SwipeListener.instance);
 		baseViewIndex = vf.indexOfChild(baseView);
 		initHogsView();
 		initGraphView();
