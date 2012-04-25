@@ -201,8 +201,8 @@ public class CaratDB {
 		return deleted;
 	}
 	
-	public int deleteOldestSamples(double newestTimestamp){
-		return delete("timestamp <= ?", new String[]{newestTimestamp+""});
+	public int deleteOldestSamples(double timestamp){
+		return delete(COLUMN_TIMESTAMP+" <= ?", new String[]{timestamp +""});
 	}
 
 	public Sample queryLastSample() {
@@ -233,7 +233,7 @@ public class CaratDB {
 	private Sample fillSample(Cursor cursor) {
 		Sample s = new Sample();
 		s.setUuId(cursor.getString(cursor.getColumnIndex(CaratDB.COLUMN_UUID)));
-		s.setTimestamp(cursor.getLong(cursor
+		s.setTimestamp(cursor.getDouble(cursor
 				.getColumnIndex(CaratDB.COLUMN_TIMESTAMP)));
 		s.setTriggeredBy(cursor.getString(cursor
 				.getColumnIndex(CaratDB.COLUMN_TRIGGERED_BY)));

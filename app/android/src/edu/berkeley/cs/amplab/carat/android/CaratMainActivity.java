@@ -2,9 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import org.apache.thrift.TException;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.ProtocolClient;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDB;
-import edu.berkeley.cs.amplab.carat.thrift.CaratService.Client;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.AlarmManager;
 import android.app.TabActivity;
@@ -196,8 +194,10 @@ public class CaratMainActivity extends TabActivity {
 	 */
 	@Override
 	protected void onResume() {
-		sampleSender = new CommsThread();
-		sampleSender.start();
+		if (sampleSender == null) {
+			sampleSender = new CommsThread();
+			sampleSender.start();
+		}
 		super.onResume();
 	}
 

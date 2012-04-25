@@ -63,8 +63,9 @@ public abstract class HogsBugsAdapter extends BaseAdapter {
 		}
 		HogsBugs item = allBugsOrHogs.get(position);
 		Drawable icon = a.iconForApp(item.getAppName());
+		String label = a.labelForApp(item.getAppName());
 
-		holder.txtName.setText(item.getAppName());
+		holder.txtName.setText(label);
 		holder.appIcon.setImageDrawable(icon);
 		holder.progConfidence.setProgress((int) (item.getWDistance() * 100));
 		// holder.moreInfo...

@@ -123,9 +123,9 @@ public class CommunicationManager {
 
 		// FIXME: Fake data for now
 
-		uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
-		model = "iPhone 3GS";
-		OS = "5.0.1";
+		//uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
+		//model = "iPhone 3GS";
+		//OS = "5.0.1";
 
 		try {
 			c = ProtocolClient.getInstance(a.getApplicationContext());

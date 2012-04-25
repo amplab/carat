@@ -52,6 +52,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	}
 
 	private void acceptHogsOrBugs(List<HogsBugs> input, List<HogsBugs> result) {
+		if (input == null)
+			return;
 		for (HogsBugs item : input) {
 			double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
 					/ item.getExpectedValue();

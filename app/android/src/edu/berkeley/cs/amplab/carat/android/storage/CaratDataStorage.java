@@ -185,7 +185,7 @@ public class CaratDataStorage {
 	 * @return the hog reports
 	 */
 	public List<HogsBugs> getHogReport() {
-		if (bugData == null)
+		if (hogData == null)
 			return null;
 		return hogData.getHbList();
 	}

@@ -149,8 +149,8 @@ public class CaratApplication extends Application {
 
 				// Get the AlarmManager service
 				AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-
-				am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+				// we probably don't want the wakeup, but do battery events still get delivered?
+				am.setInexactRepeating(AlarmManager.RTC,
 						System.currentTimeMillis() + FIRST_SAMPLE_DELAY_MS,
 						SAMPLE_INTERVAL_MS, sender);
 

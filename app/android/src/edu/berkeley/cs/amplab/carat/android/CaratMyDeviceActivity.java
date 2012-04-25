@@ -6,19 +6,15 @@ import edu.berkeley.cs.amplab.carat.android.suggestions.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Activity;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
-import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * 
@@ -135,20 +131,6 @@ public class CaratMyDeviceActivity extends Activity {
 		vf.setOutAnimation(CaratMainActivity.outtoLeft);
 		vf.setInAnimation(CaratMainActivity.inFromRight);
 		vf.setDisplayedChild(vf.indexOfChild(target));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onActivityResult(int, int,
-	 * android.content.Intent)
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		findViewById(R.id.scrollView1).startAnimation(
-				CaratMainActivity.inFromLeft);
-		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void setModelAndVersion() {
