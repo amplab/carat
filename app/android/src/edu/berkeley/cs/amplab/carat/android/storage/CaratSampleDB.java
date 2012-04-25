@@ -22,53 +22,40 @@ import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 /**
- * Deprecated, use CaratSampleDB.
  * Stores samples in a SQLite database until sent.
  * If you add COLUMNS in the database, check all the TODO:s for places you need to update.
  * 
  * @author Eemil Lagerspetz
  *
  */
-@Deprecated
-public class CaratDB {
+public class CaratSampleDB {
 
-	private static final String TAG = "CaratDB";
+	private static final String TAG = "CaratSampleDB";
 
-	public static final String COLUMN_UUID = "uuid";
 	public static final String COLUMN_TIMESTAMP = "timestamp";
-	public static final String COLUMN_TRIGGERED_BY = "triggeredby";
-	public static final String COLUMN_BATTERY_LEVEL = "batterylevel";
-	public static final String COLUMN_BATTERY_STATE = "batterystate";
-	public static final String COLUMN_NETWORKSTATUS = "networkstatus";
-	public static final String COLUMN_MEMORY_WIRED = "memorywired";
-	public static final String COLUMN_DISTANCE_TRAVELED = "distancetraveled";
-	public static final String COLUMN_MEMORY_ACTIVE = "memoryactive";
-	public static final String COLUMN_MEMORY_USER = "memoryuser";
-	public static final String COLUMN_MEMORY_FREE = "memoryfree";
-	public static final String COLUMN_MEMORY_INACTIVE = "memoryinactive";
-	public static final String COLUMN_PILIST = "pilist";
+	public static final String COLUMN_SAMPLE = "sample";
 
 	public static final String DATABASE_NAME = "caratdata";
-	public static final String SAMPLES_VIRTUAL_TABLE = "samples";
+	public static final String SAMPLES_VIRTUAL_TABLE = "sampleobjects";
 	private static final int DATABASE_VERSION = 2;
 
 	private static final HashMap<String, String> mColumnMap = buildColumnMap();
 
 	private Sample lastSample = null;
 
-	private DictionaryOpenHelper mDatabaseOpenHelper = null;
+	private SampleDbOpenHelper sampleOpenHelper = null;
 	
-	private static CaratDB instance = null;
+	private static CaratSampleDB instance = null;
 	
-	public static CaratDB getInstance(Context c){
+	public static CaratSampleDB getInstance(Context c){
 		if (instance == null)
-			instance = new CaratDB(c);
+			instance = new CaratSampleDB(c);
 		return instance;
 	}
 
-	public CaratDB(Context context) {
-		if (mDatabaseOpenHelper == null)
-			mDatabaseOpenHelper = new DictionaryOpenHelper(context);
+	public CaratSampleDB(Context context) {
+		if (sampleOpenHelper == null)
+			sampleOpenHelper = new SampleDbOpenHelper(context);
 	}
 
 	/**
@@ -83,19 +70,8 @@ public class CaratDB {
 	 */
 	private static HashMap<String, String> buildColumnMap() {
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put(COLUMN_BATTERY_LEVEL, COLUMN_BATTERY_LEVEL);
-		map.put(COLUMN_BATTERY_STATE, COLUMN_BATTERY_STATE);
-		map.put(COLUMN_DISTANCE_TRAVELED, COLUMN_DISTANCE_TRAVELED);
-		map.put(COLUMN_MEMORY_ACTIVE, COLUMN_MEMORY_ACTIVE);
-		map.put(COLUMN_MEMORY_INACTIVE, COLUMN_MEMORY_INACTIVE);
-		map.put(COLUMN_MEMORY_USER, COLUMN_MEMORY_USER);
-		map.put(COLUMN_MEMORY_FREE, COLUMN_MEMORY_FREE);
-		map.put(COLUMN_MEMORY_WIRED, COLUMN_MEMORY_WIRED);
-		map.put(COLUMN_NETWORKSTATUS, COLUMN_NETWORKSTATUS);
-		map.put(COLUMN_PILIST, COLUMN_PILIST);
 		map.put(COLUMN_TIMESTAMP, COLUMN_TIMESTAMP);
-		map.put(COLUMN_TRIGGERED_BY, COLUMN_TRIGGERED_BY);
-		map.put(COLUMN_UUID, COLUMN_UUID);
+		map.put(COLUMN_SAMPLE, COLUMN_SAMPLE);
 		map.put(BaseColumns._ID, "rowid AS " + BaseColumns._ID);
 		return map;
 	}
@@ -124,7 +100,7 @@ public class CaratDB {
 		builder.setProjectionMap(mColumnMap);
 
 		Cursor cursor = builder.query(
-				mDatabaseOpenHelper.getReadableDatabase(), columns, selection,
+				sampleOpenHelper.getReadableDatabase(), columns, selection,
 				selectionArgs, groupBy, having, sortOrder);
 
 		if (cursor == null) {
@@ -197,7 +173,7 @@ public class CaratDB {
 	}
 	
 	public int delete(String whereClause, String[] whereArgs){
-		SQLiteDatabase db = mDatabaseOpenHelper.getWritableDatabase();
+		SQLiteDatabase db = sampleOpenHelper.getWritableDatabase();
 		int deleted =  db.delete(SAMPLES_VIRTUAL_TABLE, whereClause, whereArgs);
 		db.close();
 		return deleted;
@@ -233,39 +209,16 @@ public class CaratDB {
 	 * updated when fields update.
 	 */
 	private Sample fillSample(Cursor cursor) {
-		Sample s = new Sample();
-		s.setUuId(cursor.getString(cursor.getColumnIndex(CaratDB.COLUMN_UUID)));
-		s.setTimestamp(cursor.getDouble(cursor
-				.getColumnIndex(CaratDB.COLUMN_TIMESTAMP)));
-		s.setTriggeredBy(cursor.getString(cursor
-				.getColumnIndex(CaratDB.COLUMN_TRIGGERED_BY)));
-		s.setBatteryLevel(cursor.getDouble(cursor
-				.getColumnIndex(CaratDB.COLUMN_BATTERY_LEVEL)));
-		s.setBatteryState(cursor.getString(cursor
-				.getColumnIndex(CaratDB.COLUMN_BATTERY_STATE)));
-		s.setNetworkStatus(cursor.getString(cursor
-				.getColumnIndex(CaratDB.COLUMN_NETWORKSTATUS)));
-		s.setMemoryActive(cursor.getInt(cursor
-				.getColumnIndex(CaratDB.COLUMN_MEMORY_ACTIVE)));
-		s.setMemoryInactive(cursor.getInt(cursor
-				.getColumnIndex(CaratDB.COLUMN_MEMORY_INACTIVE)));
-		s.setMemoryUser(cursor.getInt(cursor
-				.getColumnIndex(CaratDB.COLUMN_MEMORY_USER)));
-		s.setMemoryFree(cursor.getInt(cursor
-				.getColumnIndex(CaratDB.COLUMN_MEMORY_FREE)));
-		s.setMemoryWired(cursor.getInt(cursor
-				.getColumnIndex(CaratDB.COLUMN_MEMORY_WIRED)));
-		s.setDistanceTraveled(cursor.getDouble(cursor
-				.getColumnIndex(CaratDB.COLUMN_DISTANCE_TRAVELED)));
-		byte[] pidlistB = cursor.getBlob(cursor
-				.getColumnIndex(CaratDB.COLUMN_PILIST));
-		if (pidlistB != null) {
+		Sample s = null;
+		byte[] sampleB = cursor.getBlob(cursor
+				.getColumnIndex(CaratSampleDB.COLUMN_SAMPLE));
+		if (sampleB != null) {
 			ObjectInputStream oi;
 			try {
-				oi = new ObjectInputStream(new ByteArrayInputStream(pidlistB));
+				oi = new ObjectInputStream(new ByteArrayInputStream(sampleB));
 				Object o = oi.readObject();
 				if (o != null)
-					s.setPiList((List<ProcessInfo>) o);
+					s = (Sample) o;
 			} catch (StreamCorruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -277,15 +230,7 @@ public class CaratDB {
 				e.printStackTrace();
 			}
 		}
-		// s.setDistanceTraveled(distanceTraveled)
-		// s.setMemoryActive(memoryActive)
-		// s.setMemoryFree(memoryFree)
-		// s.setMemoryInactive(memoryInactive)
-		// s.setMemoryUser(memoryUser)
-		// s.setMemoryWired(memoryWired)
-		// s.setNetworkStatus(networkStatus)
 
-		// cursor.getX(columnIndex) ...
 		return s;
 	}
 
@@ -297,16 +242,16 @@ public class CaratDB {
 
 	public long putSample(Sample s) {
 		// force init
-		mDatabaseOpenHelper.getReadableDatabase();
-		long id = mDatabaseOpenHelper.addSample(s);
-		mDatabaseOpenHelper.close();
+		sampleOpenHelper.getReadableDatabase();
+		long id = sampleOpenHelper.addSample(s);
+		sampleOpenHelper.close();
 		return id;
 	}
 
 	/**
 	 * This creates/opens the database.
 	 */
-	private static class DictionaryOpenHelper extends SQLiteOpenHelper {
+	private static class SampleDbOpenHelper extends SQLiteOpenHelper {
 		private SQLiteDatabase mDatabase;
 
 		/*
@@ -336,7 +281,7 @@ public class CaratDB {
 			return b.toString();
 		}
 
-		DictionaryOpenHelper(Context context) {
+		SampleDbOpenHelper(Context context) {
 			super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		}
 
@@ -368,26 +313,13 @@ public class CaratDB {
 		public long addSample(Sample s) {
 			ContentValues initialValues = new ContentValues();
 			initialValues.put(COLUMN_TIMESTAMP, s.getTimestamp());
-			initialValues.put(COLUMN_UUID, s.getUuId());
-			initialValues
-					.put(COLUMN_DISTANCE_TRAVELED, s.getDistanceTraveled());
-			initialValues.put(COLUMN_MEMORY_WIRED, s.getMemoryWired());
-			initialValues.put(COLUMN_MEMORY_USER, s.getMemoryUser());
-			initialValues.put(COLUMN_MEMORY_FREE, s.getMemoryFree());
-			initialValues.put(COLUMN_MEMORY_ACTIVE, s.getMemoryActive());
-			initialValues.put(COLUMN_MEMORY_INACTIVE, s.getMemoryInactive());
-			initialValues.put(COLUMN_TRIGGERED_BY, s.getTriggeredBy());
-			initialValues.put(COLUMN_BATTERY_STATE, s.getBatteryState());
-			initialValues.put(COLUMN_BATTERY_LEVEL, s.getBatteryLevel());
-			initialValues.put(COLUMN_NETWORKSTATUS, s.getNetworkStatus());
 			// Add the piList as a blob
-			Object o = s.getPiList();
-			if (o != null) {
+			if (s != null) {
 				try {
 					ByteArrayOutputStream bo = new ByteArrayOutputStream();
 					ObjectOutputStream oo = new ObjectOutputStream(bo);
-					oo.writeObject(o);
-					initialValues.put(COLUMN_PILIST, bo.toByteArray());
+					oo.writeObject(s);
+					initialValues.put(COLUMN_SAMPLE, bo.toByteArray());
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
