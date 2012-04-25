@@ -315,21 +315,27 @@ public final class SamplingLibrary {
         for (RunningAppProcessInfo pi : list) {
             ProcessInfo item = new ProcessInfo();
             /*
-             * pi.importance; pi.lru; pi.uid;
+             * TODO:
+             * pi.lru; pi.uid;
              */
             PackageInfo pak = packages.get(pi.processName);
             if (pak != null) {
                 ApplicationInfo info = pak.applicationInfo;
+                // Human readable label (if any)
                 String label = pm.getApplicationLabel(info).toString();
-                // TODO: get application details and assign to item
-                //item.setApplicationLabel(label);
-
+                if (label != null && label.length() > 0)
+                    item.setApplicationLabel(label);
+                // TODO: get more application details and assign to item
                 int flags = pak.applicationInfo.flags;
-                // TODO: check if it is a system app
-                // if (flags & pak.applicationInfo)
+                // Check if it is a system app
+                boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
+                isSystemApp = isSystemApp || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
+                item.setIsSystemApp(isSystemApp);
             }
+            item.setImportance(CaratApplication.importanceString(pi.importance));
             item.setPId(pi.pid);
             item.setPName(pi.processName);
+            
             procMem[list.indexOf(pi)] = pi.pid;
             // FIXME: More fields will need to be added here, but ProcessInfo
             // needs to change.
@@ -514,15 +520,19 @@ public final class SamplingLibrary {
         return tmp;
     }
 
-    public static String getUptime() {
+    /**
+     * Return time in seconds since last boot.
+     */
+    public static double getUptime() {
         long uptime = SystemClock.elapsedRealtime();
-        int seconds = (int) (uptime / 1000) % 60;
+        /*int seconds = (int) (uptime / 1000) % 60;
         int minutes = (int) (uptime / (1000 * 60) % 60);
         int hours = (int) (uptime / (1000 * 60 * 60) % 24);
         String tmp = "\nThe uptime is :" + hours + "hr:" + minutes + "mins:"
                 + seconds + "sec.\n";
-        return tmp;
-
+        return tmp;*/
+        
+        return uptime / 1000.0;
     }
 
     public static String getNetworkStatus(Context context) {
@@ -776,7 +786,7 @@ public final class SamplingLibrary {
 
         // Construct sample and return it in the end
         Sample mySample = new Sample();
-        AndroidSample otherInfo = new AndroidSample();
+        
         mySample.setUuId(SamplingLibrary.getUuid(context));
         mySample.setTriggeredBy(action);
         // required always
@@ -800,24 +810,46 @@ public final class SamplingLibrary {
 
         List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
         mySample.setPiList(processes);
-
+        // Wifi stuff
         int wifiSignalStrength = SamplingLibrary.getWifiSignalStrength(context);
+        mySample.setWifiSignalStrength(wifiSignalStrength);
         int wifiLinkSpeed = SamplingLibrary.getWifiLinkSpeed(context);
-
-        float screenbrightnessVal = SamplingLibrary
+        mySample.setWifiLinkSpeed(wifiLinkSpeed);
+        
+        int screenBrightness = SamplingLibrary
                 .getScreenBrightness(context);
+        mySample.setScreenBrightness(screenBrightness);
         boolean gpsEnabled = SamplingLibrary.getGpsEnabled(context);
+        // Location providers
+        List<String> enabledLocationProviders = SamplingLibrary.getEnabledLocationProviders(context);
+        mySample.setLocationProviders(enabledLocationProviders);
+        // TODO: not in Sample yet
         int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
         int callState=SamplingLibrary.getCallState(context);
+        // Network type
         String networkType=SamplingLibrary.getNetworkType(context);
+        mySample.setNetworkType(networkType);
+        String mobileNetworkType=SamplingLibrary.getMobileNetworkType(context);
+        mySample.setMobileNetworkType(mobileNetworkType);
         boolean roamStatus=SamplingLibrary.getRoamingStatus(context);
-        int dataState=SamplingLibrary.getDataState(context);
-        int dataActivity=SamplingLibrary.getDataActivity(context);
+        mySample.setRoamingEnabled(roamStatus);
+        // TODO: needs to be String
+        //String dataState=SamplingLibrary.getDataState(context);
+        //mySample.setMobileDataStatus(dataState);
+        // TODO: needs to be String
+        //String dataActivity=SamplingLibrary.getDataActivity(context);
+        //mySample.setMobileDataActivity(dataActivity);
         CellLocation deviceLoc=SamplingLibrary.getDeviceLocation(context);
         boolean wifiEnabled=SamplingLibrary.getWifiEnabled(context);
-        int wifiState=SamplingLibrary.getWifiState(context);
-        WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
+        mySample.setWifiEnabled(wifiEnabled);
+        // TODO: needs to be String
+        //String wifiState=SamplingLibrary.getWifiState(context);
+        //mySample.setWifiStatus(wifiState);
+        
+        // TODO: is this used for something?
+        //WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
         boolean bacDataEnabled=SamplingLibrary.getBackgroundDataEnabled(context);
+        mySample.setBackgroundDataEnabled(bacDataEnabled);
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
@@ -898,21 +930,26 @@ public final class SamplingLibrary {
             batteryCharger = "usb";
             break;
         }
-        otherInfo.setCPUTotalTime(totalCpuTime);
-        otherInfo.setCPUIdleTime(totalIdleTime);
-        // This is the same as readMeminfo[0]+[1]
-        // otherInfo.setMemoryTotalInfo(MemoryTotalInfo);
-        otherInfo.setBatteryTemperature(temperature);
-        otherInfo.setBatteryVoltage(voltage);
+        mySample.setCpuTime(totalCpuTime);
+        //otherInfo.setCPUTotalTime(totalCpuTime);
+        mySample.setIdleTime(totalIdleTime);
+        //otherInfo.setCPUIdleTime(totalIdleTime);
+        mySample.setBatteryTemperature(temperature);
+        //otherInfo.setBatteryTemperature(temperature);
+        mySample.setBatteryVoltage(voltage);
+        //otherInfo.setBatteryVoltage(voltage);
+        
+        // TODO: Extended attributes should be set to mySample
+        // What is totalCpuUsage? How does it compare to cpuTime and idleTime?
+        // Maybe we should just have a cpu usage percentage.
+        AndroidSample otherInfo = new AndroidSample();
         otherInfo.setCPUUsage(totalCpuUsage);
-        otherInfo.setWifiSignalStrength(wifiSignalStrength);
-        otherInfo.setWifiLinkSpeed(wifiLinkSpeed);
-        // already used in Sample
-        // otherInfo.setBatteryStatus(Batterystatus);
-        otherInfo.setBatteryPlugged(batteryCharger);
-        otherInfo.setBatteryHealth(Batteryhealth);
+        
+        mySample.setUptime(getUptime());
+        mySample.setBatteryCharger(batteryCharger);
+        mySample.setBatteryHealth(Batteryhealth);
+        
         // Required in new Carat protocol
-
         mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
         mySample.setBatteryLevel(batteryLevel);
         mySample.setBatteryState(Batterystatus);
@@ -930,6 +967,7 @@ public final class SamplingLibrary {
 
         // Deprecated, readMeminfo gives all the 4 values
         // mySample.setMemoryFree(Integer.parseInt(SamplingLibrary.getMemoryFree()));
+
 
         return mySample;
     }
