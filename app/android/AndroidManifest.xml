@@ -8,11 +8,20 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="10" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Not actually required. -->
+    <!-- 
     <uses-permission android:name="android.permission.BATTERY_STATS" />
+     -->
+     <!-- Not used at the moment -->
+    <!-- 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+     -->
+
+  <!-- For sending and receiving Samples and reports. -->     
+     <uses-permission android:name="android.permission.INTERNET" />
+     <!-- For Sampling network stuff -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 	    <application
@@ -70,16 +79,22 @@
                 is 15 mins or more. -->
                 <!-- 
                  <action android:name="android.intent.action.TIME_TICK" />  -->
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                
                 <!-- This event cannot be registered to from the manifest either. -->
                 <!-- 
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
                  -->
+                 <!-- Let's not make Carat immortal for now. -->
+                <!-- 
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 -->
+                 
+                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <!-- Sample on timer if nothing else happens for 15 mins -->
                 <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
             </intent-filter>
         </receiver>

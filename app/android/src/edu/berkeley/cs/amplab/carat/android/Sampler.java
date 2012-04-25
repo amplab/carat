@@ -23,34 +23,50 @@ public class Sampler extends BroadcastReceiver {
 		}
 		final Context c = context;
 		final Intent i = intent;
+		
 		if (i.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
-			/*
-			 * Schedule recurring sampling event:
-			 */
-			// What to start when the event fires (this is unused at the moment)
-			Intent in = new Intent(context, Sampler.class);
-			in.setAction(CaratApplication.ACTION_CARAT_SAMPLE);
-			// In reality, you would want to have a static variable for the
-			// request code instead of 192837
-			PendingIntent sender = PendingIntent.getBroadcast(context, 192837,
-					in, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			// Get the AlarmManager service
-			AlarmManager am = (AlarmManager) context
-					.getSystemService(Activity.ALARM_SERVICE);
-			// 1 min first, 15 min intervals
-			am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-					CaratApplication.FIRST_SAMPLE_DELAY_MS,
-					CaratApplication.SAMPLE_INTERVAL_MS, sender);
-
-			IntentFilter intentFilter = new IntentFilter();
-			intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-			context.registerReceiver(new Sampler(), intentFilter);
+			//NOTE: This is disabled to simplify how Carat behaves. 
+			//onBoot(context);
 		}
 		// Sample
 		getSample(c, i);
 	}
+	
+	/**
+	 * Used to start Sampler on reboot even when Carat is not started.
+	 * Not used at the moment to keep Carat simple.
+	 * @param context
+	 */
 
+	private void onBoot(Context context){
+		// Schedule recurring sampling event:
+		// What to start when the event fires (this is unused at the moment)
+		Intent in = new Intent(context, Sampler.class);
+		in.setAction(CaratApplication.ACTION_CARAT_SAMPLE);
+		// In reality, you would want to have a static variable for the
+		// request code instead of 192837
+		PendingIntent sender = PendingIntent.getBroadcast(context, 192837,
+				in, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		// Get the AlarmManager service
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(Activity.ALARM_SERVICE);
+		// 1 min first, 15 min intervals
+		am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+				CaratApplication.FIRST_SAMPLE_DELAY_MS,
+				CaratApplication.SAMPLE_INTERVAL_MS, sender);
+
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+		context.registerReceiver(new Sampler(), intentFilter);
+	}
+
+	/**
+	 * Get a Sample and store it in the database. Do not store the first ever samples on a device that have no battery info.
+	 * @param context from onReceive
+	 * @param intent from onReceive
+	 * @return the newly recorded Sample
+	 */
 	private Sample getSample(Context context, Intent intent) {
 		// FIXME: or create a takeSample(...) with more features returned than
 		// in the basic Sample class
