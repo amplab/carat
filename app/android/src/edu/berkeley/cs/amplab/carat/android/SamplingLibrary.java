@@ -62,7 +62,28 @@ public final class SamplingLibrary {
     public static String TYPE_WIFI = "wifi";
     public static String TYPE_MOBILE = "mobile";
     public static String TYPE_WIMAX = "wimax";
-
+    // Data State constants
+    public static String DATA_DISCONNECTED="disconnected";
+    public static String DATA_CONNECTING="connecting";
+    public static String DATA_CONNECTED="connected";
+    public static String DATA_SUSPENDED="suspended";
+    // Data Activity constants
+    public static String DATA_ACTIVITY_NONE="none"; 
+    public static String DATA_ACTIVITY_IN="in";
+    public static String DATA_ACTIVITY_OUT="out";
+    public static String DATA_ACTIVITY_INOUT="inout";
+    public static String DATA_ACTIVITY_DORMANT="dormant";
+    // Wifi State constants
+    public static String WIFI_STATE_DISABLING="disabling"; 
+    public static String WIFI_STATE_DISABLED ="disabled";
+    public static String WIFI_STATE_ENABLING="enabling";
+    public static String WIFI_STATE_ENABLED="enabled";
+    public static String WIFI_STATE_UNKNOWN="unknown";
+    // Call state constants
+    public static String CALL_STATE_IDLE="idle"; 
+    public static String CALL_STATE_OFFHOOK ="offhook";
+    public static String CALL_STATE_RINGING="ringing";
+	
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
     }
@@ -363,8 +384,8 @@ public final class SamplingLibrary {
 
     // FIXME: Describe this. Why are there so many fields? Why is it divided by
     // 100?
-    public static long getTotalCpuTime() throws IOException {
-        long totalCpuTime = 0;
+    public static double getTotalCpuTime() throws IOException  {
+        double totalCpuTime = 0;
         File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
         BufferedReader br = new BufferedReader(new InputStreamReader(in),
@@ -373,18 +394,18 @@ public final class SamplingLibrary {
         String[] cpuTotal = str.split(" ");
         br.close();
 
-        totalCpuTime = Long.parseLong(cpuTotal[2])
-                + Long.parseLong(cpuTotal[3]) + Long.parseLong(cpuTotal[4])
-                + Long.parseLong(cpuTotal[6]) + Long.parseLong(cpuTotal[7])
-                + Long.parseLong(cpuTotal[8]);
+        totalCpuTime = Double.parseDouble(cpuTotal[2])
+                + Double.parseDouble(cpuTotal[3]) + Double.parseDouble(cpuTotal[4])
+                + Double.parseDouble(cpuTotal[6]) + Double.parseDouble(cpuTotal[7])
+                + Double.parseDouble(cpuTotal[8]);
         totalCpuTime /= 100;
         return totalCpuTime;
     }
 
     // FIXME: Describe this. Why is it divided by 100?
     // on my Linux, the 6th field never changes -> idletime never changes?
-    public static long getTotalIdleTime() throws IOException {
-        long totalIdleTime = 0;
+    public static double getTotalIdleTime() throws IOException {
+        double totalIdleTime = 0;
         File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
         BufferedReader br = new BufferedReader(new InputStreamReader(in),
@@ -393,15 +414,15 @@ public final class SamplingLibrary {
         String[] idleTotal = str.split(" ");
         br.close();
 
-        totalIdleTime = Long.parseLong(idleTotal[5]);
+        totalIdleTime = Double.parseDouble(idleTotal[5]);
         totalIdleTime /= 100;
         return totalIdleTime;
     }
 
-    public static long getTotalCpuUsage() {
+    public static double getTotalCpuUsage(){
 
         String[] cpuUsage;
-        long totalCpuUsage = 0;
+        double totalCpuUsage = 0;
         try {
             File file = new File("/proc/stat");
             FileInputStream in = new FileInputStream(file);
@@ -411,8 +432,8 @@ public final class SamplingLibrary {
             cpuUsage = str.split(" ");
             br.close();
 
-            long idle1 = Long.parseLong(cpuUsage[5]);
-            long cpu1 = getTotalCpuTime();
+            double idle1 = Double.parseDouble(cpuUsage[5]);
+            double cpu1 = getTotalCpuTime();
 
             try {
                 Thread.sleep(300);
@@ -428,8 +449,8 @@ public final class SamplingLibrary {
             cpuUsage = str.split(" ");
             br2.close();
 
-            long idle2 = Long.parseLong(cpuUsage[5]);
-            long cpu2 = getTotalCpuTime();
+            double idle2 = Long.parseLong(cpuUsage[5]);
+            double cpu2 = getTotalCpuTime();
             if (cpu2 + idle2 - (cpu1 + idle1) > 0)
                 totalCpuUsage = (100 * (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1)));
             Log.v("CPUusage", String.valueOf(totalCpuUsage));
@@ -612,16 +633,23 @@ public final class SamplingLibrary {
         return wifiEnabled;
     }
 
-    /*
-     * Get Wifi state: 0: WIFI_STATE_DISABLING 1: WIFI_STATE_DISABLED 2.
-     * WIFI_STATE_ENABLING 3: WIFI_STATE_ENABLED 4: WIFI_STATE_UNKNOWN
-     */
-    public static int getWifiState(Context context) {
+    /* Get Wifi state: */
+    public static String getWifiState(Context context) {
         WifiManager myWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
         int wifiState = myWifiManager.getWifiState();
-        Log.i("WifiState", "Wifi state:" + wifiState);
-        return wifiState;
+        switch (wifiState) {
+        case WifiManager.WIFI_STATE_DISABLED:
+            return  WIFI_STATE_DISABLED;
+        case WifiManager.WIFI_STATE_DISABLING:
+            return WIFI_STATE_DISABLING;
+        case WifiManager.WIFI_STATE_ENABLED:
+            return WIFI_STATE_ENABLED;
+        case WifiManager.WIFI_STATE_ENABLING:
+            return WIFI_STATE_ENABLING;    
+        default:
+            return WIFI_STATE_UNKNOWN;
+        }   
     }
 
     public static WifiInfo getWifiInfo(Context context) {
@@ -633,7 +661,6 @@ public final class SamplingLibrary {
 
     }
 
-    
     /*
      * This method is deprecated.
      * As of ICE_CREAM_SANDWICH, availability of background data depends on several combined factors,
@@ -720,19 +747,22 @@ public final class SamplingLibrary {
         return maxNumSatellite;
     }
 
-    /*
-     * Get call status: value 0: CALL_STATE_IDLE 1: CALL_STATE_RINGING 2:
-     * CALL_STATE_OFFHOOK
-     */
-    public static int getCallState(Context context) {
+    /* Get call status */
+    public static String getCallState(Context context) {
         TelephonyManager telManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int callState = telManager.getCallState();
-        Log.i("callstate", "Call state:" + callState);
-        return callState;
+        switch (callState) {
+        case TelephonyManager.CALL_STATE_OFFHOOK:
+            return WIFI_STATE_DISABLING;
+        case TelephonyManager.CALL_STATE_RINGING:
+            return CALL_STATE_RINGING;   
+        default:
+            return CALL_STATE_IDLE;    
+        }
     }
-
+    
     /*
      * Get network type: value 0: NETWORK_TYPE_UNKNOWN 1: NETWORK_TYPE_GPRS 2:
      * NETWORK_TYPE_EDGE 3: NETWORK_TYPE_UMTS 4: NETWORK_TYPE_CDMA 5:
@@ -762,30 +792,40 @@ public final class SamplingLibrary {
         return roamStatus;
     }
 
-    /*
-     * Get data state: value 0: DATA_DISCONNECTED 1: DATA_CONNECTING 2:
-     * DATA_CONNECTED 3: DATA_SUSPENDED
-     */
-    public static int getDataState(Context context) {
+    /* Get data state */
+    public static String getDataState(Context context) {
         TelephonyManager telManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int dataState = telManager.getDataState();
-        Log.i("DataState", "Data state:" + dataState);
-        return dataState;
+        switch (dataState) {
+        case TelephonyManager.DATA_CONNECTED:
+            return DATA_CONNECTED;
+        case TelephonyManager.DATA_CONNECTING:
+            return DATA_CONNECTING;
+        case TelephonyManager.DATA_DISCONNECTED:
+            return DATA_DISCONNECTED;
+        default:
+            return DATA_SUSPENDED;
+    }
     }
 
-    /*
-     * Get data activity: value 0: DATA_ACTIVITY_NONE 1: DATA_ACTIVITY_IN 2:
-     * DATA_ACTIVITY_OUT 3: DATA_ACTIVITY_INOUT 4: DATA_ACTIVITY_DORMANT
-     */
-    public static int getDataActivity(Context context) {
+    /* Get data activity */
+    public static String getDataActivity(Context context) {
         TelephonyManager telManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int dataActivity = telManager.getDataActivity();
-        Log.i("DataActivity", "Data activity:" + dataActivity);
-        return dataActivity;
+        switch (dataActivity) {
+        case TelephonyManager.DATA_ACTIVITY_IN:
+            return DATA_ACTIVITY_IN;
+        case TelephonyManager.DATA_ACTIVITY_OUT:
+            return DATA_ACTIVITY_OUT;
+        case TelephonyManager.DATA_ACTIVITY_INOUT:
+            return DATA_ACTIVITY_INOUT;
+        default:
+            return DATA_ACTIVITY_NONE;      
+        }
     }
 
     /* Get the current location of the device */
@@ -815,7 +855,7 @@ public final class SamplingLibrary {
         // String MemoryTotalInfo = SamplingLibrary.getMemoryInfo();
 
         // FIXED: Not used yet, Sample needs more fields
-        long totalCpuTime = 0, totalIdleTime = 0;
+        double totalCpuTime = 0, totalIdleTime = 0;
         try {
             totalCpuTime = SamplingLibrary.getTotalCpuTime();
             totalIdleTime = SamplingLibrary.getTotalIdleTime();
@@ -825,7 +865,7 @@ public final class SamplingLibrary {
         }
 
         // FIXED: Not used yet, Sample needs more fields
-        long totalCpuUsage = SamplingLibrary.getTotalCpuUsage();
+        double totalCpuUsage = SamplingLibrary.getTotalCpuUsage();
 
         List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
         mySample.setPiList(processes);
@@ -844,7 +884,7 @@ public final class SamplingLibrary {
         mySample.setLocationProviders(enabledLocationProviders);
         // TODO: not in Sample yet
         int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
-        int callState = SamplingLibrary.getCallState(context);
+        String callState = SamplingLibrary.getCallState(context);
         // Network type
         String networkType = SamplingLibrary.getNetworkType(context);
         mySample.setNetworkType(networkType);
@@ -853,18 +893,18 @@ public final class SamplingLibrary {
         mySample.setMobileNetworkType(mobileNetworkType);
         boolean roamStatus = SamplingLibrary.getRoamingStatus(context);
         mySample.setRoamingEnabled(roamStatus);
+        //TODO: needs to be String
+         String dataState=SamplingLibrary.getDataState(context);
+        mySample.setMobileDataStatus(dataState);
         // TODO: needs to be String
-        // String dataState=SamplingLibrary.getDataState(context);
-        // mySample.setMobileDataStatus(dataState);
-        // TODO: needs to be String
-        // String dataActivity=SamplingLibrary.getDataActivity(context);
-        // mySample.setMobileDataActivity(dataActivity);
+        String dataActivity=SamplingLibrary.getDataActivity(context);
+        mySample.setMobileDataActivity(dataActivity);
         CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
         boolean wifiEnabled = SamplingLibrary.getWifiEnabled(context);
         mySample.setWifiEnabled(wifiEnabled);
         // TODO: needs to be String
-        // String wifiState=SamplingLibrary.getWifiState(context);
-        // mySample.setWifiStatus(wifiState);
+        String wifiState=SamplingLibrary.getWifiState(context);
+        //mySample.setWifiState(wifiState);
 
         // TODO: is this used for something?
         // WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
@@ -879,10 +919,14 @@ public final class SamplingLibrary {
         double scale = intent.getIntExtra("scale", 100);
         int status = intent.getIntExtra("status", 0);
         // FIXED: Not used yet, Sample needs more fields
-        int voltage = intent.getIntExtra("voltage", 0);
+        double voltage = intent.getDoubleExtra("voltage",0.0)/1000.0;
+        //current battery voltage in volts
         // FIXED: Not used yet, Sample needs more fields
-        int temperature = intent.getIntExtra("temperature", 0);
+        int temperature = intent.getIntExtra("temperature", 0)/10;
+        //current battery temperature in a degree Centigrade
         int plugged = intent.getIntExtra("plugged", 0);
+        String batteryTechnology=intent.getStringExtra("batteryTechnology");
+        
         // use last known value
         double batteryLevel = 0.0;
         if (lastSample != null)
@@ -894,52 +938,52 @@ public final class SamplingLibrary {
         }
 
         // FIXED: Not used yet, Sample needs more fields
-        String Batteryhealth = "Unknown";
-        String Batterystatus = "Unknown";
+        String batteryHealth = "Unknown";
+        String batteryStatus = "Unknown";
 
         switch (health) {
 
         case BatteryManager.BATTERY_HEALTH_DEAD:
-            Batteryhealth = "Dead";
+            batteryHealth = "Dead";
             break;
         case BatteryManager.BATTERY_HEALTH_GOOD:
-            Batteryhealth = "Good";
+            batteryHealth = "Good";
             break;
         case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
-            Batteryhealth = "Over voltage";
+            batteryHealth = "Over voltage";
             break;
         case BatteryManager.BATTERY_HEALTH_OVERHEAT:
-            Batteryhealth = "Overheat";
+            batteryHealth = "Overheat";
             break;
         case BatteryManager.BATTERY_HEALTH_UNKNOWN:
-            Batteryhealth = "Unknown";
+            batteryHealth = "Unknown";
             break;
         case BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE:
-            Batteryhealth = "Unspecified failure";
+            batteryHealth = "Unspecified failure";
             break;
         }
 
         switch (status) {
 
         case BatteryManager.BATTERY_STATUS_CHARGING:
-            Batterystatus = "Charging";
+            batteryStatus = "Charging";
             break;
         case BatteryManager.BATTERY_STATUS_DISCHARGING:
-            Batterystatus = "Discharging";
+            batteryStatus = "Discharging";
             break;
         case BatteryManager.BATTERY_STATUS_FULL:
-            Batterystatus = "Full";
+            batteryStatus = "Full";
             break;
         case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
-            Batterystatus = "Not charging";
+            batteryStatus = "Not charging";
             break;
         case BatteryManager.BATTERY_STATUS_UNKNOWN:
-            Batterystatus = "Unknown";
+            batteryStatus = "Unknown";
             break;
         default:
             // use last known value
             if (lastSample != null)
-                Batterystatus = lastSample.getBatteryState();
+                batteryStatus = lastSample.getBatteryState();
         }
 
         // FIXED: Not used yet, Sample needs more fields
@@ -970,12 +1014,12 @@ public final class SamplingLibrary {
 
         mySample.setUptime(getUptime());
         mySample.setBatteryCharger(batteryCharger);
-        mySample.setBatteryHealth(Batteryhealth);
+        mySample.setBatteryHealth(batteryHealth);
 
         // Required in new Carat protocol
         mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
         mySample.setBatteryLevel(batteryLevel);
-        mySample.setBatteryState(Batterystatus);
+        mySample.setBatteryState(batteryStatus);
 
         int[] usedFreeActiveInactive = SamplingLibrary.readMeminfo();
         if (usedFreeActiveInactive != null
