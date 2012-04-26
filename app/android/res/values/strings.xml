@@ -29,7 +29,9 @@
     <color name="green">#127112</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-
+    <color name="with">#f3b14d</color>
+    <color name="without">#007777</color>
+    
     <string name="zeroh">0h 0m 0s</string>
     <string name="tab_actions">Actions</string>
     <string name="tab_bugs">Bugs</string>
