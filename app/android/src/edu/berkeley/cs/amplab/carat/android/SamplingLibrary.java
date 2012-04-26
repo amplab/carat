@@ -340,9 +340,6 @@ public final class SamplingLibrary {
 
         for (RunningAppProcessInfo pi : list) {
             ProcessInfo item = new ProcessInfo();
-            /*
-             * TODO: pi.lru; pi.uid;
-             */
             PackageInfo pak = packages.get(pi.processName);
             if (pak != null) {
                 ApplicationInfo info = pak.applicationInfo;
@@ -366,7 +363,7 @@ public final class SamplingLibrary {
             // FIXME: More fields will need to be added here, but ProcessInfo
             // needs to change.
             /*
-             * uid importance lru
+             * uid lru
              */
             // add to result
             result.add(item);
@@ -1169,10 +1166,6 @@ public final class SamplingLibrary {
         // TODO: is this used for something?
         // WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
         
-        //NOTE: Background data is deprecated.
-        //boolean bacDataEnabled = SamplingLibrary
-        //        .getBackgroundDataEnabled(context);
-        //mySample.setBackgroundDataEnabled(bacDataEnabled);
         
         /*Calling Information*/
       //  List<String> callInfo;
