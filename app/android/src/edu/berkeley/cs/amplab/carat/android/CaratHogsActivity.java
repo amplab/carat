@@ -59,6 +59,9 @@ public class CaratHogsActivity extends Activity {
     private void initGraphChart() {
         final DrawView w = new DrawView(getApplicationContext());
         vf.addView(w);
+        w.setOnTouchListener(new FlipperBackListener(vf, vf
+                .indexOfChild(findViewById(R.id.hogsList))));
+        
         final ListView lv = (ListView) findViewById(R.id.hogsList);
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
