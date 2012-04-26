@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
@@ -384,6 +385,17 @@ public final class SamplingLibrary {
 
     // FIXME: Describe this. Why are there so many fields? Why is it divided by
     // 100?
+    /*     
+     * The value of HZ varies across kernel versions and hardware platforms. 
+     * On i386 the situation is as follows: on kernels up to and including 2.4.x, 
+     * HZ was 100, giving a jiffy value of 0.01 seconds; starting with 2.6.0, HZ was raised to 1000, 
+     * giving a jiffy of 0.001 seconds. 
+     * Since kernel 2.6.13, the HZ value is a kernel configuration parameter and can be 100, 250 (the default) 
+     * or 1000, yielding a jiffies value of, respectively, 0.01, 0.004, or 0.001 seconds. Since kernel 2.6.20, 
+     * a further frequency is available: 300, a number that divides evenly for the common video frame rates (PAL, 25 HZ; NTSC, 30 HZ).
+     *
+     *I will leave the unit of cpu time as the jiffy and we can discuss later.
+     */
     public static double getTotalCpuTime() throws IOException  {
         double totalCpuTime = 0;
         File file = new File("/proc/stat");
@@ -398,12 +410,28 @@ public final class SamplingLibrary {
                 + Double.parseDouble(cpuTotal[3]) + Double.parseDouble(cpuTotal[4])
                 + Double.parseDouble(cpuTotal[6]) + Double.parseDouble(cpuTotal[7])
                 + Double.parseDouble(cpuTotal[8]);
-        totalCpuTime /= 100;
+//        totalCpuTime /= 100;
         return totalCpuTime;
     }
 
     // FIXME: Describe this. Why is it divided by 100?
     // on my Linux, the 6th field never changes -> idletime never changes?
+    
+    /* 0    name of cpu
+     * 1    space
+     * 2    user time
+     * 3    nice time
+     * 4    sys time
+     * 5    idle time(it is not include in the cpu total time)
+     * 6    iowait time
+     * 7    irg time
+     * 8    softirg time
+     *
+     *  the idleTotal[5] is the idle time which always changes in my Linux computer.There are two 
+     *  spaces between cpu and user time.That is a tricky thing and messed up splitting.:)
+     * 
+     * 
+     */
     public static double getTotalIdleTime() throws IOException {
         double totalIdleTime = 0;
         File file = new File("/proc/stat");
@@ -415,7 +443,7 @@ public final class SamplingLibrary {
         br.close();
 
         totalIdleTime = Double.parseDouble(idleTotal[5]);
-        totalIdleTime /= 100;
+//        totalIdleTime /= 100;
         return totalIdleTime;
     }
 
@@ -763,6 +791,40 @@ public final class SamplingLibrary {
         }
     }
     
+    /* Get callinfo: call type, call date, call duration */
+    public static List<String> getCallInfo(Context context){
+        String callType=null;
+        String callDate=null;
+        String callDuration="0";
+        List<String> res = new ArrayList<String>();
+        Cursor myCursor = context.getContentResolver().query(
+                android.provider.CallLog.Calls.CONTENT_URI,
+                null,
+                null,
+                null,
+                android.provider.CallLog.Calls.DATE + " DESC"
+                );
+        int typeColumn=myCursor.getColumnIndex(android.provider.CallLog.Calls.TYPE);
+        int dateColumn =myCursor.getColumnIndex(android.provider.CallLog.Calls.DATE);
+        int DurationColumn =myCursor.getColumnIndex(android.provider.CallLog.Calls.DURATION);
+        if(myCursor.moveToFirst()){
+            do{
+                callType=myCursor.getString(typeColumn);
+                callDate=myCursor.getString(dateColumn);
+                callDuration=myCursor.getString(DurationColumn);               
+            } while (myCursor.moveToNext());           
+          }
+        else{
+            Log.i("TYPE", "callType=None");
+            Log.i("DATE", "callDate=None");
+            Log.i("DURATION","callduration =None");     
+        }
+        res.add(callType);
+        res.add(callDate);
+        res.add(callDuration);
+        return res;
+    }
+    
     /*
      * Get network type: value 0: NETWORK_TYPE_UNKNOWN 1: NETWORK_TYPE_GPRS 2:
      * NETWORK_TYPE_EDGE 3: NETWORK_TYPE_UMTS 4: NETWORK_TYPE_CDMA 5:
@@ -845,7 +907,6 @@ public final class SamplingLibrary {
 
         // Construct sample and return it in the end
         Sample mySample = new Sample();
-
         mySample.setUuId(SamplingLibrary.getUuid(context));
         mySample.setTriggeredBy(action);
         // required always
@@ -913,7 +974,14 @@ public final class SamplingLibrary {
         //boolean bacDataEnabled = SamplingLibrary
         //        .getBackgroundDataEnabled(context);
         //mySample.setBackgroundDataEnabled(bacDataEnabled);
-
+        
+        /*Calling Information*/
+        List<String> callInfo;
+        callInfo=SamplingLibrary.getCallInfo(context);
+        String callType =callInfo.get(0);
+        String callDate =callInfo.get(1);
+        long callDuration = Long.parseLong(callInfo.get(2));
+        
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
         double scale = intent.getIntExtra("scale", 100);
