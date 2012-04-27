@@ -792,36 +792,54 @@ public final class SamplingLibrary {
     }
     
     /* Get callinfo: call type, call date, call duration */
-    public static List<String> getCallInfo(Context context){
-        String callType=null;
-        String callDate=null;
-        String callDuration="0";
+    public static List<String> getCallInfo(Context context){    
         List<String> res = new ArrayList<String>();
-        Cursor myCursor = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI,
+        
+        String[] queryFields = new String[] {
+                android.provider.CallLog.Calls.TYPE,
+                android.provider.CallLog.Calls.DATE,
+                android.provider.CallLog.Calls.DURATION
+            };
+        
+        Cursor myCursor = context.getContentResolver().query( android.provider.CallLog.Calls.CONTENT_URI,
+                queryFields, 
+                null, 
                 null,
-                null,
-                null,
-                android.provider.CallLog.Calls.DATE + " DESC"
-                );
-        int typeColumn=myCursor.getColumnIndex(android.provider.CallLog.Calls.TYPE);
-        int dateColumn =myCursor.getColumnIndex(android.provider.CallLog.Calls.DATE);
-        int DurationColumn =myCursor.getColumnIndex(android.provider.CallLog.Calls.DURATION);
-        if(myCursor.moveToFirst()){
-            do{
-                callType=myCursor.getString(typeColumn);
-                callDate=myCursor.getString(dateColumn);
-                callDuration=myCursor.getString(DurationColumn);               
-            } while (myCursor.moveToNext());           
-          }
-        else{
-            Log.i("TYPE", "callType=None");
-            Log.i("DATE", "callDate=None");
-            Log.i("DURATION","callduration =None");     
-        }
-        res.add(callType);
-        res.add(callDate);
-        res.add(callDuration);
+                android.provider.CallLog.Calls.DATE + " DESC");
+   
+           if( myCursor.moveToFirst()){
+            while (myCursor.isAfterLast() == false) {
+                for (int i=0; i<myCursor.getColumnCount(); i++) {
+                    myCursor.moveToPosition(i);
+                if(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE))== null){
+                    res.add("no records");
+                   }
+                else{
+                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE)));
+                }
+                
+                if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE))== null){
+                    res.add("no records");
+                }
+             else{
+                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE)));
+             }
+                if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION))== null){
+                    res.add("no records");
+                }
+             else{
+                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION)));
+             }       
+                }
+                myCursor.moveToNext();
+            } 
+           }  
+            else{
+                Log.i("TYPE", "callType=None");
+                Log.i("DATE", "callDate=None");
+                Log.i("DURATION","callduration =None");  
+           }
+           
         return res;
     }
     
@@ -978,9 +996,6 @@ public final class SamplingLibrary {
         /*Calling Information*/
         List<String> callInfo;
         callInfo=SamplingLibrary.getCallInfo(context);
-        String callType =callInfo.get(0);
-        String callDate =callInfo.get(1);
-        long callDuration = Long.parseLong(callInfo.get(2));
         
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
