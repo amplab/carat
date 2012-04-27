@@ -398,18 +398,22 @@ public final class SamplingLibrary {
      */
     public static double getTotalCpuTime() throws IOException  {
         double totalCpuTime = 0;
-        File file = new File("/proc/stat");
+        RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
+        String load = reader.readLine();
+        String[] toks = load.split("\\s+");
+        
+       /* File file = new File("/proc/stat");
         FileInputStream in = new FileInputStream(file);
         BufferedReader br = new BufferedReader(new InputStreamReader(in),
                 READ_BUFFER_SIZE);
         String str = br.readLine();
         String[] cpuTotal = str.split(" ");
-        br.close();
-
-        totalCpuTime = Double.parseDouble(cpuTotal[2])
-                + Double.parseDouble(cpuTotal[3]) + Double.parseDouble(cpuTotal[4])
-                + Double.parseDouble(cpuTotal[6]) + Double.parseDouble(cpuTotal[7])
-                + Double.parseDouble(cpuTotal[8]);
+        br.close(); */
+        
+        totalCpuTime = Double.parseDouble(toks[1])
+                + Double.parseDouble(toks[2]) + Double.parseDouble(toks[3])
+                + Double.parseDouble(toks[5]) + Double.parseDouble(toks[6])
+                + Double.parseDouble(toks[7]);
 //        totalCpuTime /= 100;
         return totalCpuTime;
     }
@@ -434,15 +438,11 @@ public final class SamplingLibrary {
      */
     public static double getTotalIdleTime() throws IOException {
         double totalIdleTime = 0;
-        File file = new File("/proc/stat");
-        FileInputStream in = new FileInputStream(file);
-        BufferedReader br = new BufferedReader(new InputStreamReader(in),
-                READ_BUFFER_SIZE);
-        String str = br.readLine();
-        String[] idleTotal = str.split(" ");
-        br.close();
+        RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
+        String load = reader.readLine();
+        String[] toks = load.split("\\s+");
 
-        totalIdleTime = Double.parseDouble(idleTotal[5]);
+        totalIdleTime = Double.parseDouble(toks[4]);
 //        totalIdleTime /= 100;
         return totalIdleTime;
     }
@@ -801,7 +801,8 @@ public final class SamplingLibrary {
                 android.provider.CallLog.Calls.DURATION
             };
         
-        Cursor myCursor = context.getContentResolver().query( android.provider.CallLog.Calls.CONTENT_URI,
+        Cursor myCursor = context.getContentResolver().query(
+                android.provider.CallLog.Calls.CONTENT_URI,
                 queryFields, 
                 null, 
                 null,
@@ -825,7 +826,7 @@ public final class SamplingLibrary {
                     res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE)));
              }
                 if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION))== null){
-                    res.add("no records");
+                    res.add("0");
                 }
              else{
                     res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION)));
@@ -842,6 +843,34 @@ public final class SamplingLibrary {
            
         return res;
     }
+    
+   // Get total call duration just for cells 
+   //TODO: Classify iT into total incoming call time and outcoming call time
+   //TODO: Add time range, for example, a month
+   public static long getTotalCallDur(Context context){
+       long totalCallDur=0;
+   
+       Cursor myCursor = context.getContentResolver().query(
+               android.provider.CallLog.Calls.CONTENT_URI,
+               null, 
+               null, 
+               null,
+               android.provider.CallLog.Calls.DEFAULT_SORT_ORDER);
+       
+       int DurationColumn =myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION);
+       
+       if(myCursor.moveToFirst()){
+           do{
+               totalCallDur += myCursor.getLong(DurationColumn);
+              
+           } while (myCursor.moveToNext());           
+         }
+       else{
+           Log.i("DURATION","callduration =0");     
+       }
+       return totalCallDur;
+   }
+    
     
     /*
      * Get network type: value 0: NETWORK_TYPE_UNKNOWN 1: NETWORK_TYPE_GPRS 2:
@@ -972,16 +1001,13 @@ public final class SamplingLibrary {
         mySample.setMobileNetworkType(mobileNetworkType);
         boolean roamStatus = SamplingLibrary.getRoamingStatus(context);
         mySample.setRoamingEnabled(roamStatus);
-        //TODO: needs to be String
-         String dataState=SamplingLibrary.getDataState(context);
+        String dataState=SamplingLibrary.getDataState(context);
         mySample.setMobileDataStatus(dataState);
-        // TODO: needs to be String
         String dataActivity=SamplingLibrary.getDataActivity(context);
         mySample.setMobileDataActivity(dataActivity);
         CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
         boolean wifiEnabled = SamplingLibrary.getWifiEnabled(context);
         mySample.setWifiEnabled(wifiEnabled);
-        // TODO: needs to be String
         String wifiState=SamplingLibrary.getWifiState(context);
         //mySample.setWifiState(wifiState);
 
@@ -996,6 +1022,9 @@ public final class SamplingLibrary {
         /*Calling Information*/
         List<String> callInfo;
         callInfo=SamplingLibrary.getCallInfo(context);
+        /*Total call time*/
+        long totalCallTime=0;
+        totalCallTime=SamplingLibrary.getTotalCallDur(context);
         
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
