@@ -88,11 +88,10 @@
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
                  -->
                  <!-- Let's not make Carat immortal for now. -->
-                <!-- 
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                 -->
-                 
-                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                
+                
+                <action android:name="android.intent.action.BOOT_COMPLETED" /> 
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />

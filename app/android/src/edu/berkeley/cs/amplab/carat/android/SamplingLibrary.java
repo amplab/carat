@@ -7,12 +7,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.berkeley.cs.amplab.carat.thrift.AndroidSample;
+import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
@@ -21,6 +24,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -580,7 +584,7 @@ public final class SamplingLibrary {
          * 24); String tmp = "\nThe uptime is :" + hours + "hr:" + minutes +
          * "mins:" + seconds + "sec.\n"; return tmp;
          */
-
+        Log.i("uptime",String.valueOf(uptime));
         return uptime / 1000.0;
     }
 
@@ -791,85 +795,7 @@ public final class SamplingLibrary {
         }
     }
     
-    /* Get callinfo: call type, call date, call duration */
-    public static List<String> getCallInfo(Context context){    
-        List<String> res = new ArrayList<String>();
-        
-        String[] queryFields = new String[] {
-                android.provider.CallLog.Calls.TYPE,
-                android.provider.CallLog.Calls.DATE,
-                android.provider.CallLog.Calls.DURATION
-            };
-        
-        Cursor myCursor = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI,
-                queryFields, 
-                null, 
-                null,
-                android.provider.CallLog.Calls.DATE + " DESC");
-   
-           if( myCursor.moveToFirst()){
-            while (myCursor.isAfterLast() == false) {
-                for (int i=0; i<myCursor.getColumnCount(); i++) {
-                    myCursor.moveToPosition(i);
-                if(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE))== null){
-                    res.add("no records");
-                   }
-                else{
-                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE)));
-                }
-                
-                if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE))== null){
-                    res.add("no records");
-                }
-             else{
-                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE)));
-             }
-                if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION))== null){
-                    res.add("0");
-                }
-             else{
-                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION)));
-             }       
-                }
-                myCursor.moveToNext();
-            } 
-           }  
-            else{
-                Log.i("TYPE", "callType=None");
-                Log.i("DATE", "callDate=None");
-                Log.i("DURATION","callduration =None");  
-           }
-           
-        return res;
-    }
     
-   // Get total call duration just for cells 
-   //TODO: Classify iT into total incoming call time and outcoming call time
-   //TODO: Add time range, for example, a month
-   public static long getTotalCallDur(Context context){
-       long totalCallDur=0;
-   
-       Cursor myCursor = context.getContentResolver().query(
-               android.provider.CallLog.Calls.CONTENT_URI,
-               null, 
-               null, 
-               null,
-               android.provider.CallLog.Calls.DEFAULT_SORT_ORDER);
-       
-       int DurationColumn =myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION);
-       
-       if(myCursor.moveToFirst()){
-           do{
-               totalCallDur += myCursor.getLong(DurationColumn);
-              
-           } while (myCursor.moveToNext());           
-         }
-       else{
-           Log.i("DURATION","callduration =0");     
-       }
-       return totalCallDur;
-   }
     
     
     /*
@@ -947,7 +873,236 @@ public final class SamplingLibrary {
         Log.i("DeviceLocation", "Device Location:" + LocDevice);
         return LocDevice;
     }
+    
+    /*Get the time when mobile is booted*/
+    public static String getBootTime(Context context){
+        
+        SharedPreferences sharedPreferences=context.getSharedPreferences("SystemBootTime", Context.MODE_PRIVATE); 
+        long milliseconds= sharedPreferences.getLong("bootTime", new Date().getTime());   
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        java.util.Date dt = new Date(milliseconds); 
+       
+        Log.i("bootSeconds", sdf.format(dt) );
+        return sdf.format(dt);        
+    }
+    /*Get the call duration between booted time and current time*/
+    public static List<String> getCallDurFromBootTime(Context context){
+        
+        List<String> callDurFromBootList = new ArrayList<String>();
+        
+        long callInDur=0;
+        long callOutDur=0;
+        int type;
+        long dur;
+        Date date;
+        SimpleDateFormat dateformat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String time;
+        String bootTime=getBootTime(context);
+        
+        String[] queries = new String[] {
+                android.provider.CallLog.Calls.TYPE,
+                android.provider.CallLog.Calls.DATE,
+                android.provider.CallLog.Calls.DURATION
+            };
+        
+        Cursor cur = context.getContentResolver().query(
+                android.provider.CallLog.Calls.CONTENT_URI,
+                queries, 
+                null, 
+                null,
+                android.provider.CallLog.Calls.DATE + " DESC");
+        
+        if( cur.moveToFirst()){
+            for (int i=0; i<cur.getColumnCount(); i++) {
+                cur.moveToPosition(i);
+                       type = cur.getInt(0);
+                       date = new Date(cur.getLong(1));
+                       dur = cur.getLong(2);
+                      
+                       time = dateformat.format(date);
+                           if (time.compareTo(bootTime)>0) {                                                     
+                               switch(type){
+                                   case 1:
+                                           callInDur+=dur;
+                                   case 2:
+                                           callOutDur+=dur;
+                                   case 3:                                       
+                               }
+                           }
+            }
+        }
+    else{
+        Log.i("CallDurFromBoot","calldur=null");  
+    }      
+        callDurFromBootList.add(String.valueOf(callInDur));
+        callDurFromBootList.add(String.valueOf(callInDur));
+        return callDurFromBootList;    
+    }
+    
+    
+    /*Get a monthly call duration record*/
+    public static Map<String,CallMonth> getMonthCallDur(Context context){
+        
+        Map<String, CallMonth> callMonth = new HashMap<String, CallMonth>();
+        Map<String, String> callInDur = new HashMap<String, String>();
+        Map<String, String> callOutDur = new HashMap<String, String>();
+        
+        long tolCallInDur=0;
+        long tolCallOutDur=0;
+        int callType;
+        long callDur;
+        Date callDate;
+        String tmpTime=null;
+        String time;
+        SimpleDateFormat dateformat=new SimpleDateFormat("yyyy-MM");
+        CallMonth curMonth = null;
+        
+        String[] queryFields = new String[] {
+                android.provider.CallLog.Calls.TYPE,
+                android.provider.CallLog.Calls.DATE,
+                android.provider.CallLog.Calls.DURATION
+            };
+        
+        Cursor myCursor = context.getContentResolver().query(
+                android.provider.CallLog.Calls.CONTENT_URI,
+                queryFields, 
+                null, 
+                null,
+                android.provider.CallLog.Calls.DATE + " DESC");
+        
+        if( myCursor.moveToFirst()){
+                for (int i=0; i<myCursor.getColumnCount(); i++) {
+                    myCursor.moveToPosition(i);
+                           callType = myCursor.getInt(0);
+                           callDate = new Date(myCursor.getLong(1));
+                           callDur = myCursor.getLong(2);
+                          
+                           time = dateformat.format(callDate);
+                               if (!time.equals(tmpTime)) {
+                                   if (tmpTime.equals(null)) {       
+                                   } 
+                                   else { 
+                                       callMonth.put(tmpTime,curMonth);
+                                       callInDur.clear();
+                                       callOutDur.clear();
+                                   }
+                                   curMonth = new CallMonth();
+                                   tmpTime = time;
+                               }
+                               
+                               if (callType==1){
+                                   curMonth.tolCallInNum++;
+                                   curMonth.tolCallInDur+=callDur;
+                                   callInDur.put("tolCallInNum",String.valueOf(curMonth.tolCallInNum));
+                                   callInDur.put("tolCallInDur",String.valueOf(curMonth.tolCallInDur));            
+                                   }
+                               if(callType==2){
+                                   curMonth.tolCallOutNum++;
+                                   curMonth.tolCallOutDur+=callDur;
+                                   callOutDur.put("tolCallOutNum", String.valueOf(curMonth.tolCallOutNum));
+                                   callOutDur.put("tolCallOutDur",String.valueOf(curMonth.tolCallOutDur));  
+                               }
+                               if (callType==3){
+                                   curMonth.tolMissedCallNum++;
+                                   callInDur.put("tolMissedCallNum",String.valueOf(curMonth.tolMissedCallNum));            
+                                   }               
+                }
+         }
+        else{
+            Log.i("MonthType", "callType=None");
+            Log.i("MonthDate", "callDate=None");
+            Log.i("MonthDuration","callduration =None");  
+       }
+        return callMonth;
+    }
 
+    public static CallMonth getCallMonthinfo(Context context,String time){
+        
+        Map<String,CallMonth> callInfo;
+        callInfo=SamplingLibrary.getMonthCallDur(context);
+        CallMonth call= new CallMonth();
+        call=callInfo.get(time);
+        return call;
+    }
+    
+    /* Get callinfo: call type, call date, call duration */
+    @Deprecated
+    public static List<String> getCallInfo(Context context){    
+        List<String> res = new ArrayList<String>();
+        
+        String[] queryFields = new String[] {
+                android.provider.CallLog.Calls.TYPE,
+                android.provider.CallLog.Calls.DATE,
+                android.provider.CallLog.Calls.DURATION
+            };
+        
+        Cursor myCursor = context.getContentResolver().query(
+                android.provider.CallLog.Calls.CONTENT_URI,
+                queryFields, 
+                null, 
+                null,
+                android.provider.CallLog.Calls.DATE + " DESC");
+   
+           if( myCursor.moveToFirst()){
+                for (int i=0; i<myCursor.getColumnCount(); i++) {
+                    myCursor.moveToPosition(i);
+                if(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE))== null){
+                    res.add("no records");
+                   }
+                else{
+                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE)));
+                }
+                
+                if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE))== null){
+                    res.add("no records");
+                }
+             else{
+                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE)));
+             }
+                if (myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION))== null){
+                    res.add("0");
+                }
+             else{
+                    res.add(myCursor.getString(myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION)));
+             }       
+                }
+                myCursor.moveToNext(); 
+           }  
+            else{
+                Log.i("TYPE", "callType=None");
+                Log.i("DATE", "callDate=None");
+                Log.i("DURATION","callduration =None");  
+           }
+           
+        return res;
+    }
+    
+   /*Get total call duration just for cells*/
+    @Deprecated
+   public static long getTotalCallDur(Context context){
+       long totalCallDur=0;
+   
+       Cursor myCursor = context.getContentResolver().query(
+               android.provider.CallLog.Calls.CONTENT_URI,
+               null, 
+               null, 
+               null,
+               android.provider.CallLog.Calls.DEFAULT_SORT_ORDER);
+       
+       int DurationColumn =myCursor.getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION);
+       
+       if(myCursor.moveToFirst()){
+           do{
+               totalCallDur += myCursor.getLong(DurationColumn);
+              
+           } while (myCursor.moveToNext());           
+         }
+       else{
+           Log.i("DURATION","callduration =0");     
+       }
+       return totalCallDur;
+   }
+    
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
         String action = intent.getAction();
@@ -1020,11 +1175,17 @@ public final class SamplingLibrary {
         //mySample.setBackgroundDataEnabled(bacDataEnabled);
         
         /*Calling Information*/
-        List<String> callInfo;
-        callInfo=SamplingLibrary.getCallInfo(context);
+      //  List<String> callInfo;
+       // callInfo=SamplingLibrary.getCallInfo(context);
         /*Total call time*/
-        long totalCallTime=0;
-        totalCallTime=SamplingLibrary.getTotalCallDur(context);
+     //   long totalCallTime=0;
+       // totalCallTime=SamplingLibrary.getTotalCallDur(context);
+        List<String> callDurFromBoot;
+        callDurFromBoot=SamplingLibrary.getCallDurFromBootTime(context);
+        
+        
+        String bootTime=null;
+        bootTime=getBootTime(context);
         
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
@@ -1146,8 +1307,10 @@ public final class SamplingLibrary {
 
         // Deprecated, readMeminfo gives all the 4 values
         // mySample.setMemoryFree(Integer.parseInt(SamplingLibrary.getMemoryFree()));
-
+        /*Calling Information*/
+       CallMonth cm=new CallMonth();
+        cm=getCallMonthinfo(context, "2012-03");    
+        Log.v("MonthCall","cm.tolCallInNum");
         return mySample;
     }
-
 }

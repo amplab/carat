@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.Date;
+
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
@@ -9,13 +11,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.Toast;
 
 public class Sampler extends BroadcastReceiver {
 
 	CaratSampleDB ds = null;
-
+	private SharedPreferences sharedPreferences;
+	private Editor editor;
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (ds == null) {
@@ -26,6 +32,10 @@ public class Sampler extends BroadcastReceiver {
 		
 		if (i.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 			//NOTE: This is disabled to simplify how Carat behaves. 
+		    sharedPreferences = context.getSharedPreferences("SystemBootTime", Context.MODE_PRIVATE); 
+		            editor = sharedPreferences.edit(); 
+		            editor.putLong("bootTime", new Date().getTime()); 
+		            editor.commit();
 			//onBoot(context);
 		}
 		// Sample
