@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.thrift.TException;
@@ -68,7 +69,7 @@ public class CommunicationManager {
 		ProtocolClient.close();
 	}
 
-	public boolean uploadSamples(Sample[] samples) throws TException {
+	public boolean uploadSamples(Collection<Sample> samples) throws TException {
 		registerOnFirstRun();
 		// FIXME: This may be stupid, but always use a new connection.
 		// Alternative: Make sure c opens the connection if it is

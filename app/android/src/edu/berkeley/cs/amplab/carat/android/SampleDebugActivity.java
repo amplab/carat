@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -85,16 +87,22 @@ public class SampleDebugActivity extends Activity {
         super.finish();
     }
 
+    /**
+     * Show 10 oldest samples, so that we can see how the deletion works.
+     * 
+     */
     private void updateSampleScreen() {
-        Sample[] list = db.querySamples();
+        SortedMap<Long, Sample> list = db.queryOldestSamples(10);
         StringBuilder sb = new StringBuilder();
         String dfs = "EEE MMM dd HH:mm:ss zzz yyyy";
         SimpleDateFormat df = new SimpleDateFormat(dfs);
-        for (Sample s : list) {
+        for (Entry<Long, Sample> entry : list.entrySet()) {
+            long id = entry.getKey();
+            Sample s = entry.getValue();
             String trig = s.getTriggeredBy()
                     .replace("android.intent.action.", "")
                     .replace("edu.berkeley.cs.amplab.carat.android.", "");
-            sb.append(df.format(new Date((long) (s.getTimestamp() * 1000)))
+            sb.append(id +" " + df.format(new Date((long) (s.getTimestamp() * 1000)))
                     + " " + trig + "\n");
             int i = 0;
             try {

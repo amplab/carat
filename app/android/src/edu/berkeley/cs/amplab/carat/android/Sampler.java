@@ -89,9 +89,9 @@ public class Sampler extends BroadcastReceiver {
 		if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
 			long id = ds.putSample(s);
 			Log.i("Sampler", "Took sample " + id + " for " + intent.getAction());
-			Toast.makeText(context,
+			/*Toast.makeText(context,
 					"Took sample " + id + " for " + intent.getAction(),
-					Toast.LENGTH_LONG).show();
+					Toast.LENGTH_LONG).show();*/
 		}
 		return s;
 	}
