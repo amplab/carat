@@ -12,7 +12,10 @@ import android.widget.ViewFlipper;
 
 import java.util.List;
 
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.suggestions.*;
+import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class CaratSuggestionsActivity extends Activity {

@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;

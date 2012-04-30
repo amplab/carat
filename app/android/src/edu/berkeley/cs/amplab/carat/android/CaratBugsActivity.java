@@ -2,6 +2,9 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import edu.berkeley.cs.amplab.carat.android.suggestions.BugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.suggestions.HogsBugsAdapter;
+import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 import android.app.Activity;
@@ -31,6 +34,7 @@ public class CaratBugsActivity extends Activity {
 		baseViewIndex = vf.indexOfChild(baseView);
 		initBugsView();
 		initGraphView();
+		initGraphChart();
 	}
 
 	private void initBugsView() {
@@ -67,6 +71,36 @@ public class CaratBugsActivity extends Activity {
 				.indexOfChild(findViewById(R.id.bugsList))));
 	}
 	
+	 private void initGraphChart() {
+	        final DrawView w = new DrawView(getApplicationContext());
+	        vf.addView(w);
+	        w.setOnTouchListener(new FlipperBackListener(vf, vf
+	                .indexOfChild(findViewById(R.id.bugsList))));
+	        
+	        final ListView lv = (ListView) findViewById(R.id.bugsList);
+	        lv.setOnItemClickListener(new OnItemClickListener() {
+	            @Override
+	            public void onItemClick(AdapterView<?> a, View v, int position,
+	                    long id) {
+	                Object o = lv.getItemAtPosition(position);
+	                HogsBugs fullObject = (HogsBugs) o;
+	                // View target = findViewById(R.id.hogsGraphView);
+	                View target = w;
+	                CaratApplication app = (CaratApplication) getApplication();
+	                String label = app.labelForApp(fullObject.getAppName());
+	                w.setHogsBugs(fullObject, label, true);
+	                w.postInvalidate();
+	                vf.setOutAnimation(CaratMainActivity.outtoLeft);
+	                vf.setInAnimation(CaratMainActivity.inFromRight);
+	                vf.setDisplayedChild(vf.indexOfChild(target));
+
+	                Toast.makeText(CaratBugsActivity.this,
+	                        "You have chosen: " + " " + fullObject.getAppName(),
+	                        Toast.LENGTH_SHORT).show();
+	            }
+	        });
+	    }
+	
 	/**
 	 * (non-Javadoc)
 	 * 
@@ -77,7 +111,7 @@ public class CaratBugsActivity extends Activity {
 		CaratApplication app = (CaratApplication) getApplication();
 		final ListView lv = (ListView) findViewById(R.id.bugsList);
 		lv.setAdapter(new BugsAdapter(app, app.s.getBugReport()));
-		super.onResume();
+		super.onResume(); 
 	}
 	
 	@Override

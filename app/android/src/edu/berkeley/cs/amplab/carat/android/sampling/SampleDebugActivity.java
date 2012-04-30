@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.R.id;
+import edu.berkeley.cs.amplab.carat.android.R.layout;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
+import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.ActivityManager.RunningAppProcessInfo;

@@ -67,12 +67,12 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".SampleDebugActivity"
+            android:name=".sampling.SampleDebugActivity"
             android:label="@string/app_name" >
         </activity>
 
         <receiver
-            android:name="edu.berkeley.cs.amplab.carat.android.Sampler"
+            android:name=".sampling.Sampler"
             android:enabled="true"
             android:exported="true"
             android:label="Carat Sampler" >

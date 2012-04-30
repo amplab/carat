@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.AndroidSample;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
@@ -940,16 +941,13 @@ public final class SamplingLibrary {
                 callDur = myCursor.getLong(2);
 
                 time = dateformat.format(callDate);
-                if (!time.equals(tmpTime)) {
-                    if (tmpTime.equals(null)) {
-                    } else {
-                        callMonth.put(tmpTime, curMonth);
-                        callInDur.clear();
-                        callOutDur.clear();
-                    }
+                if (tmpTime != null && !time.equals(tmpTime)) {
+                    callMonth.put(tmpTime, curMonth);
+                    callInDur.clear();
+                    callOutDur.clear();
                     curMonth = new CallMonth();
-                    tmpTime = time;
                 }
+                tmpTime = time;
 
                 if (callType == 1) {
                     curMonth.tolCallInNum++;
@@ -1172,10 +1170,11 @@ public final class SamplingLibrary {
         // will always be used even when all apps are killed
 
         /* Calling Information */
-        CallMonth cm = new CallMonth();
+        /*CallMonth cm = new CallMonth();
         cm = getCallMonthinfo(context, "2012-03");
-        Log.v(STAG, "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
-
+        if (cm != null)
+            Log.v(STAG, "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
+        */
         Log.i(STAG, "serial="+getBuildSerial());
         
         // Record second data point for cpu/idle time
