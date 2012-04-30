@@ -827,17 +827,17 @@ public final class SamplingLibrary {
     }
 
     /**
-     * Return a long[3] with incoming call time, outgoing call time, and non-call time since boot.
+     * Return a long[3] with incoming call time, outgoing call time, and non-call time in seconds since boot.
      * 
      * @param context from onReceive or Activity
-     * @return a long[3] with incoming call time, outgoing call time, and non-call time since boot.
+     * @return a long[3] with incoming call time, outgoing call time, and non-call time in seconds since boot.
      */
     public static long[] getCalltimesSinceBoot(Context context) {
 
         long[] result = new long[3];
 
-        long callInDur = 0;
-        long callOutDur = 0;
+        long callInSeconds = 0;
+        long callOutSeconds = 0;
         int type;
         long dur;
         long time = 0;
@@ -864,10 +864,10 @@ public final class SamplingLibrary {
                     dur = cur.getLong(2);
                     switch (type) {
                     case android.provider.CallLog.Calls.INCOMING_TYPE:
-                        callInDur += dur;
+                        callInSeconds += dur;
                         break;
                     case android.provider.CallLog.Calls.OUTGOING_TYPE:
-                        callOutDur += dur;
+                        callOutSeconds += dur;
                         break;
                     default:
                     }
@@ -881,9 +881,10 @@ public final class SamplingLibrary {
             Log.i("CallDurFromBoot", "Cursor is null");
         }
 
-        long nonCallTime = uptime - callInDur - callOutDur;
-        result[0] = callInDur;
-        result[1] = callOutDur;
+        // uptime is ms, so it needs to be divided by 1000
+        long nonCallTime = uptime/1000 - callInSeconds - callOutSeconds;
+        result[0] = callInSeconds;
+        result[1] = callOutSeconds;
         result[2] = nonCallTime;
         return result;
     }
