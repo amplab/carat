@@ -16,6 +16,13 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 
+/**
+ * Application class for Carat Android App.
+ * Place App-global static constants and methods here.
+ * 
+ * @author Eemil Lagerspetz
+ *
+ */
 public class CaratApplication extends Application {
 
 	// 1 min first, then 15 min intervals

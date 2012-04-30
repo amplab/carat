@@ -15,18 +15,29 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
+/**
+ * Carat Android App Main Activity. Is loaded right after CaratApplication. Holds the Tabs that comprise the UI.
+ * Place code related to tab handling and global Activity code here.
+ * 
+ * @author Eemil Lagerspetz
+ *
+ */
 public class CaratMainActivity extends TabActivity {
+    // Log tag
     private static final String TAG = "CaratMain";
+    // 250 ms
+    public static final long ANIMATION_DURATION = 250;
 
+    // Thread that sends samples when phone is woken up, GUI is started, or at 15 min intervals.
     private CommsThread sampleSender = null;
 
+    // Hold the tabs of the UI.
     static TabHost tabHost = null;
 
     /** Called when the activity is first created. */
@@ -124,9 +135,6 @@ public class CaratMainActivity extends TabActivity {
     public static void changeTab(int tab) {
         tabHost.setCurrentTab(tab);
     }
-
-    // 250 ms
-    public static final long ANIMATION_DURATION = 250;
 
     /**
      * Animation for sliding a screen in from the right.
