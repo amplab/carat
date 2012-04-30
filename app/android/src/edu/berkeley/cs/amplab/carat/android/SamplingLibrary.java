@@ -331,15 +331,15 @@ public final class SamplingLibrary {
      * @return a fraction of usage/(usage+idletime)
      */
     @Deprecated
-    public static float readUsage() {
+    public static double readUsage() {
         try {
             RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
             String load = reader.readLine();
 
             String[] toks = load.split("\\s+");
 
-            long idle1 = Long.parseLong(toks[5]);
-            long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
+            double idle1 = Long.parseLong(toks[5]);
+            double cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
                     + Long.parseLong(toks[4]) + Long.parseLong(toks[6])
                     + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
 
@@ -354,12 +354,12 @@ public final class SamplingLibrary {
 
             toks = load.split(" ");
 
-            long idle2 = Long.parseLong(toks[5]);
-            long cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
+            double idle2 = Long.parseLong(toks[5]);
+            double cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
                     + Long.parseLong(toks[4]) + Long.parseLong(toks[6])
                     + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
 
-            return (float) (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
+            return (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -826,90 +826,68 @@ public final class SamplingLibrary {
         return LocDevice;
     }
 
-    /* Get the time when mobile is booted */
-    public static String getBootTime(Context context) {
+    /**
+     * Return a long[3] with incoming call time, outgoing call time, and non-call time since boot.
+     * 
+     * @param context from onReceive or Activity
+     * @return a long[3] with incoming call time, outgoing call time, and non-call time since boot.
+     */
+    public static long[] getCalltimesSinceBoot(Context context) {
 
-        SharedPreferences sharedpreferences = context.getSharedPreferences(
-                "SystemBootTime", Context.MODE_PRIVATE);
-        long milliseconds = sharedpreferences.getLong("bootTime",
-                new Date().getTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date dt = new Date(milliseconds);
-
-        Log.i("bootSeconds", sdf.format(dt));
-        return sdf.format(dt);
-    }
-
-    /* Get the call duration between booted time and current time */
-    public static List<String> getCallDurFromBootTime(Context context) {
-
-        List<String> callDurFromBootList = new ArrayList<String>();
+        long[] result = new long[3];
 
         long callInDur = 0;
         long callOutDur = 0;
         int type;
         long dur;
-        Date date;
-        SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String time;
-        String bootTime = getBootTime(context);
+        long time = 0;
+
+        // ms since boot
+        long uptime = SystemClock.elapsedRealtime();
+        long now = System.currentTimeMillis();
+        long bootTime = now - uptime;
 
         String[] queries = new String[] { android.provider.CallLog.Calls.TYPE,
                 android.provider.CallLog.Calls.DATE,
                 android.provider.CallLog.Calls.DURATION };
 
         Cursor cur = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI, queries, null,
-                null, android.provider.CallLog.Calls.DATE + " DESC");
+                android.provider.CallLog.Calls.CONTENT_URI, queries,
+                android.provider.CallLog.Calls.DATE + " > " + bootTime, null,
+                android.provider.CallLog.Calls.DATE + " ASC");
 
-        if (cur.moveToFirst()) {
-            for (int i = 0; i < cur.getColumnCount(); i++) {
-                cur.moveToPosition(i);
-                type = cur.getInt(0);
-                date = new Date(cur.getLong(1));
-                dur = cur.getLong(2);
-
-                time = dateformat.format(date);
-                if (time.compareTo(bootTime) > 0) {
+        if (cur != null) {
+            if (cur.moveToFirst()) {
+                while (!cur.isAfterLast()) {
+                    type = cur.getInt(0);
+                    time = cur.getLong(1);
+                    dur = cur.getLong(2);
                     switch (type) {
-                    case 1:
+                    case android.provider.CallLog.Calls.INCOMING_TYPE:
                         callInDur += dur;
-                    case 2:
+                        break;
+                    case android.provider.CallLog.Calls.OUTGOING_TYPE:
                         callOutDur += dur;
-                    case 3:
+                        break;
+                    default:
                     }
+                    cur.moveToNext();
                 }
+            } else {
+                Log.i("CallDurFromBoot", "No calls");
             }
+            cur.close();
         } else {
-            Log.i("CallDurFromBoot", "calldur=null");
+            Log.i("CallDurFromBoot", "Cursor is null");
         }
-        callDurFromBootList.add(String.valueOf(callInDur));
-        callDurFromBootList.add(String.valueOf(callOutDur));
-        return callDurFromBootList;
+
+        long nonCallTime = uptime - callInDur - callOutDur;
+        result[0] = callInDur;
+        result[1] = callOutDur;
+        result[2] = nonCallTime;
+        return result;
     }
 
-    /* Get the length of not-calling time between booted time and current time */
-    public static long getNotCallDur(Context context){
-        long notCallDur= 0;
-        long uptime= (long)getUptime();
-        List<String> tmp=new ArrayList<String>();
-        tmp=getCallDurFromBootTime(context);
-        long callInDur=Long.parseLong(tmp.get(0));
-        long callOutDur=Long.parseLong(tmp.get(1));
-                
-        if(callInDur>0||callOutDur>0){
-              long callDur=callInDur+callOutDur;
-              notCallDur=uptime-callDur;
-              Log.i("callInDur", String.valueOf(callInDur));  
-              Log.i("callOutDur", String.valueOf(callOutDur));
-              return notCallDur;   
-            }
-              else{
-                  Log.i("NotCallingDuration", String.valueOf(notCallDur));
-                  return uptime;
-                   }
-    }
-    
     /* Get a monthly call duration record */
     public static Map<String, CallMonth> getMonthCallDur(Context context) {
 
@@ -994,82 +972,6 @@ public final class SamplingLibrary {
         return call;
     }
 
-    /* Get callinfo: call type, call date, call duration */
-    @Deprecated
-    public static List<String> getCallInfo(Context context) {
-        List<String> res = new ArrayList<String>();
-
-        String[] queryFields = new String[] {
-                android.provider.CallLog.Calls.TYPE,
-                android.provider.CallLog.Calls.DATE,
-                android.provider.CallLog.Calls.DURATION };
-
-        Cursor myCursor = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI, queryFields, null,
-                null, android.provider.CallLog.Calls.DATE + " DESC");
-
-        if (myCursor.moveToFirst()) {
-            for (int i = 0; i < myCursor.getColumnCount(); i++) {
-                myCursor.moveToPosition(i);
-                if (myCursor
-                        .getString(myCursor
-                                .getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE)) == null) {
-                    res.add("no records");
-                } else {
-                    res.add(myCursor.getString(myCursor
-                            .getColumnIndexOrThrow(android.provider.CallLog.Calls.TYPE)));
-                }
-
-                if (myCursor
-                        .getString(myCursor
-                                .getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE)) == null) {
-                    res.add("no records");
-                } else {
-                    res.add(myCursor.getString(myCursor
-                            .getColumnIndexOrThrow(android.provider.CallLog.Calls.DATE)));
-                }
-                if (myCursor
-                        .getString(myCursor
-                                .getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION)) == null) {
-                    res.add("0");
-                } else {
-                    res.add(myCursor.getString(myCursor
-                            .getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION)));
-                }
-            }
-            myCursor.moveToNext();
-        } else {
-            Log.i("TYPE", "callType=None");
-            Log.i("DATE", "callDate=None");
-            Log.i("DURATION", "callduration =None");
-        }
-
-        return res;
-    }
-
-    /* Get total call duration just for cells */
-    @Deprecated
-    public static long getTotalCallDur(Context context) {
-        long totalCallDur = 0;
-
-        Cursor myCursor = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI, null, null, null,
-                android.provider.CallLog.Calls.DEFAULT_SORT_ORDER);
-
-        int DurationColumn = myCursor
-                .getColumnIndexOrThrow(android.provider.CallLog.Calls.DURATION);
-
-        if (myCursor.moveToFirst()) {
-            do {
-                totalCallDur += myCursor.getLong(DurationColumn);
-
-            } while (myCursor.moveToNext());
-        } else {
-            Log.i("DURATION", "callduration =0");
-        }
-        return totalCallDur;
-    }
-
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
         String action = intent.getAction();
@@ -1129,14 +1031,8 @@ public final class SamplingLibrary {
         /* Total call time */
         // long totalCallTime=0;
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
-        List<String> callDurFromBoot;
-        callDurFromBoot = SamplingLibrary.getCallDurFromBootTime(context);
-
-        String bootTime = null;
-        bootTime = getBootTime(context);
-        
-        long noneCallTime=getNotCallDur(context);
-        Log.i("Not-Calling-Time", String.valueOf(noneCallTime));
+        long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
+        Log.i("getSample", "Call time since boot: Incoming="+ incomingOutgoingIdle[0] +" Outgoing=" + incomingOutgoingIdle[1] +" idle=" + incomingOutgoingIdle[2]);
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
