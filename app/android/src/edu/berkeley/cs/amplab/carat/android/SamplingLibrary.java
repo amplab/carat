@@ -65,9 +65,9 @@ public final class SamplingLibrary {
     public static String TYPE_MOBILE = "mobile";
     public static String TYPE_WIMAX = "wimax";
     // Data State constants
-    public static String DATA_DISCONNECTED = "disconnected";
-    public static String DATA_CONNECTING = "connecting";
-    public static String DATA_CONNECTED = "connected";
+    public static String DATA_DISCONNECTED = NETWORKSTATUS_DISCONNECTED;
+    public static String DATA_CONNECTING = NETWORKSTATUS_CONNECTING;
+    public static String DATA_CONNECTED = NETWORKSTATUS_CONNECTED;
     public static String DATA_SUSPENDED = "suspended";
     // Data Activity constants
     public static String DATA_ACTIVITY_NONE = "none";
@@ -134,7 +134,22 @@ public final class SamplingLibrary {
     public static String getOsVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
+    
+    /**
+     * This may only work for 2.3 and later:
+     * @return
+     */
+    
+    public static String getBuildSerial(){
+        // return android.os.Build.Serial;
+        return System.getProperty("ro.serial", TYPE_UNKNOWN);
+    }
 
+    
+    /**
+     * Return misc system details that we might want to use later. Currently does nothing.
+     * @return
+     */
     public static Map<String, String> getSystemDetails() {
         Map<String, String> results = new HashMap<String, String>();
         // TODO: Some of this should be added to registration to identify the
@@ -1159,10 +1174,14 @@ public final class SamplingLibrary {
         cm = getCallMonthinfo(context, "2012-03");
         Log.v("MonthCall", "cm.tolCallInNum");
 
+        Log.i("getSample", "serial="+getBuildSerial());
+        
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();
         long[] idleAndCpu2 = readUsagePoint();
         otherInfo.setCPUUsage(getUsage(idleAndCpu1, idleAndCpu2));
+        
+        
         return mySample;
     }
 }
