@@ -85,6 +85,8 @@ public final class SamplingLibrary {
     public static String CALL_STATE_IDLE = "idle";
     public static String CALL_STATE_OFFHOOK = "offhook";
     public static String CALL_STATE_RINGING = "ringing";
+    
+    private static final String STAG = "getSample";
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -199,22 +201,22 @@ public final class SamplingLibrary {
             String load = reader.readLine();
 
             String[] toks = load.split("\\s+");
-            Log.i("meminfo", "Load: " + load + " 1:" + toks[1]);
+            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int total = Integer.parseInt(toks[1]);
             load = reader.readLine();
             toks = load.split("\\s+");
-            Log.i("meminfo", "Load: " + load + " 1:" + toks[1]);
+            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int free = Integer.parseInt(toks[1]);
             load = reader.readLine();
             load = reader.readLine();
             load = reader.readLine();
             load = reader.readLine();
             toks = load.split("\\s+");
-            Log.i("meminfo", "Load: " + load + " 1:" + toks[1]);
+            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int act = Integer.parseInt(toks[1]);
             load = reader.readLine();
             toks = load.split("\\s+");
-            Log.i("meminfo", "Load: " + load + " 1:" + toks[1]);
+            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int inact = Integer.parseInt(toks[1]);
             reader.close();
             return new int[] { total - free, free, inact, act };
@@ -268,8 +270,8 @@ public final class SamplingLibrary {
         for (android.os.Debug.MemoryInfo mem : mems) {
             memUsed += mem.getTotalPss();
         }
-        Log.i("Mem", "Total mem:" + totalMem);
-        Log.i("Mem", "Mem Used:" + memUsed);
+        Log.v("Mem", "Total mem:" + totalMem);
+        Log.v("Mem", "Mem Used:" + memUsed);
         return new int[] { totalMem, memUsed };
     }
 
@@ -554,7 +556,7 @@ public final class SamplingLibrary {
          * 24); String tmp = "\nThe uptime is :" + hours + "hr:" + minutes +
          * "mins:" + seconds + "sec.\n"; return tmp;
          */
-        Log.i("uptime", String.valueOf(uptime));
+        Log.v("uptime", String.valueOf(uptime));
         return uptime / 1000.0;
     }
 
@@ -608,7 +610,7 @@ public final class SamplingLibrary {
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
         int wifiRssi = myWifiInfo.getRssi();
-        Log.i("WifiRssi", "Rssi:" + wifiRssi);
+        Log.v("WifiRssi", "Rssi:" + wifiRssi);
         return wifiRssi;
 
     }
@@ -620,7 +622,7 @@ public final class SamplingLibrary {
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
         int linkSpeed = myWifiInfo.getLinkSpeed();
 
-        Log.i("linkSpeed", "Link speed:" + linkSpeed);
+        Log.v("linkSpeed", "Link speed:" + linkSpeed);
         return linkSpeed;
     }
 
@@ -631,7 +633,7 @@ public final class SamplingLibrary {
         WifiManager myWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
         wifiEnabled = myWifiManager.isWifiEnabled();
-        Log.i("WifiEnabled", "Wifi is enabled:" + wifiEnabled);
+        Log.v("WifiEnabled", "Wifi is enabled:" + wifiEnabled);
         return wifiEnabled;
     }
 
@@ -658,7 +660,7 @@ public final class SamplingLibrary {
         WifiManager myWifiManager = (WifiManager) context
                 .getSystemService(Context.WIFI_SERVICE);
         WifiInfo connectionInfo = myWifiManager.getConnectionInfo();
-        Log.i("WifiInfo", "Wifi information:" + connectionInfo);
+        Log.v("WifiInfo", "Wifi information:" + connectionInfo);
         return connectionInfo;
 
     }
@@ -682,7 +684,7 @@ public final class SamplingLibrary {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Log.i("BacakgroundDataEnabled", "Background data are enabled :"
+        Log.v("BackgroundDataEnabled", "Background data enabled? "
                 + bacDataEnabled);
         // return bacDataEnabled;
         return true;
@@ -701,7 +703,7 @@ public final class SamplingLibrary {
             e.printStackTrace();
         }
 
-        Log.i("ScreenBrightness", "Screen brightness value:"
+        Log.v("ScreenBrightness", "Screen brightness value:"
                 + screenBrightnessValue);
         return screenBrightnessValue;
     }
@@ -714,7 +716,7 @@ public final class SamplingLibrary {
 
         gpsEnabled = myLocationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Log.i("GPS", "GPS is :" + gpsEnabled);
+        Log.v("GPS", "GPS is :" + gpsEnabled);
         return gpsEnabled;
     }
 
@@ -745,7 +747,7 @@ public final class SamplingLibrary {
         GpsStatus gpsStatus = locationManager.getGpsStatus(null);
         int maxNumSatellite = gpsStatus.getMaxSatellites();
 
-        Log.i("maxNumStatellite", "Maxmium number of satellites:"
+        Log.v("maxNumStatellite", "Maxmium number of satellites:"
                 + maxNumSatellite);
         return maxNumSatellite;
     }
@@ -779,7 +781,7 @@ public final class SamplingLibrary {
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int netType = telManager.getNetworkType();
-        Log.i("NetworkType", "Network type:" + String.valueOf(netType));
+        Log.v("NetworkType", "Network type:" + String.valueOf(netType));
         return String.valueOf(netType);
     }
 
@@ -791,7 +793,7 @@ public final class SamplingLibrary {
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         roamStatus = telManager.isNetworkRoaming();
-        Log.i("RoamingStatus", "Roaming status:" + roamStatus);
+        Log.v("RoamingStatus", "Roaming status:" + roamStatus);
         return roamStatus;
     }
 
@@ -837,7 +839,7 @@ public final class SamplingLibrary {
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         CellLocation LocDevice = telManager.getCellLocation();
-        Log.i("DeviceLocation", "Device Location:" + LocDevice);
+        Log.v("DeviceLocation", "Device Location:" + LocDevice);
         return LocDevice;
     }
 
@@ -889,11 +891,11 @@ public final class SamplingLibrary {
                     cur.moveToNext();
                 }
             } else {
-                Log.i("CallDurFromBoot", "No calls");
+                Log.w("CallDurFromBoot", "No calls listed");
             }
             cur.close();
         } else {
-            Log.i("CallDurFromBoot", "Cursor is null");
+            Log.w("CallDurFromBoot", "Cursor is null");
         }
 
         // uptime is ms, so it needs to be divided by 1000
@@ -972,9 +974,9 @@ public final class SamplingLibrary {
                 }
             }
         } else {
-            Log.i("MonthType", "callType=None");
-            Log.i("MonthDate", "callDate=None");
-            Log.i("MonthDuration", "callduration =None");
+            Log.v("MonthType", "callType=None");
+            Log.v("MonthDate", "callDate=None");
+            Log.v("MonthDuration", "callduration =None");
         }
         return callMonth;
     }
@@ -1048,7 +1050,7 @@ public final class SamplingLibrary {
         // long totalCallTime=0;
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
         long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
-        Log.i("getSample", "Call time since boot: Incoming="+ incomingOutgoingIdle[0] +" Outgoing=" + incomingOutgoingIdle[1] +" idle=" + incomingOutgoingIdle[2]);
+        Log.i(STAG, "Call time since boot: Incoming="+ incomingOutgoingIdle[0] +" Outgoing=" + incomingOutgoingIdle[1] +" idle=" + incomingOutgoingIdle[2]);
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
@@ -1070,7 +1072,7 @@ public final class SamplingLibrary {
         // if we have real data, change old value
         if (level > 0 && scale > 0) {
             batteryLevel = (level / scale);
-            Log.i("SamplingLibrary", "BatteryLevel: " + batteryLevel);
+            Log.i(STAG, "BatteryLevel: " + batteryLevel);
         }
 
         // FIXED: Not used yet, Sample needs more fields
@@ -1172,9 +1174,9 @@ public final class SamplingLibrary {
         /* Calling Information */
         CallMonth cm = new CallMonth();
         cm = getCallMonthinfo(context, "2012-03");
-        Log.v("MonthCall", "cm.tolCallInNum");
+        Log.v(STAG, "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
 
-        Log.i("getSample", "serial="+getBuildSerial());
+        Log.i(STAG, "serial="+getBuildSerial());
         
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();
