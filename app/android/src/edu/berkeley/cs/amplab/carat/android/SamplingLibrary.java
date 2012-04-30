@@ -829,12 +829,12 @@ public final class SamplingLibrary {
     /* Get the time when mobile is booted */
     public static String getBootTime(Context context) {
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(
+        SharedPreferences sharedpreferences = context.getSharedPreferences(
                 "SystemBootTime", Context.MODE_PRIVATE);
-        long milliseconds = sharedPreferences.getLong("bootTime",
+        long milliseconds = sharedpreferences.getLong("bootTime",
                 new Date().getTime());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        java.util.Date dt = new Date(milliseconds);
+                Date dt = new Date(milliseconds);
 
         Log.i("bootSeconds", sdf.format(dt));
         return sdf.format(dt);
@@ -884,10 +884,32 @@ public final class SamplingLibrary {
             Log.i("CallDurFromBoot", "calldur=null");
         }
         callDurFromBootList.add(String.valueOf(callInDur));
-        callDurFromBootList.add(String.valueOf(callInDur));
+        callDurFromBootList.add(String.valueOf(callOutDur));
         return callDurFromBootList;
     }
 
+    /* Get the length of not-calling time between booted time and current time */
+    public static long getNotCallDur(Context context){
+        long notCallDur= 0;
+        long uptime= (long)getUptime();
+        List<String> tmp=new ArrayList<String>();
+        tmp=getCallDurFromBootTime(context);
+        long callInDur=Long.parseLong(tmp.get(0));
+        long callOutDur=Long.parseLong(tmp.get(1));
+                
+        if(callInDur>0||callOutDur>0){
+              long callDur=callInDur+callOutDur;
+              notCallDur=uptime-callDur;
+              Log.i("callInDur", String.valueOf(callInDur));  
+              Log.i("callOutDur", String.valueOf(callOutDur));
+              return notCallDur;   
+            }
+              else{
+                  Log.i("NotCallingDuration", String.valueOf(notCallDur));
+                  return uptime;
+                   }
+    }
+    
     /* Get a monthly call duration record */
     public static Map<String, CallMonth> getMonthCallDur(Context context) {
 
@@ -1112,6 +1134,9 @@ public final class SamplingLibrary {
 
         String bootTime = null;
         bootTime = getBootTime(context);
+        
+        long noneCallTime=getNotCallDur(context);
+        Log.i("Not-Calling-Time", String.valueOf(noneCallTime));
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
