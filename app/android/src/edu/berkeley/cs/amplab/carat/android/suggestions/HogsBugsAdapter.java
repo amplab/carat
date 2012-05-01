@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 import android.graphics.drawable.Drawable;
@@ -17,16 +18,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public abstract class HogsBugsAdapter extends BaseAdapter {
-	private List<HogsBugs> allBugsOrHogs = null;
+	private List<HogsBugs> allBugsOrHogs = new ArrayList<HogsBugs>();
 
 	private LayoutInflater mInflater;
 	private CaratApplication a = null;
 
 	public HogsBugsAdapter(CaratApplication a, List<HogsBugs> results) {
 		this.a = a;
-		allBugsOrHogs = results;
-		if (allBugsOrHogs == null)
-			allBugsOrHogs = new ArrayList<HogsBugs>();
+		// Skip system apps.
+		for (HogsBugs b: results){
+		 if (!SamplingLibrary.isSystem(a.getApplicationContext(), b.getAppName()))
+		     allBugsOrHogs.add(b);
+		}
 		mInflater = LayoutInflater.from(a.getApplicationContext());
 	}
 

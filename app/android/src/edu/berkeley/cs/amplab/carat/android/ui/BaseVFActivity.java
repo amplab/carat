@@ -1,11 +1,15 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
+import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ViewFlipper;
 
 public abstract class BaseVFActivity extends Activity implements VFActivity {
 
     protected int viewIndex = 0;
+    protected int baseViewIndex = 0;
+    protected ViewFlipper vf = null;
 
     @Override
     public void setViewId(int id) {
@@ -35,5 +39,14 @@ public abstract class BaseVFActivity extends Activity implements VFActivity {
         super.onCreate(savedInstanceState);
     }
     
-    
+    @Override
+    public void onBackPressed() {
+        if (vf.getDisplayedChild() != baseViewIndex) {
+            vf.setOutAnimation(CaratMainActivity.outtoRight);
+            vf.setInAnimation(CaratMainActivity.inFromLeft);
+            vf.setDisplayedChild(baseViewIndex);
+            viewIndex = baseViewIndex;
+        } else
+            finish();
+    }
 }

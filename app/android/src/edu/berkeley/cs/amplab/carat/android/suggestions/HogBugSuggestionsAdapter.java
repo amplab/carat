@@ -1,13 +1,9 @@
 package edu.berkeley.cs.amplab.carat.android.suggestions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
@@ -60,7 +56,10 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 					/ item.getExpectedValue();
 			// TODO other filter conditions?
 			// Limit max number of items?
-
+			
+			// Skip system apps
+			if (SamplingLibrary.isSystem(a.getApplicationContext(), item.getAppName()))
+			    continue;
 			// Filter out if benefit is too small
 			if (SamplingLibrary.isRunning(a.getApplicationContext(), item.getAppName()) && benefit > 60) {
 				result.add(item);

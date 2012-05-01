@@ -15,9 +15,6 @@ import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class CaratBugsActivity extends BaseVFActivity{
-	
-    private ViewFlipper vf = null;
-	private int baseViewIndex = 0;
 	private DrawView w = null;
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -127,16 +124,5 @@ public class CaratBugsActivity extends BaseVFActivity{
 		final ListView lv = (ListView) findViewById(R.id.bugsList);
 		lv.setAdapter(new BugsAdapter(app, app.s.getBugReport()));
 		super.onResume(); 
-	}
-	
-	@Override
-	public void onBackPressed() {
-		if (vf.getDisplayedChild() != baseViewIndex) {
-			vf.setOutAnimation(CaratMainActivity.outtoRight);
-			vf.setInAnimation(CaratMainActivity.inFromLeft);
-			vf.setDisplayedChild(baseViewIndex);
-			this.viewIndex = baseViewIndex;
-		} else
-			finish();
 	}
 }

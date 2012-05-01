@@ -16,8 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class CaratHogsActivity extends BaseVFActivity {
 
-    private ViewFlipper vf = null;
-    private int baseViewIndex = 0;
     private DrawView w = null;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -109,16 +107,5 @@ public class CaratHogsActivity extends BaseVFActivity {
         lv.setAdapter(new HogsAdapter(app, app.s.getHogReport()));
         // initGraphChart();
         super.onResume();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex) {
-            vf.setOutAnimation(CaratMainActivity.outtoRight);
-            vf.setInAnimation(CaratMainActivity.inFromLeft);
-            vf.setDisplayedChild(baseViewIndex);
-            viewIndex = baseViewIndex;
-        } else
-            finish();
     }
 }

@@ -8,11 +8,9 @@ import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
-import edu.berkeley.cs.amplab.carat.thrift.Reports;
-import android.app.Activity;
+
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
@@ -29,8 +27,6 @@ import android.widget.ViewFlipper;
 public class CaratMyDeviceActivity extends BaseVFActivity {
 
     private CaratApplication app = null;
-    private ViewFlipper vf = null;
-    private int baseViewIndex = 0;
 
     /** Called when the activity is first created. */
     @Override
@@ -186,15 +182,5 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                 mText.setProgress((int) (cpu * 100));
             }
         });
-    }
-
-    public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex) {
-            vf.setOutAnimation(CaratMainActivity.outtoRight);
-            vf.setInAnimation(CaratMainActivity.inFromLeft);
-            vf.setDisplayedChild(baseViewIndex);
-            viewIndex = baseViewIndex;
-        } else
-            finish();
     }
 }

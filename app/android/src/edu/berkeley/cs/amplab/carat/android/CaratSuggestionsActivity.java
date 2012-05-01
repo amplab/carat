@@ -1,6 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -20,9 +19,6 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
-
-    private ViewFlipper vf = null;
-    private int baseViewIndex = 0;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -101,15 +97,4 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
 			}
 		}
 	}
-	
-	@Override
-    public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex) {
-            vf.setOutAnimation(CaratMainActivity.outtoRight);
-            vf.setInAnimation(CaratMainActivity.inFromLeft);
-            vf.setDisplayedChild(baseViewIndex);
-            viewIndex = baseViewIndex;
-        } else
-            finish();
-    }
 }

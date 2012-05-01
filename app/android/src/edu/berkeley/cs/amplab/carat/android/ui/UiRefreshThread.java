@@ -28,6 +28,7 @@ public class UiRefreshThread extends Thread {
     private static final String TRY_AGAIN = " will try again in "
             + (CaratApplication.FRESHNESS_TIMEOUT / 1000) + "s.";
 
+    // FIXME: There should be a non-static way of doing this.
     private static CaratApplication app = null;
     
     private static UiRefreshThread instance = null;
@@ -37,7 +38,7 @@ public class UiRefreshThread extends Thread {
     }
 
     public UiRefreshThread(CaratApplication app) {
-        this.app = app;
+        UiRefreshThread.app = app;
         instance = this;
     }
 
