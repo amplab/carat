@@ -105,48 +105,9 @@ public class CommunicationManager {
         }
     }
 
-    public void refreshReports() {
-        // Do not refresh if not connected
-        if (!SamplingLibrary.networkAvailable(a.getApplicationContext()))
-            return;
-        if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
-            return;
-        registerOnFirstRun();
-
-        String uuId = SamplingLibrary.getUuid(a);
-        String model = SamplingLibrary.getModel();
-        String OS = SamplingLibrary.getOsVersion();
-
-        // NOTE: Fake data for simulator:
-        if (model.equals("sdk")){
-            uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus
-            model = "Galaxy Nexus";
-            OS = "4.0.2";
-        }
-        // Adam's 3GS
-        // uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
-        // model = "iPhone 3GS";
-        // OS = "5.0.1";
-
-        try {
-            c = ProtocolClient.getInstance(a.getApplicationContext());
-            if (c == null) {
-                Log.e("refreshReports", "We are disconnected, not refreshing.");
-                return;
-            }
-            refreshMainReports(uuId, OS, model);
-            refreshBugReports(uuId, model);
-            refreshHogReports(uuId, model);
-            ProtocolClient.close();
-            a.s.writeFreshness();
-        } catch (TException e) {
-            Log.e("refreshReports", "Could not download new reports!");
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Used by UiRefreshThread which needs to know about exceptions.
+     * 
      * @throws TException
      */
     public void refreshAllReports() throws TException {
@@ -161,11 +122,17 @@ public class CommunicationManager {
         String model = SamplingLibrary.getModel();
         String OS = SamplingLibrary.getOsVersion();
 
-        // FIXME: Fake data for simulator
+        // NOTE: Fake data for simulator
+        /*
+         * if (model.equals("sdk")) { uuId =
+         * "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE"; model = "iPhone 3GS"; OS =
+         * "5.0.1"; }
+         */
+
         if (model.equals("sdk")) {
-            uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
-            model = "iPhone 3GS";
-            OS = "5.0.1";
+            uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus
+            model = "Galaxy Nexus";
+            OS = "4.0.2";
         }
 
         c = ProtocolClient.getInstance(a.getApplicationContext());
