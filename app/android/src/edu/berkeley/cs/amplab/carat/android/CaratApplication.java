@@ -226,11 +226,15 @@ public class CaratApplication extends Application {
                 .getInstalledPackages(0);
         for (android.content.pm.PackageInfo pak : packagelist) {
             String pname = pak.applicationInfo.packageName;
+            String procname = pak.applicationInfo.processName;
             String label = getPackageManager().getApplicationLabel(
                     pak.applicationInfo).toString();
             Drawable icon = pak.applicationInfo.loadIcon(getPackageManager());
-            appToIcon.put(pname, icon);
             appToLabel.put(pname, label);
+            appToIcon.put(pname, icon);
+            // Fallback / process list
+            appToLabel.put(procname, label);
+            appToIcon.put(procname, icon);
         }
 
         super.onCreate();
