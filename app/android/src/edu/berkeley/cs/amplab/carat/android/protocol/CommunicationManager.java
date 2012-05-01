@@ -117,8 +117,13 @@ public class CommunicationManager {
         String model = SamplingLibrary.getModel();
         String OS = SamplingLibrary.getOsVersion();
 
-        // FIXME: Fake data for now
-
+        // NOTE: Fake data for simulator:
+        if (model.equals("sdk")){
+            uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus
+            model = "Galaxy Nexus";
+            OS = "4.0.2";
+        }
+        // Adam's 3GS
         // uuId = "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE";
         // model = "iPhone 3GS";
         // OS = "5.0.1";
