@@ -14,11 +14,12 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.suggestions.*;
+import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
-public class CaratSuggestionsActivity extends Activity {
+public class CaratSuggestionsActivity extends BaseVFActivity {
 
     private ViewFlipper vf = null;
     private int baseViewIndex = 0;
@@ -46,11 +47,16 @@ public class CaratSuggestionsActivity extends Activity {
                 vf.setOutAnimation(CaratMainActivity.outtoLeft);
                 vf.setInAnimation(CaratMainActivity.inFromRight);
                 vf.setDisplayedChild(vf.indexOfChild(target));
+                viewIndex = vf.indexOfChild(target);
 				//killApp(fullObject.getAppName());
 			}
 		});
 
 		initKillView();
+		if (viewIndex == 0)
+            vf.setDisplayedChild(baseViewIndex);
+        else
+            vf.setDisplayedChild(viewIndex);
 	}
 	
 	private void initKillView(){
@@ -64,7 +70,7 @@ public class CaratSuggestionsActivity extends Activity {
             webview.loadUrl("file:///android_asset/killapp-2.2.html");
         else
             webview.loadUrl("file:///android_asset/killapp.html");
-        webview.setOnTouchListener(new FlipperBackListener(vf, vf
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.list))));
 	}
 
@@ -102,6 +108,7 @@ public class CaratSuggestionsActivity extends Activity {
             vf.setOutAnimation(CaratMainActivity.outtoRight);
             vf.setInAnimation(CaratMainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);
+            viewIndex = baseViewIndex;
         } else
             finish();
     }

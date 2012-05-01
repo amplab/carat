@@ -64,14 +64,14 @@ public class CaratMainActivity extends TabActivity {
                 .setContent(intent);
         tabHost.addTab(spec);
 
-        intent = new Intent().setClass(this, SampleDebugActivity.class);
+        /*intent = new Intent().setClass(this, SampleDebugActivity.class);
         spec = tabHost
                 .newTabSpec("Sample")
                 .setIndicator(getString(R.string.tab_sample),
                         res.getDrawable(R.drawable.ic_tab_actions))
                 .setContent(intent);
         tabHost.addTab(spec);
-
+*/
         intent = new Intent().setClass(this, CaratMyDeviceActivity.class);
         spec = tabHost
                 .newTabSpec("mydevice")

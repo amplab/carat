@@ -8,8 +8,6 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.R.id;
-import edu.berkeley.cs.amplab.carat.android.R.layout;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;

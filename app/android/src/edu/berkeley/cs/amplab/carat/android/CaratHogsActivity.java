@@ -1,33 +1,24 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.Iterator;
-
 import edu.berkeley.cs.amplab.carat.android.suggestions.HogsAdapter;
+import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CaratHogsActivity extends Activity {
+public class CaratHogsActivity extends BaseVFActivity {
 
     private ViewFlipper vf = null;
     private int baseViewIndex = 0;
+    private DrawView w = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +30,23 @@ public class CaratHogsActivity extends Activity {
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
         initHogsView();
-        initGraphView();
+        //initGraphView();
         initGraphChart();
+        
+        Object o = getLastNonConfigurationInstance();
+        if (o != null){
+            CaratHogsActivity previous = (CaratHogsActivity) o;
+            HogsBugs h = previous.w.getHogOrBug();
+            boolean isBug = previous.w.isBug();
+            String appName = previous.w.getAppName();
+            w.setHogsBugs(h, appName, isBug);
+            w.postInvalidate();
+        }
+        
+        if (viewIndex == 0)
+            vf.setDisplayedChild(baseViewIndex);
+        else
+            vf.setDisplayedChild(viewIndex);
     }
 
     private void initHogsView() {
@@ -48,6 +54,7 @@ public class CaratHogsActivity extends Activity {
         lv.setCacheColorHint(0);
     }
 
+    /*
     private void initGraphView() {
         WebView webview = (WebView) findViewById(R.id.hogsGraphView);
         // Fixes the white flash when showing the page for the first time.
@@ -57,12 +64,12 @@ public class CaratHogsActivity extends Activity {
         webview.loadUrl("file:///android_asset/twolinechart.html");
         webview.setOnTouchListener(new FlipperBackListener(vf, vf
                 .indexOfChild(findViewById(R.id.hogsList))));
-    }
+    }*/
 
     private void initGraphChart() {
-        final DrawView w = new DrawView(getApplicationContext());
+        w = new DrawView(getApplicationContext());
         vf.addView(w);
-        w.setOnTouchListener(new FlipperBackListener(vf, vf
+        w.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.hogsList))));
         
         final ListView lv = (ListView) findViewById(R.id.hogsList);
@@ -81,10 +88,11 @@ public class CaratHogsActivity extends Activity {
                 vf.setOutAnimation(CaratMainActivity.outtoLeft);
                 vf.setInAnimation(CaratMainActivity.inFromRight);
                 vf.setDisplayedChild(vf.indexOfChild(target));
-
+                viewIndex = vf.indexOfChild(target);
+                /*
                 Toast.makeText(CaratHogsActivity.this,
                         "You have chosen: " + " " + fullObject.getAppName(),
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
             }
         });
     }
@@ -109,6 +117,7 @@ public class CaratHogsActivity extends Activity {
             vf.setOutAnimation(CaratMainActivity.outtoRight);
             vf.setInAnimation(CaratMainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);
+            viewIndex = baseViewIndex;
         } else
             finish();
     }

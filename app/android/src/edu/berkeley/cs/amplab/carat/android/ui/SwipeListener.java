@@ -58,7 +58,7 @@ abstract class BaseSwipeListener implements OnTouchListener {
 			oldX = ev.getX();
 			oldY = ev.getY();
 			// Fix swipe not working on fake bugs/hogs screens:
-			if (currentTab == 3 || currentTab == 4)
+			if (currentTab == 2 || currentTab == 3)
 				return true;
 			return false;
 		} else if (action == MotionEvent.ACTION_UP) {

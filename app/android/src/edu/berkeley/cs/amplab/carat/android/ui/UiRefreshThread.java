@@ -28,7 +28,7 @@ public class UiRefreshThread extends Thread {
     private static final String TRY_AGAIN = " will try again in "
             + (CaratApplication.FRESHNESS_TIMEOUT / 1000) + "s.";
 
-    CaratApplication app = null;
+    private static CaratApplication app = null;
     
     private static UiRefreshThread instance = null;
     
@@ -101,7 +101,7 @@ public class UiRefreshThread extends Thread {
         Log.i(TAG, "Refresh thread stopped.");
     }
     
-    private void setReportData() {
+    public static void setReportData() {
         final Reports r = app.s.getReports();
         Log.i("CaratHomeScreen", "Got reports: " + r);
         long l = System.currentTimeMillis() - app.s.getFreshness();

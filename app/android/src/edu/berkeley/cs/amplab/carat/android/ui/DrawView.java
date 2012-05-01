@@ -11,7 +11,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
 import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.R.color;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class DrawView extends View {
@@ -28,8 +27,20 @@ public class DrawView extends View {
     private static final float X_LINE_MARGIN = 10;
 
     private HogsBugs thing = null;
-    private boolean isBug  = false;
+    private boolean isBug = false;
     private String appName = null;
+
+    public HogsBugs getHogOrBug() {
+        return this.thing;
+    }
+
+    public boolean isBug() {
+        return isBug;
+    }
+
+    public String getAppName() {
+        return this.appName;
+    }
 
     public DrawView(Context context) {
         super(context);
@@ -39,15 +50,16 @@ public class DrawView extends View {
         axisPaint.setStrokeCap(Paint.Cap.ROUND);
         axisPaint.setColor(getContext().getResources().getColor(R.color.text));
         axisPaint.setStrokeWidth(strokeWidth);
-        
+
         withPaint.setDither(true);
         withPaint.setStyle(Paint.Style.STROKE);
         withPaint.setStrokeJoin(Paint.Join.ROUND);
         withPaint.setStrokeCap(Paint.Cap.ROUND);
         withPaint.setColor(getContext().getResources().getColor(R.color.with));
         withPaint.setStrokeWidth(strokeWidth);
-        
-        withTextPaint.setColor(getContext().getResources().getColor(R.color.with));
+
+        withTextPaint.setColor(getContext().getResources().getColor(
+                R.color.with));
         withTextPaint.setTextSize(32);
         withTextPaint.setTextAlign(Align.RIGHT);
 
@@ -55,13 +67,15 @@ public class DrawView extends View {
         withoutPaint.setStyle(Paint.Style.STROKE);
         withoutPaint.setStrokeJoin(Paint.Join.ROUND);
         withoutPaint.setStrokeCap(Paint.Cap.ROUND);
-        withoutPaint.setColor(getContext().getResources().getColor(R.color.without));
+        withoutPaint.setColor(getContext().getResources().getColor(
+                R.color.without));
         withoutPaint.setStrokeWidth(strokeWidth);
-        
-        withoutTextPaint.setColor(getContext().getResources().getColor(R.color.without));
+
+        withoutTextPaint.setColor(getContext().getResources().getColor(
+                R.color.without));
         withoutTextPaint.setTextSize(32);
         withoutTextPaint.setTextAlign(Align.RIGHT);
-        
+
         textPaint.setColor(getContext().getResources().getColor(R.color.text));
         textPaint.setTextSize(32);
     }
@@ -91,34 +105,41 @@ public class DrawView extends View {
 
         float origoX = startX + MARGIN_X_AXIS;
         float origoY = stopY - MARGIN_Y_AXIS;
-        
-        float xmaxX = stopX - origoX-X_LINE_MARGIN;
-        float maxProb = - origoY - Y_LINE_MARGIN +startY;
-        
+
+        float xmaxX = stopX - origoX - X_LINE_MARGIN;
+        float maxProb = -origoY - Y_LINE_MARGIN + startY;
+
         // X and Y axis
         canvas.drawLine(origoX, origoY, origoX, startY, axisPaint);
         canvas.drawLine(origoX, origoY, stopX, origoY, axisPaint);
         // canvas.drawLine(startX, startY, stopX, stopY, axisPaint);
 
-        canvas.drawText("Battery drain %/s", origoX,
-                stopY - 20, textPaint);
+        canvas.drawText("Battery drain %/s", origoX, stopY - 20, textPaint);
 
         Path path = new Path();
         path.addRect(new RectF(clip), Path.Direction.CW);
         canvas.drawTextOnPath("Probability", path, w * 2 + h + h / 2, +40,
                 textPaint);
-        
-        
-        if (thing == null){
-            canvas.drawText("With", stopX-X_LINE_MARGIN, startY+Y_LINE_MARGIN+50, withTextPaint);
-            canvas.drawText("Without", stopX-X_LINE_MARGIN, startY+Y_LINE_MARGIN+100, withoutTextPaint);
-        }else {
-            if (isBug){
-                canvas.drawText(appName +" running here", stopX-X_LINE_MARGIN, startY+Y_LINE_MARGIN+50, withTextPaint);
-                canvas.drawText(appName +" running elsewhere", stopX-X_LINE_MARGIN, startY+Y_LINE_MARGIN+100, withoutTextPaint);
-            }else{
-            canvas.drawText(appName +" running", stopX-X_LINE_MARGIN, startY+Y_LINE_MARGIN+50, withTextPaint);
-            canvas.drawText(appName +" not running", stopX-X_LINE_MARGIN, startY+Y_LINE_MARGIN+100, withoutTextPaint);
+
+        if (thing == null) {
+            canvas.drawText("With", stopX - X_LINE_MARGIN, startY
+                    + Y_LINE_MARGIN + 50, withTextPaint);
+            canvas.drawText("Without", stopX - X_LINE_MARGIN, startY
+                    + Y_LINE_MARGIN + 100, withoutTextPaint);
+        } else {
+            if (isBug) {
+                canvas.drawText(appName + " running here", stopX
+                        - X_LINE_MARGIN, startY + Y_LINE_MARGIN + 50,
+                        withTextPaint);
+                canvas.drawText(appName + " running elsewhere", stopX
+                        - X_LINE_MARGIN, startY + Y_LINE_MARGIN + 100,
+                        withoutTextPaint);
+            } else {
+                canvas.drawText(appName + " running", stopX - X_LINE_MARGIN,
+                        startY + Y_LINE_MARGIN + 50, withTextPaint);
+                canvas.drawText(appName + " not running",
+                        stopX - X_LINE_MARGIN, startY + Y_LINE_MARGIN + 100,
+                        withoutTextPaint);
             }
             Iterator<Double> xes = thing.getXValsIterator();
             Iterator<Double> ys = thing.getYValsIterator();
@@ -137,7 +158,7 @@ public class DrawView extends View {
                 if (next > xmax)
                     xmax = next;
             }
-            
+
             float ymax = 0.0f;
             while (ys.hasNext()) {
                 float next = (float) ys.next().doubleValue();
@@ -149,59 +170,59 @@ public class DrawView extends View {
                 if (next > ymax)
                     ymax = next;
             }
-            
+
             String xmaxS = xmax + "";
             if (xmaxS.length() > 6)
                 xmaxS = xmaxS.substring(0, 6);
-            
+
             String ymaxS = ymax + "";
             if (ymaxS.length() > 4)
                 ymaxS = ymaxS.substring(0, 4);
-            
-            canvas.drawText(xmaxS+"", xmaxX, stopY-20, textPaint);
-            canvas.drawText(ymaxS+"", origoX+X_LINE_MARGIN, startY+30, textPaint);
+
+            canvas.drawText(xmaxS + "", xmaxX, stopY - 20, textPaint);
+            canvas.drawText(ymaxS + "", origoX + X_LINE_MARGIN, startY + 30,
+                    textPaint);
 
             xes = thing.getXValsIterator();
             xesWo = thing.getXValsWithoutIterator();
             ys = thing.getYValsIterator();
             ysWo = thing.getYValsWithoutIterator();
-            
+
             float lastX = 0.0f, lastY = 0.0f;
-            while (xes.hasNext() && ys.hasNext()){
+            while (xes.hasNext() && ys.hasNext()) {
                 float x = (float) xes.next().doubleValue();
                 float y = (float) ys.next().doubleValue();
                 if (y == 0.0)
                     continue;
-                x/= xmax;
-                // Now x is a fraction of max. All x values are from origoX to w - origoX - offset:
+                x /= xmax;
+                // Now x is a fraction of max. All x values are from origoX to w
+                // - origoX - offset:
                 x = origoX + X_LINE_MARGIN + x * xmaxX;
-                
-                
-                y/=ymax;
+
+                y /= ymax;
                 y = origoY + Y_LINE_MARGIN + y * maxProb;
-                
-                if (lastX != 0 || lastY != 0){
+
+                if (lastX != 0 || lastY != 0) {
                     canvas.drawLine(lastX, lastY, x, y, withPaint);
                 }
                 lastX = x;
                 lastY = y;
             }
-            
+
             lastX = 0.0f;
             lastY = 0.0f;
-            while (xesWo.hasNext() && ysWo.hasNext()){
+            while (xesWo.hasNext() && ysWo.hasNext()) {
                 float x = (float) xesWo.next().doubleValue();
                 float y = (float) ysWo.next().doubleValue();
                 if (y == 0.0)
                     continue;
-                x/= xmax;
+                x /= xmax;
                 x = origoX + X_LINE_MARGIN + x * xmaxX;
-                
-                
-                y/=ymax;
+
+                y /= ymax;
                 y = origoY + Y_LINE_MARGIN + y * maxProb;
-                
-                if (lastX != 0 || lastY != 0){
+
+                if (lastX != 0 || lastY != 0) {
                     canvas.drawLine(lastX, lastY, x, y, withoutPaint);
                 }
                 lastX = x;

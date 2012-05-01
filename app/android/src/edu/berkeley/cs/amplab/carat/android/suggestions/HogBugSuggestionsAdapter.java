@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 import android.graphics.drawable.Drawable;
@@ -57,11 +58,11 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		for (HogsBugs item : input) {
 			double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
 					/ item.getExpectedValue();
-			// TODO: Filter out stuff not running on this device in the final
-			// version
+			// TODO other filter conditions?
+			// Limit max number of items?
 
 			// Filter out if benefit is too small
-			if (benefit > 60) {
+			if (SamplingLibrary.isRunning(a.getApplicationContext(), item.getAppName()) && benefit > 60) {
 				result.add(item);
 			}
 		}

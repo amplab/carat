@@ -8,10 +8,13 @@ import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
 public class FlipperBackListener extends BaseSwipeListener {
 
     ViewFlipper vf = null;
+    // To be able to save the state of which view we are in
+    VFActivity vfa = null;
     int backViewIndex = 0;
 
-    public FlipperBackListener(ViewFlipper vf, int backViewIndex) {
+    public FlipperBackListener(VFActivity vfa, ViewFlipper vf, int backViewIndex) {
         this.vf = vf;
+        this.vfa = vfa;
         this.backViewIndex = backViewIndex;
     }
 
@@ -39,6 +42,7 @@ public class FlipperBackListener extends BaseSwipeListener {
                 vf.setOutAnimation(CaratMainActivity.outtoRight);
                 vf.setInAnimation(CaratMainActivity.inFromLeft);
                 vf.setDisplayedChild(backViewIndex);
+                vfa.setViewId(backViewIndex);
                 return true;
             }
         }

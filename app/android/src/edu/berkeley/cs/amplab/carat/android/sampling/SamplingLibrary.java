@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -86,7 +87,7 @@ public final class SamplingLibrary {
     public static String CALL_STATE_IDLE = "idle";
     public static String CALL_STATE_OFFHOOK = "offhook";
     public static String CALL_STATE_RINGING = "ringing";
-    
+
     private static final String STAG = "getSample";
 
     /** Library class, prevent instantiation */
@@ -137,20 +138,22 @@ public final class SamplingLibrary {
     public static String getOsVersion() {
         return android.os.Build.VERSION.RELEASE;
     }
-    
+
     /**
      * This may only work for 2.3 and later:
+     * 
      * @return
      */
-    
-    public static String getBuildSerial(){
+
+    public static String getBuildSerial() {
         // return android.os.Build.Serial;
         return System.getProperty("ro.serial", TYPE_UNKNOWN);
     }
 
-    
     /**
-     * Return misc system details that we might want to use later. Currently does nothing.
+     * Return misc system details that we might want to use later. Currently
+     * does nothing.
+     * 
      * @return
      */
     public static Map<String, String> getSystemDetails() {
@@ -202,22 +205,22 @@ public final class SamplingLibrary {
             String load = reader.readLine();
 
             String[] toks = load.split("\\s+");
-            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
+            // Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int total = Integer.parseInt(toks[1]);
             load = reader.readLine();
             toks = load.split("\\s+");
-            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
+            // Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int free = Integer.parseInt(toks[1]);
             load = reader.readLine();
             load = reader.readLine();
             load = reader.readLine();
             load = reader.readLine();
             toks = load.split("\\s+");
-            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
+            // Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int act = Integer.parseInt(toks[1]);
             load = reader.readLine();
             toks = load.split("\\s+");
-            //Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
+            // Log.v("meminfo", "Load: " + load + " 1:" + toks[1]);
             int inact = Integer.parseInt(toks[1]);
             reader.close();
             return new int[] { total - free, free, inact, act };
@@ -311,7 +314,7 @@ public final class SamplingLibrary {
             RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
             String load = reader.readLine();
 
-            String[] toks = load.split("\\s+");
+            String[] toks = load.split(" ");
 
             long idle1 = Long.parseLong(toks[5]);
             long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
@@ -354,7 +357,7 @@ public final class SamplingLibrary {
             RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
             String load = reader.readLine();
 
-            String[] toks = load.split("\\s+");
+            String[] toks = load.split(" ");
 
             double idle1 = Long.parseLong(toks[5]);
             double cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
@@ -386,15 +389,27 @@ public final class SamplingLibrary {
         return 0;
     }
 
+    private static WeakReference<List<RunningAppProcessInfo>> runningAppInfo = null;
+
     public static List<RunningAppProcessInfo> getRunningProcessInfo(
             Context context) {
+        if (runningAppInfo == null || runningAppInfo.get() == null) {
+            ActivityManager pActivityManager = (ActivityManager) context
+                    .getSystemService(Activity.ACTIVITY_SERVICE);
 
-        ActivityManager pActivityManager = (ActivityManager) context
-                .getSystemService(Activity.ACTIVITY_SERVICE);
-        List<RunningAppProcessInfo> RunningProcList = null;
-        RunningProcList = pActivityManager.getRunningAppProcesses();
-
-        return RunningProcList;
+            runningAppInfo = new WeakReference(
+                    pActivityManager.getRunningAppProcesses());
+        }
+        return runningAppInfo.get();
+    }
+    
+    public static boolean isRunning(Context context, String appName){
+        List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(context);
+        for (RunningAppProcessInfo i: runningProcs){
+            if (i.processName.equals(appName) && i.importance != RunningAppProcessInfo.IMPORTANCE_EMPTY)
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -845,10 +860,13 @@ public final class SamplingLibrary {
     }
 
     /**
-     * Return a long[3] with incoming call time, outgoing call time, and non-call time in seconds since boot.
+     * Return a long[3] with incoming call time, outgoing call time, and
+     * non-call time in seconds since boot.
      * 
-     * @param context from onReceive or Activity
-     * @return a long[3] with incoming call time, outgoing call time, and non-call time in seconds since boot.
+     * @param context
+     *            from onReceive or Activity
+     * @return a long[3] with incoming call time, outgoing call time, and
+     *         non-call time in seconds since boot.
      */
     public static long[] getCalltimesSinceBoot(Context context) {
 
@@ -900,7 +918,7 @@ public final class SamplingLibrary {
         }
 
         // uptime is ms, so it needs to be divided by 1000
-        long nonCallTime = uptime/1000 - callInSeconds - callOutSeconds;
+        long nonCallTime = uptime / 1000 - callInSeconds - callOutSeconds;
         result[0] = callInSeconds;
         result[1] = callOutSeconds;
         result[2] = nonCallTime;
@@ -1048,7 +1066,9 @@ public final class SamplingLibrary {
         // long totalCallTime=0;
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
         long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
-        Log.i(STAG, "Call time since boot: Incoming="+ incomingOutgoingIdle[0] +" Outgoing=" + incomingOutgoingIdle[1] +" idle=" + incomingOutgoingIdle[2]);
+        Log.i(STAG, "Call time since boot: Incoming=" + incomingOutgoingIdle[0]
+                + " Outgoing=" + incomingOutgoingIdle[1] + " idle="
+                + incomingOutgoingIdle[2]);
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
@@ -1170,19 +1190,18 @@ public final class SamplingLibrary {
         // will always be used even when all apps are killed
 
         /* Calling Information */
-        /*CallMonth cm = new CallMonth();
-        cm = getCallMonthinfo(context, "2012-03");
-        if (cm != null)
-            Log.v(STAG, "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
-        */
-        Log.i(STAG, "serial="+getBuildSerial());
-        
+        /*
+         * CallMonth cm = new CallMonth(); cm = getCallMonthinfo(context,
+         * "2012-03"); if (cm != null) Log.v(STAG,
+         * "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
+         */
+        Log.i(STAG, "serial=" + getBuildSerial());
+
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();
         long[] idleAndCpu2 = readUsagePoint();
         otherInfo.setCPUUsage(getUsage(idleAndCpu1, idleAndCpu2));
-        
-        
+
         return mySample;
     }
 }

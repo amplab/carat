@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.suggestions.ProcessInfoAdapter;
+import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
@@ -25,7 +26,7 @@ import android.widget.ViewFlipper;
  * @author Eemil Lagerspetz
  * 
  */
-public class CaratMyDeviceActivity extends Activity {
+public class CaratMyDeviceActivity extends BaseVFActivity {
 
     private CaratApplication app = null;
     private ViewFlipper vf = null;
@@ -45,6 +46,11 @@ public class CaratMyDeviceActivity extends Activity {
         initJscoreView();
         initProcessListView();
         setModelAndVersion();
+        if (viewIndex == 0)
+            vf.setDisplayedChild(baseViewIndex);
+        else
+            vf.setDisplayedChild(viewIndex);
+
     }
 
     private void initJscoreView() {
@@ -63,7 +69,7 @@ public class CaratMyDeviceActivity extends Activity {
          * avoids it.
          */
         webview.loadUrl("file:///android_asset/jscoreinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(vf, vf
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
 
@@ -80,7 +86,10 @@ public class CaratMyDeviceActivity extends Activity {
          * Toast.makeText(CaratMyDeviceActivity.this, "You have chosen: " + " "
          * + fullObject.processName, Toast.LENGTH_LONG).show(); } });
          */
-        lv.setOnTouchListener(new FlipperBackListener(vf, vf
+        List<RunningAppProcessInfo> searchResults = SamplingLibrary
+                .getRunningProcessInfo(getApplicationContext());
+        lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
+        lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
 
@@ -92,6 +101,7 @@ public class CaratMyDeviceActivity extends Activity {
     @Override
     protected void onResume() {
         CaratApplication.setMyDevice(this);
+        UiRefreshThread.setReportData();
         new Thread() {
             public void run() {
                 synchronized (UiRefreshThread.getInstance()) {
@@ -115,6 +125,7 @@ public class CaratMyDeviceActivity extends Activity {
         vf.setOutAnimation(CaratMainActivity.outtoLeft);
         vf.setInAnimation(CaratMainActivity.inFromRight);
         vf.setDisplayedChild(vf.indexOfChild(target));
+        viewIndex = vf.indexOfChild(target);
     }
 
     /**
@@ -134,6 +145,7 @@ public class CaratMyDeviceActivity extends Activity {
         vf.setOutAnimation(CaratMainActivity.outtoLeft);
         vf.setInAnimation(CaratMainActivity.inFromRight);
         vf.setDisplayedChild(vf.indexOfChild(target));
+        viewIndex = vf.indexOfChild(target);
     }
 
     private void setModelAndVersion() {
@@ -152,22 +164,28 @@ public class CaratMyDeviceActivity extends Activity {
     }
 
     private void setMemory() {
-        Window win = this.getWindow();
+        final Window win = this.getWindow();
         // Set memory values to the progress bar.
         ProgressBar mText = (ProgressBar) win.findViewById(R.id.progressBar1);
-        mText.setMax(app.totalAndUsed[0] + app.totalAndUsed[1]);
-        mText.setProgress(app.totalAndUsed[0]);
+        int[] totalAndUsed = SamplingLibrary.readMeminfo();
+        mText.setMax(totalAndUsed[0] + totalAndUsed[1]);
+        mText.setProgress(totalAndUsed[0]);
         mText = (ProgressBar) win.findViewById(R.id.progressBar2);
 
-        if (app.totalAndUsed.length > 2) {
-            mText.setMax(app.totalAndUsed[2] + app.totalAndUsed[3]);
-            mText.setProgress(app.totalAndUsed[2]);
+        if (totalAndUsed.length > 2) {
+            mText.setMax(totalAndUsed[2] + totalAndUsed[3]);
+            mText.setProgress(totalAndUsed[2]);
         }
 
-        /* CPU usage */
-        mText = (ProgressBar) win.findViewById(R.id.cpubar);
-        mText.setMax(100);
-        mText.setProgress(app.cpu);
+        runOnUiThread(new Runnable() {
+            public void run() {
+                final double cpu = SamplingLibrary.readUsage();
+                /* CPU usage */
+                ProgressBar mText = (ProgressBar) win.findViewById(R.id.cpubar);
+                mText.setMax(100);
+                mText.setProgress((int) (cpu * 100));
+            }
+        });
     }
 
     public void onBackPressed() {
@@ -175,6 +193,7 @@ public class CaratMyDeviceActivity extends Activity {
             vf.setOutAnimation(CaratMainActivity.outtoRight);
             vf.setInAnimation(CaratMainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);
+            viewIndex = baseViewIndex;
         } else
             finish();
     }

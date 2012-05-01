@@ -1,42 +1,55 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import edu.berkeley.cs.amplab.carat.android.suggestions.BugsAdapter;
-import edu.berkeley.cs.amplab.carat.android.suggestions.HogsBugsAdapter;
+import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class CaratBugsActivity extends Activity {
+public class CaratBugsActivity extends BaseVFActivity{
 	
     private ViewFlipper vf = null;
 	private int baseViewIndex = 0;
+	private DrawView w = null;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.bugs);
-
 		vf = (ViewFlipper) findViewById(R.id.bugsFlipper);
 		View baseView = findViewById(R.id.bugsList);
 		baseView.setOnTouchListener(
 				SwipeListener.instance);
 		vf.setOnTouchListener(SwipeListener.instance);
 		baseViewIndex = vf.indexOfChild(baseView);
-		initBugsView();
-		initGraphView();
+		//initBugsView();
+		//initGraphView();
 		initGraphChart();
+		
+		Object o = getLastNonConfigurationInstance();
+        if (o != null){
+            CaratBugsActivity previous = (CaratBugsActivity) o;
+            HogsBugs h = previous.w.getHogOrBug();
+            boolean isBug = previous.w.isBug();
+            String appName = previous.w.getAppName();
+            w.setHogsBugs(h, appName, isBug);
+            w.postInvalidate();
+        }
+		
+		if (viewIndex == 0)
+		    vf.setDisplayedChild(baseViewIndex);
+		else
+		    vf.setDisplayedChild(viewIndex);
 	}
 
+	/*
 	private void initBugsView() {
 		final ListView lv = (ListView) findViewById(R.id.bugsList);
 		lv.setCacheColorHint(0);
@@ -51,15 +64,16 @@ public class CaratBugsActivity extends Activity {
 				vf.setOutAnimation(CaratMainActivity.outtoLeft);
 				vf.setInAnimation(CaratMainActivity.inFromRight);
 				vf.setDisplayedChild(vf.indexOfChild(target));
-				
+				/*
 				Toast.makeText(CaratBugsActivity.this,
 						"You have chosen: " + " " + fullObject.getAppName(),
 						Toast.LENGTH_SHORT).show();
+						*//*
 			}
 		});
 		
-	}
-
+	}*/
+/*
 	private void initGraphView() {
 		WebView webview = (WebView) findViewById(R.id.graphView);
 		// Fixes the white flash when showing the page for the first time.
@@ -67,14 +81,14 @@ public class CaratBugsActivity extends Activity {
 		webview.getSettings().setJavaScriptEnabled(true);
 		
 		webview.loadUrl("file:///android_asset/twolinechart.html");
-		webview.setOnTouchListener(new FlipperBackListener(vf, vf
+		webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
 				.indexOfChild(findViewById(R.id.bugsList))));
-	}
+	}*/
 	
 	 private void initGraphChart() {
-	        final DrawView w = new DrawView(getApplicationContext());
+	        w = new DrawView(getApplicationContext());
 	        vf.addView(w);
-	        w.setOnTouchListener(new FlipperBackListener(vf, vf
+	        w.setOnTouchListener(new FlipperBackListener(this, vf, vf
 	                .indexOfChild(findViewById(R.id.bugsList))));
 	        
 	        final ListView lv = (ListView) findViewById(R.id.bugsList);
@@ -93,10 +107,11 @@ public class CaratBugsActivity extends Activity {
 	                vf.setOutAnimation(CaratMainActivity.outtoLeft);
 	                vf.setInAnimation(CaratMainActivity.inFromRight);
 	                vf.setDisplayedChild(vf.indexOfChild(target));
-
+	                CaratBugsActivity.this.viewIndex = vf.indexOfChild(target);
+	                /*
 	                Toast.makeText(CaratBugsActivity.this,
 	                        "You have chosen: " + " " + fullObject.getAppName(),
-	                        Toast.LENGTH_SHORT).show();
+	                        Toast.LENGTH_SHORT).show();*/
 	            }
 	        });
 	    }
@@ -120,6 +135,7 @@ public class CaratBugsActivity extends Activity {
 			vf.setOutAnimation(CaratMainActivity.outtoRight);
 			vf.setInAnimation(CaratMainActivity.inFromLeft);
 			vf.setDisplayedChild(baseViewIndex);
+			this.viewIndex = baseViewIndex;
 		} else
 			finish();
 	}
