@@ -402,14 +402,53 @@ public final class SamplingLibrary {
         }
         return runningAppInfo.get();
     }
-    
-    public static boolean isRunning(Context context, String appName){
+
+    public static boolean isRunning(Context context, String appName) {
         List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(context);
-        for (RunningAppProcessInfo i: runningProcs){
-            if (i.processName.equals(appName) && i.importance != RunningAppProcessInfo.IMPORTANCE_EMPTY)
+        for (RunningAppProcessInfo i : runningProcs) {
+            if (i.processName.equals(appName)
+                    && i.importance != RunningAppProcessInfo.IMPORTANCE_EMPTY)
                 return true;
         }
         return false;
+    }
+
+    static WeakReference<Map<String, PackageInfo>> packages = null;
+
+    public static boolean isSystem(Context context, String processName) {
+        PackageInfo pak = getPackageInfo(context, processName);
+        if (pak != null) {
+            ApplicationInfo i = pak.applicationInfo;
+            int flags = i.flags;
+            boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
+            isSystemApp = isSystemApp
+                    || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
+            Log.v(STAG, processName + " is System app? " + isSystemApp);
+            return isSystemApp;
+        }
+        return false;
+    }
+
+    public static PackageInfo getPackageInfo(Context context, String processName) {
+        if (packages == null || packages.get() == null
+                || packages.get().size() == 0) {
+            Map<String, PackageInfo> mp = new HashMap<String, PackageInfo>();
+            PackageManager pm = context.getPackageManager();
+
+            List<android.content.pm.PackageInfo> packagelist = pm
+                    .getInstalledPackages(0);
+
+            for (PackageInfo pak : packagelist) {
+                mp.put(pak.applicationInfo.processName, pak);
+            }
+
+            packages = new WeakReference(mp);
+        }
+
+        if (!packages.get().containsKey(processName))
+            return null;
+        PackageInfo pak = packages.get().get(processName);
+        return pak;
     }
 
     /**
@@ -424,20 +463,13 @@ public final class SamplingLibrary {
         List<ProcessInfo> result = new ArrayList<ProcessInfo>();
 
         PackageManager pm = context.getPackageManager();
-        List<android.content.pm.PackageInfo> packagelist = pm
-                .getInstalledPackages(0);
-
-        Map<String, PackageInfo> packages = new HashMap<String, PackageInfo>();
-        for (PackageInfo pak : packagelist) {
-            packages.put(pak.applicationInfo.name, pak);
-        }
 
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
 
         for (RunningAppProcessInfo pi : list) {
             ProcessInfo item = new ProcessInfo();
-            PackageInfo pak = packages.get(pi.processName);
+            PackageInfo pak = getPackageInfo(context, pi.processName);
             if (pak != null) {
                 ApplicationInfo info = pak.applicationInfo;
                 // Human readable label (if any)
@@ -475,6 +507,7 @@ public final class SamplingLibrary {
             // Decide which ones of info.* we want, add to a new and improved
             // ProcessInfo object
             // FIXME: Not used yet, Sample needs more fields
+            // FIXME: Which memory fields to choose?
             int memory = info.dalvikPrivateDirty;
         }
 
