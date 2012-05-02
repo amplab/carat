@@ -1,8 +1,10 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
 import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.android.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ViewFlipper;
 
 public abstract class BaseVFActivity extends Activity implements VFActivity {
@@ -18,6 +20,26 @@ public abstract class BaseVFActivity extends Activity implements VFActivity {
     
     public int getViewId() {
         return this.viewIndex;
+    }
+    
+    /**
+     * Switch to the given view by id and animate the change.
+     * @param viewId The view to switch to, for findViewById().
+     */
+    public void switchView(int viewId){
+        View target = findViewById(viewId);
+        switchView(target);
+    }
+    
+    /**
+     * Switch to the given view by object and animate the change.
+     * @param v The view to switch to.
+     */
+    public void switchView(View v){
+        vf.setOutAnimation(CaratMainActivity.outtoLeft);
+        vf.setInAnimation(CaratMainActivity.inFromRight);
+        vf.setDisplayedChild(vf.indexOfChild(v));
+        viewIndex = vf.indexOfChild(v);
     }
 
     /* (non-Javadoc)
