@@ -25,6 +25,7 @@ public class DrawView extends View {
     private static final float MARGIN_Y_AXIS = 50;
     private static final float Y_LINE_MARGIN = -10;
     private static final float X_LINE_MARGIN = 10;
+    private static final int TEXT_SIZE = 24;
 
     private HogsBugs thing = null;
     private boolean isBug = false;
@@ -60,7 +61,7 @@ public class DrawView extends View {
 
         withTextPaint.setColor(getContext().getResources().getColor(
                 R.color.with));
-        withTextPaint.setTextSize(32);
+        withTextPaint.setTextSize(TEXT_SIZE);
         withTextPaint.setTextAlign(Align.RIGHT);
 
         withoutPaint.setDither(true);
@@ -73,11 +74,11 @@ public class DrawView extends View {
 
         withoutTextPaint.setColor(getContext().getResources().getColor(
                 R.color.without));
-        withoutTextPaint.setTextSize(32);
+        withoutTextPaint.setTextSize(TEXT_SIZE);
         withoutTextPaint.setTextAlign(Align.RIGHT);
 
         textPaint.setColor(getContext().getResources().getColor(R.color.text));
-        textPaint.setTextSize(32);
+        textPaint.setTextSize(TEXT_SIZE);
     }
 
     public void setHogsBugs(HogsBugs bugOrHog, String appName, boolean isBug) {
@@ -123,22 +124,36 @@ public class DrawView extends View {
 
         if (thing == null) {
             canvas.drawText("With", stopX - X_LINE_MARGIN, startY
-                    + Y_LINE_MARGIN + 50, withTextPaint);
+                    + 30, withTextPaint);
             canvas.drawText("Without", stopX - X_LINE_MARGIN, startY
-                    + Y_LINE_MARGIN + 100, withoutTextPaint);
+                    + 60, withoutTextPaint);
         } else {
+            String anShort = appName;
+            int dot = anShort.lastIndexOf('.');
+            if (dot > 0) {
+                int lastPart = anShort.length() - dot;
+                if (lastPart > 7)
+                    anShort = anShort.substring(dot + 1);
+                else {
+                    if (anShort.length() > 15 + 3) {
+                        anShort = "..."
+                                + anShort.substring(anShort.length() - 15);
+                    }
+                }
+            }
+
             if (isBug) {
-                canvas.drawText(appName + " running here", stopX
-                        - X_LINE_MARGIN, startY + Y_LINE_MARGIN + 50,
+                canvas.drawText(anShort + " running here", stopX
+                        - X_LINE_MARGIN, startY+30,
                         withTextPaint);
-                canvas.drawText(appName + " running elsewhere", stopX
-                        - X_LINE_MARGIN, startY + Y_LINE_MARGIN + 100,
+                canvas.drawText(anShort + " running elsewhere", stopX
+                        - X_LINE_MARGIN, startY +60,
                         withoutTextPaint);
             } else {
-                canvas.drawText(appName + " running", stopX - X_LINE_MARGIN,
-                        startY + Y_LINE_MARGIN + 50, withTextPaint);
-                canvas.drawText(appName + " not running",
-                        stopX - X_LINE_MARGIN, startY + Y_LINE_MARGIN + 100,
+                canvas.drawText(anShort + " running", stopX - X_LINE_MARGIN,
+                        startY+30, withTextPaint);
+                canvas.drawText(anShort + " not running",
+                        stopX - X_LINE_MARGIN, startY + 60,
                         withoutTextPaint);
             }
             Iterator<Double> xes = thing.getXValsIterator();
@@ -180,7 +195,7 @@ public class DrawView extends View {
                 ymaxS = ymaxS.substring(0, 4);
 
             canvas.drawText(xmaxS + "", xmaxX, stopY - 20, textPaint);
-            canvas.drawText(ymaxS + "", origoX + X_LINE_MARGIN, startY + 30,
+            canvas.drawText(ymaxS + "", startX, startY + 30,
                     textPaint);
 
             xes = thing.getXValsIterator();
