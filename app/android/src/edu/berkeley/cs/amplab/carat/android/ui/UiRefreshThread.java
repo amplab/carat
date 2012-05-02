@@ -3,10 +3,7 @@ package edu.berkeley.cs.amplab.carat.android.ui;
 import org.apache.thrift.TException;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Window;
-import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;

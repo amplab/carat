@@ -40,9 +40,8 @@ public class CaratHogsActivity extends BaseVFActivity {
             List<Double> yVals = previous.w.getYVals();
             List<Double> xValsWithout = previous.w.getXValsWithout();
             List<Double> yValsWithout = previous.w.getYValsWithout();
-            boolean isBug = previous.w.isBug();
             String appName = previous.w.getAppName();
-            w.setParams(DrawView.TYPE_HOGBUG, appName, isBug, xVals, yVals, xValsWithout, yValsWithout);
+            w.setParams(DrawView.Type.HOG, appName, xVals, yVals, xValsWithout, yValsWithout);
             w.postInvalidate();
         }
         

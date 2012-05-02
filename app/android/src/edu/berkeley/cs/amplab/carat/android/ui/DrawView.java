@@ -28,39 +28,34 @@ public class DrawView extends View {
     private static final float Y_LINE_MARGIN = -10;
     private static final float X_LINE_MARGIN = 10;
     private static final int TEXT_SIZE = 24;
-    
-    public static final String TYPE_OSMODEL = "OSMODEL";
-    public static final String TYPE_HOGBUG = "HOGBUG";
-    
-    private String type = TYPE_HOGBUG;
+
+    public enum Type {
+        OS, MODEL, HOG, BUG, SIMILAR, JSCORE
+    }
+
+    private Type type = null;
 
     private List<Double> xVals = null;
     private List<Double> yVals = null;
     private List<Double> xValsWithout = null;
     private List<Double> yValsWithout = null;
-    
-    private boolean isBug = false;
+
     private String appName = null;
 
     public List<Double> getXVals() {
         return this.xVals;
     }
-    
+
     public List<Double> getYVals() {
         return this.yVals;
     }
 
-    
     public List<Double> getXValsWithout() {
         return this.xValsWithout;
     }
-    
+
     public List<Double> getYValsWithout() {
         return this.yValsWithout;
-    }
-    
-    public boolean isBug() {
-        return isBug;
     }
 
     public String getAppName() {
@@ -104,38 +99,40 @@ public class DrawView extends View {
         textPaint.setColor(getContext().getResources().getColor(R.color.text));
         textPaint.setTextSize(TEXT_SIZE);
     }
-    
-    public String getType(){ return this.type; }
+
+    public Type getType() {
+        return this.type;
+    }
 
     public void setHogsBugs(HogsBugs bugOrHog, String appName, boolean isBug) {
         this.xVals = bugOrHog.getXVals();
         this.yVals = bugOrHog.getYVals();
         this.xValsWithout = bugOrHog.getXValsWithout();
         this.yValsWithout = bugOrHog.getYValsWithout();
-        
-        this.type = TYPE_HOGBUG;
-        this.isBug = isBug;
+
+        this.type = isBug ? Type.BUG : Type.HOG;
         this.appName = appName;
     }
-    
-    public void setParams(String type, String appName, boolean isBug, List<Double> xVals, List<Double> yVals,List<Double> xValsWithout, List<Double> yValsWithout) {
+
+    public void setParams(Type type, String appName, List<Double> xVals,
+            List<Double> yVals, List<Double> xValsWithout,
+            List<Double> yValsWithout) {
         this.xVals = xVals;
         this.yVals = yVals;
         this.xValsWithout = xValsWithout;
         this.yValsWithout = yValsWithout;
-        
+
         this.type = type;
-        this.isBug = isBug;
         this.appName = appName;
     }
-    
-    public void setOsOrModel(DetailScreenReport osOrModel, DetailScreenReport osOrModelWithout, String name, boolean isOs) {
+
+    public void setOsOrModel(DetailScreenReport osOrModel,
+            DetailScreenReport osOrModelWithout, String name, boolean isOs) {
         this.xVals = osOrModel.getXVals();
         this.yVals = osOrModel.getYVals();
         this.xValsWithout = osOrModelWithout.getXVals();
         this.yValsWithout = osOrModelWithout.getYVals();
-        this.type = TYPE_OSMODEL;
-        this.isBug = isOs;
+        this.type = isOs ? Type.OS : Type.MODEL;
         this.appName = name;
     }
 
@@ -191,32 +188,38 @@ public class DrawView extends View {
                     }
                 }
             }
-            
+
             String withString = anShort;
             String withoutString = anShort;
-            
-            if (isBug && type == TYPE_HOGBUG){
+
+            switch (type) {
+            case BUG:
                 withString = anShort + " running here";
                 withoutString = anShort + " running elsewhere";
-            }else if (isBug && type == TYPE_OSMODEL){
-                withString = "With "+anShort;
-                withoutString = "With another OS";
-            } else if (!isBug && type == TYPE_HOGBUG){
+                break;
+            case HOG:
                 withString = anShort + " running";
                 withoutString = anShort + " not running";
-            } else {
-                // Model
-                withString = "On "+anShort;
+                break;
+            case MODEL:
+                withString = "On " + anShort;
                 withoutString = "On another model";
+                break;
+            case OS:
+                withString = "With " + anShort;
+                withoutString = "With another OS";
+                break;
+            case SIMILAR:
+                withString = "With similar apps";
+                withoutString = "With different apps";
+                break;
+            default:
+
             }
 
-            
-                canvas.drawText(withString, stopX, startY + 30,
-                        withTextPaint);
-                canvas.drawText(withoutString, stopX,
-                        startY + 60, withoutTextPaint);
-            
-                
+            canvas.drawText(withString, stopX, startY + 30, withTextPaint);
+            canvas.drawText(withoutString, stopX, startY + 60, withoutTextPaint);
+
             Iterator<Double> xes = xVals.iterator();
             Iterator<Double> ys = yVals.iterator();
 

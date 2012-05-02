@@ -1,23 +1,31 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.suggestions.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
+import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.android.ui.DrawView.Type;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
+import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
+import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
+import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
 import android.widget.ViewFlipper;
+import android.widget.AdapterView.OnItemClickListener;
 
 /**
  * 
@@ -27,6 +35,11 @@ import android.widget.ViewFlipper;
 public class CaratMyDeviceActivity extends BaseVFActivity {
 
     private CaratApplication app = null;
+    
+    private DrawView osView = null;
+    private DrawView modelView = null;
+    private DrawView appsView = null;
+    
 
     /** Called when the activity is first created. */
     @Override
@@ -42,7 +55,42 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         initJscoreView();
         initMemoryView();
         initProcessListView();
+        initOsView();
+        initModelView();
+        initAppsView();
         setModelAndVersion();
+        
+        Object o = getLastNonConfigurationInstance();
+        if (o != null){
+            CaratMyDeviceActivity previous = (CaratMyDeviceActivity) o;
+            List<DrawView> views = new ArrayList<DrawView>();
+            views.add(previous.osView);
+            views.add(previous.modelView);
+            views.add(previous.appsView);
+            for (DrawView v : views) {
+                List<Double> xVals = v.getXVals();
+                List<Double> yVals = v.getYVals();
+                Type t = v.getType();
+                List<Double> xValsWithout = v.getXValsWithout();
+                List<Double> yValsWithout = v.getYValsWithout();
+                String appName = v.getAppName();
+                if (v == previous.osView){
+                osView.setParams(t, appName, xVals, yVals, xValsWithout,
+                        yValsWithout);
+                osView.postInvalidate();
+                }else if (v == previous.modelView){
+                    modelView.setParams(t, appName, xVals, yVals, xValsWithout,
+                            yValsWithout);
+                    modelView.postInvalidate();
+                }else if (v == previous.appsView){
+                    appsView.setParams(t, appName, xVals, yVals, xValsWithout,
+                            yValsWithout);
+                    appsView.postInvalidate();
+                }
+            }
+        }
+
+        
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
@@ -108,6 +156,25 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
+    
+    private DrawView construct(){
+        DrawView w = new DrawView(getApplicationContext());
+        vf.addView(w);
+        w.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
+        return w;
+    }
+    
+    private void initOsView(){
+        osView = construct();
+    }
+    
+    private void initModelView(){
+        modelView = construct();
+    }
+    
+    private void initAppsView(){
+        appsView = construct();
+    }
 
     /**
      * (non-Javadoc)
@@ -138,7 +205,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showOsInfo(View v) {
-        switchView(R.id.memoryView);
+        Reports r = app.s.getReports();
+        if (r != null){
+            DetailScreenReport os = r.getOs();
+            DetailScreenReport osWithout = r.getOsWithout();
+            osView.setParams(Type.OS, SamplingLibrary.getOsVersion(), os.getXVals(), os.getYVals(), osWithout.getXVals(), osWithout.getYVals());
+        }
+        switchView(osView);
     }
     
     /**
@@ -148,7 +221,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showDeviceInfo(View v) {
-        switchView(R.id.memoryView);
+        Reports r = app.s.getReports();
+        if (r != null){
+            DetailScreenReport model = r.getModel();
+            DetailScreenReport modelWithout = r.getModelWithout();
+            modelView.setParams(Type.MODEL, SamplingLibrary.getModel(), model.getXVals(), model.getYVals(), modelWithout.getXVals(), modelWithout.getYVals());
+        }
+        switchView(modelView);
     }
     
     /**
@@ -158,7 +237,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showAppInfo(View v) {
-        switchView(R.id.memoryView);
+        Reports r = app.s.getReports();
+        if (r != null){
+            DetailScreenReport similar = r.getSimilarApps();
+            DetailScreenReport similarWithout = r.getSimilarAppsWithout();
+            appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(), similar.getXVals(), similar.getYVals(), similarWithout.getXVals(), similarWithout.getYVals());
+        }
+        switchView(appsView);
     }
 
     
