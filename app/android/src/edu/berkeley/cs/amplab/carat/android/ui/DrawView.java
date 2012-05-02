@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
 import java.util.Iterator;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class DrawView extends View {
@@ -26,15 +28,37 @@ public class DrawView extends View {
     private static final float Y_LINE_MARGIN = -10;
     private static final float X_LINE_MARGIN = 10;
     private static final int TEXT_SIZE = 24;
+    
+    public static final String TYPE_OSMODEL = "OSMODEL";
+    public static final String TYPE_HOGBUG = "HOGBUG";
+    
+    private String type = TYPE_HOGBUG;
 
-    private HogsBugs thing = null;
+    private List<Double> xVals = null;
+    private List<Double> yVals = null;
+    private List<Double> xValsWithout = null;
+    private List<Double> yValsWithout = null;
+    
     private boolean isBug = false;
     private String appName = null;
 
-    public HogsBugs getHogOrBug() {
-        return this.thing;
+    public List<Double> getXVals() {
+        return this.xVals;
+    }
+    
+    public List<Double> getYVals() {
+        return this.yVals;
     }
 
+    
+    public List<Double> getXValsWithout() {
+        return this.xValsWithout;
+    }
+    
+    public List<Double> getYValsWithout() {
+        return this.yValsWithout;
+    }
+    
     public boolean isBug() {
         return isBug;
     }
@@ -80,11 +104,39 @@ public class DrawView extends View {
         textPaint.setColor(getContext().getResources().getColor(R.color.text));
         textPaint.setTextSize(TEXT_SIZE);
     }
+    
+    public String getType(){ return this.type; }
 
     public void setHogsBugs(HogsBugs bugOrHog, String appName, boolean isBug) {
-        this.thing = bugOrHog;
+        this.xVals = bugOrHog.getXVals();
+        this.yVals = bugOrHog.getYVals();
+        this.xValsWithout = bugOrHog.getXValsWithout();
+        this.yValsWithout = bugOrHog.getYValsWithout();
+        
+        this.type = TYPE_HOGBUG;
         this.isBug = isBug;
         this.appName = appName;
+    }
+    
+    public void setParams(String type, String appName, boolean isBug, List<Double> xVals, List<Double> yVals,List<Double> xValsWithout, List<Double> yValsWithout) {
+        this.xVals = xVals;
+        this.yVals = yVals;
+        this.xValsWithout = xValsWithout;
+        this.yValsWithout = yValsWithout;
+        
+        this.type = type;
+        this.isBug = isBug;
+        this.appName = appName;
+    }
+    
+    public void setOsOrModel(DetailScreenReport osOrModel, DetailScreenReport osOrModelWithout, String name, boolean isOs) {
+        this.xVals = osOrModel.getXVals();
+        this.yVals = osOrModel.getYVals();
+        this.xValsWithout = osOrModelWithout.getXVals();
+        this.yValsWithout = osOrModelWithout.getYVals();
+        this.type = TYPE_OSMODEL;
+        this.isBug = isOs;
+        this.appName = name;
     }
 
     @Override
@@ -110,7 +162,7 @@ public class DrawView extends View {
         float xmaxX = stopX - origoX - X_LINE_MARGIN;
         float maxProb = -origoY - Y_LINE_MARGIN + startY;
 
-        // X and Y axis
+        // X and Y axisbug
         canvas.drawLine(origoX, origoY, origoX, startY, axisPaint);
         canvas.drawLine(origoX, origoY, stopX, origoY, axisPaint);
         // canvas.drawLine(startX, startY, stopX, stopY, axisPaint);
@@ -122,11 +174,9 @@ public class DrawView extends View {
         canvas.drawTextOnPath("Probability", path, w * 2 + h + h / 2, +40,
                 textPaint);
 
-        if (thing == null) {
-            canvas.drawText("With", stopX - X_LINE_MARGIN, startY
-                    + 30, withTextPaint);
-            canvas.drawText("Without", stopX - X_LINE_MARGIN, startY
-                    + 60, withoutTextPaint);
+        if (xVals == null || yVals == null) {
+            canvas.drawText("With", stopX, startY + 30, withTextPaint);
+            canvas.drawText("Without", stopX, startY + 60, withoutTextPaint);
         } else {
             String anShort = appName;
             int dot = anShort.lastIndexOf('.');
@@ -141,26 +191,37 @@ public class DrawView extends View {
                     }
                 }
             }
-
-            if (isBug) {
-                canvas.drawText(anShort + " running here", stopX
-                        - X_LINE_MARGIN, startY+30,
-                        withTextPaint);
-                canvas.drawText(anShort + " running elsewhere", stopX
-                        - X_LINE_MARGIN, startY +60,
-                        withoutTextPaint);
+            
+            String withString = anShort;
+            String withoutString = anShort;
+            
+            if (isBug && type == TYPE_HOGBUG){
+                withString = anShort + " running here";
+                withoutString = anShort + " running elsewhere";
+            }else if (isBug && type == TYPE_OSMODEL){
+                withString = "With "+anShort;
+                withoutString = "With another OS";
+            } else if (!isBug && type == TYPE_HOGBUG){
+                withString = anShort + " running";
+                withoutString = anShort + " not running";
             } else {
-                canvas.drawText(anShort + " running", stopX - X_LINE_MARGIN,
-                        startY+30, withTextPaint);
-                canvas.drawText(anShort + " not running",
-                        stopX - X_LINE_MARGIN, startY + 60,
-                        withoutTextPaint);
+                // Model
+                withString = "On "+anShort;
+                withoutString = "On another model";
             }
-            Iterator<Double> xes = thing.getXValsIterator();
-            Iterator<Double> ys = thing.getYValsIterator();
 
-            Iterator<Double> xesWo = thing.getXValsWithoutIterator();
-            Iterator<Double> ysWo = thing.getYValsWithoutIterator();
+            
+                canvas.drawText(withString, stopX, startY + 30,
+                        withTextPaint);
+                canvas.drawText(withoutString, stopX,
+                        startY + 60, withoutTextPaint);
+            
+                
+            Iterator<Double> xes = xVals.iterator();
+            Iterator<Double> ys = yVals.iterator();
+
+            Iterator<Double> xesWo = xValsWithout.iterator();
+            Iterator<Double> ysWo = yValsWithout.iterator();
 
             float xmax = 0.0f;
             while (xes.hasNext()) {
@@ -195,13 +256,12 @@ public class DrawView extends View {
                 ymaxS = ymaxS.substring(0, 4);
 
             canvas.drawText(xmaxS + "", xmaxX, stopY - 20, textPaint);
-            canvas.drawText(ymaxS + "", startX, startY + 30,
-                    textPaint);
+            canvas.drawText(ymaxS + "", startX, startY + 30, textPaint);
 
-            xes = thing.getXValsIterator();
-            xesWo = thing.getXValsWithoutIterator();
-            ys = thing.getYValsIterator();
-            ysWo = thing.getYValsWithoutIterator();
+            xes = xVals.iterator();
+            xesWo = xValsWithout.iterator();
+            ys = yVals.iterator();
+            ysWo = yValsWithout.iterator();
 
             float lastX = 0.0f, lastY = 0.0f;
             while (xes.hasNext() && ys.hasNext()) {

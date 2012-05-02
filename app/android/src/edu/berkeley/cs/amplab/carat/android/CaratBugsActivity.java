@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.List;
+
 import edu.berkeley.cs.amplab.carat.android.suggestions.BugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -33,10 +35,13 @@ public class CaratBugsActivity extends BaseVFActivity{
 		Object o = getLastNonConfigurationInstance();
         if (o != null){
             CaratBugsActivity previous = (CaratBugsActivity) o;
-            HogsBugs h = previous.w.getHogOrBug();
+            List<Double> xVals = previous.w.getXVals();
+            List<Double> yVals = previous.w.getYVals();
+            List<Double> xValsWithout = previous.w.getXValsWithout();
+            List<Double> yValsWithout = previous.w.getYValsWithout();
             boolean isBug = previous.w.isBug();
             String appName = previous.w.getAppName();
-            w.setHogsBugs(h, appName, isBug);
+            w.setParams(DrawView.TYPE_HOGBUG, appName, isBug, xVals, yVals, xValsWithout, yValsWithout);
             w.postInvalidate();
         }
 		
