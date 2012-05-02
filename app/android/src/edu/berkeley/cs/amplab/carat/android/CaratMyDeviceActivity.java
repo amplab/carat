@@ -40,13 +40,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         baseView.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
         initJscoreView();
+        initMemoryView();
         initProcessListView();
         setModelAndVersion();
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
-
     }
 
     private void initJscoreView() {
@@ -65,6 +65,26 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
          * avoids it.
          */
         webview.loadUrl("file:///android_asset/jscoreinfo.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));
+    }
+    
+    private void initMemoryView() {
+        WebView webview = (WebView) findViewById(R.id.memoryView);
+        // Fixes the white flash when showing the page for the first time.
+        if (getString(R.string.blackBackground).equals("true"))
+            webview.setBackgroundColor(0);
+        /*
+         * 
+         * 
+         * webview.getSettings().setJavaScriptEnabled(true);
+         */
+        /*
+         * To display the amplab_logo, we need to have it stored in assets as
+         * well. If we don't want to do that, the loadConvoluted method below
+         * avoids it.
+         */
+        webview.loadUrl("file:///android_asset/memoryinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
@@ -109,19 +129,57 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         setMemory();
         super.onResume();
     }
-
+    
+    
     /**
-     * Called when Jscore additional info button is clicked.
+     * Called when OS additional info button is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void showOsInfo(View v) {
+        switchView(R.id.memoryView);
+    }
+    
+    /**
+     * Called when Device additional info button is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void showDeviceInfo(View v) {
+        switchView(R.id.memoryView);
+    }
+    
+    /**
+     * Called when App list additional info button is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void showAppInfo(View v) {
+        switchView(R.id.memoryView);
+    }
+
+    
+    /**
+     * Called when Memory additional info button is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void showMemoryInfo(View v) {
+        switchView(R.id.memoryView);
+    }
+    
+    /**
+     * Called when J-Score additional info button is clicked.
      * 
      * @param v
      *            The source of the click.
      */
     public void viewJscoreInfo(View v) {
-        View target = findViewById(R.id.jscoreView);
-        vf.setOutAnimation(CaratMainActivity.outtoLeft);
-        vf.setInAnimation(CaratMainActivity.inFromRight);
-        vf.setDisplayedChild(vf.indexOfChild(target));
-        viewIndex = vf.indexOfChild(target);
+        switchView(R.id.jscoreView);
     }
 
     /**
@@ -137,11 +195,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                 .getRunningProcessInfo(getApplicationContext());
         lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
         // switch views:
-        View target = findViewById(R.id.processList);
-        vf.setOutAnimation(CaratMainActivity.outtoLeft);
-        vf.setInAnimation(CaratMainActivity.inFromRight);
-        vf.setDisplayedChild(vf.indexOfChild(target));
-        viewIndex = vf.indexOfChild(target);
+        switchView(R.id.processList);
     }
 
     private void setModelAndVersion() {

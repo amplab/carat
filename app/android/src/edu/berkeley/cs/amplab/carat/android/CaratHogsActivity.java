@@ -83,10 +83,7 @@ public class CaratHogsActivity extends BaseVFActivity {
                 String label = app.labelForApp(fullObject.getAppName());
                 w.setHogsBugs(fullObject, label, false);
                 w.postInvalidate();
-                vf.setOutAnimation(CaratMainActivity.outtoLeft);
-                vf.setInAnimation(CaratMainActivity.inFromRight);
-                vf.setDisplayedChild(vf.indexOfChild(target));
-                viewIndex = vf.indexOfChild(target);
+                switchView(target);
                 /*
                 Toast.makeText(CaratHogsActivity.this,
                         "You have chosen: " + " " + fullObject.getAppName(),

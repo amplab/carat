@@ -20,43 +20,42 @@ import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.suggestions);
-		vf = (ViewFlipper) findViewById(R.id.suggestionsFlipper);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.suggestions);
+        vf = (ViewFlipper) findViewById(R.id.suggestionsFlipper);
         View baseView = findViewById(R.id.list);
-        baseView.setOnTouchListener(
-                SwipeListener.instance);
+        baseView.setOnTouchListener(SwipeListener.instance);
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
 
-		final ListView lv = (ListView) findViewById(R.id.list);
-		lv.setCacheColorHint(0);
+        final ListView lv = (ListView) findViewById(R.id.list);
+        lv.setCacheColorHint(0);
 
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int position,
-					long id) {
-				Object o = lv.getItemAtPosition(position);
-				HogsBugs fullObject = (HogsBugs) o;
-				View target = findViewById(R.id.killAppView);
-                vf.setOutAnimation(CaratMainActivity.outtoLeft);
-                vf.setInAnimation(CaratMainActivity.inFromRight);
-                vf.setDisplayedChild(vf.indexOfChild(target));
-                viewIndex = vf.indexOfChild(target);
-				//killApp(fullObject.getAppName());
-			}
-		});
+        lv.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position,
+                    long id) {
+                Object o = lv.getItemAtPosition(position);
+                HogsBugs fullObject = (HogsBugs) o;
+                View target = null;
+                if (fullObject.getAppName().equals("OsUpgrade"))
+                    switchView(R.id.upgradeOsView);
+                else
+                    switchView(R.id.killAppView);
+            }
+        });
 
-		initKillView();
-		if (viewIndex == 0)
+        initKillView();
+        initUpgradeOsView();
+        if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
-	}
-	
-	private void initKillView(){
-	    WebView webview = (WebView) findViewById(R.id.killAppView);
+    }
+
+    private void initKillView() {
+        WebView webview = (WebView) findViewById(R.id.killAppView);
         // Fixes the white flash when showing the page for the first time.
         if (getString(R.string.blackBackground).equals("true"))
             webview.setBackgroundColor(0);
@@ -68,33 +67,46 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             webview.loadUrl("file:///android_asset/killapp.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.list))));
-	}
+    }
 
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume() {
-		getRealSuggestions();
-		super.onResume();
-	}
-	
-	private void getRealSuggestions(){
-		CaratApplication app = (CaratApplication) getApplication();
-		final ListView lv = (ListView) findViewById(R.id.list);
-		lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(), app.s.getBugReport()));
-	}
+    private void initUpgradeOsView() {
+        WebView webview = (WebView) findViewById(R.id.upgradeOsView);
+        // Fixes the white flash when showing the page for the first time.
+        if (getString(R.string.blackBackground).equals("true"))
+            webview.setBackgroundColor(0);
+        webview.loadUrl("file:///android_asset/upgradeos.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.list))));
+    }
 
-	public void killApp(String appName) {
-		List<ActivityManager.RunningAppProcessInfo> list = SamplingLibrary
-				.getRunningProcessInfo(getApplicationContext());
-		if (list != null) {
-			for (int i = 0; i < list.size(); ++i) {
-				ActivityManager.RunningAppProcessInfo pi = list.get(i);
-				if (appName.matches(pi.processName)) {
-					android.os.Process.killProcess(pi.pid);
-				}
-			}
-		}
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.app.Activity#onResume()
+     */
+    @Override
+    protected void onResume() {
+        getRealSuggestions();
+        super.onResume();
+    }
+
+    private void getRealSuggestions() {
+        CaratApplication app = (CaratApplication) getApplication();
+        final ListView lv = (ListView) findViewById(R.id.list);
+        lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(),
+                app.s.getBugReport()));
+    }
+
+    public void killApp(String appName) {
+        List<ActivityManager.RunningAppProcessInfo> list = SamplingLibrary
+                .getRunningProcessInfo(getApplicationContext());
+        if (list != null) {
+            for (int i = 0; i < list.size(); ++i) {
+                ActivityManager.RunningAppProcessInfo pi = list.get(i);
+                if (appName.matches(pi.processName)) {
+                    android.os.Process.killProcess(pi.pid);
+                }
+            }
+        }
+    }
 }

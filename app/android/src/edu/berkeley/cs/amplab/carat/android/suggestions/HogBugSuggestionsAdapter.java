@@ -22,9 +22,13 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 
 	private boolean[] isBug = null;
 	private HogsBugs[] indexes = null;
+	
+	private boolean addFakeItem = true;
 
 	private LayoutInflater mInflater;
 	private CaratApplication a = null;
+	
+	private String FAKE_ITEM = "OsUpgrade";
 
 	public HogBugSuggestionsAdapter(CaratApplication a, List<HogsBugs> hogs,
 			List<HogsBugs> bugs) {
@@ -33,7 +37,13 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		ArrayList<HogsBugs> temp = new ArrayList<HogsBugs>();
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
-
+		if (addFakeItem){
+		    HogsBugs fake = new HogsBugs();
+            fake.setAppName(FAKE_ITEM);
+            fake.setExpectedValue(0.0);
+            fake.setExpectedValueWithout(0.0);
+            temp.add(fake);
+		}
 		Collections.sort(temp, new HogsBugsComparator());
 
 		indexes = new HogsBugs[temp.size()];
@@ -60,6 +70,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			// Skip system apps
 			if (SamplingLibrary.isSystem(a.getApplicationContext(), item.getAppName()))
 			    continue;
+			if (addFakeItem && item.getAppName().equals(FAKE_ITEM))
+			    result.add(item);
 			// Filter out if benefit is too small
 			if (SamplingLibrary.isRunning(a.getApplicationContext(), item.getAppName()) && benefit > 60) {
 				result.add(item);
@@ -109,24 +121,30 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 
 		Drawable icon = a.iconForApp(item.getAppName());
 
-		double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-				/ item.getExpectedValue();
+		if (item.getAppName().equals(FAKE_ITEM)){
+            holder.txtName.setText("OS Upgrade");
+            // TODO: Include process type=priority in Sample?
+            holder.txtType.setText("information");
+            holder.txtBenefit.setText("Unknown");
+        } else {
+            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
+                    / item.getExpectedValue();
 
-		int min = (int) (benefit / 60);
-		int hours = (int) (min / 60);
-		min -= hours * 60;
+            int min = (int) (benefit / 60);
+            int hours = (int) (min / 60);
+            min -= hours * 60;
 
-		holder.icon.setImageDrawable(icon);
-		holder.txtName.setText((bug ? "Restart" : "Kill") + " "
-				+ a.labelForApp(item.getAppName()));
-		// TODO: Include process type=priority in Sample?
-		// holder.txtType.setText(item.getType());
-		holder.txtBenefit.setText(hours + "h " + min + "m");
+            holder.icon.setImageDrawable(icon);
+            holder.txtName.setText((bug ? "Restart" : "Kill") + " "
+                    + a.labelForApp(item.getAppName()));
+            // TODO: Include process type=priority in Sample?
+            // holder.txtType.setText(item.getType());
+            holder.txtBenefit.setText(hours + "h " + min + "m");
 
-		// holder.moreInfo...
-
-		return convertView;
-	}
+            // holder.moreInfo...
+        }
+        return convertView;
+    }
 
 	static class ViewHolder {
 		ImageView icon;
