@@ -43,23 +43,11 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final org.apache.thrift.protocol.TField NETWORK_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("networkStatus", org.apache.thrift.protocol.TType.STRING, (short)12);
   private static final org.apache.thrift.protocol.TField DISTANCE_TRAVELED_FIELD_DESC = new org.apache.thrift.protocol.TField("distanceTraveled", org.apache.thrift.protocol.TType.DOUBLE, (short)13);
   private static final org.apache.thrift.protocol.TField SCREEN_BRIGHTNESS_FIELD_DESC = new org.apache.thrift.protocol.TField("screenBrightness", org.apache.thrift.protocol.TType.I32, (short)14);
-  private static final org.apache.thrift.protocol.TField NETWORK_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("networkType", org.apache.thrift.protocol.TType.STRING, (short)15);
-  private static final org.apache.thrift.protocol.TField MOBILE_NETWORK_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("mobileNetworkType", org.apache.thrift.protocol.TType.STRING, (short)16);
-  private static final org.apache.thrift.protocol.TField MOBILE_DATA_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("mobileDataStatus", org.apache.thrift.protocol.TType.STRING, (short)17);
-  private static final org.apache.thrift.protocol.TField MOBILE_DATA_ACTIVITY_FIELD_DESC = new org.apache.thrift.protocol.TField("mobileDataActivity", org.apache.thrift.protocol.TType.STRING, (short)18);
-  private static final org.apache.thrift.protocol.TField ROAMING_ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("roamingEnabled", org.apache.thrift.protocol.TType.BOOL, (short)19);
-  private static final org.apache.thrift.protocol.TField BATTERY_CHARGER_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryCharger", org.apache.thrift.protocol.TType.STRING, (short)20);
-  private static final org.apache.thrift.protocol.TField BATTERY_HEALTH_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryHealth", org.apache.thrift.protocol.TType.STRING, (short)21);
-  private static final org.apache.thrift.protocol.TField BATTERY_VOLTAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryVoltage", org.apache.thrift.protocol.TType.DOUBLE, (short)22);
-  private static final org.apache.thrift.protocol.TField BATTERY_TEMPERATURE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTemperature", org.apache.thrift.protocol.TType.DOUBLE, (short)23);
-  private static final org.apache.thrift.protocol.TField BATTERY_TECHNOLOGY_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTechnology", org.apache.thrift.protocol.TType.STRING, (short)24);
-  private static final org.apache.thrift.protocol.TField CPU_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("cpuTime", org.apache.thrift.protocol.TType.DOUBLE, (short)25);
-  private static final org.apache.thrift.protocol.TField IDLE_TIME_FIELD_DESC = new org.apache.thrift.protocol.TField("idleTime", org.apache.thrift.protocol.TType.DOUBLE, (short)26);
-  private static final org.apache.thrift.protocol.TField UPTIME_FIELD_DESC = new org.apache.thrift.protocol.TField("uptime", org.apache.thrift.protocol.TType.DOUBLE, (short)27);
-  private static final org.apache.thrift.protocol.TField WIFI_ENABLED_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiEnabled", org.apache.thrift.protocol.TType.BOOL, (short)28);
-  private static final org.apache.thrift.protocol.TField WIFI_SIGNAL_STRENGTH_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiSignalStrength", org.apache.thrift.protocol.TType.I32, (short)29);
-  private static final org.apache.thrift.protocol.TField WIFI_LINK_SPEED_FIELD_DESC = new org.apache.thrift.protocol.TField("wifiLinkSpeed", org.apache.thrift.protocol.TType.I32, (short)30);
-  private static final org.apache.thrift.protocol.TField LOCATION_PROVIDERS_FIELD_DESC = new org.apache.thrift.protocol.TField("locationProviders", org.apache.thrift.protocol.TType.LIST, (short)31);
+  private static final org.apache.thrift.protocol.TField NETWORK_DETAILS_FIELD_DESC = new org.apache.thrift.protocol.TField("networkDetails", org.apache.thrift.protocol.TType.STRUCT, (short)15);
+  private static final org.apache.thrift.protocol.TField BATTERY_DETAILS_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryDetails", org.apache.thrift.protocol.TType.STRUCT, (short)16);
+  private static final org.apache.thrift.protocol.TField CPU_STATUS_FIELD_DESC = new org.apache.thrift.protocol.TField("cpuStatus", org.apache.thrift.protocol.TType.STRUCT, (short)17);
+  private static final org.apache.thrift.protocol.TField LOCATION_PROVIDERS_FIELD_DESC = new org.apache.thrift.protocol.TField("locationProviders", org.apache.thrift.protocol.TType.LIST, (short)18);
+  private static final org.apache.thrift.protocol.TField CALL_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("callInfo", org.apache.thrift.protocol.TType.STRUCT, (short)19);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -81,23 +69,11 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   public String networkStatus; // optional
   public double distanceTraveled; // optional
   public int screenBrightness; // optional
-  public String networkType; // optional
-  public String mobileNetworkType; // optional
-  public String mobileDataStatus; // optional
-  public String mobileDataActivity; // optional
-  public boolean roamingEnabled; // optional
-  public String batteryCharger; // optional
-  public String batteryHealth; // optional
-  public double batteryVoltage; // optional
-  public double batteryTemperature; // optional
-  public String batteryTechnology; // optional
-  public double cpuTime; // optional
-  public double idleTime; // optional
-  public double uptime; // optional
-  public boolean wifiEnabled; // optional
-  public int wifiSignalStrength; // optional
-  public int wifiLinkSpeed; // optional
+  public NetworkDetails networkDetails; // optional
+  public BatteryDetails batteryDetails; // optional
+  public CpuStatus cpuStatus; // optional
   public List<String> locationProviders; // optional
+  public CallInfo callInfo; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -115,23 +91,11 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     NETWORK_STATUS((short)12, "networkStatus"),
     DISTANCE_TRAVELED((short)13, "distanceTraveled"),
     SCREEN_BRIGHTNESS((short)14, "screenBrightness"),
-    NETWORK_TYPE((short)15, "networkType"),
-    MOBILE_NETWORK_TYPE((short)16, "mobileNetworkType"),
-    MOBILE_DATA_STATUS((short)17, "mobileDataStatus"),
-    MOBILE_DATA_ACTIVITY((short)18, "mobileDataActivity"),
-    ROAMING_ENABLED((short)19, "roamingEnabled"),
-    BATTERY_CHARGER((short)20, "batteryCharger"),
-    BATTERY_HEALTH((short)21, "batteryHealth"),
-    BATTERY_VOLTAGE((short)22, "batteryVoltage"),
-    BATTERY_TEMPERATURE((short)23, "batteryTemperature"),
-    BATTERY_TECHNOLOGY((short)24, "batteryTechnology"),
-    CPU_TIME((short)25, "cpuTime"),
-    IDLE_TIME((short)26, "idleTime"),
-    UPTIME((short)27, "uptime"),
-    WIFI_ENABLED((short)28, "wifiEnabled"),
-    WIFI_SIGNAL_STRENGTH((short)29, "wifiSignalStrength"),
-    WIFI_LINK_SPEED((short)30, "wifiLinkSpeed"),
-    LOCATION_PROVIDERS((short)31, "locationProviders");
+    NETWORK_DETAILS((short)15, "networkDetails"),
+    BATTERY_DETAILS((short)16, "batteryDetails"),
+    CPU_STATUS((short)17, "cpuStatus"),
+    LOCATION_PROVIDERS((short)18, "locationProviders"),
+    CALL_INFO((short)19, "callInfo");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -174,40 +138,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           return DISTANCE_TRAVELED;
         case 14: // SCREEN_BRIGHTNESS
           return SCREEN_BRIGHTNESS;
-        case 15: // NETWORK_TYPE
-          return NETWORK_TYPE;
-        case 16: // MOBILE_NETWORK_TYPE
-          return MOBILE_NETWORK_TYPE;
-        case 17: // MOBILE_DATA_STATUS
-          return MOBILE_DATA_STATUS;
-        case 18: // MOBILE_DATA_ACTIVITY
-          return MOBILE_DATA_ACTIVITY;
-        case 19: // ROAMING_ENABLED
-          return ROAMING_ENABLED;
-        case 20: // BATTERY_CHARGER
-          return BATTERY_CHARGER;
-        case 21: // BATTERY_HEALTH
-          return BATTERY_HEALTH;
-        case 22: // BATTERY_VOLTAGE
-          return BATTERY_VOLTAGE;
-        case 23: // BATTERY_TEMPERATURE
-          return BATTERY_TEMPERATURE;
-        case 24: // BATTERY_TECHNOLOGY
-          return BATTERY_TECHNOLOGY;
-        case 25: // CPU_TIME
-          return CPU_TIME;
-        case 26: // IDLE_TIME
-          return IDLE_TIME;
-        case 27: // UPTIME
-          return UPTIME;
-        case 28: // WIFI_ENABLED
-          return WIFI_ENABLED;
-        case 29: // WIFI_SIGNAL_STRENGTH
-          return WIFI_SIGNAL_STRENGTH;
-        case 30: // WIFI_LINK_SPEED
-          return WIFI_LINK_SPEED;
-        case 31: // LOCATION_PROVIDERS
+        case 15: // NETWORK_DETAILS
+          return NETWORK_DETAILS;
+        case 16: // BATTERY_DETAILS
+          return BATTERY_DETAILS;
+        case 17: // CPU_STATUS
+          return CPU_STATUS;
+        case 18: // LOCATION_PROVIDERS
           return LOCATION_PROVIDERS;
+        case 19: // CALL_INFO
+          return CALL_INFO;
         default:
           return null;
       }
@@ -257,17 +197,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final int __MEMORYUSER_ISSET_ID = 6;
   private static final int __DISTANCETRAVELED_ISSET_ID = 7;
   private static final int __SCREENBRIGHTNESS_ISSET_ID = 8;
-  private static final int __ROAMINGENABLED_ISSET_ID = 9;
-  private static final int __BATTERYVOLTAGE_ISSET_ID = 10;
-  private static final int __BATTERYTEMPERATURE_ISSET_ID = 11;
-  private static final int __CPUTIME_ISSET_ID = 12;
-  private static final int __IDLETIME_ISSET_ID = 13;
-  private static final int __UPTIME_ISSET_ID = 14;
-  private static final int __WIFIENABLED_ISSET_ID = 15;
-  private static final int __WIFISIGNALSTRENGTH_ISSET_ID = 16;
-  private static final int __WIFILINKSPEED_ISSET_ID = 17;
-  private BitSet __isset_bit_vector = new BitSet(18);
-  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED,_Fields.SCREEN_BRIGHTNESS,_Fields.NETWORK_TYPE,_Fields.MOBILE_NETWORK_TYPE,_Fields.MOBILE_DATA_STATUS,_Fields.MOBILE_DATA_ACTIVITY,_Fields.ROAMING_ENABLED,_Fields.BATTERY_CHARGER,_Fields.BATTERY_HEALTH,_Fields.BATTERY_VOLTAGE,_Fields.BATTERY_TEMPERATURE,_Fields.BATTERY_TECHNOLOGY,_Fields.CPU_TIME,_Fields.IDLE_TIME,_Fields.UPTIME,_Fields.WIFI_ENABLED,_Fields.WIFI_SIGNAL_STRENGTH,_Fields.WIFI_LINK_SPEED,_Fields.LOCATION_PROVIDERS};
+  private BitSet __isset_bit_vector = new BitSet(9);
+  private _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED,_Fields.SCREEN_BRIGHTNESS,_Fields.NETWORK_DETAILS,_Fields.BATTERY_DETAILS,_Fields.CPU_STATUS,_Fields.LOCATION_PROVIDERS,_Fields.CALL_INFO};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -299,41 +230,17 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.SCREEN_BRIGHTNESS, new org.apache.thrift.meta_data.FieldMetaData("screenBrightness", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.NETWORK_TYPE, new org.apache.thrift.meta_data.FieldMetaData("networkType", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.MOBILE_NETWORK_TYPE, new org.apache.thrift.meta_data.FieldMetaData("mobileNetworkType", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.MOBILE_DATA_STATUS, new org.apache.thrift.meta_data.FieldMetaData("mobileDataStatus", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.MOBILE_DATA_ACTIVITY, new org.apache.thrift.meta_data.FieldMetaData("mobileDataActivity", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.ROAMING_ENABLED, new org.apache.thrift.meta_data.FieldMetaData("roamingEnabled", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.BATTERY_CHARGER, new org.apache.thrift.meta_data.FieldMetaData("batteryCharger", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.BATTERY_HEALTH, new org.apache.thrift.meta_data.FieldMetaData("batteryHealth", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.BATTERY_VOLTAGE, new org.apache.thrift.meta_data.FieldMetaData("batteryVoltage", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.BATTERY_TEMPERATURE, new org.apache.thrift.meta_data.FieldMetaData("batteryTemperature", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.BATTERY_TECHNOLOGY, new org.apache.thrift.meta_data.FieldMetaData("batteryTechnology", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.CPU_TIME, new org.apache.thrift.meta_data.FieldMetaData("cpuTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.IDLE_TIME, new org.apache.thrift.meta_data.FieldMetaData("idleTime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.UPTIME, new org.apache.thrift.meta_data.FieldMetaData("uptime", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
-    tmpMap.put(_Fields.WIFI_ENABLED, new org.apache.thrift.meta_data.FieldMetaData("wifiEnabled", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
-    tmpMap.put(_Fields.WIFI_SIGNAL_STRENGTH, new org.apache.thrift.meta_data.FieldMetaData("wifiSignalStrength", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.WIFI_LINK_SPEED, new org.apache.thrift.meta_data.FieldMetaData("wifiLinkSpeed", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.NETWORK_DETAILS, new org.apache.thrift.meta_data.FieldMetaData("networkDetails", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, NetworkDetails.class)));
+    tmpMap.put(_Fields.BATTERY_DETAILS, new org.apache.thrift.meta_data.FieldMetaData("batteryDetails", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, BatteryDetails.class)));
+    tmpMap.put(_Fields.CPU_STATUS, new org.apache.thrift.meta_data.FieldMetaData("cpuStatus", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CpuStatus.class)));
     tmpMap.put(_Fields.LOCATION_PROVIDERS, new org.apache.thrift.meta_data.FieldMetaData("locationProviders", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+    tmpMap.put(_Fields.CALL_INFO, new org.apache.thrift.meta_data.FieldMetaData("callInfo", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, CallInfo.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Sample.class, metaDataMap);
   }
@@ -378,42 +285,24 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     }
     this.distanceTraveled = other.distanceTraveled;
     this.screenBrightness = other.screenBrightness;
-    if (other.isSetNetworkType()) {
-      this.networkType = other.networkType;
+    if (other.isSetNetworkDetails()) {
+      this.networkDetails = new NetworkDetails(other.networkDetails);
     }
-    if (other.isSetMobileNetworkType()) {
-      this.mobileNetworkType = other.mobileNetworkType;
+    if (other.isSetBatteryDetails()) {
+      this.batteryDetails = new BatteryDetails(other.batteryDetails);
     }
-    if (other.isSetMobileDataStatus()) {
-      this.mobileDataStatus = other.mobileDataStatus;
+    if (other.isSetCpuStatus()) {
+      this.cpuStatus = new CpuStatus(other.cpuStatus);
     }
-    if (other.isSetMobileDataActivity()) {
-      this.mobileDataActivity = other.mobileDataActivity;
-    }
-    this.roamingEnabled = other.roamingEnabled;
-    if (other.isSetBatteryCharger()) {
-      this.batteryCharger = other.batteryCharger;
-    }
-    if (other.isSetBatteryHealth()) {
-      this.batteryHealth = other.batteryHealth;
-    }
-    this.batteryVoltage = other.batteryVoltage;
-    this.batteryTemperature = other.batteryTemperature;
-    if (other.isSetBatteryTechnology()) {
-      this.batteryTechnology = other.batteryTechnology;
-    }
-    this.cpuTime = other.cpuTime;
-    this.idleTime = other.idleTime;
-    this.uptime = other.uptime;
-    this.wifiEnabled = other.wifiEnabled;
-    this.wifiSignalStrength = other.wifiSignalStrength;
-    this.wifiLinkSpeed = other.wifiLinkSpeed;
     if (other.isSetLocationProviders()) {
       List<String> __this__locationProviders = new ArrayList<String>();
       for (String other_element : other.locationProviders) {
         __this__locationProviders.add(other_element);
       }
       this.locationProviders = __this__locationProviders;
+    }
+    if (other.isSetCallInfo()) {
+      this.callInfo = new CallInfo(other.callInfo);
     }
   }
 
@@ -446,32 +335,11 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     this.distanceTraveled = 0.0;
     setScreenBrightnessIsSet(false);
     this.screenBrightness = 0;
-    this.networkType = null;
-    this.mobileNetworkType = null;
-    this.mobileDataStatus = null;
-    this.mobileDataActivity = null;
-    setRoamingEnabledIsSet(false);
-    this.roamingEnabled = false;
-    this.batteryCharger = null;
-    this.batteryHealth = null;
-    setBatteryVoltageIsSet(false);
-    this.batteryVoltage = 0.0;
-    setBatteryTemperatureIsSet(false);
-    this.batteryTemperature = 0.0;
-    this.batteryTechnology = null;
-    setCpuTimeIsSet(false);
-    this.cpuTime = 0.0;
-    setIdleTimeIsSet(false);
-    this.idleTime = 0.0;
-    setUptimeIsSet(false);
-    this.uptime = 0.0;
-    setWifiEnabledIsSet(false);
-    this.wifiEnabled = false;
-    setWifiSignalStrengthIsSet(false);
-    this.wifiSignalStrength = 0;
-    setWifiLinkSpeedIsSet(false);
-    this.wifiLinkSpeed = 0;
+    this.networkDetails = null;
+    this.batteryDetails = null;
+    this.cpuStatus = null;
     this.locationProviders = null;
+    this.callInfo = null;
   }
 
   public String getUuId() {
@@ -816,379 +684,76 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     __isset_bit_vector.set(__SCREENBRIGHTNESS_ISSET_ID, value);
   }
 
-  public String getNetworkType() {
-    return this.networkType;
+  public NetworkDetails getNetworkDetails() {
+    return this.networkDetails;
   }
 
-  public Sample setNetworkType(String networkType) {
-    this.networkType = networkType;
+  public Sample setNetworkDetails(NetworkDetails networkDetails) {
+    this.networkDetails = networkDetails;
     return this;
   }
 
-  public void unsetNetworkType() {
-    this.networkType = null;
+  public void unsetNetworkDetails() {
+    this.networkDetails = null;
   }
 
-  /** Returns true if field networkType is set (has been assigned a value) and false otherwise */
-  public boolean isSetNetworkType() {
-    return this.networkType != null;
+  /** Returns true if field networkDetails is set (has been assigned a value) and false otherwise */
+  public boolean isSetNetworkDetails() {
+    return this.networkDetails != null;
   }
 
-  public void setNetworkTypeIsSet(boolean value) {
+  public void setNetworkDetailsIsSet(boolean value) {
     if (!value) {
-      this.networkType = null;
+      this.networkDetails = null;
     }
   }
 
-  public String getMobileNetworkType() {
-    return this.mobileNetworkType;
+  public BatteryDetails getBatteryDetails() {
+    return this.batteryDetails;
   }
 
-  public Sample setMobileNetworkType(String mobileNetworkType) {
-    this.mobileNetworkType = mobileNetworkType;
+  public Sample setBatteryDetails(BatteryDetails batteryDetails) {
+    this.batteryDetails = batteryDetails;
     return this;
   }
 
-  public void unsetMobileNetworkType() {
-    this.mobileNetworkType = null;
+  public void unsetBatteryDetails() {
+    this.batteryDetails = null;
   }
 
-  /** Returns true if field mobileNetworkType is set (has been assigned a value) and false otherwise */
-  public boolean isSetMobileNetworkType() {
-    return this.mobileNetworkType != null;
+  /** Returns true if field batteryDetails is set (has been assigned a value) and false otherwise */
+  public boolean isSetBatteryDetails() {
+    return this.batteryDetails != null;
   }
 
-  public void setMobileNetworkTypeIsSet(boolean value) {
+  public void setBatteryDetailsIsSet(boolean value) {
     if (!value) {
-      this.mobileNetworkType = null;
+      this.batteryDetails = null;
     }
   }
 
-  public String getMobileDataStatus() {
-    return this.mobileDataStatus;
+  public CpuStatus getCpuStatus() {
+    return this.cpuStatus;
   }
 
-  public Sample setMobileDataStatus(String mobileDataStatus) {
-    this.mobileDataStatus = mobileDataStatus;
+  public Sample setCpuStatus(CpuStatus cpuStatus) {
+    this.cpuStatus = cpuStatus;
     return this;
   }
 
-  public void unsetMobileDataStatus() {
-    this.mobileDataStatus = null;
+  public void unsetCpuStatus() {
+    this.cpuStatus = null;
   }
 
-  /** Returns true if field mobileDataStatus is set (has been assigned a value) and false otherwise */
-  public boolean isSetMobileDataStatus() {
-    return this.mobileDataStatus != null;
+  /** Returns true if field cpuStatus is set (has been assigned a value) and false otherwise */
+  public boolean isSetCpuStatus() {
+    return this.cpuStatus != null;
   }
 
-  public void setMobileDataStatusIsSet(boolean value) {
+  public void setCpuStatusIsSet(boolean value) {
     if (!value) {
-      this.mobileDataStatus = null;
+      this.cpuStatus = null;
     }
-  }
-
-  public String getMobileDataActivity() {
-    return this.mobileDataActivity;
-  }
-
-  public Sample setMobileDataActivity(String mobileDataActivity) {
-    this.mobileDataActivity = mobileDataActivity;
-    return this;
-  }
-
-  public void unsetMobileDataActivity() {
-    this.mobileDataActivity = null;
-  }
-
-  /** Returns true if field mobileDataActivity is set (has been assigned a value) and false otherwise */
-  public boolean isSetMobileDataActivity() {
-    return this.mobileDataActivity != null;
-  }
-
-  public void setMobileDataActivityIsSet(boolean value) {
-    if (!value) {
-      this.mobileDataActivity = null;
-    }
-  }
-
-  public boolean isRoamingEnabled() {
-    return this.roamingEnabled;
-  }
-
-  public Sample setRoamingEnabled(boolean roamingEnabled) {
-    this.roamingEnabled = roamingEnabled;
-    setRoamingEnabledIsSet(true);
-    return this;
-  }
-
-  public void unsetRoamingEnabled() {
-    __isset_bit_vector.clear(__ROAMINGENABLED_ISSET_ID);
-  }
-
-  /** Returns true if field roamingEnabled is set (has been assigned a value) and false otherwise */
-  public boolean isSetRoamingEnabled() {
-    return __isset_bit_vector.get(__ROAMINGENABLED_ISSET_ID);
-  }
-
-  public void setRoamingEnabledIsSet(boolean value) {
-    __isset_bit_vector.set(__ROAMINGENABLED_ISSET_ID, value);
-  }
-
-  public String getBatteryCharger() {
-    return this.batteryCharger;
-  }
-
-  public Sample setBatteryCharger(String batteryCharger) {
-    this.batteryCharger = batteryCharger;
-    return this;
-  }
-
-  public void unsetBatteryCharger() {
-    this.batteryCharger = null;
-  }
-
-  /** Returns true if field batteryCharger is set (has been assigned a value) and false otherwise */
-  public boolean isSetBatteryCharger() {
-    return this.batteryCharger != null;
-  }
-
-  public void setBatteryChargerIsSet(boolean value) {
-    if (!value) {
-      this.batteryCharger = null;
-    }
-  }
-
-  public String getBatteryHealth() {
-    return this.batteryHealth;
-  }
-
-  public Sample setBatteryHealth(String batteryHealth) {
-    this.batteryHealth = batteryHealth;
-    return this;
-  }
-
-  public void unsetBatteryHealth() {
-    this.batteryHealth = null;
-  }
-
-  /** Returns true if field batteryHealth is set (has been assigned a value) and false otherwise */
-  public boolean isSetBatteryHealth() {
-    return this.batteryHealth != null;
-  }
-
-  public void setBatteryHealthIsSet(boolean value) {
-    if (!value) {
-      this.batteryHealth = null;
-    }
-  }
-
-  public double getBatteryVoltage() {
-    return this.batteryVoltage;
-  }
-
-  public Sample setBatteryVoltage(double batteryVoltage) {
-    this.batteryVoltage = batteryVoltage;
-    setBatteryVoltageIsSet(true);
-    return this;
-  }
-
-  public void unsetBatteryVoltage() {
-    __isset_bit_vector.clear(__BATTERYVOLTAGE_ISSET_ID);
-  }
-
-  /** Returns true if field batteryVoltage is set (has been assigned a value) and false otherwise */
-  public boolean isSetBatteryVoltage() {
-    return __isset_bit_vector.get(__BATTERYVOLTAGE_ISSET_ID);
-  }
-
-  public void setBatteryVoltageIsSet(boolean value) {
-    __isset_bit_vector.set(__BATTERYVOLTAGE_ISSET_ID, value);
-  }
-
-  public double getBatteryTemperature() {
-    return this.batteryTemperature;
-  }
-
-  public Sample setBatteryTemperature(double batteryTemperature) {
-    this.batteryTemperature = batteryTemperature;
-    setBatteryTemperatureIsSet(true);
-    return this;
-  }
-
-  public void unsetBatteryTemperature() {
-    __isset_bit_vector.clear(__BATTERYTEMPERATURE_ISSET_ID);
-  }
-
-  /** Returns true if field batteryTemperature is set (has been assigned a value) and false otherwise */
-  public boolean isSetBatteryTemperature() {
-    return __isset_bit_vector.get(__BATTERYTEMPERATURE_ISSET_ID);
-  }
-
-  public void setBatteryTemperatureIsSet(boolean value) {
-    __isset_bit_vector.set(__BATTERYTEMPERATURE_ISSET_ID, value);
-  }
-
-  public String getBatteryTechnology() {
-    return this.batteryTechnology;
-  }
-
-  public Sample setBatteryTechnology(String batteryTechnology) {
-    this.batteryTechnology = batteryTechnology;
-    return this;
-  }
-
-  public void unsetBatteryTechnology() {
-    this.batteryTechnology = null;
-  }
-
-  /** Returns true if field batteryTechnology is set (has been assigned a value) and false otherwise */
-  public boolean isSetBatteryTechnology() {
-    return this.batteryTechnology != null;
-  }
-
-  public void setBatteryTechnologyIsSet(boolean value) {
-    if (!value) {
-      this.batteryTechnology = null;
-    }
-  }
-
-  public double getCpuTime() {
-    return this.cpuTime;
-  }
-
-  public Sample setCpuTime(double cpuTime) {
-    this.cpuTime = cpuTime;
-    setCpuTimeIsSet(true);
-    return this;
-  }
-
-  public void unsetCpuTime() {
-    __isset_bit_vector.clear(__CPUTIME_ISSET_ID);
-  }
-
-  /** Returns true if field cpuTime is set (has been assigned a value) and false otherwise */
-  public boolean isSetCpuTime() {
-    return __isset_bit_vector.get(__CPUTIME_ISSET_ID);
-  }
-
-  public void setCpuTimeIsSet(boolean value) {
-    __isset_bit_vector.set(__CPUTIME_ISSET_ID, value);
-  }
-
-  public double getIdleTime() {
-    return this.idleTime;
-  }
-
-  public Sample setIdleTime(double idleTime) {
-    this.idleTime = idleTime;
-    setIdleTimeIsSet(true);
-    return this;
-  }
-
-  public void unsetIdleTime() {
-    __isset_bit_vector.clear(__IDLETIME_ISSET_ID);
-  }
-
-  /** Returns true if field idleTime is set (has been assigned a value) and false otherwise */
-  public boolean isSetIdleTime() {
-    return __isset_bit_vector.get(__IDLETIME_ISSET_ID);
-  }
-
-  public void setIdleTimeIsSet(boolean value) {
-    __isset_bit_vector.set(__IDLETIME_ISSET_ID, value);
-  }
-
-  public double getUptime() {
-    return this.uptime;
-  }
-
-  public Sample setUptime(double uptime) {
-    this.uptime = uptime;
-    setUptimeIsSet(true);
-    return this;
-  }
-
-  public void unsetUptime() {
-    __isset_bit_vector.clear(__UPTIME_ISSET_ID);
-  }
-
-  /** Returns true if field uptime is set (has been assigned a value) and false otherwise */
-  public boolean isSetUptime() {
-    return __isset_bit_vector.get(__UPTIME_ISSET_ID);
-  }
-
-  public void setUptimeIsSet(boolean value) {
-    __isset_bit_vector.set(__UPTIME_ISSET_ID, value);
-  }
-
-  public boolean isWifiEnabled() {
-    return this.wifiEnabled;
-  }
-
-  public Sample setWifiEnabled(boolean wifiEnabled) {
-    this.wifiEnabled = wifiEnabled;
-    setWifiEnabledIsSet(true);
-    return this;
-  }
-
-  public void unsetWifiEnabled() {
-    __isset_bit_vector.clear(__WIFIENABLED_ISSET_ID);
-  }
-
-  /** Returns true if field wifiEnabled is set (has been assigned a value) and false otherwise */
-  public boolean isSetWifiEnabled() {
-    return __isset_bit_vector.get(__WIFIENABLED_ISSET_ID);
-  }
-
-  public void setWifiEnabledIsSet(boolean value) {
-    __isset_bit_vector.set(__WIFIENABLED_ISSET_ID, value);
-  }
-
-  public int getWifiSignalStrength() {
-    return this.wifiSignalStrength;
-  }
-
-  public Sample setWifiSignalStrength(int wifiSignalStrength) {
-    this.wifiSignalStrength = wifiSignalStrength;
-    setWifiSignalStrengthIsSet(true);
-    return this;
-  }
-
-  public void unsetWifiSignalStrength() {
-    __isset_bit_vector.clear(__WIFISIGNALSTRENGTH_ISSET_ID);
-  }
-
-  /** Returns true if field wifiSignalStrength is set (has been assigned a value) and false otherwise */
-  public boolean isSetWifiSignalStrength() {
-    return __isset_bit_vector.get(__WIFISIGNALSTRENGTH_ISSET_ID);
-  }
-
-  public void setWifiSignalStrengthIsSet(boolean value) {
-    __isset_bit_vector.set(__WIFISIGNALSTRENGTH_ISSET_ID, value);
-  }
-
-  public int getWifiLinkSpeed() {
-    return this.wifiLinkSpeed;
-  }
-
-  public Sample setWifiLinkSpeed(int wifiLinkSpeed) {
-    this.wifiLinkSpeed = wifiLinkSpeed;
-    setWifiLinkSpeedIsSet(true);
-    return this;
-  }
-
-  public void unsetWifiLinkSpeed() {
-    __isset_bit_vector.clear(__WIFILINKSPEED_ISSET_ID);
-  }
-
-  /** Returns true if field wifiLinkSpeed is set (has been assigned a value) and false otherwise */
-  public boolean isSetWifiLinkSpeed() {
-    return __isset_bit_vector.get(__WIFILINKSPEED_ISSET_ID);
-  }
-
-  public void setWifiLinkSpeedIsSet(boolean value) {
-    __isset_bit_vector.set(__WIFILINKSPEED_ISSET_ID, value);
   }
 
   public int getLocationProvidersSize() {
@@ -1227,6 +792,30 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   public void setLocationProvidersIsSet(boolean value) {
     if (!value) {
       this.locationProviders = null;
+    }
+  }
+
+  public CallInfo getCallInfo() {
+    return this.callInfo;
+  }
+
+  public Sample setCallInfo(CallInfo callInfo) {
+    this.callInfo = callInfo;
+    return this;
+  }
+
+  public void unsetCallInfo() {
+    this.callInfo = null;
+  }
+
+  /** Returns true if field callInfo is set (has been assigned a value) and false otherwise */
+  public boolean isSetCallInfo() {
+    return this.callInfo != null;
+  }
+
+  public void setCallInfoIsSet(boolean value) {
+    if (!value) {
+      this.callInfo = null;
     }
   }
 
@@ -1344,131 +933,27 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       break;
 
-    case NETWORK_TYPE:
+    case NETWORK_DETAILS:
       if (value == null) {
-        unsetNetworkType();
+        unsetNetworkDetails();
       } else {
-        setNetworkType((String)value);
+        setNetworkDetails((NetworkDetails)value);
       }
       break;
 
-    case MOBILE_NETWORK_TYPE:
+    case BATTERY_DETAILS:
       if (value == null) {
-        unsetMobileNetworkType();
+        unsetBatteryDetails();
       } else {
-        setMobileNetworkType((String)value);
+        setBatteryDetails((BatteryDetails)value);
       }
       break;
 
-    case MOBILE_DATA_STATUS:
+    case CPU_STATUS:
       if (value == null) {
-        unsetMobileDataStatus();
+        unsetCpuStatus();
       } else {
-        setMobileDataStatus((String)value);
-      }
-      break;
-
-    case MOBILE_DATA_ACTIVITY:
-      if (value == null) {
-        unsetMobileDataActivity();
-      } else {
-        setMobileDataActivity((String)value);
-      }
-      break;
-
-    case ROAMING_ENABLED:
-      if (value == null) {
-        unsetRoamingEnabled();
-      } else {
-        setRoamingEnabled((Boolean)value);
-      }
-      break;
-
-    case BATTERY_CHARGER:
-      if (value == null) {
-        unsetBatteryCharger();
-      } else {
-        setBatteryCharger((String)value);
-      }
-      break;
-
-    case BATTERY_HEALTH:
-      if (value == null) {
-        unsetBatteryHealth();
-      } else {
-        setBatteryHealth((String)value);
-      }
-      break;
-
-    case BATTERY_VOLTAGE:
-      if (value == null) {
-        unsetBatteryVoltage();
-      } else {
-        setBatteryVoltage((Double)value);
-      }
-      break;
-
-    case BATTERY_TEMPERATURE:
-      if (value == null) {
-        unsetBatteryTemperature();
-      } else {
-        setBatteryTemperature((Double)value);
-      }
-      break;
-
-    case BATTERY_TECHNOLOGY:
-      if (value == null) {
-        unsetBatteryTechnology();
-      } else {
-        setBatteryTechnology((String)value);
-      }
-      break;
-
-    case CPU_TIME:
-      if (value == null) {
-        unsetCpuTime();
-      } else {
-        setCpuTime((Double)value);
-      }
-      break;
-
-    case IDLE_TIME:
-      if (value == null) {
-        unsetIdleTime();
-      } else {
-        setIdleTime((Double)value);
-      }
-      break;
-
-    case UPTIME:
-      if (value == null) {
-        unsetUptime();
-      } else {
-        setUptime((Double)value);
-      }
-      break;
-
-    case WIFI_ENABLED:
-      if (value == null) {
-        unsetWifiEnabled();
-      } else {
-        setWifiEnabled((Boolean)value);
-      }
-      break;
-
-    case WIFI_SIGNAL_STRENGTH:
-      if (value == null) {
-        unsetWifiSignalStrength();
-      } else {
-        setWifiSignalStrength((Integer)value);
-      }
-      break;
-
-    case WIFI_LINK_SPEED:
-      if (value == null) {
-        unsetWifiLinkSpeed();
-      } else {
-        setWifiLinkSpeed((Integer)value);
+        setCpuStatus((CpuStatus)value);
       }
       break;
 
@@ -1477,6 +962,14 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         unsetLocationProviders();
       } else {
         setLocationProviders((List<String>)value);
+      }
+      break;
+
+    case CALL_INFO:
+      if (value == null) {
+        unsetCallInfo();
+      } else {
+        setCallInfo((CallInfo)value);
       }
       break;
 
@@ -1527,56 +1020,20 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     case SCREEN_BRIGHTNESS:
       return Integer.valueOf(getScreenBrightness());
 
-    case NETWORK_TYPE:
-      return getNetworkType();
+    case NETWORK_DETAILS:
+      return getNetworkDetails();
 
-    case MOBILE_NETWORK_TYPE:
-      return getMobileNetworkType();
+    case BATTERY_DETAILS:
+      return getBatteryDetails();
 
-    case MOBILE_DATA_STATUS:
-      return getMobileDataStatus();
-
-    case MOBILE_DATA_ACTIVITY:
-      return getMobileDataActivity();
-
-    case ROAMING_ENABLED:
-      return Boolean.valueOf(isRoamingEnabled());
-
-    case BATTERY_CHARGER:
-      return getBatteryCharger();
-
-    case BATTERY_HEALTH:
-      return getBatteryHealth();
-
-    case BATTERY_VOLTAGE:
-      return Double.valueOf(getBatteryVoltage());
-
-    case BATTERY_TEMPERATURE:
-      return Double.valueOf(getBatteryTemperature());
-
-    case BATTERY_TECHNOLOGY:
-      return getBatteryTechnology();
-
-    case CPU_TIME:
-      return Double.valueOf(getCpuTime());
-
-    case IDLE_TIME:
-      return Double.valueOf(getIdleTime());
-
-    case UPTIME:
-      return Double.valueOf(getUptime());
-
-    case WIFI_ENABLED:
-      return Boolean.valueOf(isWifiEnabled());
-
-    case WIFI_SIGNAL_STRENGTH:
-      return Integer.valueOf(getWifiSignalStrength());
-
-    case WIFI_LINK_SPEED:
-      return Integer.valueOf(getWifiLinkSpeed());
+    case CPU_STATUS:
+      return getCpuStatus();
 
     case LOCATION_PROVIDERS:
       return getLocationProviders();
+
+    case CALL_INFO:
+      return getCallInfo();
 
     }
     throw new IllegalStateException();
@@ -1617,40 +1074,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       return isSetDistanceTraveled();
     case SCREEN_BRIGHTNESS:
       return isSetScreenBrightness();
-    case NETWORK_TYPE:
-      return isSetNetworkType();
-    case MOBILE_NETWORK_TYPE:
-      return isSetMobileNetworkType();
-    case MOBILE_DATA_STATUS:
-      return isSetMobileDataStatus();
-    case MOBILE_DATA_ACTIVITY:
-      return isSetMobileDataActivity();
-    case ROAMING_ENABLED:
-      return isSetRoamingEnabled();
-    case BATTERY_CHARGER:
-      return isSetBatteryCharger();
-    case BATTERY_HEALTH:
-      return isSetBatteryHealth();
-    case BATTERY_VOLTAGE:
-      return isSetBatteryVoltage();
-    case BATTERY_TEMPERATURE:
-      return isSetBatteryTemperature();
-    case BATTERY_TECHNOLOGY:
-      return isSetBatteryTechnology();
-    case CPU_TIME:
-      return isSetCpuTime();
-    case IDLE_TIME:
-      return isSetIdleTime();
-    case UPTIME:
-      return isSetUptime();
-    case WIFI_ENABLED:
-      return isSetWifiEnabled();
-    case WIFI_SIGNAL_STRENGTH:
-      return isSetWifiSignalStrength();
-    case WIFI_LINK_SPEED:
-      return isSetWifiLinkSpeed();
+    case NETWORK_DETAILS:
+      return isSetNetworkDetails();
+    case BATTERY_DETAILS:
+      return isSetBatteryDetails();
+    case CPU_STATUS:
+      return isSetCpuStatus();
     case LOCATION_PROVIDERS:
       return isSetLocationProviders();
+    case CALL_INFO:
+      return isSetCallInfo();
     }
     throw new IllegalStateException();
   }
@@ -1794,147 +1227,30 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         return false;
     }
 
-    boolean this_present_networkType = true && this.isSetNetworkType();
-    boolean that_present_networkType = true && that.isSetNetworkType();
-    if (this_present_networkType || that_present_networkType) {
-      if (!(this_present_networkType && that_present_networkType))
+    boolean this_present_networkDetails = true && this.isSetNetworkDetails();
+    boolean that_present_networkDetails = true && that.isSetNetworkDetails();
+    if (this_present_networkDetails || that_present_networkDetails) {
+      if (!(this_present_networkDetails && that_present_networkDetails))
         return false;
-      if (!this.networkType.equals(that.networkType))
-        return false;
-    }
-
-    boolean this_present_mobileNetworkType = true && this.isSetMobileNetworkType();
-    boolean that_present_mobileNetworkType = true && that.isSetMobileNetworkType();
-    if (this_present_mobileNetworkType || that_present_mobileNetworkType) {
-      if (!(this_present_mobileNetworkType && that_present_mobileNetworkType))
-        return false;
-      if (!this.mobileNetworkType.equals(that.mobileNetworkType))
+      if (!this.networkDetails.equals(that.networkDetails))
         return false;
     }
 
-    boolean this_present_mobileDataStatus = true && this.isSetMobileDataStatus();
-    boolean that_present_mobileDataStatus = true && that.isSetMobileDataStatus();
-    if (this_present_mobileDataStatus || that_present_mobileDataStatus) {
-      if (!(this_present_mobileDataStatus && that_present_mobileDataStatus))
+    boolean this_present_batteryDetails = true && this.isSetBatteryDetails();
+    boolean that_present_batteryDetails = true && that.isSetBatteryDetails();
+    if (this_present_batteryDetails || that_present_batteryDetails) {
+      if (!(this_present_batteryDetails && that_present_batteryDetails))
         return false;
-      if (!this.mobileDataStatus.equals(that.mobileDataStatus))
-        return false;
-    }
-
-    boolean this_present_mobileDataActivity = true && this.isSetMobileDataActivity();
-    boolean that_present_mobileDataActivity = true && that.isSetMobileDataActivity();
-    if (this_present_mobileDataActivity || that_present_mobileDataActivity) {
-      if (!(this_present_mobileDataActivity && that_present_mobileDataActivity))
-        return false;
-      if (!this.mobileDataActivity.equals(that.mobileDataActivity))
+      if (!this.batteryDetails.equals(that.batteryDetails))
         return false;
     }
 
-    boolean this_present_roamingEnabled = true && this.isSetRoamingEnabled();
-    boolean that_present_roamingEnabled = true && that.isSetRoamingEnabled();
-    if (this_present_roamingEnabled || that_present_roamingEnabled) {
-      if (!(this_present_roamingEnabled && that_present_roamingEnabled))
+    boolean this_present_cpuStatus = true && this.isSetCpuStatus();
+    boolean that_present_cpuStatus = true && that.isSetCpuStatus();
+    if (this_present_cpuStatus || that_present_cpuStatus) {
+      if (!(this_present_cpuStatus && that_present_cpuStatus))
         return false;
-      if (this.roamingEnabled != that.roamingEnabled)
-        return false;
-    }
-
-    boolean this_present_batteryCharger = true && this.isSetBatteryCharger();
-    boolean that_present_batteryCharger = true && that.isSetBatteryCharger();
-    if (this_present_batteryCharger || that_present_batteryCharger) {
-      if (!(this_present_batteryCharger && that_present_batteryCharger))
-        return false;
-      if (!this.batteryCharger.equals(that.batteryCharger))
-        return false;
-    }
-
-    boolean this_present_batteryHealth = true && this.isSetBatteryHealth();
-    boolean that_present_batteryHealth = true && that.isSetBatteryHealth();
-    if (this_present_batteryHealth || that_present_batteryHealth) {
-      if (!(this_present_batteryHealth && that_present_batteryHealth))
-        return false;
-      if (!this.batteryHealth.equals(that.batteryHealth))
-        return false;
-    }
-
-    boolean this_present_batteryVoltage = true && this.isSetBatteryVoltage();
-    boolean that_present_batteryVoltage = true && that.isSetBatteryVoltage();
-    if (this_present_batteryVoltage || that_present_batteryVoltage) {
-      if (!(this_present_batteryVoltage && that_present_batteryVoltage))
-        return false;
-      if (this.batteryVoltage != that.batteryVoltage)
-        return false;
-    }
-
-    boolean this_present_batteryTemperature = true && this.isSetBatteryTemperature();
-    boolean that_present_batteryTemperature = true && that.isSetBatteryTemperature();
-    if (this_present_batteryTemperature || that_present_batteryTemperature) {
-      if (!(this_present_batteryTemperature && that_present_batteryTemperature))
-        return false;
-      if (this.batteryTemperature != that.batteryTemperature)
-        return false;
-    }
-
-    boolean this_present_batteryTechnology = true && this.isSetBatteryTechnology();
-    boolean that_present_batteryTechnology = true && that.isSetBatteryTechnology();
-    if (this_present_batteryTechnology || that_present_batteryTechnology) {
-      if (!(this_present_batteryTechnology && that_present_batteryTechnology))
-        return false;
-      if (!this.batteryTechnology.equals(that.batteryTechnology))
-        return false;
-    }
-
-    boolean this_present_cpuTime = true && this.isSetCpuTime();
-    boolean that_present_cpuTime = true && that.isSetCpuTime();
-    if (this_present_cpuTime || that_present_cpuTime) {
-      if (!(this_present_cpuTime && that_present_cpuTime))
-        return false;
-      if (this.cpuTime != that.cpuTime)
-        return false;
-    }
-
-    boolean this_present_idleTime = true && this.isSetIdleTime();
-    boolean that_present_idleTime = true && that.isSetIdleTime();
-    if (this_present_idleTime || that_present_idleTime) {
-      if (!(this_present_idleTime && that_present_idleTime))
-        return false;
-      if (this.idleTime != that.idleTime)
-        return false;
-    }
-
-    boolean this_present_uptime = true && this.isSetUptime();
-    boolean that_present_uptime = true && that.isSetUptime();
-    if (this_present_uptime || that_present_uptime) {
-      if (!(this_present_uptime && that_present_uptime))
-        return false;
-      if (this.uptime != that.uptime)
-        return false;
-    }
-
-    boolean this_present_wifiEnabled = true && this.isSetWifiEnabled();
-    boolean that_present_wifiEnabled = true && that.isSetWifiEnabled();
-    if (this_present_wifiEnabled || that_present_wifiEnabled) {
-      if (!(this_present_wifiEnabled && that_present_wifiEnabled))
-        return false;
-      if (this.wifiEnabled != that.wifiEnabled)
-        return false;
-    }
-
-    boolean this_present_wifiSignalStrength = true && this.isSetWifiSignalStrength();
-    boolean that_present_wifiSignalStrength = true && that.isSetWifiSignalStrength();
-    if (this_present_wifiSignalStrength || that_present_wifiSignalStrength) {
-      if (!(this_present_wifiSignalStrength && that_present_wifiSignalStrength))
-        return false;
-      if (this.wifiSignalStrength != that.wifiSignalStrength)
-        return false;
-    }
-
-    boolean this_present_wifiLinkSpeed = true && this.isSetWifiLinkSpeed();
-    boolean that_present_wifiLinkSpeed = true && that.isSetWifiLinkSpeed();
-    if (this_present_wifiLinkSpeed || that_present_wifiLinkSpeed) {
-      if (!(this_present_wifiLinkSpeed && that_present_wifiLinkSpeed))
-        return false;
-      if (this.wifiLinkSpeed != that.wifiLinkSpeed)
+      if (!this.cpuStatus.equals(that.cpuStatus))
         return false;
     }
 
@@ -1944,6 +1260,15 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (!(this_present_locationProviders && that_present_locationProviders))
         return false;
       if (!this.locationProviders.equals(that.locationProviders))
+        return false;
+    }
+
+    boolean this_present_callInfo = true && this.isSetCallInfo();
+    boolean that_present_callInfo = true && that.isSetCallInfo();
+    if (this_present_callInfo || that_present_callInfo) {
+      if (!(this_present_callInfo && that_present_callInfo))
+        return false;
+      if (!this.callInfo.equals(that.callInfo))
         return false;
     }
 
@@ -2103,162 +1428,32 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetNetworkType()).compareTo(typedOther.isSetNetworkType());
+    lastComparison = Boolean.valueOf(isSetNetworkDetails()).compareTo(typedOther.isSetNetworkDetails());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetNetworkType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.networkType, typedOther.networkType);
+    if (isSetNetworkDetails()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.networkDetails, typedOther.networkDetails);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMobileNetworkType()).compareTo(typedOther.isSetMobileNetworkType());
+    lastComparison = Boolean.valueOf(isSetBatteryDetails()).compareTo(typedOther.isSetBatteryDetails());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMobileNetworkType()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mobileNetworkType, typedOther.mobileNetworkType);
+    if (isSetBatteryDetails()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryDetails, typedOther.batteryDetails);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetMobileDataStatus()).compareTo(typedOther.isSetMobileDataStatus());
+    lastComparison = Boolean.valueOf(isSetCpuStatus()).compareTo(typedOther.isSetCpuStatus());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetMobileDataStatus()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mobileDataStatus, typedOther.mobileDataStatus);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetMobileDataActivity()).compareTo(typedOther.isSetMobileDataActivity());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetMobileDataActivity()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.mobileDataActivity, typedOther.mobileDataActivity);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetRoamingEnabled()).compareTo(typedOther.isSetRoamingEnabled());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetRoamingEnabled()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.roamingEnabled, typedOther.roamingEnabled);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBatteryCharger()).compareTo(typedOther.isSetBatteryCharger());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBatteryCharger()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryCharger, typedOther.batteryCharger);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBatteryHealth()).compareTo(typedOther.isSetBatteryHealth());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBatteryHealth()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryHealth, typedOther.batteryHealth);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBatteryVoltage()).compareTo(typedOther.isSetBatteryVoltage());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBatteryVoltage()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryVoltage, typedOther.batteryVoltage);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBatteryTemperature()).compareTo(typedOther.isSetBatteryTemperature());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBatteryTemperature()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryTemperature, typedOther.batteryTemperature);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetBatteryTechnology()).compareTo(typedOther.isSetBatteryTechnology());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetBatteryTechnology()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryTechnology, typedOther.batteryTechnology);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetCpuTime()).compareTo(typedOther.isSetCpuTime());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetCpuTime()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.cpuTime, typedOther.cpuTime);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetIdleTime()).compareTo(typedOther.isSetIdleTime());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetIdleTime()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.idleTime, typedOther.idleTime);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetUptime()).compareTo(typedOther.isSetUptime());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetUptime()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.uptime, typedOther.uptime);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetWifiEnabled()).compareTo(typedOther.isSetWifiEnabled());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetWifiEnabled()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wifiEnabled, typedOther.wifiEnabled);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetWifiSignalStrength()).compareTo(typedOther.isSetWifiSignalStrength());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetWifiSignalStrength()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wifiSignalStrength, typedOther.wifiSignalStrength);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetWifiLinkSpeed()).compareTo(typedOther.isSetWifiLinkSpeed());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetWifiLinkSpeed()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.wifiLinkSpeed, typedOther.wifiLinkSpeed);
+    if (isSetCpuStatus()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.cpuStatus, typedOther.cpuStatus);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -2269,6 +1464,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     }
     if (isSetLocationProviders()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.locationProviders, typedOther.locationProviders);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetCallInfo()).compareTo(typedOther.isSetCallInfo());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetCallInfo()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.callInfo, typedOther.callInfo);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -2394,128 +1599,34 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       sb.append(this.screenBrightness);
       first = false;
     }
-    if (isSetNetworkType()) {
+    if (isSetNetworkDetails()) {
       if (!first) sb.append(", ");
-      sb.append("networkType:");
-      if (this.networkType == null) {
+      sb.append("networkDetails:");
+      if (this.networkDetails == null) {
         sb.append("null");
       } else {
-        sb.append(this.networkType);
+        sb.append(this.networkDetails);
       }
       first = false;
     }
-    if (isSetMobileNetworkType()) {
+    if (isSetBatteryDetails()) {
       if (!first) sb.append(", ");
-      sb.append("mobileNetworkType:");
-      if (this.mobileNetworkType == null) {
+      sb.append("batteryDetails:");
+      if (this.batteryDetails == null) {
         sb.append("null");
       } else {
-        sb.append(this.mobileNetworkType);
+        sb.append(this.batteryDetails);
       }
       first = false;
     }
-    if (isSetMobileDataStatus()) {
+    if (isSetCpuStatus()) {
       if (!first) sb.append(", ");
-      sb.append("mobileDataStatus:");
-      if (this.mobileDataStatus == null) {
+      sb.append("cpuStatus:");
+      if (this.cpuStatus == null) {
         sb.append("null");
       } else {
-        sb.append(this.mobileDataStatus);
+        sb.append(this.cpuStatus);
       }
-      first = false;
-    }
-    if (isSetMobileDataActivity()) {
-      if (!first) sb.append(", ");
-      sb.append("mobileDataActivity:");
-      if (this.mobileDataActivity == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.mobileDataActivity);
-      }
-      first = false;
-    }
-    if (isSetRoamingEnabled()) {
-      if (!first) sb.append(", ");
-      sb.append("roamingEnabled:");
-      sb.append(this.roamingEnabled);
-      first = false;
-    }
-    if (isSetBatteryCharger()) {
-      if (!first) sb.append(", ");
-      sb.append("batteryCharger:");
-      if (this.batteryCharger == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.batteryCharger);
-      }
-      first = false;
-    }
-    if (isSetBatteryHealth()) {
-      if (!first) sb.append(", ");
-      sb.append("batteryHealth:");
-      if (this.batteryHealth == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.batteryHealth);
-      }
-      first = false;
-    }
-    if (isSetBatteryVoltage()) {
-      if (!first) sb.append(", ");
-      sb.append("batteryVoltage:");
-      sb.append(this.batteryVoltage);
-      first = false;
-    }
-    if (isSetBatteryTemperature()) {
-      if (!first) sb.append(", ");
-      sb.append("batteryTemperature:");
-      sb.append(this.batteryTemperature);
-      first = false;
-    }
-    if (isSetBatteryTechnology()) {
-      if (!first) sb.append(", ");
-      sb.append("batteryTechnology:");
-      if (this.batteryTechnology == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.batteryTechnology);
-      }
-      first = false;
-    }
-    if (isSetCpuTime()) {
-      if (!first) sb.append(", ");
-      sb.append("cpuTime:");
-      sb.append(this.cpuTime);
-      first = false;
-    }
-    if (isSetIdleTime()) {
-      if (!first) sb.append(", ");
-      sb.append("idleTime:");
-      sb.append(this.idleTime);
-      first = false;
-    }
-    if (isSetUptime()) {
-      if (!first) sb.append(", ");
-      sb.append("uptime:");
-      sb.append(this.uptime);
-      first = false;
-    }
-    if (isSetWifiEnabled()) {
-      if (!first) sb.append(", ");
-      sb.append("wifiEnabled:");
-      sb.append(this.wifiEnabled);
-      first = false;
-    }
-    if (isSetWifiSignalStrength()) {
-      if (!first) sb.append(", ");
-      sb.append("wifiSignalStrength:");
-      sb.append(this.wifiSignalStrength);
-      first = false;
-    }
-    if (isSetWifiLinkSpeed()) {
-      if (!first) sb.append(", ");
-      sb.append("wifiLinkSpeed:");
-      sb.append(this.wifiLinkSpeed);
       first = false;
     }
     if (isSetLocationProviders()) {
@@ -2525,6 +1636,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         sb.append("null");
       } else {
         sb.append(this.locationProviders);
+      }
+      first = false;
+    }
+    if (isSetCallInfo()) {
+      if (!first) sb.append(", ");
+      sb.append("callInfo:");
+      if (this.callInfo == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.callInfo);
       }
       first = false;
     }
@@ -2698,135 +1819,34 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 15: // NETWORK_TYPE
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.networkType = iprot.readString();
-              struct.setNetworkTypeIsSet(true);
+          case 15: // NETWORK_DETAILS
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.networkDetails = new NetworkDetails();
+              struct.networkDetails.read(iprot);
+              struct.setNetworkDetailsIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 16: // MOBILE_NETWORK_TYPE
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.mobileNetworkType = iprot.readString();
-              struct.setMobileNetworkTypeIsSet(true);
+          case 16: // BATTERY_DETAILS
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.batteryDetails = new BatteryDetails();
+              struct.batteryDetails.read(iprot);
+              struct.setBatteryDetailsIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 17: // MOBILE_DATA_STATUS
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.mobileDataStatus = iprot.readString();
-              struct.setMobileDataStatusIsSet(true);
+          case 17: // CPU_STATUS
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.cpuStatus = new CpuStatus();
+              struct.cpuStatus.read(iprot);
+              struct.setCpuStatusIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 18: // MOBILE_DATA_ACTIVITY
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.mobileDataActivity = iprot.readString();
-              struct.setMobileDataActivityIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 19: // ROAMING_ENABLED
-            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-              struct.roamingEnabled = iprot.readBool();
-              struct.setRoamingEnabledIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 20: // BATTERY_CHARGER
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.batteryCharger = iprot.readString();
-              struct.setBatteryChargerIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 21: // BATTERY_HEALTH
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.batteryHealth = iprot.readString();
-              struct.setBatteryHealthIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 22: // BATTERY_VOLTAGE
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.batteryVoltage = iprot.readDouble();
-              struct.setBatteryVoltageIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 23: // BATTERY_TEMPERATURE
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.batteryTemperature = iprot.readDouble();
-              struct.setBatteryTemperatureIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 24: // BATTERY_TECHNOLOGY
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.batteryTechnology = iprot.readString();
-              struct.setBatteryTechnologyIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 25: // CPU_TIME
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.cpuTime = iprot.readDouble();
-              struct.setCpuTimeIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 26: // IDLE_TIME
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.idleTime = iprot.readDouble();
-              struct.setIdleTimeIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 27: // UPTIME
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.uptime = iprot.readDouble();
-              struct.setUptimeIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 28: // WIFI_ENABLED
-            if (schemeField.type == org.apache.thrift.protocol.TType.BOOL) {
-              struct.wifiEnabled = iprot.readBool();
-              struct.setWifiEnabledIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 29: // WIFI_SIGNAL_STRENGTH
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.wifiSignalStrength = iprot.readI32();
-              struct.setWifiSignalStrengthIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 30: // WIFI_LINK_SPEED
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.wifiLinkSpeed = iprot.readI32();
-              struct.setWifiLinkSpeedIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 31: // LOCATION_PROVIDERS
+          case 18: // LOCATION_PROVIDERS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
@@ -2840,6 +1860,15 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
                 iprot.readListEnd();
               }
               struct.setLocationProvidersIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 19: // CALL_INFO
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+              struct.callInfo = new CallInfo();
+              struct.callInfo.read(iprot);
+              struct.setCallInfoIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -2944,99 +1973,26 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         oprot.writeI32(struct.screenBrightness);
         oprot.writeFieldEnd();
       }
-      if (struct.networkType != null) {
-        if (struct.isSetNetworkType()) {
-          oprot.writeFieldBegin(NETWORK_TYPE_FIELD_DESC);
-          oprot.writeString(struct.networkType);
+      if (struct.networkDetails != null) {
+        if (struct.isSetNetworkDetails()) {
+          oprot.writeFieldBegin(NETWORK_DETAILS_FIELD_DESC);
+          struct.networkDetails.write(oprot);
           oprot.writeFieldEnd();
         }
       }
-      if (struct.mobileNetworkType != null) {
-        if (struct.isSetMobileNetworkType()) {
-          oprot.writeFieldBegin(MOBILE_NETWORK_TYPE_FIELD_DESC);
-          oprot.writeString(struct.mobileNetworkType);
+      if (struct.batteryDetails != null) {
+        if (struct.isSetBatteryDetails()) {
+          oprot.writeFieldBegin(BATTERY_DETAILS_FIELD_DESC);
+          struct.batteryDetails.write(oprot);
           oprot.writeFieldEnd();
         }
       }
-      if (struct.mobileDataStatus != null) {
-        if (struct.isSetMobileDataStatus()) {
-          oprot.writeFieldBegin(MOBILE_DATA_STATUS_FIELD_DESC);
-          oprot.writeString(struct.mobileDataStatus);
+      if (struct.cpuStatus != null) {
+        if (struct.isSetCpuStatus()) {
+          oprot.writeFieldBegin(CPU_STATUS_FIELD_DESC);
+          struct.cpuStatus.write(oprot);
           oprot.writeFieldEnd();
         }
-      }
-      if (struct.mobileDataActivity != null) {
-        if (struct.isSetMobileDataActivity()) {
-          oprot.writeFieldBegin(MOBILE_DATA_ACTIVITY_FIELD_DESC);
-          oprot.writeString(struct.mobileDataActivity);
-          oprot.writeFieldEnd();
-        }
-      }
-      if (struct.isSetRoamingEnabled()) {
-        oprot.writeFieldBegin(ROAMING_ENABLED_FIELD_DESC);
-        oprot.writeBool(struct.roamingEnabled);
-        oprot.writeFieldEnd();
-      }
-      if (struct.batteryCharger != null) {
-        if (struct.isSetBatteryCharger()) {
-          oprot.writeFieldBegin(BATTERY_CHARGER_FIELD_DESC);
-          oprot.writeString(struct.batteryCharger);
-          oprot.writeFieldEnd();
-        }
-      }
-      if (struct.batteryHealth != null) {
-        if (struct.isSetBatteryHealth()) {
-          oprot.writeFieldBegin(BATTERY_HEALTH_FIELD_DESC);
-          oprot.writeString(struct.batteryHealth);
-          oprot.writeFieldEnd();
-        }
-      }
-      if (struct.isSetBatteryVoltage()) {
-        oprot.writeFieldBegin(BATTERY_VOLTAGE_FIELD_DESC);
-        oprot.writeDouble(struct.batteryVoltage);
-        oprot.writeFieldEnd();
-      }
-      if (struct.isSetBatteryTemperature()) {
-        oprot.writeFieldBegin(BATTERY_TEMPERATURE_FIELD_DESC);
-        oprot.writeDouble(struct.batteryTemperature);
-        oprot.writeFieldEnd();
-      }
-      if (struct.batteryTechnology != null) {
-        if (struct.isSetBatteryTechnology()) {
-          oprot.writeFieldBegin(BATTERY_TECHNOLOGY_FIELD_DESC);
-          oprot.writeString(struct.batteryTechnology);
-          oprot.writeFieldEnd();
-        }
-      }
-      if (struct.isSetCpuTime()) {
-        oprot.writeFieldBegin(CPU_TIME_FIELD_DESC);
-        oprot.writeDouble(struct.cpuTime);
-        oprot.writeFieldEnd();
-      }
-      if (struct.isSetIdleTime()) {
-        oprot.writeFieldBegin(IDLE_TIME_FIELD_DESC);
-        oprot.writeDouble(struct.idleTime);
-        oprot.writeFieldEnd();
-      }
-      if (struct.isSetUptime()) {
-        oprot.writeFieldBegin(UPTIME_FIELD_DESC);
-        oprot.writeDouble(struct.uptime);
-        oprot.writeFieldEnd();
-      }
-      if (struct.isSetWifiEnabled()) {
-        oprot.writeFieldBegin(WIFI_ENABLED_FIELD_DESC);
-        oprot.writeBool(struct.wifiEnabled);
-        oprot.writeFieldEnd();
-      }
-      if (struct.isSetWifiSignalStrength()) {
-        oprot.writeFieldBegin(WIFI_SIGNAL_STRENGTH_FIELD_DESC);
-        oprot.writeI32(struct.wifiSignalStrength);
-        oprot.writeFieldEnd();
-      }
-      if (struct.isSetWifiLinkSpeed()) {
-        oprot.writeFieldBegin(WIFI_LINK_SPEED_FIELD_DESC);
-        oprot.writeI32(struct.wifiLinkSpeed);
-        oprot.writeFieldEnd();
       }
       if (struct.locationProviders != null) {
         if (struct.isSetLocationProviders()) {
@@ -3049,6 +2005,13 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
             }
             oprot.writeListEnd();
           }
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.callInfo != null) {
+        if (struct.isSetCallInfo()) {
+          oprot.writeFieldBegin(CALL_INFO_FIELD_DESC);
+          struct.callInfo.write(oprot);
           oprot.writeFieldEnd();
         }
       }
@@ -3110,58 +2073,22 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetScreenBrightness()) {
         optionals.set(12);
       }
-      if (struct.isSetNetworkType()) {
+      if (struct.isSetNetworkDetails()) {
         optionals.set(13);
       }
-      if (struct.isSetMobileNetworkType()) {
+      if (struct.isSetBatteryDetails()) {
         optionals.set(14);
       }
-      if (struct.isSetMobileDataStatus()) {
+      if (struct.isSetCpuStatus()) {
         optionals.set(15);
       }
-      if (struct.isSetMobileDataActivity()) {
+      if (struct.isSetLocationProviders()) {
         optionals.set(16);
       }
-      if (struct.isSetRoamingEnabled()) {
+      if (struct.isSetCallInfo()) {
         optionals.set(17);
       }
-      if (struct.isSetBatteryCharger()) {
-        optionals.set(18);
-      }
-      if (struct.isSetBatteryHealth()) {
-        optionals.set(19);
-      }
-      if (struct.isSetBatteryVoltage()) {
-        optionals.set(20);
-      }
-      if (struct.isSetBatteryTemperature()) {
-        optionals.set(21);
-      }
-      if (struct.isSetBatteryTechnology()) {
-        optionals.set(22);
-      }
-      if (struct.isSetCpuTime()) {
-        optionals.set(23);
-      }
-      if (struct.isSetIdleTime()) {
-        optionals.set(24);
-      }
-      if (struct.isSetUptime()) {
-        optionals.set(25);
-      }
-      if (struct.isSetWifiEnabled()) {
-        optionals.set(26);
-      }
-      if (struct.isSetWifiSignalStrength()) {
-        optionals.set(27);
-      }
-      if (struct.isSetWifiLinkSpeed()) {
-        optionals.set(28);
-      }
-      if (struct.isSetLocationProviders()) {
-        optionals.set(29);
-      }
-      oprot.writeBitSet(optionals, 30);
+      oprot.writeBitSet(optionals, 18);
       if (struct.isSetTimestamp()) {
         oprot.writeDouble(struct.timestamp);
       }
@@ -3207,53 +2134,14 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetScreenBrightness()) {
         oprot.writeI32(struct.screenBrightness);
       }
-      if (struct.isSetNetworkType()) {
-        oprot.writeString(struct.networkType);
+      if (struct.isSetNetworkDetails()) {
+        struct.networkDetails.write(oprot);
       }
-      if (struct.isSetMobileNetworkType()) {
-        oprot.writeString(struct.mobileNetworkType);
+      if (struct.isSetBatteryDetails()) {
+        struct.batteryDetails.write(oprot);
       }
-      if (struct.isSetMobileDataStatus()) {
-        oprot.writeString(struct.mobileDataStatus);
-      }
-      if (struct.isSetMobileDataActivity()) {
-        oprot.writeString(struct.mobileDataActivity);
-      }
-      if (struct.isSetRoamingEnabled()) {
-        oprot.writeBool(struct.roamingEnabled);
-      }
-      if (struct.isSetBatteryCharger()) {
-        oprot.writeString(struct.batteryCharger);
-      }
-      if (struct.isSetBatteryHealth()) {
-        oprot.writeString(struct.batteryHealth);
-      }
-      if (struct.isSetBatteryVoltage()) {
-        oprot.writeDouble(struct.batteryVoltage);
-      }
-      if (struct.isSetBatteryTemperature()) {
-        oprot.writeDouble(struct.batteryTemperature);
-      }
-      if (struct.isSetBatteryTechnology()) {
-        oprot.writeString(struct.batteryTechnology);
-      }
-      if (struct.isSetCpuTime()) {
-        oprot.writeDouble(struct.cpuTime);
-      }
-      if (struct.isSetIdleTime()) {
-        oprot.writeDouble(struct.idleTime);
-      }
-      if (struct.isSetUptime()) {
-        oprot.writeDouble(struct.uptime);
-      }
-      if (struct.isSetWifiEnabled()) {
-        oprot.writeBool(struct.wifiEnabled);
-      }
-      if (struct.isSetWifiSignalStrength()) {
-        oprot.writeI32(struct.wifiSignalStrength);
-      }
-      if (struct.isSetWifiLinkSpeed()) {
-        oprot.writeI32(struct.wifiLinkSpeed);
+      if (struct.isSetCpuStatus()) {
+        struct.cpuStatus.write(oprot);
       }
       if (struct.isSetLocationProviders()) {
         {
@@ -3264,6 +2152,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           }
         }
       }
+      if (struct.isSetCallInfo()) {
+        struct.callInfo.write(oprot);
+      }
     }
 
     @Override
@@ -3271,7 +2162,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       TTupleProtocol iprot = (TTupleProtocol) prot;
       struct.uuId = iprot.readString();
       struct.setUuIdIsSet(true);
-      BitSet incoming = iprot.readBitSet(30);
+      BitSet incoming = iprot.readBitSet(18);
       if (incoming.get(0)) {
         struct.timestamp = iprot.readDouble();
         struct.setTimestampIsSet(true);
@@ -3335,70 +2226,21 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         struct.setScreenBrightnessIsSet(true);
       }
       if (incoming.get(13)) {
-        struct.networkType = iprot.readString();
-        struct.setNetworkTypeIsSet(true);
+        struct.networkDetails = new NetworkDetails();
+        struct.networkDetails.read(iprot);
+        struct.setNetworkDetailsIsSet(true);
       }
       if (incoming.get(14)) {
-        struct.mobileNetworkType = iprot.readString();
-        struct.setMobileNetworkTypeIsSet(true);
+        struct.batteryDetails = new BatteryDetails();
+        struct.batteryDetails.read(iprot);
+        struct.setBatteryDetailsIsSet(true);
       }
       if (incoming.get(15)) {
-        struct.mobileDataStatus = iprot.readString();
-        struct.setMobileDataStatusIsSet(true);
+        struct.cpuStatus = new CpuStatus();
+        struct.cpuStatus.read(iprot);
+        struct.setCpuStatusIsSet(true);
       }
       if (incoming.get(16)) {
-        struct.mobileDataActivity = iprot.readString();
-        struct.setMobileDataActivityIsSet(true);
-      }
-      if (incoming.get(17)) {
-        struct.roamingEnabled = iprot.readBool();
-        struct.setRoamingEnabledIsSet(true);
-      }
-      if (incoming.get(18)) {
-        struct.batteryCharger = iprot.readString();
-        struct.setBatteryChargerIsSet(true);
-      }
-      if (incoming.get(19)) {
-        struct.batteryHealth = iprot.readString();
-        struct.setBatteryHealthIsSet(true);
-      }
-      if (incoming.get(20)) {
-        struct.batteryVoltage = iprot.readDouble();
-        struct.setBatteryVoltageIsSet(true);
-      }
-      if (incoming.get(21)) {
-        struct.batteryTemperature = iprot.readDouble();
-        struct.setBatteryTemperatureIsSet(true);
-      }
-      if (incoming.get(22)) {
-        struct.batteryTechnology = iprot.readString();
-        struct.setBatteryTechnologyIsSet(true);
-      }
-      if (incoming.get(23)) {
-        struct.cpuTime = iprot.readDouble();
-        struct.setCpuTimeIsSet(true);
-      }
-      if (incoming.get(24)) {
-        struct.idleTime = iprot.readDouble();
-        struct.setIdleTimeIsSet(true);
-      }
-      if (incoming.get(25)) {
-        struct.uptime = iprot.readDouble();
-        struct.setUptimeIsSet(true);
-      }
-      if (incoming.get(26)) {
-        struct.wifiEnabled = iprot.readBool();
-        struct.setWifiEnabledIsSet(true);
-      }
-      if (incoming.get(27)) {
-        struct.wifiSignalStrength = iprot.readI32();
-        struct.setWifiSignalStrengthIsSet(true);
-      }
-      if (incoming.get(28)) {
-        struct.wifiLinkSpeed = iprot.readI32();
-        struct.setWifiLinkSpeedIsSet(true);
-      }
-      if (incoming.get(29)) {
         {
           org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
           struct.locationProviders = new ArrayList<String>(_list13.size);
@@ -3410,6 +2252,11 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           }
         }
         struct.setLocationProvidersIsSet(true);
+      }
+      if (incoming.get(17)) {
+        struct.callInfo = new CallInfo();
+        struct.callInfo.read(iprot);
+        struct.setCallInfoIsSet(true);
       }
     }
   }

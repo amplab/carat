@@ -36,6 +36,8 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
   private static final org.apache.thrift.protocol.TField Y_VALS_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("yValsWithout", org.apache.thrift.protocol.TType.LIST, (short)6);
   private static final org.apache.thrift.protocol.TField EXPECTED_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("expectedValue", org.apache.thrift.protocol.TType.DOUBLE, (short)7);
   private static final org.apache.thrift.protocol.TField EXPECTED_VALUE_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("expectedValueWithout", org.apache.thrift.protocol.TType.DOUBLE, (short)8);
+  private static final org.apache.thrift.protocol.TField APP_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("appLabel", org.apache.thrift.protocol.TType.STRING, (short)9);
+  private static final org.apache.thrift.protocol.TField APP_PRIORITY_FIELD_DESC = new org.apache.thrift.protocol.TField("appPriority", org.apache.thrift.protocol.TType.STRING, (short)10);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -51,6 +53,8 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
   public List<Double> yValsWithout; // optional
   public double expectedValue; // optional
   public double expectedValueWithout; // optional
+  public String appLabel; // optional
+  public String appPriority; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -61,7 +65,9 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     X_VALS_WITHOUT((short)5, "xValsWithout"),
     Y_VALS_WITHOUT((short)6, "yValsWithout"),
     EXPECTED_VALUE((short)7, "expectedValue"),
-    EXPECTED_VALUE_WITHOUT((short)8, "expectedValueWithout");
+    EXPECTED_VALUE_WITHOUT((short)8, "expectedValueWithout"),
+    APP_LABEL((short)9, "appLabel"),
+    APP_PRIORITY((short)10, "appPriority");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -92,6 +98,10 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           return EXPECTED_VALUE;
         case 8: // EXPECTED_VALUE_WITHOUT
           return EXPECTED_VALUE_WITHOUT;
+        case 9: // APP_LABEL
+          return APP_LABEL;
+        case 10: // APP_PRIORITY
+          return APP_PRIORITY;
         default:
           return null;
       }
@@ -136,7 +146,7 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
   private static final int __EXPECTEDVALUE_ISSET_ID = 1;
   private static final int __EXPECTEDVALUEWITHOUT_ISSET_ID = 2;
   private BitSet __isset_bit_vector = new BitSet(3);
-  private _Fields optionals[] = {_Fields.APP_NAME,_Fields.W_DISTANCE,_Fields.X_VALS,_Fields.Y_VALS,_Fields.X_VALS_WITHOUT,_Fields.Y_VALS_WITHOUT,_Fields.EXPECTED_VALUE,_Fields.EXPECTED_VALUE_WITHOUT};
+  private _Fields optionals[] = {_Fields.APP_NAME,_Fields.W_DISTANCE,_Fields.X_VALS,_Fields.Y_VALS,_Fields.X_VALS_WITHOUT,_Fields.Y_VALS_WITHOUT,_Fields.EXPECTED_VALUE,_Fields.EXPECTED_VALUE_WITHOUT,_Fields.APP_LABEL,_Fields.APP_PRIORITY};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -160,6 +170,10 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.EXPECTED_VALUE_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("expectedValueWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.APP_LABEL, new org.apache.thrift.meta_data.FieldMetaData("appLabel", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.APP_PRIORITY, new org.apache.thrift.meta_data.FieldMetaData("appPriority", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(HogsBugs.class, metaDataMap);
   }
@@ -207,6 +221,12 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     }
     this.expectedValue = other.expectedValue;
     this.expectedValueWithout = other.expectedValueWithout;
+    if (other.isSetAppLabel()) {
+      this.appLabel = other.appLabel;
+    }
+    if (other.isSetAppPriority()) {
+      this.appPriority = other.appPriority;
+    }
   }
 
   public HogsBugs deepCopy() {
@@ -226,6 +246,8 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     this.expectedValue = 0.0;
     setExpectedValueWithoutIsSet(false);
     this.expectedValueWithout = 0.0;
+    this.appLabel = null;
+    this.appPriority = null;
   }
 
   public String getAppName() {
@@ -477,6 +499,54 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     __isset_bit_vector.set(__EXPECTEDVALUEWITHOUT_ISSET_ID, value);
   }
 
+  public String getAppLabel() {
+    return this.appLabel;
+  }
+
+  public HogsBugs setAppLabel(String appLabel) {
+    this.appLabel = appLabel;
+    return this;
+  }
+
+  public void unsetAppLabel() {
+    this.appLabel = null;
+  }
+
+  /** Returns true if field appLabel is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppLabel() {
+    return this.appLabel != null;
+  }
+
+  public void setAppLabelIsSet(boolean value) {
+    if (!value) {
+      this.appLabel = null;
+    }
+  }
+
+  public String getAppPriority() {
+    return this.appPriority;
+  }
+
+  public HogsBugs setAppPriority(String appPriority) {
+    this.appPriority = appPriority;
+    return this;
+  }
+
+  public void unsetAppPriority() {
+    this.appPriority = null;
+  }
+
+  /** Returns true if field appPriority is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppPriority() {
+    return this.appPriority != null;
+  }
+
+  public void setAppPriorityIsSet(boolean value) {
+    if (!value) {
+      this.appPriority = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case APP_NAME:
@@ -543,6 +613,22 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       }
       break;
 
+    case APP_LABEL:
+      if (value == null) {
+        unsetAppLabel();
+      } else {
+        setAppLabel((String)value);
+      }
+      break;
+
+    case APP_PRIORITY:
+      if (value == null) {
+        unsetAppPriority();
+      } else {
+        setAppPriority((String)value);
+      }
+      break;
+
     }
   }
 
@@ -572,6 +658,12 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     case EXPECTED_VALUE_WITHOUT:
       return Double.valueOf(getExpectedValueWithout());
 
+    case APP_LABEL:
+      return getAppLabel();
+
+    case APP_PRIORITY:
+      return getAppPriority();
+
     }
     throw new IllegalStateException();
   }
@@ -599,6 +691,10 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       return isSetExpectedValue();
     case EXPECTED_VALUE_WITHOUT:
       return isSetExpectedValueWithout();
+    case APP_LABEL:
+      return isSetAppLabel();
+    case APP_PRIORITY:
+      return isSetAppPriority();
     }
     throw new IllegalStateException();
   }
@@ -685,6 +781,24 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (!(this_present_expectedValueWithout && that_present_expectedValueWithout))
         return false;
       if (this.expectedValueWithout != that.expectedValueWithout)
+        return false;
+    }
+
+    boolean this_present_appLabel = true && this.isSetAppLabel();
+    boolean that_present_appLabel = true && that.isSetAppLabel();
+    if (this_present_appLabel || that_present_appLabel) {
+      if (!(this_present_appLabel && that_present_appLabel))
+        return false;
+      if (!this.appLabel.equals(that.appLabel))
+        return false;
+    }
+
+    boolean this_present_appPriority = true && this.isSetAppPriority();
+    boolean that_present_appPriority = true && that.isSetAppPriority();
+    if (this_present_appPriority || that_present_appPriority) {
+      if (!(this_present_appPriority && that_present_appPriority))
+        return false;
+      if (!this.appPriority.equals(that.appPriority))
         return false;
     }
 
@@ -784,6 +898,26 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetAppLabel()).compareTo(typedOther.isSetAppLabel());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAppLabel()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appLabel, typedOther.appLabel);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAppPriority()).compareTo(typedOther.isSetAppPriority());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAppPriority()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appPriority, typedOther.appPriority);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -869,6 +1003,26 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (!first) sb.append(", ");
       sb.append("expectedValueWithout:");
       sb.append(this.expectedValueWithout);
+      first = false;
+    }
+    if (isSetAppLabel()) {
+      if (!first) sb.append(", ");
+      sb.append("appLabel:");
+      if (this.appLabel == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.appLabel);
+      }
+      first = false;
+    }
+    if (isSetAppPriority()) {
+      if (!first) sb.append(", ");
+      sb.append("appPriority:");
+      if (this.appPriority == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.appPriority);
+      }
       first = false;
     }
     sb.append(")");
@@ -1019,6 +1173,22 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 9: // APP_LABEL
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.appLabel = iprot.readString();
+              struct.setAppLabelIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 10: // APP_PRIORITY
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.appPriority = iprot.readString();
+              struct.setAppPriorityIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -1112,6 +1282,20 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         oprot.writeDouble(struct.expectedValueWithout);
         oprot.writeFieldEnd();
       }
+      if (struct.appLabel != null) {
+        if (struct.isSetAppLabel()) {
+          oprot.writeFieldBegin(APP_LABEL_FIELD_DESC);
+          oprot.writeString(struct.appLabel);
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.appPriority != null) {
+        if (struct.isSetAppPriority()) {
+          oprot.writeFieldBegin(APP_PRIORITY_FIELD_DESC);
+          oprot.writeString(struct.appPriority);
+          oprot.writeFieldEnd();
+        }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -1154,7 +1338,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (struct.isSetExpectedValueWithout()) {
         optionals.set(7);
       }
-      oprot.writeBitSet(optionals, 8);
+      if (struct.isSetAppLabel()) {
+        optionals.set(8);
+      }
+      if (struct.isSetAppPriority()) {
+        optionals.set(9);
+      }
+      oprot.writeBitSet(optionals, 10);
       if (struct.isSetAppName()) {
         oprot.writeString(struct.appName);
       }
@@ -1203,12 +1393,18 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (struct.isSetExpectedValueWithout()) {
         oprot.writeDouble(struct.expectedValueWithout);
       }
+      if (struct.isSetAppLabel()) {
+        oprot.writeString(struct.appLabel);
+      }
+      if (struct.isSetAppPriority()) {
+        oprot.writeString(struct.appPriority);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, HogsBugs struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(8);
+      BitSet incoming = iprot.readBitSet(10);
       if (incoming.get(0)) {
         struct.appName = iprot.readString();
         struct.setAppNameIsSet(true);
@@ -1276,6 +1472,14 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (incoming.get(7)) {
         struct.expectedValueWithout = iprot.readDouble();
         struct.setExpectedValueWithoutIsSet(true);
+      }
+      if (incoming.get(8)) {
+        struct.appLabel = iprot.readString();
+        struct.setAppLabelIsSet(true);
+      }
+      if (incoming.get(9)) {
+        struct.appPriority = iprot.readString();
+        struct.setAppPriorityIsSet(true);
       }
     }
   }
