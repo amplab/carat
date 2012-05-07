@@ -93,6 +93,7 @@ public class CommsThread extends Thread {
             } else {
                 Log.w("CommsThread", "Network status: " + networkStatus
                         + TRY_AGAIN);
+                connecting = false;
             }
             if (connecting) {
                 // wait for wifi to come up

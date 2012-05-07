@@ -64,6 +64,7 @@ public class UiRefreshThread extends Thread {
                     Log.w(TAG, "," + TRY_AGAIN);
                     e1.printStackTrace();
                 }
+                connecting = false;
             } else if (networkStatus
                     .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
                 Log.w(TAG, "Network status: " + networkStatus
@@ -71,6 +72,7 @@ public class UiRefreshThread extends Thread {
                 connecting = true;
             } else {
                 Log.w(TAG, "Network status: " + networkStatus + TRY_AGAIN);
+                connecting = false;
             }
             // do this regardless
             setReportData();
@@ -84,8 +86,9 @@ public class UiRefreshThread extends Thread {
                 }
                 connecting = false;
             } else {
+                connecting = false;
                 try {
-                    sleep(CaratApplication.COMMS_INTERVAL);
+                    sleep(CaratApplication.FRESHNESS_TIMEOUT);
                 } catch (InterruptedException e) {
                     // wait for wifi to come up
                     try {

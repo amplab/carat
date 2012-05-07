@@ -1,7 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import com.zubhium.ZubhiumSDK;
+
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
-import edu.berkeley.cs.amplab.carat.android.sampling.SampleDebugActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -16,11 +17,12 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 
 /**
- * Carat Android App Main Activity. Is loaded right after CaratApplication. Holds the Tabs that comprise the UI.
- * Place code related to tab handling and global Activity code here.
+ * Carat Android App Main Activity. Is loaded right after CaratApplication.
+ * Holds the Tabs that comprise the UI. Place code related to tab handling and
+ * global Activity code here.
  * 
  * @author Eemil Lagerspetz
- *
+ * 
  */
 public class CaratMainActivity extends TabActivity {
     // Log tag
@@ -28,9 +30,10 @@ public class CaratMainActivity extends TabActivity {
     // 250 ms
     public static final long ANIMATION_DURATION = 250;
 
-    // Thread that sends samples when phone is woken up, GUI is started, or at 15 min intervals.
+    // Thread that sends samples when phone is woken up, GUI is started, or at
+    // 15 min intervals.
     private CommsThread sampleSender = null;
-    
+
     private UiRefreshThread uiRefreshThread = null;
 
     // Hold the tabs of the UI.
@@ -45,8 +48,12 @@ public class CaratMainActivity extends TabActivity {
         // This does not show if it is not updated
         // getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
-        this.setTitle(getString(R.string.app_name) + " "
-                + getString(R.string.version_name));
+        
+        String fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
+        //TODO: Set key
+        //ZubhiumSDK.getZubhiumSDKInstance(getApplicationContext(), "secret_key", fullVersion);
+        
+        this.setTitle(fullVersion);
 
         Resources res = getResources(); // Resource object to get Drawables
         tabHost = getTabHost(); // The activity TabHost
@@ -64,14 +71,13 @@ public class CaratMainActivity extends TabActivity {
                 .setContent(intent);
         tabHost.addTab(spec);
 
-        /*intent = new Intent().setClass(this, SampleDebugActivity.class);
-        spec = tabHost
-                .newTabSpec("Sample")
-                .setIndicator(getString(R.string.tab_sample),
-                        res.getDrawable(R.drawable.ic_tab_actions))
-                .setContent(intent);
-        tabHost.addTab(spec);
-*/
+        /*
+         * intent = new Intent().setClass(this, SampleDebugActivity.class); spec
+         * = tabHost .newTabSpec("Sample")
+         * .setIndicator(getString(R.string.tab_sample),
+         * res.getDrawable(R.drawable.ic_tab_actions)) .setContent(intent);
+         * tabHost.addTab(spec);
+         */
         intent = new Intent().setClass(this, CaratMyDeviceActivity.class);
         spec = tabHost
                 .newTabSpec("mydevice")
@@ -203,7 +209,7 @@ public class CaratMainActivity extends TabActivity {
         if (sampleSender == null) {
             sampleSender = new CommsThread((CaratApplication) getApplication());
             sampleSender.start();
-        } else{
+        } else {
             Log.i("CaratMainActivity", "Resuming SampleSender");
             new Thread() {
                 public void run() {
@@ -211,12 +217,14 @@ public class CaratMainActivity extends TabActivity {
                 }
             }.start();
         }
-        
-        // Thread for refreshing the UI with new reports every 5 mins and on resume
-        if (uiRefreshThread == null){
-            uiRefreshThread = new UiRefreshThread((CaratApplication) getApplication());
+
+        // Thread for refreshing the UI with new reports every 5 mins and on
+        // resume
+        if (uiRefreshThread == null) {
+            uiRefreshThread = new UiRefreshThread(
+                    (CaratApplication) getApplication());
             uiRefreshThread.start();
-        }else {
+        } else {
             Log.i("CaratMainActivity", "Resuming UiRefreshThread");
             new Thread() {
                 public void run() {
@@ -235,9 +243,10 @@ public class CaratMainActivity extends TabActivity {
     @Override
     public void finish() {
         sampleSender.stopRunning();
-        synchronized (sampleSender) {
-            sampleSender.notify();
-        }
+        sampleSender.appResumed();
+        uiRefreshThread.stopRunning();
+        uiRefreshThread.appResumed();
+
         Log.i(TAG, "Finishing up");
         super.finish();
     }
