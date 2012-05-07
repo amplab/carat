@@ -50,7 +50,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		isBug = new boolean[temp.size()];
 		int i = 0;
 		for (HogsBugs b : temp) {
-			isBug[i] = bugs.contains(b);
+		    if (bugs != null)
+		        isBug[i] = bugs.contains(b);
 			indexes[i] = b;
 			i++;
 		}
