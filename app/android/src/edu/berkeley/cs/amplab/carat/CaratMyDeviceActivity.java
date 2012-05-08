@@ -1,19 +1,19 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.suggestions.ProcessInfoAdapter;
-import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
-import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
-import edu.berkeley.cs.amplab.carat.android.ui.DrawView.Type;
-import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
-import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
-import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
+import edu.berkeley.cs.amplab.carat.lists.ProcessInfoAdapter;
+import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
+import edu.berkeley.cs.amplab.carat.ui.BaseVFActivity;
+import edu.berkeley.cs.amplab.carat.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.ui.SwipeListener;
+import edu.berkeley.cs.amplab.carat.ui.UiRefreshThread;
+import edu.berkeley.cs.amplab.carat.ui.DrawView.Type;
 
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.os.Bundle;

@@ -1,9 +1,9 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat;
 
 import com.zubhium.ZubhiumSDK;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
-import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
+import edu.berkeley.cs.amplab.carat.protocol.CommsThread;
+import edu.berkeley.cs.amplab.carat.ui.UiRefreshThread;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -38,6 +38,9 @@ public class CaratMainActivity extends TabActivity {
 
     // Hold the tabs of the UI.
     public static TabHost tabHost = null;
+    
+    // Zubhium SDK
+    ZubhiumSDK sdk = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -49,9 +52,10 @@ public class CaratMainActivity extends TabActivity {
         // getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
         
-        String fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
+        final String fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
         //TODO: Set key
-        //ZubhiumSDK.getZubhiumSDKInstance(getApplicationContext(), "secret_key", fullVersion);
+        sdk = ZubhiumSDK.getZubhiumSDKInstance(getApplicationContext(), "ef904d9ca72380befa4738b8d33484", fullVersion);
+        sdk.registerUpdateReceiver(CaratMainActivity.this);
         
         this.setTitle(fullVersion);
 
@@ -250,4 +254,15 @@ public class CaratMainActivity extends TabActivity {
         Log.i(TAG, "Finishing up");
         super.finish();
     }
+
+    /* (non-Javadoc)
+     * @see android.app.ActivityGroup#onDestroy()
+     */
+    @Override
+    protected void onDestroy() {
+        sdk.unRegisterUpdateReceiver();
+        super.onDestroy();
+    }
+    
+    
 }

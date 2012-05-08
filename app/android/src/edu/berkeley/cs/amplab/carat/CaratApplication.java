@@ -1,13 +1,13 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
-import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.protocol.CommunicationManager;
+import edu.berkeley.cs.amplab.carat.sampling.Sampler;
+import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.storage.CaratDataStorage;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
