@@ -1,11 +1,11 @@
-package edu.berkeley.cs.amplab.carat.android.suggestions;
+package edu.berkeley.cs.amplab.carat.lists;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.CaratApplication;
+import edu.berkeley.cs.amplab.carat.R;
+import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 import android.graphics.drawable.Drawable;
