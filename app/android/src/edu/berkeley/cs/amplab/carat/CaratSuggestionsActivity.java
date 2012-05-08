@@ -11,7 +11,6 @@ import android.widget.ViewFlipper;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.suggestions.*;
 import edu.berkeley.cs.amplab.carat.lists.HogBugSuggestionsAdapter;
 import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;

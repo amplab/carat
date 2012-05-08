@@ -1,5 +1,9 @@
 package edu.berkeley.cs.amplab.carat;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
 import com.zubhium.ZubhiumSDK;
 
 import edu.berkeley.cs.amplab.carat.protocol.CommsThread;
@@ -38,9 +42,11 @@ public class CaratMainActivity extends TabActivity {
 
     // Hold the tabs of the UI.
     public static TabHost tabHost = null;
-    
+
     // Zubhium SDK
     ZubhiumSDK sdk = null;
+    // Key File
+    public static final String ZUBHIUM_KEYFILE = "zubhium.properties";
 
     /** Called when the activity is first created. */
     @Override
@@ -51,12 +57,36 @@ public class CaratMainActivity extends TabActivity {
         // This does not show if it is not updated
         // getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
-        
-        final String fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
-        //TODO: Set key
-        sdk = ZubhiumSDK.getZubhiumSDKInstance(getApplicationContext(), "ef904d9ca72380befa4738b8d33484", fullVersion);
-        sdk.registerUpdateReceiver(CaratMainActivity.this);
-        
+
+        final String fullVersion = getString(R.string.app_name) + " "
+                + getString(R.string.version_name);
+
+        new Thread() {
+            public void run() {
+                String secretKey = null;
+                Properties properties = new Properties();
+                try {
+                    InputStream raw = CaratMainActivity.this.getAssets().open(
+                            ZUBHIUM_KEYFILE);
+                    if (raw != null) {
+                        properties.load(raw);
+                        if (properties.containsKey("secretkey"))
+                            secretKey = properties.getProperty("secretkey",
+                                    "secretkey");
+                        Log.d(TAG, "Set secret key.");
+                    } else
+                        Log.e(TAG, "Could not open zubhium key file!");
+                } catch (IOException e) {
+                    Log.e(TAG,
+                            "Could not open zubhium key file: " + e.toString());
+                }
+                if (secretKey != null) {
+                    sdk = ZubhiumSDK.getZubhiumSDKInstance(
+                            getApplicationContext(), secretKey, fullVersion);
+                    sdk.registerUpdateReceiver(CaratMainActivity.this);
+                }
+            }
+        }.start();
         this.setTitle(fullVersion);
 
         Resources res = getResources(); // Resource object to get Drawables
@@ -255,14 +285,16 @@ public class CaratMainActivity extends TabActivity {
         super.finish();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.app.ActivityGroup#onDestroy()
      */
     @Override
     protected void onDestroy() {
-        sdk.unRegisterUpdateReceiver();
+        if (sdk != null)
+            sdk.unRegisterUpdateReceiver();
         super.onDestroy();
     }
-    
-    
+
 }
