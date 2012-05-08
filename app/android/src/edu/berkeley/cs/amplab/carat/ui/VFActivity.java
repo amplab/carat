@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.ui;
+package edu.berkeley.cs.amplab.carat.ui;
 
 public interface VFActivity {
 

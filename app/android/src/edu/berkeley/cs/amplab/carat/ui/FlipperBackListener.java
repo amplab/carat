@@ -1,9 +1,9 @@
-package edu.berkeley.cs.amplab.carat.android.ui;
+package edu.berkeley.cs.amplab.carat.ui;
 
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ViewFlipper;
-import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.CaratMainActivity;
 
 public class FlipperBackListener extends BaseSwipeListener {
 

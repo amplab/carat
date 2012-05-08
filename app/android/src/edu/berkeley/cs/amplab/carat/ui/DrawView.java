@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.ui;
+package edu.berkeley.cs.amplab.carat.ui;
 
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +11,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
-import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.R;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 

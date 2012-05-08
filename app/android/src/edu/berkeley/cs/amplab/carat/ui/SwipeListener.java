@@ -1,6 +1,6 @@
-package edu.berkeley.cs.amplab.carat.android.ui;
+package edu.berkeley.cs.amplab.carat.ui;
 
-import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.CaratMainActivity;
 import android.app.Activity;
 import android.view.MotionEvent;
 import android.view.View;

@@ -1,12 +1,12 @@
-package edu.berkeley.cs.amplab.carat.android.ui;
+package edu.berkeley.cs.amplab.carat.ui;
 
 import org.apache.thrift.TException;
 
 import android.content.Context;
 import android.util.Log;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.CaratApplication;
+import edu.berkeley.cs.amplab.carat.R;
+import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 /**
