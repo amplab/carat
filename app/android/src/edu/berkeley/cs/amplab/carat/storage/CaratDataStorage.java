@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.storage;
+package edu.berkeley.cs.amplab.carat.storage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

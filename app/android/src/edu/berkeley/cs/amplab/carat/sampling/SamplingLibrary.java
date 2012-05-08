@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.sampling;
+package edu.berkeley.cs.amplab.carat.sampling;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
