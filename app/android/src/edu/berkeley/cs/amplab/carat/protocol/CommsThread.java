@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.protocol;
+package edu.berkeley.cs.amplab.carat.protocol;
 
 import java.util.SortedMap;
 import java.util.Map.Entry;
@@ -7,9 +7,9 @@ import org.apache.thrift.TException;
 
 import android.content.Context;
 import android.util.Log;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
+import edu.berkeley.cs.amplab.carat.CaratApplication;
+import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 /**

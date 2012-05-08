@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.protocol;
+package edu.berkeley.cs.amplab.carat.protocol;
 
 import java.io.IOException;
 import java.io.InputStream;
