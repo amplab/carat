@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat;
+package edu.berkeley.cs.amplab.carat.android;
 
 import android.app.ActivityManager;
 import android.os.Bundle;
@@ -11,12 +11,12 @@ import android.widget.ViewFlipper;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.lists.HogBugSuggestionsAdapter;
-import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
+import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
-import edu.berkeley.cs.amplab.carat.ui.BaseVFActivity;
-import edu.berkeley.cs.amplab.carat.ui.FlipperBackListener;
-import edu.berkeley.cs.amplab.carat.ui.SwipeListener;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 

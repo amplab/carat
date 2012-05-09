@@ -1,9 +1,9 @@
-package edu.berkeley.cs.amplab.carat.lists;
+package edu.berkeley.cs.amplab.carat.android.lists;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.CaratApplication;
-import edu.berkeley.cs.amplab.carat.R;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.view.LayoutInflater;

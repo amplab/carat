@@ -1,13 +1,13 @@
-package edu.berkeley.cs.amplab.carat;
+package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.lists.HogsAdapter;
+import edu.berkeley.cs.amplab.carat.android.lists.HogsAdapter;
+import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
+import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
-import edu.berkeley.cs.amplab.carat.ui.BaseVFActivity;
-import edu.berkeley.cs.amplab.carat.ui.DrawView;
-import edu.berkeley.cs.amplab.carat.ui.FlipperBackListener;
-import edu.berkeley.cs.amplab.carat.ui.SwipeListener;
 
 import android.os.Bundle;
 import android.view.View;

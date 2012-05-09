@@ -1,9 +1,9 @@
-package edu.berkeley.cs.amplab.carat.sampling;
+package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.Date;
 
-import edu.berkeley.cs.amplab.carat.CaratApplication;
-import edu.berkeley.cs.amplab.carat.storage.CaratSampleDB;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.AlarmManager;

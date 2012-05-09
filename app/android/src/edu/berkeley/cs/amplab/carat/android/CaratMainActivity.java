@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat;
+package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import com.zubhium.ZubhiumSDK;
 
-import edu.berkeley.cs.amplab.carat.protocol.CommsThread;
-import edu.berkeley.cs.amplab.carat.ui.UiRefreshThread;
+import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
+import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -61,32 +61,27 @@ public class CaratMainActivity extends TabActivity {
         final String fullVersion = getString(R.string.app_name) + " "
                 + getString(R.string.version_name);
 
-        new Thread() {
-            public void run() {
-                String secretKey = null;
-                Properties properties = new Properties();
-                try {
-                    InputStream raw = CaratMainActivity.this.getAssets().open(
-                            ZUBHIUM_KEYFILE);
-                    if (raw != null) {
-                        properties.load(raw);
-                        if (properties.containsKey("secretkey"))
-                            secretKey = properties.getProperty("secretkey",
-                                    "secretkey");
-                        Log.d(TAG, "Set secret key.");
-                    } else
-                        Log.e(TAG, "Could not open zubhium key file!");
-                } catch (IOException e) {
-                    Log.e(TAG,
-                            "Could not open zubhium key file: " + e.toString());
-                }
-                if (secretKey != null) {
-                    sdk = ZubhiumSDK.getZubhiumSDKInstance(
-                            getApplicationContext(), secretKey, fullVersion);
-                    sdk.registerUpdateReceiver(CaratMainActivity.this);
-                }
-            }
-        }.start();
+        String secretKey = null;
+        Properties properties = new Properties();
+        try {
+            InputStream raw = CaratMainActivity.this.getAssets().open(
+                    ZUBHIUM_KEYFILE);
+            if (raw != null) {
+                properties.load(raw);
+                if (properties.containsKey("secretkey"))
+                    secretKey = properties
+                            .getProperty("secretkey", "secretkey");
+                Log.d(TAG, "Set secret key.");
+            } else
+                Log.e(TAG, "Could not open zubhium key file!");
+        } catch (IOException e) {
+            Log.e(TAG, "Could not open zubhium key file: " + e.toString());
+        }
+        if (secretKey != null) {
+            sdk = ZubhiumSDK.getZubhiumSDKInstance(getApplicationContext(),
+                    secretKey, fullVersion);
+            sdk.registerUpdateReceiver(CaratMainActivity.this);
+        }
         this.setTitle(fullVersion);
 
         Resources res = getResources(); // Resource object to get Drawables

@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.protocol;
+package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +10,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import edu.berkeley.cs.amplab.carat.CaratApplication;
-import edu.berkeley.cs.amplab.carat.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
