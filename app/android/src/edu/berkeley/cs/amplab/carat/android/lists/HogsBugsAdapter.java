@@ -18,68 +18,69 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public abstract class HogsBugsAdapter extends BaseAdapter {
-	private List<HogsBugs> allBugsOrHogs = new ArrayList<HogsBugs>();
+    private List<HogsBugs> allBugsOrHogs = new ArrayList<HogsBugs>();
 
-	private LayoutInflater mInflater;
-	private CaratApplication a = null;
+    private LayoutInflater mInflater;
+    private CaratApplication a = null;
 
-	public HogsBugsAdapter(CaratApplication a, List<HogsBugs> results) {
-		this.a = a;
-		// Skip system apps.
-		for (HogsBugs b: results){
-		 if (!SamplingLibrary.isSystem(a.getApplicationContext(), b.getAppName()))
-		     allBugsOrHogs.add(b);
-		}
-		mInflater = LayoutInflater.from(a.getApplicationContext());
-	}
+    public HogsBugsAdapter(CaratApplication a, List<HogsBugs> results) {
+        this.a = a;
+        // Skip system apps.
+        if (results != null)
+            for (HogsBugs b : results) {
+                if (!SamplingLibrary.isSystem(a.getApplicationContext(),
+                        b.getAppName()))
+                    allBugsOrHogs.add(b);
+            }
+        mInflater = LayoutInflater.from(a.getApplicationContext());
+    }
 
-	public int getCount() {
-		return allBugsOrHogs.size();
-	}
+    public int getCount() {
+        return allBugsOrHogs.size();
+    }
 
-	public Object getItem(int position) {
-		return allBugsOrHogs.get(position);
-	}
+    public Object getItem(int position) {
+        return allBugsOrHogs.get(position);
+    }
 
-	public long getItemId(int position) {
-		return position;
-	}
-	
-	
-	protected abstract int getId();
+    public long getItemId(int position) {
+        return position;
+    }
 
-	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder holder;
-		if (convertView == null) {
-			convertView = mInflater.inflate(getId(), null);
-			holder = new ViewHolder();
-			holder.appIcon = (ImageView) convertView.findViewById(R.id.appIcon);
-			holder.txtName = (TextView) convertView.findViewById(R.id.bugName);
-			holder.progConfidence = (ProgressBar) convertView
-					.findViewById(R.id.confidenceBar);
-			holder.moreInfo = (ImageView) convertView
-					.findViewById(R.id.moreinfo);
+    protected abstract int getId();
 
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-		HogsBugs item = allBugsOrHogs.get(position);
-		Drawable icon = a.iconForApp(item.getAppName());
-		String label = a.labelForApp(item.getAppName());
+    public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder holder;
+        if (convertView == null) {
+            convertView = mInflater.inflate(getId(), null);
+            holder = new ViewHolder();
+            holder.appIcon = (ImageView) convertView.findViewById(R.id.appIcon);
+            holder.txtName = (TextView) convertView.findViewById(R.id.bugName);
+            holder.progConfidence = (ProgressBar) convertView
+                    .findViewById(R.id.confidenceBar);
+            holder.moreInfo = (ImageView) convertView
+                    .findViewById(R.id.moreinfo);
 
-		holder.txtName.setText(label);
-		holder.appIcon.setImageDrawable(icon);
-		holder.progConfidence.setProgress((int) (item.getWDistance() * 100));
-		// holder.moreInfo...
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
+        HogsBugs item = allBugsOrHogs.get(position);
+        Drawable icon = a.iconForApp(item.getAppName());
+        String label = a.labelForApp(item.getAppName());
 
-		return convertView;
-	}
+        holder.txtName.setText(label);
+        holder.appIcon.setImageDrawable(icon);
+        holder.progConfidence.setProgress((int) (item.getWDistance() * 100));
+        // holder.moreInfo...
 
-	static class ViewHolder {
-		ImageView appIcon;
-		TextView txtName;
-		ProgressBar progConfidence;
-		ImageView moreInfo;
-	}
+        return convertView;
+    }
+
+    static class ViewHolder {
+        ImageView appIcon;
+        TextView txtName;
+        ProgressBar progConfidence;
+        ImageView moreInfo;
+    }
 }

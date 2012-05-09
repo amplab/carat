@@ -21,6 +21,8 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 public class CommunicationManager {
 
+    private static final String TAG = "CommsManager";
+    
     private CaratService.Client c = null;
 
     private CaratApplication a = null;
@@ -128,6 +130,8 @@ public class CommunicationManager {
          * "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE"; model = "iPhone 3GS"; OS =
          * "5.0.1"; }
          */
+        
+        Log.i(TAG, "Getting reports for "+uuId + " model=" + model +" os="+OS);
 
         if (model.equals("sdk")) {
             uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus

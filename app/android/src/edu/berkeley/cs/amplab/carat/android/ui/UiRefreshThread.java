@@ -111,7 +111,10 @@ public class UiRefreshThread extends Thread {
         double bl = 0;
         int jscore = 0;
         if (r != null) {
-            bl = 100 / r.getModel().expectedValue;
+            double exp = r.getModel().expectedValue;
+            Log.i(TAG, "Model expected value: " + exp);
+            if (exp > 0.0)
+                bl = 100 / r.getModel().expectedValue;
             jscore = ((int) (r.getJScore() * 100));
         }
         int blh = (int) (bl / 3600);
