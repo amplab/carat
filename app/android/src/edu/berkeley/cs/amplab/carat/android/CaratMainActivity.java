@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -291,5 +292,15 @@ public class CaratMainActivity extends TabActivity {
             sdk.unRegisterUpdateReceiver();
         super.onDestroy();
     }
+
+    /**
+     * Turn off options menu since Carat doesn't have one.
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return false;
+    }
+    
+    
 
 }
