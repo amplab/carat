@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Carat</string>
-    <string name="version_name">0.44b</string>
+    <string name="version_name">0.45b</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
