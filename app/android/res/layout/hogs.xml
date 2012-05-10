@@ -13,9 +13,9 @@ Carat Hogs screen layout
         android:id="@+id/hogsList"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
-
-    <WebView
-        android:id="@+id/hogsGraphView"
+    
+     <WebView
+        android:id="@+id/detailView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </WebView>

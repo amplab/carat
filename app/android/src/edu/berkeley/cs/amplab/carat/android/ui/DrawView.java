@@ -203,11 +203,11 @@ public class DrawView extends View {
                 break;
             case MODEL:
                 withString = "On " + anShort;
-                withoutString = "On another model";
+                withoutString = "On other models";
                 break;
             case OS:
                 withString = "With " + anShort;
-                withoutString = "With another OS";
+                withoutString = "With other OSes";
                 break;
             case SIMILAR:
                 withString = "With similar apps";

@@ -34,7 +34,7 @@ public class FlipperBackListener extends BaseSwipeListener {
             oldX = ev.getX();
             oldY = ev.getY();
             // Fix swipe not working on fake bugs/hogs screens:
-            if (currentTab == 2 || currentTab == 3 || trueHack)
+            if (trueHack)
                 return true;
             return false;
         } else if (action == MotionEvent.ACTION_UP) {

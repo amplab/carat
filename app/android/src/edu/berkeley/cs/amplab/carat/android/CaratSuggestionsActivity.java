@@ -38,7 +38,6 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     long id) {
                 Object o = lv.getItemAtPosition(position);
                 HogsBugs fullObject = (HogsBugs) o;
-                View target = null;
                 if (fullObject.getAppName().equals("OsUpgrade"))
                     switchView(R.id.upgradeOsView);
                 else
