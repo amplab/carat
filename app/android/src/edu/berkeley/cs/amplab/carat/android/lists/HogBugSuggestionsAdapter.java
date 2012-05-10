@@ -23,7 +23,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	private boolean[] isBug = null;
 	private HogsBugs[] indexes = null;
 	
-	private boolean addFakeItem = true;
+	private boolean addFakeItem = false;
 
 	private LayoutInflater mInflater;
 	private CaratApplication a = null;

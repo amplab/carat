@@ -86,11 +86,12 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
      */
     @Override
     protected void onResume() {
-        getRealSuggestions();
+        CaratApplication.setActionList(this);
+        refresh();
         super.onResume();
     }
 
-    private void getRealSuggestions() {
+    public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
         final ListView lv = (ListView) findViewById(R.id.list);
         lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(),

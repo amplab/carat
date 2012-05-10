@@ -50,42 +50,6 @@ public class CaratBugsActivity extends BaseVFActivity{
 		    vf.setDisplayedChild(viewIndex);
 	}
 
-	/*
-	private void initBugsView() {
-		final ListView lv = (ListView) findViewById(R.id.bugsList);
-		lv.setCacheColorHint(0);
-		
-		lv.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> a, View v, int position,
-					long id) {
-				Object o = lv.getItemAtPosition(position);
-				HogsBugs fullObject = (HogsBugs) o;
-				View target = findViewById(R.id.graphView);
-				vf.setOutAnimation(CaratMainActivity.outtoLeft);
-				vf.setInAnimation(CaratMainActivity.inFromRight);
-				vf.setDisplayedChild(vf.indexOfChild(target));
-				/*
-				Toast.makeText(CaratBugsActivity.this,
-						"You have chosen: " + " " + fullObject.getAppName(),
-						Toast.LENGTH_SHORT).show();
-						*//*
-			}
-		});
-		
-	}*/
-/*
-	private void initGraphView() {
-		WebView webview = (WebView) findViewById(R.id.graphView);
-		// Fixes the white flash when showing the page for the first time.
-		webview.setBackgroundColor(0);
-		webview.getSettings().setJavaScriptEnabled(true);
-		
-		webview.loadUrl("file:///android_asset/twolinechart.html");
-		webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-				.indexOfChild(findViewById(R.id.bugsList))));
-	}*/
-	
 	 private void initGraphChart() {
 	        w = new DrawView(getApplicationContext());
 	        vf.addView(w);
@@ -113,6 +77,12 @@ public class CaratBugsActivity extends BaseVFActivity{
 	            }
 	        });
 	    }
+	 
+	 public void refresh(){
+	     CaratApplication app = (CaratApplication) getApplication();
+	     final ListView lv = (ListView) findViewById(R.id.bugsList);
+	        lv.setAdapter(new BugsAdapter(app, app.s.getBugReport()));
+	 }
 	
 	/**
 	 * (non-Javadoc)
@@ -121,9 +91,8 @@ public class CaratBugsActivity extends BaseVFActivity{
 	 */
 	@Override
 	protected void onResume(){
-		CaratApplication app = (CaratApplication) getApplication();
-		final ListView lv = (ListView) findViewById(R.id.bugsList);
-		lv.setAdapter(new BugsAdapter(app, app.s.getBugReport()));
+	    CaratApplication.setBugs(this);
+		refresh();
 		super.onResume(); 
 	}
 }

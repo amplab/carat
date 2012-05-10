@@ -400,8 +400,21 @@ public final class SamplingLibrary {
             ActivityManager pActivityManager = (ActivityManager) context
                     .getSystemService(Activity.ACTIVITY_SERVICE);
 
-            runningAppInfo = new WeakReference(
-                    pActivityManager.getRunningAppProcesses());
+            List<RunningAppProcessInfo> runningProcs = pActivityManager
+                    .getRunningAppProcesses();
+            /*
+             * TODO: Is this the right thing to do? Remove part after ":" in
+             * process names
+             */
+            for (RunningAppProcessInfo i : runningProcs) {
+                int idx = i.processName.lastIndexOf(':');
+                if (idx <= 0)
+                    idx = i.processName.length();
+                i.processName = i.processName.substring(0, idx);
+            }
+
+            runningAppInfo = new WeakReference<List<RunningAppProcessInfo>>(
+                    runningProcs);
         }
         return runningAppInfo.get();
     }
@@ -1065,10 +1078,10 @@ public final class SamplingLibrary {
         mySample.setLocationProviders(enabledLocationProviders);
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
-        
+
         // Network details
         NetworkDetails nd = new NetworkDetails();
-        
+
         // Network type
         String networkType = SamplingLibrary.getNetworkType(context);
         nd.setNetworkType(networkType);
@@ -1081,7 +1094,7 @@ public final class SamplingLibrary {
         nd.setMobileDataStatus(dataState);
         String dataActivity = SamplingLibrary.getDataActivity(context);
         nd.setMobileDataActivity(dataActivity);
-        
+
         // Wifi stuff
         String wifiState = SamplingLibrary.getWifiState(context);
         nd.setWifiStatus(wifiState);
@@ -1091,7 +1104,7 @@ public final class SamplingLibrary {
         nd.setWifiLinkSpeed(wifiLinkSpeed);
         // Add NetworkDetails substruct to Sample
         mySample.setNetworkDetails(nd);
-        
+
         CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
         // TODO: cast this to GSMLocation or CDMALocation and use it
 
@@ -1116,9 +1129,9 @@ public final class SamplingLibrary {
         ci.setIncomingCallTime(incomingOutgoingIdle[0]);
         ci.setOutgoingCallTime(incomingOutgoingIdle[1]);
         ci.setNonCallTime(incomingOutgoingIdle[2]);
-        
+
         mySample.setCallInfo(ci);
-        
+
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
         double scale = intent.getIntExtra("scale", 100);
@@ -1202,7 +1215,7 @@ public final class SamplingLibrary {
             batteryCharger = "usb";
             break;
         }
-        
+
         BatteryDetails bd = new BatteryDetails();
         // otherInfo.setCPUIdleTime(totalIdleTime);
         bd.setBatteryTemperature(temperature);
@@ -1210,16 +1223,16 @@ public final class SamplingLibrary {
         bd.setBatteryVoltage(voltage);
         // otherInfo.setBatteryVoltage(voltage);
         bd.setBatteryTechnology(batteryTechnology);
-        
+
         bd.setBatteryCharger(batteryCharger);
         bd.setBatteryHealth(batteryHealth);
-        
+
         mySample.setBatteryDetails(bd);
 
         // TODO: Extended attributes should be set to mySample
         // What is totalCpuUsage? How does it compare to cpuTime and idleTime?
         // Maybe we should just have a cpu usage percentage.
-        //AndroidSample otherInfo = new AndroidSample();
+        // AndroidSample otherInfo = new AndroidSample();
 
         // Required in new Carat protocol
         mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
@@ -1248,13 +1261,13 @@ public final class SamplingLibrary {
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();
         long[] idleAndCpu2 = readUsagePoint();
-        
+
         CpuStatus cs = new CpuStatus();
-        
+
         cs.setCpuUsage(getUsage(idleAndCpu1, idleAndCpu2));
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
-        
+
         return mySample;
     }
 }

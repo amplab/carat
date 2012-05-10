@@ -8,6 +8,7 @@ import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -59,6 +60,9 @@ public class CaratApplication extends Application {
 
     private static CaratMainActivity main = null;
     private static CaratMyDeviceActivity myDevice = null;
+    private static CaratBugsActivity bugsActivity = null;
+    private static CaratHogsActivity hogsActivity = null;
+    private static CaratSuggestionsActivity actionList = null;
 
     // TODO: This may not be the best place for the icon map.
     private Map<String, Drawable> appToIcon = new HashMap<String, Drawable>();
@@ -127,16 +131,49 @@ public class CaratApplication extends Application {
             return appName;
     }
 
-    public static void setText(final int viewId, final String text) {
-        main.runOnUiThread(new Runnable() {
-            public void run() {
-                if (myDevice != null) {
+    public static void setMyDeviceText(final int viewId, final String text) {
+        if (myDevice != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
                     TextView t = (TextView) myDevice.findViewById(viewId);
                     if (t != null)
                         t.setText(text);
                 }
-            }
-        });
+
+            });
+        }
+    }
+
+    public static void refreshBugs() {
+        if (bugsActivity != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
+                    bugsActivity.refresh();
+                }
+
+            });
+        }
+    }
+
+    public static void refreshHogs() {
+        if (hogsActivity != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
+                    hogsActivity.refresh();
+                }
+
+            });
+        }
+    }
+
+    public static void refreshActions() {
+        if (actionList != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
+                    actionList.refresh();
+                }
+            });
+        }
     }
 
     public static void setMain(CaratMainActivity a) {
@@ -145,6 +182,18 @@ public class CaratApplication extends Application {
 
     public static void setMyDevice(CaratMyDeviceActivity a) {
         myDevice = a;
+    }
+
+    public static void setBugs(CaratBugsActivity a) {
+        bugsActivity = a;
+    }
+
+    public static void setHogs(CaratHogsActivity a) {
+        hogsActivity = a;
+    }
+
+    public static void setActionList(CaratSuggestionsActivity a) {
+        actionList = a;
     }
 
     // Application overrides
@@ -230,9 +279,6 @@ public class CaratApplication extends Application {
             String label = getPackageManager().getApplicationLabel(
                     pak.applicationInfo).toString();
             Drawable icon = pak.applicationInfo.loadIcon(getPackageManager());
-            appToLabel.put(pname, label);
-            appToIcon.put(pname, icon);
-            // Fallback / process list
             appToLabel.put(procname, label);
             appToIcon.put(procname, icon);
         }

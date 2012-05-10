@@ -197,12 +197,40 @@ public class CaratDataStorage {
 	}
 
 	public void writeBugReport(HogBugReport r) {
+	    if (r != null){
+            List<HogsBugs> list = r.getHbList();
+            for (int i = 0; i < list.size(); ++i){
+                HogsBugs thing = list.get(i);
+                String name = thing.getAppName();
+                int idx = name.lastIndexOf(':');
+                if (idx <= 0)
+                    idx = name.length();
+                name = name.substring(0, idx);
+                thing.setAppName(name);
+                list.set(i, thing);
+            }
+            r.setHbList(list);
+        }
 		bugData = r;
 		writeObject(r, BUGFILE);
 
 	}
 
 	public void writeHogReport(HogBugReport r) {
+	    if (r != null){
+            List<HogsBugs> list = r.getHbList();
+            for (int i = 0; i < list.size(); ++i){
+                HogsBugs thing = list.get(i);
+                String name = thing.getAppName();
+                int idx = name.lastIndexOf(':');
+                if (idx <= 0)
+                    idx = name.length();
+                name = name.substring(0, idx);
+                thing.setAppName(name);
+                list.set(i, thing);
+            }
+            r.setHbList(list);
+        }
 		hogData = r;
 		writeObject(r, HOGFILE);
 

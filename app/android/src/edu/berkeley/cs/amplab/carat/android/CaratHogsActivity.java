@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.List;
 
+import edu.berkeley.cs.amplab.carat.android.lists.BugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsAdapter;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -95,6 +96,13 @@ public class CaratHogsActivity extends BaseVFActivity {
             }
         });
     }
+    
+    
+    public void refresh(){
+        CaratApplication app = (CaratApplication) getApplication();
+        final ListView lv = (ListView) findViewById(R.id.hogsList);
+        lv.setAdapter(new HogsAdapter(app, app.s.getHogReport()));
+    }
 
     /**
      * (non-Javadoc)
@@ -103,10 +111,8 @@ public class CaratHogsActivity extends BaseVFActivity {
      */
     @Override
     protected void onResume() {
-        CaratApplication app = (CaratApplication) getApplication();
-        final ListView lv = (ListView) findViewById(R.id.hogsList);
-        lv.setAdapter(new HogsAdapter(app, app.s.getHogReport()));
-        // initGraphChart();
+        CaratApplication.setHogs(this);
+        refresh();
         super.onResume();
     }
 }

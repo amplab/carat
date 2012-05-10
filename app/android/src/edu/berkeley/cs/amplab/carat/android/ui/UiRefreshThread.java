@@ -76,6 +76,10 @@ public class UiRefreshThread extends Thread {
             }
             // do this regardless
             setReportData();
+            // Update UI elements
+            CaratApplication.refreshActions();
+            CaratApplication.refreshBugs();
+            CaratApplication.refreshHogs();
             
             if (connecting) {
                 // wait for wifi to come up
@@ -122,8 +126,8 @@ public class UiRefreshThread extends Thread {
         int blmin = (int) (bl / 60);
         int bls = (int) (bl - blmin * 60);
         final String blS = blh + "h " + blmin + "m " + bls + "s";
-        CaratApplication.setText(R.id.jscore_value, jscore + "");
-        CaratApplication.setText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
-        CaratApplication.setText(R.id.batterylife_value, blS);
+        CaratApplication.setMyDeviceText(R.id.jscore_value, jscore + "");
+        CaratApplication.setMyDeviceText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
+        CaratApplication.setMyDeviceText(R.id.batterylife_value, blS);
     }
 }
