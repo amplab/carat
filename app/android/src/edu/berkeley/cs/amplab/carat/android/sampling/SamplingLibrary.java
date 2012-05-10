@@ -15,11 +15,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
+import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
+import edu.berkeley.cs.amplab.carat.thrift.Itude;
 import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -39,8 +50,10 @@ import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.CellLocation;
 import android.telephony.TelephonyManager;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.location.GpsStatus;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -90,9 +103,31 @@ public final class SamplingLibrary {
     public static String CALL_STATE_IDLE = "idle";
     public static String CALL_STATE_OFFHOOK = "offhook";
     public static String CALL_STATE_RINGING = "ringing";
-
+    
+ // Mobile network constants
+    /*we cannot find network types:EVDO_B,LTE,EHRPD,HSPAP from TelephonyManager now*/
+    public static String NETWORK_TYPE_UNKNOWN="unknown";
+    public static String NETWORK_TYPE_GPRS="gprs";
+    public static String NETWORK_TYPE_EDGE="edge";
+    public static String NETWORK_TYPE_UMTS="utms";
+    public static String NETWORK_TYPE_CDMA="cdma";
+    public static String NETWORK_TYPE_EVDO_0="evdo_0";
+    public static String NETWORK_TYPE_EVDO_A="evdo_a";
+    //public static String NETWORK_TYPE_EVDO_B="evdo_b";
+    public static String NETWORK_TYPE_1xRTT="1xrtt";
+    public static String NETWORK_TYPE_HSDPA="hsdpa";
+    public static String NETWORK_TYPE_HSUPA="hsupa";
+    public static String NETWORK_TYPE_HSPA="hspa";
+    public static String NETWORK_TYPE_IDEN="iden";
+    //public static String NETWORK_TYPE_LTE="lte";
+    //public static String NETWORK_TYPE_EHRPD="ehrpd";
+    //public static String NETWORK_TYPE_HSPAP="hspap";
+    public static Itude gsmStartItude;
+    public static double startLatitude=0;
+    public static double startLongitude=0;
+    public static double distance=0;
     private static final String STAG = "getSample";
-
+    
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
     }
@@ -784,7 +819,110 @@ public final class SamplingLibrary {
         Log.v("GPS", "GPS is :" + gpsEnabled);
         return gpsEnabled;
     }
+    
+    /*check the GSM cell information*/
+    public static CellInfo getCellInfo(Context context){
+        CellInfo curCell = new CellInfo();
+       
+        TelephonyManager myTelManager = (TelephonyManager)context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        
+        GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager.getCellLocation();
+        String netOperator = myTelManager.getNetworkOperator();
+        if (gsmLocation == null){
+            Log.v("gsmLocation", "GSM Location:" + gsmLocation);
+        }
+        else{     
+        int cid = gsmLocation.getCid();
+        int lac = gsmLocation.getLac();        
+        int mcc = Integer.parseInt(netOperator.substring(0, 3));
+        int mnc = Integer.parseInt(netOperator.substring(3));
 
+        curCell.MCC = mcc;
+        curCell.MNC = mnc;
+        curCell.LAC = lac;
+        curCell.CID = cid;
+     
+        Log.v("MCC", "MCC is:"+mcc);
+        Log.v("MNC", "MNC is:"+mnc);
+        Log.v("CID", "CID is:"+cid);
+        Log.v("LAC", "LAC is:"+lac);
+        }        
+        return curCell;
+    }
+    
+    /*Get the latitude and longitude of the current location*/
+    public static Itude getItude(CellInfo curCell) throws Exception {
+        
+        Itude itude = new Itude();
+     
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost request = new HttpPost("http://www.google.com/loc/json");
+        try {
+            JSONObject holder = new JSONObject();
+            holder.put("version", "1.1.0");
+            holder.put("host", "maps.google.com");
+            holder.put("address_language", "en_US");
+            holder.put("request_address", true);
+            holder.put("radio_type", "gsm");
+     
+            JSONObject data = new JSONObject();
+            data.put("mobile_country_code", curCell.MCC);
+            data.put("mobile_network_code", curCell.MNC);
+            data.put("location_area_code", curCell.LAC);
+            data.put("cell_id", curCell.CID);
+            data.put("age", 0);
+     
+            JSONArray dataArray = new JSONArray();
+            dataArray.put(data);
+            holder.put("cell_towers", dataArray);
+     
+            StringEntity se = new StringEntity(holder.toString());
+            request.setEntity(se);
+            
+            HttpResponse response = httpclient.execute(request);
+            HttpEntity entity = response.getEntity();
+            InputStreamReader stream = new InputStreamReader(entity.getContent());
+            BufferedReader br = new BufferedReader(stream);
+            StringBuffer sb = new StringBuffer();
+            
+            String info = br.readLine();
+            while (info != null) {
+                //Log.e("receive location",info);
+                sb.append(info);
+                info=br.readLine();
+            }
+            
+            if(sb.length()==0){
+                return null;
+                }
+            else{
+            JSONObject tmpjson = new JSONObject(sb.toString());
+            JSONObject json = new JSONObject(tmpjson.getString("location"));
+     
+            itude.latitude = json.getString("latitude");
+            itude.longitude = json.getString("longitude");
+             
+            Log.i("Itude", itude.latitude + itude.longitude);
+            
+            return itude;
+            }            
+        } catch (Exception e) {
+            Log.e(e.getMessage(), e.toString());
+              throw new Exception("fail to fetch information:"+e.getMessage());
+        } 
+        finally{
+            request.abort();
+            httpclient = null;
+        }
+    }
+    
+    public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
+        float[] results=new float[1];  
+        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);  
+        return results[0];  
+    }  
+    
     /**
      * Return a list of enabled LocationProviders, such as GPS, Network, etc.
      * 
@@ -833,21 +971,38 @@ public final class SamplingLibrary {
         }
     }
 
-    /*
-     * Get network type: value 0: NETWORK_TYPE_UNKNOWN 1: NETWORK_TYPE_GPRS 2:
-     * NETWORK_TYPE_EDGE 3: NETWORK_TYPE_UMTS 4: NETWORK_TYPE_CDMA 5:
-     * NETWORK_TYPE_EVDO_0 6: NETWORK_TYPE_EVDO_A 7: NETWORK_TYPE_1xRTT 8:
-     * NETWORK_TYPE_HSDPA 9: NETWORK_TYPE_HSUPA 10: NETWORK_TYPE_HSPA 11:
-     * NETWORK_TYPE_IDEN 12: NETWORK_TYPE_EVDO_B 13: NETWORK_TYPE_LTE 14:
-     * NETWORK_TYPE_EHRPD 15: NETWORK_TYPE_HSPAP
-     */
+    /* Get network type */
     public static String getMobileNetworkType(Context context) {
         TelephonyManager telManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int netType = telManager.getNetworkType();
-        Log.v("NetworkType", "Network type:" + String.valueOf(netType));
-        return String.valueOf(netType);
+        switch(netType){
+        case TelephonyManager.NETWORK_TYPE_1xRTT:
+            return NETWORK_TYPE_1xRTT;
+        case TelephonyManager.NETWORK_TYPE_CDMA:
+            return NETWORK_TYPE_CDMA;
+        case TelephonyManager.NETWORK_TYPE_EDGE:
+            return NETWORK_TYPE_EDGE;
+        case TelephonyManager.NETWORK_TYPE_EVDO_0:
+            return NETWORK_TYPE_EVDO_0;
+        case TelephonyManager.NETWORK_TYPE_EVDO_A:
+            return NETWORK_TYPE_EVDO_A;
+        case TelephonyManager.NETWORK_TYPE_GPRS:
+            return NETWORK_TYPE_GPRS;
+        case TelephonyManager.NETWORK_TYPE_HSDPA:
+            return NETWORK_TYPE_HSDPA;
+        case TelephonyManager.NETWORK_TYPE_HSPA:
+            return NETWORK_TYPE_HSPA;
+        case TelephonyManager.NETWORK_TYPE_HSUPA:
+            return NETWORK_TYPE_HSUPA;
+        case TelephonyManager.NETWORK_TYPE_IDEN:
+            return NETWORK_TYPE_IDEN;
+        case TelephonyManager.NETWORK_TYPE_UMTS:
+            return NETWORK_TYPE_UMTS;
+        default:
+            return NETWORK_TYPE_UNKNOWN;
+        }      
     }
 
     /* Check is it network roaming */
@@ -1056,7 +1211,7 @@ public final class SamplingLibrary {
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
         String action = intent.getAction();
-
+        
         // Construct sample and return it in the end
         Sample mySample = new Sample();
         mySample.setUuId(SamplingLibrary.getUuid(context));
@@ -1104,8 +1259,45 @@ public final class SamplingLibrary {
         nd.setWifiLinkSpeed(wifiLinkSpeed);
         // Add NetworkDetails substruct to Sample
         mySample.setNetworkDetails(nd);
+        CellInfo startCellLoc=SamplingLibrary.getCellInfo(context);
+      
+        //CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
+            /*
+            if(startLatitude==0 && startLongitude==0){
+                Itude gsmStartItude=new Itude();
+                Log.v("cellloc", "mcc is:"+cellLoc.MCC+"\nmnc is:"+cellLoc.MNC+"\nlac is"+cellLoc.LAC+"\ncid is:"+cellLoc.CID);
 
-        CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
+                try {
+                    gsmStartItude=SamplingLibrary.getItude(startCellLoc);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                startLatitude=Double.parseDouble(gsmStartItude.latitude);
+                startLongitude=Double.parseDouble(gsmStartItude.longitude);
+                distance=0;
+                Log.v("gsmItude","gsmStartLatitude is" +startLatitude +"\ngsmStartLongitude is"+startLongitude);
+                Log.v("Move distance","The client already moved "+distance);
+            }
+              else{
+                double endLatitude;
+                double endLongitude;
+                Itude gsmEndItude=new Itude();
+
+                CellInfo endCellLoc=SamplingLibrary.getCellInfo(context);
+                try {
+                    gsmEndItude=SamplingLibrary.getItude(endCellLoc);
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                endLatitude=Double.parseDouble(gsmEndItude.latitude);
+                endLongitude=Double.parseDouble(gsmEndItude.latitude);
+                Log.v("gsmItude","gsmStartLatitude is" +endLatitude +"\ngsmStartLongitude is"+endLongitude);
+                distance=distance+SamplingLibrary.getDistance(startLatitude, startLongitude, endLatitude, endLongitude);
+                Log.v("Move Distance", "Distance is:"+distance); 
+            }
+          */
         // TODO: cast this to GSMLocation or CDMALocation and use it
 
         // TODO: is this used for something?
@@ -1117,7 +1309,8 @@ public final class SamplingLibrary {
         /* Total call time */
         // long totalCallTime=0;
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
-        long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
+       
+       long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
         Log.i(STAG, "Call time since boot: Incoming=" + incomingOutgoingIdle[0]
                 + " Outgoing=" + incomingOutgoingIdle[1] + " idle="
                 + incomingOutgoingIdle[2]);
