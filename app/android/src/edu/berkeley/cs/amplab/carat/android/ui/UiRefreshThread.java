@@ -56,7 +56,7 @@ public class UiRefreshThread extends Thread {
 
         while (isRunning) {
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
-            if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED) {
+            if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED && app.c != null) {
                 try {
                     app.c.refreshAllReports();
                     Log.d(TAG, "Reports refreshed.");
@@ -72,7 +72,7 @@ public class UiRefreshThread extends Thread {
                         + ", trying again in 10s.");
                 connecting = true;
             } else {
-                Log.w(TAG, "Network status: " + networkStatus + TRY_AGAIN);
+                Log.w(TAG, "Network status: " + networkStatus + "CommunicationManager="+ app.c + TRY_AGAIN);
                 connecting = false;
             }
             // do this regardless

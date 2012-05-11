@@ -20,6 +20,9 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
  * 
  */
 public class CommsThread extends Thread {
+    
+    private static final String TAG = "CommsThread";
+    
     private boolean isRunning = true;
 
     private static final String TRY_AGAIN = " will try again in "
@@ -45,7 +48,7 @@ public class CommsThread extends Thread {
         boolean connecting = false;
         Context c = app.getApplicationContext();
 
-        Log.d("CommsThread", "Sample sender started.");
+        Log.d(TAG, "Sample sender started.");
 
         while (isRunning) {
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
@@ -54,45 +57,44 @@ public class CommsThread extends Thread {
                         .queryOldestSamples(
                                 CaratApplication.COMMS_MAX_UPLOAD_BATCH);
                 if (map.size() > 0) {
-                    try {
-                        StringBuilder timestamps = new StringBuilder();
-                        for (Entry<Long, Sample> entry : map.entrySet()) {
-                            timestamps.append(" "
-                                    + entry.getValue().getTimestamp());
+                    if (app.c != null) {
+                        try {
+                            boolean success = app.c.uploadSamples(map.values());
+                            if (success) {
+                                Log.d(TAG, "Uploaded " + map.size()
+                                        + " samples.");
+                                Sample last = map.get(map.lastKey());
+                                Log.d(TAG,
+                                        "Deleting " + map.size()
+                                                + " samples older than "
+                                                + last.getTimestamp());
+                                int deleted = CaratSampleDB.getInstance(c)
+                                        .deleteSamples(map.keySet());
+                                /*
+                                 * .deleteOldestSamples( last.getTimestamp());
+                                 */
+                                Log.d(TAG, "Deleted " + deleted
+                                        + " samples.");
+                            }
+                        } catch (TException e1) {
+                            Log.w(TAG, "Failed to send samples,"
+                                    + TRY_AGAIN);
+                            app.c.resetConnection();
+                            e1.printStackTrace();
                         }
-                        boolean success = app.c.uploadSamples(map.values());
-                        if (success) {
-                            Log.d("CommsThread", "Uploaded " + map.size()
-                                    + " samples, timestamps:" + timestamps);
-                            Sample last = map.get(map.lastKey());
-                            Log.d("CommsThread",
-                                    "Deleting " + map.size()
-                                            + " samples older than "
-                                            + last.getTimestamp());
-                            int deleted = CaratSampleDB.getInstance(c)
-                                    .deleteSamples(map.keySet());
-                            /*
-                             * .deleteOldestSamples( last.getTimestamp());
-                             */
-                            Log.d("CommsThread", "Deleted " + deleted
-                                    + " samples.");
-                        }
-                    } catch (TException e1) {
-                        Log.w("CommsThread", "Failed to send samples,"
-                                + TRY_AGAIN);
-                        app.c.resetConnection();
-                        e1.printStackTrace();
+                    }else {
+                        Log.w(TAG, "CommunicationManager is not ready yet." + TRY_AGAIN);
                     }
                 } else {
-                    Log.w("CommsThread", "No samples to send." + TRY_AGAIN);
+                    Log.w(TAG, "No samples to send." + TRY_AGAIN);
                 }
             } else if (networkStatus
                     .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
-                Log.w("CommsThread", "Network status: " + networkStatus
+                Log.w(TAG, "Network status: " + networkStatus
                         + ", trying again in 10s.");
                 connecting = true;
             } else {
-                Log.w("CommsThread", "Network status: " + networkStatus
+                Log.w(TAG, "Network status: " + networkStatus
                         + TRY_AGAIN);
                 connecting = false;
             }
@@ -117,6 +119,6 @@ public class CommsThread extends Thread {
                 }
             }
         }
-        Log.d("CommsThread", "Sample sender stopped.");
+        Log.d(TAG, "Sample sender stopped.");
     }
 }
