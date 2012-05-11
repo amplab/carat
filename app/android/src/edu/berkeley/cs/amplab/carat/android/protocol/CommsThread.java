@@ -80,6 +80,7 @@ public class CommsThread extends Thread {
                     } catch (TException e1) {
                         Log.w("CommsThread", "Failed to send samples,"
                                 + TRY_AGAIN);
+                        app.c.resetConnection();
                         e1.printStackTrace();
                     }
                 } else {

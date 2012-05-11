@@ -276,6 +276,8 @@ public class CaratMainActivity extends TabActivity {
         sampleSender.appResumed();
         uiRefreshThread.stopRunning();
         uiRefreshThread.appResumed();
+        CaratApplication app = (CaratApplication) getApplication();
+        app.c.resetConnection();
 
         Log.i(TAG, "Finishing up");
         super.finish();

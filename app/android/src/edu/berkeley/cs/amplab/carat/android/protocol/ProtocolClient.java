@@ -89,6 +89,13 @@ public class ProtocolClient {
         }
         return instance;
     }
+    
+    /**
+     * Unknown error, next time build connection from scratch
+     */
+    public static void resetConnection(){
+        soc = null;
+    }
 
     public static void close() {
         soc.close();

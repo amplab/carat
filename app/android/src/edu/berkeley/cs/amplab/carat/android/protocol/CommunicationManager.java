@@ -79,6 +79,10 @@ public class CommunicationManager {
         ProtocolClient.close();
         return true;
     }
+    
+    public void resetConnection(){
+        ProtocolClient.resetConnection();
+    }
 
     public void registerOnFirstRun() {
         if (register) {
