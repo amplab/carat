@@ -30,7 +30,6 @@ import edu.berkeley.cs.amplab.carat.thrift.CallInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
-import edu.berkeley.cs.amplab.carat.thrift.Itude;
 import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -122,7 +121,6 @@ public final class SamplingLibrary {
     //public static String NETWORK_TYPE_LTE="lte";
     //public static String NETWORK_TYPE_EHRPD="ehrpd";
     //public static String NETWORK_TYPE_HSPAP="hspap";
-    public static Itude gsmStartItude;
     public static double startLatitude=0;
     public static double startLongitude=0;
     public static double distance=0;
@@ -851,71 +849,7 @@ public final class SamplingLibrary {
         return curCell;
     }
     
-    /*Get the latitude and longitude of the current location*/
-    public static Itude getItude(CellInfo curCell) throws Exception {
-        
-        Itude itude = new Itude();
-     
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpPost request = new HttpPost("http://www.google.com/loc/json");
-        try {
-            JSONObject holder = new JSONObject();
-            holder.put("version", "1.1.0");
-            holder.put("host", "maps.google.com");
-            holder.put("address_language", "en_US");
-            holder.put("request_address", true);
-            holder.put("radio_type", "gsm");
-     
-            JSONObject data = new JSONObject();
-            data.put("mobile_country_code", curCell.MCC);
-            data.put("mobile_network_code", curCell.MNC);
-            data.put("location_area_code", curCell.LAC);
-            data.put("cell_id", curCell.CID);
-            data.put("age", 0);
-     
-            JSONArray dataArray = new JSONArray();
-            dataArray.put(data);
-            holder.put("cell_towers", dataArray);
-     
-            StringEntity se = new StringEntity(holder.toString());
-            request.setEntity(se);
-            
-            HttpResponse response = httpclient.execute(request);
-            HttpEntity entity = response.getEntity();
-            InputStreamReader stream = new InputStreamReader(entity.getContent());
-            BufferedReader br = new BufferedReader(stream);
-            StringBuffer sb = new StringBuffer();
-            
-            String info = br.readLine();
-            while (info != null) {
-                //Log.e("receive location",info);
-                sb.append(info);
-                info=br.readLine();
-            }
-            
-            if(sb.length()==0){
-                return null;
-                }
-            else{
-            JSONObject tmpjson = new JSONObject(sb.toString());
-            JSONObject json = new JSONObject(tmpjson.getString("location"));
-     
-            itude.latitude = json.getString("latitude");
-            itude.longitude = json.getString("longitude");
-             
-            Log.d("Itude", itude.latitude + itude.longitude);
-            
-            return itude;
-            }            
-        } catch (Exception e) {
-            Log.e(e.getMessage(), e.toString());
-              throw new Exception("fail to fetch information:"+e.getMessage());
-        } 
-        finally{
-            request.abort();
-            httpclient = null;
-        }
-    }
+    
     
     public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
         float[] results=new float[1];  
@@ -1263,8 +1197,17 @@ public final class SamplingLibrary {
         // Add NetworkDetails substruct to Sample
         mySample.setNetworkDetails(nd);
         CellInfo startCellLoc=SamplingLibrary.getCellInfo(context);
-      
-        //CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
+        distanceThread location = new distanceThread(startCellLoc);
+        location.start();
+        //Log.v("Move distance","The client already moved "+distance);
+
+        //     Log.v("itude",location.itude.latitude);
+/*        startLatitude=Double.parseDouble(location.itude.latitude);
+        startLongitude=Double.parseDouble(location.itude.longitude);
+        distance=0;
+        Log.v("gsmItude","gsmStartLatitude is" +startLatitude +"\ngsmStartLongitude is"+startLongitude);
+        Log.v("Move distance","The client already moved "+distance);
+*/        //CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
             /*
             if(startLatitude==0 && startLongitude==0){
                 Itude gsmStartItude=new Itude();
