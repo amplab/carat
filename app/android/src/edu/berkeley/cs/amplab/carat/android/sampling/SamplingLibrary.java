@@ -202,28 +202,28 @@ public final class SamplingLibrary {
         // performance.
 
         /*
-         * Log.i("SetModel", "board:" + android.os.Build.BOARD);
-         * Log.i("SetModel", "bootloader:" + android.os.Build.BOOTLOADER);
-         * Log.i("SetModel", "brand:" + android.os.Build.BRAND);
-         * Log.i("SetModel", "CPU_ABI 1 and 2:" + android.os.Build.CPU_ABI +
-         * ", " + android.os.Build.CPU_ABI2); Log.i("SetModel", "dev:" +
-         * android.os.Build.DEVICE); Log.i("SetModel", "disp:" +
-         * android.os.Build.DISPLAY); Log.i("SetModel", "FP:" +
-         * android.os.Build.FINGERPRINT); Log.i("SetModel", "HW:" +
-         * android.os.Build.HARDWARE); Log.i("SetModel", "host:" +
-         * android.os.Build.HOST); Log.i("SetModel", "ID:" +
-         * android.os.Build.ID); Log.i("SetModel", "manufacturer:" +
-         * android.os.Build.MANUFACTURER); Log.i("SetModel", "prod:" +
-         * android.os.Build.PRODUCT); Log.i("SetModel", "radio:" +
+         * Log.d("SetModel", "board:" + android.os.Build.BOARD);
+         * Log.d("SetModel", "bootloader:" + android.os.Build.BOOTLOADER);
+         * Log.d("SetModel", "brand:" + android.os.Build.BRAND);
+         * Log.d("SetModel", "CPU_ABI 1 and 2:" + android.os.Build.CPU_ABI +
+         * ", " + android.os.Build.CPU_ABI2); Log.d("SetModel", "dev:" +
+         * android.os.Build.DEVICE); Log.d("SetModel", "disp:" +
+         * android.os.Build.DISPLAY); Log.d("SetModel", "FP:" +
+         * android.os.Build.FINGERPRINT); Log.d("SetModel", "HW:" +
+         * android.os.Build.HARDWARE); Log.d("SetModel", "host:" +
+         * android.os.Build.HOST); Log.d("SetModel", "ID:" +
+         * android.os.Build.ID); Log.d("SetModel", "manufacturer:" +
+         * android.os.Build.MANUFACTURER); Log.d("SetModel", "prod:" +
+         * android.os.Build.PRODUCT); Log.d("SetModel", "radio:" +
          * android.os.Build.RADIO); // FIXME: SERIAL not available on 2.2 //
-         * Log.i("SetModel", "ser:" + android.os.Build.SERIAL);
-         * Log.i("SetModel", "tags:" + android.os.Build.TAGS); Log.i("SetModel",
-         * "time:" + android.os.Build.TIME); Log.i("SetModel", "type:" +
-         * android.os.Build.TYPE); Log.i("SetModel", "unknown:" +
-         * android.os.Build.UNKNOWN); Log.i("SetModel", "user:" +
-         * android.os.Build.USER); Log.i("SetModel", "model:" +
-         * android.os.Build.MODEL); Log.i("SetModel", "codename:" +
-         * android.os.Build.VERSION.CODENAME); Log.i("SetModel", "release:" +
+         * Log.d("SetModel", "ser:" + android.os.Build.SERIAL);
+         * Log.d("SetModel", "tags:" + android.os.Build.TAGS); Log.d("SetModel",
+         * "time:" + android.os.Build.TIME); Log.d("SetModel", "type:" +
+         * android.os.Build.TYPE); Log.d("SetModel", "unknown:" +
+         * android.os.Build.UNKNOWN); Log.d("SetModel", "user:" +
+         * android.os.Build.USER); Log.d("SetModel", "model:" +
+         * android.os.Build.MODEL); Log.d("SetModel", "codename:" +
+         * android.os.Build.VERSION.CODENAME); Log.d("SetModel", "release:" +
          * android.os.Build.VERSION.RELEASE);
          */
 
@@ -903,7 +903,7 @@ public final class SamplingLibrary {
             itude.latitude = json.getString("latitude");
             itude.longitude = json.getString("longitude");
              
-            Log.i("Itude", itude.latitude + itude.longitude);
+            Log.d("Itude", itude.latitude + itude.longitude);
             
             return itude;
             }            
@@ -1314,7 +1314,7 @@ public final class SamplingLibrary {
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
        
        /*long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
-        Log.i(STAG, "Call time since boot: Incoming=" + incomingOutgoingIdle[0]
+        Log.d(STAG, "Call time since boot: Incoming=" + incomingOutgoingIdle[0]
                 + " Outgoing=" + incomingOutgoingIdle[1] + " idle="
                 + incomingOutgoingIdle[2]);
 
@@ -1349,7 +1349,7 @@ public final class SamplingLibrary {
         // if we have real data, change old value
         if (level > 0 && scale > 0) {
             batteryLevel = (level / scale);
-            Log.i(STAG, "BatteryLevel: " + batteryLevel);
+            Log.d(STAG, "BatteryLevel: " + batteryLevel);
         }
 
         // FIXED: Not used yet, Sample needs more fields
@@ -1453,7 +1453,7 @@ public final class SamplingLibrary {
          * "2012-03"); if (cm != null) Log.v(STAG,
          * "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
          */
-        Log.i(STAG, "serial=" + getBuildSerial());
+        Log.d(STAG, "serial=" + getBuildSerial());
 
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();

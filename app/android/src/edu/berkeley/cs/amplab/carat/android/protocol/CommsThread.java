@@ -45,7 +45,7 @@ public class CommsThread extends Thread {
         boolean connecting = false;
         Context c = app.getApplicationContext();
 
-        Log.i("CommsThread", "Sample sender started.");
+        Log.d("CommsThread", "Sample sender started.");
 
         while (isRunning) {
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
@@ -62,10 +62,10 @@ public class CommsThread extends Thread {
                         }
                         boolean success = app.c.uploadSamples(map.values());
                         if (success) {
-                            Log.i("CommsThread", "Uploaded " + map.size()
+                            Log.d("CommsThread", "Uploaded " + map.size()
                                     + " samples, timestamps:" + timestamps);
                             Sample last = map.get(map.lastKey());
-                            Log.i("CommsThread",
+                            Log.d("CommsThread",
                                     "Deleting " + map.size()
                                             + " samples older than "
                                             + last.getTimestamp());
@@ -74,7 +74,7 @@ public class CommsThread extends Thread {
                             /*
                              * .deleteOldestSamples( last.getTimestamp());
                              */
-                            Log.i("CommsThread", "Deleted " + deleted
+                            Log.d("CommsThread", "Deleted " + deleted
                                     + " samples.");
                         }
                     } catch (TException e1) {
@@ -117,6 +117,6 @@ public class CommsThread extends Thread {
                 }
             }
         }
-        Log.i("CommsThread", "Sample sender stopped.");
+        Log.d("CommsThread", "Sample sender stopped.");
     }
 }

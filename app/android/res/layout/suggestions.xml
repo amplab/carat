@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Suggestions screen layout -->
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+<edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/suggestionsFlipper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -25,4 +25,4 @@
         android:layout_height="match_parent" >
     </WebView>
     
-</ViewFlipper>
+</edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper>

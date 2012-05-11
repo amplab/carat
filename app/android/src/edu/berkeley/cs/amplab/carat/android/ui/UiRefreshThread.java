@@ -52,14 +52,14 @@ public class UiRefreshThread extends Thread {
     public void run() {
         boolean connecting = false;
         Context c = app.getApplicationContext();
-        Log.i(TAG, "Refresh thread started.");
+        Log.d(TAG, "Refresh thread started.");
 
         while (isRunning) {
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
             if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED) {
                 try {
                     app.c.refreshAllReports();
-                    Log.i(TAG, "Reports refreshed.");
+                    Log.d(TAG, "Reports refreshed.");
                 } catch (TException e1) {
                     Log.w(TAG, "Failed to refresh reports: " + e1 + TRY_AGAIN);
                     e1.printStackTrace();
@@ -104,12 +104,12 @@ public class UiRefreshThread extends Thread {
                 }
             }
         }
-        Log.i(TAG, "Refresh thread stopped.");
+        Log.d(TAG, "Refresh thread stopped.");
     }
     
     public static void setReportData() {
         final Reports r = app.s.getReports();
-        Log.i("CaratHomeScreen", "Got reports: " + r);
+        Log.d("CaratHomeScreen", "Got reports: " + r);
         long freshness = app.s.getFreshness();
         long l = System.currentTimeMillis() - freshness;
         final long min = l / 60000;
@@ -118,7 +118,7 @@ public class UiRefreshThread extends Thread {
         int jscore = 0;
         if (r != null) {
             double exp = r.getModel().expectedValue;
-            Log.i(TAG, "Model expected value: " + exp);
+            Log.d(TAG, "Model expected value: " + exp);
             if (exp > 0.0)
                 bl = 100 / r.getModel().expectedValue;
             jscore = ((int) (r.getJScore() * 100));

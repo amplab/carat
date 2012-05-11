@@ -89,7 +89,7 @@ public class CommunicationManager {
             String uuId = SamplingLibrary.getUuid(a.getApplicationContext());
             String os = SamplingLibrary.getOsVersion();
             String model = SamplingLibrary.getModel();
-            Log.i("CommunicationManager",
+            Log.d("CommunicationManager",
                     "First run, registering this device: " + uuId + ", " + os
                             + ", " + model);
             try {
@@ -135,7 +135,7 @@ public class CommunicationManager {
          * "5.0.1"; }
          */
         
-        Log.i(TAG, "Getting reports for "+uuId + " model=" + model +" os="+OS);
+        Log.d(TAG, "Getting reports for "+uuId + " model=" + model +" os="+OS);
 
         if (model.equals("sdk")) {
             uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus

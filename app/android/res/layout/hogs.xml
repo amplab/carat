@@ -3,7 +3,7 @@
 Carat Hogs screen layout
 @author Eemil Lagerspetz
 -->
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+<edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/hogsFlipper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -20,4 +20,4 @@ Carat Hogs screen layout
         android:layout_height="match_parent" >
     </WebView>
 
-</ViewFlipper>
+</edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper>

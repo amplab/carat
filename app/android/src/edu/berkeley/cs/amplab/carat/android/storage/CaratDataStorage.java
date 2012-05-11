@@ -143,7 +143,7 @@ public class CaratDataStorage {
 
 	public long readFreshness() {
 		String s = readText(FRESHNESS);
-		Log.i("CaratDataStorage", "Read freshness: " + s);
+		Log.d("CaratDataStorage", "Read freshness: " + s);
 		if (s != null)
 			return Long.parseLong(s);
 		else
@@ -152,7 +152,7 @@ public class CaratDataStorage {
 
 	public Reports readReports() {
 		Object o = readObject(FILENAME);
-		Log.i("CaratDataStorage", "Read Reports: " + o);
+		Log.d("CaratDataStorage", "Read Reports: " + o);
 		if (o != null){
 		    caratData = new WeakReference<Reports>((Reports) o);
 			return (Reports) o;
@@ -244,7 +244,7 @@ public class CaratDataStorage {
 
 	public HogBugReport readBugReport() {
 		Object o = readObject(BUGFILE);
-		Log.i("CaratDataStorage", "Read Bugs: " + o);
+		Log.d("CaratDataStorage", "Read Bugs: " + o);
 		if (o == null)
 			return null;
 		HogBugReport r = (HogBugReport) o;
@@ -254,7 +254,7 @@ public class CaratDataStorage {
 
 	public HogBugReport readHogReport() {
 		Object o = readObject(HOGFILE);
-		Log.i("CaratDataStorage", "Read Hogs: " + o);
+		Log.d("CaratDataStorage", "Read Hogs: " + o);
 		if (o == null)
 			return null;
 		HogBugReport r = (HogBugReport) o;

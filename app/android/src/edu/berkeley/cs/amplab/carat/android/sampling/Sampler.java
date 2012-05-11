@@ -89,7 +89,7 @@ public class Sampler extends BroadcastReceiver {
 		// But only after first real numbers
 		if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
 			long id = ds.putSample(s);
-			Log.i("Sampler", "Took sample " + id + " for " + intent.getAction());
+			Log.d("Sampler", "Took sample " + id + " for " + intent.getAction());
 			/*Toast.makeText(context,
 					"Took sample " + id + " for " + intent.getAction(),
 					Toast.LENGTH_LONG).show();*/

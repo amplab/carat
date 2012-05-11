@@ -3,7 +3,7 @@
 Carat My Device Screen layout
 @author Eemil Lagerspetz
 -->
-<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+<edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/viewFlipper"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -330,4 +330,4 @@ Carat My Device Screen layout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
-</ViewFlipper>
+</edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper>

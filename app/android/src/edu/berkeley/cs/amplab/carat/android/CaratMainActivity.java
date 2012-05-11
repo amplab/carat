@@ -147,7 +147,7 @@ public class CaratMainActivity extends TabActivity {
                 int newTab = tabHost.getCurrentTab();
                 View old = tabHost.getTabContentView().getChildAt(oldTab);
                 View newView = tabHost.getTabContentView().getChildAt(newTab);
-                Log.i("onTabChanged", "oldTab=" + oldTab + " old=" + old
+                Log.d("onTabChanged", "oldTab=" + oldTab + " old=" + old
                         + " newTabId=" + tabId + " newTab=" + newTab
                         + " newView=" + newView);
                 /*
@@ -240,7 +240,7 @@ public class CaratMainActivity extends TabActivity {
             sampleSender = new CommsThread((CaratApplication) getApplication());
             sampleSender.start();
         } else {
-            Log.i("CaratMainActivity", "Resuming SampleSender");
+            Log.d("CaratMainActivity", "Resuming SampleSender");
             new Thread() {
                 public void run() {
                     sampleSender.appResumed();
@@ -255,7 +255,7 @@ public class CaratMainActivity extends TabActivity {
                     (CaratApplication) getApplication());
             uiRefreshThread.start();
         } else {
-            Log.i("CaratMainActivity", "Resuming UiRefreshThread");
+            Log.d("CaratMainActivity", "Resuming UiRefreshThread");
             new Thread() {
                 public void run() {
                     uiRefreshThread.appResumed();
@@ -279,7 +279,7 @@ public class CaratMainActivity extends TabActivity {
         CaratApplication app = (CaratApplication) getApplication();
         app.c.resetConnection();
 
-        Log.i(TAG, "Finishing up");
+        Log.d(TAG, "Finishing up");
         super.finish();
     }
 
