@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,6 @@ import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -65,8 +65,8 @@ public class CaratApplication extends Application {
     private static CaratSuggestionsActivity actionList = null;
 
     // TODO: This may not be the best place for the icon map.
-    private Map<String, Drawable> appToIcon = new HashMap<String, Drawable>();
-    private Map<String, String> appToLabel = new HashMap<String, String>();
+    private WeakReference<Map<String, Drawable>> appToIcon = null;
+    private WeakReference<Map<String, String>> appToLabel = null;
     private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
     {
         importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY,
@@ -100,6 +100,26 @@ public class CaratApplication extends Application {
     public int cpu = 0;
 
     // Utility methods
+    
+    
+    private void buildAppToIconAndLabel(){
+        Map<String, Drawable> icons = new HashMap<String, Drawable>();
+        Map<String, String> labels = new HashMap<String, String>();
+        
+        List<android.content.pm.PackageInfo> packagelist = getPackageManager()
+                .getInstalledPackages(0);
+        for (android.content.pm.PackageInfo pak : packagelist) {
+            String procname = pak.applicationInfo.processName;
+            String label = getPackageManager().getApplicationLabel(
+                    pak.applicationInfo).toString();
+            Drawable icon = pak.applicationInfo.loadIcon(getPackageManager());
+            labels.put(procname, label);
+            icons.put(procname, icon);
+        }
+        
+        appToLabel = new WeakReference<Map<String, String>>(labels);
+        appToIcon = new WeakReference<Map<String, Drawable>>(icons);
+    }
 
     /**
      * Return a Drawable that contains an app icon for the named app. If not
@@ -110,10 +130,12 @@ public class CaratApplication extends Application {
      * @return the Drawable for the application's icon
      */
     public Drawable iconForApp(String appName) {
-        if (appToIcon.containsKey(appName))
-            return appToIcon.get(appName);
+        if (appToIcon == null || appToIcon.get() == null)
+            buildAppToIconAndLabel();
+        if (appToIcon.get().containsKey(appName))
+            return appToIcon.get().get(appName);
         else
-            return appToIcon.get(CARAT_PACKAGE);
+            return appToIcon.get().get(CARAT_PACKAGE);
     }
 
     /**
@@ -125,8 +147,10 @@ public class CaratApplication extends Application {
      * @return the human readable application label
      */
     public String labelForApp(String appName) {
-        if (appToLabel.containsKey(appName))
-            return appToLabel.get(appName);
+        if (appToLabel == null || appToLabel.get() == null)
+            buildAppToIconAndLabel();
+        if (appToLabel.get().containsKey(appName))
+            return appToLabel.get().get(appName);
         else
             return appName;
     }
@@ -266,23 +290,7 @@ public class CaratApplication extends Application {
                 c = new CommunicationManager(CaratApplication.this);
             }
         }.start();
-
-        /*
-         * Note: this needs to be done in the main thread because icons are used
-         * right away in the suggestions list.
-         */
-        List<android.content.pm.PackageInfo> packagelist = getPackageManager()
-                .getInstalledPackages(0);
-        for (android.content.pm.PackageInfo pak : packagelist) {
-            String pname = pak.applicationInfo.packageName;
-            String procname = pak.applicationInfo.processName;
-            String label = getPackageManager().getApplicationLabel(
-                    pak.applicationInfo).toString();
-            Drawable icon = pak.applicationInfo.loadIcon(getPackageManager());
-            appToLabel.put(procname, label);
-            appToIcon.put(procname, icon);
-        }
-
+        
         super.onCreate();
     }
 

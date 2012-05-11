@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import android.app.Application;
@@ -27,20 +28,20 @@ public class CaratDataStorage {
 	private Application a = null;
 
 	private long freshness = 0;
-	private Reports caratData = null;
-	private HogBugReport bugData = null;
-	private HogBugReport hogData = null;
+	private WeakReference<Reports> caratData = null;
+	private WeakReference<HogBugReport> bugData = null;
+	private WeakReference<HogBugReport> hogData = null;
 
 	public CaratDataStorage(Application a) {
 		this.a = a;
 		freshness = readFreshness();
-		caratData = readReports();
+		caratData = new WeakReference<Reports>(readReports());
 		readBugReport();
 		readHogReport();
 	}
 
 	public void writeReports(Reports reports) {
-		caratData = reports;
+		caratData = new WeakReference<Reports>(reports);
 		writeObject(reports, FILENAME);
 	}
 
@@ -169,31 +170,34 @@ public class CaratDataStorage {
 	 * @return the caratData
 	 */
 	public Reports getReports() {
-		return caratData;
+	    if (caratData != null && caratData.get() != null)
+	        return caratData.get();
+	    else
+	        return readReports();
 	}
 
 	/**
 	 * @return the bug reports
 	 */
 	public List<HogsBugs> getBugReport() {
-		if (bugData == null) {
+		if (bugData == null || bugData.get() == null) {
 			readBugReport();
 		}
-		if (bugData == null)
+		if (bugData == null || bugData.get() == null)
 			return null;
-		return bugData.getHbList();
+		return bugData.get().getHbList();
 	}
 
 	/**
 	 * @return the hog reports
 	 */
 	public List<HogsBugs> getHogReport() {
-		if (hogData == null) {
+		if (hogData == null || hogData.get() == null) {
 			readHogReport();
 		}
-		if (hogData == null)
+		if (hogData == null || hogData.get() == null)
 			return null;
-		return hogData.getHbList();
+		return hogData.get().getHbList();
 	}
 
 	public void writeBugReport(HogBugReport r) {
@@ -211,7 +215,7 @@ public class CaratDataStorage {
             }
             r.setHbList(list);
         }
-		bugData = r;
+		bugData = new WeakReference<HogBugReport>(r);
 		writeObject(r, BUGFILE);
 
 	}
@@ -231,7 +235,7 @@ public class CaratDataStorage {
             }
             r.setHbList(list);
         }
-		hogData = r;
+		hogData = new WeakReference<HogBugReport>(r);
 		writeObject(r, HOGFILE);
 
 	}
@@ -242,7 +246,7 @@ public class CaratDataStorage {
 		if (o == null)
 			return null;
 		HogBugReport r = (HogBugReport) o;
-		bugData = r;
+		bugData = new WeakReference<HogBugReport>(r);
 		return r;
 	}
 
@@ -252,7 +256,7 @@ public class CaratDataStorage {
 		if (o == null)
 			return null;
 		HogBugReport r = (HogBugReport) o;
-		hogData = r;
+		hogData = new WeakReference<HogBugReport>(r);
 		return r;
 	}
 }
