@@ -1,8 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
@@ -16,6 +14,8 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.widget.TextView;
@@ -64,9 +64,6 @@ public class CaratApplication extends Application {
     private static CaratHogsActivity hogsActivity = null;
     private static CaratSuggestionsActivity actionList = null;
 
-    // TODO: This may not be the best place for the icon map.
-    private WeakReference<Map<String, Drawable>> appToIcon = null;
-    private WeakReference<Map<String, String>> appToLabel = null;
     private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
     {
         importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY,
@@ -100,26 +97,6 @@ public class CaratApplication extends Application {
     public int cpu = 0;
 
     // Utility methods
-    
-    
-    private void buildAppToIconAndLabel(){
-        Map<String, Drawable> icons = new HashMap<String, Drawable>();
-        Map<String, String> labels = new HashMap<String, String>();
-        
-        List<android.content.pm.PackageInfo> packagelist = getPackageManager()
-                .getInstalledPackages(0);
-        for (android.content.pm.PackageInfo pak : packagelist) {
-            String procname = pak.applicationInfo.processName;
-            String label = getPackageManager().getApplicationLabel(
-                    pak.applicationInfo).toString();
-            Drawable icon = pak.applicationInfo.loadIcon(getPackageManager());
-            labels.put(procname, label);
-            icons.put(procname, icon);
-        }
-        
-        appToLabel = new WeakReference<Map<String, String>>(labels);
-        appToIcon = new WeakReference<Map<String, Drawable>>(icons);
-    }
 
     /**
      * Return a Drawable that contains an app icon for the named app. If not
@@ -130,12 +107,11 @@ public class CaratApplication extends Application {
      * @return the Drawable for the application's icon
      */
     public Drawable iconForApp(String appName) {
-        if (appToIcon == null || appToIcon.get() == null)
-            buildAppToIconAndLabel();
-        if (appToIcon.get().containsKey(appName))
-            return appToIcon.get().get(appName);
-        else
-            return appToIcon.get().get(CARAT_PACKAGE);
+        try {
+            return getPackageManager().getApplicationIcon(appName);
+        } catch (NameNotFoundException e) {
+            return getResources().getDrawable(R.drawable.ic_launcher);
+        }
     }
 
     /**
@@ -147,12 +123,16 @@ public class CaratApplication extends Application {
      * @return the human readable application label
      */
     public String labelForApp(String appName) {
-        if (appToLabel == null || appToLabel.get() == null)
-            buildAppToIconAndLabel();
-        if (appToLabel.get().containsKey(appName))
-            return appToLabel.get().get(appName);
-        else
+        try {
+            ApplicationInfo i = getPackageManager().getApplicationInfo(appName,
+                    0);
+            if (i != null)
+                return getPackageManager().getApplicationLabel(i).toString();
+            else
+                return appName;
+        } catch (NameNotFoundException e) {
             return appName;
+        }
     }
 
     public static void setMyDeviceText(final int viewId, final String text) {
@@ -290,7 +270,7 @@ public class CaratApplication extends Application {
                 c = new CommunicationManager(CaratApplication.this);
             }
         }.start();
-        
+
         super.onCreate();
     }
 

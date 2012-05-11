@@ -61,8 +61,9 @@ public class UiRefreshThread extends Thread {
                     app.c.refreshAllReports();
                     Log.i(TAG, "Reports refreshed.");
                 } catch (TException e1) {
-                    Log.w(TAG, "," + TRY_AGAIN);
+                    Log.w(TAG, "Failed to refresh reports: " + e1 + TRY_AGAIN);
                     e1.printStackTrace();
+                    app.c.resetConnection();
                 }
                 connecting = false;
             } else if (networkStatus

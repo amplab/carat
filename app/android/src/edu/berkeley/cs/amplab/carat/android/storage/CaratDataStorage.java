@@ -154,7 +154,7 @@ public class CaratDataStorage {
 		Object o = readObject(FILENAME);
 		Log.i("CaratDataStorage", "Read Reports: " + o);
 		if (o != null){
-		    new WeakReference<Reports>((Reports) o);
+		    caratData = new WeakReference<Reports>((Reports) o);
 			return (Reports) o;
 		}
 		else
