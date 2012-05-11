@@ -935,9 +935,12 @@ public final class SamplingLibrary {
         LocationManager lm = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);
         List<String> allProviders = lm.getAllProviders();
-        for (String provider : allProviders)
+        for (String provider : allProviders){
+            if (provider.equals("passive") || provider.equals("gps"))
+                continue;
             if (lm.isProviderEnabled(provider))
                 res.add(provider);
+        }
 
         return res;
     }
@@ -1310,7 +1313,7 @@ public final class SamplingLibrary {
         // long totalCallTime=0;
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
        
-       long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
+       /*long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
         Log.i(STAG, "Call time since boot: Incoming=" + incomingOutgoingIdle[0]
                 + " Outgoing=" + incomingOutgoingIdle[1] + " idle="
                 + incomingOutgoingIdle[2]);
@@ -1324,6 +1327,7 @@ public final class SamplingLibrary {
         ci.setNonCallTime(incomingOutgoingIdle[2]);
 
         mySample.setCallInfo(ci);
+        */
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
