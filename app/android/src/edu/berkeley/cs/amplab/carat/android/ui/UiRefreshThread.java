@@ -109,7 +109,8 @@ public class UiRefreshThread extends Thread {
     public static void setReportData() {
         final Reports r = app.s.getReports();
         Log.i("CaratHomeScreen", "Got reports: " + r);
-        long l = System.currentTimeMillis() - app.s.getFreshness();
+        long freshness = app.s.getFreshness();
+        long l = System.currentTimeMillis() - freshness;
         final long min = l / 60000;
         final long sec = (l - min * 60000) / 1000;
         double bl = 0;
@@ -127,7 +128,10 @@ public class UiRefreshThread extends Thread {
         int bls = (int) (bl - blmin * 60);
         final String blS = blh + "h " + blmin + "m " + bls + "s";
         CaratApplication.setMyDeviceText(R.id.jscore_value, jscore + "");
-        CaratApplication.setMyDeviceText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
+        if (freshness == 0)
+            CaratApplication.setMyDeviceText(R.id.updated, "(Never updated)");
+        else
+            CaratApplication.setMyDeviceText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
         CaratApplication.setMyDeviceText(R.id.batterylife_value, blS);
     }
 }

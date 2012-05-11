@@ -474,7 +474,7 @@ public final class SamplingLibrary {
             boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
             isSystemApp = isSystemApp
                     || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
-            Log.v(STAG, processName + " is System app? " + isSystemApp);
+            //Log.v(STAG, processName + " is System app? " + isSystemApp);
             return isSystemApp;
         }
         return false;

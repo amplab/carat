@@ -153,8 +153,10 @@ public class CaratDataStorage {
 	public Reports readReports() {
 		Object o = readObject(FILENAME);
 		Log.i("CaratDataStorage", "Read Reports: " + o);
-		if (o != null)
+		if (o != null){
+		    new WeakReference<Reports>((Reports) o);
 			return (Reports) o;
+		}
 		else
 			return null;
 	}
