@@ -5,4 +5,5 @@ public class CellInfo {
     public int MNC;
     public int LAC;
     public int CID;
+    public String radioType;
 }

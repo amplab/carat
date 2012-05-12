@@ -49,6 +49,7 @@ import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.CellLocation;
 import android.telephony.TelephonyManager;
+import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.location.GpsStatus;
@@ -121,6 +122,12 @@ public final class SamplingLibrary {
     //public static String NETWORK_TYPE_LTE="lte";
     //public static String NETWORK_TYPE_EHRPD="ehrpd";
     //public static String NETWORK_TYPE_HSPAP="hspap";
+ // Phone type constants
+    public static String PHONE_TYPE_CDMA="cdma";
+    public static String PHONE_TYPE_GSM="gsm";
+   // public static String PHONE_TYPE_SIP="sip";
+    public static String PHONE_TYPE_NONE="none";
+    
     public static double startLatitude=0;
     public static double startLongitude=0;
     public static double distance=0;
@@ -824,30 +831,62 @@ public final class SamplingLibrary {
        
         TelephonyManager myTelManager = (TelephonyManager)context
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        
-        GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager.getCellLocation();
-        String netOperator = myTelManager.getNetworkOperator();
-        if (gsmLocation == null){
-            Log.v("gsmLocation", "GSM Location:" + gsmLocation);
+    
+        if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_CDMA){
+            CdmaCellLocation cdmaLocation=(CdmaCellLocation) myTelManager.getCellLocation();
+            String netOperator=myTelManager.getNetworkOperator();
+            if(cdmaLocation==null){
+                Log.v("cdmaLocation","CDMA Location:"+cdmaLocation);
+            }
+            else{
+                int cid=cdmaLocation.getBaseStationId();
+                int lac=cdmaLocation.getNetworkId();
+                int mnc=cdmaLocation.getSystemId();
+                int mcc=Integer.parseInt(netOperator.substring(0, 3));
+                
+                curCell.CID=cid;
+                curCell.LAC=lac;
+                curCell.MNC=mnc;
+                curCell.MCC=mcc;
+                curCell.radioType=SamplingLibrary.getMobileNetworkType(context);
+                
+                Log.v("MCC", "MCC is:"+mcc);
+                Log.v("MNC", "MNC is:"+mnc);
+                Log.v("CID", "CID is:"+cid);
+                Log.v("LAC", "LAC is:"+lac);
+            }
+            
         }
-        else{     
-        int cid = gsmLocation.getCid();
-        int lac = gsmLocation.getLac();        
-        int mcc = Integer.parseInt(netOperator.substring(0, 3));
-        int mnc = Integer.parseInt(netOperator.substring(3));
+        else if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_GSM){
+            GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager.getCellLocation();
+            String netOperator = myTelManager.getNetworkOperator();
+        
+            if (gsmLocation == null){
+                Log.v("gsmLocation", "GSM Location:" + gsmLocation);
+            }
+                else{     
+                    int cid = gsmLocation.getCid();
+                    int lac = gsmLocation.getLac();
+                    int mcc = Integer.parseInt(netOperator.substring(0, 3));
+                    int mnc = Integer.parseInt(netOperator.substring(3));
 
-        curCell.MCC = mcc;
-        curCell.MNC = mnc;
-        curCell.LAC = lac;
-        curCell.CID = cid;
+                    curCell.MCC = mcc;
+                    curCell.MNC = mnc;
+                    curCell.LAC = lac;
+                    curCell.CID = cid;
+                    curCell.radioType=SamplingLibrary.getMobileNetworkType(context);
      
-        Log.v("MCC", "MCC is:"+mcc);
-        Log.v("MNC", "MNC is:"+mnc);
-        Log.v("CID", "CID is:"+cid);
-        Log.v("LAC", "LAC is:"+lac);
-        }        
+                    Log.v("MCC", "MCC is:"+mcc);
+                    Log.v("MNC", "MNC is:"+mnc);
+                    Log.v("CID", "CID is:"+cid);
+                    Log.v("LAC", "LAC is:"+lac);
+                }    
+           }
         return curCell;
     }
+    
+    
+    
     
     /* Get the distance users between two locations */
     public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
@@ -940,6 +979,23 @@ public final class SamplingLibrary {
             return NETWORK_TYPE_UNKNOWN;
         }      
     }
+    
+    /*Get Phone Type*/
+    public static String getPhoneType(Context context) {
+        TelephonyManager telManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+
+        int phoneType = telManager.getPhoneType();
+        switch(phoneType){
+        case TelephonyManager.PHONE_TYPE_CDMA:
+            return PHONE_TYPE_CDMA;
+        case TelephonyManager.PHONE_TYPE_GSM:
+            return PHONE_TYPE_GSM;
+        default:
+            return PHONE_TYPE_NONE;
+        }      
+    }
+    
 
     /* Check is it network roaming */
     public static boolean getRoamingStatus(Context context) {

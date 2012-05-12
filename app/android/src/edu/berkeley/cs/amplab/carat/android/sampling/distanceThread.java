@@ -69,7 +69,7 @@ public class distanceThread extends Thread{
                     holder.put("host", "maps.google.com");
                     holder.put("address_language", "en_FI");
                     holder.put("request_address", true);
-                    holder.put("radio_type", "gsm");
+                    holder.put("radio_type", curCell.radioType);
      
                     JSONObject data = new JSONObject();
                     data.put("mobile_country_code", curCell.MCC);
