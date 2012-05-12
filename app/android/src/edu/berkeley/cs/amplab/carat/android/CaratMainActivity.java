@@ -7,6 +7,7 @@ import java.util.Properties;
 import com.zubhium.ZubhiumSDK;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
+import edu.berkeley.cs.amplab.carat.android.sampling.distanceThread;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class CaratMainActivity extends TabActivity {
     // Thread that sends samples when phone is woken up, GUI is started, or at
     // 15 min intervals.
     private CommsThread sampleSender = null;
-
+    private distanceThread distanceInfo = null;
     private UiRefreshThread uiRefreshThread = null;
 
     // Hold the tabs of the UI.
@@ -236,6 +237,7 @@ public class CaratMainActivity extends TabActivity {
     protected void onResume() {
         CaratApplication.setMain(this);
         // Thread for sending samples every 15 mins
+        
         if (sampleSender == null) {
             sampleSender = new CommsThread((CaratApplication) getApplication());
             sampleSender.start();
@@ -247,7 +249,18 @@ public class CaratMainActivity extends TabActivity {
                 }
             }.start();
         }
-
+        
+        if (distanceInfo == null) {
+            distanceInfo= new distanceThread((CaratApplication) getApplication());
+            distanceInfo.start();
+        } else {
+            Log.d("CaratMainActivity", "Resuming location distance calculation!");
+            new Thread() {
+                public void run() {
+                    distanceInfo.appResumed();
+                }
+            }.start();
+        }
         // Thread for refreshing the UI with new reports every 5 mins and on
         // resume
         if (uiRefreshThread == null) {
@@ -274,8 +287,11 @@ public class CaratMainActivity extends TabActivity {
     public void finish() {
         sampleSender.stopRunning();
         sampleSender.appResumed();
+        distanceInfo.appResumed();
+        distanceInfo.stopRunning();
         uiRefreshThread.stopRunning();
         uiRefreshThread.appResumed();
+
         CaratApplication app = (CaratApplication) getApplication();
         app.c.resetConnection();
 

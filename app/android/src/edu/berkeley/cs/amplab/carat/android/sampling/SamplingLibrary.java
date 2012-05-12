@@ -1196,54 +1196,7 @@ public final class SamplingLibrary {
         nd.setWifiLinkSpeed(wifiLinkSpeed);
         // Add NetworkDetails substruct to Sample
         mySample.setNetworkDetails(nd);
-        CellInfo startCellLoc=SamplingLibrary.getCellInfo(context);
-        distanceThread location = new distanceThread(startCellLoc);
-        location.start();
-        //Log.v("Move distance","The client already moved "+distance);
 
-        //     Log.v("itude",location.itude.latitude);
-/*        startLatitude=Double.parseDouble(location.itude.latitude);
-        startLongitude=Double.parseDouble(location.itude.longitude);
-        distance=0;
-        Log.v("gsmItude","gsmStartLatitude is" +startLatitude +"\ngsmStartLongitude is"+startLongitude);
-        Log.v("Move distance","The client already moved "+distance);
-*/        //CellLocation deviceLoc = SamplingLibrary.getDeviceLocation(context);
-            /*
-            if(startLatitude==0 && startLongitude==0){
-                Itude gsmStartItude=new Itude();
-                Log.v("cellloc", "mcc is:"+cellLoc.MCC+"\nmnc is:"+cellLoc.MNC+"\nlac is"+cellLoc.LAC+"\ncid is:"+cellLoc.CID);
-
-                try {
-                    gsmStartItude=SamplingLibrary.getItude(startCellLoc);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                startLatitude=Double.parseDouble(gsmStartItude.latitude);
-                startLongitude=Double.parseDouble(gsmStartItude.longitude);
-                distance=0;
-                Log.v("gsmItude","gsmStartLatitude is" +startLatitude +"\ngsmStartLongitude is"+startLongitude);
-                Log.v("Move distance","The client already moved "+distance);
-            }
-              else{
-                double endLatitude;
-                double endLongitude;
-                Itude gsmEndItude=new Itude();
-
-                CellInfo endCellLoc=SamplingLibrary.getCellInfo(context);
-                try {
-                    gsmEndItude=SamplingLibrary.getItude(endCellLoc);
-                } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                endLatitude=Double.parseDouble(gsmEndItude.latitude);
-                endLongitude=Double.parseDouble(gsmEndItude.latitude);
-                Log.v("gsmItude","gsmStartLatitude is" +endLatitude +"\ngsmStartLongitude is"+endLongitude);
-                distance=distance+SamplingLibrary.getDistance(startLatitude, startLongitude, endLatitude, endLongitude);
-                Log.v("Move Distance", "Distance is:"+distance); 
-            }
-          */
         // TODO: cast this to GSMLocation or CDMALocation and use it
 
         // TODO: is this used for something?
@@ -1407,7 +1360,7 @@ public final class SamplingLibrary {
         cs.setCpuUsage(getUsage(idleAndCpu1, idleAndCpu2));
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
-
+   
         return mySample;
     }
 }

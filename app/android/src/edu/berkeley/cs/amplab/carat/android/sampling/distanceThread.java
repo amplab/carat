@@ -12,20 +12,42 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
 import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
 
 public class distanceThread extends Thread{
-    String latitude=null;
-    String longitude=null;
-    CellInfo curCell;
+    private boolean isRunning = true;
+    double latitude=0;
+    double longitude=0;
+    double distance=0;
+    CaratApplication app = null;
+
     
-    public distanceThread(CellInfo curCell) {
-        this.curCell = curCell;
+    public distanceThread(CaratApplication app) {
+        this.app = app;
     }
-    /*Get the latitude and longitude of the current location*/ 
+    public void stopRunning() {
+        isRunning = false;
+    }
+    
+    public void appResumed() {
+        synchronized (distanceThread.this) {
+            distanceThread.this.interrupt();
+        }
+    }
+   
+   /*Get the latitude and longitude of the current location*/ 
     public void run () {
-        
+        while (isRunning) {
+            CellInfo curCell = new CellInfo();
+            Context c = app.getApplicationContext();
+            curCell=SamplingLibrary.getCellInfo(c);    
+            
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost request = new HttpPost("http://www.google.com/loc/json");
         try {
@@ -63,21 +85,47 @@ public class distanceThread extends Thread{
                 sb.append(info);
                 info=br.readLine();
             }
-            Log.v("hello","hell"+sb+sb.length());
-            if(sb.length()==0){
-                latitude =null;
-                longitude = null;
-                Log.v("Itude", latitude + longitude);
+            Log.v("ResultLocation","Location info:"+sb+sb.length());
+            if(latitude==0 && longitude==0){
+                if(sb.length()==0){
+                    Log.v("Error", "Get location error!\n");
+                }
+                else{
+                    JSONObject json = new JSONObject(sb.toString());
+                    JSONObject subjosn = new JSONObject(json.getString("location"));
+     
+                    latitude=Double.parseDouble(subjosn.getString("latitude"));
+                    longitude = Double.parseDouble(subjosn.getString("longitude"));
+                    distance=0;
+                    Log.v("Itude & distance", "latitude:"+latitude+"longitude:"+longitude+"Distance:"+distance);
+                }            
+            
             }
             else{
-                JSONObject json = new JSONObject(sb.toString());
-                JSONObject subjosn = new JSONObject(json.getString("location"));
-     
-                latitude=subjosn.getString("latitude");
-                longitude = subjosn.getString("longitude");
-             
-            Log.v("Itude", "latitude:"+latitude+"longitude:"+longitude);
-            }            
+                if(sb.length()==0){
+                    Log.v("Error", "Get location error!\n");
+                }
+                else{
+                    JSONObject json = new JSONObject(sb.toString());
+                    JSONObject subjosn = new JSONObject(json.getString("location"));
+                    double endlatitude = Double.parseDouble(subjosn.getString("latitude"));
+                    double endlongitude = Double.parseDouble(subjosn.getString("longitude")) ;
+                    distance=distance+SamplingLibrary.getDistance(latitude, longitude, endlatitude, endlongitude);
+                    
+                    Log.v("Itude & distance", "latitude:"+latitude+"longitude:"+longitude+"Distance:"+distance);
+                }
+                
+            }
+            try {
+                sleep(CaratApplication.COMMS_INTERVAL);
+            } catch (InterruptedException e) {
+                
+                try {
+                    sleep(CaratApplication.COMMS_WIFI_WAIT);
+                } catch (InterruptedException e1) {
+                
+                }
+            }
         } catch (Exception e) {
             Log.e(e.getMessage(), e.toString());
         } 
@@ -87,4 +135,5 @@ public class distanceThread extends Thread{
         }
         
     }
+   }
 }
