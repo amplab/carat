@@ -849,8 +849,7 @@ public final class SamplingLibrary {
         return curCell;
     }
     
-    
-    
+    /* Get the distance users between two locations */
     public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
         float[] results=new float[1];  
         Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);  
