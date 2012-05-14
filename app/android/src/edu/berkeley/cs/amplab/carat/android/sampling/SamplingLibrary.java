@@ -131,8 +131,9 @@ public final class SamplingLibrary {
     public static double startLatitude=0;
     public static double startLongitude=0;
     public static double distance=0;
+
     private static final String STAG = "getSample";
-    
+
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
     }
@@ -826,17 +827,25 @@ public final class SamplingLibrary {
         Log.v("GPS", "GPS is :" + gpsEnabled);
         return gpsEnabled;
     }
-    
-    /*check the GSM cell information*/
-    public static CellInfo getCellInfo(Context context){
+
+    /* check the GSM cell information */
+    public static CellInfo getCellInfo(Context context) {
         CellInfo curCell = new CellInfo();
-       
-        TelephonyManager myTelManager = (TelephonyManager)context
+
+        TelephonyManager myTelManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
+        
+        String netOperator = myTelManager.getNetworkOperator();
+        
+        // Fix crash when not connected to network (airplane mode, underground, etc)
+        if (netOperator == null || netOperator.length() < 3){
+            return curCell;
+        }
+        
+        /* FIXME: Actually check for mobile network status == connected before doing this stuff. */
     
         if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_CDMA){
             CdmaCellLocation cdmaLocation=(CdmaCellLocation) myTelManager.getCellLocation();
-            String netOperator=myTelManager.getNetworkOperator();
             if(cdmaLocation==null){
                 Log.v("cdmaLocation","CDMA Location:"+cdmaLocation);
             }
@@ -858,11 +867,9 @@ public final class SamplingLibrary {
                 Log.v("LAC", "LAC is:"+lac);
             }
             
-        }
-        else if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_GSM){
+        } else if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_GSM){
             GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager.getCellLocation();
-            String netOperator = myTelManager.getNetworkOperator();
-        
+            
             if (gsmLocation == null){
                 Log.v("gsmLocation", "GSM Location:" + gsmLocation);
             }
@@ -886,9 +893,6 @@ public final class SamplingLibrary {
            }
         return curCell;
     }
-    
-    
-    
     
     /* Get the distance users between two locations */
     public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
@@ -954,7 +958,7 @@ public final class SamplingLibrary {
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int netType = telManager.getNetworkType();
-        switch(netType){
+        switch (netType) {
         case TelephonyManager.NETWORK_TYPE_1xRTT:
             return NETWORK_TYPE_1xRTT;
         case TelephonyManager.NETWORK_TYPE_CDMA:
@@ -979,7 +983,7 @@ public final class SamplingLibrary {
             return NETWORK_TYPE_UMTS;
         default:
             return NETWORK_TYPE_UNKNOWN;
-        }      
+        }
     }
     
     /*Get Phone Type*/
@@ -1205,7 +1209,7 @@ public final class SamplingLibrary {
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
         String action = intent.getAction();
-        
+
         // Construct sample and return it in the end
         Sample mySample = new Sample();
         mySample.setUuId(SamplingLibrary.getUuid(context));

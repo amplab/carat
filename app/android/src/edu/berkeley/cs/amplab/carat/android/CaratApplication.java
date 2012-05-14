@@ -47,8 +47,8 @@ public class CaratApplication extends Application {
 
     // Send samples every 15 minutes
     public static final long COMMS_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-    // When waking up from screen off, wait 10 seconds for wifi etc to come up
-    public static final long COMMS_WIFI_WAIT = 10 * 1000;
+    // When waking up from screen off, wait 5 seconds for wifi etc to come up
+    public static final long COMMS_WIFI_WAIT = 5 * 1000;
     // Send up to 10 samples at a time
     public static final int COMMS_MAX_UPLOAD_BATCH = 10;
 
