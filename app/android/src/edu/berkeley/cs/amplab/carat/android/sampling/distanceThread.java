@@ -53,12 +53,10 @@ public class distanceThread extends Thread{
         Context c = app.getApplicationContext();
         
         while (isRunning) {
-            CellInfo curCell = new CellInfo();  
-            curCell=SamplingLibrary.getCellInfo(c);  
+            CellInfo curCell = SamplingLibrary.getCellInfo(c);  
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
             
-            
-            if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED) {
+            if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED && curCell.radioType != null) {
                 
                 HttpClient httpclient = new DefaultHttpClient();
                 HttpPost request = new HttpPost("http://www.google.com/loc/json");

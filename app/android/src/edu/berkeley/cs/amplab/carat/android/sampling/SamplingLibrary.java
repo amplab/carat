@@ -15,15 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallInfo;
@@ -1232,6 +1223,9 @@ public final class SamplingLibrary {
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
 
+        // Required in new Carat protocol
+        mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
+        
         // Network details
         NetworkDetails nd = new NetworkDetails();
 
@@ -1388,8 +1382,6 @@ public final class SamplingLibrary {
         // Maybe we should just have a cpu usage percentage.
         // AndroidSample otherInfo = new AndroidSample();
 
-        // Required in new Carat protocol
-        mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
         mySample.setBatteryLevel(batteryLevel);
         mySample.setBatteryState(batteryStatus);
 
