@@ -447,10 +447,12 @@ public final class SamplingLibrary {
              * process names
              */
             for (RunningAppProcessInfo i : runningProcs) {
-                int idx = i.processName.lastIndexOf(':');
-                if (idx <= 0)
-                    idx = i.processName.length();
-                i.processName = i.processName.substring(0, idx);
+                if (i != null && i.processName != null) {
+                    int idx = i.processName.lastIndexOf(':');
+                    if (idx <= 0)
+                        idx = i.processName.length();
+                    i.processName = i.processName.substring(0, idx);
+                }
             }
 
             runningAppInfo = new WeakReference<List<RunningAppProcessInfo>>(

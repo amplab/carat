@@ -94,11 +94,14 @@ public class ProtocolClient {
      * Unknown error, next time build connection from scratch
      */
     public static void resetConnection(){
+        if (soc != null)
+            close();
         soc = null;
     }
 
     public static void close() {
-        soc.close();
+        if (soc != null)
+            soc.close();
     }
 
     /**
