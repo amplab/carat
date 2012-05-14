@@ -513,6 +513,8 @@ public final class SamplingLibrary {
      */
     public static List<ProcessInfo> getRunningProcessInfoForSample(
             Context context) {
+        // Reset list for each sample
+        runningAppInfo = null;
         List<RunningAppProcessInfo> list = getRunningProcessInfo(context);
         List<ProcessInfo> result = new ArrayList<ProcessInfo>();
 

@@ -166,7 +166,8 @@ public class CommunicationManager {
         Reports r = c.getReports(uuid, getFeatures("Model", model, "OS", os));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
-        a.s.writeReports(r);
+        if (r != null)
+            a.s.writeReports(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
@@ -182,7 +183,8 @@ public class CommunicationManager {
                 getFeatures("ReportType", "Bug", "Model", model));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
-        a.s.writeBugReport(r);
+        if (r != null)
+            a.s.writeBugReport(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
@@ -199,7 +201,8 @@ public class CommunicationManager {
 
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
-        a.s.writeHogReport(r);
+        if (r != null)
+            a.s.writeHogReport(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
