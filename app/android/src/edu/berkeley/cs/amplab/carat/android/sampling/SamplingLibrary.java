@@ -885,12 +885,44 @@ public final class SamplingLibrary {
         return curCell;
     }
     
+    /**
+     * Return distance between <code>lastKnownLocation</code> and a newly obtained location from any available provider.
+     * @param c from Intent or Application.
+     * @return
+     */
+    public static double getDistance(Context c){
+        Location l = getLastKnownLocation(c);
+        double distance = 0.0;
+        if (lastKnownLocation != null && l != null){
+            distance = lastKnownLocation.distanceTo(l);
+        }
+        lastKnownLocation = l;
+        return distance;
+    }
+    
+    private static Location getLastKnownLocation(Context c) {
+        List<String> providers = getEnabledLocationProviders(c);
+        if (providers.size() > 0) {
+            String provider = providers.get(0);
+            Location l = getLastKnownLocation(c, provider);
+            return l;
+        }
+        return null;
+    }
+    
+    private static Location getLastKnownLocation(Context context, String provider){
+        LocationManager lm = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+        Location l = lm.getLastKnownLocation(provider);
+        return l;
+    }
+    
     /* Get the distance users between two locations */
     public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
         float[] results=new float[1];  
-        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);  
+        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
         return results[0];  
-    }  
+    }
     
     /**
      * Return a list of enabled LocationProviders, such as GPS, Network, etc.
@@ -1196,6 +1228,8 @@ public final class SamplingLibrary {
         call = callInfo.get(time);
         return call;
     }
+    
+    private static Location lastKnownLocation = null; 
 
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
@@ -1220,6 +1254,12 @@ public final class SamplingLibrary {
         List<String> enabledLocationProviders = SamplingLibrary
                 .getEnabledLocationProviders(context);
         mySample.setLocationProviders(enabledLocationProviders);
+        
+        distance = getDistance(context);
+        mySample.setDistanceTraveled(distance);
+        Log.v(STAG, "distanceTravelled=" +distance);
+        
+        
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
 
