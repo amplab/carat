@@ -135,8 +135,8 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
     public void onLocationChanged(Location location) {
         if (lastKnownLocation != null && location != null) {
             distance = lastKnownLocation.distanceTo(location);
-            CharSequence text = "Location change with distance = " + distance;
-            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+            /*CharSequence text = "Location change with distance = " + distance;
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show();*/
         }
         lastKnownLocation = location;
     }
