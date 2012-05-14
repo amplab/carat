@@ -39,7 +39,7 @@ public class CaratMainActivity extends TabActivity {
     // Thread that sends samples when phone is woken up, GUI is started, or at
     // 15 min intervals.
     private CommsThread sampleSender = null;
-    private distanceThread distanceInfo = null;
+    //private distanceThread distanceInfo = null;
     private UiRefreshThread uiRefreshThread = null;
 
     // Hold the tabs of the UI.
@@ -250,7 +250,7 @@ public class CaratMainActivity extends TabActivity {
             }.start();
         }
         
-        if (distanceInfo == null) {
+        /*if (distanceInfo == null) {
             distanceInfo= new distanceThread((CaratApplication) getApplication());
             distanceInfo.start();
         } else {
@@ -260,7 +260,7 @@ public class CaratMainActivity extends TabActivity {
                     distanceInfo.appResumed();
                 }
             }.start();
-        }
+        }*/
         // Thread for refreshing the UI with new reports every 5 mins and on
         // resume
         if (uiRefreshThread == null) {
@@ -287,8 +287,8 @@ public class CaratMainActivity extends TabActivity {
     public void finish() {
         sampleSender.stopRunning();
         sampleSender.appResumed();
-        distanceInfo.appResumed();
-        distanceInfo.stopRunning();
+        //distanceInfo.appResumed();
+        //distanceInfo.stopRunning();
         uiRefreshThread.stopRunning();
         uiRefreshThread.appResumed();
 
