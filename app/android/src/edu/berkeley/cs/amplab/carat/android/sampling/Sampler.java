@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.Date;
+import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
@@ -14,19 +15,41 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-public class Sampler extends BroadcastReceiver {
+public class Sampler extends BroadcastReceiver implements LocationListener{
 
+    private static final String TAG = "Sampler";
+    
 	CaratSampleDB ds = null;
 	private SharedPreferences sharedPreferences;
 	private Editor editor;
+	private Context context = null;
+	
+	private void requestLocationUpdates(){
+	    LocationManager lm = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+	    lm.removeUpdates(this);
+        List<String> providers = SamplingLibrary.getEnabledLocationProviders(context);
+        if (providers != null){
+            for (String provider: providers){
+            lm.requestLocationUpdates(provider, CaratApplication.FRESHNESS_TIMEOUT, 0, this);
+            Log.v(TAG, "Location updates requested for " + provider);
+            }
+        }
+	}
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (ds == null) {
+		    this.context = context;
 			ds = new CaratSampleDB(context);
+			requestLocationUpdates();
 		}
 		final Context c = context;
 		final Intent i = intent;
@@ -82,18 +105,54 @@ public class Sampler extends BroadcastReceiver {
 		// FIXME: or create a takeSample(...) with more features returned than
 		// in the basic Sample class
 
+	    // Update last known location...
+	    if (lastKnownLocation == null)
+	        lastKnownLocation = SamplingLibrary.getLastKnownLocation(context);
 		Sample s = SamplingLibrary.getSample(context, intent,
 				ds.getLastSample(context));
+		// Set distance to current distance value
+		if (s != null){
+		    Log.v(TAG, "distanceTravelled=" + distance);
+		    s.setDistanceTraveled(distance);
+		}
 
 		// Write to database
 		// But only after first real numbers
 		if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
 			long id = ds.putSample(s);
-			Log.d("Sampler", "Took sample " + id + " for " + intent.getAction());
+			Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
 			/*Toast.makeText(context,
 					"Took sample " + id + " for " + intent.getAction(),
 					Toast.LENGTH_LONG).show();*/
 		}
 		return s;
 	}
+	
+	private Location lastKnownLocation = null;
+	private double distance = 0.0;
+
+    @Override
+    public void onLocationChanged(Location location) {
+        if (lastKnownLocation != null && location != null) {
+            distance = lastKnownLocation.distanceTo(location);
+            CharSequence text = "Location change with distance = " + distance;
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show();
+        }
+        lastKnownLocation = location;
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        requestLocationUpdates();
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        requestLocationUpdates();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        requestLocationUpdates();
+    }
 }

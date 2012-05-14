@@ -43,6 +43,7 @@ import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
+import android.location.Criteria;
 import android.location.GpsStatus;
 import android.location.Location;
 import android.location.LocationManager;
@@ -94,34 +95,37 @@ public final class SamplingLibrary {
     public static String CALL_STATE_IDLE = "idle";
     public static String CALL_STATE_OFFHOOK = "offhook";
     public static String CALL_STATE_RINGING = "ringing";
-    
- // Mobile network constants
-    /*we cannot find network types:EVDO_B,LTE,EHRPD,HSPAP from TelephonyManager now*/
-    public static String NETWORK_TYPE_UNKNOWN="unknown";
-    public static String NETWORK_TYPE_GPRS="gprs";
-    public static String NETWORK_TYPE_EDGE="edge";
-    public static String NETWORK_TYPE_UMTS="utms";
-    public static String NETWORK_TYPE_CDMA="cdma";
-    public static String NETWORK_TYPE_EVDO_0="evdo_0";
-    public static String NETWORK_TYPE_EVDO_A="evdo_a";
-    //public static String NETWORK_TYPE_EVDO_B="evdo_b";
-    public static String NETWORK_TYPE_1xRTT="1xrtt";
-    public static String NETWORK_TYPE_HSDPA="hsdpa";
-    public static String NETWORK_TYPE_HSUPA="hsupa";
-    public static String NETWORK_TYPE_HSPA="hspa";
-    public static String NETWORK_TYPE_IDEN="iden";
-    //public static String NETWORK_TYPE_LTE="lte";
-    //public static String NETWORK_TYPE_EHRPD="ehrpd";
-    //public static String NETWORK_TYPE_HSPAP="hspap";
- // Phone type constants
-    public static String PHONE_TYPE_CDMA="cdma";
-    public static String PHONE_TYPE_GSM="gsm";
-   // public static String PHONE_TYPE_SIP="sip";
-    public static String PHONE_TYPE_NONE="none";
-    
-    public static double startLatitude=0;
-    public static double startLongitude=0;
-    public static double distance=0;
+
+    // Mobile network constants
+    /*
+     * we cannot find network types:EVDO_B,LTE,EHRPD,HSPAP from TelephonyManager
+     * now
+     */
+    public static String NETWORK_TYPE_UNKNOWN = "unknown";
+    public static String NETWORK_TYPE_GPRS = "gprs";
+    public static String NETWORK_TYPE_EDGE = "edge";
+    public static String NETWORK_TYPE_UMTS = "utms";
+    public static String NETWORK_TYPE_CDMA = "cdma";
+    public static String NETWORK_TYPE_EVDO_0 = "evdo_0";
+    public static String NETWORK_TYPE_EVDO_A = "evdo_a";
+    // public static String NETWORK_TYPE_EVDO_B="evdo_b";
+    public static String NETWORK_TYPE_1xRTT = "1xrtt";
+    public static String NETWORK_TYPE_HSDPA = "hsdpa";
+    public static String NETWORK_TYPE_HSUPA = "hsupa";
+    public static String NETWORK_TYPE_HSPA = "hspa";
+    public static String NETWORK_TYPE_IDEN = "iden";
+    // public static String NETWORK_TYPE_LTE="lte";
+    // public static String NETWORK_TYPE_EHRPD="ehrpd";
+    // public static String NETWORK_TYPE_HSPAP="hspap";
+    // Phone type constants
+    public static String PHONE_TYPE_CDMA = "cdma";
+    public static String PHONE_TYPE_GSM = "gsm";
+    // public static String PHONE_TYPE_SIP="sip";
+    public static String PHONE_TYPE_NONE = "none";
+
+    public static double startLatitude = 0;
+    public static double startLongitude = 0;
+    public static double distance = 0;
 
     private static final String STAG = "getSample";
 
@@ -473,7 +477,7 @@ public final class SamplingLibrary {
             boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
             isSystemApp = isSystemApp
                     || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
-            //Log.v(STAG, processName + " is System app? " + isSystemApp);
+            // Log.v(STAG, processName + " is System app? " + isSystemApp);
             return isSystemApp;
         }
         return false;
@@ -825,105 +829,116 @@ public final class SamplingLibrary {
 
         TelephonyManager myTelManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        
+
         String netOperator = myTelManager.getNetworkOperator();
-        
-        // Fix crash when not connected to network (airplane mode, underground, etc)
-        if (netOperator == null || netOperator.length() < 3){
+
+        // Fix crash when not connected to network (airplane mode, underground,
+        // etc)
+        if (netOperator == null || netOperator.length() < 3) {
             return curCell;
         }
-        
-        /* FIXME: Actually check for mobile network status == connected before doing this stuff. */
-    
-        if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_CDMA){
-            CdmaCellLocation cdmaLocation=(CdmaCellLocation) myTelManager.getCellLocation();
-            if(cdmaLocation==null){
-                Log.v("cdmaLocation","CDMA Location:"+cdmaLocation);
-            }
-            else{
-                int cid=cdmaLocation.getBaseStationId();
-                int lac=cdmaLocation.getNetworkId();
-                int mnc=cdmaLocation.getSystemId();
-                int mcc=Integer.parseInt(netOperator.substring(0, 3));
-                
-                curCell.CID=cid;
-                curCell.LAC=lac;
-                curCell.MNC=mnc;
-                curCell.MCC=mcc;
-                curCell.radioType=SamplingLibrary.getMobileNetworkType(context);
-                
-                Log.v("MCC", "MCC is:"+mcc);
-                Log.v("MNC", "MNC is:"+mnc);
-                Log.v("CID", "CID is:"+cid);
-                Log.v("LAC", "LAC is:"+lac);
-            }
-            
-        } else if(SamplingLibrary.getPhoneType(context)==PHONE_TYPE_GSM){
-            GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager.getCellLocation();
-            
-            if (gsmLocation == null){
-                Log.v("gsmLocation", "GSM Location:" + gsmLocation);
-            }
-                else{     
-                    int cid = gsmLocation.getCid();
-                    int lac = gsmLocation.getLac();
-                    int mcc = Integer.parseInt(netOperator.substring(0, 3));
-                    int mnc = Integer.parseInt(netOperator.substring(3));
 
-                    curCell.MCC = mcc;
-                    curCell.MNC = mnc;
-                    curCell.LAC = lac;
-                    curCell.CID = cid;
-                    curCell.radioType=SamplingLibrary.getMobileNetworkType(context);
-     
-                    Log.v("MCC", "MCC is:"+mcc);
-                    Log.v("MNC", "MNC is:"+mnc);
-                    Log.v("CID", "CID is:"+cid);
-                    Log.v("LAC", "LAC is:"+lac);
-                }    
-           }
+        /*
+         * FIXME: Actually check for mobile network status == connected before
+         * doing this stuff.
+         */
+
+        if (SamplingLibrary.getPhoneType(context) == PHONE_TYPE_CDMA) {
+            CdmaCellLocation cdmaLocation = (CdmaCellLocation) myTelManager
+                    .getCellLocation();
+            if (cdmaLocation == null) {
+                Log.v("cdmaLocation", "CDMA Location:" + cdmaLocation);
+            } else {
+                int cid = cdmaLocation.getBaseStationId();
+                int lac = cdmaLocation.getNetworkId();
+                int mnc = cdmaLocation.getSystemId();
+                int mcc = Integer.parseInt(netOperator.substring(0, 3));
+
+                curCell.CID = cid;
+                curCell.LAC = lac;
+                curCell.MNC = mnc;
+                curCell.MCC = mcc;
+                curCell.radioType = SamplingLibrary
+                        .getMobileNetworkType(context);
+
+                Log.v("MCC", "MCC is:" + mcc);
+                Log.v("MNC", "MNC is:" + mnc);
+                Log.v("CID", "CID is:" + cid);
+                Log.v("LAC", "LAC is:" + lac);
+            }
+
+        } else if (SamplingLibrary.getPhoneType(context) == PHONE_TYPE_GSM) {
+            GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager
+                    .getCellLocation();
+
+            if (gsmLocation == null) {
+                Log.v("gsmLocation", "GSM Location:" + gsmLocation);
+            } else {
+                int cid = gsmLocation.getCid();
+                int lac = gsmLocation.getLac();
+                int mcc = Integer.parseInt(netOperator.substring(0, 3));
+                int mnc = Integer.parseInt(netOperator.substring(3));
+
+                curCell.MCC = mcc;
+                curCell.MNC = mnc;
+                curCell.LAC = lac;
+                curCell.CID = cid;
+                curCell.radioType = SamplingLibrary
+                        .getMobileNetworkType(context);
+
+                Log.v("MCC", "MCC is:" + mcc);
+                Log.v("MNC", "MNC is:" + mnc);
+                Log.v("CID", "CID is:" + cid);
+                Log.v("LAC", "LAC is:" + lac);
+            }
+        }
         return curCell;
     }
-    
+
     /**
-     * Return distance between <code>lastKnownLocation</code> and a newly obtained location from any available provider.
-     * @param c from Intent or Application.
+     * Return distance between <code>lastKnownLocation</code> and a newly
+     * obtained location from any available provider.
+     * 
+     * @param c
+     *            from Intent or Application.
      * @return
      */
-    public static double getDistance(Context c){
+    public static double getDistance(Context c) {
         Location l = getLastKnownLocation(c);
         double distance = 0.0;
-        if (lastKnownLocation != null && l != null){
+        if (lastKnownLocation != null && l != null) {
             distance = lastKnownLocation.distanceTo(l);
         }
         lastKnownLocation = l;
         return distance;
     }
-    
-    private static Location getLastKnownLocation(Context c) {
-        List<String> providers = getEnabledLocationProviders(c);
-        if (providers.size() > 0) {
-            String provider = providers.get(0);
+
+    public static Location getLastKnownLocation(Context c) {
+        String provider = getBestProvider(c);
+        if (provider != null) {
             Location l = getLastKnownLocation(c, provider);
             return l;
         }
         return null;
     }
-    
-    private static Location getLastKnownLocation(Context context, String provider){
+
+    private static Location getLastKnownLocation(Context context,
+            String provider) {
         LocationManager lm = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);
         Location l = lm.getLastKnownLocation(provider);
         return l;
     }
-    
+
     /* Get the distance users between two locations */
-    public static double getDistance(double startLatitude, double startLongitude, double endLatitude, double endLongitude) {  
-        float[] results=new float[1];  
-        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
-        return results[0];  
+    public static double getDistance(double startLatitude,
+            double startLongitude, double endLatitude, double endLongitude) {
+        float[] results = new float[1];
+        Location.distanceBetween(startLatitude, startLongitude, endLatitude,
+                endLongitude, results);
+        return results[0];
     }
-    
+
     /**
      * Return a list of enabled LocationProviders, such as GPS, Network, etc.
      * 
@@ -932,18 +947,16 @@ public final class SamplingLibrary {
      * @return
      */
     public static List<String> getEnabledLocationProviders(Context context) {
-        List<String> res = new ArrayList<String>();
         LocationManager lm = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);
-        List<String> allProviders = lm.getAllProviders();
-        for (String provider : allProviders){
-            if (provider.equals("passive") || provider.equals("gps"))
-                continue;
-            if (lm.isProviderEnabled(provider))
-                res.add(provider);
-        }
+        return lm.getProviders(true);
+    }
 
-        return res;
+    public static String getBestProvider(Context context) {
+        LocationManager lm = (LocationManager) context
+                .getSystemService(Context.LOCATION_SERVICE);
+        Criteria c = new Criteria();
+        return lm.getBestProvider(c, true);
     }
 
     /* Check the maximum number of satellites can be used in the satellite list */
@@ -1008,23 +1021,22 @@ public final class SamplingLibrary {
             return NETWORK_TYPE_UNKNOWN;
         }
     }
-    
-    /*Get Phone Type*/
+
+    /* Get Phone Type */
     public static String getPhoneType(Context context) {
         TelephonyManager telManager = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
 
         int phoneType = telManager.getPhoneType();
-        switch(phoneType){
+        switch (phoneType) {
         case TelephonyManager.PHONE_TYPE_CDMA:
             return PHONE_TYPE_CDMA;
         case TelephonyManager.PHONE_TYPE_GSM:
             return PHONE_TYPE_GSM;
         default:
             return PHONE_TYPE_NONE;
-        }      
+        }
     }
-    
 
     /* Check is it network roaming */
     public static boolean getRoamingStatus(Context context) {
@@ -1228,8 +1240,8 @@ public final class SamplingLibrary {
         call = callInfo.get(time);
         return call;
     }
-    
-    private static Location lastKnownLocation = null; 
+
+    private static Location lastKnownLocation = null;
 
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {
@@ -1254,17 +1266,13 @@ public final class SamplingLibrary {
         List<String> enabledLocationProviders = SamplingLibrary
                 .getEnabledLocationProviders(context);
         mySample.setLocationProviders(enabledLocationProviders);
-        
-        distance = getDistance(context);
-        mySample.setDistanceTraveled(distance);
-        Log.v(STAG, "distanceTravelled=" +distance);
-        
+
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
 
         // Required in new Carat protocol
         mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
-        
+
         // Network details
         NetworkDetails nd = new NetworkDetails();
 
@@ -1302,22 +1310,21 @@ public final class SamplingLibrary {
         /* Total call time */
         // long totalCallTime=0;
         // totalCallTime=SamplingLibrary.getTotalCallDur(context);
-       
-       /*long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
-        Log.d(STAG, "Call time since boot: Incoming=" + incomingOutgoingIdle[0]
-                + " Outgoing=" + incomingOutgoingIdle[1] + " idle="
-                + incomingOutgoingIdle[2]);
 
-        // Summary Call info
-        CallInfo ci = new CallInfo();
-        String callState = SamplingLibrary.getCallState(context);
-        ci.setCallStatus(callState);
-        ci.setIncomingCallTime(incomingOutgoingIdle[0]);
-        ci.setOutgoingCallTime(incomingOutgoingIdle[1]);
-        ci.setNonCallTime(incomingOutgoingIdle[2]);
-
-        mySample.setCallInfo(ci);
-        */
+        /*
+         * long[] incomingOutgoingIdle = getCalltimesSinceBoot(context);
+         * Log.d(STAG, "Call time since boot: Incoming=" +
+         * incomingOutgoingIdle[0] + " Outgoing=" + incomingOutgoingIdle[1] +
+         * " idle=" + incomingOutgoingIdle[2]);
+         * 
+         * // Summary Call info CallInfo ci = new CallInfo(); String callState =
+         * SamplingLibrary.getCallState(context); ci.setCallStatus(callState);
+         * ci.setIncomingCallTime(incomingOutgoingIdle[0]);
+         * ci.setOutgoingCallTime(incomingOutgoingIdle[1]);
+         * ci.setNonCallTime(incomingOutgoingIdle[2]);
+         * 
+         * mySample.setCallInfo(ci);
+         */
 
         double level = intent.getIntExtra("level", -1);
         int health = intent.getIntExtra("health", 0);
@@ -1452,7 +1459,7 @@ public final class SamplingLibrary {
         cs.setCpuUsage(getUsage(idleAndCpu1, idleAndCpu2));
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
-   
+
         return mySample;
     }
 }
