@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.flurry.android.FlurryAgent;
 import com.zubhium.ZubhiumSDK;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
@@ -49,6 +50,7 @@ public class CaratMainActivity extends TabActivity {
     ZubhiumSDK sdk = null;
     // Key File
     public static final String ZUBHIUM_KEYFILE = "zubhium.properties";
+    public static final String FLURRY_KEYFILE = "flurry.properties";
 
     /** Called when the activity is first created. */
     @Override
@@ -164,6 +166,49 @@ public class CaratMainActivity extends TabActivity {
 
         tabHost.setCurrentTab(0);
     }
+    
+    
+
+    /* (non-Javadoc)
+     * @see android.app.Activity#onStart()
+     */
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+        
+        String secretKey = null;
+        Properties properties = new Properties();
+        try {
+            InputStream raw = CaratMainActivity.this.getAssets().open(
+                    FLURRY_KEYFILE);
+            if (raw != null) {
+                properties.load(raw);
+                if (properties.containsKey("secretkey"))
+                    secretKey = properties
+                            .getProperty("secretkey", "secretkey");
+                Log.d(TAG, "Set Flurry secret key.");
+            } else
+                Log.e(TAG, "Could not open Flurry key file!");
+        } catch (IOException e) {
+            Log.e(TAG, "Could not open Flurry key file: " + e.toString());
+        }
+        if (secretKey != null) {
+            FlurryAgent.onStartSession(getApplicationContext(), secretKey);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see android.app.ActivityGroup#onStop()
+     */
+    @Override
+    protected void onStop() {
+        // TODO Auto-generated method stub
+        super.onStop();
+        FlurryAgent.onEndSession(getApplicationContext());
+    }
+
+
 
     public static void changeTab(int tab) {
         tabHost.setCurrentTab(tab);

@@ -32,6 +32,7 @@ Carat My Device Screen layout
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:orientation="vertical" >
 
@@ -41,6 +42,7 @@ Carat My Device Screen layout
                         android:layout_height="wrap_content"
                         android:text="@string/jscore"
                         android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textSize="32dip"
                         android:textColor="@color/brown" />
 
                     <TextView
@@ -58,6 +60,7 @@ Carat My Device Screen layout
                     android:layout_gravity="center_vertical"
                     android:text="@string/zero"
                     android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="48dip"
                     android:textColor="@color/green" />
                 
                 <ImageView

@@ -1,9 +1,10 @@
 package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.util.SortedMap;
-import java.util.Map.Entry;
 
 import org.apache.thrift.TException;
+
+import com.flurry.android.FlurryAgent;
 
 import android.content.Context;
 import android.util.Log;
@@ -61,6 +62,7 @@ public class CommsThread extends Thread {
                         try {
                             boolean success = app.c.uploadSamples(map.values());
                             if (success) {
+                                FlurryAgent.logEvent("UploadSamples", map);
                                 Log.d(TAG, "Uploaded " + map.size()
                                         + " samples.");
                                 Sample last = map.get(map.lastKey());
