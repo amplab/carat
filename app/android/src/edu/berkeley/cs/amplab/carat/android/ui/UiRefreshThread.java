@@ -95,12 +95,7 @@ public class UiRefreshThread extends Thread {
                 try {
                     sleep(CaratApplication.FRESHNESS_TIMEOUT);
                 } catch (InterruptedException e) {
-                    // wait for wifi to come up
-                    try {
-                        sleep(CaratApplication.COMMS_WIFI_WAIT);
-                    } catch (InterruptedException e1) {
-                        // ignore
-                    }
+                    // Wake up and loop
                 }
             }
         }
