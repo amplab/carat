@@ -1259,7 +1259,6 @@ public final class SamplingLibrary {
         mySample.setDistanceTraveled(distance);
         Log.v(STAG, "distanceTravelled=" +distance);
         
-        
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
 
