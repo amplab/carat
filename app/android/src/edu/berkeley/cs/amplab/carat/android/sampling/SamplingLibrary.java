@@ -28,6 +28,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -812,6 +813,21 @@ public final class SamplingLibrary {
                 + screenBrightnessValue);
         return screenBrightnessValue;
     }
+    
+    public static boolean isAutoBrightness(Context context) {
+        boolean autoBrightness = false;
+        try {
+            autoBrightness = Settings.System.getInt(
+                    context.getContentResolver(),
+                    Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+        } catch (SettingNotFoundException e) {
+            e.printStackTrace();
+        }
+        Log.v("AutoScreenBrightness", "Automatic Screen brightness mode is enabled:"
+                + autoBrightness);
+        return autoBrightness;
+    }
+    
 
     /* Check whether GPS are enabled */
     public static boolean getGpsEnabled(Context context) {
@@ -1263,6 +1279,8 @@ public final class SamplingLibrary {
 
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
+        boolean autoScreenBrightness=SamplingLibrary.isAutoBrightness(context);
+        
         // boolean gpsEnabled = SamplingLibrary.getGpsEnabled(context);
         // Location providers
         List<String> enabledLocationProviders = SamplingLibrary
