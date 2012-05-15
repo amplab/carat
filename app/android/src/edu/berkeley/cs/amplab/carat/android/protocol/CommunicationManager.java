@@ -47,21 +47,8 @@ public class CommunicationManager {
         registration.setPlatformId(model);
         registration.setSystemVersion(os);
         registration.setTimestamp(System.currentTimeMillis() / 1000.0);
+        ProtocolClient.open();
         c.registerMe(registration);
-    }
-
-    public void uploadSample(Sample sample) throws TException {
-        registerOnFirstRun();
-        // FIXME: This may be stupid, but always use a new connection.
-        // Alternative: Make sure c opens the connection if it is
-        // stale/closed/nonexistent.
-        c = ProtocolClient.getInstance(a.getApplicationContext());
-        if (c == null) {
-            Log.e("uploadSample", "We are disconnected, not uploading.");
-            return;
-        }
-        c.uploadSample(sample);
-        ProtocolClient.close();
     }
 
     public boolean uploadSamples(Collection<Sample> samples) throws TException {
@@ -74,6 +61,7 @@ public class CommunicationManager {
             Log.e("uploadSample", "We are disconnected, not uploading.");
             return false;
         }
+        ProtocolClient.open();
         for (Sample s : samples)
             c.uploadSample(s);
         ProtocolClient.close();
@@ -148,6 +136,8 @@ public class CommunicationManager {
             Log.e("refreshReports", "We are disconnected, not refreshing.");
             return;
         }
+        // If not open yet
+        ProtocolClient.open();
         refreshMainReports(uuId, OS, model);
         refreshBugReports(uuId, model);
         refreshHogReports(uuId, model);

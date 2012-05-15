@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransportException;
 
 import android.content.Context;
 import android.util.Log;
@@ -60,40 +60,22 @@ public class ProtocolClient {
                         "Could not open server property file: " + e.toString());
             }
         }
+        if (SERVER_ADDRESS == null || SERVER_PORT == 0)
+            return null;
 
-        // Initialize server port and address
-        boolean tryagain = true;
-        while (tryagain) {
-            try {
-                if (soc == null){
-                    soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
-                    TProtocol p = new TBinaryProtocol(soc, true, true);
-                    instance = new CaratService.Client(p);
-                }
-                if (!soc.isOpen())
-                    soc.open();
-                tryagain = false;
-            } catch (Exception e) {
-                Log.e(TAG, "Could not create instance!");
-                e.printStackTrace();
-                tryagain = false;
-            } catch (Throwable th) {
-                // Try again if get an unknown error.
-                Log.e(TAG, "Socket error? Creating new soc and protocol.");
-                th.printStackTrace();
-                soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
-                TProtocol p = new TBinaryProtocol(soc, true, true);
-                instance = new CaratService.Client(p);
-                tryagain = true;
-            }
+        if (soc == null) {
+            soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
+            TProtocol p = new TBinaryProtocol(soc, true, true);
+            instance = new CaratService.Client(p);
         }
+        
         return instance;
     }
-    
+
     /**
      * Unknown error, next time build connection from scratch
      */
-    public static void resetConnection(){
+    public static void resetConnection() {
         if (soc != null)
             close();
         soc = null;
@@ -102,6 +84,11 @@ public class ProtocolClient {
     public static void close() {
         if (soc != null)
             soc.close();
+    }
+    
+    public static void open() throws TTransportException{
+        if (soc != null && !soc.isOpen())
+            soc.open();
     }
 
     /**

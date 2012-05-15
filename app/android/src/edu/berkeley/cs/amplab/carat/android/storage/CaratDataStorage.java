@@ -125,7 +125,7 @@ public class CaratDataStorage {
         } catch (FileNotFoundException e) {
             Log.e(this.getClass().getName(), "Could not open carat data file "
                     + fname + " for reading!");
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class CaratDataStorage {
         } catch (FileNotFoundException e) {
             Log.e(this.getClass().getName(), "Could not open carat data file "
                     + fname + " for writing!");
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }
