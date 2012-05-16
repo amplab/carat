@@ -1,8 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
-import java.util.Iterator;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,8 +9,9 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class DrawView extends View {
     Paint textPaint = new Paint();
@@ -35,26 +33,26 @@ public class DrawView extends View {
 
     private Type type = null;
 
-    private List<Double> xVals = null;
-    private List<Double> yVals = null;
-    private List<Double> xValsWithout = null;
-    private List<Double> yValsWithout = null;
+    private double[] xVals = null;
+    private double[] yVals = null;
+    private double[] xValsWithout = null;
+    private double[] yValsWithout = null;
 
     private String appName = null;
 
-    public List<Double> getXVals() {
+    public double[] getXVals() {
         return this.xVals;
     }
 
-    public List<Double> getYVals() {
+    public double[] getYVals() {
         return this.yVals;
     }
 
-    public List<Double> getXValsWithout() {
+    public double[] getXValsWithout() {
         return this.xValsWithout;
     }
 
-    public List<Double> getYValsWithout() {
+    public double[] getYValsWithout() {
         return this.yValsWithout;
     }
 
@@ -104,19 +102,19 @@ public class DrawView extends View {
         return this.type;
     }
 
-    public void setHogsBugs(HogsBugs bugOrHog, String appName, boolean isBug) {
-        this.xVals = bugOrHog.getXVals();
-        this.yVals = bugOrHog.getYVals();
-        this.xValsWithout = bugOrHog.getXValsWithout();
-        this.yValsWithout = bugOrHog.getYValsWithout();
+    public void setHogsBugs(SimpleHogBug bugOrHog, String appName, boolean isBug) {
+        this.xVals = bugOrHog.getxVals();
+        this.yVals = bugOrHog.getyVals();
+        this.xValsWithout = bugOrHog.getxValsWithout();
+        this.yValsWithout = bugOrHog.getyValsWithout();
 
         this.type = isBug ? Type.BUG : Type.HOG;
         this.appName = appName;
     }
 
-    public void setParams(Type type, String appName, List<Double> xVals,
-            List<Double> yVals, List<Double> xValsWithout,
-            List<Double> yValsWithout) {
+    public void setParams(Type type, String appName, double[] xVals,
+            double[] yVals, double[] xValsWithout,
+            double[] yValsWithout) {
         this.xVals = xVals;
         this.yVals = yVals;
         this.xValsWithout = xValsWithout;
@@ -128,10 +126,10 @@ public class DrawView extends View {
 
     public void setOsOrModel(DetailScreenReport osOrModel,
             DetailScreenReport osOrModelWithout, String name, boolean isOs) {
-        this.xVals = osOrModel.getXVals();
-        this.yVals = osOrModel.getYVals();
-        this.xValsWithout = osOrModelWithout.getXVals();
-        this.yValsWithout = osOrModelWithout.getYVals();
+        this.xVals = CaratDataStorage.convert(osOrModel.getXVals());
+        this.yVals = CaratDataStorage.convert(osOrModel.getYVals());
+        this.xValsWithout = CaratDataStorage.convert(osOrModelWithout.getXVals());
+        this.yValsWithout = CaratDataStorage.convert(osOrModelWithout.getYVals());
         this.type = isOs ? Type.OS : Type.MODEL;
         this.appName = name;
     }
@@ -220,34 +218,23 @@ public class DrawView extends View {
             canvas.drawText(withString, stopX, startY + 30, withTextPaint);
             canvas.drawText(withoutString, stopX, startY + 60, withoutTextPaint);
 
-            Iterator<Double> xes = xVals.iterator();
-            Iterator<Double> ys = yVals.iterator();
-
-            Iterator<Double> xesWo = xValsWithout.iterator();
-            Iterator<Double> ysWo = yValsWithout.iterator();
-
             float xmax = 0.0f;
-            while (xes.hasNext()) {
-                float next = (float) xes.next().doubleValue();
-                if (next > xmax)
-                    xmax = next;
-            }
-            while (xesWo.hasNext()) {
-                float next = (float) xesWo.next().doubleValue();
-                if (next > xmax)
-                    xmax = next;
-            }
-
             float ymax = 0.0f;
-            while (ys.hasNext()) {
-                float next = (float) ys.next().doubleValue();
-                if (next > ymax)
-                    ymax = next;
+            for (int i = 0; i < xVals.length && i < yVals.length; ++i) {
+                float next = (float) xVals[i];
+                float nexty = (float) yVals[i];
+                if (next > xmax)
+                    xmax = next;
+                if (nexty > ymax)
+                    ymax = nexty;
             }
-            while (ysWo.hasNext()) {
-                float next = (float) ysWo.next().doubleValue();
-                if (next > ymax)
-                    ymax = next;
+            for (int i = 0; i < xValsWithout.length && i < yValsWithout.length; ++i) {
+                float next = (float)  xValsWithout[i];
+                float nexty = (float)  yValsWithout[i];
+                if (next > xmax)
+                    xmax = next;
+                if (nexty > ymax)
+                    ymax = nexty;
             }
 
             String xmaxS = xmax + "";
@@ -261,15 +248,11 @@ public class DrawView extends View {
             canvas.drawText(xmaxS + "", xmaxX, stopY - 20, textPaint);
             canvas.drawText(ymaxS + "", startX, startY + 30, textPaint);
 
-            xes = xVals.iterator();
-            xesWo = xValsWithout.iterator();
-            ys = yVals.iterator();
-            ysWo = yValsWithout.iterator();
-
-            float lastX = 0.0f, lastY = 0.0f;
-            while (xes.hasNext() && ys.hasNext()) {
-                float x = (float) xes.next().doubleValue();
-                float y = (float) ys.next().doubleValue();
+            
+            float lastX = 0.0f, lastY = 0.0f; 
+            for (int i = 0; i < xVals.length && i < yVals.length; ++i){
+                float x = (float) xVals[i];
+                float y = (float) yVals[i];
                 if (y == 0.0)
                     continue;
                 x /= xmax;
@@ -289,9 +272,9 @@ public class DrawView extends View {
 
             lastX = 0.0f;
             lastY = 0.0f;
-            while (xesWo.hasNext() && ysWo.hasNext()) {
-                float x = (float) xesWo.next().doubleValue();
-                float y = (float) ysWo.next().doubleValue();
+            for (int i = 0; i < xValsWithout.length && i < yValsWithout.length; ++i){
+                float x = (float) xValsWithout[i];
+                float y = (float) yValsWithout[i];
                 if (y == 0.0)
                     continue;
                 x /= xmax;

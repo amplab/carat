@@ -3,12 +3,11 @@ package edu.berkeley.cs.amplab.carat.android.lists;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -20,8 +19,7 @@ import android.widget.TextView;
 
 public class HogBugSuggestionsAdapter extends BaseAdapter {
 
-	private boolean[] isBug = null;
-	private HogsBugs[] indexes = null;
+	private SimpleHogBug[] indexes = null;
 	
 	private boolean addFakeItem = false;
 
@@ -30,44 +28,34 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	
 	private String FAKE_ITEM = "OsUpgrade";
 
-	public HogBugSuggestionsAdapter(CaratApplication a, List<HogsBugs> hogs,
-			List<HogsBugs> bugs) {
+	public HogBugSuggestionsAdapter(CaratApplication a, SimpleHogBug[] hogs,
+	        SimpleHogBug[] bugs) {
 		this.a = a;
 
-		ArrayList<HogsBugs> temp = new ArrayList<HogsBugs>();
+		ArrayList<SimpleHogBug> temp = new ArrayList<SimpleHogBug>();
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
 		if (addFakeItem){
-		    HogsBugs fake = new HogsBugs();
-            fake.setAppName(FAKE_ITEM);
+		    SimpleHogBug fake = new SimpleHogBug(FAKE_ITEM, true);
             fake.setExpectedValue(0.0);
             fake.setExpectedValueWithout(0.0);
             temp.add(fake);
 		}
 		Collections.sort(temp, new HogsBugsComparator());
 
-		indexes = new HogsBugs[temp.size()];
-		isBug = new boolean[temp.size()];
-		int i = 0;
-		for (HogsBugs b : temp) {
-		    if (bugs != null)
-		        isBug[i] = bugs.contains(b);
-			indexes[i] = b;
-			i++;
-		}
+		indexes = temp.toArray(new SimpleHogBug[temp.size()]);
 
 		mInflater = LayoutInflater.from(a.getApplicationContext());
 	}
 
-	private void acceptHogsOrBugs(List<HogsBugs> input, List<HogsBugs> result) {
+	private void acceptHogsOrBugs(SimpleHogBug[] input, ArrayList<SimpleHogBug> result) {
 		if (input == null)
 			return;
-		for (HogsBugs item : input) {
+		for (SimpleHogBug item : input) {
 			double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
 					/ item.getExpectedValue();
 			// TODO other filter conditions?
 			// Limit max number of items?
-			
 			// Skip system apps
 			if (SamplingLibrary.isSystem(a.getApplicationContext(), item.getAppName()))
 			    continue;
@@ -117,8 +105,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		HogsBugs item = indexes[position];
-		boolean bug = isBug[position];
+		SimpleHogBug item = indexes[position];
 
 		Drawable icon = a.iconForApp(item.getAppName());
 
@@ -136,7 +123,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             min -= hours * 60;
 
             holder.icon.setImageDrawable(icon);
-            holder.txtName.setText((bug ? "Restart" : "Kill") + " "
+            holder.txtName.setText((item.isBug() ? "Restart" : "Kill") + " "
                     + a.labelForApp(item.getAppName()));
             // TODO: Include process type=priority in Sample?
             // holder.txtType.setText(item.getType());
@@ -156,10 +143,10 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	}
 }
 
-class HogsBugsComparator implements Comparator<HogsBugs> {
+class HogsBugsComparator implements Comparator<SimpleHogBug> {
 
 	@Override
-	public int compare(HogsBugs lhs, HogsBugs rhs) {
+	public int compare(SimpleHogBug lhs, SimpleHogBug rhs) {
 		double benefitL = 100.0 / lhs.getExpectedValueWithout() - 100.0
 				/ lhs.getExpectedValue();
 		double benefitR = 100.0 / rhs.getExpectedValueWithout() - 100.0

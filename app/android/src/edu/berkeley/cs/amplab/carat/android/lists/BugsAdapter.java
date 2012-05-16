@@ -1,14 +1,13 @@
 package edu.berkeley.cs.amplab.carat.android.lists;
 
-import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 public class BugsAdapter extends HogsBugsAdapter {
 
-	public BugsAdapter(CaratApplication a, List<HogsBugs> results) {
+	public BugsAdapter(CaratApplication a, SimpleHogBug[] results) {
 		super(a, results);
 	}
 

@@ -13,10 +13,10 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 
@@ -37,7 +37,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             public void onItemClick(AdapterView<?> a, View v, int position,
                     long id) {
                 Object o = lv.getItemAtPosition(position);
-                HogsBugs fullObject = (HogsBugs) o;
+                SimpleHogBug fullObject = (SimpleHogBug) o;
                 if (fullObject.getAppName().equals("OsUpgrade"))
                     switchView(R.id.upgradeOsView);
                 else

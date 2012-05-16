@@ -12,7 +12,6 @@ import android.util.Log;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.Registration;
@@ -22,8 +21,6 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 public class CommunicationManager {
 
     private static final String TAG = "CommsManager";
-    
-    private CaratService.Client c = null;
 
     private CaratApplication a = null;
 
@@ -47,29 +44,16 @@ public class CommunicationManager {
         registration.setPlatformId(model);
         registration.setSystemVersion(os);
         registration.setTimestamp(System.currentTimeMillis() / 1000.0);
-        ProtocolClient.open();
-        c.registerMe(registration);
+        ProtocolClient.registerMe(a.getApplicationContext(), registration);
     }
 
     public boolean uploadSamples(Collection<Sample> samples) throws TException {
         registerOnFirstRun();
-        // FIXME: This may be stupid, but always use a new connection.
-        // Alternative: Make sure c opens the connection if it is
-        // stale/closed/nonexistent.
-        c = ProtocolClient.getInstance(a.getApplicationContext());
-        if (c == null) {
-            Log.e("uploadSample", "We are disconnected, not uploading.");
-            return false;
-        }
-        ProtocolClient.open();
+        
         for (Sample s : samples)
-            c.uploadSample(s);
+            ProtocolClient.uploadSample(a.getApplicationContext(), s);
         ProtocolClient.close();
         return true;
-    }
-    
-    public void resetConnection(){
-        ProtocolClient.resetConnection();
     }
 
     public void registerOnFirstRun() {
@@ -81,11 +65,6 @@ public class CommunicationManager {
                     "First run, registering this device: " + uuId + ", " + os
                             + ", " + model);
             try {
-                c = ProtocolClient.getInstance(a.getApplicationContext());
-                if (c == null) {
-                    Log.e("register", "We are disconnected, not registering.");
-                    return;
-                }
                 registerMe(uuId, os, model);
                 p.edit()
                         .putBoolean(CaratApplication.PREFERENCE_FIRST_RUN,
@@ -131,13 +110,6 @@ public class CommunicationManager {
             OS = "4.0.2";
         }
 
-        c = ProtocolClient.getInstance(a.getApplicationContext());
-        if (c == null) {
-            Log.e("refreshReports", "We are disconnected, not refreshing.");
-            return;
-        }
-        // If not open yet
-        ProtocolClient.open();
         refreshMainReports(uuId, OS, model);
         refreshBugReports(uuId, model);
         refreshHogReports(uuId, model);
@@ -149,11 +121,7 @@ public class CommunicationManager {
             throws TException {
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        if (c == null) {
-            Log.e("refreshReports", "We are disconnected, not refreshing.");
-            return;
-        }
-        Reports r = c.getReports(uuid, getFeatures("Model", model, "OS", os));
+        Reports r = ProtocolClient.getReports(a.getApplicationContext(), uuid, getFeatures("Model", model, "OS", os));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
         if (r != null)
@@ -165,11 +133,7 @@ public class CommunicationManager {
     private void refreshBugReports(String uuid, String model) throws TException {
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        if (c == null) {
-            Log.e("refreshReports", "We are disconnected, not refreshing.");
-            return;
-        }
-        HogBugReport r = c.getHogOrBugReport(uuid,
+        HogBugReport r = ProtocolClient.getHogOrBugReport(a.getApplicationContext(), uuid,
                 getFeatures("ReportType", "Bug", "Model", model));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
@@ -182,11 +146,7 @@ public class CommunicationManager {
     private void refreshHogReports(String uuid, String model) throws TException {
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        if (c == null) {
-            Log.e("refreshReports", "We are disconnected, not refreshing.");
-            return;
-        }
-        HogBugReport r = c.getHogOrBugReport(uuid,
+        HogBugReport r = ProtocolClient.getHogOrBugReport(a.getApplicationContext(), uuid,
                 getFeatures("ReportType", "Hog", "Model", model));
 
         // Assume multiple invocations, do not close
@@ -195,6 +155,14 @@ public class CommunicationManager {
             a.s.writeHogReport(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
+    }
+    
+    public static void resetConnection(){
+        ProtocolClient.resetConnection();
+    }
+    
+    public static void close(){
+        ProtocolClient.close();
     }
 
     private List<Feature> getFeatures(String key1, String val1, String key2,

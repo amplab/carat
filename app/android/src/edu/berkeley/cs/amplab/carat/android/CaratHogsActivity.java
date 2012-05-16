@@ -1,13 +1,11 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.List;
-
 import edu.berkeley.cs.amplab.carat.android.lists.HogsAdapter;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -57,10 +55,10 @@ public class CaratHogsActivity extends BaseVFActivity {
             ((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
                     .setProgress(pp.getProgress());
             
-            List<Double> xVals = previous.w.getXVals();
-            List<Double> yVals = previous.w.getYVals();
-            List<Double> xValsWithout = previous.w.getXValsWithout();
-            List<Double> yValsWithout = previous.w.getYValsWithout();
+            double[] xVals = previous.w.getXVals();
+            double[] yVals = previous.w.getYVals();
+            double[] xValsWithout = previous.w.getXValsWithout();
+            double[] yValsWithout = previous.w.getYValsWithout();
             String appName = previous.w.getAppName();
             w.setParams(DrawView.Type.HOG, appName, xVals, yVals, xValsWithout,
                     yValsWithout);
@@ -103,7 +101,7 @@ public class CaratHogsActivity extends BaseVFActivity {
             public void onItemClick(AdapterView<?> a, View v, int position,
                     long id) {
                 Object o = lv.getItemAtPosition(position);
-                HogsBugs fullObject = (HogsBugs) o;
+                SimpleHogBug fullObject = (SimpleHogBug) o;
                 // View target = findViewById(R.id.hogsGraphView);
                 View target = detailPage;
                 CaratApplication app = (CaratApplication) getApplication();
@@ -113,7 +111,7 @@ public class CaratHogsActivity extends BaseVFActivity {
                 ((ImageView) detailPage.findViewById(R.id.appIcon))
                         .setImageDrawable(icon);
                 ((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
-                        .setProgress((int) (fullObject.getWDistance() * 100));
+                        .setProgress((int) (fullObject.getwDistance() * 100));
                 w.setHogsBugs(fullObject, label, false);
                 w.postInvalidate();
                 switchView(target);

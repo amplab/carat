@@ -1,12 +1,9 @@
 package edu.berkeley.cs.amplab.carat.android.lists;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -18,29 +15,40 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public abstract class HogsBugsAdapter extends BaseAdapter {
-    private List<HogsBugs> allBugsOrHogs = new ArrayList<HogsBugs>();
+    private SimpleHogBug[] allBugsOrHogs = null;
 
     private LayoutInflater mInflater;
     private CaratApplication a = null;
 
-    public HogsBugsAdapter(CaratApplication a, List<HogsBugs> results) {
+    public HogsBugsAdapter(CaratApplication a, SimpleHogBug[] results) {
         this.a = a;
         // Skip system apps.
+        int items = 0;
         if (results != null)
-            for (HogsBugs b : results) {
+            for (SimpleHogBug b : results) {
                 if (!SamplingLibrary.isSystem(a.getApplicationContext(),
                         b.getAppName()))
-                    allBugsOrHogs.add(b);
+                    items++;
+            }
+        allBugsOrHogs = new SimpleHogBug[items];
+        int i = 0;
+        if (results != null)
+            for (SimpleHogBug b : results) {
+                if (!SamplingLibrary.isSystem(a.getApplicationContext(),
+                        b.getAppName())) {
+                    allBugsOrHogs[i] = b;
+                    i++;
+                }
             }
         mInflater = LayoutInflater.from(a.getApplicationContext());
     }
 
     public int getCount() {
-        return allBugsOrHogs.size();
+        return allBugsOrHogs.length;
     }
 
     public Object getItem(int position) {
-        return allBugsOrHogs.get(position);
+        return allBugsOrHogs[position];
     }
 
     public long getItemId(int position) {
@@ -65,13 +73,13 @@ public abstract class HogsBugsAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        HogsBugs item = allBugsOrHogs.get(position);
+        SimpleHogBug item = allBugsOrHogs[position];
         Drawable icon = a.iconForApp(item.getAppName());
         String label = a.labelForApp(item.getAppName());
 
         holder.txtName.setText(label);
         holder.appIcon.setImageDrawable(icon);
-        holder.progConfidence.setProgress((int) (item.getWDistance() * 100));
+        holder.progConfidence.setProgress((int) (item.getwDistance() * 100));
         // holder.moreInfo...
 
         return convertView;

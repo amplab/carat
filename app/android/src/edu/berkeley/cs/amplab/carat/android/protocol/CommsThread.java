@@ -81,7 +81,7 @@ public class CommsThread extends Thread {
                         } catch (TException e1) {
                             Log.w(TAG, "Failed to send samples,"
                                     + TRY_AGAIN);
-                            app.c.resetConnection();
+                            CommunicationManager.resetConnection();
                             e1.printStackTrace();
                         }
                     }else {

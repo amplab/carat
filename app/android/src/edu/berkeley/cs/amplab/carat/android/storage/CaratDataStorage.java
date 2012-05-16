@@ -29,8 +29,8 @@ public class CaratDataStorage {
 
     private long freshness = 0;
     private WeakReference<Reports> caratData = null;
-    private WeakReference<HogBugReport> bugData = null;
-    private WeakReference<HogBugReport> hogData = null;
+    private WeakReference<SimpleHogBug[]> bugData = null;
+    private WeakReference<SimpleHogBug[]> hogData = null;
 
     public CaratDataStorage(Application a) {
         this.a = a;
@@ -125,7 +125,7 @@ public class CaratDataStorage {
         } catch (FileNotFoundException e) {
             Log.e(this.getClass().getName(), "Could not open carat data file "
                     + fname + " for reading!");
-            //e.printStackTrace();
+            // e.printStackTrace();
             return null;
         }
     }
@@ -136,7 +136,7 @@ public class CaratDataStorage {
         } catch (FileNotFoundException e) {
             Log.e(this.getClass().getName(), "Could not open carat data file "
                     + fname + " for writing!");
-            //e.printStackTrace();
+            // e.printStackTrace();
             return null;
         }
     }
@@ -180,84 +180,105 @@ public class CaratDataStorage {
     /**
      * @return the bug reports
      */
-    public List<HogsBugs> getBugReport() {
+    public SimpleHogBug[] getBugReport() {
         if (bugData == null || bugData.get() == null) {
             readBugReport();
         }
         if (bugData == null || bugData.get() == null)
             return null;
-        return bugData.get().getHbList();
+        return bugData.get();
     }
 
     /**
      * @return the hog reports
      */
-    public List<HogsBugs> getHogReport() {
+    public SimpleHogBug[] getHogReport() {
         if (hogData == null || hogData.get() == null) {
             readHogReport();
         }
         if (hogData == null || hogData.get() == null)
             return null;
-        return hogData.get().getHbList();
+        return hogData.get();
     }
 
     public void writeBugReport(HogBugReport r) {
         if (r != null) {
-            List<HogsBugs> list = r.getHbList();
-            r.setHbList(fixNames(list));
+            SimpleHogBug[] list = convert(r.getHbList(), true);
+            bugData = new WeakReference<SimpleHogBug[]>(list);
+            writeObject(list, BUGFILE);
         }
-        bugData = new WeakReference<HogBugReport>(r);
-        writeObject(r, BUGFILE);
-
     }
 
     public void writeHogReport(HogBugReport r) {
         if (r != null) {
-            List<HogsBugs> list = r.getHbList();
-            r.setHbList(fixNames(list));
+            SimpleHogBug[] list = convert(r.getHbList(), false);
+            hogData = new WeakReference<SimpleHogBug[]>(list);
+            writeObject(list, HOGFILE);
         }
-        hogData = new WeakReference<HogBugReport>(r);
-        writeObject(r, HOGFILE);
-
     }
 
-    private List<HogsBugs> fixNames(List<HogsBugs> list) {
-        if (list != null) {
-            for (int i = 0; i < list.size(); ++i) {
-                HogsBugs thing = list.get(i);
-                if (thing == null)
-                    continue;
-                String name = thing.getAppName();
-                if (name == null)
-                    continue;
-                int idx = name.lastIndexOf(':');
-                if (idx <= 0)
-                    idx = name.length();
-                name = name.substring(0, idx);
-                thing.setAppName(name);
-                list.set(i, thing);
+    private SimpleHogBug[] convert(List<HogsBugs> list, boolean isBug) {
+        if (list == null)
+            return null;
+        SimpleHogBug[] result = new SimpleHogBug[list.size()];
+        int size = list.size();
+        for (int i = 0; i < size; ++i) {
+            HogsBugs item = list.get(i);
+            result[i] = new SimpleHogBug(fixName(item.getAppName()), isBug);
+            result[i].setAppLabel(item.getAppLabel());
+            result[i].setAppPriority(item.getAppPriority());
+            result[i].setExpectedValue(item.getExpectedValue());
+            result[i].setExpectedValueWithout(item.getExpectedValueWithout());
+            result[i].setwDistance(item.getWDistance());
+            result[i].setxVals(convert(item.getXVals()));
+            result[i].setyVals(convert(item.getYVals()));
+            result[i].setxValsWithout(convert(item.getXValsWithout()));
+            result[i].setyValsWithout(convert(item.getYValsWithout()));
+        }
+        return result;
+    }
+
+    public static double[] convert(List<Double> dbls) {
+        for (int j = 0; j < dbls.size(); ++j) {
+            if (dbls.get(j) == 0.0) {
+                dbls.remove(j);
+                j--;
             }
         }
-        return list;
+        double[] arr = new double[dbls.size()];
+        for (int j = 0; j < dbls.size(); ++j) {
+            arr[j] = dbls.get(j);
+        }
+        return arr;
     }
 
-    public HogBugReport readBugReport() {
+    private String fixName(String name) {
+        if (name == null)
+            return null;
+        int idx = name.lastIndexOf(':');
+        if (idx <= 0)
+            idx = name.length();
+        String n = name.substring(0, idx);
+        return n;
+    }
+
+    public SimpleHogBug[] readBugReport() {
         Object o = readObject(BUGFILE);
         Log.d("CaratDataStorage", "Read Bugs: " + o);
-        if (o == null)
+        if (o == null || !(o instanceof SimpleHogBug[]))
             return null;
-        HogBugReport r = (HogBugReport) o;
-        bugData = new WeakReference<HogBugReport>(r);
+        SimpleHogBug[] r = (SimpleHogBug[]) o;
+        bugData = new WeakReference<SimpleHogBug[]>(r);
         return r;
     }
 
-    public HogBugReport readHogReport() {
+    public SimpleHogBug[] readHogReport() {
         Object o = readObject(HOGFILE);
         Log.d("CaratDataStorage", "Read Hogs: " + o);
-        if (o == null)
+        if (o == null || !(o instanceof SimpleHogBug[]))
             return null;
-        HogBugReport r = (HogBugReport) o;
-        hogData = new WeakReference<HogBugReport>(r);
+        SimpleHogBug[] r = (SimpleHogBug[]) o;
+        hogData = new WeakReference<SimpleHogBug[]>(r);
         return r;
     }
 }

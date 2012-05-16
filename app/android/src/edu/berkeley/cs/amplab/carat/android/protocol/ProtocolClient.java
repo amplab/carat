@@ -2,8 +2,10 @@ package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
+import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
@@ -13,6 +15,11 @@ import android.content.Context;
 import android.util.Log;
 
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
+import edu.berkeley.cs.amplab.carat.thrift.Feature;
+import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
+import edu.berkeley.cs.amplab.carat.thrift.Registration;
+import edu.berkeley.cs.amplab.carat.thrift.Reports;
+import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 /**
  * Client for the Carat Protocol.
@@ -69,6 +76,9 @@ public class ProtocolClient {
             instance = new CaratService.Client(p);
         }
         
+        if (!soc.isOpen())
+            open();
+        
         return instance;
     }
 
@@ -86,10 +96,38 @@ public class ProtocolClient {
             soc.close();
     }
     
-    public static void open() throws TTransportException{
-        if (soc != null && !soc.isOpen())
-            soc.open();
+    public static void open(){
+        if (soc != null && !soc.isOpen()){
+            try {
+                soc.open();
+            } catch (TTransportException te){
+                soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
+                TProtocol p = new TBinaryProtocol(soc, true, true);
+                instance = new CaratService.Client(p);
+            }
+        }
     }
+    
+    public static Reports getReports(Context c, String uuid, List<Feature> features) throws TException{
+        getInstance(c);
+        return instance.getReports(uuid, features);
+    }
+    
+    public static void registerMe(Context c, Registration registration) throws TException{
+        getInstance(c);
+        instance.registerMe(registration);
+    }
+    
+    public static void uploadSample(Context c, Sample s) throws TException{
+        getInstance(c);
+        instance.uploadSample(s);
+    }
+    
+    public static HogBugReport getHogOrBugReport(Context c, String uuid, List<Feature> features) throws TException{
+        getInstance(c);
+        return instance.getHogOrBugReport(uuid, features);
+    }
+
 
     /**
      * Test program.

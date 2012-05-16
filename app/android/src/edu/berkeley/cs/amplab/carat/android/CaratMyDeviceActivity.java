@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
@@ -74,11 +75,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             views.add(previous.modelView);
             views.add(previous.appsView);
             for (DrawView v : views) {
-                List<Double> xVals = v.getXVals();
-                List<Double> yVals = v.getYVals();
+                double[] xVals = v.getXVals();
+                double[] yVals = v.getYVals();
                 Type t = v.getType();
-                List<Double> xValsWithout = v.getXValsWithout();
-                List<Double> yValsWithout = v.getYValsWithout();
+                double[] xValsWithout = v.getXValsWithout();
+                double[] yValsWithout = v.getYValsWithout();
                 String appName = v.getAppName();
                 if (v == previous.osView) {
                     osView.setParams(t, appName, xVals, yVals, xValsWithout,
@@ -275,8 +276,8 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     .setProgress((int) (os.getScore() * 100));
 
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
-                    os.getXVals(), os.getYVals(), osWithout.getXVals(),
-                    osWithout.getYVals());
+                    CaratDataStorage.convert(os.getXVals()), CaratDataStorage.convert(os.getYVals()), CaratDataStorage.convert(osWithout.getXVals()),
+                    CaratDataStorage.convert(osWithout.getYVals()));
         }
         switchView(osViewPage);
     }
@@ -304,8 +305,8 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     .setProgress((int) (model.getScore() * 100));
 
             modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
-                    model.getXVals(), model.getYVals(),
-                    modelWithout.getXVals(), modelWithout.getYVals());
+                    CaratDataStorage.convert(model.getXVals()), CaratDataStorage.convert(model.getYVals()),
+                    CaratDataStorage.convert(modelWithout.getXVals()), CaratDataStorage.convert(modelWithout.getYVals()));
         }
         switchView(modelViewPage);
     }
@@ -334,8 +335,8 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     .setProgress((int) (similar.getScore() * 100));
 
             appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
-                    similar.getXVals(), similar.getYVals(),
-                    similarWithout.getXVals(), similarWithout.getYVals());
+                    CaratDataStorage.convert(similar.getXVals()), CaratDataStorage.convert(similar.getYVals()),
+                    CaratDataStorage.convert(similarWithout.getXVals()), CaratDataStorage.convert(similarWithout.getYVals()));
         }
         switchView(appsViewPage);
     }

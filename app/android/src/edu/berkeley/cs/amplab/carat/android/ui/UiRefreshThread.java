@@ -6,6 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
@@ -62,8 +63,8 @@ public class UiRefreshThread extends Thread {
                     Log.d(TAG, "Reports refreshed.");
                 } catch (TException e1) {
                     Log.w(TAG, "Failed to refresh reports: " + e1 + TRY_AGAIN);
+                    CommunicationManager.resetConnection();
                     e1.printStackTrace();
-                    app.c.resetConnection();
                 }
                 connecting = false;
             } else if (networkStatus
