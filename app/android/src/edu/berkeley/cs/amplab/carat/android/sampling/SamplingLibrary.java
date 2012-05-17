@@ -17,7 +17,6 @@ import java.util.Map;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
-import edu.berkeley.cs.amplab.carat.thrift.CallInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
@@ -28,10 +27,8 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -497,7 +494,7 @@ public final class SamplingLibrary {
                 mp.put(pak.applicationInfo.processName, pak);
             }
 
-            packages = new WeakReference(mp);
+            packages = new WeakReference<Map<String, PackageInfo>>(mp);
         }
 
         if (!packages.get().containsKey(processName))
@@ -1185,8 +1182,6 @@ public final class SamplingLibrary {
         Map<String, String> callInDur = new HashMap<String, String>();
         Map<String, String> callOutDur = new HashMap<String, String>();
 
-        long tolCallInDur = 0;
-        long tolCallOutDur = 0;
         int callType;
         long callDur;
         Date callDate;
@@ -1272,6 +1267,8 @@ public final class SamplingLibrary {
         // required always
         long now = System.currentTimeMillis();
         mySample.setTimestamp(now / 1000.0);
+        
+        // Record first data point for CPU usage
         long[] idleAndCpu1 = readUsagePoint();
 
         List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
@@ -1280,7 +1277,8 @@ public final class SamplingLibrary {
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
         boolean autoScreenBrightness=SamplingLibrary.isAutoBrightness(context);
-        
+        if (autoScreenBrightness)
+            mySample.setScreenBrightness(-1); // Auto
         // boolean gpsEnabled = SamplingLibrary.getGpsEnabled(context);
         // Location providers
         List<String> enabledLocationProviders = SamplingLibrary
@@ -1318,8 +1316,6 @@ public final class SamplingLibrary {
         nd.setWifiLinkSpeed(wifiLinkSpeed);
         // Add NetworkDetails substruct to Sample
         mySample.setNetworkDetails(nd);
-
-        // TODO: cast this to GSMLocation or CDMALocation and use it
 
         // TODO: is this used for something?
         // WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
@@ -1443,11 +1439,6 @@ public final class SamplingLibrary {
 
         mySample.setBatteryDetails(bd);
 
-        // TODO: Extended attributes should be set to mySample
-        // What is totalCpuUsage? How does it compare to cpuTime and idleTime?
-        // Maybe we should just have a cpu usage percentage.
-        // AndroidSample otherInfo = new AndroidSample();
-
         mySample.setBatteryLevel(batteryLevel);
         mySample.setBatteryState(batteryStatus);
 
@@ -1462,13 +1453,7 @@ public final class SamplingLibrary {
         // TODO: Memory Wired should have memory that is "unevictable", that
         // will always be used even when all apps are killed
 
-        /* Calling Information */
-        /*
-         * CallMonth cm = new CallMonth(); cm = getCallMonthinfo(context,
-         * "2012-03"); if (cm != null) Log.v(STAG,
-         * "Total duration of incoming calls in March 2012=" +cm.tolCallInNum);
-         */
-        Log.d(STAG, "serial=" + getBuildSerial());
+        //Log.d(STAG, "serial=" + getBuildSerial());
 
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();

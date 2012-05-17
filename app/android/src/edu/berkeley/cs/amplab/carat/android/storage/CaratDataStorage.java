@@ -41,6 +41,8 @@ public class CaratDataStorage {
     }
 
     public void writeReports(Reports reports) {
+        if (reports == null)
+            return;
         caratData = new WeakReference<Reports>(reports);
         writeObject(reports, FILENAME);
     }
@@ -204,16 +206,20 @@ public class CaratDataStorage {
     public void writeBugReport(HogBugReport r) {
         if (r != null) {
             SimpleHogBug[] list = convert(r.getHbList(), true);
-            bugData = new WeakReference<SimpleHogBug[]>(list);
-            writeObject(list, BUGFILE);
+            if (list != null){
+                bugData = new WeakReference<SimpleHogBug[]>(list);
+                writeObject(list, BUGFILE);
+            }
         }
     }
 
     public void writeHogReport(HogBugReport r) {
         if (r != null) {
             SimpleHogBug[] list = convert(r.getHbList(), false);
-            hogData = new WeakReference<SimpleHogBug[]>(list);
-            writeObject(list, HOGFILE);
+            if (list != null){
+                hogData = new WeakReference<SimpleHogBug[]>(list);
+                writeObject(list, HOGFILE);
+            }
         }
     }
 
@@ -239,6 +245,8 @@ public class CaratDataStorage {
     }
 
     public static double[] convert(List<Double> dbls) {
+        if (dbls == null)
+            return new double[0];
         for (int j = 0; j < dbls.size(); ++j) {
             if (dbls.get(j) == 0.0) {
                 dbls.remove(j);
