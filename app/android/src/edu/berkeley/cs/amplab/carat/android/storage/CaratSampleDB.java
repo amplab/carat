@@ -19,7 +19,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
 import android.util.Log;
-import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 /**
@@ -43,8 +42,8 @@ public class CaratSampleDB {
     private static final HashMap<String, String> mColumnMap = buildColumnMap();
 
     private Sample lastSample = null;
-
-    private SampleDbOpenHelper sampleOpenHelper = null;
+    
+    private SQLiteDatabase db = null;
 
     private static CaratSampleDB instance = null;
 
@@ -55,8 +54,17 @@ public class CaratSampleDB {
     }
 
     public CaratSampleDB(Context context) {
-        if (sampleOpenHelper == null)
-            sampleOpenHelper = new SampleDbOpenHelper(context);
+            SampleDbOpenHelper sampleOpenHelper = new SampleDbOpenHelper(context);
+            db = sampleOpenHelper.getWritableDatabase();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#finalize()
+     */
+    @Override
+    protected void finalize() throws Throwable {
+        db.close();
+        super.finalize();
     }
 
     /**
@@ -100,15 +108,13 @@ public class CaratSampleDB {
         builder.setTables(SAMPLES_VIRTUAL_TABLE);
         builder.setProjectionMap(mColumnMap);
 
-        Cursor cursor = builder.query(sampleOpenHelper.getReadableDatabase(),
+        Cursor cursor = builder.query(db,
                 columns, selection, selectionArgs, groupBy, having, sortOrder);
 
         if (cursor == null) {
-            sampleOpenHelper.close();
             return null;
         } else if (!cursor.moveToFirst()) {
             cursor.close();
-            sampleOpenHelper.close();
             return null;
         }
         return cursor;
@@ -126,7 +132,6 @@ public class CaratSampleDB {
 
         if (cursor == null) {
             // There are no results
-            sampleOpenHelper.close();
             return new Sample[0];
         } else {
             // Display the number of results
@@ -143,7 +148,6 @@ public class CaratSampleDB {
                 cursor.moveToNext();
             }
             cursor.close();
-            sampleOpenHelper.close();
             return results;
         }
     }
@@ -159,12 +163,8 @@ public class CaratSampleDB {
 
         if (cursor == null) {
             // There are no results
-            sampleOpenHelper.close();
             return results;
         } else {
-            // Display the number of results
-            int count = cursor.getCount();
-
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 Sample s = fillSample(cursor);
@@ -174,15 +174,12 @@ public class CaratSampleDB {
                 cursor.moveToNext();
             }
             cursor.close();
-            sampleOpenHelper.close();
             return results;
         }
     }
 
     public int delete(String whereClause, String[] whereArgs) {
-        SQLiteDatabase db = sampleOpenHelper.getWritableDatabase();
         int deleted = db.delete(SAMPLES_VIRTUAL_TABLE, whereClause, whereArgs);
-        db.close();
         return deleted;
     }
 
@@ -216,19 +213,16 @@ public class CaratSampleDB {
 
         if (cursor == null) {
             // There are no results
-            sampleOpenHelper.close();
             return null;
         } else {
             cursor.moveToFirst();
             if (!cursor.isAfterLast()) {
                 Sample s = fillSample(cursor);
                 cursor.close();
-                sampleOpenHelper.close();
                 lastSample = s;
                 return s;
             }
             cursor.close();
-            sampleOpenHelper.close();
             return null;
         }
     }
@@ -271,10 +265,33 @@ public class CaratSampleDB {
 
     public long putSample(Sample s) {
         // force init
-        sampleOpenHelper.getReadableDatabase();
-        long id = sampleOpenHelper.addSample(s);
-        sampleOpenHelper.close();
+        long id = addSample(s);
         return id;
+    }
+    
+
+    /**
+     * Add a sample to the database.
+     * 
+     * @return rowId or -1 if failed
+     */
+    public long addSample(Sample s) {
+        ContentValues initialValues = new ContentValues();
+        initialValues.put(COLUMN_TIMESTAMP, s.getTimestamp());
+        // Add the piList as a blob
+        if (s != null) {
+            try {
+                ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                ObjectOutputStream oo = new ObjectOutputStream(bo);
+                oo.writeObject(s);
+                initialValues.put(COLUMN_SAMPLE, bo.toByteArray());
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        return db.insert(SAMPLES_VIRTUAL_TABLE, null, initialValues);
     }
 
     /**
@@ -331,30 +348,6 @@ public class CaratSampleDB {
         public void onOpen(SQLiteDatabase db) {
             mDatabase = db;
             super.onOpen(db);
-        }
-
-        /**
-         * Add a sample to the database.
-         * 
-         * @return rowId or -1 if failed
-         */
-        public long addSample(Sample s) {
-            ContentValues initialValues = new ContentValues();
-            initialValues.put(COLUMN_TIMESTAMP, s.getTimestamp());
-            // Add the piList as a blob
-            if (s != null) {
-                try {
-                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                    ObjectOutputStream oo = new ObjectOutputStream(bo);
-                    oo.writeObject(s);
-                    initialValues.put(COLUMN_SAMPLE, bo.toByteArray());
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-
-            return mDatabase.insert(SAMPLES_VIRTUAL_TABLE, null, initialValues);
         }
 
         @Override
