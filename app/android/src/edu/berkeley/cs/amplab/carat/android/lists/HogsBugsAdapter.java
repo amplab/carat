@@ -74,9 +74,13 @@ public abstract class HogsBugsAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         SimpleHogBug item = allBugsOrHogs[position];
+        if (item == null)
+            return convertView;
+        
         Drawable icon = a.iconForApp(item.getAppName());
         String label = a.labelForApp(item.getAppName());
-
+        if (label == null)
+            label = "Unknown";
         holder.txtName.setText(label);
         holder.appIcon.setImageDrawable(icon);
         holder.progConfidence.setProgress((int) (item.getwDistance() * 100));

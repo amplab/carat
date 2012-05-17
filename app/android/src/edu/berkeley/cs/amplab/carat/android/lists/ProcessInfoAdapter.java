@@ -57,6 +57,10 @@ public class ProcessInfoAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		RunningAppProcessInfo x = searchArrayList.get(position);
+		
+		if (x == null)
+            return convertView;
+		
 		holder.appIcon.setImageDrawable(app.iconForApp(x.processName));
 		holder.txtName.setText(app.labelForApp(x.processName));
 		holder.txtBenefit.setText(CaratApplication.importanceString(x.importance));

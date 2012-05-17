@@ -73,7 +73,10 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	}
 
 	public Object getItem(int position) {
-		return indexes[position];
+	    if (position >= 0 && position < indexes.length)
+	        return indexes[position];
+	    else
+	        return null;
 	}
 
 	public long getItemId(int position) {
@@ -106,7 +109,9 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		}
 
 		SimpleHogBug item = indexes[position];
-
+		if (item == null)
+		    return convertView;
+		
 		Drawable icon = a.iconForApp(item.getAppName());
 
 		if (item.getAppName().equals(FAKE_ITEM)){
@@ -121,10 +126,13 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             int min = (int) (benefit / 60);
             int hours = (int) (min / 60);
             min -= hours * 60;
+            
+            String label = a.labelForApp(item.getAppName());
+            if (label == null)
+                label = "Unknown";
 
             holder.icon.setImageDrawable(icon);
-            holder.txtName.setText((item.isBug() ? "Restart" : "Kill") + " "
-                    + a.labelForApp(item.getAppName()));
+            holder.txtName.setText((item.isBug() ? "Restart" : "Kill") + " "+label);
             // TODO: Include process type=priority in Sample?
             // holder.txtType.setText(item.getType());
             holder.txtBenefit.setText(hours + "h " + min + "m");
