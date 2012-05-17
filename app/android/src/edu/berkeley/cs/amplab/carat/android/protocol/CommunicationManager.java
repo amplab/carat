@@ -52,7 +52,7 @@ public class CommunicationManager {
         
         for (Sample s : samples)
             ProtocolClient.uploadSample(a.getApplicationContext(), s);
-        ProtocolClient.close();
+        //ProtocolClient.close();
         return true;
     }
 
@@ -113,7 +113,7 @@ public class CommunicationManager {
         refreshMainReports(uuId, OS, model);
         refreshBugReports(uuId, model);
         refreshHogReports(uuId, model);
-        ProtocolClient.close();
+       // ProtocolClient.close();
         a.s.writeFreshness();
     }
 

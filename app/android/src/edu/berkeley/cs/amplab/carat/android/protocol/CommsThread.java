@@ -59,30 +59,43 @@ public class CommsThread extends Thread {
                                 CaratApplication.COMMS_MAX_UPLOAD_BATCH);
                 if (map.size() > 0) {
                     if (app.c != null) {
-                        try {
-                            boolean success = app.c.uploadSamples(map.values());
-                            if (success) {
-                                FlurryAgent.logEvent("UploadSamples", map);
-                                Log.d(TAG, "Uploaded " + map.size()
-                                        + " samples.");
-                                Sample last = map.get(map.lastKey());
-                                Log.d(TAG,
-                                        "Deleting " + map.size()
-                                                + " samples older than "
-                                                + last.getTimestamp());
-                                int deleted = CaratSampleDB.getInstance(c)
-                                        .deleteSamples(map.keySet());
-                                /*
-                                 * .deleteOldestSamples( last.getTimestamp());
-                                 */
-                                Log.d(TAG, "Deleted " + deleted
-                                        + " samples.");
+                        int tries = 0;
+                        while (tries < 2) {
+                            try {
+                                boolean success = app.c.uploadSamples(map
+                                        .values());
+                                if (success) {
+                                    tries = 2;
+                                    FlurryAgent.logEvent("UploadSamples", map);
+                                    Log.d(TAG, "Uploaded " + map.size()
+                                            + " samples.");
+                                    Sample last = map.get(map.lastKey());
+                                    Log.d(TAG,
+                                            "Deleting " + map.size()
+                                                    + " samples older than "
+                                                    + last.getTimestamp());
+                                    int deleted = CaratSampleDB.getInstance(c)
+                                            .deleteSamples(map.keySet());
+                                    /*
+                                     * .deleteOldestSamples(
+                                     * last.getTimestamp());
+                                     */
+                                    Log.d(TAG, "Deleted " + deleted
+                                            + " samples.");
+                                }
+                            } catch (TException e1) {
+                                Log.w(TAG, "Failed to send samples,"
+                                        + (tries < 1 ? "Trying again now": TRY_AGAIN), e1);
+                                CommunicationManager.resetConnection();
+                                tries++;
+                            } catch (Throwable th) {
+                                // Any sort of malformed response, too short
+                                // string, etc...
+                                Log.w(TAG, "Failed to refresh reports: " + th
+                                        + (tries < 1 ? "Trying again now": TRY_AGAIN), th);
+                                CommunicationManager.resetConnection();
+                                tries++;
                             }
-                        } catch (TException e1) {
-                            Log.w(TAG, "Failed to send samples,"
-                                    + TRY_AGAIN);
-                            CommunicationManager.resetConnection();
-                            e1.printStackTrace();
                         }
                     }else {
                         Log.w(TAG, "CommunicationManager is not ready yet." + TRY_AGAIN);

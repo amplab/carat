@@ -58,15 +58,30 @@ public class UiRefreshThread extends Thread {
         while (isRunning) {
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
             if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED && app.c != null) {
-                try {
-                    app.c.refreshAllReports();
-                    Log.d(TAG, "Reports refreshed.");
-                } catch (TException e1) {
-                    Log.w(TAG, "Failed to refresh reports: " + e1 + TRY_AGAIN);
-                    CommunicationManager.resetConnection();
-                    e1.printStackTrace();
+                int tries = 0;
+                while (tries < 2) {
+                    try {
+                        app.c.refreshAllReports();
+                        Log.d(TAG, "Reports refreshed.");
+                        tries = 2;
+                    } catch (TException e1) {
+                        Log.w(TAG, "Failed to refresh reports: " + e1
+                                + (tries < 1 ? "Trying again now": TRY_AGAIN));
+                        CommunicationManager.resetConnection();
+                        e1.printStackTrace();
+                        tries++;
+                    } catch (Throwable th) {
+                        // Any sort of malformed response, too short string,
+                        // etc...
+                        Log.w(TAG, "Failed to refresh reports: " + th
+                                + (tries < 1 ? "Trying again now": TRY_AGAIN));
+                        CommunicationManager.resetConnection();
+                        th.printStackTrace();
+                        tries++;
+                    }
                 }
                 connecting = false;
+                
             } else if (networkStatus
                     .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
                 Log.w(TAG, "Network status: " + networkStatus

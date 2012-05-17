@@ -174,6 +174,8 @@ public class DrawView extends View {
             canvas.drawText("Without", stopX, startY + 60, withoutTextPaint);
         } else {
             String anShort = appName;
+            if (anShort == null)
+                anShort = "Unknown";
             int dot = anShort.lastIndexOf('.');
             if (dot > 0) {
                 int lastPart = anShort.length() - dot;
