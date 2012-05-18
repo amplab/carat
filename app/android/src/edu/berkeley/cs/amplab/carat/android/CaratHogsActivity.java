@@ -32,8 +32,8 @@ public class CaratHogsActivity extends BaseVFActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hogs);
 
-        vf = (ViewFlipper) findViewById(R.id.hogsFlipper);
-        View baseView = findViewById(R.id.hogsList);
+        vf = (ViewFlipper) findViewById(R.id.flipper);
+        View baseView = findViewById(R.id.itemList);
         baseView.setOnTouchListener(SwipeListener.instance);
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
@@ -72,7 +72,7 @@ public class CaratHogsActivity extends BaseVFActivity {
     }
 
     private void initHogsView() {
-        final ListView lv = (ListView) findViewById(R.id.hogsList);
+        final ListView lv = (ListView) findViewById(R.id.itemList);
         lv.setCacheColorHint(0);
     }
 
@@ -95,7 +95,7 @@ public class CaratHogsActivity extends BaseVFActivity {
         
         detailPage.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
 
-        final ListView lv = (ListView) findViewById(R.id.hogsList);
+        final ListView lv = (ListView) findViewById(R.id.itemList);
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position,
@@ -135,7 +135,7 @@ public class CaratHogsActivity extends BaseVFActivity {
 
     public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
-        final ListView lv = (ListView) findViewById(R.id.hogsList);
+        final ListView lv = (ListView) findViewById(R.id.itemList);
         lv.setAdapter(new HogsAdapter(app, app.s.getHogReport()));
     }
 

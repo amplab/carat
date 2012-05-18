@@ -63,7 +63,7 @@ public abstract class HogsBugsAdapter extends BaseAdapter {
             convertView = mInflater.inflate(getId(), null);
             holder = new ViewHolder();
             holder.appIcon = (ImageView) convertView.findViewById(R.id.appIcon);
-            holder.txtName = (TextView) convertView.findViewById(R.id.bugName);
+            holder.txtName = (TextView) convertView.findViewById(R.id.appName);
             holder.progConfidence = (ProgressBar) convertView
                     .findViewById(R.id.confidenceBar);
             holder.moreInfo = (ImageView) convertView

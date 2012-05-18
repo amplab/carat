@@ -31,9 +31,9 @@ public class CaratBugsActivity extends BaseVFActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.bugs);
-        vf = (ViewFlipper) findViewById(R.id.bugsFlipper);
-        View baseView = findViewById(R.id.bugsList);
+        setContentView(R.layout.hogs);
+        vf = (ViewFlipper) findViewById(R.id.flipper);
+        View baseView = findViewById(R.id.itemList);
         baseView.setOnTouchListener(SwipeListener.instance);
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
@@ -91,7 +91,7 @@ public class CaratBugsActivity extends BaseVFActivity {
         detailPage.setOnTouchListener(new FlipperBackListener(this, vf,
                 baseViewIndex, true));
 
-        final ListView lv = (ListView) findViewById(R.id.bugsList);
+        final ListView lv = (ListView) findViewById(R.id.itemList);
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position,
@@ -132,7 +132,7 @@ public class CaratBugsActivity extends BaseVFActivity {
 
     public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
-        final ListView lv = (ListView) findViewById(R.id.bugsList);
+        final ListView lv = (ListView) findViewById(R.id.itemList);
         lv.setAdapter(new BugsAdapter(app, app.s.getBugReport()));
     }
 

@@ -13,6 +13,6 @@ public class BugsAdapter extends HogsBugsAdapter {
 
 	@Override
 	protected int getId() {
-		return R.layout.bug;
+		return R.layout.hog;
 	}
 }
