@@ -33,6 +33,10 @@ import android.widget.TabHost.OnTabChangeListener;
 public class CaratMainActivity extends TabActivity {
     // Log tag
     private static final String TAG = "CaratMain";
+    
+    public static final String ACTION_BUGS = "bugs";
+    public static final String ACTION_HOGS = "hogs";
+    
     // 250 ms
     public static final long ANIMATION_DURATION = 250;
 
@@ -119,16 +123,18 @@ public class CaratMainActivity extends TabActivity {
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
-        intent = new Intent().setClass(this, CaratBugsActivity.class);
+        intent = new Intent().setClass(this, CaratBugsOrHogsActivity.class);
+        intent.setAction(ACTION_BUGS);
         spec = tabHost
-                .newTabSpec("bugs")
+                .newTabSpec(ACTION_BUGS)
                 .setIndicator(getString(R.string.tab_bugs),
                         res.getDrawable(R.drawable.ic_tab_bugs))
                 .setContent(intent);
         tabHost.addTab(spec);
 
-        intent = new Intent().setClass(this, CaratHogsActivity.class);
-        spec = tabHost.newTabSpec("hogs")
+        intent = new Intent().setClass(this, CaratBugsOrHogsActivity.class);
+        intent.setAction(ACTION_HOGS);
+        spec = tabHost.newTabSpec(ACTION_HOGS)
                 .setIndicator("Hogs", res.getDrawable(R.drawable.ic_tab_hogs))
                 .setContent(intent);
         tabHost.addTab(spec);

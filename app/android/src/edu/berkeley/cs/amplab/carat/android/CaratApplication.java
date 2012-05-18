@@ -60,8 +60,8 @@ public class CaratApplication extends Application {
 
     private static CaratMainActivity main = null;
     private static CaratMyDeviceActivity myDevice = null;
-    private static CaratBugsActivity bugsActivity = null;
-    private static CaratHogsActivity hogsActivity = null;
+    private static CaratBugsOrHogsActivity bugsActivity = null;
+    private static CaratBugsOrHogsActivity hogsActivity = null;
     private static CaratSuggestionsActivity actionList = null;
 
     private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
@@ -188,11 +188,11 @@ public class CaratApplication extends Application {
         myDevice = a;
     }
 
-    public static void setBugs(CaratBugsActivity a) {
+    public static void setBugs(CaratBugsOrHogsActivity a) {
         bugsActivity = a;
     }
 
-    public static void setHogs(CaratHogsActivity a) {
+    public static void setHogs(CaratBugsOrHogsActivity a) {
         hogsActivity = a;
     }
 
