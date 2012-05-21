@@ -30,6 +30,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
     protected DrawView.Type activityType = DrawView.Type.HOG;
     private DrawView w = null;
     private View detailPage = null;
+    private View tv = null;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +47,20 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
         }
         setContentView(R.layout.hogs);
         vf = (ViewFlipper) findViewById(R.id.flipper);
-        View baseView = findViewById(R.id.itemList);
+        View baseView = findViewById(android.R.id.list);
         baseView.setOnTouchListener(SwipeListener.instance);
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
+        
+        LayoutInflater mInflater = LayoutInflater.from(getApplicationContext());
+        tv = mInflater.inflate(R.layout.emptyactions, null);
+        vf.addView(tv);
         // initBugsView();
         // initGraphView();
         initGraphChart();
         initDetailView();
+        
+        
 
         Object o = getLastNonConfigurationInstance();
         if (o != null) {
@@ -104,7 +111,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
         detailPage.setOnTouchListener(new FlipperBackListener(this, vf,
                 baseViewIndex, true));
 
-        final ListView lv = (ListView) findViewById(R.id.itemList);
+        final ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position,
@@ -141,13 +148,25 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 
     public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
-        final ListView lv = (ListView) findViewById(R.id.itemList);
+        final ListView lv = (ListView) findViewById(android.R.id.list);
         if (isBugsActivity)
             lv.setAdapter(new HogsBugsAdapter(app, app.s.getBugReport()));
         else
             lv.setAdapter(new HogsBugsAdapter(app, app.s.getHogReport()));
+        emptyCheck(lv);
     }
-
+    
+    
+    private void emptyCheck(ListView lv) {
+        if (lv.getAdapter().isEmpty()) {
+            if (vf.getDisplayedChild() == baseViewIndex)
+                vf.setDisplayedChild(vf.indexOfChild(tv));
+        } else {
+            if (vf.getDisplayedChild() == vf.indexOfChild(tv)) {
+                vf.setDisplayedChild(baseViewIndex);
+            }
+        }
+    }
     /**
      * (non-Javadoc)
      * 
@@ -161,5 +180,19 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
             CaratApplication.setHogs(this);
         refresh();
         super.onResume();
+    }
+
+    /* (non-Javadoc)
+     * @see edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity#onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != vf.indexOfChild(tv)) {
+            vf.setOutAnimation(CaratMainActivity.outtoRight);
+            vf.setInAnimation(CaratMainActivity.inFromLeft);
+            vf.setDisplayedChild(baseViewIndex);
+            viewIndex = baseViewIndex;
+        } else
+            finish();
     }
 }

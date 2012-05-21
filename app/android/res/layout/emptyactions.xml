@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Color set for the GUI designer -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background"
+    android:orientation="horizontal"
+    android:paddingBottom="10dip"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="10dip" >
+
+    <ImageView
+        android:id="@+id/suggestion_app_icon"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_gravity="top"
+        android:layout_marginRight="11dip"
+        android:contentDescription="@string/appicon"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_launcher" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/actionName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="@string/emptySuggestion"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/brown" />
+
+            <TextView
+                android:id="@+id/benefitLegend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="@string/checkback"
+                android:textColor="@color/green" />
+
+    </LinearLayout>
+
+</LinearLayout>

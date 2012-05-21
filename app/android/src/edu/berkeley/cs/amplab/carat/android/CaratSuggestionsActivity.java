@@ -2,11 +2,15 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import android.app.ActivityManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.util.List;
@@ -20,16 +24,22 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 
+    View tv = null;
+    
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.suggestions);
+        LayoutInflater mInflater = LayoutInflater.from(getApplicationContext());
         vf = (ViewFlipper) findViewById(R.id.suggestionsFlipper);
-        View baseView = findViewById(R.id.list);
+        View baseView = findViewById(android.R.id.list);
         baseView.setOnTouchListener(SwipeListener.instance);
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
+        
+        tv = mInflater.inflate(R.layout.emptyactions, null);
+        vf.addView(tv);
 
-        final ListView lv = (ListView) findViewById(R.id.list);
+        final ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
 
         lv.setOnItemClickListener(new OnItemClickListener() {
@@ -65,7 +75,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         else
             webview.loadUrl("file:///android_asset/killapp.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.list))));
+                .indexOfChild(findViewById(android.R.id.list))));
     }
 
     private void initUpgradeOsView() {
@@ -75,7 +85,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             webview.setBackgroundColor(0);
         webview.loadUrl("file:///android_asset/upgradeos.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.list))));
+                .indexOfChild(findViewById(android.R.id.list))));
     }
 
     /*
@@ -92,10 +102,24 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
 
     public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
-        final ListView lv = (ListView) findViewById(R.id.list);
+        final ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(),
                 app.s.getBugReport()));
+        emptyCheck(lv);
     }
+    
+    
+    private void emptyCheck(ListView lv) {
+        if (lv.getAdapter().isEmpty()) {
+            if (vf.getDisplayedChild() == baseViewIndex)
+                vf.setDisplayedChild(vf.indexOfChild(tv));
+        } else {
+            if (vf.getDisplayedChild() == vf.indexOfChild(tv)) {
+                vf.setDisplayedChild(baseViewIndex);
+            }
+        }
+    }
+    
 
     public void killApp(String appName) {
         List<ActivityManager.RunningAppProcessInfo> list = SamplingLibrary
@@ -108,5 +132,19 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                 }
             }
         }
+    }
+    
+    /* (non-Javadoc)
+     * @see edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity#onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != vf.indexOfChild(tv)) {
+            vf.setOutAnimation(CaratMainActivity.outtoRight);
+            vf.setInAnimation(CaratMainActivity.inFromLeft);
+            vf.setDisplayedChild(baseViewIndex);
+            viewIndex = baseViewIndex;
+        } else
+            finish();
     }
 }
