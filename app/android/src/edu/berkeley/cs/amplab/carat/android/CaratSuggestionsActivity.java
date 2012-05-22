@@ -1,11 +1,20 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.bluetooth.BluetoothAdapter;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.media.AudioManager;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -54,9 +63,15 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     switchView(R.id.killAppView);
             }
         });
-
+//        ContentResolver aContentResolver=this.getContentResolver();
         initKillView();
         initUpgradeOsView();
+        DimScreen(getApplicationContext());
+        //SetAutoBrightness(getApplicationContext());
+        DisableWifi(getApplicationContext());
+        DisableBluetooth(); 
+        DisableHapticFb(getApplicationContext());
+        
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
@@ -87,7 +102,73 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(android.R.id.list))));
     }
+    
+    /*Dim the screen if current screen brightness value is larger than 30*/
+    public void DimScreen(Context context){
+        boolean isAutoBrightness= SamplingLibrary.isAutoBrightness(context);
+        if (isAutoBrightness==true) {
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+        }
+        int brightnessValue=30;
+        int curBrightValue=SamplingLibrary.getScreenBrightness(context);
+        if(curBrightValue>brightnessValue)
+        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 30);
+    }
 
+    /*Set automatic brightness mode*/
+    public void SetAutoBrightness(Context context){
+        boolean isAutoBrightness= SamplingLibrary.isAutoBrightness(context);
+        if (isAutoBrightness==false) {
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);   
+        }
+        else{
+            Log.v("Screen","Automatic Brightness already on");
+            
+        }
+    }
+    
+    /*Disable Wifi if Wifi is on*/
+    public void DisableWifi(Context context){
+        boolean wifiEnabled=SamplingLibrary.getWifiEnabled(context);
+        if(wifiEnabled==true){
+            WifiManager myWifiManager = (WifiManager) context
+                    .getSystemService(Context.WIFI_SERVICE);
+            myWifiManager.setWifiEnabled(false);            
+        }
+    }
+    
+    /*Disable bluetooth if bluetooth is on*/
+    public void DisableBluetooth(){
+        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
+        if (myBluetoothAdapter.isEnabled()==true) {
+            myBluetoothAdapter.disable(); 
+        }                 
+    }
+    
+    /*Disable haptic feedback if it is on*/
+    public void DisableHapticFb(Context context){
+        try {
+            if(Settings.System.getInt(
+                    context.getContentResolver(),
+                    Settings.System.HAPTIC_FEEDBACK_ENABLED)== 1)
+            {
+            Settings.System.putInt(getContentResolver(), Settings.System.HAPTIC_FEEDBACK_ENABLED, 0);
+            }
+        } catch (SettingNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+     }
+/*    
+    public void DisableVibration(){
+        AudioManager audioManager=(AudioManager) getApplicationContext()
+                .getSystemService(Context.AUDIO_SERVICE);
+        
+        if(audioManager.getVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION)){        
+        }        
+    }
+    
+  */  
     /*
      * (non-Javadoc)
      * 
