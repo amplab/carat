@@ -19,7 +19,6 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.util.List;
@@ -33,7 +32,8 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 
-    View tv = null;
+    private View tv = null;
+    private int emptyIndex = -1;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +46,10 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         baseViewIndex = vf.indexOfChild(baseView);
         
         tv = mInflater.inflate(R.layout.emptyactions, null);
-        vf.addView(tv);
+        if (tv != null){
+            vf.addView(tv);
+            emptyIndex = vf.indexOfChild(tv);
+        }
 
         final ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
@@ -193,9 +196,9 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     private void emptyCheck(ListView lv) {
         if (lv.getAdapter().isEmpty()) {
             if (vf.getDisplayedChild() == baseViewIndex)
-                vf.setDisplayedChild(vf.indexOfChild(tv));
+                vf.setDisplayedChild(emptyIndex);
         } else {
-            if (vf.getDisplayedChild() == vf.indexOfChild(tv)) {
+            if (vf.getDisplayedChild() == emptyIndex) {
                 vf.setDisplayedChild(baseViewIndex);
             }
         }
@@ -220,7 +223,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
      */
     @Override
     public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != vf.indexOfChild(tv)) {
+        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
             vf.setOutAnimation(CaratMainActivity.outtoRight);
             vf.setInAnimation(CaratMainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);

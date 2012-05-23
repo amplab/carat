@@ -31,6 +31,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
     private DrawView w = null;
     private View detailPage = null;
     private View tv = null;
+    private int emptyIndex = -1;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +55,10 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
         
         LayoutInflater mInflater = LayoutInflater.from(getApplicationContext());
         tv = mInflater.inflate(R.layout.emptyactions, null);
-        vf.addView(tv);
+        if (tv != null){
+            vf.addView(tv);
+            emptyIndex = vf.indexOfChild(tv);
+        }
         // initBugsView();
         // initGraphView();
         initGraphChart();
@@ -160,9 +164,9 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
     private void emptyCheck(ListView lv) {
         if (lv.getAdapter().isEmpty()) {
             if (vf.getDisplayedChild() == baseViewIndex)
-                vf.setDisplayedChild(vf.indexOfChild(tv));
+                vf.setDisplayedChild(emptyIndex);
         } else {
-            if (vf.getDisplayedChild() == vf.indexOfChild(tv)) {
+            if (vf.getDisplayedChild() == emptyIndex) {
                 vf.setDisplayedChild(baseViewIndex);
             }
         }
@@ -187,7 +191,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
      */
     @Override
     public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != vf.indexOfChild(tv)) {
+        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
             vf.setOutAnimation(CaratMainActivity.outtoRight);
             vf.setInAnimation(CaratMainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);
