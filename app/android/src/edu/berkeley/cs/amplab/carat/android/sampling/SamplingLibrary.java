@@ -69,9 +69,6 @@ public final class SamplingLibrary {
     public static String NETWORKSTATUS_CONNECTING = "connecting";
     // Network type constants
     public static String TYPE_UNKNOWN = "unknown";
-    public static String TYPE_WIFI = "wifi";
-    public static String TYPE_MOBILE = "mobile";
-    public static String TYPE_WIMAX = "wimax";
     // Data State constants
     public static String DATA_DISCONNECTED = NETWORKSTATUS_DISCONNECTED;
     public static String DATA_CONNECTING = NETWORKSTATUS_CONNECTING;
@@ -687,19 +684,12 @@ public final class SamplingLibrary {
     public static String getNetworkType(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null || cm.getActiveNetworkInfo() == null)
+        if (cm == null)
             return TYPE_UNKNOWN;
-        int type = cm.getActiveNetworkInfo().getType();
-        switch (type) {
-        case ConnectivityManager.TYPE_MOBILE:
-            return TYPE_MOBILE;
-        case ConnectivityManager.TYPE_WIFI:
-            return TYPE_WIFI;
-        case ConnectivityManager.TYPE_WIMAX:
-            return TYPE_WIMAX;
-        default:
+        NetworkInfo i = cm.getActiveNetworkInfo();
+        if (i == null)
             return TYPE_UNKNOWN;
-        }
+        return i.getTypeName();
     }
 
     public static boolean networkAvailable(Context c) {
@@ -810,7 +800,7 @@ public final class SamplingLibrary {
                 + screenBrightnessValue);
         return screenBrightnessValue;
     }
-    
+
     public static boolean isAutoBrightness(Context context) {
         boolean autoBrightness = false;
         try {
@@ -820,11 +810,10 @@ public final class SamplingLibrary {
         } catch (SettingNotFoundException e) {
             e.printStackTrace();
         }
-        Log.v("AutoScreenBrightness", "Automatic Screen brightness mode is enabled:"
-                + autoBrightness);
+        Log.v("AutoScreenBrightness",
+                "Automatic Screen brightness mode is enabled:" + autoBrightness);
         return autoBrightness;
     }
-    
 
     /* Check whether GPS are enabled */
     public static boolean getGpsEnabled(Context context) {
@@ -1267,7 +1256,7 @@ public final class SamplingLibrary {
         // required always
         long now = System.currentTimeMillis();
         mySample.setTimestamp(now / 1000.0);
-        
+
         // Record first data point for CPU usage
         long[] idleAndCpu1 = readUsagePoint();
 
@@ -1276,7 +1265,8 @@ public final class SamplingLibrary {
 
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
-        boolean autoScreenBrightness=SamplingLibrary.isAutoBrightness(context);
+        boolean autoScreenBrightness = SamplingLibrary
+                .isAutoBrightness(context);
         if (autoScreenBrightness)
             mySample.setScreenBrightness(-1); // Auto
         // boolean gpsEnabled = SamplingLibrary.getGpsEnabled(context);
@@ -1453,7 +1443,7 @@ public final class SamplingLibrary {
         // TODO: Memory Wired should have memory that is "unevictable", that
         // will always be used even when all apps are killed
 
-        //Log.d(STAG, "serial=" + getBuildSerial());
+        // Log.d(STAG, "serial=" + getBuildSerial());
 
         // Record second data point for cpu/idle time
         now = System.currentTimeMillis();
