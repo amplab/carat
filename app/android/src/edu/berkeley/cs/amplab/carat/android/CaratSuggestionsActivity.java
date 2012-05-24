@@ -69,11 +69,11 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
 //        ContentResolver aContentResolver=this.getContentResolver();
         initKillView();
         initUpgradeOsView();
-        DimScreen(getApplicationContext());
+        //DimScreen(getApplicationContext());
         //SetAutoBrightness(getApplicationContext());
-        DisableWifi(getApplicationContext());
-        DisableBluetooth(); 
-        DisableHapticFb(getApplicationContext());
+        //DisableWifi(getApplicationContext());
+        //DisableBluetooth(); 
+        //DisableHapticFb(getApplicationContext());
         
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
