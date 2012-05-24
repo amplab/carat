@@ -15,6 +15,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -39,7 +41,7 @@ public class CaratMainActivity extends TabActivity {
     
     // 250 ms
     public static final long ANIMATION_DURATION = 250;
-
+    
     // Thread that sends samples when phone is woken up, GUI is started, or at
     // 15 min intervals.
     private CommsThread sampleSender = null;
@@ -51,9 +53,12 @@ public class CaratMainActivity extends TabActivity {
 
     // Zubhium SDK
     ZubhiumSDK sdk = null;
+    
     // Key File
-    public static final String ZUBHIUM_KEYFILE = "zubhium.properties";
-    public static final String FLURRY_KEYFILE = "flurry.properties";
+    private static final String ZUBHIUM_KEYFILE = "zubhium.properties";
+    private static final String FLURRY_KEYFILE = "flurry.properties";
+    
+    private MenuItem feedbackItem = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -362,11 +367,20 @@ public class CaratMainActivity extends TabActivity {
     }
 
     /**
-     * Turn off options menu since Carat doesn't have one.
+     * Show Zubhium menu here.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return false;
+        feedbackItem = menu.add(R.string.feedback);
+        feedbackItem.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+                if (sdk != null)
+                    sdk.openFeedbackDialog(CaratMainActivity.this);
+                return true;
+            }});
+        return true;
     }
     
     
