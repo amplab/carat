@@ -44,8 +44,12 @@ public class CaratSampleDB {
     private Sample lastSample = null;
     
     private SQLiteDatabase db = null;
+    
+    private SampleDbOpenHelper helper = null;
 
     private static CaratSampleDB instance = null;
+    
+    private Object dbLock = null;
 
     public static CaratSampleDB getInstance(Context c) {
         if (instance == null)
@@ -54,8 +58,8 @@ public class CaratSampleDB {
     }
 
     public CaratSampleDB(Context context) {
-            SampleDbOpenHelper sampleOpenHelper = new SampleDbOpenHelper(context);
-            db = sampleOpenHelper.getWritableDatabase();
+            helper = new SampleDbOpenHelper(context);
+            dbLock = new Object();
     }
 
     /* (non-Javadoc)
@@ -63,7 +67,10 @@ public class CaratSampleDB {
      */
     @Override
     protected void finalize() throws Throwable {
-        db.close();
+        synchronized(dbLock){
+            if (db != null)
+                db.close();
+        }
         super.finalize();
     }
 
@@ -120,91 +127,69 @@ public class CaratSampleDB {
         return cursor;
     }
 
-    /**
-     * Searches the database and returns Samples not yet sent.
-     */
-
-    public Sample[] querySamples() {
-        String[] columns = mColumnMap.keySet().toArray(
-                new String[mColumnMap.size()]);
-
-        Cursor cursor = query(null, null, columns, null, null, null);
-
-        if (cursor == null) {
-            // There are no results
-            return new Sample[0];
-        } else {
-            // Display the number of results
-            int count = cursor.getCount();
-
-            Sample[] results = new Sample[count];
-            int i = 0;
-
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Sample s = fillSample(cursor);
-                results[i] = s;
-                i++;
-                cursor.moveToNext();
-            }
-            cursor.close();
-            return results;
-        }
-    }
-
     public SortedMap<Long, Sample> queryOldestSamples(int howmany) {
-        String[] columns = mColumnMap.keySet().toArray(
-                new String[mColumnMap.size()]);
-
-        Cursor cursor = query(null, null, columns, null, null, COLUMN_TIMESTAMP
-                + " ASC LIMIT " + howmany);
-
         SortedMap<Long, Sample> results = new TreeMap<Long, Sample>();
-
-        if (cursor == null) {
-            // There are no results
-            return results;
-        } else {
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                Sample s = fillSample(cursor);
-                results.put(
-                        cursor.getLong(cursor.getColumnIndex(BaseColumns._ID)),
-                        s);
-                cursor.moveToNext();
+        synchronized (dbLock) {
+            if (db == null || !db.isOpen()) {
+                db = helper.getWritableDatabase();
             }
-            cursor.close();
-            return results;
+            String[] columns = mColumnMap.keySet().toArray(
+                    new String[mColumnMap.size()]);
+
+            Cursor cursor = query(null, null, columns, null, null,
+                    COLUMN_TIMESTAMP + " ASC LIMIT " + howmany);
+
+            if (cursor == null) {
+                // There are no results
+                return results;
+            } else {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    Sample s = fillSample(cursor);
+                    results.put(cursor.getLong(cursor
+                            .getColumnIndex(BaseColumns._ID)), s);
+                    cursor.moveToNext();
+                }
+                cursor.close();
+
+            }
         }
+        return results;
     }
 
-    public int delete(String whereClause, String[] whereArgs) {
+    private int delete(String whereClause, String[] whereArgs) {
         int deleted = db.delete(SAMPLES_VIRTUAL_TABLE, whereClause, whereArgs);
         return deleted;
     }
 
-    public int deleteOldestSamples(double timestamp) {
-        return delete(COLUMN_TIMESTAMP + " <= ?",
-                new String[] { timestamp + "" });
-    }
-
     public int deleteSamples(Set<Long> rowids) {
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        sb.append("(");
-        for (Long rowid : rowids) {
-            sb.append("" + rowid);
-            i++;
-            if (i != rowids.size()) {
-                sb.append(", ");
+        int ret = 0;
+        synchronized (dbLock) {
+            if (db == null || !db.isOpen()) {
+                db = helper.getWritableDatabase();
+            }
+            StringBuilder sb = new StringBuilder();
+            int i = 0;
+            sb.append("(");
+            for (Long rowid : rowids) {
+                sb.append("" + rowid);
+                i++;
+                if (i != rowids.size()) {
+                    sb.append(", ");
+                }
+            }
+            sb.append(")");
+            Log.d("CaratSampleDB", "Deleting where rowid in " + sb.toString());
+            ret = delete("rowid in " + sb.toString(), null);
+
+            if (db != null && db.isOpen()) {
+                db.close();
             }
         }
-        sb.append(")");
-        Log.d("CaratSampleDB", "Deleting where rowid in " + sb.toString());
-        return delete("rowid in " + sb.toString(), null);
+        return ret;
     }
 
-    public Sample queryLastSample() {
+    private Sample queryLastSample() {
         String[] columns = mColumnMap.keySet().toArray(
                 new String[mColumnMap.size()]);
 
@@ -258,14 +243,29 @@ public class CaratSampleDB {
     }
 
     public Sample getLastSample(Context c) {
-        if (lastSample == null)
-            queryLastSample();
+        synchronized (dbLock) {
+            if (db == null || !db.isOpen()) {
+                db = helper.getWritableDatabase();
+            }
+            if (lastSample == null)
+                queryLastSample();
+        }
         return lastSample;
     }
 
     public long putSample(Sample s) {
-        // force init
-        long id = addSample(s);
+        long id = 0;
+        synchronized (dbLock) {
+            if (db == null || !db.isOpen()) {
+                db = helper.getWritableDatabase();
+            }
+            // force init
+            id = addSample(s);
+
+            if (db != null && db.isOpen()) {
+                db.close();
+            }
+        }
         return id;
     }
     
@@ -275,7 +275,7 @@ public class CaratSampleDB {
      * 
      * @return rowId or -1 if failed
      */
-    public long addSample(Sample s) {
+    private long addSample(Sample s) {
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_TIMESTAMP, s.getTimestamp());
         // Add the piList as a blob
@@ -334,7 +334,12 @@ public class CaratSampleDB {
         @Override
         public void onCreate(SQLiteDatabase db) {
             mDatabase = db;
+            try{
             mDatabase.execSQL(FTS_TABLE_CREATE);
+            } catch (Throwable th){
+                // Already created
+                Log.e(TAG, "DB create failed!", th);
+            }
         }
 
         /*
