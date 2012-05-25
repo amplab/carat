@@ -158,7 +158,12 @@ public class CommunicationManager {
     }
     
     public static void resetConnection(){
+        try{
         ProtocolClient.resetConnection();
+        } catch (Throwable th){
+            // Null pointer from Thrift?
+            Log.e(TAG, "Got exception from thrift while resetting:", th);
+        }
     }
     
     public static void close(){

@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android.storage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -125,8 +126,8 @@ public class CaratDataStorage {
         try {
             return a.openFileInput(fname);
         } catch (FileNotFoundException e) {
-            Log.e(this.getClass().getName(), "Could not open carat data file "
-                    + fname + " for reading!");
+            Log.w(this.getClass().getName(), "File "
+                    + fname + " does not exist yet. Wait for reports.");
             // e.printStackTrace();
             return null;
         }
@@ -136,8 +137,8 @@ public class CaratDataStorage {
         try {
             return a.openFileOutput(fname, Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
-            Log.e(this.getClass().getName(), "Could not open carat data file "
-                    + fname + " for writing!");
+            Log.w(this.getClass().getName(), "File "
+                    + fname + " does not exist yet. Wait for reports.");
             // e.printStackTrace();
             return null;
         }
