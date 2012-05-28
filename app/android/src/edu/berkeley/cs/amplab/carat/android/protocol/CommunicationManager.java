@@ -48,15 +48,16 @@ public class CommunicationManager {
     }
 
     public boolean uploadSamples(Collection<Sample> samples) throws TException {
+        ProtocolClient.open(a.getApplicationContext());
         registerOnFirstRun();
         
         for (Sample s : samples)
             ProtocolClient.uploadSample(a.getApplicationContext(), s);
-        //ProtocolClient.close();
+        ProtocolClient.close();
         return true;
     }
 
-    public void registerOnFirstRun() {
+    private void registerOnFirstRun() {
         if (register) {
             String uuId = SamplingLibrary.getUuid(a.getApplicationContext());
             String os = SamplingLibrary.getOsVersion();
@@ -89,6 +90,8 @@ public class CommunicationManager {
             return;
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
+        // Establish connection
+        ProtocolClient.open(a.getApplicationContext());
         registerOnFirstRun();
 
         String uuId = SamplingLibrary.getUuid(a);
@@ -113,7 +116,7 @@ public class CommunicationManager {
         refreshMainReports(uuId, OS, model);
         refreshBugReports(uuId, model);
         refreshHogReports(uuId, model);
-       // ProtocolClient.close();
+        ProtocolClient.close();
         a.s.writeFreshness();
     }
 

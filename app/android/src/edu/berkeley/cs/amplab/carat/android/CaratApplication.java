@@ -33,6 +33,11 @@ public class CaratApplication extends Application {
     // Not in Android 2.2:
     public static final int IMPORTANCE_PERCEPTIBLE = 130;
     
+    // Used for bugs and hogs, and drawing
+    public enum Type {
+        OS, MODEL, HOG, BUG, SIMILAR, JSCORE
+    }
+    
     public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
     // Sample 1 min since application start, then at 15 min intervals

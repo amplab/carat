@@ -43,34 +43,6 @@ public class SwipeListener extends BaseSwipeListener {
 	}
 }
 
-abstract class BaseSwipeListener implements OnTouchListener {
-
-	float oldX = 0;
-	float oldY = 0;
-	
-	int currentTab = 0;
-
-	@Override
-	public boolean onTouch(View v, MotionEvent ev) {
-		int action = ev.getActionMasked();
-		if (action == MotionEvent.ACTION_DOWN) {
-			currentTab = CaratMainActivity.tabHost.getCurrentTab();
-			oldX = ev.getX();
-			oldY = ev.getY();
-			// Fix swipe not working on fake bugs/hogs screens:
-			if (currentTab == 0 || currentTab == 2 || currentTab == 3)
-				return true;
-			return false;
-		} else if (action == MotionEvent.ACTION_UP) {
-			currentTab = CaratMainActivity.tabHost.getCurrentTab();
-			return handleUp(v, ev);
-		}
-		return false;
-	}
-
-	public abstract boolean handleUp(View v, MotionEvent ev);
-}
-
 class BackSwipeListener extends BaseSwipeListener {
 
 	Activity a = null;

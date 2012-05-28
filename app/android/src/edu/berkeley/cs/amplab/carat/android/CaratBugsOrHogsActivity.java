@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
@@ -27,7 +28,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class CaratBugsOrHogsActivity extends BaseVFActivity {
 
     protected boolean isBugsActivity = false;
-    protected DrawView.Type activityType = DrawView.Type.HOG;
+    protected Type activityType = Type.HOG;
     private DrawView w = null;
     private View detailPage = null;
     private View tv = null;
@@ -39,10 +40,10 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
         if (i != null){
             String a = i.getAction();
             if (a.equals(CaratMainActivity.ACTION_BUGS)){
-                activityType = DrawView.Type.BUG;
+                activityType = Type.BUG;
                 isBugsActivity = true;
             }else {
-                activityType = DrawView.Type.HOG;
+                activityType = Type.HOG;
                 isBugsActivity = false;
             }
         }

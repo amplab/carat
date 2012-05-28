@@ -2,6 +2,8 @@ package edu.berkeley.cs.amplab.carat.android.storage;
 
 import java.io.Serializable;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+
 /**
  * Simple container class for Hog/Bug data to save memory.
  * @author Eemil Lagerspetz
@@ -13,12 +15,16 @@ public class SimpleHogBug implements Serializable{
      */
     private static final long serialVersionUID = 8272459694607111058L;
     
-    private boolean isBug = false;
+    private Type type = null;
     
-    public boolean isBug(){ return isBug; }
+    public Type getType (){
+        return type;
+    }
     
-    public SimpleHogBug(String appName, boolean isBug){
-        this.isBug = isBug;
+    public boolean isBug(){ return type == Type.BUG; }
+    
+    public SimpleHogBug(String appName, Type type){
+        this.type = type;
         this.appName = appName;
     }
     

@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.view.View;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -26,10 +27,6 @@ public class DrawView extends View {
     private static final float Y_LINE_MARGIN = -10;
     private static final float X_LINE_MARGIN = 10;
     private static final int TEXT_SIZE = 24;
-
-    public enum Type {
-        OS, MODEL, HOG, BUG, SIMILAR, JSCORE
-    }
 
     private Type type = null;
 

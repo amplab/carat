@@ -1,12 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -14,15 +10,11 @@ import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ViewFlipper;
-
-import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -63,7 +55,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                 SimpleHogBug fullObject = (SimpleHogBug) o;
                 if (fullObject.getAppName().equals("OsUpgrade"))
                     switchView(R.id.upgradeOsView);
-               /* else if (fullObject.getAppName().equals("Dim the Screen"))
+                else if (fullObject.getAppName().equals("Dim the Screen"))
                     GoToDisplayScreen();
                 else if (fullObject.getAppName().equals("Disable Wifi"))
                     GoToWifiScreen();
@@ -73,16 +65,16 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     GoToBluetoothScreen();
                 else if (fullObject.getAppName().equals("Disable haptic feedback"))
                     GoToSoundScreen();
-                else if (fullObject.getAppName().equals("Set automatic screen brightness"))
+                else if (fullObject.getAppName().equals("Set brightness to automatic"))
                     GoToDisplayScreen();
                 else if (fullObject.getAppName().equals("Disable network"))
                     GoToMobileNetworkScreen();
                 else if (fullObject.getAppName().equals("Disable vibration"))
                     GoToSoundScreen();
-                else if (fullObject.getAppName().equals("Reset sleep time"))
+                else if (fullObject.getAppName().equals("Shorten screen timeout"))
                     GoToDisplayScreen();
                 else if (fullObject.getAppName().equals("Disable automatic sync"))
-                    GoToSyncScreen(); */
+                    GoToSyncScreen();
                 else
                     switchView(R.id.killAppView);
                 }

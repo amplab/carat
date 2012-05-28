@@ -70,13 +70,13 @@ public class ProtocolClient {
         if (SERVER_ADDRESS == null || SERVER_PORT == 0)
             return null;
 
-        if (soc == null) {
+        //if (soc == null) {
             soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
             TProtocol p = new TBinaryProtocol(soc, true, true);
             instance = new CaratService.Client(p);
-        }
+        //}
         
-        if (!soc.isOpen())
+        if (soc != null && !soc.isOpen())
             open();
         
         return instance;
@@ -96,6 +96,10 @@ public class ProtocolClient {
             soc.close();
     }
     
+    public static void open(Context c){
+        getInstance(c);
+    }
+    
     public static void open(){
         if (soc != null && !soc.isOpen()){
             try {
@@ -109,25 +113,20 @@ public class ProtocolClient {
     }
     
     public static Reports getReports(Context c, String uuid, List<Feature> features) throws TException{
-        getInstance(c);
         return instance.getReports(uuid, features);
     }
     
     public static void registerMe(Context c, Registration registration) throws TException{
-        getInstance(c);
         instance.registerMe(registration);
     }
     
     public static void uploadSample(Context c, Sample s) throws TException{
-        getInstance(c);
         instance.uploadSample(s);
     }
     
     public static HogBugReport getHogOrBugReport(Context c, String uuid, List<Feature> features) throws TException{
-        getInstance(c);
         return instance.getHogOrBugReport(uuid, features);
     }
-
 
     /**
      * Test program.

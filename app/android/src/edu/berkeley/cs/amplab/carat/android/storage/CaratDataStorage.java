@@ -15,6 +15,7 @@ import java.util.List;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
@@ -231,9 +232,12 @@ public class CaratDataStorage {
         int size = list.size();
         for (int i = 0; i < size; ++i) {
             HogsBugs item = list.get(i);
-            result[i] = new SimpleHogBug(fixName(item.getAppName()), isBug);
+            result[i] = new SimpleHogBug(fixName(item.getAppName()), isBug ? Type.BUG:Type.HOG);
             result[i].setAppLabel(item.getAppLabel());
-            result[i].setAppPriority(item.getAppPriority());
+            String priority = item.getAppPriority();
+            if (priority == null || priority.length() == 0)
+                priority = "Foreground app";
+            result[i].setAppPriority(priority);
             result[i].setExpectedValue(item.getExpectedValue());
             result[i].setExpectedValueWithout(item.getExpectedValueWithout());
             result[i].setwDistance(item.getWDistance());
