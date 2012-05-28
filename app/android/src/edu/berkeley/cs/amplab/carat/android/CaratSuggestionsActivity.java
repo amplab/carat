@@ -5,6 +5,7 @@ import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -62,19 +63,34 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                 SimpleHogBug fullObject = (SimpleHogBug) o;
                 if (fullObject.getAppName().equals("OsUpgrade"))
                     switchView(R.id.upgradeOsView);
+               /* else if (fullObject.getAppName().equals("Dim the Screen"))
+                    GoToDisplayScreen();
+                else if (fullObject.getAppName().equals("Disable Wifi"))
+                    GoToWifiScreen();
+                else if (fullObject.getAppName().equals("Disable gps"))
+                    GoToLocSevScreen();
+                else if (fullObject.getAppName().equals("Disable bluetooth"))
+                    GoToBluetoothScreen();
+                else if (fullObject.getAppName().equals("Disable haptic feedback"))
+                    GoToSoundScreen();
+                else if (fullObject.getAppName().equals("Set automatic screen brightness"))
+                    GoToDisplayScreen();
+                else if (fullObject.getAppName().equals("Disable network"))
+                    GoToMobileNetworkScreen();
+                else if (fullObject.getAppName().equals("Disable vibration"))
+                    GoToSoundScreen();
+                else if (fullObject.getAppName().equals("Reset sleep time"))
+                    GoToDisplayScreen();
+                else if (fullObject.getAppName().equals("Disable automatic sync"))
+                    GoToSyncScreen(); */
                 else
                     switchView(R.id.killAppView);
-            }
+                }
         });
-//        ContentResolver aContentResolver=this.getContentResolver();
+        
         initKillView();
         initUpgradeOsView();
-        //DimScreen(getApplicationContext());
-        //SetAutoBrightness(getApplicationContext());
-        //DisableWifi(getApplicationContext());
-        //DisableBluetooth(); 
-        //DisableHapticFb(getApplicationContext());
-        
+
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
@@ -95,7 +111,6 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(android.R.id.list))));
     }
-
     private void initUpgradeOsView() {
         WebView webview = (WebView) findViewById(R.id.upgradeOsView);
         // Fixes the white flash when showing the page for the first time.
@@ -140,6 +155,51 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         }
     }
     
+    /*Show the bluetooth setting*/
+    public void GoToBluetoothScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+        startActivity(startIntent);  
+    }
+    /*Show the wifi setting*/
+    public void GoToWifiScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
+        startActivity(startIntent);        
+    }
+    /*Show the display setting
+     * including screen brightness setting, sleep mode*/
+    public void GoToDisplayScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_DISPLAY_SETTINGS);
+        startActivity(startIntent);
+    }
+    /*Show the sound setting
+     * including phone ringer mode, vibration mode, haptic feedback setting and other sound options*/
+    public void GoToSoundScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_SOUND_SETTINGS);
+        startActivity(startIntent);
+    }
+    /*Show the location service setting
+     * including configuring gps provider, network provider*/
+    public void GoToLocSevScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(startIntent);
+    }
+    /*Show the synchronization setting*/
+    public void GoToSyncScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_SYNC_SETTINGS);
+        startActivity(startIntent);
+    }
+    /*Show the mobile network setting
+     * including configuring 3G/2G, network operators*/
+    public void GoToMobileNetworkScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+        startActivity(startIntent);
+    }
+    /*Show the application setting*/
+    public void GoToAppScreen(){
+        Intent startIntent= new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+        startActivity(startIntent);
+    }
+    
     /*Disable bluetooth if bluetooth is on*/
     public void DisableBluetooth(){
         BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
@@ -162,16 +222,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             e.printStackTrace();
         }
      }
-/*    
-    public void DisableVibration(){
-        AudioManager audioManager=(AudioManager) getApplicationContext()
-                .getSystemService(Context.AUDIO_SERVICE);
-        
-        if(audioManager.getVibrateSetting(AudioManager.VIBRATE_TYPE_NOTIFICATION)){        
-        }        
-    }
     
-  */  
     /*
      * (non-Javadoc)
      * 
