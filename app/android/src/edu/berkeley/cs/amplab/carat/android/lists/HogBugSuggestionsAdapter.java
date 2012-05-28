@@ -77,7 +77,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			String appName = item.getAppName();
 			if (appName == null) appName = "unknown";
 			
-			if (SamplingLibrary.isSystem(a.getApplicationContext(), appName))
+			if (SamplingLibrary.isHidden(a.getApplicationContext(), appName))
 			    continue;
 			if (appName.equals(CaratApplication.CARAT_PACKAGE) || appName.equals(CaratApplication.CARAT_OLD))
 			    continue;

@@ -13,6 +13,7 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView.Type;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
+import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -172,8 +173,8 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
          * Toast.makeText(CaratMyDeviceActivity.this, "You have chosen: " + " "
          * + fullObject.processName, Toast.LENGTH_LONG).show(); } });
          */
-        List<RunningAppProcessInfo> searchResults = SamplingLibrary
-                .getRunningProcessInfo(getApplicationContext());
+        List<ProcessInfo> searchResults = SamplingLibrary
+                .getRunningAppInfo(getApplicationContext());
         lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
         lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
@@ -370,8 +371,8 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     public void viewProcessList(View v) {
         // prepare content:
         ListView lv = (ListView) findViewById(R.id.processList);
-        List<RunningAppProcessInfo> searchResults = SamplingLibrary
-                .getRunningProcessInfo(getApplicationContext());
+        List<ProcessInfo> searchResults = SamplingLibrary
+                .getRunningAppInfo(getApplicationContext());
         lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
         // switch views:
         switchView(R.id.processList);

@@ -15,6 +15,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.flurry.android.FlurryAgent;
+
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
@@ -27,6 +29,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -425,12 +428,36 @@ public final class SamplingLibrary {
 
     private static WeakReference<List<RunningAppProcessInfo>> runningAppInfo = null;
 
-    public static List<RunningAppProcessInfo> getRunningProcessInfo(
+    public static List<ProcessInfo> getRunningAppInfo(Context c){
+        List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(c);
+        List<RunningServiceInfo> runningServices = getRunningServiceInfo(c);
+        
+        List<ProcessInfo> l = new ArrayList<ProcessInfo>();
+        
+        for (RunningAppProcessInfo pi : runningProcs) {
+            ProcessInfo item = new ProcessInfo();
+            item.setImportance(CaratApplication.importanceString(pi.importance));
+            item.setPId(pi.pid);
+            item.setPName(pi.processName);
+            l.add(item);
+        }
+        
+        for (RunningServiceInfo pi : runningServices) {
+            ProcessInfo item = new ProcessInfo();
+            item.setImportance(pi.foreground ? "Foreground app":"Service");
+            item.setPId(pi.pid);
+            item.setPName(pi.clientPackage);
+            l.add(item);
+        }
+            
+        return l;
+    }
+    
+    private static List<RunningAppProcessInfo> getRunningProcessInfo(
             Context context) {
         if (runningAppInfo == null || runningAppInfo.get() == null) {
             ActivityManager pActivityManager = (ActivityManager) context
                     .getSystemService(Activity.ACTIVITY_SERVICE);
-
             List<RunningAppProcessInfo> runningProcs = pActivityManager
                     .getRunningAppProcesses();
             /*
@@ -451,6 +478,13 @@ public final class SamplingLibrary {
         }
         return runningAppInfo.get();
     }
+    
+    public static List<RunningServiceInfo> getRunningServiceInfo(Context c){
+        ActivityManager pActivityManager = (ActivityManager) c
+                .getSystemService(Activity.ACTIVITY_SERVICE);
+        return pActivityManager.getRunningServices(0);
+    }
+    
 
     public static boolean isRunning(Context context, String appName) {
         List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(context);
@@ -461,10 +495,55 @@ public final class SamplingLibrary {
         }
         return false;
     }
+    
+    public static void resetRunningProcessInfo(){
+        runningAppInfo = null;
+    }
+    
 
     static WeakReference<Map<String, PackageInfo>> packages = null;
 
-    public static boolean isSystem(Context context, String processName) {
+    public static boolean isHidden(Context c, String processName){
+        boolean isSystem = isSystem(c, processName);
+        return (isSystem && !isWhiteListed(c, processName));
+    }
+    
+    /**
+     * For debugging always returns true.
+     * @param c
+     * @param processName
+     * @return
+     */
+    private static boolean isWhiteListed(Context c, String processName) {
+        /*
+         * Blacklist:
+         * Key chain, google partner set up, package installer, package access helper
+         * 
+         * Whitelist:
+         * MusicFX, Messaging, Voice Search, Bluetooth Share
+         * 
+         * 
+         */
+        
+        // Unkillable:
+        if (processName.equals("com.android.keychain"))
+            return false;
+        else if (processName.equals("com.google.android.partnersetup"))
+            return false;
+        else if (processName.equals("com.android.packageinstaller"))
+            return false;
+        else if (processName.equals("com.android.defcontainer"))
+            return false;
+        // This always springs up when killed after a minute or two
+        else if (processName.equals("com.android.musicfx"))
+            return false;
+        
+        FlurryAgent.logEvent("Whitelisted "+processName);
+        Log.i("ProcessName", processName);
+        return true;
+    }
+    
+    private static boolean isSystem(Context context, String processName) {
         PackageInfo pak = getPackageInfo(context, processName);
         if (pak != null) {
             ApplicationInfo i = pak.applicationInfo;
@@ -510,7 +589,7 @@ public final class SamplingLibrary {
             Context context) {
         // Reset list for each sample
         runningAppInfo = null;
-        List<RunningAppProcessInfo> list = getRunningProcessInfo(context);
+        List<ProcessInfo> list = getRunningAppInfo(context);
         List<ProcessInfo> result = new ArrayList<ProcessInfo>();
 
         PackageManager pm = context.getPackageManager();
@@ -518,9 +597,9 @@ public final class SamplingLibrary {
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
 
-        for (RunningAppProcessInfo pi : list) {
+        for (ProcessInfo pi : list) {
             ProcessInfo item = new ProcessInfo();
-            PackageInfo pak = getPackageInfo(context, pi.processName);
+            PackageInfo pak = getPackageInfo(context, pi.getPName());
             if (pak != null) {
                 ApplicationInfo info = pak.applicationInfo;
                 // Human readable label (if any)
@@ -535,11 +614,11 @@ public final class SamplingLibrary {
                         || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
             }
-            item.setImportance(CaratApplication.importanceString(pi.importance));
-            item.setPId(pi.pid);
-            item.setPName(pi.processName);
+            item.setImportance(pi.getImportance());
+            item.setPId(pi.getPId());
+            item.setPName(pi.getPName());
 
-            procMem[list.indexOf(pi)] = pi.pid;
+            procMem[list.indexOf(pi)] = pi.getPId();
             // FIXME: More fields will need to be added here, but ProcessInfo
             // needs to change.
             /*

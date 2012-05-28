@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,14 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProcessInfoAdapter extends BaseAdapter {
-	private static List<RunningAppProcessInfo> searchArrayList;
+	private static List<ProcessInfo> searchArrayList;
 
 	private LayoutInflater mInflater;
 	
 	private CaratApplication app = null;
 
 	public ProcessInfoAdapter(Context context,
-			List<RunningAppProcessInfo> results, CaratApplication app) {
+			List<ProcessInfo> results, CaratApplication app) {
 		this.app = app;
 		searchArrayList = results;
 		mInflater = LayoutInflater.from(context);
@@ -56,14 +57,14 @@ public class ProcessInfoAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		RunningAppProcessInfo x = searchArrayList.get(position);
+		ProcessInfo x = searchArrayList.get(position);
 		
 		if (x == null)
             return convertView;
 		
-		holder.appIcon.setImageDrawable(app.iconForApp(x.processName));
-		holder.txtName.setText(app.labelForApp(x.processName));
-		holder.txtBenefit.setText(CaratApplication.importanceString(x.importance));
+		holder.appIcon.setImageDrawable(app.iconForApp(x.getPName()));
+		holder.txtName.setText(app.labelForApp(x.getPName()));
+		holder.txtBenefit.setText(x.getImportance());
 		// holder.moreInfo...
 
 		return convertView;

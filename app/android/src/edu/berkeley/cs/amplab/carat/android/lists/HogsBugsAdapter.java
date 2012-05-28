@@ -35,7 +35,7 @@ public class HogsBugsAdapter extends BaseAdapter {
                 if (appName.equals(CaratApplication.CARAT_PACKAGE)
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
-                if (!SamplingLibrary.isSystem(c, appName))
+                if (!SamplingLibrary.isHidden(c, appName))
                     items++;
             }
         allBugsOrHogs = new SimpleHogBug[items];
@@ -49,7 +49,7 @@ public class HogsBugsAdapter extends BaseAdapter {
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
 
-                if (!SamplingLibrary.isSystem(c, b.getAppName())) {
+                if (!SamplingLibrary.isHidden(c, b.getAppName())) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }

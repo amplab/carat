@@ -255,20 +255,6 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         }
     }
     
-
-    public void killApp(String appName) {
-        List<ActivityManager.RunningAppProcessInfo> list = SamplingLibrary
-                .getRunningProcessInfo(getApplicationContext());
-        if (list != null) {
-            for (int i = 0; i < list.size(); ++i) {
-                ActivityManager.RunningAppProcessInfo pi = list.get(i);
-                if (appName.matches(pi.processName)) {
-                    android.os.Process.killProcess(pi.pid);
-                }
-            }
-        }
-    }
-    
     /* (non-Javadoc)
      * @see edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity#onBackPressed()
      */

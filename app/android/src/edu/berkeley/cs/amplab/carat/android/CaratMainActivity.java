@@ -8,6 +8,7 @@ import com.flurry.android.FlurryAgent;
 import com.zubhium.ZubhiumSDK;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import android.app.TabActivity;
 import android.content.Intent;
@@ -332,6 +333,19 @@ public class CaratMainActivity extends TabActivity {
         }
         super.onResume();
     }
+    
+    
+
+    /* (non-Javadoc)
+     * @see android.app.ActivityGroup#onPause()
+     */
+    @Override
+    protected void onPause() {
+        SamplingLibrary.resetRunningProcessInfo();
+        super.onPause();
+    }
+
+
 
     /*
      * (non-Javadoc)

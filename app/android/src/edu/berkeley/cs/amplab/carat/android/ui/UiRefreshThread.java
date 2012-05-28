@@ -56,6 +56,7 @@ public class UiRefreshThread extends Thread {
         Log.d(TAG, "Refresh thread started.");
 
         while (isRunning) {
+            CaratApplication.refreshActions();
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
             if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED && app.c != null) {
                 int tries = 0;

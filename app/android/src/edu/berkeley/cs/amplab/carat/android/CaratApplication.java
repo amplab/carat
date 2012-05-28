@@ -18,6 +18,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -28,6 +29,9 @@ import android.widget.TextView;
  * 
  */
 public class CaratApplication extends Application {
+    
+    // Not in Android 2.2:
+    public static final int IMPORTANCE_PERCEPTIBLE = 130;
     
     public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
@@ -78,10 +82,15 @@ public class CaratApplication extends Application {
                 "Visible task");
         importanceToString.put(RunningAppProcessInfo.IMPORTANCE_FOREGROUND,
                 "Foreground app");
+        
+        importanceToString.put(IMPORTANCE_PERCEPTIBLE, "Perceptible task");
     }
 
     public static String importanceString(int importance) {
-        return importanceToString.get(importance);
+        String s = importanceToString.get(importance);
+        if (s == null || s.length() == 0)
+            Log.e("Importance not found:", ""+importance);
+        return s;
     }
 
     // default icon:
