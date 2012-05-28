@@ -5,6 +5,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,25 +23,38 @@ public class HogsBugsAdapter extends BaseAdapter {
 
     public HogsBugsAdapter(CaratApplication a, SimpleHogBug[] results) {
         this.a = a;
+
+        Context c = a.getApplicationContext();
         // Skip system apps.
         int items = 0;
         if (results != null)
             for (SimpleHogBug b : results) {
-                if (!SamplingLibrary.isSystem(a.getApplicationContext(),
-                        b.getAppName()))
+                String appName = b.getAppName();
+                if (appName == null)
+                    appName = "unknown";
+                if (appName.equals(CaratApplication.CARAT_PACKAGE)
+                        || appName.equals(CaratApplication.CARAT_OLD))
+                    continue;
+                if (!SamplingLibrary.isSystem(c, appName))
                     items++;
             }
         allBugsOrHogs = new SimpleHogBug[items];
         int i = 0;
         if (results != null)
             for (SimpleHogBug b : results) {
-                if (!SamplingLibrary.isSystem(a.getApplicationContext(),
-                        b.getAppName())) {
+                String appName = b.getAppName();
+                if (appName == null)
+                    appName = "unknown";
+                if (appName.equals(CaratApplication.CARAT_PACKAGE)
+                        || appName.equals(CaratApplication.CARAT_OLD))
+                    continue;
+
+                if (!SamplingLibrary.isSystem(c, b.getAppName())) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }
             }
-        mInflater = LayoutInflater.from(a.getApplicationContext());
+        mInflater = LayoutInflater.from(c);
     }
 
     public int getCount() {
@@ -74,7 +88,7 @@ public class HogsBugsAdapter extends BaseAdapter {
         SimpleHogBug item = allBugsOrHogs[position];
         if (item == null)
             return convertView;
-        
+
         Drawable icon = a.iconForApp(item.getAppName());
         String label = a.labelForApp(item.getAppName());
         if (label == null)

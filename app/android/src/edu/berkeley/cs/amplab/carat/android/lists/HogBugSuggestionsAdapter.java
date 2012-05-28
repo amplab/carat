@@ -57,12 +57,17 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			// TODO other filter conditions?
 			// Limit max number of items?
 			// Skip system apps
-			if (SamplingLibrary.isSystem(a.getApplicationContext(), item.getAppName()))
+			String appName = item.getAppName();
+			if (appName == null) appName = "unknown";
+			
+			if (SamplingLibrary.isSystem(a.getApplicationContext(), appName))
 			    continue;
-			if (addFakeItem && item.getAppName().equals(FAKE_ITEM))
+			if (appName.equals(CaratApplication.CARAT_PACKAGE) || appName.equals(CaratApplication.CARAT_OLD))
+			    continue;
+			if (addFakeItem && appName.equals(FAKE_ITEM))
 			    result.add(item);
 			// Filter out if benefit is too small
-			if (SamplingLibrary.isRunning(a.getApplicationContext(), item.getAppName()) && benefit > 60) {
+			if (SamplingLibrary.isRunning(a.getApplicationContext(), appName) && benefit > 60) {
 				result.add(item);
 			}
 		}

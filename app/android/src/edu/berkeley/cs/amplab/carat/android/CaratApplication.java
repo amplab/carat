@@ -28,6 +28,8 @@ import android.widget.TextView;
  * 
  */
 public class CaratApplication extends Application {
+    
+    public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
     // Sample 1 min since application start, then at 15 min intervals
     public static final long FIRST_SAMPLE_DELAY_MS = 60 * 1000;
