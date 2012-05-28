@@ -41,8 +41,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		ArrayList<SimpleHogBug> temp = new ArrayList<SimpleHogBug>();
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
-		acceptHogsOrBugs(hogs, temp);
-		acceptHogsOrBugs(bugs, temp);
 		//acceptDimScreen(temp);
 		//acceptDisableWifi(temp);
 		//acceptDisableLocSev(temp);
@@ -309,6 +307,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                 label = "Unknown";
             
             holder.icon.setImageDrawable(icon);
+            holder.txtName.setText((item.isBug() ? "Restart" : "Kill") + " "+label);
             /*if(label=="Dim the Screen"){
                     holder.txtName.setText(label);
                     holder.txtBenefit.setText(hours + "h " + min + "m");
@@ -349,10 +348,10 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                 holder.txtName.setText(label);
                 holder.txtBenefit.setText(hours + "h " + min + "m");
             }
-               else{*/
-                    holder.txtName.setText((item.isBug() ? "Restart" : "Kill") + " "+label);
+               else{
+                    holder.txtName.setText((item.isBug() ? "Restart" : "Kill") + " "+label);*/
             // TODO: Include process type=priority in Sample?
-            // holder.txtType.setText(item.getType());
+            //holder.txtType.setText(item.getType());
                     holder.txtBenefit.setText(hours + "h " + min + "m");
 
             // holder.moreInfo...
