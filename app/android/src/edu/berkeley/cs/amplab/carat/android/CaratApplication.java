@@ -11,6 +11,7 @@ import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -122,11 +123,11 @@ public class CaratApplication extends Application {
      *            the application name
      * @return the Drawable for the application's icon
      */
-    public Drawable iconForApp(String appName) {
+    public static Drawable iconForApp(Context c, String appName) {
         try {
-            return getPackageManager().getApplicationIcon(appName);
+            return c.getPackageManager().getApplicationIcon(appName);
         } catch (NameNotFoundException e) {
-            return getResources().getDrawable(R.drawable.ic_launcher);
+            return c.getResources().getDrawable(R.drawable.ic_launcher);
         }
     }
 
@@ -138,12 +139,12 @@ public class CaratApplication extends Application {
      *            the application name
      * @return the human readable application label
      */
-    public String labelForApp(String appName) {
+    public static String labelForApp(Context c, String appName) {
         try {
-            ApplicationInfo i = getPackageManager().getApplicationInfo(appName,
+            ApplicationInfo i = c.getPackageManager().getApplicationInfo(appName,
                     0);
             if (i != null)
-                return getPackageManager().getApplicationLabel(i).toString();
+                return c.getPackageManager().getApplicationLabel(i).toString();
             else
                 return appName;
         } catch (NameNotFoundException e) {

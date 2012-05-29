@@ -175,7 +175,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
          */
         List<ProcessInfo> searchResults = SamplingLibrary
                 .getRunningAppInfo(getApplicationContext());
-        lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
+        lv.setAdapter(new ProcessInfoAdapter(this, searchResults));
         lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
@@ -268,7 +268,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport osWithout = r.getOsWithout();
 
             String label = "OS: " + SamplingLibrary.getOsVersion();
-            Drawable icon = app.iconForApp("Carat");
+            Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
             ((TextView) osViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) osViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
@@ -296,7 +296,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport modelWithout = r.getModelWithout();
 
             String label = "Model: " + SamplingLibrary.getModel();
-            Drawable icon = app.iconForApp("Carat");
+            Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
             ((TextView) modelViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) modelViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
@@ -319,13 +319,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showAppInfo(View v) {
-        Reports r = app.s.getReports();
+        Reports r = CaratApplication.s.getReports();
         if (r != null) {
             DetailScreenReport similar = r.getSimilarApps();
             DetailScreenReport similarWithout = r.getSimilarAppsWithout();
 
             String label = "Similar apps";
-            Drawable icon = app.iconForApp("Carat");
+            Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
             ((TextView) appsViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) appsViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
@@ -373,7 +373,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         ListView lv = (ListView) findViewById(R.id.processList);
         List<ProcessInfo> searchResults = SamplingLibrary
                 .getRunningAppInfo(getApplicationContext());
-        lv.setAdapter(new ProcessInfoAdapter(this, searchResults, app));
+        lv.setAdapter(new ProcessInfoAdapter(this, searchResults));
         // switch views:
         switchView(R.id.processList);
     }

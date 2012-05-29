@@ -5,7 +5,6 @@ import java.util.List;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +18,11 @@ public class ProcessInfoAdapter extends BaseAdapter {
 
 	private LayoutInflater mInflater;
 	
-	private CaratApplication app = null;
+	private Context c = null;
 
 	public ProcessInfoAdapter(Context context,
-			List<ProcessInfo> results, CaratApplication app) {
-		this.app = app;
+			List<ProcessInfo> results) {
+	    this.c = context;
 		searchArrayList = results;
 		mInflater = LayoutInflater.from(context);
 	}
@@ -62,8 +61,8 @@ public class ProcessInfoAdapter extends BaseAdapter {
 		if (x == null)
             return convertView;
 		
-		holder.appIcon.setImageDrawable(app.iconForApp(x.getPName()));
-		holder.txtName.setText(app.labelForApp(x.getPName()));
+		holder.appIcon.setImageDrawable(CaratApplication.iconForApp(c, x.getPName()));
+		holder.txtName.setText(CaratApplication.labelForApp(c, x.getPName()));
 		holder.txtBenefit.setText(x.getImportance());
 		// holder.moreInfo...
 

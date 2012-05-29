@@ -125,9 +125,8 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
                 SimpleHogBug fullObject = (SimpleHogBug) o;
                 // View target = findViewById(R.id.hogsGraphView);
                 View target = detailPage;
-                CaratApplication app = (CaratApplication) getApplication();
-                String label = app.labelForApp(fullObject.getAppName());
-                Drawable icon = app.iconForApp(fullObject.getAppName());
+                String label = CaratApplication.labelForApp(getApplicationContext(), fullObject.getAppName());
+                Drawable icon = CaratApplication.iconForApp(getApplicationContext(), fullObject.getAppName());
                 ((TextView) detailPage.findViewById(R.id.name)).setText(label);
                 ((ImageView) detailPage.findViewById(R.id.appIcon))
                         .setImageDrawable(icon);

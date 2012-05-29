@@ -89,8 +89,8 @@ public class HogsBugsAdapter extends BaseAdapter {
         if (item == null)
             return convertView;
 
-        Drawable icon = a.iconForApp(item.getAppName());
-        String label = a.labelForApp(item.getAppName());
+        Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(), item.getAppName());
+        String label = CaratApplication.labelForApp(a.getApplicationContext(), item.getAppName());
         if (label == null)
             label = "Unknown";
         holder.txtName.setText(label);

@@ -303,7 +303,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		if (item == null)
 		    return convertView;
 		
-		Drawable icon = a.iconForApp(item.getAppName());
+		Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(), item.getAppName());
 
 		if (item.getAppName().equals(FAKE_ITEM)){
             holder.txtName.setText("OS Upgrade");
@@ -318,7 +318,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             int hours = (int) (min / 60);
             min -= hours * 60;
             
-            String label = a.labelForApp(item.getAppName());
+            String label = CaratApplication.labelForApp(a.getApplicationContext(), item.getAppName());
             if (label == null)
                 label = "Unknown";
             
