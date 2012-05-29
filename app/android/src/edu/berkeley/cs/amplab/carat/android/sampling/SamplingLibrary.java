@@ -505,7 +505,8 @@ public final class SamplingLibrary {
 
     public static boolean isHidden(Context c, String processName){
         boolean isSystem = isSystem(c, processName);
-        return (isSystem && !isWhiteListed(c, processName));
+        boolean blocked = (isSystem && !isWhiteListed(c, processName));
+        return blocked || isBlacklisted(c, processName);
     }
     
     /**
@@ -542,7 +543,10 @@ public final class SamplingLibrary {
         }
         
         FlurryAgent.logEvent("Whitelisted "+processName);
-        Log.i("ProcessName", processName);
+        if (CaratApplication.labelForApp(c, processName).equals(processName)){
+            Log.i("Hiding uninstalled", processName);
+            return true;
+        }
         return false;
     }
     
