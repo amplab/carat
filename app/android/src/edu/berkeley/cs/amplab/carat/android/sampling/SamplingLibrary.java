@@ -515,32 +515,35 @@ public final class SamplingLibrary {
      * @return
      */
     private static boolean isWhiteListed(Context c, String processName) {
+        return !isBlacklisted(c, processName);
+    }
+    
+    /**
+     * For debugging always returns true.
+     * @param c
+     * @param processName
+     * @return
+     */
+    private static boolean isBlacklisted(Context c, String processName) {
         /*
+         * Whitelist:
+         * Messaging, Voice Search, Bluetooth Share
+         * 
          * Blacklist:
          * Key chain, google partner set up, package installer, package access helper
          * 
-         * Whitelist:
-         * MusicFX, Messaging, Voice Search, Bluetooth Share
-         * 
-         * 
-         */
-        
-        // Unkillable:
-        if (processName.equals("com.android.keychain"))
-            return false;
-        else if (processName.equals("com.google.android.partnersetup"))
-            return false;
-        else if (processName.equals("com.android.packageinstaller"))
-            return false;
-        else if (processName.equals("com.android.defcontainer"))
-            return false;
-        // This always springs up when killed after a minute or two
-        else if (processName.equals("com.android.musicfx"))
-            return false;
+         */        
+        if (CaratApplication.s != null) {
+            List<String> blacklist = CaratApplication.s.getBlacklist();
+            if (blacklist != null && blacklist.size() > 0
+                    && blacklist.contains(processName)) {
+                return true;
+            }
+        }
         
         FlurryAgent.logEvent("Whitelisted "+processName);
         Log.i("ProcessName", processName);
-        return true;
+        return false;
     }
     
     private static boolean isSystem(Context context, String processName) {

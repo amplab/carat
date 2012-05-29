@@ -23,6 +23,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
 public class CaratDataStorage {
 
     public static final String FILENAME = "carat-reports.dat";
+    public static final String BLACKLIST_FILE = "carat-blacklist.dat";
     public static final String BUGFILE = "carat-bugs.dat";
     public static final String HOGFILE = "carat-hogs.dat";
 
@@ -33,6 +34,7 @@ public class CaratDataStorage {
     private WeakReference<Reports> caratData = null;
     private WeakReference<SimpleHogBug[]> bugData = null;
     private WeakReference<SimpleHogBug[]> hogData = null;
+    private WeakReference<List<String>> blacklistedApps = null;
 
     public CaratDataStorage(Application a) {
         this.a = a;
@@ -40,6 +42,7 @@ public class CaratDataStorage {
         caratData = new WeakReference<Reports>(readReports());
         readBugReport();
         readHogReport();
+        readBlacklist();
     }
 
     public void writeReports(Reports reports) {
@@ -170,6 +173,42 @@ public class CaratDataStorage {
     public long getFreshness() {
         return freshness;
     }
+    
+    /**
+     * @return a list of blacklisted apps
+     */
+    public List<String> getBlacklist() {
+        if (blacklistedApps != null && blacklistedApps.get() != null)
+            return blacklistedApps.get();
+        else
+            return readBlacklist();
+    }
+    
+    /**
+     * 
+     * @return a list of blacklisted apps
+     */
+    public List<String> readBlacklist() {
+        Object o = readObject(BLACKLIST_FILE);
+        Log.d("CaratDataStorage", "Read blacklist: " + o);
+        if (o != null) {
+            blacklistedApps = new WeakReference<List<String>>((List<String>) o);
+            return (List<String>) o;
+        } else
+            return null;
+    }
+    
+    /**
+     * 
+     * @param blacklist the list of blacklisted apps to write.
+     */
+    public void writeBlacklist(List<String> blacklist) {
+        if (blacklist == null)
+            return;
+        blacklistedApps = new WeakReference<List<String>>(blacklist);
+        writeObject(blacklist, BLACKLIST_FILE);
+    }
+    
 
     /**
      * @return the caratData

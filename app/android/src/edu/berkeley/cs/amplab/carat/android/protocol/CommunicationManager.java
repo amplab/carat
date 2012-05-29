@@ -1,10 +1,17 @@
 package edu.berkeley.cs.amplab.carat.android.protocol;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.apache.thrift.TException;
+
+
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -21,6 +28,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample;
 public class CommunicationManager {
 
     private static final String TAG = "CommsManager";
+    private static final String DAEMONS_URL = "http://carat.cs.berkeley.edu/daemons.txt";
 
     private CaratApplication a = null;
 
@@ -107,15 +115,16 @@ public class CommunicationManager {
         
         Log.d(TAG, "Getting reports for "+uuId + " model=" + model +" os="+OS);
 
-        if (model.equals("sdk")) {
+        if (model.equals("sdk") || uuId.equals("ce9af33c736adbf7")) {
             uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus
             model = "Galaxy Nexus";
-            OS = "4.0.2";
+            OS = "4.0.4";
         }
 
         refreshMainReports(uuId, OS, model);
         refreshBugReports(uuId, model);
         refreshHogReports(uuId, model);
+        refreshBlacklist();
         ProtocolClient.close();
         a.s.writeFreshness();
     }
@@ -158,6 +167,30 @@ public class CommunicationManager {
             a.s.writeHogReport(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
+    }
+    
+    private void refreshBlacklist(){
+        try{
+        List<String> blacklist = new ArrayList<String>();
+                  URL u = new URL(DAEMONS_URL);
+                  URLConnection c = u.openConnection();
+                  InputStream is = c.getInputStream();
+                  if (is != null) {
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+                    String s = rd.readLine();
+                    while (s != null) {
+                        // Optimization for android: Only add names that have a dot
+                        if (s.contains("."))
+                            blacklist.add(s);
+                      s = rd.readLine();
+                    }
+                    rd.close();
+                    Log.v(TAG, "Downloaded blacklist: " + blacklist);
+                    a.s.writeBlacklist(blacklist);
+                  }
+        } catch (Throwable th){
+            Log.e(TAG, "Could not retrieve blacklist!", th);
+        }
     }
     
     public static void resetConnection(){

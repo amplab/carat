@@ -64,7 +64,7 @@ public class CaratApplication extends Application {
     public static final int COMMS_MAX_UPLOAD_BATCH = 10;
 
     // NOTE: This needs to be initialized before CommunicationManager.
-    public CaratDataStorage s = null;
+    public static CaratDataStorage s = null;
     // NOTE: The CommunicationManager requires a working instance of
     // CaratDataStorage.
     public CommunicationManager c = null;
