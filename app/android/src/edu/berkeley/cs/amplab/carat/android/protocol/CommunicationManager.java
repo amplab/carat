@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.apache.thrift.TException;
 
-
-
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -58,7 +56,7 @@ public class CommunicationManager {
     public boolean uploadSamples(Collection<Sample> samples) throws TException {
         ProtocolClient.open(a.getApplicationContext());
         registerOnFirstRun();
-        
+
         for (Sample s : samples)
             ProtocolClient.uploadSample(a.getApplicationContext(), s);
         ProtocolClient.close();
@@ -112,8 +110,9 @@ public class CommunicationManager {
          * "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE"; model = "iPhone 3GS"; OS =
          * "5.0.1"; }
          */
-        
-        Log.d(TAG, "Getting reports for "+uuId + " model=" + model +" os="+OS);
+
+        Log.d(TAG, "Getting reports for " + uuId + " model=" + model + " os="
+                + OS);
 
         if (model.equals("sdk") || uuId.equals("ce9af33c736adbf7")) {
             uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus
@@ -133,7 +132,8 @@ public class CommunicationManager {
             throws TException {
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        Reports r = ProtocolClient.getReports(a.getApplicationContext(), uuid, getFeatures("Model", model, "OS", os));
+        Reports r = ProtocolClient.getReports(a.getApplicationContext(), uuid,
+                getFeatures("Model", model, "OS", os));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
         if (r != null)
@@ -145,7 +145,8 @@ public class CommunicationManager {
     private void refreshBugReports(String uuid, String model) throws TException {
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        HogBugReport r = ProtocolClient.getHogOrBugReport(a.getApplicationContext(), uuid,
+        HogBugReport r = ProtocolClient.getHogOrBugReport(
+                a.getApplicationContext(), uuid,
                 getFeatures("ReportType", "Bug", "Model", model));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
@@ -158,7 +159,8 @@ public class CommunicationManager {
     private void refreshHogReports(String uuid, String model) throws TException {
         if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        HogBugReport r = ProtocolClient.getHogOrBugReport(a.getApplicationContext(), uuid,
+        HogBugReport r = ProtocolClient.getHogOrBugReport(
+                a.getApplicationContext(), uuid,
                 getFeatures("ReportType", "Hog", "Model", model));
 
         // Assume multiple invocations, do not close
@@ -168,41 +170,42 @@ public class CommunicationManager {
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
-    
-    private void refreshBlacklist(){
-        try{
-        List<String> blacklist = new ArrayList<String>();
-                  URL u = new URL(DAEMONS_URL);
-                  URLConnection c = u.openConnection();
-                  InputStream is = c.getInputStream();
-                  if (is != null) {
-                    BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-                    String s = rd.readLine();
-                    while (s != null) {
-                        // Optimization for android: Only add names that have a dot
-                        if (s.contains("."))
-                            blacklist.add(s);
-                      s = rd.readLine();
-                    }
-                    rd.close();
-                    Log.v(TAG, "Downloaded blacklist: " + blacklist);
-                    a.s.writeBlacklist(blacklist);
-                  }
-        } catch (Throwable th){
+
+    private void refreshBlacklist() {
+        try {
+            List<String> blacklist = new ArrayList<String>();
+            URL u = new URL(DAEMONS_URL);
+            URLConnection c = u.openConnection();
+            InputStream is = c.getInputStream();
+            if (is != null) {
+                BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(is));
+                String s = rd.readLine();
+                while (s != null) {
+                    // Optimization for android: Only add names that have a dot
+                    if (s.contains("."))
+                        blacklist.add(s);
+                    s = rd.readLine();
+                }
+                rd.close();
+                Log.v(TAG, "Downloaded blacklist: " + blacklist);
+                a.s.writeBlacklist(blacklist);
+            }
+        } catch (Throwable th) {
             Log.e(TAG, "Could not retrieve blacklist!", th);
         }
     }
-    
-    public static void resetConnection(){
-        try{
-        ProtocolClient.resetConnection();
-        } catch (Throwable th){
+
+    public static void resetConnection() {
+        try {
+            ProtocolClient.resetConnection();
+        } catch (Throwable th) {
             // Null pointer from Thrift?
             Log.e(TAG, "Got exception from thrift while resetting:", th);
         }
     }
-    
-    public static void close(){
+
+    public static void close() {
         ProtocolClient.close();
     }
 
