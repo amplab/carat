@@ -16,7 +16,6 @@ import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -40,8 +39,6 @@ import android.widget.ViewFlipper;
  */
 public class CaratMyDeviceActivity extends BaseVFActivity {
 
-    private CaratApplication app = null;
-
     private DrawView osView = null;
     private View osViewPage = null;
     private DrawView modelView = null;
@@ -54,7 +51,6 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mydevice);
-        app = (CaratApplication) this.getApplication();
 
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         View baseView = findViewById(R.id.scrollView1);
@@ -262,7 +258,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showOsInfo(View v) {
-        Reports r = app.s.getReports();
+        Reports r = CaratApplication.s.getReports();
         if (r != null) {
             DetailScreenReport os = r.getOs();
             DetailScreenReport osWithout = r.getOsWithout();
@@ -290,7 +286,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showDeviceInfo(View v) {
-        Reports r = app.s.getReports();
+        Reports r = CaratApplication.s.getReports();
         if (r != null) {
             DetailScreenReport model = r.getModel();
             DetailScreenReport modelWithout = r.getModelWithout();

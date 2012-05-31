@@ -154,9 +154,9 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
         CaratApplication app = (CaratApplication) getApplication();
         final ListView lv = (ListView) findViewById(android.R.id.list);
         if (isBugsActivity)
-            lv.setAdapter(new HogsBugsAdapter(app, app.s.getBugReport()));
+            lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.s.getBugReport()));
         else
-            lv.setAdapter(new HogsBugsAdapter(app, app.s.getHogReport()));
+            lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.s.getHogReport()));
         emptyCheck(lv);
     }
     

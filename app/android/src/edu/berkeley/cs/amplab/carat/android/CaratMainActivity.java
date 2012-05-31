@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -60,6 +61,8 @@ public class CaratMainActivity extends TabActivity {
     private static final String FLURRY_KEYFILE = "flurry.properties";
     
     private MenuItem feedbackItem = null;
+    
+    private String fullVersion = null; 
 
     /** Called when the activity is first created. */
     @Override
@@ -68,11 +71,12 @@ public class CaratMainActivity extends TabActivity {
         // If we want a progress bar for loading some screens at the top of the
         // title bar
         // This does not show if it is not updated
-        // getWindow().requestFeature(Window.FEATURE_PROGRESS);
+        //getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
-
-        final String fullVersion = getString(R.string.app_name) + " "
-                + getString(R.string.version_name);
+        
+        fullVersion = getString(R.string.app_name) + " "
+        + getString(R.string.version_name);
 
         String secretKey = null;
         Properties properties = new Properties();
@@ -95,7 +99,7 @@ public class CaratMainActivity extends TabActivity {
                     secretKey, fullVersion);
             sdk.registerUpdateReceiver(CaratMainActivity.this);
         }
-        this.setTitle(fullVersion);
+        setTitleNormal();
 
         Resources res = getResources(); // Resource object to get Drawables
         tabHost = getTabHost(); // The activity TabHost
@@ -178,6 +182,14 @@ public class CaratMainActivity extends TabActivity {
         tabHost.setCurrentTab(0);
     }
     
+    
+    public void setTitleNormal(){
+        this.setTitle(fullVersion);
+    }
+    
+    public void setTitleUpdating(){
+        this.setTitle(fullVersion + " - Updating reports ...");
+    }
     
 
     /* (non-Javadoc)
@@ -360,9 +372,6 @@ public class CaratMainActivity extends TabActivity {
         //distanceInfo.stopRunning();
         uiRefreshThread.stopRunning();
         uiRefreshThread.appResumed();
-
-        CaratApplication app = (CaratApplication) getApplication();
-        app.c.close();
 
         Log.d(TAG, "Finishing up");
         super.finish();

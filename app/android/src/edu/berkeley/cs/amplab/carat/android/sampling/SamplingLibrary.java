@@ -540,6 +540,18 @@ public final class SamplingLibrary {
                     && blacklist.contains(processName)) {
                 return true;
             }
+            
+            blacklist = CaratApplication.s.getGloblist();
+            if (blacklist != null && blacklist.size() > 0){
+                for (String glob: blacklist){
+                    // something*
+                    if (glob.endsWith("*") && processName.startsWith(glob.substring(0, glob.length()-1)))
+                            return true;
+                    // *something
+                    if (glob.startsWith("*") && processName.endsWith(glob.substring(1)))
+                            return true;
+                }
+            }
         }
         
         FlurryAgent.logEvent("Whitelisted "+processName);

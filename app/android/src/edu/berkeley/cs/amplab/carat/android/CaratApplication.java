@@ -30,15 +30,15 @@ import android.widget.TextView;
  * 
  */
 public class CaratApplication extends Application {
-    
+
     // Not in Android 2.2:
     public static final int IMPORTANCE_PERCEPTIBLE = 130;
-    
+
     // Used for bugs and hogs, and drawing
     public enum Type {
         OS, MODEL, HOG, BUG, SIMILAR, JSCORE
     }
-    
+
     public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
     // Sample 1 min since application start, then at 15 min intervals
@@ -88,14 +88,14 @@ public class CaratApplication extends Application {
                 "Visible task");
         importanceToString.put(RunningAppProcessInfo.IMPORTANCE_FOREGROUND,
                 "Foreground app");
-        
+
         importanceToString.put(IMPORTANCE_PERCEPTIBLE, "Perceptible task");
     }
 
     public static String importanceString(int importance) {
         String s = importanceToString.get(importance);
         if (s == null || s.length() == 0)
-            Log.e("Importance not found:", ""+importance);
+            Log.e("Importance not found:", "" + importance);
         return s;
     }
 
@@ -141,8 +141,8 @@ public class CaratApplication extends Application {
      */
     public static String labelForApp(Context c, String appName) {
         try {
-            ApplicationInfo i = c.getPackageManager().getApplicationInfo(appName,
-                    0);
+            ApplicationInfo i = c.getPackageManager().getApplicationInfo(
+                    appName, 0);
             if (i != null)
                 return c.getPackageManager().getApplicationLabel(i).toString();
             else
@@ -187,11 +187,49 @@ public class CaratApplication extends Application {
         }
     }
 
+    public static void setActionInProgress() {
+        if (main != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
+                    // Updating done
+                    main.setTitleUpdating();
+                    main.setProgress(0);
+                    main.setProgressBarVisibility(true);
+                    //main.setProgressBarIndeterminateVisibility(true);
+                }
+            });
+        }
+    }
+
     public static void refreshActions() {
         if (actionList != null) {
             main.runOnUiThread(new Runnable() {
                 public void run() {
                     actionList.refresh();
+                }
+            });
+        }
+    }
+    
+    public static void setActionProgress(final int progress) {
+        if (main != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
+                    main.setProgress(progress*100);
+                }
+            });
+        }
+    }
+
+    public static void setActionFinished() {
+        if (main != null) {
+            main.runOnUiThread(new Runnable() {
+                public void run() {
+                    // Updating done
+                    main.setTitleNormal();
+                    main.setProgress(100);
+                    main.setProgressBarVisibility(false);
+                    //main.setProgressBarIndeterminateVisibility(false);
                 }
             });
         }

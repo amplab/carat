@@ -17,6 +17,7 @@ import android.util.Log;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.Registration;
@@ -39,7 +40,7 @@ public class CommunicationManager {
         register = p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
     }
 
-    private void registerMe(String uuId, String os, String model)
+    private void registerMe(CaratService.Client instance, String uuId, String os, String model)
             throws TException {
         if (uuId == null || os == null || model == null) {
             Log.e("registerMe", "Null uuId, os, or model given to registerMe!");
@@ -50,20 +51,21 @@ public class CommunicationManager {
         registration.setPlatformId(model);
         registration.setSystemVersion(os);
         registration.setTimestamp(System.currentTimeMillis() / 1000.0);
-        ProtocolClient.registerMe(a.getApplicationContext(), registration);
+        instance.registerMe(registration);
     }
 
     public boolean uploadSamples(Collection<Sample> samples) throws TException {
-        ProtocolClient.open(a.getApplicationContext());
-        registerOnFirstRun();
+        CaratService.Client instance = ProtocolClient.open(a.getApplicationContext());
+        registerOnFirstRun(instance);
 
         for (Sample s : samples)
-            ProtocolClient.uploadSample(a.getApplicationContext(), s);
-        ProtocolClient.close();
+            instance.uploadSample(s);
+        instance.getOutputProtocol().getTransport().close();
+        instance.getInputProtocol().getTransport().close();
         return true;
     }
 
-    private void registerOnFirstRun() {
+    private void registerOnFirstRun(CaratService.Client instance) {
         if (register) {
             String uuId = SamplingLibrary.getUuid(a.getApplicationContext());
             String os = SamplingLibrary.getOsVersion();
@@ -72,7 +74,7 @@ public class CommunicationManager {
                     "First run, registering this device: " + uuId + ", " + os
                             + ", " + model);
             try {
-                registerMe(uuId, os, model);
+                registerMe(instance, uuId, os, model);
                 p.edit()
                         .putBoolean(CaratApplication.PREFERENCE_FIRST_RUN,
                                 false).commit();
@@ -94,11 +96,11 @@ public class CommunicationManager {
         // Do not refresh if not connected
         if (!SamplingLibrary.networkAvailable(a.getApplicationContext()))
             return;
-        if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
         // Establish connection
-        ProtocolClient.open(a.getApplicationContext());
-        registerOnFirstRun();
+        CaratService.Client instance = ProtocolClient.open(a.getApplicationContext());
+        registerOnFirstRun(instance);
 
         String uuId = SamplingLibrary.getUuid(a);
         String model = SamplingLibrary.getModel();
@@ -120,53 +122,57 @@ public class CommunicationManager {
             OS = "4.0.4";
         }
 
-        refreshMainReports(uuId, OS, model);
-        refreshBugReports(uuId, model);
-        refreshHogReports(uuId, model);
+        refreshMainReports(instance, uuId, OS, model);
+        CaratApplication.setActionProgress(20);
+        refreshBugReports(instance, uuId, model);
+        CaratApplication.setActionProgress(60);
+        refreshHogReports(instance, uuId, model);
+        CaratApplication.setActionProgress(80);
         refreshBlacklist();
-        ProtocolClient.close();
-        a.s.writeFreshness();
+        instance.getOutputProtocol().getTransport().close();
+        instance.getInputProtocol().getTransport().close();
+        CaratApplication.s.writeFreshness();
     }
 
-    private void refreshMainReports(String uuid, String os, String model)
+    private void refreshMainReports(CaratService.Client instance, String uuid, String os, String model)
             throws TException {
-        if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        Reports r = ProtocolClient.getReports(a.getApplicationContext(), uuid,
+        Reports r = instance.getReports(uuid,
                 getFeatures("Model", model, "OS", os));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
         if (r != null)
-            a.s.writeReports(r);
+            CaratApplication.s.writeReports(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
 
-    private void refreshBugReports(String uuid, String model) throws TException {
-        if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+    private void refreshBugReports(CaratService.Client instance, String uuid, String model) throws TException {
+        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        HogBugReport r = ProtocolClient.getHogOrBugReport(
-                a.getApplicationContext(), uuid,
+        HogBugReport r = instance.getHogOrBugReport(
+                uuid,
                 getFeatures("ReportType", "Bug", "Model", model));
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
         if (r != null)
-            a.s.writeBugReport(r);
+            CaratApplication.s.writeBugReport(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
 
-    private void refreshHogReports(String uuid, String model) throws TException {
-        if (System.currentTimeMillis() - a.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+    private void refreshHogReports(CaratService.Client instance, String uuid, String model) throws TException {
+        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
-        HogBugReport r = ProtocolClient.getHogOrBugReport(
-                a.getApplicationContext(), uuid,
+        HogBugReport r = instance.getHogOrBugReport(
+                uuid,
                 getFeatures("ReportType", "Hog", "Model", model));
 
         // Assume multiple invocations, do not close
         // ProtocolClient.close();
         if (r != null)
-            a.s.writeHogReport(r);
+            CaratApplication.s.writeHogReport(r);
         // Assume freshness written by caller.
         // s.writeFreshness();
     }
@@ -174,6 +180,7 @@ public class CommunicationManager {
     private void refreshBlacklist() {
         try {
             List<String> blacklist = new ArrayList<String>();
+            List<String> globlist = new ArrayList<String>();
             URL u = new URL(DAEMONS_URL);
             URLConnection c = u.openConnection();
             InputStream is = c.getInputStream();
@@ -185,28 +192,21 @@ public class CommunicationManager {
                     // Optimization for android: Only add names that have a dot
                     if (s.contains("."))
                         blacklist.add(s);
+                    if (s.endsWith("*") || s.startsWith("*"))
+                        globlist.add(s);
                     s = rd.readLine();
                 }
                 rd.close();
                 Log.v(TAG, "Downloaded blacklist: " + blacklist);
-                a.s.writeBlacklist(blacklist);
+                Log.v(TAG, "Downloaded globlist: " + globlist);
+                CaratApplication.s.writeBlacklist(blacklist);
+                // List of *something or something* expressions:
+                if (globlist.size() > 0)
+                    CaratApplication.s.writeGloblist(globlist);
             }
         } catch (Throwable th) {
             Log.e(TAG, "Could not retrieve blacklist!", th);
         }
-    }
-
-    public static void resetConnection() {
-        try {
-            ProtocolClient.resetConnection();
-        } catch (Throwable th) {
-            // Null pointer from Thrift?
-            Log.e(TAG, "Got exception from thrift while resetting:", th);
-        }
-    }
-
-    public static void close() {
-        ProtocolClient.close();
     }
 
     private List<Feature> getFeatures(String key1, String val1, String key2,

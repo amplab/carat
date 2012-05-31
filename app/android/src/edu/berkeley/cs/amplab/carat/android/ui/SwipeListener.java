@@ -4,7 +4,6 @@ import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
 import android.app.Activity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 
 public class SwipeListener extends BaseSwipeListener {
 

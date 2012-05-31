@@ -230,8 +230,8 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
         final ListView lv = (ListView) findViewById(android.R.id.list);
-        lv.setAdapter(new HogBugSuggestionsAdapter(app, app.s.getHogReport(),
-                app.s.getBugReport()));
+        lv.setAdapter(new HogBugSuggestionsAdapter(app, CaratApplication.s.getHogReport(),
+                CaratApplication.s.getBugReport()));
         emptyCheck(lv);
     }
     

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
@@ -61,6 +60,8 @@ public class UiRefreshThread extends Thread {
             if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED && app.c != null) {
                 int tries = 0;
                 while (tries < 2) {
+                    // Show we are updating...
+                    CaratApplication.setActionInProgress();
                     try {
                         app.c.refreshAllReports();
                         Log.d(TAG, "Reports refreshed.");
@@ -68,7 +69,6 @@ public class UiRefreshThread extends Thread {
                     } catch (TException e1) {
                         Log.w(TAG, "Failed to refresh reports: " + e1
                                 + (tries < 1 ? "Trying again now": TRY_AGAIN));
-                        CommunicationManager.resetConnection();
                         e1.printStackTrace();
                         tries++;
                     } catch (Throwable th) {
@@ -76,7 +76,6 @@ public class UiRefreshThread extends Thread {
                         // etc...
                         Log.w(TAG, "Failed to refresh reports: " + th
                                 + (tries < 1 ? "Trying again now": TRY_AGAIN));
-                        CommunicationManager.resetConnection();
                         th.printStackTrace();
                         tries++;
                     }
@@ -98,6 +97,10 @@ public class UiRefreshThread extends Thread {
             CaratApplication.refreshActions();
             CaratApplication.refreshBugs();
             CaratApplication.refreshHogs();
+            CaratApplication.setActionProgress(90);
+            
+            if (!connecting)
+                CaratApplication.setActionFinished();
             
             if (connecting) {
                 // wait for wifi to come up
@@ -108,6 +111,7 @@ public class UiRefreshThread extends Thread {
                 }
                 connecting = false;
             } else {
+                CaratApplication.setActionFinished();
                 connecting = false;
                 try {
                     sleep(CaratApplication.FRESHNESS_TIMEOUT);
@@ -120,9 +124,9 @@ public class UiRefreshThread extends Thread {
     }
     
     public static void setReportData() {
-        final Reports r = app.s.getReports();
+        final Reports r = CaratApplication.s.getReports();
         Log.d("CaratHomeScreen", "Got reports: " + r);
-        long freshness = app.s.getFreshness();
+        long freshness = CaratApplication.s.getFreshness();
         long l = System.currentTimeMillis() - freshness;
         final long min = l / 60000;
         final long sec = (l - min * 60000) / 1000;

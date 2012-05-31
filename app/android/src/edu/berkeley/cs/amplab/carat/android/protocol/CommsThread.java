@@ -86,14 +86,12 @@ public class CommsThread extends Thread {
                             } catch (TException e1) {
                                 Log.w(TAG, "Failed to send samples,"
                                         + (tries < 1 ? "Trying again now": TRY_AGAIN), e1);
-                                CommunicationManager.resetConnection();
                                 tries++;
                             } catch (Throwable th) {
                                 // Any sort of malformed response, too short
                                 // string, etc...
                                 Log.w(TAG, "Failed to refresh reports: " + th
                                         + (tries < 1 ? "Trying again now": TRY_AGAIN), th);
-                                CommunicationManager.resetConnection();
                                 tries++;
                             }
                         }

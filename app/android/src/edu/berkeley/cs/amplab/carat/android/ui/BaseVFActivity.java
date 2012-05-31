@@ -1,6 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
-import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
 import android.app.Activity;
 import android.os.Bundle;

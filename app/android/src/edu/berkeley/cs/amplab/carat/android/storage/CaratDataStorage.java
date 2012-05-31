@@ -24,6 +24,7 @@ public class CaratDataStorage {
 
     public static final String FILENAME = "carat-reports.dat";
     public static final String BLACKLIST_FILE = "carat-blacklist.dat";
+    public static final String GLOBLIST_FILE = "carat-globlist.dat";
     public static final String BUGFILE = "carat-bugs.dat";
     public static final String HOGFILE = "carat-hogs.dat";
 
@@ -35,6 +36,7 @@ public class CaratDataStorage {
     private WeakReference<SimpleHogBug[]> bugData = null;
     private WeakReference<SimpleHogBug[]> hogData = null;
     private WeakReference<List<String>> blacklistedApps = null;
+    private WeakReference<List<String>> blacklistedGlobs = null;
 
     public CaratDataStorage(Application a) {
         this.a = a;
@@ -185,6 +187,16 @@ public class CaratDataStorage {
     }
     
     /**
+     * @return a list of blacklisted expressions
+     */
+    public List<String> getGloblist() {
+        if (blacklistedGlobs != null && blacklistedGlobs.get() != null)
+            return blacklistedGlobs.get();
+        else
+            return readGloblist();
+    }
+    
+    /**
      * 
      * @return a list of blacklisted apps
      */
@@ -208,6 +220,33 @@ public class CaratDataStorage {
         blacklistedApps = new WeakReference<List<String>>(blacklist);
         writeObject(blacklist, BLACKLIST_FILE);
     }
+    
+    /**
+     * 
+     * @return a list of blacklisted expressions
+     */
+    public List<String> readGloblist() {
+        Object o = readObject(GLOBLIST_FILE);
+        Log.d("CaratDataStorage", "Read glob blacklist: " + o);
+        if (o != null) {
+            blacklistedGlobs = new WeakReference<List<String>>((List<String>) o);
+            return (List<String>) o;
+        } else
+            return null;
+    }
+    
+    /**
+     * 
+     * @param globlist the list of blacklisted expressions to write.
+     */
+    public void writeGloblist(List<String> globlist) {
+        if (globlist == null)
+            return;
+        blacklistedGlobs = new WeakReference<List<String>>(globlist);
+        writeObject(globlist, GLOBLIST_FILE);
+    }
+    
+    
     
 
     /**
