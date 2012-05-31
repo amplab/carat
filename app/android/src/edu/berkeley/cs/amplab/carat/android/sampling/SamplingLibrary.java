@@ -555,7 +555,7 @@ public final class SamplingLibrary {
         }
         
         if (CaratApplication.labelForApp(c, processName).equals(processName)){
-            Log.i("Hiding uninstalled", processName);
+            //Log.v("Hiding uninstalled", processName);
             return true;
         }
         
