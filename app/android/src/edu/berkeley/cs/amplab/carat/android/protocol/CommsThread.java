@@ -69,6 +69,7 @@ public class CommsThread extends Thread {
                                     FlurryAgent.logEvent("UploadSamples", map);
                                     Log.d(TAG, "Uploaded " + map.size()
                                             + " samples.");
+                                    CaratApplication.s.samplesReported(map.size());
                                     Sample last = map.get(map.lastKey());
                                     Log.d(TAG,
                                             "Deleting " + map.size()

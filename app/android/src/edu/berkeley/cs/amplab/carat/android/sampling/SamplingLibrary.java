@@ -554,11 +554,12 @@ public final class SamplingLibrary {
             }
         }
         
-        FlurryAgent.logEvent("Whitelisted "+processName);
         if (CaratApplication.labelForApp(c, processName).equals(processName)){
             Log.i("Hiding uninstalled", processName);
             return true;
         }
+        
+        FlurryAgent.logEvent("Whitelisted "+processName);
         return false;
     }
     

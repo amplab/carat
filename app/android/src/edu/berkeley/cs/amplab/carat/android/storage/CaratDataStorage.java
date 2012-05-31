@@ -2,7 +2,6 @@ package edu.berkeley.cs.amplab.carat.android.storage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,10 +27,13 @@ public class CaratDataStorage {
     public static final String BUGFILE = "carat-bugs.dat";
     public static final String HOGFILE = "carat-hogs.dat";
 
+    public static final String SAMPLES_REPORTED = "carat-samples-reported.dat";
+    
     public static final String FRESHNESS = "carat-freshness.dat";
     private Application a = null;
 
     private long freshness = 0;
+    private long samples_reported = 0;
     private WeakReference<Reports> caratData = null;
     private WeakReference<SimpleHogBug[]> bugData = null;
     private WeakReference<SimpleHogBug[]> hogData = null;
@@ -45,6 +47,7 @@ public class CaratDataStorage {
         readBugReport();
         readHogReport();
         readBlacklist();
+        samples_reported = readSamplesReported();
     }
 
     public void writeReports(Reports reports) {
@@ -247,7 +250,26 @@ public class CaratDataStorage {
     }
     
     
+    public void samplesReported(int howmany) {
+    	samples_reported += howmany;
+        writeText(samples_reported+ "", SAMPLES_REPORTED);
+    }
     
+    public long readSamplesReported() {
+        String s = readText(SAMPLES_REPORTED);
+        Log.d("CaratDataStorage", "Read samples reported: " + s);
+        if (s != null)
+            return Long.parseLong(s);
+        else
+            return -1;
+    }
+
+    /**
+     * @return the freshness
+     */
+    public long getSamplesReported() {
+        return samples_reported;
+    }
 
     /**
      * @return the caratData

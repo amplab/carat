@@ -128,8 +128,8 @@ public class UiRefreshThread extends Thread {
         Log.d("CaratHomeScreen", "Got reports: " + r);
         long freshness = CaratApplication.s.getFreshness();
         long l = System.currentTimeMillis() - freshness;
-        final long min = l / 60000;
-        final long sec = (l - min * 60000) / 1000;
+        final long h = l /360000;
+        final long min = (l - h* 360000) / 60000;
         double bl = 0;
         int jscore = 0;
         if (r != null) {
@@ -147,10 +147,13 @@ public class UiRefreshThread extends Thread {
         int bls = (int) (bl - blmin * 60);
         final String blS = blh + "h " + blmin + "m " + bls + "s";
         CaratApplication.setMyDeviceText(R.id.jscore_value, jscore + "");
-        if (freshness == 0)
+        Log.i(TAG, "Freshness: " + freshness);
+        if (freshness <= 0)
             CaratApplication.setMyDeviceText(R.id.updated, "(Never updated)");
+        else if (min == 0)
+        	CaratApplication.setMyDeviceText(R.id.updated, "(Updated just now)");
         else
-            CaratApplication.setMyDeviceText(R.id.updated, "(Updated " + min + "m " + sec + "s ago)");
+            CaratApplication.setMyDeviceText(R.id.updated, "(Updated " + h + "h " + min + "m ago)");
         CaratApplication.setMyDeviceText(R.id.batterylife_value, blS);
     }
 }

@@ -71,7 +71,7 @@ public class CaratMainActivity extends TabActivity {
         // If we want a progress bar for loading some screens at the top of the
         // title bar
         // This does not show if it is not updated
-        //getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
         
@@ -184,7 +184,11 @@ public class CaratMainActivity extends TabActivity {
     
     
     public void setTitleNormal(){
-        this.setTitle(fullVersion);
+    	long s = CaratApplication.s.getSamplesReported();
+    	if (s > 0)
+    		this.setTitle(fullVersion +" - " + s + " samples reported");
+    	else
+    		this.setTitle(fullVersion);
     }
     
     public void setTitleUpdating(){

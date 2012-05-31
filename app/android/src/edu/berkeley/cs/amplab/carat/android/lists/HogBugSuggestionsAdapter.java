@@ -43,7 +43,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		ArrayList<SimpleHogBug> temp = new ArrayList<SimpleHogBug>();
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
-		addFeatureActions(temp);
+		// Disabled for stability until we know what to do on pre-ICS phones for this.
+		//addFeatureActions(temp);
 
 		if (addFakeItem){
 		    SimpleHogBug fake = new SimpleHogBug(FAKE_ITEM, Type.BUG);
@@ -62,6 +63,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		if (input == null)
 			return;
 		for (SimpleHogBug item : input) {
+			if (item == null)
+				continue;
 			double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
 					/ item.getExpectedValue();
 			// TODO other filter conditions?

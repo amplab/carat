@@ -195,7 +195,7 @@ public class CaratApplication extends Application {
                     main.setTitleUpdating();
                     main.setProgress(0);
                     main.setProgressBarVisibility(true);
-                    //main.setProgressBarIndeterminateVisibility(true);
+                    main.setProgressBarIndeterminateVisibility(true);
                 }
             });
         }
@@ -229,7 +229,7 @@ public class CaratApplication extends Application {
                     main.setTitleNormal();
                     main.setProgress(100);
                     main.setProgressBarVisibility(false);
-                    //main.setProgressBarIndeterminateVisibility(false);
+                    main.setProgressBarIndeterminateVisibility(false);
                 }
             });
         }

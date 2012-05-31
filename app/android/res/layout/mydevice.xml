@@ -61,6 +61,8 @@ Carat My Device Screen layout
                     android:text="@string/zero"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="48dip"
+                    android:clickable="true"
+                    android:onClick="viewJscoreInfo"
                     android:textColor="@color/green" />
                 
                 <ImageView
@@ -124,6 +126,8 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_os"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:clickable="true"
+                    android:onClick="showOsInfo"
                     android:textColor="@color/green" />
                 
                  <ImageView
@@ -162,6 +166,8 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_dev"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:clickable="true"
+                    android:onClick="showDeviceInfo"
                     android:textColor="@color/green" />
                 
                  <ImageView

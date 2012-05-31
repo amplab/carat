@@ -49,7 +49,7 @@ public class CaratSampleDB {
 
     private static CaratSampleDB instance = null;
     
-    private Object dbLock = null;
+    private static Object dbLock = new Object();
 
     public static CaratSampleDB getInstance(Context c) {
         if (instance == null)
@@ -58,8 +58,9 @@ public class CaratSampleDB {
     }
 
     public CaratSampleDB(Context context) {
+    	 synchronized(dbLock){
             helper = new SampleDbOpenHelper(context);
-            dbLock = new Object();
+    	 }
     }
 
     /* (non-Javadoc)
