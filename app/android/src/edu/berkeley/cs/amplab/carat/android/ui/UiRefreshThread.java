@@ -64,7 +64,7 @@ public class UiRefreshThread extends Thread {
                     CaratApplication.setActionInProgress();
                     try {
                         app.c.refreshAllReports();
-                        Log.d(TAG, "Reports refreshed.");
+                        //Log.d(TAG, "Reports refreshed.");
                         tries = 2;
                     } catch (TException e1) {
                         Log.w(TAG, "Failed to refresh reports: " + e1
@@ -147,7 +147,7 @@ public class UiRefreshThread extends Thread {
         int bls = (int) (bl - blmin * 60);
         final String blS = blh + "h " + blmin + "m " + bls + "s";
         CaratApplication.setMyDeviceText(R.id.jscore_value, jscore + "");
-        Log.i(TAG, "Freshness: " + freshness);
+        //Log.v(TAG, "Freshness: " + freshness);
         if (freshness <= 0)
             CaratApplication.setMyDeviceText(R.id.updated, "(Never updated)");
         else if (min == 0)

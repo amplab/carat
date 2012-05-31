@@ -1377,17 +1377,29 @@ public final class SamplingLibrary {
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
 
+        
+        String network = SamplingLibrary.getNetworkStatus(context);
+        String networkType = SamplingLibrary.getNetworkType(context);
+        String mobileNetworkType = SamplingLibrary
+                .getMobileNetworkType(context);
+        
         // Required in new Carat protocol
-        mySample.setNetworkStatus(SamplingLibrary.getNetworkStatus(context));
+        if (network.equals(NETWORKSTATUS_CONNECTED)){
+            if (networkType.equals("WIFI"))
+                mySample.setNetworkStatus(networkType);
+            else
+                mySample.setNetworkStatus(mobileNetworkType);
+        }else
+            mySample.setNetworkStatus(network);
+        
+        //String ns = mySample.getNetworkStatus();
+        //Log.d(STAG, "Set networkStatus="+ns);
 
         // Network details
         NetworkDetails nd = new NetworkDetails();
 
         // Network type
-        String networkType = SamplingLibrary.getNetworkType(context);
         nd.setNetworkType(networkType);
-        String mobileNetworkType = SamplingLibrary
-                .getMobileNetworkType(context);
         nd.setMobileNetworkType(mobileNetworkType);
         boolean roamStatus = SamplingLibrary.getRoamingStatus(context);
         nd.setRoamingEnabled(roamStatus);
