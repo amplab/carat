@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.berkeley.cs.amplab.carat.android"
-    android:versionCode="38"
+    android:versionCode="39"
     android:versionName="@string/version_name"
     >
 
@@ -19,12 +19,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- For Sampling network stuff -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
  	<!-- <uses-permission android:name="android.permission.WRITE_SETTINGS" />  -->
@@ -101,8 +98,8 @@
                 <!-- This event cannot be registered to from the manifest either. -->
 <!--                 <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
                 <!-- Let's not make Carat immortal for now. -->
-
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+<!-- 
+                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />

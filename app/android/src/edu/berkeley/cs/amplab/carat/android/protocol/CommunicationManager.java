@@ -190,8 +190,8 @@ public class CommunicationManager {
                 String s = rd.readLine();
                 while (s != null) {
                     // Optimization for android: Only add names that have a dot
-                    if (s.contains("."))
-                        blacklist.add(s);
+                    // Does not work, since for example "system" has no dots.
+                    blacklist.add(s);
                     if (s.endsWith("*") || s.startsWith("*"))
                         globlist.add(s);
                     s = rd.readLine();

@@ -128,19 +128,27 @@ public class UiRefreshThread extends Thread {
         Log.d("CaratHomeScreen", "Got reports: " + r);
         long freshness = CaratApplication.s.getFreshness();
         long l = System.currentTimeMillis() - freshness;
-        final long h = l /360000;
-        final long min = (l - h* 360000) / 60000;
+        final long h = l /3600000;
+        final long min = (l - h* 3600000) / 60000;
         double bl = 0;
         int jscore = 0;
         if (r != null) {
-            if (r.getModel() != null){
-                double exp = r.getModel().expectedValue;
-                Log.d(TAG, "Model expected value: " + exp);
+            // Try exact battery life
+            if (r.jScoreWith != null){
+                double exp = r.jScoreWith.expectedValue;
                 if (exp > 0.0)
                     bl = 100 / r.getModel().expectedValue;
+                else if (r.getModel() != null){
+                    exp = r.getModel().expectedValue;
+                    Log.d(TAG, "Model expected value: " + exp);
+                    if (exp > 0.0)
+                        bl = 100 / r.getModel().expectedValue;
+                }
+                // If not possible, try model battery life
             }
             jscore = ((int) (r.getJScore() * 100));
         }
+        
         int blh = (int) (bl / 3600);
         bl -= blh * 3600;
         int blmin = (int) (bl / 60);
