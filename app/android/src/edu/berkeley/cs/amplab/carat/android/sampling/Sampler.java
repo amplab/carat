@@ -116,6 +116,8 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		if (s != null){
 		    Log.v(TAG, "distanceTravelled=" + distance);
 		    s.setDistanceTraveled(distance);
+		    // FIX: Do not use same distance again.
+		    distance = 0;
 		}
 
 		// Write to database

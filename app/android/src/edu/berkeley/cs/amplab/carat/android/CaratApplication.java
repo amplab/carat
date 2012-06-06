@@ -75,6 +75,8 @@ public class CaratApplication extends Application {
     private static CaratBugsOrHogsActivity bugsActivity = null;
     private static CaratBugsOrHogsActivity hogsActivity = null;
     private static CaratSuggestionsActivity actionList = null;
+    
+    private static Sampler sampler = null;
 
     private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
     {
@@ -302,21 +304,24 @@ public class CaratApplication extends Application {
                 PendingIntent sender = PendingIntent.getBroadcast(
                         CaratApplication.this, 192837, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
-
+                // Cancel if this has been set up. Do not use timer at all any more.
+                sender.cancel();
                 // Get the AlarmManager service
-                AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+                //AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
                 // we probably don't want the wakeup, but do battery events
                 // still get delivered?
-                am.setInexactRepeating(AlarmManager.RTC,
-                        System.currentTimeMillis() + FIRST_SAMPLE_DELAY_MS,
-                        SAMPLE_INTERVAL_MS, sender);
+                //am.setInexactRepeating(AlarmManager.RTC,
+                        //System.currentTimeMillis() + FIRST_SAMPLE_DELAY_MS,
+                        //SAMPLE_INTERVAL_MS, sender);
 
                 // p.edit().putBoolean(PREFERENCE_SAMPLE_FIRST_RUN,
                 // false).commit();
                 // }
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-                registerReceiver(new Sampler(), intentFilter);
+                sampler = new Sampler();
+                //unregisterReceiver(sampler);
+                registerReceiver(sampler, intentFilter);
             }
         }.start();
 

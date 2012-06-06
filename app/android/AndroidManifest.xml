@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.berkeley.cs.amplab.carat.android"
-    android:versionCode="39"
+    android:versionCode="40"
     android:versionName="@string/version_name"
     >
 
@@ -101,12 +101,13 @@
 <!-- 
                 <action android:name="android.intent.action.BOOT_COMPLETED" />-->
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-                <action android:name="android.intent.action.BATTERY_LOW" />
+                <!-- BATTERY_CHANGED seems to activate in all these conditions: -->
+                <!-- <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />-->
                 <!-- Sample on timer if nothing else happens for 15 mins -->
-                <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
+                <!--  <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" /> -->
             </intent-filter>
         </receiver>
     </application>
