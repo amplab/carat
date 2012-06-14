@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.zubhium.ZubhiumSDK;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -42,13 +44,13 @@ public class CaratSampleDB {
     private static final HashMap<String, String> mColumnMap = buildColumnMap();
 
     private Sample lastSample = null;
-    
+
     private SQLiteDatabase db = null;
-    
+
     private SampleDbOpenHelper helper = null;
 
     private static CaratSampleDB instance = null;
-    
+
     private static Object dbLock = new Object();
 
     public static CaratSampleDB getInstance(Context c) {
@@ -58,17 +60,19 @@ public class CaratSampleDB {
     }
 
     public CaratSampleDB(Context context) {
-    	 synchronized(dbLock){
+        synchronized (dbLock) {
             helper = new SampleDbOpenHelper(context);
-    	 }
+        }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#finalize()
      */
     @Override
     protected void finalize() throws Throwable {
-        synchronized(dbLock){
+        synchronized (dbLock) {
             if (db != null)
                 db.close();
         }
@@ -116,8 +120,8 @@ public class CaratSampleDB {
         builder.setTables(SAMPLES_VIRTUAL_TABLE);
         builder.setProjectionMap(mColumnMap);
 
-        Cursor cursor = builder.query(db,
-                columns, selection, selectionArgs, groupBy, having, sortOrder);
+        Cursor cursor = builder.query(db, columns, selection, selectionArgs,
+                groupBy, having, sortOrder);
 
         if (cursor == null) {
             return null;
@@ -130,30 +134,34 @@ public class CaratSampleDB {
 
     public SortedMap<Long, Sample> queryOldestSamples(int howmany) {
         SortedMap<Long, Sample> results = new TreeMap<Long, Sample>();
-        synchronized (dbLock) {
-            if (db == null || !db.isOpen()) {
-                db = helper.getWritableDatabase();
-            }
-            String[] columns = mColumnMap.keySet().toArray(
-                    new String[mColumnMap.size()]);
-
-            Cursor cursor = query(null, null, columns, null, null,
-                    COLUMN_TIMESTAMP + " ASC LIMIT " + howmany);
-
-            if (cursor == null) {
-                // There are no results
-                return results;
-            } else {
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    Sample s = fillSample(cursor);
-                    results.put(cursor.getLong(cursor
-                            .getColumnIndex(BaseColumns._ID)), s);
-                    cursor.moveToNext();
+        try {
+            synchronized (dbLock) {
+                if (db == null || !db.isOpen()) {
+                    db = helper.getWritableDatabase();
                 }
-                cursor.close();
+                String[] columns = mColumnMap.keySet().toArray(
+                        new String[mColumnMap.size()]);
 
+                Cursor cursor = query(null, null, columns, null, null,
+                        COLUMN_TIMESTAMP + " ASC LIMIT " + howmany);
+
+                if (cursor == null) {
+                    // There are no results
+                    return results;
+                } else {
+                    cursor.moveToFirst();
+                    while (!cursor.isAfterLast()) {
+                        Sample s = fillSample(cursor);
+                        results.put(cursor.getLong(cursor
+                                .getColumnIndex(BaseColumns._ID)), s);
+                        cursor.moveToNext();
+                    }
+                    cursor.close();
+
+                }
             }
+        } catch (Throwable th) {
+            Log.e(TAG, "Failed to query oldest samples!", th);
         }
         return results;
     }
@@ -165,27 +173,32 @@ public class CaratSampleDB {
 
     public int deleteSamples(Set<Long> rowids) {
         int ret = 0;
-        synchronized (dbLock) {
-            if (db == null || !db.isOpen()) {
-                db = helper.getWritableDatabase();
-            }
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
-            sb.append("(");
-            for (Long rowid : rowids) {
-                sb.append("" + rowid);
-                i++;
-                if (i != rowids.size()) {
-                    sb.append(", ");
+        try {
+            synchronized (dbLock) {
+                if (db == null || !db.isOpen()) {
+                    db = helper.getWritableDatabase();
+                }
+                StringBuilder sb = new StringBuilder();
+                int i = 0;
+                sb.append("(");
+                for (Long rowid : rowids) {
+                    sb.append("" + rowid);
+                    i++;
+                    if (i != rowids.size()) {
+                        sb.append(", ");
+                    }
+                }
+                sb.append(")");
+                Log.d("CaratSampleDB",
+                        "Deleting where rowid in " + sb.toString());
+                ret = delete("rowid in " + sb.toString(), null);
+
+                if (db != null && db.isOpen()) {
+                    db.close();
                 }
             }
-            sb.append(")");
-            Log.d("CaratSampleDB", "Deleting where rowid in " + sb.toString());
-            ret = delete("rowid in " + sb.toString(), null);
-
-            if (db != null && db.isOpen()) {
-                db.close();
-            }
+        } catch (Throwable th) {
+            Log.e(TAG, "Failed to delete samples!", th);
         }
         return ret;
     }
@@ -244,32 +257,39 @@ public class CaratSampleDB {
     }
 
     public Sample getLastSample(Context c) {
-        synchronized (dbLock) {
-            if (db == null || !db.isOpen()) {
-                db = helper.getWritableDatabase();
+        try {
+            synchronized (dbLock) {
+                if (db == null || !db.isOpen()) {
+                    db = helper.getWritableDatabase();
+                }
+                if (lastSample == null)
+                    queryLastSample();
             }
-            if (lastSample == null)
-                queryLastSample();
+        } catch (Throwable th) {
+            Log.e(TAG, "Failed to get last sample!", th);
         }
         return lastSample;
     }
 
     public long putSample(Sample s) {
         long id = 0;
-        synchronized (dbLock) {
-            if (db == null || !db.isOpen()) {
-                db = helper.getWritableDatabase();
-            }
-            // force init
-            id = addSample(s);
+        try {
+            synchronized (dbLock) {
+                if (db == null || !db.isOpen()) {
+                    db = helper.getWritableDatabase();
+                }
+                // force init
+                id = addSample(s);
 
-            if (db != null && db.isOpen()) {
-                db.close();
+                if (db != null && db.isOpen()) {
+                    db.close();
+                }
             }
+        } catch (Throwable th) {
+            Log.e(TAG, "Failed to add a sample!", th);
         }
         return id;
     }
-    
 
     /**
      * Add a sample to the database.
@@ -335,9 +355,9 @@ public class CaratSampleDB {
         @Override
         public void onCreate(SQLiteDatabase db) {
             mDatabase = db;
-            try{
-            mDatabase.execSQL(FTS_TABLE_CREATE);
-            } catch (Throwable th){
+            try {
+                mDatabase.execSQL(FTS_TABLE_CREATE);
+            } catch (Throwable th) {
                 // Already created
                 Log.e(TAG, "DB create failed!", th);
             }

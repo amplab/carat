@@ -591,12 +591,22 @@ public final class SamplingLibrary {
             }
 
             packages = new WeakReference<Map<String, PackageInfo>>(mp);
+            
+            if (mp == null || mp.size() == 0)
+                return null;
+            if (!mp.containsKey(processName))
+                return null;
+            PackageInfo pak = mp.get(processName);
+            return pak;
+        }else{
+            Map<String, PackageInfo> p = packages.get();
+            if (p == null || p.size() == 0)
+                return null;
+            if (!p.containsKey(processName))
+                return null;
+            PackageInfo pak = p.get(processName);
+            return pak;    
         }
-
-        if (!packages.get().containsKey(processName))
-            return null;
-        PackageInfo pak = packages.get().get(processName);
-        return pak;
     }
 
     /**
