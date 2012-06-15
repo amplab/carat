@@ -2,8 +2,6 @@ package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.util.SortedMap;
 
-import org.apache.thrift.TException;
-
 import com.flurry.android.FlurryAgent;
 
 import android.content.Context;
@@ -84,10 +82,6 @@ public class CommsThread extends Thread {
                                     Log.d(TAG, "Deleted " + deleted
                                             + " samples.");
                                 }
-                            } catch (TException e1) {
-                                Log.w(TAG, "Failed to send samples,"
-                                        + (tries < 1 ? "Trying again now": TRY_AGAIN), e1);
-                                tries++;
                             } catch (Throwable th) {
                                 // Any sort of malformed response, too short
                                 // string, etc...

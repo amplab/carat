@@ -434,21 +434,30 @@ public final class SamplingLibrary {
         
         List<ProcessInfo> l = new ArrayList<ProcessInfo>();
         
-        for (RunningAppProcessInfo pi : runningProcs) {
-            ProcessInfo item = new ProcessInfo();
-            item.setImportance(CaratApplication.importanceString(pi.importance));
-            item.setPId(pi.pid);
-            item.setPName(pi.processName);
-            l.add(item);
-        }
-        
-        for (RunningServiceInfo pi : runningServices) {
-            ProcessInfo item = new ProcessInfo();
-            item.setImportance(pi.foreground ? "Foreground app":"Service");
-            item.setPId(pi.pid);
-            item.setPName(pi.clientPackage);
-            l.add(item);
-        }
+		if (runningProcs != null) {
+			for (RunningAppProcessInfo pi : runningProcs) {
+				if (pi == null)
+					continue;
+				ProcessInfo item = new ProcessInfo();
+				item.setImportance(CaratApplication
+						.importanceString(pi.importance));
+				item.setPId(pi.pid);
+				item.setPName(pi.processName);
+				l.add(item);
+			}
+		}
+
+		if (runningServices != null) {
+			for (RunningServiceInfo pi : runningServices) {
+				if (pi == null)
+					continue;
+				ProcessInfo item = new ProcessInfo();
+				item.setImportance(pi.foreground ? "Foreground app" : "Service");
+				item.setPId(pi.pid);
+				item.setPName(pi.clientPackage);
+				l.add(item);
+			}
+		}
             
         return l;
     }

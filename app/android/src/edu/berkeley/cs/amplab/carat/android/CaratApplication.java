@@ -52,8 +52,8 @@ public class CaratApplication extends Application {
     // If true, install Sampling events to occur at boot. Currently not used.
     public static final String PREFERENCE_SAMPLE_FIRST_RUN = "carat.sample.first.run";
 
-    // Report Freshness timeout. Default: 5 minutes
-    public static final long FRESHNESS_TIMEOUT = 300000L;
+    // Report Freshness timeout. Default: 10 minutes
+    public static final long FRESHNESS_TIMEOUT = 600000L;
     // If true, register this as a new device on the Carat server
     public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
 
@@ -96,8 +96,10 @@ public class CaratApplication extends Application {
 
     public static String importanceString(int importance) {
         String s = importanceToString.get(importance);
-        if (s == null || s.length() == 0)
-            Log.e("Importance not found:", "" + importance);
+        if (s == null || s.length() == 0){
+            Log.e("Importance not found:","" + importance);
+            s = "Unknown";
+        }
         return s;
     }
 
@@ -194,7 +196,7 @@ public class CaratApplication extends Application {
             main.runOnUiThread(new Runnable() {
                 public void run() {
                     // Updating done
-                    main.setTitleUpdating();
+                    main.setTitleUpdating("My Device");
                     main.setProgress(0);
                     main.setProgressBarVisibility(true);
                     main.setProgressBarIndeterminateVisibility(true);
@@ -213,10 +215,14 @@ public class CaratApplication extends Application {
         }
     }
     
-    public static void setActionProgress(final int progress) {
+    public static void setActionProgress(final int progress, final String what, final boolean fail) {
         if (main != null) {
             main.runOnUiThread(new Runnable() {
                 public void run() {
+                	if (fail)
+                		main.setTitleUpdatingFailed(what);
+                	else
+                		main.setTitleUpdating(what);
                     main.setProgress(progress*100);
                 }
             });

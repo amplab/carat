@@ -191,8 +191,12 @@ public class CaratMainActivity extends TabActivity {
     		this.setTitle(fullVersion);
     }
     
-    public void setTitleUpdating(){
-        this.setTitle(fullVersion + " - Updating reports ...");
+    public void setTitleUpdating(String what){
+        this.setTitle(fullVersion + " - Updating "+ what);
+    }
+    
+    public void setTitleUpdatingFailed(String what){
+        this.setTitle(fullVersion + " - got no "+ what);
     }
     
 
