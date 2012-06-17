@@ -18,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,14 +105,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	    if(!SamplingLibrary.isAutoBrightness(a.getApplicationContext()) && SamplingLibrary.getScreenBrightness(a.getApplicationContext())>50){
 	 	        
 	        SimpleHogBug item=new SimpleHogBug("Dim the Screen", Type.OS);
-	     // TODO Get expected benefit
-	       // PowerProfile powerCalculate= new PowerProfile(a.getApplicationContext());
-	       // powerCalculate.getAveragePower(arg0);
-	        /*item.setExpectedValueWithout(1);
-	        item.setExpectedValue(4);
-	        double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-	                    / item.getExpectedValue();
-	        if(benefit > 60)*/
 	        result.add(item);
 	    }   
 	}
@@ -119,12 +112,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	private void acceptDisableWifi(ArrayList<SimpleHogBug> result) {
         if(SamplingLibrary.getWifiEnabled(a.getApplicationContext())){
             SimpleHogBug item=new SimpleHogBug("Disable Wifi", Type.OS);
-            // TODO Get expected benefit
-            /*item.setExpectedValueWithout(1);
-            item.setExpectedValue(4);
-            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                        / item.getExpectedValue();
-            if(benefit > 60)*/
             result.add(item);
         }   
     }
@@ -142,12 +129,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	private void acceptDisableGps(ArrayList<SimpleHogBug> result) {
         if(SamplingLibrary.getGpsEnabled(a.getApplicationContext())==true){
             SimpleHogBug item=new SimpleHogBug("Disable gps", Type.OS);
-            // TODO Get expected benefit
-            /*item.setExpectedValueWithout(1);
-            item.setExpectedValue(4);
-            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                        / item.getExpectedValue();
-            if(benefit > 60)*/
             result.add(item);
         }   
     }
@@ -156,12 +137,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	    BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
         if (myBluetoothAdapter.isEnabled()==true) {               
             SimpleHogBug item=new SimpleHogBug("Disable bluetooth", Type.OS);
-            // TODO Get expected benefit
-            /*item.setExpectedValueWithout(1);
-            item.setExpectedValue(4);
-            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                        / item.getExpectedValue();
-            if(benefit > 60)*/
             result.add(item);
         }   
     }
@@ -173,11 +148,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                     Settings.System.HAPTIC_FEEDBACK_ENABLED)== 1){               
                 SimpleHogBug item=new SimpleHogBug("Disable haptic feedback", Type.OS);
                 // TODO Get expected benefit
-                /*item.setExpectedValueWithout(1);
-                item.setExpectedValue(4);
-                double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                            / item.getExpectedValue();
-                if(benefit > 60)*/
                 result.add(item);
             }
         } catch (SettingNotFoundException e) {
@@ -190,11 +160,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	        if(SamplingLibrary.isAutoBrightness(a.getApplicationContext())){
 	            SimpleHogBug item=new SimpleHogBug("Set brightness to automatic", Type.OS);
 	            // TODO Get expected benefit
-	            /*item.setExpectedValueWithout(1);
-	            item.setExpectedValue(4);
-	            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-	                        / item.getExpectedValue();
-	            if(benefit > 60)*/
 	            result.add(item);
 	        }   
 	    }
@@ -203,11 +168,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	        if(SamplingLibrary.networkAvailable(a.getApplicationContext())==true){
 	            SimpleHogBug item=new SimpleHogBug("Disable network", Type.OS);
 	            // TODO Get expected benefit
-	            /*item.setExpectedValueWithout(1);
-	            item.setExpectedValue(4);
-	            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-	                        / item.getExpectedValue();
-	            if(benefit > 60)*/
 	            result.add(item);
 	        }   
 	    }
@@ -218,11 +178,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	       if(myAudioManager.getVibrateSetting(1)==1||myAudioManager.getVibrateSetting(0)==1){
                SimpleHogBug item=new SimpleHogBug("Disable vibration", Type.OS);
                // TODO Get expected benefit
-               /*item.setExpectedValueWithout(1);
-               item.setExpectedValue(4);
-               double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                           / item.getExpectedValue();
-               if(benefit > 60)*/
                result.add(item);
            }   
        }
@@ -235,11 +190,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                        Settings.System.SCREEN_OFF_TIMEOUT)>30000){               
                    SimpleHogBug item=new SimpleHogBug("Shorten screen timeout", Type.OS);
                    // TODO Get expected benefit
-                   /*item.setExpectedValueWithout(1);
-                   item.setExpectedValue(4);
-                   double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                               / item.getExpectedValue();
-                   if(benefit > 60)*/
                    result.add(item);
                }
            } catch (SettingNotFoundException e) {
@@ -253,14 +203,49 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                if(ContentResolver.getMasterSyncAutomatically()==true){               
                    SimpleHogBug item=new SimpleHogBug("Disable automatic sync", Type.OS);
                    // TODO Get expected benefit
-                   /*item.setExpectedValueWithout(1);
-                   item.setExpectedValue(4);
-                   double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                               / item.getExpectedValue();
-                   if(benefit > 60)*/
                    result.add(item);
                }
            } 
+       
+       private double bluetoothBenefit(Context context){
+           double bluetoothPowerCost=SamplingLibrary.getAverageBluetoothPower(context);
+           Log.d("bluetoothPowerCost", "Bluetooth power cost: " + bluetoothPowerCost);
+           double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+           Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+           double benefit=batteryCapacity/bluetoothPowerCost;
+           Log.d("BluetoothPowerBenefit", "Bluetooth power benefit: " + benefit);
+           return benefit;
+           }
+       
+       private double wifiBenefit(Context context){
+           double wifiPowerCost=SamplingLibrary.getAverageWifiPower(context);
+           Log.d("wifiPowerCost", "wifi power cost: " + wifiPowerCost);
+           double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+           Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+           double benefit=batteryCapacity/wifiPowerCost;
+           Log.d("wifiPowerBenefit", "wifi power benefit: " + benefit);
+           return benefit;
+           }
+       
+       private double gpsBenefit(Context context){
+           double gpsPowerCost=SamplingLibrary.getAverageGpsPower(context);
+           Log.d("gpsPowerCost", "gps power cost: " + gpsPowerCost);
+           double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+           Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+           double benefit=batteryCapacity/gpsPowerCost;
+           Log.d("gpsPowerBenefit", "gps power benefit: " + benefit);
+           return benefit;
+          }
+          
+        private double screenBrightnessBenefit(Context context){
+            double screenPowerCost=SamplingLibrary.getAverageScreenPower(context);
+            Log.d("screenPowerCost", "screen power cost: " + screenPowerCost);
+            double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+            Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+            double benefit=batteryCapacity/screenPowerCost;
+            Log.d("screenPowerBenefit", "screen power benefit: " + benefit);
+            return benefit;
+          }
 
 	public int getCount() {
 		return indexes.length;
@@ -334,6 +319,25 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             else{ // Other action
                 holder.txtName.setText(label);
                 holder.txtType.setText(item.getAppPriority());
+            }
+            
+            if (item.getAppName()=="Disable bluetooth"){
+                double benefitOther=bluetoothBenefit(a.getApplicationContext());
+                hours = (int) (benefitOther);
+                min = (int) (benefitOther * 60);
+                min -= hours * 60;
+            }
+            else if(item.getAppName()=="Disable Wifi"){
+                double benefitOther=wifiBenefit(a.getApplicationContext());
+                hours = (int) (benefitOther);
+                min = (int) (benefitOther * 60);
+                min -= hours * 60; 
+            }
+            else if(item.getAppName()=="Dim the Screen"){
+                double benefitOther=screenBrightnessBenefit(a.getApplicationContext());
+                hours = (int) (benefitOther);
+                min = (int) (benefitOther * 60);
+                min -= hours * 60; 
             }
             
             holder.txtBenefit.setText(hours + "h " + min + "m");

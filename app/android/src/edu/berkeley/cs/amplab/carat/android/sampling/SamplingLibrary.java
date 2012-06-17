@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.android.internal.os.PowerProfile;
 import com.flurry.android.FlurryAgent;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
@@ -1359,6 +1360,110 @@ public final class SamplingLibrary {
         CallMonth call = new CallMonth();
         call = callInfo.get(time);
         return call;
+    }
+    
+    public static double getBatteryCapacity(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        double batteryCap=powCal.getBatteryCapacity();
+        return batteryCap;
+    }
+
+  public static double getAverageBluetoothPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        
+        double bluetoothOnCost=powCal.getAveragePower(powCal.POWER_BLUETOOTH_ON);
+        Log.i("bluetoothOnCost", "Bluetooth on cost is:"+bluetoothOnCost); 
+        double bluetoothActiveCost=powCal.getAveragePower(powCal.POWER_BLUETOOTH_ACTIVE);
+       // double bluetoothAtcmdCost=powCal.getAveragePower(powCal.POWER_BLUETOOTH_AT_CMD);
+        Log.i("bluetoothActiveCost", "Bluetooth active cost is:"+bluetoothActiveCost);
+        double bluetoothPowerCost=bluetoothOnCost*0.5+bluetoothActiveCost*0.5;
+        Log.i("bluetoothPowerConsumption", "Bluetooth power consumption is:"+bluetoothPowerCost); 
+        return bluetoothPowerCost;   
+    }
+    
+    public static double getAverageWifiPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        
+        //double wifiScanCost=powCal.getAveragePower(powCal.POWER_WIFI_SCAN);
+        double wifiOnCost=powCal.getAveragePower(powCal.POWER_WIFI_ON);
+        Log.i("wifiOnCost", "Wifi on cost is:"+wifiOnCost);
+        double wifiActiveCost=powCal.getAveragePower(powCal.POWER_WIFI_ACTIVE);
+        Log.i("wifiActiveCost", "Wifi active cost is:"+wifiActiveCost);
+        
+        double wifiPowerCost=wifiOnCost*0.5+wifiActiveCost*0.5;
+        Log.i("wifiPowerConsumption", "Wifi power consumption is:"+wifiPowerCost); 
+        return wifiPowerCost;   
+    }
+    
+    public static double getAverageGpsPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        double gpsOnCost=powCal.getAveragePower(powCal.POWER_GPS_ON);
+        Log.i("gpsPowerConsumption", "Gps power consumption is:"+gpsOnCost);
+        return gpsOnCost;   
+    }
+    
+    public static double [] getAverageCpuPower(Context context){
+        
+        double result[]=new double[3];
+        PowerProfile powCal=new PowerProfile(context);
+        
+        double cpuActiveCost=powCal.getAveragePower(powCal.POWER_CPU_ACTIVE);
+        double cpuIdleCost=powCal.getAveragePower(powCal.POWER_CPU_IDLE);
+        double cpuAwakeCost=powCal.getAveragePower(powCal.POWER_CPU_AWAKE);
+        
+        result[0]=cpuActiveCost;
+        result[1]=cpuIdleCost;
+        result[2]=cpuAwakeCost;
+        Log.i("cpuPowerConsumption", "When cpu is active:\n"+cpuActiveCost);
+        Log.i("cpuPowerConsumption", "When cpu is idle:\n"+cpuIdleCost);
+        Log.i("cpuPowerConsumption", "When cpu is awake:\n"+cpuAwakeCost);
+        return result;   
+    }
+    
+    public static double getAverageScreenPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        double screenCost=0;
+        //double wifiScanCost=powCal.getAveragePower(powCal.POWER_WIFI_SCAN);
+        double screenOnCost=powCal.getAveragePower(powCal.POWER_SCREEN_ON);
+        
+        if(SamplingLibrary.getScreenBrightness(context)==255){
+            screenCost=powCal.getAveragePower(powCal.POWER_SCREEN_FULL);
+        }
+        else{
+            double curBrightness=SamplingLibrary.getScreenBrightness(context);
+            screenCost=curBrightness/255.0*powCal.getAveragePower(powCal.POWER_SCREEN_FULL);
+        }
+        
+        double screenPowerCost=screenOnCost+screenCost;
+        
+        Log.i("screenPowerConsumption", "Screen power consumption is:"+screenPowerCost); 
+        return screenPowerCost;   
+    }   
+    
+    public static double getAverageVedioPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        double vedioOnCost=powCal.getAveragePower(powCal.POWER_VIDEO);
+        Log.i("vedioPowerConsumption", "Vedio power consumption is:"+vedioOnCost);
+        return vedioOnCost;   
+    }
+    
+    public static double getAverageAudioPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        double audioOnCost=powCal.getAveragePower(powCal.POWER_AUDIO);
+        Log.i("audioPowerConsumption", "Audio power consumption is:"+audioOnCost);
+        return audioOnCost;   
+    }
+    
+    public static double getAverageRadioPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        
+        //double radioScanCost=powCal.getAveragePower(powCal.POWER_RADIO_SCANNING);
+        double radioOnCost=powCal.getAveragePower(powCal.POWER_RADIO_ON);
+        double radioActiveCost=powCal.getAveragePower(powCal.POWER_RADIO_ACTIVE);
+        
+        double radioPowerCost=radioOnCost*0.05+radioActiveCost*0.05;
+        Log.i("radioPowerConsumption", "Radio power consumption is:"+radioPowerCost); 
+        return radioPowerCost;   
     }
 
     private static Location lastKnownLocation = null;
