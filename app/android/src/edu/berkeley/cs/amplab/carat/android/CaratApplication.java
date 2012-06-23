@@ -7,6 +7,7 @@ import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.PendingIntent;
@@ -75,7 +76,7 @@ public class CaratApplication extends Application {
     private static CaratBugsOrHogsActivity bugsActivity = null;
     private static CaratBugsOrHogsActivity hogsActivity = null;
     private static CaratSuggestionsActivity actionList = null;
-    
+
     private static Sampler sampler = null;
 
     private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
@@ -96,8 +97,8 @@ public class CaratApplication extends Application {
 
     public static String importanceString(int importance) {
         String s = importanceToString.get(importance);
-        if (s == null || s.length() == 0){
-            Log.e("Importance not found:","" + importance);
+        if (s == null || s.length() == 0) {
+            Log.e("Importance not found:", "" + importance);
             s = "Unknown";
         }
         return s;
@@ -214,16 +215,17 @@ public class CaratApplication extends Application {
             });
         }
     }
-    
-    public static void setActionProgress(final int progress, final String what, final boolean fail) {
+
+    public static void setActionProgress(final int progress, final String what,
+            final boolean fail) {
         if (main != null) {
             main.runOnUiThread(new Runnable() {
                 public void run() {
-                	if (fail)
-                		main.setTitleUpdatingFailed(what);
-                	else
-                		main.setTitleUpdating(what);
-                    main.setProgress(progress*100);
+                    if (fail)
+                        main.setTitleUpdatingFailed(what);
+                    else
+                        main.setTitleUpdating(what);
+                    main.setProgress(progress * 100);
                 }
             });
         }
@@ -310,23 +312,15 @@ public class CaratApplication extends Application {
                 PendingIntent sender = PendingIntent.getBroadcast(
                         CaratApplication.this, 192837, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
-                // Cancel if this has been set up. Do not use timer at all any more.
+                // Cancel if this has been set up. Do not use timer at all any
+                // more.
                 sender.cancel();
-                // Get the AlarmManager service
-                //AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-                // we probably don't want the wakeup, but do battery events
-                // still get delivered?
-                //am.setInexactRepeating(AlarmManager.RTC,
-                        //System.currentTimeMillis() + FIRST_SAMPLE_DELAY_MS,
-                        //SAMPLE_INTERVAL_MS, sender);
-
-                // p.edit().putBoolean(PREFERENCE_SAMPLE_FIRST_RUN,
-                // false).commit();
-                // }
+                
+                // Let sampling happen on battery change
                 IntentFilter intentFilter = new IntentFilter();
                 intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
                 sampler = new Sampler();
-                //unregisterReceiver(sampler);
+                // unregisterReceiver(sampler);
                 registerReceiver(sampler, intentFilter);
             }
         }.start();
@@ -338,6 +332,125 @@ public class CaratApplication extends Application {
         }.start();
 
         super.onCreate();
+    }
+
+    private static final String TAG = "CaratApp";
+
+    private static final String TRY_AGAIN = " will try again in "
+            + (FRESHNESS_TIMEOUT / 1000) + "s.";
+
+    public void refreshUi() {
+        boolean connecting = false;
+
+        refreshActions();
+        String networkStatus = SamplingLibrary
+                .getNetworkStatus(getApplicationContext());
+        if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED
+                && getApplicationContext() != null) {
+            // Show we are updating...
+            CaratApplication.setActionInProgress();
+            try {
+                c.refreshAllReports();
+                // Log.d(TAG, "Reports refreshed.");
+            } catch (Throwable th) {
+                // Any sort of malformed response, too short string,
+                // etc...
+                Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
+                th.printStackTrace();
+            }
+            connecting = false;
+
+        } else if (networkStatus
+                .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
+            Log.w(TAG, "Network status: " + networkStatus
+                    + ", trying again in 10s.");
+            connecting = true;
+        }
+
+        // do this regardless
+        setReportData();
+        // Update UI elements
+        CaratApplication.refreshActions();
+        CaratApplication.refreshBugs();
+        CaratApplication.refreshHogs();
+        CaratApplication.setActionProgress(90, "finishing up", false);
+
+        if (!connecting)
+            CaratApplication.setActionFinished();
+
+        if (connecting) {
+            // wait for wifi to come up
+            try {
+                Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
+            } catch (InterruptedException e1) {
+                // ignore
+            }
+            connecting = false;
+
+            // Show we are updating...
+            CaratApplication.setActionInProgress();
+            try {
+                c.refreshAllReports();
+                // Log.d(TAG, "Reports refreshed.");
+            } catch (Throwable th) {
+                // Any sort of malformed response, too short string,
+                // etc...
+                Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
+                th.printStackTrace();
+            }
+            connecting = false;
+
+            // do this regardless
+            setReportData();
+            // Update UI elements
+            refreshActions();
+            refreshBugs();
+            refreshHogs();
+            setActionProgress(90, "finishing up", false);
+        }
+    }
+
+    public static void setReportData() {
+        final Reports r = s.getReports();
+        Log.d(TAG, "Got reports: " + r);
+        long freshness = CaratApplication.s.getFreshness();
+        long l = System.currentTimeMillis() - freshness;
+        final long h = l / 3600000;
+        final long min = (l - h * 3600000) / 60000;
+        double bl = 0;
+        int jscore = 0;
+        if (r != null) {
+            // Try exact battery life
+            if (r.jScoreWith != null) {
+                double exp = r.jScoreWith.expectedValue;
+                if (exp > 0.0)
+                    bl = 100 / r.getModel().expectedValue;
+                else if (r.getModel() != null) {
+                    exp = r.getModel().expectedValue;
+                    Log.d(TAG, "Model expected value: " + exp);
+                    if (exp > 0.0)
+                        bl = 100 / r.getModel().expectedValue;
+                }
+                // If not possible, try model battery life
+            }
+            jscore = ((int) (r.getJScore() * 100));
+        }
+
+        int blh = (int) (bl / 3600);
+        bl -= blh * 3600;
+        int blmin = (int) (bl / 60);
+        int bls = (int) (bl - blmin * 60);
+        final String blS = blh + "h " + blmin + "m " + bls + "s";
+        setMyDeviceText(R.id.jscore_value, jscore + "");
+        // Log.v(TAG, "Freshness: " + freshness);
+        if (freshness <= 0)
+            setMyDeviceText(R.id.updated, "(Never updated)");
+        else if (min == 0)
+            setMyDeviceText(R.id.updated, "(Updated just now)");
+        else
+            setMyDeviceText(R.id.updated, "(Updated " + h + "h " + min
+                    + "m ago)");
+        setMyDeviceText(R.id.batterylife_value, blS);
     }
 
     @Override

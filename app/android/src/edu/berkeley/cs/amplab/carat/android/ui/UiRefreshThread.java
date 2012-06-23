@@ -26,26 +26,26 @@ public class UiRefreshThread extends Thread {
 	// FIXME: There should be a non-static way of doing this.
 	private static CaratApplication app = null;
 
-	private static UiRefreshThread instance = null;
+	//private static UiRefreshThread instance = null;
 
-	public static UiRefreshThread getInstance() {
+	/*public static UiRefreshThread getInstance() {
 		return instance;
-	}
+	}*/
 
-	public UiRefreshThread(CaratApplication app) {
+	/*public UiRefreshThread(CaratApplication app) {
 		UiRefreshThread.app = app;
 		instance = this;
-	}
+	}*/
 
 	public void stopRunning() {
 		isRunning = false;
 	}
 
-	public void appResumed() {
+	/*public void appResumed() {
 		synchronized (UiRefreshThread.this) {
 			UiRefreshThread.this.interrupt();
 		}
-	}
+	}*/
 
 	public void run() {
 		boolean connecting = false;

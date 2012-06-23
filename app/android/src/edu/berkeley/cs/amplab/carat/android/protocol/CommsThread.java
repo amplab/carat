@@ -23,6 +23,7 @@ public class CommsThread extends Thread {
     private static final String TAG = "CommsThread";
     
     private boolean isRunning = true;
+    private boolean paused = false;
 
     private static final String TRY_AGAIN = " will try again in "
             + (CaratApplication.COMMS_INTERVAL / 1000) + "s.";
@@ -36,9 +37,17 @@ public class CommsThread extends Thread {
     public void stopRunning() {
         isRunning = false;
     }
+    
+    public void paused() {
+        synchronized (CommsThread.this) {
+            paused = true;
+            CommsThread.this.interrupt();
+        }
+    }
 
     public void appResumed() {
         synchronized (CommsThread.this) {
+            paused = false;
             CommsThread.this.interrupt();
         }
     }
@@ -124,6 +133,15 @@ public class CommsThread extends Thread {
                     } catch (InterruptedException e1) {
                         // ignore
                     }
+                }
+            }
+            if (paused){
+                try {
+                    synchronized(CommsThread.this){
+                        wait();
+                    }
+                } catch (InterruptedException e) {
+                   // Intended behaviour
                 }
             }
         }

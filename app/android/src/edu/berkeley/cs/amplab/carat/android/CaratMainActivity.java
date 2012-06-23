@@ -9,7 +9,6 @@ import com.zubhium.ZubhiumSDK;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -37,32 +36,32 @@ import android.widget.TabHost.OnTabChangeListener;
 public class CaratMainActivity extends TabActivity {
     // Log tag
     private static final String TAG = "CaratMain";
-    
+
     public static final String ACTION_BUGS = "bugs";
     public static final String ACTION_HOGS = "hogs";
-    
+
     // 250 ms
     public static final long ANIMATION_DURATION = 250;
-    
+
     // Thread that sends samples when phone is woken up, GUI is started, or at
     // 15 min intervals.
     private CommsThread sampleSender = null;
-    //private distanceThread distanceInfo = null;
-    private UiRefreshThread uiRefreshThread = null;
+    // private distanceThread distanceInfo = null;
+    //private UiRefreshThread uiRefreshThread = null;
 
     // Hold the tabs of the UI.
     public static TabHost tabHost = null;
 
     // Zubhium SDK
     ZubhiumSDK sdk = null;
-    
+
     // Key File
     private static final String ZUBHIUM_KEYFILE = "zubhium.properties";
     private static final String FLURRY_KEYFILE = "flurry.properties";
-    
+
     private MenuItem feedbackItem = null;
-    
-    private String fullVersion = null; 
+
+    private String fullVersion = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -74,9 +73,9 @@ public class CaratMainActivity extends TabActivity {
         getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.main);
-        
+
         fullVersion = getString(R.string.app_name) + " "
-        + getString(R.string.version_name);
+                + getString(R.string.version_name);
 
         String secretKey = null;
         Properties properties = new Properties();
@@ -181,33 +180,33 @@ public class CaratMainActivity extends TabActivity {
 
         tabHost.setCurrentTab(0);
     }
-    
-    
-    public void setTitleNormal(){
-    	long s = CaratApplication.s.getSamplesReported();
-    	if (s > 0)
-    		this.setTitle(fullVersion +" - " + s + " samples reported");
-    	else
-    		this.setTitle(fullVersion);
-    }
-    
-    public void setTitleUpdating(String what){
-        this.setTitle(fullVersion + " - Updating "+ what);
-    }
-    
-    public void setTitleUpdatingFailed(String what){
-        this.setTitle(fullVersion + " - got no "+ what);
-    }
-    
 
-    /* (non-Javadoc)
+    public void setTitleNormal() {
+        long s = CaratApplication.s.getSamplesReported();
+        if (s > 0)
+            this.setTitle(fullVersion + " - " + s + " samples reported");
+        else
+            this.setTitle(fullVersion);
+    }
+
+    public void setTitleUpdating(String what) {
+        this.setTitle(fullVersion + " - Updating " + what);
+    }
+
+    public void setTitleUpdatingFailed(String what) {
+        this.setTitle(fullVersion + " - got no " + what);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.app.Activity#onStart()
      */
     @Override
     protected void onStart() {
         // TODO Auto-generated method stub
         super.onStart();
-        
+
         String secretKey = null;
         Properties properties = new Properties();
         try {
@@ -229,7 +228,9 @@ public class CaratMainActivity extends TabActivity {
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.app.ActivityGroup#onStop()
      */
     @Override
@@ -238,8 +239,6 @@ public class CaratMainActivity extends TabActivity {
         super.onStop();
         FlurryAgent.onEndSession(getApplicationContext());
     }
-
-
 
     public static void changeTab(int tab) {
         tabHost.setCurrentTab(tab);
@@ -311,9 +310,10 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     protected void onResume() {
+        Log.i(TAG, "Resumed");
         CaratApplication.setMain(this);
         // Thread for sending samples every 15 mins
-        
+
         if (sampleSender == null) {
             sampleSender = new CommsThread((CaratApplication) getApplication());
             sampleSender.start();
@@ -325,47 +325,40 @@ public class CaratMainActivity extends TabActivity {
                 }
             }.start();
         }
-        
-        /*if (distanceInfo == null) {
-            distanceInfo= new distanceThread((CaratApplication) getApplication());
-            distanceInfo.start();
-        } else {
-            Log.d("CaratMainActivity", "Resuming location distance calculation!");
-            new Thread() {
-                public void run() {
-                    distanceInfo.appResumed();
-                }
-            }.start();
-        }*/
+
+        /*
+         * if (distanceInfo == null) { distanceInfo= new
+         * distanceThread((CaratApplication) getApplication());
+         * distanceInfo.start(); } else { Log.d("CaratMainActivity",
+         * "Resuming location distance calculation!"); new Thread() { public
+         * void run() { distanceInfo.appResumed(); } }.start(); }
+         */
         // Thread for refreshing the UI with new reports every 5 mins and on
         // resume
-        if (uiRefreshThread == null) {
-            uiRefreshThread = new UiRefreshThread(
-                    (CaratApplication) getApplication());
-            uiRefreshThread.start();
-        } else {
-            Log.d("CaratMainActivity", "Resuming UiRefreshThread");
+        
+        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() >= CaratApplication.FRESHNESS_TIMEOUT) {
+            Log.d(TAG, "Refreshing UI");
             new Thread() {
                 public void run() {
-                    uiRefreshThread.appResumed();
+                    ((CaratApplication) getApplication()).refreshUi();
                 }
             }.start();
         }
         super.onResume();
     }
-    
-    
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.app.ActivityGroup#onPause()
      */
     @Override
     protected void onPause() {
+        Log.i(TAG, "Paused");
         SamplingLibrary.resetRunningProcessInfo();
+        sampleSender.paused();
         super.onPause();
     }
-
-
 
     /*
      * (non-Javadoc)
@@ -376,10 +369,10 @@ public class CaratMainActivity extends TabActivity {
     public void finish() {
         sampleSender.stopRunning();
         sampleSender.appResumed();
-        //distanceInfo.appResumed();
-        //distanceInfo.stopRunning();
-        uiRefreshThread.stopRunning();
-        uiRefreshThread.appResumed();
+        // distanceInfo.appResumed();
+        // distanceInfo.stopRunning();
+        //uiRefreshThread.stopRunning();
+        //uiRefreshThread.appResumed();
 
         Log.d(TAG, "Finishing up");
         super.finish();
@@ -403,17 +396,16 @@ public class CaratMainActivity extends TabActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         feedbackItem = menu.add(R.string.feedback);
-        feedbackItem.setOnMenuItemClickListener(new OnMenuItemClickListener(){
+        feedbackItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 
             @Override
             public boolean onMenuItemClick(MenuItem arg0) {
                 if (sdk != null)
                     sdk.openFeedbackDialog(CaratMainActivity.this);
                 return true;
-            }});
+            }
+        });
         return true;
     }
-    
-    
 
 }

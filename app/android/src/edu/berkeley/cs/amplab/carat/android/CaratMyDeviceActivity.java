@@ -238,14 +238,14 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     @Override
     protected void onResume() {
         CaratApplication.setMyDevice(this);
-        UiRefreshThread.setReportData();
+        /*UiRefreshThread.setReportData();
         new Thread() {
             public void run() {
                 synchronized (UiRefreshThread.getInstance()) {
                     UiRefreshThread.getInstance().appResumed();
                 }
             }
-        }.start();
+        }.start();*/
 
         setMemory();
         super.onResume();
