@@ -9,8 +9,6 @@ import com.flurry.android.FlurryAgent;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -85,13 +83,13 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 				in, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// Get the AlarmManager service
-		AlarmManager am = (AlarmManager) context
+		/*AlarmManager am = (AlarmManager) context
 				.getSystemService(Activity.ALARM_SERVICE);
 		// 1 min first, 15 min intervals
 		am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
 				CaratApplication.FIRST_SAMPLE_DELAY_MS,
 				CaratApplication.SAMPLE_INTERVAL_MS, sender);
-
+		*/
 		IntentFilter intentFilter = new IntentFilter();
 		intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 		context.registerReceiver(new Sampler(), intentFilter);

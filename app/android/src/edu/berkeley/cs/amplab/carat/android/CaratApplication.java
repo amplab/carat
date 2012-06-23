@@ -42,11 +42,6 @@ public class CaratApplication extends Application {
 
     public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
-    // Sample 1 min since application start, then at 15 min intervals
-    public static final long FIRST_SAMPLE_DELAY_MS = 60 * 1000;
-    public static final long SAMPLE_INTERVAL_MS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-    // public static final long SAMPLE_INTERVAL_MS = FIRST_SAMPLE_DELAY_MS;
-
     // Alarm event for sampling when battery has not changed for
     // SAMPLE_INTERVAL_MS.
     public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
@@ -54,7 +49,7 @@ public class CaratApplication extends Application {
     public static final String PREFERENCE_SAMPLE_FIRST_RUN = "carat.sample.first.run";
 
     // Report Freshness timeout. Default: 10 minutes
-    public static final long FRESHNESS_TIMEOUT = 600000L;
+    public static final long FRESHNESS_TIMEOUT = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
     // If true, register this as a new device on the Carat server
     public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
 

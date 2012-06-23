@@ -336,14 +336,12 @@ public class CaratMainActivity extends TabActivity {
         // Thread for refreshing the UI with new reports every 5 mins and on
         // resume
         
-        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() >= CaratApplication.FRESHNESS_TIMEOUT) {
-            Log.d(TAG, "Refreshing UI");
-            new Thread() {
-                public void run() {
-                    ((CaratApplication) getApplication()).refreshUi();
-                }
-            }.start();
-        }
+        Log.d(TAG, "Refreshing UI");
+        new Thread() {
+            public void run() {
+                ((CaratApplication) getApplication()).refreshUi();
+            }
+        }.start();
         super.onResume();
     }
 
