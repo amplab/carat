@@ -394,9 +394,8 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	MenuItem tweetItem = menu.add(R.string.tweet);
+    	/*MenuItem tweetItem = menu.add(R.string.tweet);
         tweetItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
             @Override
             public boolean onMenuItemClick(MenuItem arg0) {
             	String tweet = "My J-Score is "+ CaratApplication.getJscore() +"!\nWhat's yours?\nFind out here:";
@@ -405,8 +404,30 @@ public class CaratMainActivity extends TabActivity {
             	startActivity(new Intent(Intent.ACTION_VIEW, uri));
                 return true;
             }
+        });*/
+        /*
+        MenuItem facebookItem = menu.add(R.string.facebook);
+        facebookItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+                }
+            }
+        );*/
+        
+        MenuItem shareItem = menu.add(R.string.share);
+        shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+                int jscore = CaratApplication.getJscore();
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "My J-Score is "+jscore);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "Carat is improving my battery life. My J-Score is "+jscore +"!\nWhat's yours?\nFind out here: \nhttp://carat.cs.berkeley.edu/");
+                startActivity(Intent.createChooser(sendIntent, "Share with:"));
+                return true;
+            }
         });
-    	
+        
         feedbackItem = menu.add(R.string.feedback);
         feedbackItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 

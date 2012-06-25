@@ -24,7 +24,7 @@
     <string name="emptySuggestion">Nothing to report!</string>
     <string name="checkback">Please check back later.</string>
     <string name="feedback">Give feedback</string>
-    <string name="tweet">Tweet this</string>
+    <string name="share">Share &#8230;</string>
 
     <color name="brown">#744618</color>
     <color name="orange">#ff8331</color>
