@@ -12,6 +12,7 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -393,6 +394,19 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+    	MenuItem tweetItem = menu.add(R.string.tweet);
+        tweetItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+            	String tweet = "My J-Score is "+ CaratApplication.getJscore() +"!\nWhat's yours?\nFind out here:";
+            	String tweetUrl = "https://twitter.com/intent/tweet?text="+Uri.encode(tweet)+"&url="+Uri.encode("http://carat.cs.berkeley.edu/");
+            	Uri uri = Uri.parse(tweetUrl);
+            	startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                return true;
+            }
+        });
+    	
         feedbackItem = menu.add(R.string.feedback);
         feedbackItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
 

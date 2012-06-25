@@ -286,7 +286,9 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
+		if (indexes == null || position < 0 || position >= indexes.length)
+			return convertView;
+		
 		SimpleHogBug item = indexes[position];
 		if (item == null)
 		    return convertView;

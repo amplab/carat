@@ -543,17 +543,19 @@ public final class SamplingLibrary {
          * Blacklist:
          * Key chain, google partner set up, package installer, package access helper
          * 
-         */        
+         */    
         if (CaratApplication.s != null) {
             List<String> blacklist = CaratApplication.s.getBlacklist();
             if (blacklist != null && blacklist.size() > 0
-                    && blacklist.contains(processName)) {
+                    && processName != null && blacklist.contains(processName)) {
                 return true;
             }
             
             blacklist = CaratApplication.s.getGloblist();
-            if (blacklist != null && blacklist.size() > 0){
+            if (blacklist != null && blacklist.size() > 0 && processName != null){
                 for (String glob: blacklist){
+                	if (glob == null)
+                		continue;
                     // something*
                     if (glob.endsWith("*") && processName.startsWith(glob.substring(0, glob.length()-1)))
                             return true;
@@ -564,7 +566,7 @@ public final class SamplingLibrary {
             }
         }
         
-        if (CaratApplication.labelForApp(c, processName).equals(processName)){
+        if (processName != null && CaratApplication.labelForApp(c, processName).equals(processName)){
             //Log.v("Hiding uninstalled", processName);
             return true;
         }
@@ -592,11 +594,21 @@ public final class SamplingLibrary {
                 || packages.get().size() == 0) {
             Map<String, PackageInfo> mp = new HashMap<String, PackageInfo>();
             PackageManager pm = context.getPackageManager();
-
-            List<android.content.pm.PackageInfo> packagelist = pm
+            if (pm == null)
+            	return null;
+            List<android.content.pm.PackageInfo> packagelist = null;
+            		
+            try{
+            	packagelist = pm
                     .getInstalledPackages(0);
-
+            }catch (Throwable th){
+            	// Forget about it...
+            }
+            if (packagelist == null)
+            	return null;
             for (PackageInfo pak : packagelist) {
+            	if (pak == null || pak.applicationInfo == null ||  pak.applicationInfo.processName == null)
+            		continue;
                 mp.put(pak.applicationInfo.processName, pak);
             }
 
@@ -1038,7 +1050,8 @@ public final class SamplingLibrary {
 
     public static Location getLastKnownLocation(Context c) {
         String provider = getBestProvider(c);
-        if (provider != null) {
+        // FIXME: Some buggy device is giving GPS to us, even though we cannot use it.
+        if (provider != null && !provider.equals("gps")) {
             Location l = getLastKnownLocation(c, provider);
             return l;
         }
@@ -1079,7 +1092,10 @@ public final class SamplingLibrary {
         LocationManager lm = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);
         Criteria c = new Criteria();
-        return lm.getBestProvider(c, true);
+        c.setAccuracy(Criteria.ACCURACY_COARSE);
+        c.setPowerRequirement(Criteria.POWER_LOW);
+        String provider = lm.getBestProvider(c, true);
+    	return provider;
     }
 
     /* Check the maximum number of satellites can be used in the satellite list */

@@ -74,6 +74,8 @@ public class CaratDataStorage {
             Log.e(this.getClass().getName(), "Could not write object:" + o
                     + "!");
             e.printStackTrace();
+        } catch (Throwable th){
+        	Log.e(this.getClass().getName(), "Problem writing object", th);
         }
     }
 
@@ -95,6 +97,8 @@ public class CaratDataStorage {
                     "Could not find class: " + e.getMessage()
                             + " reading from " + fname + "!");
             e.printStackTrace();
+        } catch (Throwable th){
+        	Log.e(this.getClass().getName(), "Problem reading object", th);
         }
         return null;
     }
@@ -111,6 +115,8 @@ public class CaratDataStorage {
             Log.e(this.getClass().getName(), "Could not write text:" + thing
                     + "!");
             e.printStackTrace();
+        } catch (Throwable th){
+        	Log.e(this.getClass().getName(), "Problem writing text in "+fname, th);
         }
     }
 
@@ -127,6 +133,8 @@ public class CaratDataStorage {
             Log.e(this.getClass().getName(), "Could not read text from "
                     + fname + "!");
             e.printStackTrace();
+        } catch (Throwable th){
+        	Log.e(this.getClass().getName(), "Problem reading text", th);
         }
         return null;
     }
@@ -139,6 +147,9 @@ public class CaratDataStorage {
                     + fname + " does not exist yet. Wait for reports.");
             // e.printStackTrace();
             return null;
+        } catch (Throwable th){
+        	Log.e(this.getClass().getName(), "Problem opening file "+fname+" for input", th);
+        	return null;
         }
     }
 
@@ -150,6 +161,9 @@ public class CaratDataStorage {
                     + fname + " does not exist yet. Wait for reports.");
             // e.printStackTrace();
             return null;
+        } catch (Throwable th){
+        	Log.e(this.getClass().getName(), "Problem opening file "+fname+" for output", th);
+        	return null;
         }
     }
 

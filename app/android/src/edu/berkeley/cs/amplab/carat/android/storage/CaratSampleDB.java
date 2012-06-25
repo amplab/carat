@@ -137,7 +137,12 @@ public class CaratSampleDB {
         try {
             synchronized (dbLock) {
                 if (db == null || !db.isOpen()) {
-                    db = helper.getWritableDatabase();
+                	try{
+                		db = helper.getWritableDatabase();
+                	}catch (android.database.sqlite.SQLiteException ex){
+                		Log.e(TAG, "Could not open database", ex);
+                		return results;
+                	}
                 }
                 String[] columns = mColumnMap.keySet().toArray(
                         new String[mColumnMap.size()]);
@@ -260,7 +265,12 @@ public class CaratSampleDB {
         try {
             synchronized (dbLock) {
                 if (db == null || !db.isOpen()) {
-                    db = helper.getWritableDatabase();
+                	try{
+                		db = helper.getWritableDatabase();
+                	}catch (android.database.sqlite.SQLiteException ex){
+                		Log.e(TAG, "Could not open database", ex);
+                		return lastSample;
+                	}
                 }
                 if (lastSample == null)
                     queryLastSample();

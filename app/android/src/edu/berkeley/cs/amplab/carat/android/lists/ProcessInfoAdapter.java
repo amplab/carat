@@ -56,6 +56,8 @@ public class ProcessInfoAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
+		if (searchArrayList == null || position < 0 || position >= searchArrayList.size())
+			return convertView;
 		ProcessInfo x = searchArrayList.get(position);
 		
 		if (x == null)

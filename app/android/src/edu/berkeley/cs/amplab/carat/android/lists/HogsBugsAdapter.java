@@ -85,6 +85,9 @@ public class HogsBugsAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+		if (allBugsOrHogs == null || position < 0 || position >= allBugsOrHogs.length)
+			return convertView;
+        
         SimpleHogBug item = allBugsOrHogs[position];
         if (item == null)
             return convertView;

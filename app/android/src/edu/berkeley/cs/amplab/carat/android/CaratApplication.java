@@ -140,6 +140,8 @@ public class CaratApplication extends Application {
      * @return the human readable application label
      */
     public static String labelForApp(Context c, String appName) {
+    	if (appName == null)
+    		return "Unknown";
         try {
             ApplicationInfo i = c.getPackageManager().getApplicationInfo(
                     appName, 0);
@@ -163,6 +165,15 @@ public class CaratApplication extends Application {
 
             });
         }
+    }
+    
+    public static int getJscore(){
+    	final Reports r = s.getReports();
+        int jscore = 0;
+        if (r != null) {
+            jscore = ((int) (r.getJScore() * 100));
+        }
+        return jscore;
     }
 
     public static void refreshBugs() {
