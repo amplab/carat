@@ -294,6 +294,8 @@ public class CaratApplication extends Application {
         s = new CaratDataStorage(this);
 
         new Thread() {
+            private IntentFilter intentFilter;
+
             public void run() {
                 totalAndUsed = SamplingLibrary.readMeminfo();
                 cpu = (int) (SamplingLibrary.readUsage() * 100);
@@ -309,7 +311,7 @@ public class CaratApplication extends Application {
                 // if (firstRun) {
                 // What to start when the event fires (this is unused at the
                 // moment)
-                Intent intent = new Intent(getApplicationContext(),
+                /*Intent intent = new Intent(getApplicationContext(),
                         Sampler.class);
                 intent.setAction(ACTION_CARAT_SAMPLE);
                 // In reality, you would want to have a static variable for the
@@ -320,13 +322,18 @@ public class CaratApplication extends Application {
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 // Cancel if this has been set up. Do not use timer at all any
                 // more.
-                sender.cancel();
+                sender.cancel();*/
                 
                 // Let sampling happen on battery change
-                IntentFilter intentFilter = new IntentFilter();
+                intentFilter = new IntentFilter();
                 intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-                sampler = new Sampler();
+                sampler = Sampler.getInstance();
                 // unregisterReceiver(sampler);
+                try{
+                    unregisterReceiver(sampler);
+                }catch(IllegalArgumentException e){
+                    // No-op
+                }
                 registerReceiver(sampler, intentFilter);
             }
         }.start();

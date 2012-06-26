@@ -73,7 +73,7 @@ public class CommsThread extends Thread {
                                         .values());
                                 if (success) {
                                     tries = 2;
-                                    FlurryAgent.logEvent("UploadSamples", map);
+                                    FlurryAgent.logEvent("UploadSamples");
                                     Log.d(TAG, "Uploaded " + map.size()
                                             + " samples.");
                                     CaratApplication.s.samplesReported(map.size());
@@ -82,6 +82,10 @@ public class CommsThread extends Thread {
                                             "Deleting " + map.size()
                                                     + " samples older than "
                                                     + last.getTimestamp());
+                                    Log.i(TAG, "Sent samples:");
+                                    for (Sample k: map.values()){
+                                        Log.i(TAG, k.getTimestamp() + " " + k.getBatteryLevel()); 
+                                    }
                                     int deleted = CaratSampleDB.getInstance(c)
                                             .deleteSamples(map.keySet());
                                     /*

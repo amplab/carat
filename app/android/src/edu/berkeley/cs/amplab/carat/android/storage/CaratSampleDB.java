@@ -290,7 +290,8 @@ public class CaratSampleDB {
                 }
                 // force init
                 id = addSample(s);
-
+                if (id >= 0)
+                    lastSample = s;
                 if (db != null && db.isOpen()) {
                     db.close();
                 }
