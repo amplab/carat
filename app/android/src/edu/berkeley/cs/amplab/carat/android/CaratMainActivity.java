@@ -242,7 +242,10 @@ public class CaratMainActivity extends TabActivity {
     }
 
     public static void changeTab(int tab) {
-        tabHost.setCurrentTab(tab);
+        if (tabHost == null)
+            return;
+        if (tabHost.getChildCount() > tab && tab >= 0)
+            tabHost.setCurrentTab(tab);
     }
 
     /**
