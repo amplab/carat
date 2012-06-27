@@ -23,6 +23,7 @@ public class CaratDataStorage {
 
     public static final String FILENAME = "carat-reports.dat";
     public static final String BLACKLIST_FILE = "carat-blacklist.dat";
+    public static final String BLACKLIST_FRESHNESS = "carat-blacklist-freshness.dat";
     public static final String GLOBLIST_FILE = "carat-globlist.dat";
     public static final String BUGFILE = "carat-bugs.dat";
     public static final String HOGFILE = "carat-hogs.dat";
@@ -33,6 +34,7 @@ public class CaratDataStorage {
     private Application a = null;
 
     private long freshness = 0;
+    private long blacklistFreshness = 0;
     private long samples_reported = 0;
     private WeakReference<Reports> caratData = null;
     private WeakReference<SimpleHogBug[]> bugData = null;
@@ -43,6 +45,7 @@ public class CaratDataStorage {
     public CaratDataStorage(Application a) {
         this.a = a;
         freshness = readFreshness();
+        blacklistFreshness = readBlacklistFreshness();
         caratData = new WeakReference<Reports>(readReports());
         readBugReport();
         readHogReport();
@@ -61,6 +64,12 @@ public class CaratDataStorage {
         freshness = System.currentTimeMillis();
         writeText(freshness + "", FRESHNESS);
     }
+    
+    public void writeBlacklistFreshness() {
+        blacklistFreshness = System.currentTimeMillis();
+        writeText(blacklistFreshness + "", BLACKLIST_FRESHNESS);
+    }
+
 
     public void writeObject(Object o, String fname) {
         FileOutputStream fos = getFos(fname);
@@ -191,6 +200,20 @@ public class CaratDataStorage {
      */
     public long getFreshness() {
         return freshness;
+    }
+    
+    
+    public long readBlacklistFreshness() {
+        String s = readText(BLACKLIST_FRESHNESS);
+        Log.d("CaratDataStorage", "Read freshness: " + s);
+        if (s != null)
+            return Long.parseLong(s);
+        else
+            return -1;
+    }
+    
+    public long getBlacklistFreshness() {
+        return blacklistFreshness;
     }
     
     /**
