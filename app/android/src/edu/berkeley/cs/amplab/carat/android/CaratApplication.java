@@ -10,16 +10,13 @@ import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -34,8 +31,8 @@ public class CaratApplication extends Application {
     
     // Report Freshness timeout. Default: 15 minutes
     public static final long FRESHNESS_TIMEOUT = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-    // Blacklist freshness timeout. Default 1h.
-    public static final long FRESHNESS_TIMEOUT_BLACKLIST = FRESHNESS_TIMEOUT*4;
+    // Blacklist freshness timeout. Default 24h.
+    public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24*3600*1000;
     // If this preference is true, register this as a new device on the Carat server.
     public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
 
