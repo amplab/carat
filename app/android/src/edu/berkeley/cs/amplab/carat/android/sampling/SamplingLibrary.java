@@ -1483,6 +1483,19 @@ public final class SamplingLibrary {
     }
 
     private static Location lastKnownLocation = null;
+    
+    public static double getBatteryLevel(Context context, Intent intent){
+        double level = intent.getIntExtra("level", -1);
+        double scale = intent.getIntExtra("scale", 100);
+
+        // use last known value
+        double batteryLevel = 0.0;
+        // if we have real data, change old value
+        if (level > 0 && scale > 0) {
+            batteryLevel = (level / scale);
+        }
+        return batteryLevel;
+    }
 
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {

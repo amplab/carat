@@ -12,7 +12,6 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -242,7 +241,10 @@ public class CaratMainActivity extends TabActivity {
     }
 
     public static void changeTab(int tab) {
-        tabHost.setCurrentTab(tab);
+        if (tabHost == null)
+            return;
+        if (tabHost.getChildCount() > tab && tab >= 0)
+            tabHost.setCurrentTab(tab);
     }
 
     /**

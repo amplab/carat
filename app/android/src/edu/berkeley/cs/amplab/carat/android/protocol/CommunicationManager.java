@@ -195,12 +195,19 @@ public class CommunicationManager {
 		} else
 			CaratApplication.setActionProgress(progress, "Bugs", true);
 		success = refreshHogReports(uuId, model);
+		
+		boolean bl = true;
+		 if (System.currentTimeMillis() - CaratApplication.s.getBlacklistFreshness() < CaratApplication.FRESHNESS_TIMEOUT_BLACKLIST)
+	            bl = false;
+		
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, "Blacklist", false);
+			CaratApplication.setActionProgress(progress, bl ? "Blacklist":"finishing up", false);
 		} else
 			CaratApplication.setActionProgress(progress, "Hogs", true);
-		refreshBlacklist();
+		if (bl)
+		    refreshBlacklist();
+		
 		CaratApplication.s.writeFreshness();
 	}
 
@@ -302,6 +309,8 @@ public class CommunicationManager {
 		} catch (Throwable th) {
 			Log.e(TAG, "Could not retrieve blacklist!", th);
 		}
+		// So we don't try again too often.
+		CaratApplication.s.writeBlacklistFreshness();
 	}
 
 	public static void safeClose(CaratService.Client c) {

@@ -40,7 +40,7 @@ public class HogsBugsAdapter extends BaseAdapter {
             }
         allBugsOrHogs = new SimpleHogBug[items];
         int i = 0;
-        if (results != null)
+        if (results != null && results.length > 0 && allBugsOrHogs.length > 0)
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
