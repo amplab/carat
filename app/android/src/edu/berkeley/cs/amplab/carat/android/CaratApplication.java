@@ -430,7 +430,7 @@ public class CaratApplication extends Application {
         final long h = l / 3600000;
         final long min = (l - h * 3600000) / 60000;
         double bl = 0;
-        int jscore = 0;
+        int jscore = -1;
         if (r != null) {
             // Try exact battery life
             if (r.jScoreWith != null) {
@@ -446,14 +446,16 @@ public class CaratApplication extends Application {
                 // If not possible, try model battery life
             }
             jscore = ((int) (r.getJScore() * 100));
-        }
+            setMyDeviceText(R.id.jscore_value, jscore + "");
+        }else
+            setMyDeviceText(R.id.jscore_value, "N/A");
 
         int blh = (int) (bl / 3600);
         bl -= blh * 3600;
         int blmin = (int) (bl / 60);
         int bls = (int) (bl - blmin * 60);
         final String blS = blh + "h " + blmin + "m " + bls + "s";
-        setMyDeviceText(R.id.jscore_value, jscore + "");
+        
         // Log.v(TAG, "Freshness: " + freshness);
         if (freshness <= 0)
             setMyDeviceText(R.id.updated, "(Never updated)");
