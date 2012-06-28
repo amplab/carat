@@ -20,7 +20,7 @@
     <string name="moreinfo">More Information</string>
     <string name="appicon">App Icon</string>
     <string name="default_type">Foreground App</string>
-    <string name="tab_my_device">My Device</string>
+    <string name="tab_my_device">Device</string>
     <string name="emptySuggestion">Nothing to report!</string>
     <string name="checkback">Please check back later.</string>
     <string name="feedback">Give feedback</string>
