@@ -424,7 +424,7 @@ public class CaratApplication extends Application {
 
     public static void setReportData() {
         final Reports r = s.getReports();
-        Log.d(TAG, "Got reports: " + r);
+        Log.d(TAG, "Got reports.");
         long freshness = CaratApplication.s.getFreshness();
         long l = System.currentTimeMillis() - freshness;
         final long h = l / 3600000;
