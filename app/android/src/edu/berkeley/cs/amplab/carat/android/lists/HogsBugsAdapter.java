@@ -40,7 +40,7 @@ public class HogsBugsAdapter extends BaseAdapter {
             }
         allBugsOrHogs = new SimpleHogBug[items];
         int i = 0;
-        if (results != null && results.length > 0 && allBugsOrHogs.length > 0)
+        if (results != null && results.length > 0 && allBugsOrHogs.length > 0 && i < allBugsOrHogs.length)
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
@@ -48,8 +48,8 @@ public class HogsBugsAdapter extends BaseAdapter {
                 if (appName.equals(CaratApplication.CARAT_PACKAGE)
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
-
-                if (!SamplingLibrary.isHidden(c, b.getAppName())) {
+                // Apparently the number of items changes from "items" above?
+                if (!SamplingLibrary.isHidden(c, appName) && i < allBugsOrHogs.length) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }
