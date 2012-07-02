@@ -447,7 +447,9 @@ public class CaratApplication extends Application {
             }
             jscore = ((int) (r.getJScore() * 100));
             setMyDeviceText(R.id.jscore_value, jscore + "");
-        }else
+        }
+        
+        if (jscore == -1 || jscore == 0)
             setMyDeviceText(R.id.jscore_value, "N/A");
 
         int blh = (int) (bl / 3600);
