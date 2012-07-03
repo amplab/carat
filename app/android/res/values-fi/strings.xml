@@ -8,8 +8,8 @@
     <string name="osver">KJ-versio:</string>
     <string name="dev">Laitemalli:</string>
     <string name="apps">Käynnissä:</string>
-    <string name="memused">Muistia käytetty:</string>
-    <string name="memactive">Aktiivista muistia:</string>
+    <string name="memused">Muistinkäyttö:</string>
+    <string name="memactive">Aktiivisena:</string>
     <string name="cpu">CPU-käyttö:</string>
     <string name="updated0">(Päivitetty 0m 0s sitten)</string>
     <string name="jsna">N/A</string>
