@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Carat</string>
+    <string name="version_name">0.72</string>
+    <string name="jscore">J-Scoresi:</string>
+    <string name="batterylife">Keskim. akunkesto:</string>
+    <string name="osver">KJ-versio:</string>
+    <string name="dev">Laitemalli:</string>
+    <string name="apps">Käynnissä:</string>
+    <string name="memused">Muistia käytetty:</string>
+    <string name="memactive">Aktiivista muistia:</string>
+    <string name="cpu">CPU-käyttö:</string>
+    <string name="updated0">(Päivitetty 0m 0s sitten)</string>
+    <string name="jsna">N/A</string>
+    <string name="fake_os">4.0.3</string>
+    <string name="fake_dev">Samsung Galaxy Nexus</string>
+    <string name="viewprocess">Sovelluslista</string>
+    <string name="alogo">AmpLab Logo</string>
+    <string name="moreinfo">Lisätietoja</string>
+    <string name="appicon">Kuvake</string>
+    <string name="default_type">Pääsovellus</string>
+    <string name="emptySuggestion">Ei raportoitavaa!</string>
+    <string name="checkback">Tarkista uudelleen myöhemmin.</string>
+    <string name="feedback">Anna palautetta</string>
+    <string name="share">Jaa …</string>
+    <string name="sharewith">Jaa käyttäen:</string>
+    <string name="sharetext1">Carat parantaa akunkestoani.\nJ-Scoreni on</string>
+    <string name="sharetext2">!\nEntä sinun?\nOta selvää täällä: \nhttp://carat.cs.berkeley.edu/</string>
+    <string name="myjscoreis">J-Scoreni on</string>
+    
+    <string name="appmanager">Sovellushallinta</string>
+
+    <color name="brown">#744618</color>
+    <color name="orange">#ff8331</color>
+    <color name="green">#127112</color>
+    <color name="black">#000000</color>
+    <color name="with">#f3b14d</color>
+    <color name="without">#007777</color>
+
+    <string name="zeroh">0h 0m 0s</string>
+    
+    <!-- Tabs. Also used elsewhere. -->
+    <string name="tab_actions">Ehdotukset</string>
+    <string name="tab_my_device">Laite</string>
+    <string name="tab_bugs">Bugit</string>
+    <string name="tab_hogs">Hogit</string>
+    <string name="tab_about">Tietoja</string>
+    
+    <!-- Updating etc -->
+    <string name="samplesreported"> mittausta lähetetty</string>
+    <string name="updating">Päivitetään</string>
+    <string name="updated">(Päivitetty </string>
+    <string name="ago">sitten)</string>
+    <string name="neverupdated">(Ei päivitetty)</string>
+    <string name="updatedjustnow">(Päivitetty äsken)</string>
+    <string name="didntget">ei saatu</string>
+    <string name="updatingreports">Päivitetään raporttia</string>
+    <string name="blacklist">Poistolista</string>
+    <string name="finishing">näkymää</string>
+    
+    <string name="blackBackground">false</string>
+
+    <color name="background">#FFFFFFFF</color>
+    <color name="text">#000000</color>
+
+    <string name="expected">Arvioitu parannus:</string>
+    <string name="killappname">Tapa Sovellus</string>
+    <string name="benefitdefault">1d 9h 15m 40s</string>
+    <string name="confidence">Luotettavuus:</string>
+    <string name="appname">Sovelluksen nimi</string>
+    <string name="priority">Prioriteetti:</string>
+    <string name="priorityDefault">Ei käynnissä</string>
+    <string name="prioritynotrunning">Ei käynnissä</string>
+    <string name="priorityforeground">Pääsovellus</string>
+    <string name="prioritybackground">Taustasovellus</string>
+    <string name="priorityservice">Palvelu</string>
+    <string name="priorityperceptible">Havaittava</string>
+    <string name="priorityvisible">Näkyvä</string>
+    <string name="prioritysuggestion">Ehdotus</string>
+
+    <!-- Settings screen related -->
+    
+    <string name="bluetoothsettings">Bluetooth-asetukset</string>
+    <string name="wifisettings">Langattoman verkon asetukset</string>
+    <string name="screensettings">Näytön asetukset</string>
+    <string name="soundsettings">Ääniasetukset</string>
+    <string name="locationsettings">Paikannusasetukset</string>
+    <string name="syncsettings">Päivitysasetukset</string>
+    <string name="mobilenetworksettings">Puhelinverkon asetukset</string>
+    <string name="appsettings">Sovellusasetukset</string>
+    <string name="opening"></string>
+    <string name="notsupported">eivät ole saatavilla tällä laitteella.</string>
+
+    <!-- Actions -->
+    
+    <string name="kill">Lopeta </string>
+    <string name="restart">Uudelleenk. </string>
+    <string name="osupgrade">Päivitä käyttöjärjestelmä</string>
+    <string name="information">tieto</string>
+    <string name="unknown">Tuntematon</string>
+    <string name="dimscreen">Tummenna näyttöä</string>
+    <string name="disablewifi">Sulje langaton verkko</string>
+    <string name="disablebluetooth">Sulje Bluetooth</string>
+    <string name="automaticbrightness">Käytä automaattista kirkkautta</string>
+    <string name="disablenetwork">Sulje mobiilidata</string>
+    <string name="disablehapticfeedback">Kytke kosketusvaste pois</string>
+    <string name="disablevibration">Kytke värinä pois</string>
+    <string name="disablegps">Sulje GPS</string>
+    <string name="disablelocation">Sulje paikannuspalvelut</string>
+    
+    <string name="shortenscreentimeout">Lyhennä näytön viivettä</string>
+    <string name="disableautomaticsync">Kytke pois automaattinen päivitys</string>
+    
+    <!-- Detail view -->
+
+    <string name="runninghere">tällä laitteella</string>
+    <string name="runningelsewhere">muualla</string>
+    <string name="running">käynnissä</string>
+    <string name="notrunning">suljettuna</string>
+    <string name="onmodel">Laitteella</string>
+    <string name="onothermodels">Muilla laitteilla</string>
+    <string name="withos">Versiolla</string>
+    <string name="withotheroses">Muilla KJ:lla</string>
+    <string name="withsimilarapps">Sinun sovelluksillasi</string>
+    <string name="withdifferentapps">Eri sovelluksilla</string>
+    
+</resources>
