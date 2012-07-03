@@ -14,6 +14,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
@@ -25,6 +26,7 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 
+    private static final String TAG = "CaratSuggestions";
     private View tv = null;
     private int emptyIndex = -1;
     
@@ -150,46 +152,61 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     /*Show the bluetooth setting*/
     public void GoToBluetoothScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
-        startActivity(startIntent);  
+        safeStart(startIntent, "Bluetooth Settings");  
     }
     /*Show the wifi setting*/
     public void GoToWifiScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
-        startActivity(startIntent);        
+        safeStart(startIntent, "Wifi Settings");        
     }
     /*Show the display setting
      * including screen brightness setting, sleep mode*/
     public void GoToDisplayScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_DISPLAY_SETTINGS);
-        startActivity(startIntent);
+        safeStart(startIntent, "Screen Settings");
     }
     /*Show the sound setting
      * including phone ringer mode, vibration mode, haptic feedback setting and other sound options*/
     public void GoToSoundScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_SOUND_SETTINGS);
-        startActivity(startIntent);
+        safeStart(startIntent, "Sound Settings");
     }
     /*Show the location service setting
      * including configuring gps provider, network provider*/
     public void GoToLocSevScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(startIntent);
+        safeStart(startIntent, "Location Settings");
     }
     /*Show the synchronization setting*/
     public void GoToSyncScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_SYNC_SETTINGS);
-        startActivity(startIntent);
+        safeStart(startIntent, "Sync Settings");
     }
     /*Show the mobile network setting
      * including configuring 3G/2G, network operators*/
     public void GoToMobileNetworkScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
-        startActivity(startIntent);
+        safeStart(startIntent, "Mobile Network Settings");
     }
     /*Show the application setting*/
     public void GoToAppScreen(){
         Intent startIntent= new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-        startActivity(startIntent);
+        safeStart(startIntent, "App Settings");
+    }
+    
+    private void safeStart(Intent intent, String thing){
+        try{
+            startActivity(intent);
+        } catch (Throwable th){
+            Log.e(TAG, "Could not start activity: " + intent, th);
+            if (thing != null){
+                Toast t = new Toast(getApplicationContext());
+                t.setText("Opening "+thing + " is not supported on this phone, sorry.");
+                t.setView(vf.getCurrentView());
+                t.setDuration(Toast.LENGTH_SHORT);
+                t.show();
+            }
+        }
     }
     
     /*Disable bluetooth if bluetooth is on*/
