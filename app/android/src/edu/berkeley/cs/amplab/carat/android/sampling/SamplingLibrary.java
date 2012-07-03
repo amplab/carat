@@ -645,7 +645,6 @@ public final class SamplingLibrary {
         List<ProcessInfo> result = new ArrayList<ProcessInfo>();
 
         PackageManager pm = context.getPackageManager();
-
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
 
@@ -1481,6 +1480,47 @@ public final class SamplingLibrary {
         Log.i("radioPowerConsumption", "Radio power consumption is:"+radioPowerCost); 
         return radioPowerCost;   
     }
+    
+    public static double bluetoothBenefit(Context context){
+        double bluetoothPowerCost=SamplingLibrary.getAverageBluetoothPower(context);
+        Log.d("bluetoothPowerCost", "Bluetooth power cost: " + bluetoothPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        double benefit=batteryCapacity/bluetoothPowerCost;
+        Log.d("BluetoothPowerBenefit", "Bluetooth power benefit: " + benefit);
+        return benefit;
+        }
+    
+    public static double wifiBenefit(Context context){
+        double wifiPowerCost=SamplingLibrary.getAverageWifiPower(context);
+        Log.d("wifiPowerCost", "wifi power cost: " + wifiPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        double benefit=batteryCapacity/wifiPowerCost;
+        Log.d("wifiPowerBenefit", "wifi power benefit: " + benefit);
+        return benefit;
+        }
+    
+    public static double gpsBenefit(Context context){
+        double gpsPowerCost=SamplingLibrary.getAverageGpsPower(context);
+        Log.d("gpsPowerCost", "gps power cost: " + gpsPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        double benefit=batteryCapacity/gpsPowerCost;
+        Log.d("gpsPowerBenefit", "gps power benefit: " + benefit);
+        return benefit;
+       }
+       
+    public static double screenBrightnessBenefit(Context context){
+         double screenPowerCost=SamplingLibrary.getAverageScreenPower(context);
+         Log.d("screenPowerCost", "screen power cost: " + screenPowerCost);
+         double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+         Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+         double benefit=batteryCapacity/screenPowerCost;
+         Log.d("screenPowerBenefit", "screen power benefit: " + benefit);
+         return benefit;
+       }
+    
 
     private static Location lastKnownLocation = null;
     
@@ -1495,6 +1535,24 @@ public final class SamplingLibrary {
             batteryLevel = (level / scale);
         }
         return batteryLevel;
+    }
+    
+    public static boolean killApp(Context context, String packageName, String label){
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Activity.ACTIVITY_SERVICE);
+        if (am != null){
+            try{
+                PackageInfo p = getPackageInfo(context, packageName);
+                Log.v(STAG, "Trying to kill proc="+packageName + " pak=" + p.packageName);
+                FlurryAgent.logEvent("Killing app="+(label==null?"null":label)+" proc="+packageName+" pak="+ (p==null?"null":p.packageName));
+                am.killBackgroundProcesses(packageName);
+                
+                return true;
+            }catch (Throwable th){
+                Log.e(STAG, "Could not kill process: " + packageName, th);
+            }
+        }
+        return false;
     }
 
     public static Sample getSample(Context context, Intent intent,

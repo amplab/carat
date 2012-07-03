@@ -65,7 +65,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
 		
 		holder.appIcon.setImageDrawable(CaratApplication.iconForApp(c, x.getPName()));
 		holder.txtName.setText(CaratApplication.labelForApp(c, x.getPName()));
-		holder.txtBenefit.setText(x.getImportance());
+		holder.txtBenefit.setText(CaratApplication.translatedPriority(x.getImportance()));
 		// holder.moreInfo...
 
 		return convertView;

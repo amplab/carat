@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
@@ -180,20 +181,20 @@ public class CommunicationManager {
 
 		int progress = 0;
 
-		CaratApplication.setActionProgress(progress, "My Device", false);
+		CaratApplication.setActionProgress(progress, a.getString(R.string.tab_my_device), false);
 		boolean success = refreshMainReports(uuId, OS, model);
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, "Bugs", false);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), false);
 		} else {
-			CaratApplication.setActionProgress(progress, "My Device", true);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_my_device), true);
 		}
 		success = refreshBugReports(uuId, model);
 		if (success) {
 			progress += 40;
-			CaratApplication.setActionProgress(progress, "Hogs", false);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
 		} else
-			CaratApplication.setActionProgress(progress, "Bugs", true);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), true);
 		success = refreshHogReports(uuId, model);
 		
 		boolean bl = true;
@@ -202,9 +203,9 @@ public class CommunicationManager {
 		
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, bl ? "Blacklist":"finishing up", false);
+			CaratApplication.setActionProgress(progress, bl ? a.getString(R.string.blacklist):a.getString(R.string.finishing), false);
 		} else
-			CaratApplication.setActionProgress(progress, "Hogs", true);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), true);
 		if (bl)
 		    refreshBlacklist();
 		

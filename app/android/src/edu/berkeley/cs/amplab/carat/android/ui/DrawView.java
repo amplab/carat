@@ -191,24 +191,24 @@ public class DrawView extends View {
 
             switch (type) {
             case BUG:
-                withString = anShort + " running here";
-                withoutString = anShort + " running elsewhere";
+                withString = anShort +" "+ getContext().getString(R.string.runninghere);
+                withoutString = anShort +" "+ getContext().getString(R.string.runningelsewhere);
                 break;
             case HOG:
-                withString = anShort + " running";
-                withoutString = anShort + " not running";
+                withString = anShort + " "+getContext().getString(R.string.running);
+                withoutString = anShort +" "+ getContext().getString(R.string.notrunning);
                 break;
             case MODEL:
-                withString = "On " + anShort;
-                withoutString = "On other models";
+                withString = getContext().getString(R.string.onmodel) +" "+ anShort;
+                withoutString = getContext().getString(R.string.onothermodels);
                 break;
             case OS:
-                withString = "With " + anShort;
-                withoutString = "With other OSes";
+                withString = getContext().getString(R.string.withos) +" "+ anShort;
+                withoutString = getContext().getString(R.string.withotheroses);
                 break;
             case SIMILAR:
-                withString = "With similar apps";
-                withoutString = "With different apps";
+                withString = getContext().getString(R.string.withsimilarapps);
+                withoutString =  getContext().getString(R.string.withdifferentapps);
                 break;
             default:
 

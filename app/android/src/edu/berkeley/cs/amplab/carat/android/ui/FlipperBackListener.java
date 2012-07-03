@@ -30,7 +30,6 @@ public class FlipperBackListener extends BaseSwipeListener {
     public boolean onTouch(View v, MotionEvent ev) {
         int action = ev.getActionMasked();
         if (action == MotionEvent.ACTION_DOWN) {
-            currentTab = CaratMainActivity.tabHost.getCurrentTab();
             oldX = ev.getX();
             oldY = ev.getY();
             // Fix swipe not working on fake bugs/hogs screens:
@@ -38,7 +37,6 @@ public class FlipperBackListener extends BaseSwipeListener {
                 return true;
             return false;
         } else if (action == MotionEvent.ACTION_UP) {
-            currentTab = CaratMainActivity.tabHost.getCurrentTab();
             return handleUp(v, ev);
         }
         return false;
