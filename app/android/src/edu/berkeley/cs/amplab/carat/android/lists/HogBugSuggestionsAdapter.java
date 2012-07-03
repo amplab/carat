@@ -157,7 +157,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
     }
 	
 	   private void acceptSetAutoBrightness(ArrayList<SimpleHogBug> result) {
-	        if(SamplingLibrary.isAutoBrightness(a.getApplicationContext())){
+	        if(!SamplingLibrary.isAutoBrightness(a.getApplicationContext())){
 	            SimpleHogBug item=new SimpleHogBug("Set brightness to automatic", Type.OS);
 	            // TODO Get expected benefit
 	            result.add(item);
