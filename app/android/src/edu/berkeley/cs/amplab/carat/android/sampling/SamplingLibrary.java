@@ -590,13 +590,14 @@ public final class SamplingLibrary {
     }
 
     public static PackageInfo getPackageInfo(Context context, String processName) {
+        List<android.content.pm.PackageInfo> packagelist = null;
+        
         if (packages == null || packages.get() == null
                 || packages.get().size() == 0) {
             Map<String, PackageInfo> mp = new HashMap<String, PackageInfo>();
             PackageManager pm = context.getPackageManager();
             if (pm == null)
             	return null;
-            List<android.content.pm.PackageInfo> packagelist = null;
             		
             try{
             	packagelist = pm
@@ -621,6 +622,8 @@ public final class SamplingLibrary {
             PackageInfo pak = mp.get(processName);
             return pak;
         }else{
+            if (packages == null)
+                return null;
             Map<String, PackageInfo> p = packages.get();
             if (p == null || p.size() == 0)
                 return null;
