@@ -49,7 +49,7 @@ void onUncaughtException(NSException *exception)
     localNotif.fireDate = [[NSDate date] addTimeInterval:interval];
     localNotif.timeZone = [NSTimeZone defaultTimeZone];
     
-    localNotif.alertBody = @"Carat has discovered new battery-saving actions for you. Why don't you take a look?";
+    localNotif.alertBody = @"Carat may have discovered new battery-saving actions for you. Why don't you take a look?";
     localNotif.alertAction = NSLocalizedString(@"Launch Carat", nil);
     localNotif.repeatInterval = 0;
     
