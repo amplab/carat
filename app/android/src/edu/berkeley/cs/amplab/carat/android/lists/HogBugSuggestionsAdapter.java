@@ -88,10 +88,11 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	}
 	
 	private void addFeatureActions(ArrayList<SimpleHogBug> results){
-	    acceptDimScreen(results);
+	    // Disable all for now, benefits are not calculated correctly yet.
+	    /*acceptDimScreen(results);
         acceptDisableWifi(results);
         acceptDisableBluetooth(results);
-        
+        */
         // TODO: These need benefits, disabled for now:
         //acceptDisableLocSev(results);
         //acceptDisableHapticFb(results);
