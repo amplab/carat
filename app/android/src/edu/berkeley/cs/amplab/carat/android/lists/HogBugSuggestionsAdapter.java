@@ -90,14 +90,16 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	private void addFeatureActions(ArrayList<SimpleHogBug> results){
 	    acceptDimScreen(results);
         acceptDisableWifi(results);
-        acceptDisableLocSev(results);
         acceptDisableBluetooth(results);
-        acceptDisableHapticFb(results);
-        acceptSetAutoBrightness(results);
-        acceptDisableNetwork(results);
-        acceptDisableVibration(results);
-        acceptSetScreenTimeout(results);
-        acceptDisableAutoSync(results);
+        
+        // TODO: These need benefits, disabled for now:
+        //acceptDisableLocSev(results);
+        //acceptDisableHapticFb(results);
+        //acceptSetAutoBrightness(results);
+        //acceptDisableNetwork(results);
+        //acceptDisableVibration(results);
+        //acceptSetScreenTimeout(results);
+        //acceptDisableAutoSync(results);
 	}
 
 	private void acceptDimScreen(ArrayList<SimpleHogBug> result) {
@@ -287,20 +289,17 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             if (raw.equals(a.getString(R.string.disablebluetooth))){
                 double benefitOther=SamplingLibrary.bluetoothBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
-                min = (int) (benefitOther * 60);
-                min -= hours * 60;
+                min= (int) ((benefitOther- hours)*60);
             }
             else if(raw.equals(a.getString(R.string.disablewifi))){
                 double benefitOther=SamplingLibrary.wifiBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
-                min = (int) (benefitOther * 60);
-                min -= hours * 60; 
+                min= (int) ((benefitOther- hours)*60); 
             }
             else if(raw.equals(a.getString(R.string.dimscreen))){
                 double benefitOther=SamplingLibrary.screenBrightnessBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
-                min = (int) (benefitOther * 60);
-                min -= hours * 60; 
+                min = (int) ((benefitOther- hours)*60); 
             }
             
             holder.txtBenefit.setText(hours + "h " + min + "m");
