@@ -129,12 +129,7 @@ public final class SamplingLibrary {
     public static double distance = 0;
 
     private static final String STAG = "getSample";
-<<<<<<< HEAD
     private static final String TAG="FeaturesPowerConsumption";
-=======
-    
-    public static final int UUID_LENGTH = 16;
->>>>>>> 3ec2fe27220227286108eb79edf3de025971d601
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -1566,7 +1561,6 @@ public final class SamplingLibrary {
         return radioPowerCost;   
     }
     
-<<<<<<< HEAD
     public static void printAverageFeaturePower(Context context){
         PowerProfile powCal=new PowerProfile(context);
         
@@ -1669,56 +1663,10 @@ public final class SamplingLibrary {
         Log.i(TAG, "Power consumption when audio is on "+powerAudioOn);
         Log.i(TAG, "Battery capacity is "+batteryCapacity);
     }
-    
-=======
-    public static double bluetoothBenefit(Context context){
-        double bluetoothPowerCost=SamplingLibrary.getAverageBluetoothPower(context);
-        Log.d("bluetoothPowerCost", "Bluetooth power cost: " + bluetoothPowerCost);
-        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-        
-        double benefit=batteryCapacity/bluetoothPowerCost;
-        Log.d("BluetoothPowerBenefit", "Bluetooth power benefit: " + benefit);
-        return benefit;
-        }
-    
-    public static double wifiBenefit(Context context){
-        double wifiPowerCost=SamplingLibrary.getAverageWifiPower(context);
-        Log.d("wifiPowerCost", "wifi power cost: " + wifiPowerCost);
-        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-        
-        // This is not that simple. We have to compare with Carat battery life or power profile battery life -- without wifi. --Eemil
-        
-        double benefit=(batteryCapacity/wifiPowerCost);
-        Log.d("wifiPowerBenefit", "wifi power benefit: " + benefit);
-        return benefit;
-        }
-    
-    public static double gpsBenefit(Context context){
-        double gpsPowerCost=SamplingLibrary.getAverageGpsPower(context);
-        Log.d("gpsPowerCost", "gps power cost: " + gpsPowerCost);
-        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-        double benefit=batteryCapacity/gpsPowerCost;
-        Log.d("gpsPowerBenefit", "gps power benefit: " + benefit);
-        return benefit;
-       }
-       
-    public static double screenBrightnessBenefit(Context context){
-         double screenPowerCost=SamplingLibrary.getAverageScreenPower(context);
-         Log.d("screenPowerCost", "screen power cost: " + screenPowerCost);
-         double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-         Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-         double benefit=batteryCapacity/screenPowerCost;
-         Log.d("screenPowerBenefit", "screen power benefit: " + benefit);
-         return benefit;
-       }
-    
 
->>>>>>> 3ec2fe27220227286108eb79edf3de025971d601
+
     private static Location lastKnownLocation = null;
-    
+
     public static double getBatteryLevel(Context context, Intent intent){
         double level = intent.getIntExtra("level", -1);
         double scale = intent.getIntExtra("scale", 100);
