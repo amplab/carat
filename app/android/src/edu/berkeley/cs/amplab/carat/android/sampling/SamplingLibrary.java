@@ -130,6 +130,8 @@ public final class SamplingLibrary {
 
     private static final String STAG = "getSample";
     private static final String TAG="FeaturesPowerConsumption";
+         
+    public static final int UUID_LENGTH = 16;
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -483,30 +485,30 @@ public final class SamplingLibrary {
         
         List<ProcessInfo> l = new ArrayList<ProcessInfo>();
         
-		if (runningProcs != null) {
-			for (RunningAppProcessInfo pi : runningProcs) {
-				if (pi == null)
-					continue;
-				ProcessInfo item = new ProcessInfo();
-				item.setImportance(CaratApplication
-						.importanceString(pi.importance));
-				item.setPId(pi.pid);
-				item.setPName(pi.processName);
-				l.add(item);
-			}
-		}
+        if (runningProcs != null) {
+            for (RunningAppProcessInfo pi : runningProcs) {
+                if (pi == null)
+                    continue;
+                ProcessInfo item = new ProcessInfo();
+                item.setImportance(CaratApplication
+                        .importanceString(pi.importance));
+                item.setPId(pi.pid);
+                item.setPName(pi.processName);
+                l.add(item);
+            }
+        }
 
-		if (runningServices != null) {
-			for (RunningServiceInfo pi : runningServices) {
-				if (pi == null)
-					continue;
-				ProcessInfo item = new ProcessInfo();
-				item.setImportance(pi.foreground ? "Foreground app" : "Service");
-				item.setPId(pi.pid);
-				item.setPName(pi.clientPackage);
-				l.add(item);
-			}
-		}
+        if (runningServices != null) {
+            for (RunningServiceInfo pi : runningServices) {
+                if (pi == null)
+                    continue;
+                ProcessInfo item = new ProcessInfo();
+                item.setImportance(pi.foreground ? "Foreground app" : "Service");
+                item.setPId(pi.pid);
+                item.setPName(pi.clientPackage);
+                l.add(item);
+            }
+        }
             
         return l;
     }
@@ -602,8 +604,8 @@ public final class SamplingLibrary {
             blacklist = CaratApplication.s.getGloblist();
             if (blacklist != null && blacklist.size() > 0 && processName != null){
                 for (String glob: blacklist){
-                	if (glob == null)
-                		continue;
+                    if (glob == null)
+                        continue;
                     // something*
                     if (glob.endsWith("*") && processName.startsWith(glob.substring(0, glob.length()-1)))
                             return true;
@@ -645,19 +647,19 @@ public final class SamplingLibrary {
             Map<String, PackageInfo> mp = new HashMap<String, PackageInfo>();
             PackageManager pm = context.getPackageManager();
             if (pm == null)
-            	return null;
-            		
+                return null;
+                    
             try{
-            	packagelist = pm
+                packagelist = pm
                     .getInstalledPackages(0);
             }catch (Throwable th){
-            	// Forget about it...
+                // Forget about it...
             }
             if (packagelist == null)
-            	return null;
+                return null;
             for (PackageInfo pak : packagelist) {
-            	if (pak == null || pak.applicationInfo == null ||  pak.applicationInfo.processName == null)
-            		continue;
+                if (pak == null || pak.applicationInfo == null ||  pak.applicationInfo.processName == null)
+                    continue;
                 mp.put(pak.applicationInfo.processName, pak);
             }
 
@@ -1158,7 +1160,7 @@ public final class SamplingLibrary {
         c.setAccuracy(Criteria.ACCURACY_COARSE);
         c.setPowerRequirement(Criteria.POWER_LOW);
         String provider = lm.getBestProvider(c, true);
-    	return provider;
+        return provider;
     }
 
     /* Check the maximum number of satellites can be used in the satellite list */
@@ -1663,10 +1665,54 @@ public final class SamplingLibrary {
         Log.i(TAG, "Power consumption when audio is on "+powerAudioOn);
         Log.i(TAG, "Battery capacity is "+batteryCapacity);
     }
-
+    
+    public static double bluetoothBenefit(Context context){
+        double bluetoothPowerCost=SamplingLibrary.getAverageBluetoothPower(context);
+        Log.d("bluetoothPowerCost", "Bluetooth power cost: " + bluetoothPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        
+        double benefit=batteryCapacity/bluetoothPowerCost;
+        Log.d("BluetoothPowerBenefit", "Bluetooth power benefit: " + benefit);
+        return benefit;
+        }
+    
+    public static double wifiBenefit(Context context){
+        double wifiPowerCost=SamplingLibrary.getAverageWifiPower(context);
+        Log.d("wifiPowerCost", "wifi power cost: " + wifiPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        
+        // This is not that simple. We have to compare with Carat battery life or power profile battery life -- without wifi. --Eemil
+        
+        double benefit=(batteryCapacity/wifiPowerCost);
+        Log.d("wifiPowerBenefit", "wifi power benefit: " + benefit);
+        return benefit;
+        }
+    
+    public static double gpsBenefit(Context context){
+        double gpsPowerCost=SamplingLibrary.getAverageGpsPower(context);
+        Log.d("gpsPowerCost", "gps power cost: " + gpsPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        double benefit=batteryCapacity/gpsPowerCost;
+        Log.d("gpsPowerBenefit", "gps power benefit: " + benefit);
+        return benefit;
+       }
+       
+    public static double screenBrightnessBenefit(Context context){
+         double screenPowerCost=SamplingLibrary.getAverageScreenPower(context);
+         Log.d("screenPowerCost", "screen power cost: " + screenPowerCost);
+         double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+         Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+         double benefit=batteryCapacity/screenPowerCost;
+         Log.d("screenPowerBenefit", "screen power benefit: " + benefit);
+         return benefit;
+       }
+    
 
     private static Location lastKnownLocation = null;
-
+    
     public static double getBatteryLevel(Context context, Intent intent){
         double level = intent.getIntExtra("level", -1);
         double scale = intent.getIntExtra("scale", 100);
@@ -1919,7 +1965,7 @@ public final class SamplingLibrary {
         cs.setCpuUsage(getUsage(idleAndCpu1, idleAndCpu2));
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
-        
+
         printAverageFeaturePower(context);
         
         return mySample;
