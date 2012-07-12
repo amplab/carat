@@ -1,15 +1,14 @@
 /*     */ package com.android.internal.os;
-/*     */ 
-/*     */ import android.R;
-import android.content.Context;
+/*     */
+/*     */ import android.content.Context;
 /*     */ import android.content.res.Resources;
 /*     */ import android.content.res.XmlResourceParser;
 /*     */ import com.android.internal.util.XmlUtils;
 /*     */ import java.io.IOException;
 /*     */ import java.util.ArrayList;
 /*     */ import java.util.HashMap;
-import org.xmlpull.v1.XmlPullParserException;
-/*     */ 
+/*     */ import org.xmlpull.v1.XmlPullParserException;
+/*     */
 /*     */ public class PowerProfile
 /*     */ {
 /*     */   public static final String POWER_NONE = "none";
