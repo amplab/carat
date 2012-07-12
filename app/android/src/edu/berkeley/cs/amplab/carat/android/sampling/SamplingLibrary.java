@@ -127,6 +127,7 @@ public final class SamplingLibrary {
     public static double distance = 0;
 
     private static final String STAG = "getSample";
+    private static final String TAG="FeaturesPowerConsumption";
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -1481,7 +1482,110 @@ public final class SamplingLibrary {
         Log.i("radioPowerConsumption", "Radio power consumption is:"+radioPowerCost); 
         return radioPowerCost;   
     }
-
+    
+    public static void printAverageFeaturePower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        
+        /**
+         * Power consumption when CPU is in power collapse mode.
+         */
+        double powerCpuActive=powCal.getAveragePower(powCal.POWER_CPU_ACTIVE);
+        /**
+         * Power consumption when CPU is awake (when a wake lock is held).  This
+         * should be 0 on devices that can go into full CPU power collapse even
+         * when a wake lock is held.  Otherwise, this is the power consumption in
+         * addition to POWERR_CPU_IDLE due to a wake lock being held but with no
+         * CPU activity.
+         */
+        double powerCpuAwake=powCal.getAveragePower(powCal.POWER_CPU_AWAKE);
+        /**
+         * Power consumption when CPU is in power collapse mode.
+         */
+        double powerCpuIdle=powCal.getAveragePower(powCal.POWER_CPU_IDLE);
+        /**
+         * Power consumption when Bluetooth driver is on.
+         */
+        double powerBluetoothOn=powCal.getAveragePower(powCal.POWER_BLUETOOTH_ON);
+        /**
+         * Power consumption when Bluetooth driver is transmitting/receiving.
+         */
+        double powerBluetoothActive=powCal.getAveragePower(powCal.POWER_BLUETOOTH_ACTIVE);
+        /**
+         * Power consumption when Bluetooth driver gets an AT command.
+         */
+        double powerBluetoothAtCommand=powCal.getAveragePower(powCal.POWER_BLUETOOTH_AT_CMD);
+        /**
+         * Power consumption when cell radio is on but not on a call.
+         */
+        double powerRadioOn=powCal.getAveragePower(powCal.POWER_RADIO_ON);
+        /**
+         * Power consumption when talking on the phone.
+         */
+        double powerRadioActive=powCal.getAveragePower(powCal.POWER_RADIO_ACTIVE);
+        /**
+         * Power consumption when cell radio is hunting for a signal.
+         */
+        double powerRadioScanning=powCal.getAveragePower(powCal.POWER_RADIO_SCANNING);
+        /**
+         * Power consumption when screen is on, not including the backlight power.
+         */
+        double powerScreenOn=powCal.getAveragePower(powCal.POWER_SCREEN_ON);
+        /**
+         * Power consumption at full backlight brightness. If the backlight is at
+         * 50% brightness, then this should be multiplied by 0.5
+         */
+        double powerScreenFull=powCal.getAveragePower(powCal.POWER_SCREEN_FULL);
+        /**
+         * Power consumption when GPS is on.
+         */
+        double powerGpsOn=powCal.getAveragePower(powCal.POWER_GPS_ON);
+        /**
+         * Power consumption when WiFi driver is on.
+         */
+        double powerWifiOn=powCal.getAveragePower(powCal.POWER_WIFI_ON);
+        /**
+         * Power consumption when WiFi driver is transmitting/receiving.
+         */
+        double powerWifiActive=powCal.getAveragePower(powCal.POWER_WIFI_ACTIVE);
+        /**
+         * Power consumption when WiFi driver is scanning for networks.
+         */
+        double powerWifiScan=powCal.getAveragePower(powCal.POWER_WIFI_SCAN);
+        /**
+         * Power consumed by any media hardware when playing back video content. This is in addition
+         * to the CPU power, probably due to a DSP.
+         */
+        double powerVedioOn=powCal.getAveragePower(powCal.POWER_VIDEO);
+        /**
+         * Power consumed by the audio hardware when playing back audio content. This is in addition
+         * to the CPU power, probably due to a DSP and / or amplifier.
+         */
+        double powerAudioOn=powCal.getAveragePower(powCal.POWER_AUDIO);
+        /**
+         * Battery capacity in milliAmpHour (mAh).
+         */
+        double batteryCapacity=powCal.getBatteryCapacity();
+        
+        Log.i(TAG, "Power consumption when CPU is active"+powerCpuActive);
+        Log.i(TAG, "Power consumption when CPU is awake"+powerCpuAwake);
+        Log.i(TAG, "Power consumption when CPU is idle"+powerCpuIdle);
+        Log.i(TAG, "Power consumption when bluetooth is on "+powerBluetoothOn);
+        Log.i(TAG, "Power consumption when bluetooth is active "+powerBluetoothActive);
+        Log.i(TAG, "Power consumption when bluetooth is at command "+powerBluetoothAtCommand);
+        Log.i(TAG, "Power consumption when radio is on "+powerRadioOn);
+        Log.i(TAG, "Power consumption when radio is active "+powerRadioActive);
+        Log.i(TAG, "Power consumption when radio is scanning"+powerRadioScanning);
+        Log.i(TAG, "Power consumption when screen is on "+powerScreenOn);
+        Log.i(TAG, "Power consumption when screen is full "+powerScreenFull);
+        Log.i(TAG, "Power consumption when Gps is on "+powerGpsOn);
+        Log.i(TAG, "Power consumption when wifi is on "+powerWifiOn);
+        Log.i(TAG, "Power consumption when wifi is active "+powerWifiActive);
+        Log.i(TAG, "Power consumption when wifi is scanning "+powerWifiScan);
+        Log.i(TAG, "Power consumption when vedio is on "+powerVedioOn);
+        Log.i(TAG, "Power consumption when audio is on "+powerAudioOn);
+        Log.i(TAG, "Battery capacity is "+batteryCapacity);
+    }
+    
     private static Location lastKnownLocation = null;
 
     public static Sample getSample(Context context, Intent intent,
@@ -1705,7 +1809,9 @@ public final class SamplingLibrary {
         cs.setCpuUsage(getUsage(idleAndCpu1, idleAndCpu2));
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
-
+        
+        printAverageFeaturePower(context);
+        
         return mySample;
     }
 }

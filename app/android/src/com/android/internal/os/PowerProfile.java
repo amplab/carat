@@ -1,13 +1,14 @@
 /*     */ package com.android.internal.os;
 /*     */ 
-/*     */ import android.content.Context;
+/*     */ import android.R;
+import android.content.Context;
 /*     */ import android.content.res.Resources;
 /*     */ import android.content.res.XmlResourceParser;
 /*     */ import com.android.internal.util.XmlUtils;
 /*     */ import java.io.IOException;
 /*     */ import java.util.ArrayList;
 /*     */ import java.util.HashMap;
-/*     */ import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserException;
 /*     */ 
 /*     */ public class PowerProfile
 /*     */ {
@@ -45,8 +46,8 @@
 /*     */   }
 /*     */ 
 /*     */   private void readPowerValuesFromXml(Context context)
-/*     */   {
-/* 160 */     int id = 17760266;
+/*     */   { 
+/* 160 */     int id = edu.berkeley.cs.amplab.carat.android.R.xml.power_profile;
 /* 161 */     XmlResourceParser parser = context.getResources().getXml(id);
 /* 162 */     boolean parsingArray = false;
 /* 163 */     ArrayList array = new ArrayList();
