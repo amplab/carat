@@ -387,7 +387,6 @@ static NSMutableDictionary * daemonsList = nil;
 - (BOOL) clearLocalAppReports : (NSManagedObjectContext *) managedObjectContext
 {
     NSError *error = nil;
-    //NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) 
     {
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
@@ -419,13 +418,33 @@ static NSMutableDictionary * daemonsList = nil;
          withThisDetailReport: (DetailScreenReport *) detailScreenReportWith 
           andThatDetailReport: (DetailScreenReport *) detailScreenReportWithout
 {
-    cdataSubReport.score = [NSNumber numberWithDouble:detailScreenReportWith.score];
-    cdataSubReport.expectedValue = [NSNumber numberWithDouble:detailScreenReportWith.expectedValue];
-    cdataSubReport.expectedValueWithout = [NSNumber numberWithDouble:detailScreenReportWithout.expectedValue];
-    cdataSubReport.distributionXWith = detailScreenReportWith.xVals;
-    cdataSubReport.distributionYWith = detailScreenReportWith.yVals;
-    cdataSubReport.distributionXWithout = detailScreenReportWithout.xVals;
-    cdataSubReport.distributionYWithout = detailScreenReportWithout.yVals;
+    cdataSubReport.score = detailScreenReportWith.scoreIsSet ? 
+    [NSNumber numberWithDouble:detailScreenReportWith.score] :
+    [NSNumber numberWithDouble:0.0];
+    
+    cdataSubReport.expectedValue = detailScreenReportWith.expectedValueIsSet ? 
+    [NSNumber numberWithDouble:detailScreenReportWith.expectedValue] :
+    [NSNumber numberWithDouble:0.0];
+    
+    cdataSubReport.expectedValueWithout = detailScreenReportWithout.expectedValueIsSet ? 
+    [NSNumber numberWithDouble:detailScreenReportWithout.expectedValue] :
+    [NSNumber numberWithDouble:0.0];
+    
+    cdataSubReport.distributionXWith = detailScreenReportWith.xValsIsSet ? 
+    detailScreenReportWith.xVals :
+    [[[NSArray alloc] init] autorelease];
+    
+    cdataSubReport.distributionYWith = detailScreenReportWith.yValsIsSet ? 
+    detailScreenReportWith.yVals :
+    [[[NSArray alloc] init] autorelease];
+    
+    cdataSubReport.distributionXWithout = detailScreenReportWithout.xValsIsSet ? 
+    detailScreenReportWithout.xVals :
+    [[[NSArray alloc] init] autorelease];
+    
+    cdataSubReport.distributionYWithout = detailScreenReportWithout.yValsIsSet ? 
+    detailScreenReportWithout.yVals :
+    [[[NSArray alloc] init] autorelease];
 }
 
 /**
@@ -492,7 +511,6 @@ static NSMutableDictionary * daemonsList = nil;
             double change = round((reports.jScore - lastJScore)*100.0);
             double changePercentage = 0.0;
             if (lastJScore > 0.0) {
-                //changePercentage = (change*100.0) / lastJScore; 
                 changePercentage = change / lastJScore; 
             }
             
@@ -572,20 +590,34 @@ static NSMutableDictionary * daemonsList = nil;
                 CoreDataAppReport *cdataAppReport = (CoreDataAppReport *) [NSEntityDescription 
                                                                            insertNewObjectForEntityForName:@"CoreDataAppReport" 
                                                                            inManagedObjectContext:managedObjectContext];
+                if (!hog.appNameIsSet) { 
+                    DLog(@"%s App name not set for Hog report, ignoring...", __PRETTY_FUNCTION__);
+                    continue; 
+                }
+                
                 [cdataAppReport setAppName:hog.appName];
-                [cdataAppReport setAppScore:[NSNumber numberWithDouble:hog.wDistance]];
-                [cdataAppReport setExpectedValue:[NSNumber numberWithDouble:hog.expectedValue]];
-                [cdataAppReport setExpectedValueWithout:[NSNumber numberWithDouble:hog.expectedValueWithout]];
+                [cdataAppReport setAppScore:(hog.wDistanceIsSet ? 
+                                             [NSNumber numberWithDouble:hog.wDistance] : 
+                                             [NSNumber numberWithDouble:0.0])];
+                
+                [cdataAppReport setExpectedValue:(hog.expectedValueIsSet ? 
+                                                  [NSNumber numberWithDouble:hog.expectedValue] :
+                                                  [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setExpectedValueWithout:(hog.expectedValueWithoutIsSet ? 
+                                                         [NSNumber numberWithDouble:hog.expectedValueWithout] : 
+                                                         [NSNumber numberWithDouble:0.0])];
                 [cdataAppReport setReportType:@"Hog"];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
                                                                   insertNewObjectForEntityForName:@"CoreDataDetail" 
                                                                   inManagedObjectContext:managedObjectContext];
-                [cdataDetail setDistance:[NSNumber numberWithDouble:hog.wDistance]];
-                cdataDetail.distributionXWith = hog.xVals;
-                cdataDetail.distributionXWithout = hog.xValsWithout;
-                cdataDetail.distributionYWith = hog.yVals;
-                cdataDetail.distributionYWithout = hog.yValsWithout;
+                [cdataDetail setDistance:(hog.wDistanceIsSet ? 
+                                          [NSNumber numberWithDouble:hog.wDistance] : 
+                                          [NSNumber numberWithDouble:0.0])];
+                cdataDetail.distributionXWith = hog.xValsIsSet ? hog.xVals : [[[NSArray alloc] init] autorelease];
+                cdataDetail.distributionXWithout = hog.xValsWithoutIsSet ? hog.xValsWithout : [[[NSArray alloc] init] autorelease];
+                cdataDetail.distributionYWith = hog.yValsIsSet ? hog.yVals : [[[NSArray alloc] init] autorelease];
+                cdataDetail.distributionYWithout = hog.yValsWithoutIsSet ? hog.yValsWithout : [[[NSArray alloc] init] autorelease];
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
@@ -610,20 +642,34 @@ static NSMutableDictionary * daemonsList = nil;
                 CoreDataAppReport *cdataAppReport = (CoreDataAppReport *) [NSEntityDescription 
                                                                            insertNewObjectForEntityForName:@"CoreDataAppReport" 
                                                                            inManagedObjectContext:managedObjectContext];
+                if (!bug.appNameIsSet) { 
+                    DLog(@"%s App name not set for Bug report, ignoring...", __PRETTY_FUNCTION__);
+                    continue; 
+                }
+                
                 [cdataAppReport setAppName:bug.appName];
-                [cdataAppReport setAppScore:[NSNumber numberWithDouble:bug.wDistance]];
-                [cdataAppReport setExpectedValue:[NSNumber numberWithDouble:bug.expectedValue]];
-                [cdataAppReport setExpectedValueWithout:[NSNumber numberWithDouble:bug.expectedValueWithout]];
-                [cdataAppReport setReportType:@"Bug"];
+                [cdataAppReport setAppScore:(bug.wDistanceIsSet ? 
+                                             [NSNumber numberWithDouble:bug.wDistance] : 
+                                             [NSNumber numberWithDouble:0.0])];
+                
+                [cdataAppReport setExpectedValue:(bug.expectedValueIsSet ? 
+                                                  [NSNumber numberWithDouble:bug.expectedValue] :
+                                                  [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setExpectedValueWithout:(bug.expectedValueWithoutIsSet ? 
+                                                         [NSNumber numberWithDouble:bug.expectedValueWithout] : 
+                                                         [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setReportType:@"Hog"];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
                                                                   insertNewObjectForEntityForName:@"CoreDataDetail" 
                                                                   inManagedObjectContext:managedObjectContext];
-                [cdataDetail setDistance:[NSNumber numberWithDouble:bug.wDistance]];
-                cdataDetail.distributionXWith = bug.xVals;
-                cdataDetail.distributionXWithout = bug.xValsWithout;
-                cdataDetail.distributionYWith = bug.yVals;
-                cdataDetail.distributionYWithout = bug.yValsWithout;
+                [cdataDetail setDistance:(bug.wDistanceIsSet ? 
+                                          [NSNumber numberWithDouble:bug.wDistance] : 
+                                          [NSNumber numberWithDouble:0.0])];
+                cdataDetail.distributionXWith = bug.xValsIsSet ? bug.xVals : [[[NSArray alloc] init] autorelease];
+                cdataDetail.distributionXWithout = bug.xValsWithoutIsSet ? bug.xValsWithout : [[[NSArray alloc] init] autorelease];
+                cdataDetail.distributionYWith = bug.yValsIsSet ? bug.yVals : [[[NSArray alloc] init] autorelease];
+                cdataDetail.distributionYWithout = bug.yValsWithoutIsSet ? bug.yValsWithout : [[[NSArray alloc] init] autorelease];
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }

@@ -10,7 +10,6 @@ import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
-import edu.berkeley.cs.amplab.carat.android.ui.UiRefreshThread;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
@@ -238,6 +237,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     @Override
     protected void onResume() {
         CaratApplication.setMyDevice(this);
+        CaratApplication.setReportData();
         /*UiRefreshThread.setReportData();
         new Thread() {
             public void run() {

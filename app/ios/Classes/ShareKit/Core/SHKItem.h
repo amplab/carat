@@ -73,6 +73,7 @@ typedef enum
 
 + (SHKItem *)URL:(NSURL *)url title:(NSString *)title;
 + (SHKItem *)image:(UIImage *)image title:(NSString *)title;
++ (SHKItem *)URL:(NSURL *)url title:(NSString *)title image:(UIImage *)image;
 + (SHKItem *)text:(NSString *)text;
 + (SHKItem *)file:(NSData *)data filename:(NSString *)filename mimeType:(NSString *)mimeType title:(NSString *)title;
 

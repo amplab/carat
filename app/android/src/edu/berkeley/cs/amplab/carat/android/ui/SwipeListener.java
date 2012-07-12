@@ -32,7 +32,7 @@ public class SwipeListener extends BaseSwipeListener {
 			if (left && currentTab > 0) {
 				CaratMainActivity.changeTab(currentTab - 1);
 				return true;
-			} else if (!left && currentTab + 1 < CaratMainActivity.tabHost.getTabWidget().getTabCount()) {
+			} else if (!left) {
 				CaratMainActivity.changeTab(currentTab + 1);
 				return true;
 			} else

@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.lang.ref.WeakReference;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -127,7 +129,12 @@ public final class SamplingLibrary {
     public static double distance = 0;
 
     private static final String STAG = "getSample";
+<<<<<<< HEAD
     private static final String TAG="FeaturesPowerConsumption";
+=======
+    
+    public static final int UUID_LENGTH = 16;
+>>>>>>> 3ec2fe27220227286108eb79edf3de025971d601
 
     /** Library class, prevent instantiation */
     private SamplingLibrary() {
@@ -141,8 +148,53 @@ public final class SamplingLibrary {
      * 
      * @return a String that uniquely identifies this device.
      */
-    public static String getUuid(Context c) {
+    public static String getAndroidId(Context c) {
         return Secure.getString(c.getContentResolver(), Secure.ANDROID_ID);
+    }
+    
+    public static String getUuid(Context c) {
+        String aID = getAndroidId(c);
+        String wifiMac = getWifiMacAddress(c);
+        String devid = getDeviceId(c);
+        String concat = "";
+        if (aID != null)
+            concat = aID;
+        else  
+            concat = "0000000000000000";
+        if (wifiMac != null)
+            concat += wifiMac;
+        else
+            concat += "00:00:00:00:00:00";
+        
+        // IMEI is 15 characters, decimal, while MEID is 14 characters, hex. Add a space if length is less than 15:
+        if (devid != null) {
+            concat += devid;
+            if (devid.length() < 15)
+                concat += " ";
+        } else
+            concat += "000000000000000";
+
+        //Log.d(STAG, "AID="+aID+" wifiMac="+wifiMac+" devid="+devid+" rawUUID=" +concat );
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(concat.getBytes());
+            byte[] mdbytes = md.digest();
+            StringBuilder hexString = new StringBuilder();
+            for (int i=0;i<mdbytes.length;i++) {
+                String hx = Integer.toHexString(0xFF & mdbytes[i]);
+                if (hx.equals("0"))
+                    hexString.append("00");
+                else
+                    hexString.append(hx);
+            }
+            String uuid = hexString.toString().substring(0, UUID_LENGTH);
+            FlurryAgent.logEvent("ANDROID_ID=" + aID +" UUID=" + uuid);
+            return uuid;
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return aID;
+        }
     }
 
     /**
@@ -591,13 +643,14 @@ public final class SamplingLibrary {
     }
 
     public static PackageInfo getPackageInfo(Context context, String processName) {
+        List<android.content.pm.PackageInfo> packagelist = null;
+        
         if (packages == null || packages.get() == null
                 || packages.get().size() == 0) {
             Map<String, PackageInfo> mp = new HashMap<String, PackageInfo>();
             PackageManager pm = context.getPackageManager();
             if (pm == null)
             	return null;
-            List<android.content.pm.PackageInfo> packagelist = null;
             		
             try{
             	packagelist = pm
@@ -622,6 +675,8 @@ public final class SamplingLibrary {
             PackageInfo pak = mp.get(processName);
             return pak;
         }else{
+            if (packages == null)
+                return null;
             Map<String, PackageInfo> p = packages.get();
             if (p == null || p.size() == 0)
                 return null;
@@ -646,7 +701,6 @@ public final class SamplingLibrary {
         List<ProcessInfo> result = new ArrayList<ProcessInfo>();
 
         PackageManager pm = context.getPackageManager();
-
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
 
@@ -838,6 +892,19 @@ public final class SamplingLibrary {
         Log.v("WifiRssi", "Rssi:" + wifiRssi);
         return wifiRssi;
 
+    }
+    
+    /**
+     * Get Wifi MAC ADDR. Hashed and used in UUID calculation. */
+    private static String getWifiMacAddress(Context context) {
+        WifiManager myWifiManager = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        if (myWifiManager == null)
+            return null;
+        WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
+        if (myWifiInfo == null)
+            return null;
+        return myWifiInfo.getMacAddress();
     }
 
     /* Get current WiFi link speed */
@@ -1127,6 +1194,14 @@ public final class SamplingLibrary {
             return CALL_STATE_IDLE;
         }
     }
+    
+    private static String getDeviceId(Context context) {
+        TelephonyManager telManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        if (telManager == null)
+            return null;
+        return telManager.getDeviceId();
+    }
 
     /* Get network type */
     public static String getMobileNetworkType(Context context) {
@@ -1393,7 +1468,8 @@ public final class SamplingLibrary {
         double bluetoothActiveCost=powCal.getAveragePower(powCal.POWER_BLUETOOTH_ACTIVE);
        // double bluetoothAtcmdCost=powCal.getAveragePower(powCal.POWER_BLUETOOTH_AT_CMD);
         Log.i("bluetoothActiveCost", "Bluetooth active cost is:"+bluetoothActiveCost);
-        double bluetoothPowerCost=bluetoothOnCost*0.5+bluetoothActiveCost*0.5;
+        double alpha = 0.5;
+        double bluetoothPowerCost=bluetoothOnCost*alpha+bluetoothActiveCost*(1-alpha);
         Log.i("bluetoothPowerConsumption", "Bluetooth power consumption is:"+bluetoothPowerCost); 
         return bluetoothPowerCost;   
     }
@@ -1407,7 +1483,8 @@ public final class SamplingLibrary {
         double wifiActiveCost=powCal.getAveragePower(powCal.POWER_WIFI_ACTIVE);
         Log.i("wifiActiveCost", "Wifi active cost is:"+wifiActiveCost);
         
-        double wifiPowerCost=wifiOnCost*0.5+wifiActiveCost*0.5;
+        double alpha = 0.5;
+        double wifiPowerCost=wifiOnCost*alpha+wifiActiveCost*(1-alpha);
         Log.i("wifiPowerConsumption", "Wifi power consumption is:"+wifiPowerCost); 
         return wifiPowerCost;   
     }
@@ -1436,7 +1513,7 @@ public final class SamplingLibrary {
         Log.i("cpuPowerConsumption", "When cpu is awake:\n"+cpuAwakeCost);
         return result;   
     }
-    
+
     public static double getAverageScreenPower(Context context){
         PowerProfile powCal=new PowerProfile(context);
         double screenCost=0;
@@ -1455,7 +1532,13 @@ public final class SamplingLibrary {
         
         Log.i("screenPowerConsumption", "Screen power consumption is:"+screenPowerCost); 
         return screenPowerCost;   
-    }   
+    }
+    
+    public static double getAverageScreenOnPower(Context context){
+        PowerProfile powCal=new PowerProfile(context);
+        double screenOnCost=powCal.getAveragePower(powCal.POWER_SCREEN_ON);
+        return screenOnCost;   
+    }
     
     public static double getAverageVedioPower(Context context){
         PowerProfile powCal=new PowerProfile(context);
@@ -1483,6 +1566,7 @@ public final class SamplingLibrary {
         return radioPowerCost;   
     }
     
+<<<<<<< HEAD
     public static void printAverageFeaturePower(Context context){
         PowerProfile powCal=new PowerProfile(context);
         
@@ -1586,7 +1670,85 @@ public final class SamplingLibrary {
         Log.i(TAG, "Battery capacity is "+batteryCapacity);
     }
     
+=======
+    public static double bluetoothBenefit(Context context){
+        double bluetoothPowerCost=SamplingLibrary.getAverageBluetoothPower(context);
+        Log.d("bluetoothPowerCost", "Bluetooth power cost: " + bluetoothPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        
+        double benefit=batteryCapacity/bluetoothPowerCost;
+        Log.d("BluetoothPowerBenefit", "Bluetooth power benefit: " + benefit);
+        return benefit;
+        }
+    
+    public static double wifiBenefit(Context context){
+        double wifiPowerCost=SamplingLibrary.getAverageWifiPower(context);
+        Log.d("wifiPowerCost", "wifi power cost: " + wifiPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        
+        // This is not that simple. We have to compare with Carat battery life or power profile battery life -- without wifi. --Eemil
+        
+        double benefit=(batteryCapacity/wifiPowerCost);
+        Log.d("wifiPowerBenefit", "wifi power benefit: " + benefit);
+        return benefit;
+        }
+    
+    public static double gpsBenefit(Context context){
+        double gpsPowerCost=SamplingLibrary.getAverageGpsPower(context);
+        Log.d("gpsPowerCost", "gps power cost: " + gpsPowerCost);
+        double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+        Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+        double benefit=batteryCapacity/gpsPowerCost;
+        Log.d("gpsPowerBenefit", "gps power benefit: " + benefit);
+        return benefit;
+       }
+       
+    public static double screenBrightnessBenefit(Context context){
+         double screenPowerCost=SamplingLibrary.getAverageScreenPower(context);
+         Log.d("screenPowerCost", "screen power cost: " + screenPowerCost);
+         double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
+         Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
+         double benefit=batteryCapacity/screenPowerCost;
+         Log.d("screenPowerBenefit", "screen power benefit: " + benefit);
+         return benefit;
+       }
+    
+
+>>>>>>> 3ec2fe27220227286108eb79edf3de025971d601
     private static Location lastKnownLocation = null;
+    
+    public static double getBatteryLevel(Context context, Intent intent){
+        double level = intent.getIntExtra("level", -1);
+        double scale = intent.getIntExtra("scale", 100);
+
+        // use last known value
+        double batteryLevel = 0.0;
+        // if we have real data, change old value
+        if (level > 0 && scale > 0) {
+            batteryLevel = (level / scale);
+        }
+        return batteryLevel;
+    }
+    
+    public static boolean killApp(Context context, String packageName, String label){
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Activity.ACTIVITY_SERVICE);
+        if (am != null){
+            try{
+                PackageInfo p = getPackageInfo(context, packageName);
+                Log.v(STAG, "Trying to kill proc="+packageName + " pak=" + p.packageName);
+                FlurryAgent.logEvent("Killing app="+(label==null?"null":label)+" proc="+packageName+" pak="+ (p==null?"null":p.packageName));
+                am.killBackgroundProcesses(packageName);
+                
+                return true;
+            }catch (Throwable th){
+                Log.e(STAG, "Could not kill process: " + packageName, th);
+            }
+        }
+        return false;
+    }
 
     public static Sample getSample(Context context, Intent intent,
             Sample lastSample) {

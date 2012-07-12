@@ -26,10 +26,25 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 
     private static final String TAG = "Sampler";
     
+    private static Sampler instance = null;
+    
+    public static Sampler getInstance(){
+        if (instance != null)
+            return instance;
+        else
+            return new Sampler();
+    }
+    
 	CaratSampleDB ds = null;
 	private SharedPreferences sharedPreferences;
 	private Editor editor;
 	private Context context = null;
+	
+	private double lastBatteryLevel = 0.0;
+	
+	public Sampler(){
+	    Sampler.instance = this;
+	}
 	
 	private void requestLocationUpdates(){
 	    LocationManager lm = (LocationManager) context
@@ -46,6 +61,14 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+	    /*try{
+            context.unregisterReceiver(this);
+        }catch(IllegalArgumentException e){
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            context.registerReceiver(getInstance(), intentFilter);
+        }*/
+	    
 		if (ds == null) {
 		    this.context = context;
 			ds = new CaratSampleDB(context);
@@ -62,8 +85,24 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		            editor.commit();
 			//onBoot(context);
 		}
-		// Sample
-		getSample(c, i);
+		
+		/* 
+		 * Some phones receive the batteryChanged very very often.
+		 * We are interested only in changes of the battery level. 
+		 */ 
+		
+		double bl = SamplingLibrary.getBatteryLevel(context, intent);
+		if (bl <= 0)
+		    return;
+		
+		Sample lastSample = ds.getLastSample(context);
+		
+		if ((lastSample == null && lastBatteryLevel != bl) || (lastSample != null && lastSample.getBatteryLevel() != bl)) {
+		    Log.i(TAG, "Sampling for intent="+i.getAction()+" lastSample=" + (lastSample != null ? lastSample.getBatteryLevel()+"": "null") + " current battery="+bl);
+		    // Take a sample.
+		    getSample(c, i, lastSample);
+		    lastBatteryLevel = bl;
+		}
 	}
 	
 	/**
@@ -101,15 +140,12 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 	 * @param intent from onReceive
 	 * @return the newly recorded Sample
 	 */
-	private Sample getSample(Context context, Intent intent) {
-		// FIXME: or create a takeSample(...) with more features returned than
-		// in the basic Sample class
-
+	private Sample getSample(Context context, Intent intent, Sample lastSample) {
 	    // Update last known location...
 	    if (lastKnownLocation == null)
 	        lastKnownLocation = SamplingLibrary.getLastKnownLocation(context);
 		Sample s = SamplingLibrary.getSample(context, intent,
-				ds.getLastSample(context));
+				lastSample);
 		// Set distance to current distance value
 		if (s != null){
 		    Log.v(TAG, "distanceTravelled=" + distance);

@@ -10,12 +10,18 @@ import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -25,21 +31,24 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
 
+    private static final String TAG = "CaratSuggestions";
     private View tv = null;
+    private View killView = null;
     private int emptyIndex = -1;
-    
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.suggestions);
-        LayoutInflater mInflater = LayoutInflater.from(getApplicationContext());
+        final Context c = getApplicationContext();
+        LayoutInflater mInflater = LayoutInflater.from(c);
         vf = (ViewFlipper) findViewById(R.id.suggestionsFlipper);
         View baseView = findViewById(android.R.id.list);
         baseView.setOnTouchListener(SwipeListener.instance);
         vf.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
-        
+
         tv = mInflater.inflate(R.layout.emptyactions, null);
-        if (tv != null){
+        if (tv != null) {
             vf.addView(tv);
             emptyIndex = vf.indexOfChild(tv);
         }
@@ -47,50 +56,145 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         final ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
 
+        initKillView();
+
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position,
                     long id) {
                 Object o = lv.getItemAtPosition(position);
                 SimpleHogBug fullObject = (SimpleHogBug) o;
-                if (fullObject.getAppName().equals("OsUpgrade"))
+                final String raw = fullObject.getAppName();
+                Log.v(TAG, "Showing kill view for " + raw);
+                if (raw.equals("OsUpgrade"))
                     switchView(R.id.upgradeOsView);
-                else if (fullObject.getAppName().equals("Dim the Screen"))
+                else if (raw.equals(getString(R.string.dimscreen)))
                     GoToDisplayScreen();
-                else if (fullObject.getAppName().equals("Disable Wifi"))
+                else if (raw.equals(getString(R.string.disablewifi)))
                     GoToWifiScreen();
-                else if (fullObject.getAppName().equals("Disable gps"))
+                else if (raw.equals(getString(R.string.disablegps)))
                     GoToLocSevScreen();
-                else if (fullObject.getAppName().equals("Disable bluetooth"))
+                else if (raw.equals(getString(R.string.disablebluetooth)))
                     GoToBluetoothScreen();
-                else if (fullObject.getAppName().equals("Disable haptic feedback"))
+                else if (raw.equals(getString(R.string.disablehapticfeedback)))
                     GoToSoundScreen();
-                else if (fullObject.getAppName().equals("Set brightness to automatic"))
+                else if (raw.equals(getString(R.string.automaticbrightness)))
                     GoToDisplayScreen();
-                else if (fullObject.getAppName().equals("Disable network"))
+                else if (raw.equals(getString(R.string.disablenetwork)))
                     GoToMobileNetworkScreen();
-                else if (fullObject.getAppName().equals("Disable vibration"))
+                else if (raw.equals(getString(R.string.disablevibration)))
                     GoToSoundScreen();
-                else if (fullObject.getAppName().equals("Shorten screen timeout"))
+                else if (raw.equals(getString(R.string.shortenscreentimeout)))
                     GoToDisplayScreen();
-                else if (fullObject.getAppName().equals("Disable automatic sync"))
+                else if (raw.equals(getString(R.string.disableautomaticsync)))
                     GoToSyncScreen();
-                else
-                    switchView(R.id.killAppView);
+                else {
+                    ImageView icon = (ImageView) killView
+                            .findViewById(R.id.suggestion_app_icon);
+                    TextView txtName = (TextView) killView
+                            .findViewById(R.id.actionName);
+                    TextView txtType = (TextView) killView
+                            .findViewById(R.id.suggestion_type);
+                    TextView txtBenefit = (TextView) killView
+                            .findViewById(R.id.expectedBenefit);
+                    Button killButton = (Button) killView
+                            .findViewById(R.id.killButton);
+
+                    final String label = CaratApplication.labelForApp(c, raw);
+
+                    icon.setImageDrawable(CaratApplication.iconForApp(c, raw));
+                    double benefit = 100.0
+                            / fullObject.getExpectedValueWithout() - 100.0
+                            / fullObject.getExpectedValue();
+
+                    int min = (int) (benefit / 60);
+                    int hours = (int) (min / 60);
+                    min -= hours * 60;
+
+                    Type type = fullObject.getType();
+                    if (type == Type.BUG || type == Type.HOG) {
+                        txtName.setText(label);
+                        killButton.setText(getString(R.string.kill) +" "+ label);
+                        killButton.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                SamplingLibrary.killApp(c, raw, label);
+                            }
+                        });
+                    } else { // Other action
+                        txtName.setText(label);
+                        killButton.setText(label);
+                    }
+                    txtType.setText(fullObject.getAppPriority());
+
+                    if (raw.equals("Disable bluetooth")) {
+                        double benefitOther = SamplingLibrary
+                                .bluetoothBenefit(c);
+                        hours = (int) (benefitOther);
+                        min = (int) (benefitOther * 60);
+                        min -= hours * 60;
+                    } else if (raw.equals("Disable Wifi")) {
+                        double benefitOther = SamplingLibrary.wifiBenefit(c);
+                        hours = (int) (benefitOther);
+                        min = (int) (benefitOther * 60);
+                        min -= hours * 60;
+                    } else if (raw.equals("Dim the Screen")) {
+                        double benefitOther = SamplingLibrary
+                                .screenBrightnessBenefit(c);
+                        hours = (int) (benefitOther);
+                        min = (int) (benefitOther * 60);
+                        min -= hours * 60;
+                    }
+
+                    txtBenefit.setText(hours + "h " + min + "m");
+
+                    switchView(killView);
                 }
+            }
         });
-        
-        initKillView();
+
         initUpgradeOsView();
 
+        
+        Object o = getLastNonConfigurationInstance();
+        if (o != null) {
+            CaratSuggestionsActivity previous = (CaratSuggestionsActivity) o;
+            viewIndex = previous.viewIndex;
+            if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)){
+                restoreKillView(previous.killView);
+            }
+        }
+        
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
     }
+    
+    private void restoreKillView(View previous){
+            ImageView icon = (ImageView) killView
+                    .findViewById(R.id.suggestion_app_icon);
+            
+            icon.setImageDrawable(((ImageView) previous.findViewById(R.id.suggestion_app_icon)).getDrawable());
+            TextView txtName = (TextView) killView
+                    .findViewById(R.id.actionName);
+            txtName.setText(((TextView) previous.findViewById(R.id.actionName)).getText());
+            TextView txtType = (TextView) killView
+                    .findViewById(R.id.suggestion_type);
+            txtType.setText(((TextView) previous.findViewById(R.id.suggestion_type)).getText());
+            TextView txtBenefit = (TextView) killView
+                    .findViewById(R.id.expectedBenefit);
+            txtBenefit.setText(((TextView) previous.findViewById(R.id.expectedBenefit)).getText());
+            Button killButton = (Button) killView
+                    .findViewById(R.id.killButton);
+            killButton.setText(((Button) previous.findViewById(R.id.killButton)).getText());
+    }
 
     private void initKillView() {
-        WebView webview = (WebView) findViewById(R.id.killAppView);
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View killPage = inflater.inflate(R.layout.killlayout, null);
+        WebView webview = (WebView) killPage.findViewById(R.id.killView);
         // Fixes the white flash when showing the page for the first time.
         if (getString(R.string.blackBackground).equals("true"))
             webview.setBackgroundColor(0);
@@ -100,9 +204,21 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             webview.loadUrl("file:///android_asset/killapp-2.2.html");
         else
             webview.loadUrl("file:///android_asset/killapp.html");
+        killPage.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(android.R.id.list)), true));
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(android.R.id.list))));
+                .indexOfChild(findViewById(android.R.id.list)), false));
+        Button AppManagerButton = (Button) killPage.findViewById(R.id.appManager);
+        AppManagerButton.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View arg0) {
+                GoToAppScreen();
+            } 
+        });
+        killView = killPage;
+        vf.addView(killView);
     }
+
     private void initUpgradeOsView() {
         WebView webview = (WebView) findViewById(R.id.upgradeOsView);
         // Fixes the white flash when showing the page for the first time.
@@ -112,109 +228,74 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(android.R.id.list))));
     }
-    
-    /*Dim the screen if current screen brightness value is larger than 30*/
-    public void DimScreen(Context context){
-        boolean isAutoBrightness= SamplingLibrary.isAutoBrightness(context);
-        if (isAutoBrightness==true) {
-            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-        }
-        int brightnessValue=30;
-        int curBrightValue=SamplingLibrary.getScreenBrightness(context);
-        if(curBrightValue>brightnessValue)
-        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 30);
+
+    /* Show the bluetooth setting */
+    public void GoToBluetoothScreen() {
+        safeStart(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS, getString(R.string.bluetoothsettings));
     }
 
-    /*Set automatic brightness mode*/
-    public void SetAutoBrightness(Context context){
-        boolean isAutoBrightness= SamplingLibrary.isAutoBrightness(context);
-        if (isAutoBrightness==false) {
-            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC);   
-        }
-        else{
-            Log.v("Screen","Automatic Brightness already on");
-            
-        }
+    /* Show the wifi setting */
+    public void GoToWifiScreen() {
+        safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
     }
-    
-    /*Disable Wifi if Wifi is on*/
-    public void DisableWifi(Context context){
-        boolean wifiEnabled=SamplingLibrary.getWifiEnabled(context);
-        if(wifiEnabled==true){
-            WifiManager myWifiManager = (WifiManager) context
-                    .getSystemService(Context.WIFI_SERVICE);
-            myWifiManager.setWifiEnabled(false);            
-        }
+
+    /*
+     * Show the display setting including screen brightness setting, sleep mode
+     */
+    public void GoToDisplayScreen() {
+        safeStart(android.provider.Settings.ACTION_DISPLAY_SETTINGS, getString(R.string.screensettings));
     }
-    
-    /*Show the bluetooth setting*/
-    public void GoToBluetoothScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
-        startActivity(startIntent);  
+
+    /*
+     * Show the sound setting including phone ringer mode, vibration mode,
+     * haptic feedback setting and other sound options
+     */
+    public void GoToSoundScreen() {
+        safeStart(android.provider.Settings.ACTION_SOUND_SETTINGS, getString(R.string.soundsettings));
     }
-    /*Show the wifi setting*/
-    public void GoToWifiScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
-        startActivity(startIntent);        
+
+    /*
+     * Show the location service setting including configuring gps provider,
+     * network provider
+     */
+    public void GoToLocSevScreen() {
+        safeStart(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS, getString(R.string.locationsettings));
     }
-    /*Show the display setting
-     * including screen brightness setting, sleep mode*/
-    public void GoToDisplayScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_DISPLAY_SETTINGS);
-        startActivity(startIntent);
+
+    /* Show the synchronization setting */
+    public void GoToSyncScreen() {
+        safeStart(android.provider.Settings.ACTION_SYNC_SETTINGS, getString(R.string.syncsettings));
     }
-    /*Show the sound setting
-     * including phone ringer mode, vibration mode, haptic feedback setting and other sound options*/
-    public void GoToSoundScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_SOUND_SETTINGS);
-        startActivity(startIntent);
+
+    /*
+     * Show the mobile network setting including configuring 3G/2G, network
+     * operators
+     */
+    public void GoToMobileNetworkScreen() {
+        safeStart(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS, getString(R.string.mobilenetworksettings));
     }
-    /*Show the location service setting
-     * including configuring gps provider, network provider*/
-    public void GoToLocSevScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(startIntent);
+
+    /* Show the application setting */
+    public void GoToAppScreen() {
+        safeStart(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS, getString(R.string.appsettings));
     }
-    /*Show the synchronization setting*/
-    public void GoToSyncScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_SYNC_SETTINGS);
-        startActivity(startIntent);
-    }
-    /*Show the mobile network setting
-     * including configuring 3G/2G, network operators*/
-    public void GoToMobileNetworkScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
-        startActivity(startIntent);
-    }
-    /*Show the application setting*/
-    public void GoToAppScreen(){
-        Intent startIntent= new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-        startActivity(startIntent);
-    }
-    
-    /*Disable bluetooth if bluetooth is on*/
-    public void DisableBluetooth(){
-        BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
-        if (myBluetoothAdapter.isEnabled()==true) {
-            myBluetoothAdapter.disable(); 
-        }                 
-    }
-    
-    /*Disable haptic feedback if it is on*/
-    public void DisableHapticFb(Context context){
+
+    private void safeStart(String intentString, String thing) {
+        Intent intent = null;
         try {
-            if(Settings.System.getInt(
-                    context.getContentResolver(),
-                    Settings.System.HAPTIC_FEEDBACK_ENABLED)== 1)
-            {
-            Settings.System.putInt(getContentResolver(), Settings.System.HAPTIC_FEEDBACK_ENABLED, 0);
+            intent = new Intent(intentString);
+            startActivity(intent);
+        } catch (Throwable th) {
+            Log.e(TAG, "Could not start activity: " + intent, th);
+            if (thing != null) {
+                Toast t = Toast.makeText(getApplicationContext(), getString(R.string.opening)
+                        + thing + getString(R.string.notsupported),
+                        Toast.LENGTH_SHORT);
+                t.show();
             }
-        } catch (SettingNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
-     }
-    
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -230,12 +311,11 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     public void refresh() {
         CaratApplication app = (CaratApplication) getApplication();
         final ListView lv = (ListView) findViewById(android.R.id.list);
-        lv.setAdapter(new HogBugSuggestionsAdapter(app, CaratApplication.s.getHogReport(),
-                CaratApplication.s.getBugReport()));
+        lv.setAdapter(new HogBugSuggestionsAdapter(app, CaratApplication.s
+                .getHogReport(), CaratApplication.s.getBugReport()));
         emptyCheck(lv);
     }
-    
-    
+
     private void emptyCheck(ListView lv) {
         if (lv.getAdapter().isEmpty()) {
             if (vf.getDisplayedChild() == baseViewIndex)
@@ -246,13 +326,27 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             }
         }
     }
-    
+
     /* (non-Javadoc)
-     * @see edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity#onBackPressed()
+     * @see android.app.Activity#onRetainNonConfigurationInstance()
+     */
+    @Override
+    public Object onRetainNonConfigurationInstance() {
+        return this;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity#onBackPressed()
      */
     @Override
     public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
+        if (vf.getDisplayedChild() != baseViewIndex
+                && vf.getDisplayedChild() != emptyIndex) {
+            SamplingLibrary.resetRunningProcessInfo();
+            refresh();
             vf.setOutAnimation(CaratMainActivity.outtoRight);
             vf.setInAnimation(CaratMainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);

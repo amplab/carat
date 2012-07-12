@@ -51,9 +51,12 @@
 		
 		
 		// You do not need to edit these, they are the same for everyone
-	    self.authorizeURL = [NSURL URLWithString:@"https://twitter.com/oauth/authorize"];
-	    self.requestURL = [NSURL URLWithString:@"https://twitter.com/oauth/request_token"];
-	    self.accessURL = [NSURL URLWithString:@"https://twitter.com/oauth/access_token"]; 
+//	    self.authorizeURL = [NSURL URLWithString:@"https://twitter.com/oauth/authorize"];
+//	    self.requestURL = [NSURL URLWithString:@"https://twitter.com/oauth/request_token"];
+//	    self.accessURL = [NSURL URLWithString:@"https://twitter.com/oauth/access_token"]; 
+        self.authorizeURL = [NSURL URLWithString:@"https://api.twitter.com/oauth/authorize"];
+        self.requestURL = [NSURL URLWithString:@"https://api.twitter.com/oauth/request_token"];
+        self.accessURL = [NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"];
 	}	
 	return self;
 }
@@ -320,11 +323,16 @@
 
 - (void)sendStatus
 {
-	OAMutableURLRequest *oRequest = [[OAMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"]
-																   consumer:consumer
-																	  token:accessToken
-																	  realm:nil
-														  signatureProvider:nil];
+//	OAMutableURLRequest *oRequest = [[OAMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"http://api.twitter.com/1/statuses/update.json"]
+//																   consumer:consumer
+//																	  token:accessToken
+//																	  realm:nil
+//														  signatureProvider:nil];
+    OAMutableURLRequest *oRequest = [[OAMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/1/statuses/update.json"]
+                                                                    consumer:consumer
+                                                                       token:accessToken
+                                                                       realm:nil
+                                                           signatureProvider:nil];
 	
 	[oRequest setHTTPMethod:@"POST"];
 	

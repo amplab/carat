@@ -31,7 +31,7 @@ public class HogsBugsAdapter extends BaseAdapter {
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
-                    appName = "unknown";
+                    appName = a.getString(R.string.unknown);
                 if (appName.equals(CaratApplication.CARAT_PACKAGE)
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
@@ -40,16 +40,16 @@ public class HogsBugsAdapter extends BaseAdapter {
             }
         allBugsOrHogs = new SimpleHogBug[items];
         int i = 0;
-        if (results != null)
+        if (results != null && results.length > 0 && allBugsOrHogs.length > 0 && i < allBugsOrHogs.length)
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
-                    appName = "unknown";
+                    appName = a.getString(R.string.unknown);
                 if (appName.equals(CaratApplication.CARAT_PACKAGE)
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
-
-                if (!SamplingLibrary.isHidden(c, b.getAppName())) {
+                // Apparently the number of items changes from "items" above?
+                if (!SamplingLibrary.isHidden(c, appName) && i < allBugsOrHogs.length) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }
@@ -95,7 +95,7 @@ public class HogsBugsAdapter extends BaseAdapter {
         Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(), item.getAppName());
         String label = CaratApplication.labelForApp(a.getApplicationContext(), item.getAppName());
         if (label == null)
-            label = "Unknown";
+            label = a.getString(R.string.unknown);
         holder.txtName.setText(label);
         holder.appIcon.setImageDrawable(icon);
         holder.progConfidence.setProgress((int) (item.getwDistance() * 100));

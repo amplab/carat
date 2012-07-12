@@ -75,6 +75,17 @@
 	return [item autorelease];
 }
 
++ (SHKItem *)URL:(NSURL *)url title:(NSString *)title image:(UIImage *)image
+{
+	SHKItem *item = [[SHKItem alloc] init];
+	item.shareType = SHKShareTypeURL;
+	item.URL = url;
+	item.title = title;
+    item.image = image;
+    
+	return [item autorelease];
+}
+
 + (SHKItem *)image:(UIImage *)image
 {
 	return [SHKItem image:image title:nil];

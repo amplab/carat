@@ -12,7 +12,6 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -145,13 +144,13 @@ public class CaratMainActivity extends TabActivity {
         intent = new Intent().setClass(this, CaratBugsOrHogsActivity.class);
         intent.setAction(ACTION_HOGS);
         spec = tabHost.newTabSpec(ACTION_HOGS)
-                .setIndicator("Hogs", res.getDrawable(R.drawable.ic_tab_hogs))
+                .setIndicator(getString(R.string.tab_hogs), res.getDrawable(R.drawable.ic_tab_hogs))
                 .setContent(intent);
         tabHost.addTab(spec);
 
         intent = new Intent().setClass(this, CaratAboutActivity.class);
         spec = tabHost
-                .newTabSpec("about")
+                .newTabSpec(getString(R.string.tab_about))
                 .setIndicator("About", res.getDrawable(R.drawable.ic_tab_about))
                 .setContent(intent);
         tabHost.addTab(spec);
@@ -185,17 +184,17 @@ public class CaratMainActivity extends TabActivity {
     public void setTitleNormal() {
         long s = CaratApplication.s.getSamplesReported();
         if (s > 0)
-            this.setTitle(fullVersion + " - " + s + " samples reported");
+            this.setTitle(fullVersion + " - " + s + " "+getString(R.string.samplesreported));
         else
             this.setTitle(fullVersion);
     }
 
     public void setTitleUpdating(String what) {
-        this.setTitle(fullVersion + " - Updating " + what);
+        this.setTitle(fullVersion + " - " + getString(R.string.updating)+" "+what);
     }
 
     public void setTitleUpdatingFailed(String what) {
-        this.setTitle(fullVersion + " - got no " + what);
+        this.setTitle(fullVersion + " - " +getString(R.string.didntget)+" "+ what);
     }
 
     /*
@@ -242,7 +241,10 @@ public class CaratMainActivity extends TabActivity {
     }
 
     public static void changeTab(int tab) {
-        tabHost.setCurrentTab(tab);
+        if (tabHost == null)
+            return;
+        if (tabHost.getChildCount() > tab && tab >= 0)
+            tabHost.setCurrentTab(tab);
     }
 
     /**
@@ -421,9 +423,9 @@ public class CaratMainActivity extends TabActivity {
                 int jscore = CaratApplication.getJscore();
                 Intent sendIntent = new Intent(Intent.ACTION_SEND);
                 sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, "My J-Score is "+jscore);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, "Carat is improving my battery life. My J-Score is "+jscore +"!\nWhat's yours?\nFind out here: \nhttp://carat.cs.berkeley.edu/");
-                startActivity(Intent.createChooser(sendIntent, "Share with:"));
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis)+" "+jscore);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1)+" "+jscore+getString(R.string.sharetext2));
+                startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
                 return true;
             }
         });

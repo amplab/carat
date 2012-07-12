@@ -299,6 +299,9 @@
 {
     // J-Score
     [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]];
+    if ([[[[self jscore] objectAtIndex:0] text] isEqualToString:@"0"]) {
+        [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:@"N/A"];
+    }
     
     // Expected Battery Life
     NSTimeInterval eb; // expected life in seconds

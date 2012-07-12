@@ -18,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
@@ -163,44 +164,44 @@ public class CommunicationManager {
 		String OS = SamplingLibrary.getOsVersion();
 
 		// NOTE: Fake data for simulator
-		/*
-		 * if (model.equals("sdk")) { uuId =
-		 * "2DEC05A1-C2DF-4D57-BB0F-BA29B02E4ABE"; model = "iPhone 3GS"; OS =
-		 * "5.0.1"; }
-		 */
-
-		Log.d(TAG, "Getting reports for " + uuId + " model=" + model + " os="
-				+ OS);
-
-		if (model.equals("sdk") || uuId.equals("ce9af33c736adbf7")) {
-			uuId = "304e45cf1d3cf68b"; // My Galaxy Nexus
-			model = "Galaxy Nexus";
+		if (model.equals("sdk")) {
+		    uuId = "97c542cd8e99d948"; // My S3
+			model = "GT-I9300";
 			OS = "4.0.4";
 		}
+		
+		Log.d(TAG, "Getting reports for " + uuId + " model=" + model + " os="+ OS);
 
 		int progress = 0;
 
-		CaratApplication.setActionProgress(progress, "My Device", false);
+		CaratApplication.setActionProgress(progress, a.getString(R.string.tab_my_device), false);
 		boolean success = refreshMainReports(uuId, OS, model);
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, "Bugs", false);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), false);
 		} else {
-			CaratApplication.setActionProgress(progress, "My Device", true);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_my_device), true);
 		}
 		success = refreshBugReports(uuId, model);
 		if (success) {
 			progress += 40;
-			CaratApplication.setActionProgress(progress, "Hogs", false);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
 		} else
-			CaratApplication.setActionProgress(progress, "Bugs", true);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), true);
 		success = refreshHogReports(uuId, model);
+		
+		boolean bl = true;
+		 if (System.currentTimeMillis() - CaratApplication.s.getBlacklistFreshness() < CaratApplication.FRESHNESS_TIMEOUT_BLACKLIST)
+	            bl = false;
+		
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, "Blacklist", false);
+			CaratApplication.setActionProgress(progress, bl ? a.getString(R.string.blacklist):a.getString(R.string.finishing), false);
 		} else
-			CaratApplication.setActionProgress(progress, "Hogs", true);
-		refreshBlacklist();
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), true);
+		if (bl)
+		    refreshBlacklist();
+		
 		CaratApplication.s.writeFreshness();
 	}
 
@@ -302,6 +303,8 @@ public class CommunicationManager {
 		} catch (Throwable th) {
 			Log.e(TAG, "Could not retrieve blacklist!", th);
 		}
+		// So we don't try again too often.
+		CaratApplication.s.writeBlacklistFreshness();
 	}
 
 	public static void safeClose(CaratService.Client c) {

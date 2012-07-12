@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android.storage;
 
 import java.io.Serializable;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 
 /**
@@ -25,6 +26,8 @@ public class SimpleHogBug implements Serializable{
     
     public SimpleHogBug(String appName, Type type){
         this.type = type;
+        if (type == Type.OS)
+            appPriority = CaratApplication.importanceString(CaratApplication.IMPORTANCE_SUGGESTION);
         this.appName = appName;
     }
     

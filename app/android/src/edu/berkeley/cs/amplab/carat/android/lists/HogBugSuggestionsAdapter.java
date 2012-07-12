@@ -45,7 +45,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
 		// Disabled for stability until we know what to do on pre-ICS phones for this.
-		//addFeatureActions(temp);
+		addFeatureActions(temp);
 
 		if (addFakeItem){
 		    SimpleHogBug fake = new SimpleHogBug(FAKE_ITEM, Type.BUG);
@@ -72,7 +72,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			// Limit max number of items?
 			// Skip system apps
 			String appName = item.getAppName();
-			if (appName == null) appName = "unknown";
+			if (appName == null) appName = a.getString(R.string.unknown);
 			
 			if (SamplingLibrary.isHidden(a.getApplicationContext(), appName))
 			    continue;
@@ -88,30 +88,33 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	}
 	
 	private void addFeatureActions(ArrayList<SimpleHogBug> results){
-	    acceptDimScreen(results);
+	    // Disable all for now, benefits are not calculated correctly yet.
+	    /*acceptDimScreen(results);
         acceptDisableWifi(results);
-        acceptDisableLocSev(results);
         acceptDisableBluetooth(results);
-        acceptDisableHapticFb(results);
-        acceptSetAutoBrightness(results);
-        acceptDisableNetwork(results);
-        acceptDisableVibration(results);
-        acceptSetScreenTimeout(results);
-        acceptDisableAutoSync(results);
+        */
+        // TODO: These need benefits, disabled for now:
+        //acceptDisableLocSev(results);
+        //acceptDisableHapticFb(results);
+        //acceptSetAutoBrightness(results);
+        //acceptDisableNetwork(results);
+        //acceptDisableVibration(results);
+        //acceptSetScreenTimeout(results);
+        //acceptDisableAutoSync(results);
 	}
 
 	private void acceptDimScreen(ArrayList<SimpleHogBug> result) {
 	    /*set the screen threshold to be 50 */
 	    if(!SamplingLibrary.isAutoBrightness(a.getApplicationContext()) && SamplingLibrary.getScreenBrightness(a.getApplicationContext())>50){
 	 	        
-	        SimpleHogBug item=new SimpleHogBug("Dim the Screen", Type.OS);
+	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.dimscreen), Type.OS);
 	        result.add(item);
 	    }   
 	}
 	
 	private void acceptDisableWifi(ArrayList<SimpleHogBug> result) {
         if(SamplingLibrary.getWifiEnabled(a.getApplicationContext())){
-            SimpleHogBug item=new SimpleHogBug("Disable Wifi", Type.OS);
+            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablewifi), Type.OS);
             result.add(item);
         }   
     }
@@ -120,7 +123,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	    List<String> providers = SamplingLibrary.getEnabledLocationProviders(a.getApplicationContext());
 	    if (providers != null && providers.size() > 1){
 	        // Always has 1 provider
-	        SimpleHogBug item=new SimpleHogBug("Disable location services", Type.OS);
+	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablelocation), Type.OS);
 	        result.add(item);
 	    }
 	        
@@ -128,7 +131,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	
 	private void acceptDisableGps(ArrayList<SimpleHogBug> result) {
         if(SamplingLibrary.getGpsEnabled(a.getApplicationContext())==true){
-            SimpleHogBug item=new SimpleHogBug("Disable gps", Type.OS);
+            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablegps), Type.OS);
             result.add(item);
         }   
     }
@@ -136,7 +139,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	private void acceptDisableBluetooth(ArrayList<SimpleHogBug> result) {
 	    BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
         if (myBluetoothAdapter.isEnabled()==true) {               
-            SimpleHogBug item=new SimpleHogBug("Disable bluetooth", Type.OS);
+            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablebluetooth), Type.OS);
             result.add(item);
         }   
     }
@@ -146,7 +149,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             if(Settings.System.getInt(
                     a.getApplicationContext().getContentResolver(),
                     Settings.System.HAPTIC_FEEDBACK_ENABLED)== 1){               
-                SimpleHogBug item=new SimpleHogBug("Disable haptic feedback", Type.OS);
+                SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablehapticfeedback), Type.OS);
                 // TODO Get expected benefit
                 result.add(item);
             }
@@ -157,8 +160,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
     }
 	
 	   private void acceptSetAutoBrightness(ArrayList<SimpleHogBug> result) {
-	        if(SamplingLibrary.isAutoBrightness(a.getApplicationContext())){
-	            SimpleHogBug item=new SimpleHogBug("Set brightness to automatic", Type.OS);
+	        if(!SamplingLibrary.isAutoBrightness(a.getApplicationContext())){
+	            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.automaticbrightness), Type.OS);
 	            // TODO Get expected benefit
 	            result.add(item);
 	        }   
@@ -166,7 +169,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	
 	   private void acceptDisableNetwork(ArrayList<SimpleHogBug> result) {
 	        if(SamplingLibrary.networkAvailable(a.getApplicationContext())==true){
-	            SimpleHogBug item=new SimpleHogBug("Disable network", Type.OS);
+	            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablenetwork), Type.OS);
 	            // TODO Get expected benefit
 	            result.add(item);
 	        }   
@@ -176,7 +179,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 	       AudioManager myAudioManager = (AudioManager) a.getApplicationContext()
 	                .getSystemService(Context.AUDIO_SERVICE);
 	       if(myAudioManager.getVibrateSetting(1)==1||myAudioManager.getVibrateSetting(0)==1){
-               SimpleHogBug item=new SimpleHogBug("Disable vibration", Type.OS);
+               SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablevibration), Type.OS);
                // TODO Get expected benefit
                result.add(item);
            }   
@@ -188,7 +191,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                if(Settings.System.getInt(
                        a.getApplicationContext().getContentResolver(),
                        Settings.System.SCREEN_OFF_TIMEOUT)>30000){               
-                   SimpleHogBug item=new SimpleHogBug("Shorten screen timeout", Type.OS);
+                   SimpleHogBug item=new SimpleHogBug(a.getString(R.string.shortenscreentimeout), Type.OS);
                    // TODO Get expected benefit
                    result.add(item);
                }
@@ -201,51 +204,11 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
        private void acceptDisableAutoSync(ArrayList<SimpleHogBug> result) {
            
                if(ContentResolver.getMasterSyncAutomatically()==true){               
-                   SimpleHogBug item=new SimpleHogBug("Disable automatic sync", Type.OS);
+                   SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disableautomaticsync), Type.OS);
                    // TODO Get expected benefit
                    result.add(item);
                }
-           } 
-       
-       private double bluetoothBenefit(Context context){
-           double bluetoothPowerCost=SamplingLibrary.getAverageBluetoothPower(context);
-           Log.d("bluetoothPowerCost", "Bluetooth power cost: " + bluetoothPowerCost);
-           double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-           Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-           double benefit=batteryCapacity/bluetoothPowerCost;
-           Log.d("BluetoothPowerBenefit", "Bluetooth power benefit: " + benefit);
-           return benefit;
            }
-       
-       private double wifiBenefit(Context context){
-           double wifiPowerCost=SamplingLibrary.getAverageWifiPower(context);
-           Log.d("wifiPowerCost", "wifi power cost: " + wifiPowerCost);
-           double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-           Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-           double benefit=batteryCapacity/wifiPowerCost;
-           Log.d("wifiPowerBenefit", "wifi power benefit: " + benefit);
-           return benefit;
-           }
-       
-       private double gpsBenefit(Context context){
-           double gpsPowerCost=SamplingLibrary.getAverageGpsPower(context);
-           Log.d("gpsPowerCost", "gps power cost: " + gpsPowerCost);
-           double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-           Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-           double benefit=batteryCapacity/gpsPowerCost;
-           Log.d("gpsPowerBenefit", "gps power benefit: " + benefit);
-           return benefit;
-          }
-          
-        private double screenBrightnessBenefit(Context context){
-            double screenPowerCost=SamplingLibrary.getAverageScreenPower(context);
-            Log.d("screenPowerCost", "screen power cost: " + screenPowerCost);
-            double batteryCapacity=SamplingLibrary.getBatteryCapacity(context);
-            Log.d("batteryCapacity", "Battery capacity: " + batteryCapacity);
-            double benefit=batteryCapacity/screenPowerCost;
-            Log.d("screenPowerBenefit", "screen power benefit: " + benefit);
-            return benefit;
-          }
 
 	public int getCount() {
 		return indexes.length;
@@ -293,13 +256,14 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		if (item == null)
 		    return convertView;
 		
-		Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(), item.getAppName());
+		final String raw = item.getAppName();
+		Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(), raw);
 
-		if (item.getAppName().equals(FAKE_ITEM)){
-            holder.txtName.setText("OS Upgrade");
+		if (raw.equals(FAKE_ITEM)){
+            holder.txtName.setText(a.getString(R.string.osupgrade));
             // TODO: Include process type=priority in Sample?
-            holder.txtType.setText("information");
-            holder.txtBenefit.setText("Unknown");
+            holder.txtType.setText(a.getString(R.string.information));
+            holder.txtBenefit.setText(a.getString(R.string.unknown));
         } else {
             double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
                     / item.getExpectedValue();
@@ -308,38 +272,35 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             int hours = (int) (min / 60);
             min -= hours * 60;
             
-            String label = CaratApplication.labelForApp(a.getApplicationContext(), item.getAppName());
+            String label = CaratApplication.labelForApp(a.getApplicationContext(), raw);
             if (label == null)
-                label = "Unknown";
+                label = a.getString(R.string.unknown);
             
             holder.icon.setImageDrawable(icon);
             Type type = item.getType();
             if (type == Type.BUG)
-                holder.txtName.setText("Restart "+label);
+                holder.txtName.setText(a.getString(R.string.restart)+" "+label);
             else if (type == Type.HOG)
-                holder.txtName.setText("Kill "+label);
+                holder.txtName.setText(a.getString(R.string.kill)+" "+label);
             else{ // Other action
                 holder.txtName.setText(label);
-                holder.txtType.setText(item.getAppPriority());
             }
+            holder.txtType.setText(CaratApplication.translatedPriority(item.getAppPriority()));
             
-            if (item.getAppName()=="Disable bluetooth"){
-                double benefitOther=bluetoothBenefit(a.getApplicationContext());
+            if (raw.equals(a.getString(R.string.disablebluetooth))){
+                double benefitOther=SamplingLibrary.bluetoothBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
-                min = (int) (benefitOther * 60);
-                min -= hours * 60;
+                min= (int) ((benefitOther- hours)*60);
             }
-            else if(item.getAppName()=="Disable Wifi"){
-                double benefitOther=wifiBenefit(a.getApplicationContext());
+            else if(raw.equals(a.getString(R.string.disablewifi))){
+                double benefitOther=SamplingLibrary.wifiBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
-                min = (int) (benefitOther * 60);
-                min -= hours * 60; 
+                min= (int) ((benefitOther- hours)*60); 
             }
-            else if(item.getAppName()=="Dim the Screen"){
-                double benefitOther=screenBrightnessBenefit(a.getApplicationContext());
+            else if(raw.equals(a.getString(R.string.dimscreen))){
+                double benefitOther=SamplingLibrary.screenBrightnessBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
-                min = (int) (benefitOther * 60);
-                min -= hours * 60; 
+                min = (int) ((benefitOther- hours)*60); 
             }
             
             holder.txtBenefit.setText(hours + "h " + min + "m");

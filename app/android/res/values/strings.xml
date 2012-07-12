@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Carat</string>
-    <string name="version_name">0.71</string>
+    <string name="version_name">0.72</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
@@ -12,7 +12,7 @@
     <string name="memactive">Memory active:</string>
     <string name="cpu">CPU Usage:</string>
     <string name="updated0">(Updated 0m 0s ago)</string>
-    <string name="zero">0</string>
+    <string name="jsna">N/A</string>
     <string name="fake_os">4.0.3</string>
     <string name="fake_dev">Samsung Galaxy Nexus</string>
     <string name="viewprocess">View Process List</string>
@@ -20,11 +20,17 @@
     <string name="moreinfo">More Information</string>
     <string name="appicon">App Icon</string>
     <string name="default_type">Foreground App</string>
-    <string name="tab_my_device">My Device</string>
+
     <string name="emptySuggestion">Nothing to report!</string>
     <string name="checkback">Please check back later.</string>
     <string name="feedback">Give feedback</string>
-    <string name="share">Share &#8230;</string>
+    <string name="share">Share …</string>
+    <string name="sharewith">Share with:</string>
+    <string name="sharetext1">Carat is improving my battery life. My J-Score is</string>
+    <string name="sharetext2">!\nWhat\'s yours?\nFind out here: \nhttp://carat.cs.berkeley.edu/</string>
+    <string name="myjscoreis">My J-Score is</string>
+    
+    <string name="appmanager">App Manager</string>
 
     <color name="brown">#744618</color>
     <color name="orange">#ff8331</color>
@@ -32,10 +38,28 @@
     <color name="black">#000000</color>
     <color name="with">#f3b14d</color>
     <color name="without">#007777</color>
-    
+
     <string name="zeroh">0h 0m 0s</string>
+    
+    <!-- Tabs. Also used elsewhere. -->
     <string name="tab_actions">Actions</string>
+    <string name="tab_my_device">Device</string>
     <string name="tab_bugs">Bugs</string>
+    <string name="tab_hogs">Hogs</string>
+    <string name="tab_about">About</string>
+    
+    <!-- Updating etc -->
+    <string name="samplesreported">Samples reported</string>
+    <string name="updating">Updating</string>
+    <string name="updated">(Updated </string>
+    <string name="ago">ago)</string>
+    <string name="neverupdated">(Never updated)</string>
+    <string name="updatedjustnow">(Updated just now)</string>
+    <string name="didntget">got no</string>
+    <string name="updatingreports">Updating reports</string>
+    <string name="blacklist">Blacklist</string>
+    <string name="finishing">Finishing up</string>
+    
     <string name="blackBackground">false</string>
 
     <color name="background">#FFFFFFFF</color>
@@ -48,5 +72,58 @@
     <string name="appname">App Name</string>
     <string name="priority">Priority:</string>
     <string name="priorityDefault">Not running</string>
+    <string name="prioritynotrunning">Not running</string>
+    <string name="priorityforeground">Foreground App</string>
+    <string name="prioritybackground">Background App</string>
+    <string name="priorityservice">Service</string>
+    <string name="priorityperceptible">Perceptible App</string>
+    <string name="priorityvisible">Visible App</string>
+    <string name="prioritysuggestion">Suggestion</string>
+
+    <!-- Settings screen related -->
+    
+    <string name="bluetoothsettings">Bluetooth Settings</string>
+    <string name="wifisettings">Wifi Settings</string>
+    <string name="screensettings">Screen Settings</string>
+    <string name="soundsettings">Sound Settings</string>
+    <string name="locationsettings">Location Settings</string>
+    <string name="syncsettings">Sync Settings</string>
+    <string name="mobilenetworksettings">Mobile Network Settings</string>
+    <string name="appsettings">App Settings</string>
+    <string name="opening">Opening </string>
+    <string name="notsupported">is not supported on this device, sorry.</string>
+    
+    <!-- Actions -->
+    
+    <string name="kill">Kill</string>
+    <string name="restart">Restart</string>
+    <string name="osupgrade">Upgrade the OS</string>
+    <string name="information">Information</string>
+    <string name="unknown">Unknown</string>
+    <string name="dimscreen">Dim the Screen</string>
+    <string name="disablewifi">Disable Wifi</string>
+    <string name="disablebluetooth">Disable Bluetooth</string>
+    <string name="automaticbrightness">Set brightness to automatic</string>
+    <string name="disablenetwork">Disable network</string>
+    <string name="disablehapticfeedback">Disable haptic feedback</string>
+    <string name="disablevibration">Disable vibration</string>
+    <string name="disablegps">Disable GPS</string>
+    <string name="disablelocation">Disable location services</string>
+    
+    <string name="shortenscreentimeout">Shorten screen timeout</string>
+    <string name="disableautomaticsync">Disable automatic sync</string>
+    
+    <!-- Detail view -->
+
+    <string name="runninghere">running here</string>
+    <string name="runningelsewhere">running elsewhere</string>
+    <string name="running">running</string>
+    <string name="notrunning">not running</string>
+    <string name="onmodel">On</string>
+    <string name="onothermodels">On other models</string>
+    <string name="withos">With</string>
+    <string name="withotheroses">With other OS</string>
+    <string name="withsimilarapps">With similar apps</string>
+    <string name="withdifferentapps">With different apps</string>
 
 </resources>

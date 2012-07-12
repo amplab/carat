@@ -58,7 +58,7 @@ Carat My Device Screen layout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/zero"
+                    android:text="@string/jsna"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="48dip"
                     android:clickable="true"
