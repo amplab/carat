@@ -112,10 +112,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSDate *lastUpdated = [[CoreDataManager instance] getLastReportUpdateTimestamp];
-    NSDate *now = [NSDate date];
-    NSTimeInterval howLong = [now timeIntervalSinceDate:lastUpdated];
-    return [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
+    NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
+    if (tmpStatus == nil) {
+        return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
+    } else {
+        return tmpStatus;
+    }
 }
 
 // loads the selected detail view

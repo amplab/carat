@@ -9,6 +9,7 @@
 #import "HogReportViewController.h"
 #import "HogDetailViewController.h"
 #import "DetailViewController.h"
+#import "SVPullToRefresh.h"
 
 @implementation HogReportViewController
 
@@ -68,6 +69,20 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [self setReport:[[CoreDataManager instance] getHogs:NO]];
+    
+    [self.dataTable addPullToRefreshWithActionHandler:^{
+        self.dataTable.showsPullToRefresh = NO;
+        if ([[CommunicationManager instance] isInternetReachable] == YES && // online
+            [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
+        {
+            [[CoreDataManager instance] updateLocalReportsFromServer];
+            [self updateView];
+        }
+        self.dataTable.showsPullToRefresh = YES;
+        [self.dataTable.pullToRefreshView stopAnimating];
+    }];
+    
+    [self updateView];
 }
 
 - (void)viewWillAppear:(BOOL)animated

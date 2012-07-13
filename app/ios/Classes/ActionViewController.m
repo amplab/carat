@@ -16,6 +16,7 @@
 #import "SHK.h"
 #import "CoreDataManager.h"
 #import "Reachability.h"
+#import "SVPullToRefresh.h"
 
 @implementation ActionViewController
 
@@ -246,6 +247,18 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self.actionTable addPullToRefreshWithActionHandler:^{
+        self.actionTable.showsPullToRefresh = NO;
+        if ([[CommunicationManager instance] isInternetReachable] == YES && // online
+            [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
+        {
+            [[CoreDataManager instance] updateLocalReportsFromServer];
+            [self updateView];
+        }
+        self.actionTable.showsPullToRefresh = YES;
+        [self.actionTable.pullToRefreshView stopAnimating];
+    }];
+    
     [self updateView];
 }
 
