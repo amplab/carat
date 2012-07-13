@@ -41,6 +41,7 @@
         [self.view setNeedsDisplay];
     } else {
         // *probably* no update in progress, reload table data while locking out view
+        [self.dataTable.pullToRefreshView stopAnimating];
         HUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
         [self.tabBarController.view addSubview:HUD];
         
@@ -72,15 +73,12 @@
     [self setReport:[[CoreDataManager instance] getBugs:NO]];
     
     [self.dataTable addPullToRefreshWithActionHandler:^{
-        self.dataTable.showsPullToRefresh = NO;
         if ([[CommunicationManager instance] isInternetReachable] == YES && // online
             [[CoreDataManager instance] getReportUpdateStatus] == nil) // not already updating
         {
             [[CoreDataManager instance] updateLocalReportsFromServer];
             [self updateView];
         }
-        self.dataTable.showsPullToRefresh = YES;
-        [self.dataTable.pullToRefreshView stopAnimating];
     }];
     
     [self updateView];
@@ -91,6 +89,12 @@
     [super viewWillAppear:animated];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
+        [self.dataTable.pullToRefreshView stopAnimating];
+    } else {
+        [self.dataTable.pullToRefreshView startAnimating];
+    }
     
     [self setReport:[[CoreDataManager instance] getBugs:NO]];
     
