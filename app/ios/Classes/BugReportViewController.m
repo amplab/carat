@@ -54,9 +54,12 @@
 }
 
 - (void)updateView {
-    [self setReport:[[CoreDataManager instance] getBugs:NO]];
-    [self.dataTable reloadData];
-    [self.view setNeedsDisplay];
+    HogBugReport * bugs = [[CoreDataManager instance] getBugs:NO];
+    if (bugs != nil) {
+        [self setReport:bugs];
+        [self.dataTable reloadData];
+        [self.view setNeedsDisplay];
+    }
 }
 
 #pragma mark - View lifecycle
