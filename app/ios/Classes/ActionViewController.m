@@ -371,9 +371,12 @@
     DetailScreenReport *dscWith = [[[CoreDataManager instance] getOSInfo:YES] retain];
     DetailScreenReport *dscWithout = [[[CoreDataManager instance] getOSInfo:NO] retain];
     
+    BOOL canUpgradeOS = [Utilities canUpgradeOS];
+    
     if (dscWith != nil && dscWithout != nil) {
         if (dscWith.expectedValue > 0 &&
-            dscWithout.expectedValue > 0) {
+            dscWithout.expectedValue > 0 &&
+            canUpgradeOS) {
             NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
             DLog(@"OS benefit is %d", benefit);
             if (benefit > 60) {
