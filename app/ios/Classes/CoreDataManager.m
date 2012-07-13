@@ -385,6 +385,7 @@ static NSMutableDictionary * daemonsList = nil;
 /**
  */
 - (BOOL) clearLocalAppReports : (NSManagedObjectContext *) managedObjectContext
+                forEntityType : (NSString *) entityType
 {
     NSError *error = nil;
     if (managedObjectContext != nil) 
@@ -404,7 +405,7 @@ static NSMutableDictionary * daemonsList = nil;
         // That will happen in the calling function.
         for (CoreDataAppReport *appReport in fetchedObjects)
         {
-            [managedObjectContext deleteObject:appReport];
+            if ([[appReport reportType] isEqualToString:entityType]) [managedObjectContext deleteObject:appReport];
         }
         
         return YES;
@@ -453,6 +454,7 @@ static NSMutableDictionary * daemonsList = nil;
 - (void) updateReportsFromServer
 {
     NSError *error = nil;
+    NSString *entityType = nil;
     
     NSManagedObjectContext *managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
     [managedObjectContext setUndoManager:nil];
@@ -559,8 +561,9 @@ static NSMutableDictionary * daemonsList = nil;
             }
         } else { DLog(@"%s Main report update failed.", __PRETTY_FUNCTION__); }
         
-        // Clear local app reports.
-        if ([self clearLocalAppReports : managedObjectContext] == NO)
+        entityType = @"Hog";
+        // Clear local hog reports.
+        if ([self clearLocalAppReports:managedObjectContext forEntityType:entityType] == NO)
             return;
         
         // Hog report
@@ -570,7 +573,7 @@ static NSMutableDictionary * daemonsList = nil;
         
         Feature *feature1 = [[[Feature alloc] init] autorelease];
         [feature1 setKey:@"ReportType"];
-        [feature1 setValue:@"Hog"];
+        [feature1 setValue:entityType];
         
         Feature *feature2 = [[[Feature alloc] init] autorelease];
         [feature2 setKey:@"Model"];
@@ -591,7 +594,7 @@ static NSMutableDictionary * daemonsList = nil;
                                                                            insertNewObjectForEntityForName:@"CoreDataAppReport" 
                                                                            inManagedObjectContext:managedObjectContext];
                 if (!hog.appNameIsSet) { 
-                    DLog(@"%s App name not set for Hog report, ignoring...", __PRETTY_FUNCTION__);
+                    DLog([[@"%s App name not set for " stringByAppendingString:entityType] stringByAppendingString:@" report, ignoring..."], __PRETTY_FUNCTION__);
                     continue; 
                 }
                 
@@ -606,7 +609,7 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataAppReport setExpectedValueWithout:(hog.expectedValueWithoutIsSet ? 
                                                          [NSNumber numberWithDouble:hog.expectedValueWithout] : 
                                                          [NSNumber numberWithDouble:0.0])];
-                [cdataAppReport setReportType:@"Hog"];
+                [cdataAppReport setReportType:entityType];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
                                                                   insertNewObjectForEntityForName:@"CoreDataDetail" 
@@ -621,15 +624,21 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
-        } else { DLog(@"%s Hog report update failed!", __PRETTY_FUNCTION__); }
+        } else { DLog([[@"%s " stringByAppendingString:entityType] stringByAppendingString:@" report update failed."], __PRETTY_FUNCTION__); }
         [list release];
+        
+        entityType = @"Bug";
+        
+        // Clear local bug reports.
+        if ([self clearLocalAppReports:managedObjectContext forEntityType:entityType] == NO)
+            return;
         
         // Bug report
         DLog(@"%s Updating bug report...", __PRETTY_FUNCTION__);
         reportUpdateStatus = @"(Updating bug report...)";
         [self postNotificationOnMainThread];
         
-        [feature1 setValue:@"Bug"];
+        [feature1 setValue:entityType];
         list = [[NSArray alloc] initWithObjects:feature1, feature2, nil];
         
         HogBugReport *bugReport = [[CommunicationManager instance] getHogOrBugReport:list];
@@ -643,7 +652,7 @@ static NSMutableDictionary * daemonsList = nil;
                                                                            insertNewObjectForEntityForName:@"CoreDataAppReport" 
                                                                            inManagedObjectContext:managedObjectContext];
                 if (!bug.appNameIsSet) { 
-                    DLog(@"%s App name not set for Bug report, ignoring...", __PRETTY_FUNCTION__);
+                    DLog([[@"%s App name not set for " stringByAppendingString:entityType] stringByAppendingString:@" report, ignoring..."], __PRETTY_FUNCTION__);
                     continue; 
                 }
                 
@@ -658,7 +667,7 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataAppReport setExpectedValueWithout:(bug.expectedValueWithoutIsSet ? 
                                                          [NSNumber numberWithDouble:bug.expectedValueWithout] : 
                                                          [NSNumber numberWithDouble:0.0])];
-                [cdataAppReport setReportType:@"Hog"];
+                [cdataAppReport setReportType:entityType];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
                                                                   insertNewObjectForEntityForName:@"CoreDataDetail" 
@@ -673,7 +682,7 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
-        } else { DLog(@"%s Bug report update failed.", __PRETTY_FUNCTION__); }
+        } else { DLog([[@"%s " stringByAppendingString:entityType] stringByAppendingString:@" report update failed."], __PRETTY_FUNCTION__); }
         [list release];
         
         // Save the entire stuff.
