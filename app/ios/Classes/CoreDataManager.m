@@ -658,7 +658,7 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataAppReport setExpectedValueWithout:(bug.expectedValueWithoutIsSet ? 
                                                          [NSNumber numberWithDouble:bug.expectedValueWithout] : 
                                                          [NSNumber numberWithDouble:0.0])];
-                [cdataAppReport setReportType:@"Hog"];
+                [cdataAppReport setReportType:@"Bug"];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
                                                                   insertNewObjectForEntityForName:@"CoreDataDetail" 
