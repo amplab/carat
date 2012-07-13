@@ -561,6 +561,18 @@ static NSMutableDictionary * daemonsList = nil;
             }
         } else { DLog(@"%s Main report update failed.", __PRETTY_FUNCTION__); }
         
+        // Save progress
+        @try {
+            if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+            {
+                DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+                return;
+            }
+        }
+        @catch (NSException *exception) {
+            DLog(@"%s Exception while trying to save coredata, %@, %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        }
+        
         entityType = @"Hog";
         // Clear local hog reports.
         if ([self clearLocalAppReports:managedObjectContext forEntityType:entityType] == NO)
@@ -624,8 +636,23 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
-        } else { DLog([[@"%s " stringByAppendingString:entityType] stringByAppendingString:@" report update failed."], __PRETTY_FUNCTION__); }
+        } else { 
+            DLog([[@"%s " stringByAppendingString:entityType] stringByAppendingString:@" report update failed."], __PRETTY_FUNCTION__);
+            [managedObjectContext rollback];
+        }
         [list release];
+        
+        // Save progress
+        @try {
+            if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+            {
+                DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+                return;
+            }
+        }
+        @catch (NSException *exception) {
+            DLog(@"%s Exception while trying to save coredata, %@, %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+        }
         
         entityType = @"Bug";
         
@@ -682,10 +709,13 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
-        } else { DLog([[@"%s " stringByAppendingString:entityType] stringByAppendingString:@" report update failed."], __PRETTY_FUNCTION__); }
+        } else {
+            DLog([[@"%s " stringByAppendingString:entityType] stringByAppendingString:@" report update failed."], __PRETTY_FUNCTION__);
+            [managedObjectContext rollback];
+        }
         [list release];
         
-        // Save the entire stuff.
+        // Save progress
         @try {
             if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
             {
