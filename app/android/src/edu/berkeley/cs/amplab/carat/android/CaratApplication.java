@@ -35,7 +35,7 @@ public class CaratApplication extends Application {
     public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24 * 3600 * 1000;
     // If this preference is true, register this as a new device on the Carat
     // server.
-    public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
+    public static final String PREFERENCE_FIRST_RUN = "carat.first.run.newuuid";
 
     // Check for and send new samples at most every 15 minutes, but only when
     // the user wakes up/starts Carat
