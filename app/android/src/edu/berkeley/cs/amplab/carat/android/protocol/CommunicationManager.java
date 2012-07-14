@@ -126,6 +126,9 @@ public class CommunicationManager {
                 p.edit()
                         .putBoolean(CaratApplication.PREFERENCE_FIRST_RUN,
                                 false).commit();
+                // Use new uuid after this registration.
+                p.edit().putBoolean(CaratApplication.PREFERENCE_NEW_UUID, true)
+                        .commit();
                 register = false;
             } catch (TException e) {
                 Log.e("CommunicationManager",
@@ -159,7 +162,12 @@ public class CommunicationManager {
             }
         }
 
-        String uuId = SamplingLibrary.getUuid(a);
+        // Only use new uuid if reg'd after this version for the first time.
+        boolean newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
+                false);
+        String uuId = SamplingLibrary.getAndroidId(a);
+        if (newuuid)
+            uuId = SamplingLibrary.getUuid(a);
         String model = SamplingLibrary.getModel();
         String OS = SamplingLibrary.getOsVersion();
 

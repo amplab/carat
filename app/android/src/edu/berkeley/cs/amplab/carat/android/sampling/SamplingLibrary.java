@@ -35,10 +35,12 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
@@ -1751,7 +1753,12 @@ public final class SamplingLibrary {
 
         // Construct sample and return it in the end
         Sample mySample = new Sample();
-        mySample.setUuId(SamplingLibrary.getUuid(context));
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean newUuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID, false);
+        if (newUuid)
+            mySample.setUuId(SamplingLibrary.getUuid(context));
+        else
+            mySample.setUuId(SamplingLibrary.getAndroidId(context));
         mySample.setTriggeredBy(action);
         // required always
         long now = System.currentTimeMillis();

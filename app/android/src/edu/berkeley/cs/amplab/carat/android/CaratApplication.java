@@ -35,7 +35,8 @@ public class CaratApplication extends Application {
     public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24 * 3600 * 1000;
     // If this preference is true, register this as a new device on the Carat
     // server.
-    public static final String PREFERENCE_FIRST_RUN = "carat.first.run.newuuid";
+    public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
+    public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
 
     // Check for and send new samples at most every 15 minutes, but only when
     // the user wakes up/starts Carat
@@ -471,12 +472,12 @@ public class CaratApplication extends Application {
             if (r.jScoreWith != null) {
                 double exp = r.jScoreWith.expectedValue;
                 if (exp > 0.0)
-                    bl = 100 / r.getModel().expectedValue;
+                    bl = 100 /exp;
                 else if (r.getModel() != null) {
                     exp = r.getModel().expectedValue;
                     Log.d(TAG, "Model expected value: " + exp);
                     if (exp > 0.0)
-                        bl = 100 / r.getModel().expectedValue;
+                        bl = 100 / exp;
                 }
                 // If not possible, try model battery life
             }
