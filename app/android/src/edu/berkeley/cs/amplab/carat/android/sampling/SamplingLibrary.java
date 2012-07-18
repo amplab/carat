@@ -1974,7 +1974,7 @@ public final class SamplingLibrary {
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
 
-        printAverageFeaturePower(context);
+        //printAverageFeaturePower(context);
         
         return mySample;
     }
