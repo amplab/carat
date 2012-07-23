@@ -125,5 +125,9 @@
     <string name="withotheroses">With other OS</string>
     <string name="withsimilarapps">With similar apps</string>
     <string name="withdifferentapps">With different apps</string>
+    
+    <string name="model">Model</string>
+    <string name="os">OS</string>
+    <string name="similarapps">Similar Apps</string>
 
 </resources>

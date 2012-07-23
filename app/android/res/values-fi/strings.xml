@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">Carat</string>
-    <string name="version_name">0.72</string>
     <string name="jscore">J-Scoresi:</string>
     <string name="batterylife">Keskim. akunkesto:</string>
     <string name="osver">KJ-versio:</string>
@@ -30,15 +27,6 @@
     <string name="myjscoreis">J-Scoreni on</string>
     
     <string name="appmanager">Sovellushallinta</string>
-
-    <color name="brown">#744618</color>
-    <color name="orange">#ff8331</color>
-    <color name="green">#127112</color>
-    <color name="black">#000000</color>
-    <color name="with">#f3b14d</color>
-    <color name="without">#007777</color>
-
-    <string name="zeroh">0h 0m 0s</string>
     
     <!-- Tabs. Also used elsewhere. -->
     <string name="tab_actions">Ehdotukset</string>
@@ -58,11 +46,6 @@
     <string name="updatingreports">Päivitetään raporttia</string>
     <string name="blacklist">Poistolista</string>
     <string name="finishing">näkymää</string>
-    
-    <string name="blackBackground">false</string>
-
-    <color name="background">#FFFFFFFF</color>
-    <color name="text">#000000</color>
 
     <string name="expected">Arvioitu parannus:</string>
     <string name="killappname">Tapa Sovellus</string>
@@ -124,5 +107,9 @@
     <string name="withotheroses">Muilla KJ:lla</string>
     <string name="withsimilarapps">Sinun sovelluksillasi</string>
     <string name="withdifferentapps">Eri sovelluksilla</string>
+    
+    <string name="model">Malli</string>
+    <string name="os">KJ-Versio</string>
+    <string name="similarapps">Käyttämäsi sovellukset</string>
     
 </resources>
