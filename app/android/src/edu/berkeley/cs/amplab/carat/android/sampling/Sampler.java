@@ -9,7 +9,6 @@ import com.flurry.android.FlurryAgent;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -118,9 +117,9 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		in.setAction(CaratApplication.ACTION_CARAT_SAMPLE);
 		// In reality, you would want to have a static variable for the
 		// request code instead of 192837
-		PendingIntent sender = PendingIntent.getBroadcast(context, 192837,
+		/*PendingIntent sender = PendingIntent.getBroadcast(context, 192837,
 				in, PendingIntent.FLAG_UPDATE_CURRENT);
-
+        */
 		// Get the AlarmManager service
 		/*AlarmManager am = (AlarmManager) context
 				.getSystemService(Activity.ALARM_SERVICE);

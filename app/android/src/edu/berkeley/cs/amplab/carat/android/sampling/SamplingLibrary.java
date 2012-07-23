@@ -56,7 +56,6 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
-import android.os.Debug;
 import android.os.SystemClock;
 
 /**
@@ -615,13 +614,15 @@ public final class SamplingLibrary {
                 }
             }
         }
+        String label = CaratApplication.labelForApp(c, processName);
         
-        if (processName != null && CaratApplication.labelForApp(c, processName).equals(processName)){
+        
+        if (processName != null && label != null && label.equals(processName)){
             //Log.v("Hiding uninstalled", processName);
             return true;
         }
         
-        FlurryAgent.logEvent("Whitelisted "+processName);
+        FlurryAgent.logEvent("Whitelisted "+processName + " \""+ label+"\"");
         return false;
     }
     
@@ -733,7 +734,7 @@ public final class SamplingLibrary {
         }
 
         // FIXME: These are not used yet.
-        ActivityManager pActivityManager = (ActivityManager) context
+        /*ActivityManager pActivityManager = (ActivityManager) context
                 .getSystemService(Activity.ACTIVITY_SERVICE);
         Debug.MemoryInfo[] memoryInfo = pActivityManager
                 .getProcessMemoryInfo(procMem);
@@ -742,8 +743,8 @@ public final class SamplingLibrary {
             // ProcessInfo object
             // FIXME: Not used yet, Sample needs more fields
             // FIXME: Which memory fields to choose?
-            int memory = info.dalvikPrivateDirty;
-        }
+            //int memory = info.dalvikPrivateDirty;
+        }*/
 
         return result;
     }
