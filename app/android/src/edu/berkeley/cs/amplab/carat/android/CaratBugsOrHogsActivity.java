@@ -6,6 +6,7 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 import android.content.Context;
@@ -16,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -159,10 +159,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 	}
 
 	private void initDetailView() {
-		WebView webview = (WebView) findViewById(R.id.detailView);
-		// Fixes the white flash when showing the page for the first time.
-		if (getString(R.string.blackBackground).equals("true"))
-			webview.setBackgroundColor(0);
+		LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.detailView);
 
 		webview.loadUrl("file:///android_asset/detailinfo.html");
 		webview.setOnTouchListener(new FlipperBackListener(this, vf, vf

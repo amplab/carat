@@ -11,18 +11,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
     
-    <WebView
+    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/killAppView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </WebView>
+    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
 
-      <WebView
+      <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/upgradeOsView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </WebView>
+    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
     
 </edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper>

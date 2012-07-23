@@ -320,19 +320,19 @@ Carat My Device Screen layout
 
     </ScrollView>
 
-    <WebView
+    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/jscoreView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </WebView>
+    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
     
-    <WebView
+    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/memoryView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </WebView>
+    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
 
     <ListView
         android:id="@+id/processList"

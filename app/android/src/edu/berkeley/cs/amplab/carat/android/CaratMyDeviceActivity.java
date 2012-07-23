@@ -9,6 +9,7 @@ import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
@@ -24,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -116,40 +116,16 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     }
 
     private void initJscoreView() {
-        WebView webview = (WebView) findViewById(R.id.jscoreView);
-        // Fixes the white flash when showing the page for the first time.
-        if (getString(R.string.blackBackground).equals("true"))
-            webview.setBackgroundColor(0);
-        /*
-         * 
-         * 
-         * webview.getSettings().setJavaScriptEnabled(true);
-         */
-        /*
-         * To display the amplab_logo, we need to have it stored in assets as
-         * well. If we don't want to do that, the loadConvoluted method below
-         * avoids it.
-         */
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.jscoreView);
+       
         webview.loadUrl("file:///android_asset/jscoreinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
 
     private void initMemoryView() {
-        WebView webview = (WebView) findViewById(R.id.memoryView);
-        // Fixes the white flash when showing the page for the first time.
-        if (getString(R.string.blackBackground).equals("true"))
-            webview.setBackgroundColor(0);
-        /*
-         * 
-         * 
-         * webview.getSettings().setJavaScriptEnabled(true);
-         */
-        /*
-         * To display the amplab_logo, we need to have it stored in assets as
-         * well. If we don't want to do that, the loadConvoluted method below
-         * avoids it.
-         */
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.memoryView);
+       
         webview.loadUrl("file:///android_asset/memoryinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
@@ -190,10 +166,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         result[0] = w;
         result[1] = detailPage;
 
-        final WebView webview = new WebView(getApplicationContext());
-        // Fixes the white flash when showing the page for the first time.
-        if (getString(R.string.blackBackground).equals("true"))
-            webview.setBackgroundColor(0);
+        final LocalizedWebView webview = new LocalizedWebView(getApplicationContext());
 
         webview.loadUrl("file:///android_asset/detailinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
@@ -263,7 +236,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport os = r.getOs();
             DetailScreenReport osWithout = r.getOsWithout();
 
-            String label = "OS: " + SamplingLibrary.getOsVersion();
+            String label = getString(R.string.os) +": " + SamplingLibrary.getOsVersion();
             Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
             ((TextView) osViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) osViewPage.findViewById(R.id.appIcon))
@@ -291,7 +264,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport model = r.getModel();
             DetailScreenReport modelWithout = r.getModelWithout();
 
-            String label = "Model: " + SamplingLibrary.getModel();
+            String label = getString(R.string.model) +": " + SamplingLibrary.getModel();
             Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
             ((TextView) modelViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) modelViewPage.findViewById(R.id.appIcon))
@@ -320,7 +293,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport similar = r.getSimilarApps();
             DetailScreenReport similarWithout = r.getSimilarAppsWithout();
 
-            String label = "Similar apps";
+            String label = getString(R.string.similarapps);
             Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
             ((TextView) appsViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) appsViewPage.findViewById(R.id.appIcon))

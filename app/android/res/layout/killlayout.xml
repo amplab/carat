@@ -108,7 +108,7 @@
             android:background="#77000000"
             />
 
-    <WebView
+    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         android:id="@+id/killView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

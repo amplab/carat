@@ -1,17 +1,12 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -27,6 +22,7 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
+import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 public class CaratSuggestionsActivity extends BaseVFActivity {
@@ -194,10 +190,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         LayoutInflater inflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View killPage = inflater.inflate(R.layout.killlayout, null);
-        WebView webview = (WebView) killPage.findViewById(R.id.killView);
-        // Fixes the white flash when showing the page for the first time.
-        if (getString(R.string.blackBackground).equals("true"))
-            webview.setBackgroundColor(0);
+        LocalizedWebView webview = (LocalizedWebView) killPage.findViewById(R.id.killView);
         String osVer = SamplingLibrary.getOsVersion();
         // FIXME: KLUDGE. Should be smarter with the version number.
         if (osVer.startsWith("2."))
@@ -220,10 +213,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     }
 
     private void initUpgradeOsView() {
-        WebView webview = (WebView) findViewById(R.id.upgradeOsView);
-        // Fixes the white flash when showing the page for the first time.
-        if (getString(R.string.blackBackground).equals("true"))
-            webview.setBackgroundColor(0);
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.upgradeOsView);
         webview.loadUrl("file:///android_asset/upgradeos.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(android.R.id.list))));
