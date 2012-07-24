@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.berkeley.cs.amplab.carat.android"
-    android:versionCode="43"
+    android:versionCode="44"
     android:versionName="@string/version_name"
     >
 
@@ -19,10 +19,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- For Sampling network stuff -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Required on some phones to check wifi signal strength. Should not be required. -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Required for IMEI / MEID for user differentiation. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
