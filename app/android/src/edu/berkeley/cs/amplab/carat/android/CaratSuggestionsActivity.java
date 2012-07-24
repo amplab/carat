@@ -123,24 +123,24 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     }
                     txtType.setText(fullObject.getAppPriority());
 
-                    if (raw.equals("Disable bluetooth")) {
-                        double benefitOther = SamplingLibrary
-                                .bluetoothBenefit(c);
+                    /*if (raw.equals("Disable bluetooth")) {
+                        double benefitOther = PowerProfileHelper.
+                                bluetoothBenefit(c);
                         hours = (int) (benefitOther);
                         min = (int) (benefitOther * 60);
                         min -= hours * 60;
                     } else if (raw.equals("Disable Wifi")) {
-                        double benefitOther = SamplingLibrary.wifiBenefit(c);
+                        double benefitOther = PowerProfileHelper.wifiBenefit(c);
                         hours = (int) (benefitOther);
                         min = (int) (benefitOther * 60);
                         min -= hours * 60;
                     } else if (raw.equals("Dim the Screen")) {
-                        double benefitOther = SamplingLibrary
-                                .screenBrightnessBenefit(c);
+                        double benefitOther = PowerProfileHelper.
+                                screenBrightnessBenefit(c);
                         hours = (int) (benefitOther);
                         min = (int) (benefitOther * 60);
                         min -= hours * 60;
-                    }
+                    }*/
 
                     txtBenefit.setText(hours + "h " + min + "m");
 

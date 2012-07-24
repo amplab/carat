@@ -286,7 +286,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             }
             holder.txtType.setText(CaratApplication.translatedPriority(item.getAppPriority()));
             
-            if (raw.equals(a.getString(R.string.disablebluetooth))){
+            /*if (raw.equals(a.getString(R.string.disablebluetooth))){
                 double benefitOther=SamplingLibrary.bluetoothBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
                 min= (int) ((benefitOther- hours)*60);
@@ -300,7 +300,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                 double benefitOther=SamplingLibrary.screenBrightnessBenefit(a.getApplicationContext());
                 hours = (int) (benefitOther);
                 min = (int) ((benefitOther- hours)*60); 
-            }
+            }*/
             
             holder.txtBenefit.setText(hours + "h " + min + "m");
 

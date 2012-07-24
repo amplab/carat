@@ -216,7 +216,6 @@ public class CommunicationManager {
 
         if (success) {
             progress += 20;
-
             CaratApplication.setActionProgress(
                     progress,
                     bl ? a.getString(R.string.blacklist) : a
@@ -304,37 +303,45 @@ public class CommunicationManager {
     }
 
     private void refreshBlacklist() {
-        try {
-            List<String> blacklist = new ArrayList<String>();
-            List<String> globlist = new ArrayList<String>();
-            URL u = new URL(DAEMONS_URL);
-            URLConnection c = u.openConnection();
-            InputStream is = c.getInputStream();
-            if (is != null) {
-                BufferedReader rd = new BufferedReader(
-                        new InputStreamReader(is));
-                String s = rd.readLine();
-                while (s != null) {
-                    // Optimization for android: Only add names that have a dot
-                    // Does not work, since for example "system" has no dots.
-                    blacklist.add(s);
-                    if (s.endsWith("*") || s.startsWith("*"))
-                        globlist.add(s);
-                    s = rd.readLine();
+        // I/O, let's do it on the background.
+        new Thread() {
+            public void run() {
+                final List<String> blacklist = new ArrayList<String>();
+                final List<String> globlist = new ArrayList<String>();
+                try {
+                    URL u = new URL(DAEMONS_URL);
+                    URLConnection c = u.openConnection();
+                    InputStream is = c.getInputStream();
+                    if (is != null) {
+                        BufferedReader rd = new BufferedReader(
+                                new InputStreamReader(is));
+                        String s = rd.readLine();
+                        while (s != null) {
+                            // Optimization for android: Only add names that
+                            // have a dot
+                            // Does not work, since for example "system" has no
+                            // dots.
+                            blacklist.add(s);
+                            if (s.endsWith("*") || s.startsWith("*"))
+                                globlist.add(s);
+                            s = rd.readLine();
+                        }
+                        rd.close();
+                        Log.v(TAG, "Downloaded blacklist: " + blacklist);
+                        Log.v(TAG, "Downloaded globlist: " + globlist);
+                        CaratApplication.s.writeBlacklist(blacklist);
+                        // List of *something or something* expressions:
+                        if (globlist.size() > 0)
+                            CaratApplication.s.writeGloblist(globlist);
+
+                    }
+                } catch (Throwable th) {
+                    Log.e(TAG, "Could not retrieve blacklist!", th);
                 }
-                rd.close();
-                Log.v(TAG, "Downloaded blacklist: " + blacklist);
-                Log.v(TAG, "Downloaded globlist: " + globlist);
-                CaratApplication.s.writeBlacklist(blacklist);
-                // List of *something or something* expressions:
-                if (globlist.size() > 0)
-                    CaratApplication.s.writeGloblist(globlist);
+                // So we don't try again too often.
+                CaratApplication.s.writeBlacklistFreshness();
             }
-        } catch (Throwable th) {
-            Log.e(TAG, "Could not retrieve blacklist!", th);
-        }
-        // So we don't try again too often.
-        CaratApplication.s.writeBlacklistFreshness();
+        }.start();
     }
 
     public static void safeClose(CaratService.Client c) {
