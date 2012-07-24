@@ -88,7 +88,7 @@ public class CaratApplication extends Application {
                 "Foreground app");
 
         importanceToString.put(IMPORTANCE_PERCEPTIBLE, "Perceptible task");
-        
+
         importanceToString.put(IMPORTANCE_SUGGESTION, "Suggestion");
     }
 
@@ -387,75 +387,81 @@ public class CaratApplication extends Application {
     }
 
     public void refreshUi() {
-        boolean connecting = false;
+        new Thread() {
+            public void run() {
+                boolean connecting = false;
 
-        refreshActions();
-        String networkStatus = SamplingLibrary
-                .getNetworkStatus(getApplicationContext());
-        if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED
-                && getApplicationContext() != null) {
-            // Show we are updating...
-            CaratApplication.setActionInProgress();
-            try {
-                c.refreshAllReports();
-                // Log.d(TAG, "Reports refreshed.");
-            } catch (Throwable th) {
-                // Any sort of malformed response, too short string,
-                // etc...
-                Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
-                th.printStackTrace();
+                refreshActions();
+                String networkStatus = SamplingLibrary
+                        .getNetworkStatus(getApplicationContext());
+                if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED
+                        && getApplicationContext() != null) {
+                    // Show we are updating...
+                    CaratApplication.setActionInProgress();
+                    try {
+                        c.refreshAllReports();
+                        // Log.d(TAG, "Reports refreshed.");
+                    } catch (Throwable th) {
+                        // Any sort of malformed response, too short string,
+                        // etc...
+                        Log.w(TAG, "Failed to refresh reports: " + th
+                                + TRY_AGAIN);
+                        th.printStackTrace();
+                    }
+                    connecting = false;
+
+                } else if (networkStatus
+                        .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
+                    Log.w(TAG, "Network status: " + networkStatus
+                            + ", trying again in 10s.");
+                    connecting = true;
+                }
+
+                // do this regardless
+                setReportData();
+                // Update UI elements
+                CaratApplication.refreshActions();
+                CaratApplication.refreshBugs();
+                CaratApplication.refreshHogs();
+                CaratApplication.setActionProgress(90,
+                        getString(R.string.finishing), false);
+
+                if (!connecting)
+                    CaratApplication.setActionFinished();
+
+                if (connecting) {
+                    // wait for wifi to come up
+                    try {
+                        Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
+                    } catch (InterruptedException e1) {
+                        // ignore
+                    }
+                    connecting = false;
+
+                    // Show we are updating...
+                    CaratApplication.setActionInProgress();
+                    try {
+                        c.refreshAllReports();
+                        // Log.d(TAG, "Reports refreshed.");
+                    } catch (Throwable th) {
+                        // Any sort of malformed response, too short string,
+                        // etc...
+                        Log.w(TAG, "Failed to refresh reports: " + th
+                                + TRY_AGAIN);
+                        th.printStackTrace();
+                    }
+                    connecting = false;
+
+                    // do this regardless
+                    setReportData();
+                    // Update UI elements
+                    refreshActions();
+                    refreshBugs();
+                    refreshHogs();
+                    setActionProgress(90, getString(R.string.finishing), false);
+                }
             }
-            connecting = false;
-
-        } else if (networkStatus
-                .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
-            Log.w(TAG, "Network status: " + networkStatus
-                    + ", trying again in 10s.");
-            connecting = true;
-        }
-
-        // do this regardless
-        setReportData();
-        // Update UI elements
-        CaratApplication.refreshActions();
-        CaratApplication.refreshBugs();
-        CaratApplication.refreshHogs();
-        CaratApplication.setActionProgress(90, getString(R.string.finishing),
-                false);
-
-        if (!connecting)
-            CaratApplication.setActionFinished();
-
-        if (connecting) {
-            // wait for wifi to come up
-            try {
-                Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
-            } catch (InterruptedException e1) {
-                // ignore
-            }
-            connecting = false;
-
-            // Show we are updating...
-            CaratApplication.setActionInProgress();
-            try {
-                c.refreshAllReports();
-                // Log.d(TAG, "Reports refreshed.");
-            } catch (Throwable th) {
-                // Any sort of malformed response, too short string,
-                // etc...
-                Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
-                th.printStackTrace();
-            }
-            connecting = false;
-
-            // do this regardless
-            setReportData();
-            // Update UI elements
-            refreshActions();
-            refreshBugs();
-            refreshHogs();
-            setActionProgress(90, getString(R.string.finishing), false);
-        }
+        }.start();
     }
 
     public static void setReportData() {
@@ -472,7 +478,7 @@ public class CaratApplication extends Application {
             if (r.jScoreWith != null) {
                 double exp = r.jScoreWith.expectedValue;
                 if (exp > 0.0)
-                    bl = 100 /exp;
+                    bl = 100 / exp;
                 else if (r.getModel() != null) {
                     exp = r.getModel().expectedValue;
                     Log.d(TAG, "Model expected value: " + exp);
