@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Carat</string>
-    <string name="version_name">0.73</string>
+    <string name="version_name">0.74</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
@@ -129,5 +129,8 @@
     <string name="model">Model</string>
     <string name="os">OS</string>
     <string name="similarapps">Similar Apps</string>
+    
+    <string name="wifionly">Use WiFi only</string>
+    <string name="wifionlyused">Using WiFi only</string>
 
 </resources>

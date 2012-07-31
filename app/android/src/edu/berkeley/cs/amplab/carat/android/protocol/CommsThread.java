@@ -2,9 +2,9 @@ package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.util.SortedMap;
 
-import com.flurry.android.FlurryAgent;
-
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -60,7 +60,15 @@ public class CommsThread extends Thread {
 
         while (isRunning) {
             String networkStatus = SamplingLibrary.getNetworkStatus(c);
-            if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED) {
+            String networkType = SamplingLibrary.getNetworkType(c);
+            
+            final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(c);
+            final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
+            
+            boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
+                    || networkType.equals("WIFI");
+                        
+            if (connected) {
                 SortedMap<Long, Sample> map = CaratSampleDB.getInstance(c)
                         .queryOldestSamples(
                                 CaratApplication.COMMS_MAX_UPLOAD_BATCH);
@@ -73,7 +81,7 @@ public class CommsThread extends Thread {
                                         .values());
                                 if (success) {
                                     tries = 2;
-                                    FlurryAgent.logEvent("UploadSamples");
+                                    //FlurryAgent.logEvent("UploadSamples");
                                     Log.d(TAG, "Uploaded " + map.size()
                                             + " samples.");
                                     CaratApplication.s.samplesReported(map.size());

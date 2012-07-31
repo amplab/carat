@@ -14,9 +14,11 @@ import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ public class CaratApplication extends Application {
     // If this preference is true, register this as a new device on the Carat
     // server.
     public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
+    public static final String PREFERENCE_WIFI_ONLY = "carat.use.wifi";
     public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
 
     // Check for and send new samples at most every 15 minutes, but only when
@@ -390,12 +393,19 @@ public class CaratApplication extends Application {
         new Thread() {
             public void run() {
                 boolean connecting = false;
-
+                Context co = getApplicationContext();
+                
                 refreshActions();
+                final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
+                final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
                 String networkStatus = SamplingLibrary
                         .getNetworkStatus(getApplicationContext());
-                if (networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED
-                        && getApplicationContext() != null) {
+                String networkType = SamplingLibrary.getNetworkType(co);
+                
+                boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
+                        || networkType.equals("WIFI");
+                
+                if (connected && c != null) {
                     // Show we are updating...
                     CaratApplication.setActionInProgress();
                     try {

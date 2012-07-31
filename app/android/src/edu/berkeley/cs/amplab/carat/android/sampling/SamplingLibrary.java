@@ -185,7 +185,7 @@ public final class SamplingLibrary {
                     hexString.append(hx);
             }
             String uuid = hexString.toString().substring(0, UUID_LENGTH);
-            FlurryAgent.logEvent("ANDROID_ID=" + aID +" UUID=" + uuid);
+            //FlurryAgent.logEvent("ANDROID_ID=" + aID +" UUID=" + uuid);
             return uuid;
         } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
@@ -623,7 +623,7 @@ public final class SamplingLibrary {
             return true;
         }
         
-        FlurryAgent.logEvent("Whitelisted "+processName + " \""+ label+"\"");
+        //FlurryAgent.logEvent("Whitelisted "+processName + " \""+ label+"\"");
         return false;
     }
     

@@ -11,8 +11,10 @@ import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -151,7 +153,7 @@ public class CaratMainActivity extends TabActivity {
         intent = new Intent().setClass(this, CaratAboutActivity.class);
         spec = tabHost
                 .newTabSpec(getString(R.string.tab_about))
-                .setIndicator("About", res.getDrawable(R.drawable.ic_tab_about))
+                .setIndicator(getString(R.string.tab_about), res.getDrawable(R.drawable.ic_tab_about))
                 .setContent(intent);
         tabHost.addTab(spec);
 
@@ -415,6 +417,33 @@ public class CaratMainActivity extends TabActivity {
                 }
             }
         );*/
+        
+        final MenuItem wifiOnly = menu.add(R.string.wifionly);
+        //wifiOnly.setCheckable(true);
+        //wifiOnly.setChecked(useWifiOnly);
+        final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratMainActivity.this);
+        if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
+            wifiOnly.setTitle(R.string.wifionlyused);
+        wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+                boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
+                if (useWifiOnly){
+                    p.edit()
+                    .putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY,
+                            false).commit();
+                    //wifiOnly.setChecked(false);
+                    wifiOnly.setTitle(R.string.wifionly);
+                }else{
+                    p.edit()
+                    .putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY,
+                            true).commit();
+                    //wifiOnly.setChecked(true);
+                    wifiOnly.setTitle(R.string.wifionlyused);
+                }
+                return true;
+            }
+        });
         
         MenuItem shareItem = menu.add(R.string.share);
         shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {

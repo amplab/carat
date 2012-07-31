@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.flurry.android.FlurryAgent;
-
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -158,7 +156,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
 			long id = ds.putSample(s);
 			Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
-			FlurryAgent.logEvent(intent.getAction());
+			//FlurryAgent.logEvent(intent.getAction());
 			/*Toast.makeText(context,
 					"Took sample " + id + " for " + intent.getAction(),
 					Toast.LENGTH_LONG).show();*/
@@ -175,7 +173,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
             distance = lastKnownLocation.distanceTo(location);
             HashMap<String, Double> m = new HashMap<String, Double>();
             m.put("distanceTraveled", distance);
-            FlurryAgent.logEvent("LocationChanged", m);
+            //FlurryAgent.logEvent("LocationChanged", m);
             /*CharSequence text = "Location change with distance = " + distance;
             Toast.makeText(context, text, Toast.LENGTH_LONG).show();*/
         }
