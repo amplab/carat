@@ -34,13 +34,60 @@ public class CommunicationManager {
 
     private CaratApplication a = null;
 
+    private boolean registered = false;
     private boolean register = true;
+    private boolean newuuid = false;
     private SharedPreferences p = null;
 
     public CommunicationManager(CaratApplication a) {
         this.a = a;
         p = PreferenceManager.getDefaultSharedPreferences(this.a);
-        register = p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
+        
+        /*Either:
+         * 1. Never registered -> register
+         * 2. registered, but no stored uuid -> register
+         * 3. registered, with stored uuid, but uuid, model or os are different -> register
+         * 4. registered, all fields equal to stored -> do not register
+         */
+        
+        newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
+                false);
+        registered = !p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
+        register = !registered;
+        String storedUuid = p.getString(CaratApplication.REGISTERED_UUID, null);
+        if (!register) {
+            if (storedUuid == null)
+                register = true;
+            else {
+                String storedOs = p.getString(CaratApplication.REGISTERED_OS,
+                        null);
+                String storedModel = p.getString(
+                        CaratApplication.REGISTERED_MODEL, null);
+
+                String uuid = null;
+                if (!newuuid) {
+                    uuid = SamplingLibrary.getAndroidId(a);
+                } else {
+                    uuid = SamplingLibrary.getUuid(a);
+                }
+
+                String os = SamplingLibrary.getOsVersion();
+                String model = SamplingLibrary.getModel();
+
+                if (storedUuid == null
+                        || os == null
+                        || model == null
+                        || storedModel == null
+                        || storedOs == null
+                        || uuid == null
+                        || !(uuid.equals(storedUuid) && storedOs.equals(os) && storedModel
+                                .equals(model))) {
+                    // need to re-reg
+                    register = true;
+                } else
+                    register = false;
+            }
+        }
     }
 
     private void registerMe(CaratService.Client instance, String uuId,
@@ -115,7 +162,13 @@ public class CommunicationManager {
 
     private void registerOnFirstRun(CaratService.Client instance) {
         if (register) {
-            String uuId = SamplingLibrary.getUuid(a.getApplicationContext());
+            String uuId = null;
+            // Only use new uuid if reg'd after this version for the first time.
+            if (registered && !newuuid){
+                uuId = SamplingLibrary.getAndroidId(a);
+            }else{
+                uuId = SamplingLibrary.getUuid(a);
+            }
             String os = SamplingLibrary.getOsVersion();
             String model = SamplingLibrary.getModel();
             Log.d("CommunicationManager",
@@ -126,10 +179,17 @@ public class CommunicationManager {
                 p.edit()
                         .putBoolean(CaratApplication.PREFERENCE_FIRST_RUN,
                                 false).commit();
+                if (!registered){
                 // Use new uuid after this registration.
                 p.edit().putBoolean(CaratApplication.PREFERENCE_NEW_UUID, true)
                         .commit();
+                    newuuid = true;
+                }
                 register = false;
+                registered = true;
+                p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
+                p.edit().putString(CaratApplication.REGISTERED_OS, os).commit();
+                p.edit().putString(CaratApplication.REGISTERED_MODEL, model).commit();
             } catch (TException e) {
                 Log.e("CommunicationManager",
                         "Registration failed, will try again next time: " + e);
@@ -163,7 +223,7 @@ public class CommunicationManager {
         }
 
         // Only use new uuid if reg'd after this version for the first time.
-        boolean newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
+        newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
                 false);
         String uuId = SamplingLibrary.getAndroidId(a);
         if (newuuid)

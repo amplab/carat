@@ -38,6 +38,9 @@ public class CaratApplication extends Application {
     // If this preference is true, register this as a new device on the Carat
     // server.
     public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
+    public static final String REGISTERED_UUID = "carat.registered.uuid";
+    public static final String REGISTERED_OS = "carat.registered.os";
+    public static final String REGISTERED_MODEL = "carat.registered.model";
     public static final String PREFERENCE_WIFI_ONLY = "carat.use.wifi";
     public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
 
