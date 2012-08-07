@@ -121,7 +121,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                         txtName.setText(label);
                         killButton.setText(label);
                     }
-                    txtType.setText(fullObject.getAppPriority());
+                    txtType.setText(CaratApplication.translatedPriority(fullObject.getAppPriority()));
 
                     /*if (raw.equals("Disable bluetooth")) {
                         double benefitOther = PowerProfileHelper.
