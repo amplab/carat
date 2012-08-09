@@ -78,6 +78,7 @@
     <!-- Actions -->
     
     <string name="kill">Lopeta </string>
+    <string name="killed">lopetettu</string>
     <string name="restart">Uudelleenk. </string>
     <string name="osupgrade">Päivitä käyttöjärjestelmä</string>
     <string name="information">tieto</string>

@@ -93,7 +93,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                             .findViewById(R.id.suggestion_type);
                     TextView txtBenefit = (TextView) killView
                             .findViewById(R.id.expectedBenefit);
-                    Button killButton = (Button) killView
+                    final Button killButton = (Button) killView
                             .findViewById(R.id.killButton);
 
                     final String label = CaratApplication.labelForApp(c, raw);
@@ -111,10 +111,14 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     if (type == Type.BUG || type == Type.HOG) {
                         txtName.setText(label);
                         killButton.setText(getString(R.string.kill) +" "+ label);
+                        killButton.setEnabled(true);
                         killButton.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View arg0) {
+                                killButton.setEnabled(false);
+                                killButton.setText(label + " " +getString(R.string.killed));
                                 SamplingLibrary.killApp(c, raw, label);
+                                //onBackPressed();
                             }
                         });
                     } else { // Other action

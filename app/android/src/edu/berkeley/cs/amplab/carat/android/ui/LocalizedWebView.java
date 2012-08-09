@@ -101,5 +101,8 @@ public class LocalizedWebView extends WebView {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        // If all else fails:
+        super.loadUrl(url);
+        return;
     }
 }

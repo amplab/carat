@@ -96,6 +96,7 @@
     <!-- Actions -->
     
     <string name="kill">Kill</string>
+    <string name="killed">killed</string>
     <string name="restart">Restart</string>
     <string name="osupgrade">Upgrade the OS</string>
     <string name="information">Information</string>
