@@ -242,7 +242,7 @@ public class CaratDataStorage {
      */
     public List<String> readBlacklist() {
         Object o = readObject(BLACKLIST_FILE);
-        Log.d("CaratDataStorage", "Read blacklist: " + o);
+        //Log.d("CaratDataStorage", "Read blacklist: " + o);
         if (o != null) {
             blacklistedApps = new WeakReference<List<String>>((List<String>) o);
             return (List<String>) o;
@@ -267,7 +267,7 @@ public class CaratDataStorage {
      */
     public List<String> readGloblist() {
         Object o = readObject(GLOBLIST_FILE);
-        Log.d("CaratDataStorage", "Read glob blacklist: " + o);
+        //Log.d("CaratDataStorage", "Read glob blacklist: " + o);
         if (o != null) {
             blacklistedGlobs = new WeakReference<List<String>>((List<String>) o);
             return (List<String>) o;
@@ -414,7 +414,7 @@ public class CaratDataStorage {
 
     public SimpleHogBug[] readBugReport() {
         Object o = readObject(BUGFILE);
-        Log.d("CaratDataStorage", "Read Bugs: " + o);
+        //Log.d("CaratDataStorage", "Read Bugs: " + o);
         if (o == null || !(o instanceof SimpleHogBug[]))
             return null;
         SimpleHogBug[] r = (SimpleHogBug[]) o;
@@ -424,7 +424,7 @@ public class CaratDataStorage {
 
     public SimpleHogBug[] readHogReport() {
         Object o = readObject(HOGFILE);
-        Log.d("CaratDataStorage", "Read Hogs: " + o);
+        //Log.d("CaratDataStorage", "Read Hogs: " + o);
         if (o == null || !(o instanceof SimpleHogBug[]))
             return null;
         SimpleHogBug[] r = (SimpleHogBug[]) o;

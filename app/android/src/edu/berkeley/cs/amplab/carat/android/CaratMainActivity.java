@@ -6,12 +6,15 @@ import java.util.Properties;
 
 import com.flurry.android.FlurryAgent;
 import com.zubhium.ZubhiumSDK;
+import com.zubhium.interfaces.ZubhiumListener;
+import com.zubhium.utils.ZubhiumError;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -460,16 +463,37 @@ public class CaratMainActivity extends TabActivity {
         });
         
         feedbackItem = menu.add(R.string.feedback);
-        feedbackItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-
-            @Override
-            public boolean onMenuItemClick(MenuItem arg0) {
-                if (sdk != null)
-                    sdk.openFeedbackDialog(CaratMainActivity.this);
-                return true;
-            }
-        });
+        feedbackItem.setOnMenuItemClickListener(new MenuListener());
         return true;
     }
 
+    /**
+     * Class to handle Zubhium feedback better. The only problem is that on
+     * pressing cancel in the feedback dialog, the orientation is not freed
+     * again.
+     * 
+     * @author Eemil Lagerspetz
+     * 
+     */
+    private class MenuListener implements OnMenuItemClickListener, ZubhiumListener{
+
+        @Override
+        public boolean onMenuItemClick(MenuItem arg0) {
+            if (sdk != null){
+                //CaratMainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+                sdk.openFeedbackDialog(CaratMainActivity.this, this);
+            }
+            return true;
+        }
+        
+        @Override
+        public void onZubhiumActionCompleted() {
+            //CaratMainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        }
+
+        @Override
+        public void onZubhiumError(ZubhiumError arg0) {
+            //CaratMainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        }
+    }
 }
