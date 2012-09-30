@@ -5,13 +5,11 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.flurry.android.FlurryAgent;
-import com.zubhium.ZubhiumSDK;
-import com.zubhium.interfaces.ZubhiumListener;
-import com.zubhium.utils.ZubhiumError;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -56,12 +54,8 @@ public class CaratMainActivity extends TabActivity {
 
     // Hold the tabs of the UI.
     public static TabHost tabHost = null;
-
-    // Zubhium SDK
-    ZubhiumSDK sdk = null;
-
+    
     // Key File
-    private static final String ZUBHIUM_KEYFILE = "zubhium.properties";
     private static final String FLURRY_KEYFILE = "flurry.properties";
 
     private MenuItem feedbackItem = null;
@@ -82,27 +76,6 @@ public class CaratMainActivity extends TabActivity {
         fullVersion = getString(R.string.app_name) + " "
                 + getString(R.string.version_name);
 
-        String secretKey = null;
-        Properties properties = new Properties();
-        try {
-            InputStream raw = CaratMainActivity.this.getAssets().open(
-                    ZUBHIUM_KEYFILE);
-            if (raw != null) {
-                properties.load(raw);
-                if (properties.containsKey("secretkey"))
-                    secretKey = properties
-                            .getProperty("secretkey", "secretkey");
-                Log.d(TAG, "Set secret key.");
-            } else
-                Log.e(TAG, "Could not open zubhium key file!");
-        } catch (IOException e) {
-            Log.e(TAG, "Could not open zubhium key file: " + e.toString());
-        }
-        if (secretKey != null) {
-            sdk = ZubhiumSDK.getZubhiumSDKInstance(getApplicationContext(),
-                    secretKey, fullVersion);
-            sdk.registerUpdateReceiver(CaratMainActivity.this);
-        }
         setTitleNormal();
 
         Resources res = getResources(); // Resource object to get Drawables
@@ -391,13 +364,11 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     protected void onDestroy() {
-        if (sdk != null)
-            sdk.unRegisterUpdateReceiver();
         super.onDestroy();
     }
 
     /**
-     * Show Zubhium menu here.
+     * Show share, feedback, wifi only menu here.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -468,32 +439,43 @@ public class CaratMainActivity extends TabActivity {
     }
 
     /**
-     * Class to handle Zubhium feedback better. The only problem is that on
-     * pressing cancel in the feedback dialog, the orientation is not freed
-     * again.
+     * Class to handle feedback form.
      * 
      * @author Eemil Lagerspetz
      * 
      */
-    private class MenuListener implements OnMenuItemClickListener, ZubhiumListener{
+    private class MenuListener implements OnMenuItemClickListener{
 
         @Override
         public boolean onMenuItemClick(MenuItem arg0) {
-            if (sdk != null){
-                //CaratMainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
-                sdk.openFeedbackDialog(CaratMainActivity.this, this);
+            int jscore = CaratApplication.getJscore();
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            Context a = getApplicationContext();
+            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
+            
+            // Which uuid scheme is the user using?
+            boolean newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
+                    false);
+            boolean registered = !p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
+            String uuId = "";
+            if (registered && !newuuid){
+                uuId = SamplingLibrary.getAndroidId(a);
+            }else{
+                uuId = SamplingLibrary.getUuid(a);
             }
+            String os = SamplingLibrary.getOsVersion();
+            String model = SamplingLibrary.getModel();
+            
+            // Emulator does not support message/rfc822
+            if (model.equals("sdk"))
+                sendIntent.setType("text/plain");
+            else
+                sendIntent.setType("message/rfc822");
+            sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"carat@eecs.berkeley.edu"});
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] "+getString(R.string.feedbackfrom) +" "+model);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os)+": "+os+"\n"+getString(R.string.model)+": "+model+"\nuuId: "+uuId+"\nJ-Score: "+jscore+"\n");
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
             return true;
-        }
-        
-        @Override
-        public void onZubhiumActionCompleted() {
-            //CaratMainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        }
-
-        @Override
-        public void onZubhiumError(ZubhiumError arg0) {
-            //CaratMainActivity.this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
     }
 }
