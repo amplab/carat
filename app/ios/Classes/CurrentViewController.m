@@ -24,11 +24,11 @@
 @synthesize jscore = _jscore;
 @synthesize expectedLife = _expectedLife;
 @synthesize lastUpdated = _lastUpdated;
-//@synthesize sinceLastWeekString = _sinceLastWeekString;
 @synthesize osVersion = _osVersion;
 @synthesize deviceModel = _deviceModel;
 @synthesize memUsed = _memUsed;
 @synthesize memActive = _memActive;
+@synthesize uuid = _uuid;
 @synthesize portraitView, landscapeView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -255,6 +255,8 @@
     [self setMemUsed:nil];
     [memActive release];
     [self setMemActive:nil];
+    [uuid release];
+    [self setUuid:nil];
     
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -303,13 +305,17 @@
         [[self jscore] makeObjectsPerformSelector:@selector(setText:) withObject:@"N/A"];
     }
     
+    // UUID
+    [[self uuid] makeObjectsPerformSelector:@selector(setText:) withObject:[[Globals instance] getUUID]];
+    
     // Expected Battery Life
     NSTimeInterval eb; // expected life in seconds
     double jev = [[[CoreDataManager instance] getJScoreInfo:YES] expectedValue];
     if (jev > 0) eb = MIN(MAX_LIFE,100/jev);
     else eb = MAX_LIFE;
     for (UILabel *el in self.expectedLife) {
-        el.text = [Utilities formatNSTimeIntervalAsNSString:eb];
+        el.text = [[Utilities formatNSTimeIntervalAsNSString:eb] stringByTrimmingCharactersInSet:
+                   [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     
     // Last Updated
@@ -321,7 +327,7 @@
     // Change since last week
 //    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
-    DLog(@"jscore: %f, updated: %f, os: %f, model: %f, apps: %f", (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]);
+    DLog(@"uuid: %s, jscore: %f, updated: %f, os: %f, model: %f, apps: %f", [[[Globals instance] getUUID] UTF8String], (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]);
     
     //  Memory info.
     mach_msg_type_number_t count = HOST_VM_INFO_COUNT;

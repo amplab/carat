@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
+#import "CopyLabel.h"
 
 @interface CurrentViewController : UIViewController <MBProgressHUDDelegate> {
     NSTimeInterval MAX_LIFE; // max battery life in seconds
@@ -15,9 +16,9 @@
     NSArray *jscore;
     NSArray *expectedLife;
     NSArray *lastUpdated;
-    //NSArray *sinceLastWeekString;
     NSArray *osVersion;
     NSArray *deviceModel;
+    NSArray *uuid;
     
     NSArray *memUsed;
     NSArray *memActive;
@@ -31,9 +32,9 @@
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *jscore;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *expectedLife;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *lastUpdated;
-//@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *sinceLastWeekString;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *osVersion;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *deviceModel;
+@property (retain, nonatomic) IBOutletCollection(CopyLabel) NSArray *uuid;
 
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *memUsed;
 @property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *memActive;
