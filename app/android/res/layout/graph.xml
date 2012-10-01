@@ -77,7 +77,72 @@
             android:contentDescription="@string/moreinfo"
             android:src="@drawable/arrow" />
     </LinearLayout>
-    
-    <!--  DrawView goes here -->
+
+    <LinearLayout
+        android:id="@+id/statistics"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:layout_marginTop="10dip"
+        android:background="@color/background"
+        android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/killBenefitLegend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/expected"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/green" />
+
+            <TextView
+                android:id="@+id/killBenefit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dip"
+                android:text="@string/zeroh"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/green" />
+
+            <TextView
+                android:id="@+id/significanceLegend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:text="@string/significance"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/green" />
+            
+            <ProgressBar
+                android:id="@+id/significanceBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginTop="10dip"
+                android:progress="0" />
+
+            <TextView
+                android:id="@+id/samplesLegend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dip"
+                android:text="@string/samples"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/green" />
+
+            <TextView
+                android:id="@+id/samples"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dip"
+                android:text="@string/zero"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/green" />
+
+    </LinearLayout>
 
 </LinearLayout>

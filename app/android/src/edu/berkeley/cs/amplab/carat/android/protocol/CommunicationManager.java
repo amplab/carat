@@ -13,6 +13,8 @@ import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TTransport;
 
+import com.flurry.android.FlurryAgent;
+
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -101,6 +103,7 @@ public class CommunicationManager {
         registration.setPlatformId(model);
         registration.setSystemVersion(os);
         registration.setTimestamp(System.currentTimeMillis() / 1000.0);
+        FlurryAgent.logEvent("Registering "+uuId+","+model+","+os);
         instance.registerMe(registration);
     }
 
@@ -240,7 +243,8 @@ public class CommunicationManager {
 
         Log.d(TAG, "Getting reports for " + uuId + " model=" + model + " os="
                 + OS);
-
+        FlurryAgent.logEvent("Getting reports for "+uuId+","+model+","+OS);
+        
         int progress = 0;
 
         CaratApplication.setActionProgress(progress,

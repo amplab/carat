@@ -71,24 +71,21 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             views.add(previous.modelView);
             views.add(previous.appsView);
             for (DrawView v : views) {
-                double[] xVals = v.getXVals();
-                double[] yVals = v.getYVals();
+                double[] xVals = null;
                 Type t = v.getType();
-                double[] xValsWithout = v.getXValsWithout();
-                double[] yValsWithout = v.getYValsWithout();
                 String appName = v.getAppName();
                 if (v == previous.osView) {
-                    osView.setParams(t, appName, xVals, yVals, xValsWithout,
-                            yValsWithout);
-                    osView.postInvalidate();
+                    osView.setParams(t, appName, xVals, xVals, xVals, xVals,
+                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSignificance(), osViewPage);
+                    //osView.postInvalidate();
                 } else if (v == previous.modelView) {
-                    modelView.setParams(t, appName, xVals, yVals, xValsWithout,
-                            yValsWithout);
-                    modelView.postInvalidate();
+                    modelView.setParams(t, appName, xVals, xVals, xVals, xVals,
+                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSignificance(), modelViewPage);
+                   // modelView.postInvalidate();
                 } else if (v == previous.appsView) {
-                    appsView.setParams(t, appName, xVals, yVals, xValsWithout,
-                            yValsWithout);
-                    appsView.postInvalidate();
+                    appsView.setParams(t, appName, xVals, xVals, xVals, xVals,
+                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSignificance(), appsViewPage);
+                    //appsView.postInvalidate();
                 }
             }
 
@@ -244,10 +241,10 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             Log.v("OsInfo", "Os score: " + os.getScore());
             ((ProgressBar) osViewPage.findViewById(R.id.confidenceBar))
                     .setProgress((int) (os.getScore() * 100));
-
+            double[] xVals = CaratDataStorage.convert(os.getXVals());
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
-                    CaratDataStorage.convert(os.getXVals()), CaratDataStorage.convert(os.getYVals()), CaratDataStorage.convert(osWithout.getXVals()),
-                    CaratDataStorage.convert(osWithout.getYVals()));
+                    xVals, xVals, xVals, xVals,
+                    os.getExpectedValue(), osWithout.getExpectedValue(), os.getXValsSize(), os.getScore(), osViewPage);
         }
         switchView(osViewPage);
     }
@@ -273,10 +270,10 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             Log.v("ModelInfo", "Model score: " + model.getScore());
             ((ProgressBar) modelViewPage.findViewById(R.id.confidenceBar))
                     .setProgress((int) (model.getScore() * 100));
-
+            double[] xVals = CaratDataStorage.convert(model.getXVals());
             modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
-                    CaratDataStorage.convert(model.getXVals()), CaratDataStorage.convert(model.getYVals()),
-                    CaratDataStorage.convert(modelWithout.getXVals()), CaratDataStorage.convert(modelWithout.getYVals()));
+                    xVals, xVals, xVals, xVals,
+                    model.getExpectedValue(), modelWithout.getExpectedValue(), model.getXValsSize(), model.getScore(), modelViewPage);
         }
         switchView(modelViewPage);
     }
@@ -304,9 +301,10 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             ((ProgressBar) appsViewPage.findViewById(R.id.confidenceBar))
                     .setProgress((int) (similar.getScore() * 100));
 
+            double[] xVals = CaratDataStorage.convert(similar.getXVals());
             appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
-                    CaratDataStorage.convert(similar.getXVals()), CaratDataStorage.convert(similar.getYVals()),
-                    CaratDataStorage.convert(similarWithout.getXVals()), CaratDataStorage.convert(similarWithout.getYVals()));
+                    xVals, xVals, xVals, xVals,
+                    similar.getExpectedValue(), similarWithout.getExpectedValue(), similar.getXValsSize(), similar.getScore(), appsViewPage);
         }
         switchView(appsViewPage);
     }

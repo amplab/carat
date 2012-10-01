@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Carat</string>
-    <string name="version_name">0.75</string>
+    <string name="version_name">0.77</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
@@ -26,6 +26,8 @@
     <string name="feedback">Give feedback</string>
     <string name="share">Share …</string>
     <string name="sharewith">Share with:</string>
+    <string name="chooseemail">Choose email application</string>
+    <string name="feedbackfrom">Feedback from a</string>
     <string name="sharetext1">Carat is improving my battery life. My J-Score is</string>
     <string name="sharetext2">!\nWhat\'s yours?\nFind out here: \nhttp://carat.cs.berkeley.edu/</string>
     <string name="myjscoreis">My J-Score is</string>
@@ -40,6 +42,7 @@
     <color name="without">#007777</color>
 
     <string name="zeroh">0h 0m 0s</string>
+    <string name="zero">0</string>
     
     <!-- Tabs. Also used elsewhere. -->
     <string name="tab_actions">Actions</string>
@@ -133,5 +136,11 @@
     
     <string name="wifionly">Use WiFi only</string>
     <string name="wifionlyused">Using WiFi only</string>
-
+    
+    
+    <string name="samples">Samples:</string>
+    <string name="significance">Significance:</string>
+    
+    <string name="best">Already best</string>
+    
 </resources>

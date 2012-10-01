@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
-	<classpathentry kind="lib" path="libs/zubhiumsdk.jar"/>
 	<classpathentry kind="lib" path="libs/FlurryAgent.jar"/>
 	<classpathentry excluding="com/android/internal/os/|com/android/internal/util/|com/android/internal/|com/android/|com/" kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>

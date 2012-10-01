@@ -22,6 +22,8 @@
     <string name="feedback">Anna palautetta</string>
     <string name="share">Jaa …</string>
     <string name="sharewith">Jaa käyttäen:</string>
+    <string name="chooseemail">Valitse email-sovellus</string>
+    <string name="feedbackfrom">Palautetta laitteelta</string>
     <string name="sharetext1">Carat parantaa akunkestoani.\nJ-Scoreni on</string>
     <string name="sharetext2">!\nEntä sinun?\nOta selvää täällä: \nhttp://carat.cs.berkeley.edu/</string>
     <string name="myjscoreis">J-Scoreni on</string>
@@ -112,6 +114,15 @@
     <string name="model">Malli</string>
     <string name="os">KJ-Versio</string>
     <string name="similarapps">Käyttämäsi sovellukset</string>
+    
+    <string name="wifionly">Käytä vain WiFiä</string>
+    <string name="wifionlyused">Vain WiFi käytössä</string>
+    
+    
+    <string name="samples">Mittauksia:</string>
+    <string name="significance">Merkittävyys:</string>
+    
+    <string name="best">Jo paras</string>
     
 </resources>
 

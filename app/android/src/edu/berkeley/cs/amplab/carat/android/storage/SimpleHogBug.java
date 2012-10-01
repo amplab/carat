@@ -18,7 +18,7 @@ public class SimpleHogBug implements Serializable{
     
     private Type type = null;
     
-    public Type getType (){
+    public Type getType(){
         return type;
     }
     
@@ -113,6 +113,7 @@ public class SimpleHogBug implements Serializable{
     }
     /**
      * @param expectedValue the expectedValue to set
+     * TODO: FAKE ERROR
      */
     public void setExpectedValue(double expectedValue) {
         this.expectedValue = expectedValue;
@@ -125,6 +126,7 @@ public class SimpleHogBug implements Serializable{
     }
     /**
      * @param expectedValueWithout the expectedValueWithout to set
+     * TODO: FAKE ERROR
      */
     public void setExpectedValueWithout(double expectedValueWithout) {
         this.expectedValueWithout = expectedValueWithout;
@@ -162,4 +164,41 @@ public class SimpleHogBug implements Serializable{
     private double expectedValueWithout; // optional
     private String appLabel; // optional
     private String appPriority; // optional
+    
+    // TODO: FAKE ERROR
+    // error of with dist in %/s
+    private double error = -1;
+    // error of without dist in %/s
+    private double errorWithout = -1;
+    
+    public double getError(){ return error;}
+    public void setError(double error){this.error = error;}
+    public double getErrorWithout(){ return errorWithout; }
+    public void setErrorWithout(double error){this.errorWithout = error;}
+    
+    
+    public String textBenefit() {
+        double ev = getExpectedValue();
+        double evWo = getExpectedValueWithout();
+        double benefit = 100.0 / evWo - 100.0 / ev;
+
+        int min = (int) (benefit / 60);
+        int hours = (int) (min / 60);
+        min -= hours * 60;
+
+        double error = getError();
+        double errorWo = getErrorWithout();
+        // Fake error:
+        if (error == -1 && errorWo == -1){
+            error = (ev - evWo) / 20;
+            errorWo = error;
+        }
+        //Log.i("SHB", "benefit: " + benefit);
+        //Log.i("SHB", "min benefit: 100 / (" +evWo+" + " + errorWo +") - 100 / (" + ev + " - " + error + ")");
+        double minimumBenefit = 100 / (evWo + errorWo) - 100 / (ev - error);
+
+        int errorMins = (int) ((benefit - minimumBenefit) / 60);
+
+        return hours + "h " + min + "m \u00B1 " + errorMins + "m";
+    }
 }

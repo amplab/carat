@@ -379,9 +379,9 @@ public class CaratDataStorage {
             result[i].setExpectedValueWithout(item.getExpectedValueWithout());
             result[i].setwDistance(item.getWDistance());
             result[i].setxVals(convert(item.getXVals()));
-            result[i].setyVals(convert(item.getYVals()));
+            /*result[i].setyVals(convert(item.getYVals()));
             result[i].setxValsWithout(convert(item.getXValsWithout()));
-            result[i].setyValsWithout(convert(item.getYValsWithout()));
+            result[i].setyValsWithout(convert(item.getYValsWithout()));*/
         }
         return result;
     }
