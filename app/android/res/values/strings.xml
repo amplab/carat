@@ -42,6 +42,7 @@
     <color name="without">#007777</color>
 
     <string name="zeroh">0h 0m 0s</string>
+    <string name="zero">0</string>
     
     <!-- Tabs. Also used elsewhere. -->
     <string name="tab_actions">Actions</string>
@@ -135,5 +136,11 @@
     
     <string name="wifionly">Use WiFi only</string>
     <string name="wifionlyused">Using WiFi only</string>
-
+    
+    
+    <string name="samples">Samples:</string>
+    <string name="significance">Significance:</string>
+    
+    <string name="best">Already best</string>
+    
 </resources>

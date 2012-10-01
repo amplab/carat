@@ -115,5 +115,14 @@
     <string name="os">KJ-Versio</string>
     <string name="similarapps">Käyttämäsi sovellukset</string>
     
+    <string name="wifionly">Käytä vain WiFiä</string>
+    <string name="wifionlyused">Vain WiFi käytössä</string>
+    
+    
+    <string name="samples">Mittauksia:</string>
+    <string name="significance">Merkittävyys:</string>
+    
+    <string name="best">Jo paras</string>
+    
 </resources>
 

@@ -99,14 +99,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     final String label = CaratApplication.labelForApp(c, raw);
 
                     icon.setImageDrawable(CaratApplication.iconForApp(c, raw));
-                    double benefit = 100.0
-                            / fullObject.getExpectedValueWithout() - 100.0
-                            / fullObject.getExpectedValue();
-
-                    int min = (int) (benefit / 60);
-                    int hours = (int) (min / 60);
-                    min -= hours * 60;
-
+                    
                     Type type = fullObject.getType();
                     if (type == Type.BUG || type == Type.HOG) {
                         txtName.setText(label);
@@ -146,7 +139,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                         min -= hours * 60;
                     }*/
 
-                    txtBenefit.setText(hours + "h " + min + "m");
+                    txtBenefit.setText(fullObject.textBenefit());
 
                     switchView(killView);
                 }

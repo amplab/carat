@@ -264,12 +264,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             holder.txtType.setText(a.getString(R.string.information));
             holder.txtBenefit.setText(a.getString(R.string.unknown));
         } else {
-            double benefit = 100.0 / item.getExpectedValueWithout() - 100.0
-                    / item.getExpectedValue();
-
-            int min = (int) (benefit / 60);
-            int hours = (int) (min / 60);
-            min -= hours * 60;
             
             String label = CaratApplication.labelForApp(a.getApplicationContext(), raw);
             if (label == null)
@@ -302,7 +296,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                 min = (int) ((benefitOther- hours)*60); 
             }*/
             
-            holder.txtBenefit.setText(hours + "h " + min + "m");
+            holder.txtBenefit.setText(item.textBenefit());
 
             // holder.moreInfo...
             }

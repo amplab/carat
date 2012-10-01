@@ -74,6 +74,8 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 					.findViewById(R.id.appIcon);
 			ProgressBar pp = (ProgressBar) previous.detailPage
 					.findViewById(R.id.confidenceBar);
+			
+			DrawView w = previous.w;
 
 			((TextView) detailPage.findViewById(R.id.name)).setText(pn
 					.getText());
@@ -82,14 +84,12 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 			((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
 					.setProgress(pp.getProgress());
 
-			double[] xVals = previous.w.getXVals();
-			double[] yVals = previous.w.getYVals();
-			double[] xValsWithout = previous.w.getXValsWithout();
-			double[] yValsWithout = previous.w.getYValsWithout();
-			String appName = previous.w.getAppName();
-			w.setParams(activityType, appName, xVals, yVals, xValsWithout,
-					yValsWithout);
-			w.postInvalidate();
+			double[] xVals = null;
+			String appName = w.getAppName();
+			
+			w.setParams(activityType, appName, xVals, xVals, xVals,
+					xVals, w.getEv(), w.getEvWithout(), w.getSampleCount(), w.getSignificance(), (ViewGroup) detailPage);
+			//w.postInvalidate();
 		}
 
 		if (viewIndex == 0)
@@ -151,8 +151,8 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 						.setImageDrawable(icon);
 				((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
 						.setProgress((int) (fullObject.getwDistance() * 100));
-				w.setHogsBugs(fullObject, label, isBugsActivity);
-				w.postInvalidate();
+				w.setHogsBugs(fullObject, label, isBugsActivity, target);
+				//detailPage.postInvalidate();
 				switchView(target);
 			}
 		});
