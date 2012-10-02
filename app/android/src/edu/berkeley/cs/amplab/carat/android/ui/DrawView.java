@@ -2,7 +2,6 @@ package edu.berkeley.cs.amplab.carat.android.ui;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.R;
@@ -17,6 +16,9 @@ public class DrawView extends View {
     private double ev = 0.0;
     private double evWithout = 0.0;
     private int sampleCount = 0;
+    private int sampleCountWo = 0;
+    private double error = 0.0;
+    private double errorWo = 0.0;
     private double sig = 0.0;
     private String textBenefit = null;
     
@@ -43,9 +45,21 @@ public class DrawView extends View {
     public double getEv() {
         return ev;
     }
+    
+    public double getError() {
+        return error;
+    }
+    
+    public double getErrorWithout() {
+        return errorWo;
+    }
 
     public int getSampleCount() {
         return sampleCount;
+    }
+    
+    public int getSampleCountWithout() {
+        return sampleCountWo;
     }
 
     public double getSignificance() {
@@ -60,20 +74,28 @@ public class DrawView extends View {
         this.sampleCount = bugOrHog.getxVals().length;
         this.sig = bugOrHog.getwDistance();
         this.textBenefit = bugOrHog.textBenefit();
+        this.error = bugOrHog.getError();
+        this.errorWo = bugOrHog.getErrorWithout();
+        this.sampleCount = (int) bugOrHog.getSamples();
+        this.sampleCountWo = (int) bugOrHog.getSamplesWithout();
 
         this.type = isBug ? Type.BUG : Type.HOG;
         this.appName = appName;
         setFields(parent);
     }
 
-    public void setParams(Type type, String appName, double[] xVals,
-            double[] yVals, double[] xValsWithout, double[] yValsWithout,
-            double ev, double evWithout, int sampleCount, double significance,
-            View parent) {
+    public void setParams(Type type, String appName,
+            double ev, double evWithout, int sampleCount, int sampleCountWo, double significance,
+            double error, double errorWo, View parent) {
         this.ev = ev;
         this.evWithout = evWithout;
         this.sampleCount = sampleCount;
         this.sig = significance;
+        this.error = error;
+        this.errorWo = errorWo;
+        this.sampleCount = (int) sampleCount;
+        this.sampleCountWo = (int) sampleCountWo;
+        
         this.type = type;
         this.appName = appName;
         setFields(parent);
@@ -82,12 +104,29 @@ public class DrawView extends View {
     private void setFields(View parent) {
         TextView samples = (TextView) parent.findViewById(R.id.samples);
         TextView killBenefit = (TextView) parent.findViewById(R.id.killBenefit);
-        ProgressBar significance = (ProgressBar) parent
-                .findViewById(R.id.significanceBar);
+        
+        TextView samplesWoT = (TextView) parent.findViewById(R.id.samplesWo);
+        TextView errorT = (TextView) parent.findViewById(R.id.error);
+        TextView errorWoT = (TextView) parent.findViewById(R.id.errorWo);
+        
+        if (sampleCount > 0){
+        samplesWoT.setText(sampleCountWo +"");
         // TODO: Should be sample count == n, not number of x vals
         samples.setText(sampleCount + "");
-        // TODO: Should be real significance
-        significance.setProgress((int) (sig * 100));
+        } else {
+            samples.setText("?");
+            samplesWoT.setText("?");
+        }
+        
+        if (ev > 0 && error > 0){
+          int errorM = (int) (100 / ev - 100 / (ev + error)) / 60;
+          errorT.setText("\u00B1 "+errorM+"m");
+          int errorMWo = (int) (100 / evWithout - 100 / (evWithout + errorWo)) / 60;
+          errorWoT.setText("\u00B1 "+errorMWo+"m");
+        }else {
+            errorT.setText("?");
+            errorWoT.setText("?");  
+        }
         
         // TODO: Should be real error for os/model, currently 1m
         // TODO: Should be real error for hogs/bugs, currently ev/10
@@ -100,7 +139,6 @@ public class DrawView extends View {
             if (benefit < 0) {
                 killBenefit.setText(c.getString(R.string.best));
             } else {
-
                 int min = (int) (benefit / 60);
                 int hours = (int) (min / 60);
                 min -= hours * 60;

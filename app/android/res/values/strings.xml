@@ -135,10 +135,11 @@
     <string name="similarapps">Similar Apps</string>
     
     <string name="wifionly">Use WiFi only</string>
-    <string name="wifionlyused">Using WiFi only</string>
-    
+    <string name="wifionlyused">Using WiFi only</string> 
     
     <string name="samples">Samples:</string>
+    <string name="samplesWithout">Samples without:</string>
+    <string name="error">Measurement error:</string>
     <string name="significance">Significance:</string>
     
     <string name="best">Already best</string>
