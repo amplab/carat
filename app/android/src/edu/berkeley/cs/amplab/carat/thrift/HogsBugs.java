@@ -36,8 +36,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
   private static final org.apache.thrift.protocol.TField Y_VALS_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("yValsWithout", org.apache.thrift.protocol.TType.LIST, (short)6);
   private static final org.apache.thrift.protocol.TField EXPECTED_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("expectedValue", org.apache.thrift.protocol.TType.DOUBLE, (short)7);
   private static final org.apache.thrift.protocol.TField EXPECTED_VALUE_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("expectedValueWithout", org.apache.thrift.protocol.TType.DOUBLE, (short)8);
-  private static final org.apache.thrift.protocol.TField APP_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("appLabel", org.apache.thrift.protocol.TType.STRING, (short)9);
-  private static final org.apache.thrift.protocol.TField APP_PRIORITY_FIELD_DESC = new org.apache.thrift.protocol.TField("appPriority", org.apache.thrift.protocol.TType.STRING, (short)10);
+  private static final org.apache.thrift.protocol.TField ERROR_FIELD_DESC = new org.apache.thrift.protocol.TField("error", org.apache.thrift.protocol.TType.DOUBLE, (short)9);
+  private static final org.apache.thrift.protocol.TField ERROR_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("errorWithout", org.apache.thrift.protocol.TType.DOUBLE, (short)10);
+  private static final org.apache.thrift.protocol.TField SAMPLES_FIELD_DESC = new org.apache.thrift.protocol.TField("samples", org.apache.thrift.protocol.TType.DOUBLE, (short)11);
+  private static final org.apache.thrift.protocol.TField SAMPLES_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("samplesWithout", org.apache.thrift.protocol.TType.DOUBLE, (short)12);
+  private static final org.apache.thrift.protocol.TField SIGNIFICANCE_FIELD_DESC = new org.apache.thrift.protocol.TField("significance", org.apache.thrift.protocol.TType.DOUBLE, (short)13);
+  private static final org.apache.thrift.protocol.TField APP_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("appLabel", org.apache.thrift.protocol.TType.STRING, (short)14);
+  private static final org.apache.thrift.protocol.TField APP_PRIORITY_FIELD_DESC = new org.apache.thrift.protocol.TField("appPriority", org.apache.thrift.protocol.TType.STRING, (short)15);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -53,6 +58,11 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
   public List<Double> yValsWithout; // optional
   public double expectedValue; // optional
   public double expectedValueWithout; // optional
+  public double error; // optional
+  public double errorWithout; // optional
+  public double samples; // optional
+  public double samplesWithout; // optional
+  public double significance; // optional
   public String appLabel; // optional
   public String appPriority; // optional
 
@@ -66,8 +76,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     Y_VALS_WITHOUT((short)6, "yValsWithout"),
     EXPECTED_VALUE((short)7, "expectedValue"),
     EXPECTED_VALUE_WITHOUT((short)8, "expectedValueWithout"),
-    APP_LABEL((short)9, "appLabel"),
-    APP_PRIORITY((short)10, "appPriority");
+    ERROR((short)9, "error"),
+    ERROR_WITHOUT((short)10, "errorWithout"),
+    SAMPLES((short)11, "samples"),
+    SAMPLES_WITHOUT((short)12, "samplesWithout"),
+    SIGNIFICANCE((short)13, "significance"),
+    APP_LABEL((short)14, "appLabel"),
+    APP_PRIORITY((short)15, "appPriority");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -98,9 +113,19 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
           return EXPECTED_VALUE;
         case 8: // EXPECTED_VALUE_WITHOUT
           return EXPECTED_VALUE_WITHOUT;
-        case 9: // APP_LABEL
+        case 9: // ERROR
+          return ERROR;
+        case 10: // ERROR_WITHOUT
+          return ERROR_WITHOUT;
+        case 11: // SAMPLES
+          return SAMPLES;
+        case 12: // SAMPLES_WITHOUT
+          return SAMPLES_WITHOUT;
+        case 13: // SIGNIFICANCE
+          return SIGNIFICANCE;
+        case 14: // APP_LABEL
           return APP_LABEL;
-        case 10: // APP_PRIORITY
+        case 15: // APP_PRIORITY
           return APP_PRIORITY;
         default:
           return null;
@@ -145,8 +170,13 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
   private static final int __WDISTANCE_ISSET_ID = 0;
   private static final int __EXPECTEDVALUE_ISSET_ID = 1;
   private static final int __EXPECTEDVALUEWITHOUT_ISSET_ID = 2;
-  private BitSet __isset_bit_vector = new BitSet(3);
-  private _Fields optionals[] = {_Fields.APP_NAME,_Fields.W_DISTANCE,_Fields.X_VALS,_Fields.Y_VALS,_Fields.X_VALS_WITHOUT,_Fields.Y_VALS_WITHOUT,_Fields.EXPECTED_VALUE,_Fields.EXPECTED_VALUE_WITHOUT,_Fields.APP_LABEL,_Fields.APP_PRIORITY};
+  private static final int __ERROR_ISSET_ID = 3;
+  private static final int __ERRORWITHOUT_ISSET_ID = 4;
+  private static final int __SAMPLES_ISSET_ID = 5;
+  private static final int __SAMPLESWITHOUT_ISSET_ID = 6;
+  private static final int __SIGNIFICANCE_ISSET_ID = 7;
+  private BitSet __isset_bit_vector = new BitSet(8);
+  private _Fields optionals[] = {_Fields.APP_NAME,_Fields.W_DISTANCE,_Fields.X_VALS,_Fields.Y_VALS,_Fields.X_VALS_WITHOUT,_Fields.Y_VALS_WITHOUT,_Fields.EXPECTED_VALUE,_Fields.EXPECTED_VALUE_WITHOUT,_Fields.ERROR,_Fields.ERROR_WITHOUT,_Fields.SAMPLES,_Fields.SAMPLES_WITHOUT,_Fields.SIGNIFICANCE,_Fields.APP_LABEL,_Fields.APP_PRIORITY};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -169,6 +199,16 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     tmpMap.put(_Fields.EXPECTED_VALUE, new org.apache.thrift.meta_data.FieldMetaData("expectedValue", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.EXPECTED_VALUE_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("expectedValueWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.ERROR, new org.apache.thrift.meta_data.FieldMetaData("error", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.ERROR_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("errorWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SAMPLES, new org.apache.thrift.meta_data.FieldMetaData("samples", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SAMPLES_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("samplesWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SIGNIFICANCE, new org.apache.thrift.meta_data.FieldMetaData("significance", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.APP_LABEL, new org.apache.thrift.meta_data.FieldMetaData("appLabel", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
@@ -221,6 +261,11 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     }
     this.expectedValue = other.expectedValue;
     this.expectedValueWithout = other.expectedValueWithout;
+    this.error = other.error;
+    this.errorWithout = other.errorWithout;
+    this.samples = other.samples;
+    this.samplesWithout = other.samplesWithout;
+    this.significance = other.significance;
     if (other.isSetAppLabel()) {
       this.appLabel = other.appLabel;
     }
@@ -246,6 +291,16 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     this.expectedValue = 0.0;
     setExpectedValueWithoutIsSet(false);
     this.expectedValueWithout = 0.0;
+    setErrorIsSet(false);
+    this.error = 0.0;
+    setErrorWithoutIsSet(false);
+    this.errorWithout = 0.0;
+    setSamplesIsSet(false);
+    this.samples = 0.0;
+    setSamplesWithoutIsSet(false);
+    this.samplesWithout = 0.0;
+    setSignificanceIsSet(false);
+    this.significance = 0.0;
     this.appLabel = null;
     this.appPriority = null;
   }
@@ -499,6 +554,119 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     __isset_bit_vector.set(__EXPECTEDVALUEWITHOUT_ISSET_ID, value);
   }
 
+  public double getError() {
+    return this.error;
+  }
+
+  public HogsBugs setError(double error) {
+    this.error = error;
+    setErrorIsSet(true);
+    return this;
+  }
+
+  public void unsetError() {
+    __isset_bit_vector.clear(__ERROR_ISSET_ID);
+  }
+
+  /** Returns true if field error is set (has been assigned a value) and false otherwise */
+  public boolean isSetError() {
+    return __isset_bit_vector.get(__ERROR_ISSET_ID);
+  }
+
+  public void setErrorIsSet(boolean value) {
+    __isset_bit_vector.set(__ERROR_ISSET_ID, value);
+  }
+
+  public double getErrorWithout() {
+    return this.errorWithout;
+  }
+
+  public HogsBugs setErrorWithout(double errorWithout) {
+    this.errorWithout = errorWithout;
+    setErrorWithoutIsSet(true);
+    return this;
+  }
+
+  public void unsetErrorWithout() {
+    __isset_bit_vector.clear(__ERRORWITHOUT_ISSET_ID);
+  }
+
+  /** Returns true if field errorWithout is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorWithout() {
+    return __isset_bit_vector.get(__ERRORWITHOUT_ISSET_ID);
+  }
+
+  public void setErrorWithoutIsSet(boolean value) {
+    __isset_bit_vector.set(__ERRORWITHOUT_ISSET_ID, value);
+  }
+  public double getSamples() {
+    return this.samples;
+  }
+
+  public HogsBugs setSamples(double samples) {
+    this.samples = samples;
+    setSamplesIsSet(true);
+    return this;
+  }
+
+  public void unsetSamples() {
+    __isset_bit_vector.clear(__SAMPLES_ISSET_ID);
+  }
+
+  /** Returns true if field samples is set (has been assigned a value) and false otherwise */
+  public boolean isSetSamples() {
+    return __isset_bit_vector.get(__SAMPLES_ISSET_ID);
+  }
+
+  public void setSamplesIsSet(boolean value) {
+    __isset_bit_vector.set(__SAMPLES_ISSET_ID, value);
+  }
+
+  public double getSamplesWithout() {
+    return this.samplesWithout;
+  }
+
+  public HogsBugs setSamplesWithout(double samplesWithout) {
+    this.samplesWithout = samplesWithout;
+    setSamplesWithoutIsSet(true);
+    return this;
+  }
+
+  public void unsetSamplesWithout() {
+    __isset_bit_vector.clear(__SAMPLESWITHOUT_ISSET_ID);
+  }
+
+  /** Returns true if field samplesWithout is set (has been assigned a value) and false otherwise */
+  public boolean isSetSamplesWithout() {
+    return __isset_bit_vector.get(__SAMPLESWITHOUT_ISSET_ID);
+  }
+
+  public void setSamplesWithoutIsSet(boolean value) {
+    __isset_bit_vector.set(__SAMPLESWITHOUT_ISSET_ID, value);
+  }
+
+  public double getSignificance() {
+    return this.significance;
+  }
+
+  public HogsBugs setSignificance(double significance) {
+    this.significance = significance;
+    setSignificanceIsSet(true);
+    return this;
+  }
+
+  public void unsetSignificance() {
+    __isset_bit_vector.clear(__SIGNIFICANCE_ISSET_ID);
+  }
+
+  /** Returns true if field significance is set (has been assigned a value) and false otherwise */
+  public boolean isSetSignificance() {
+    return __isset_bit_vector.get(__SIGNIFICANCE_ISSET_ID);
+  }
+
+  public void setSignificanceIsSet(boolean value) {
+    __isset_bit_vector.set(__SIGNIFICANCE_ISSET_ID, value);
+  }
   public String getAppLabel() {
     return this.appLabel;
   }
@@ -613,6 +781,45 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       }
       break;
 
+    case ERROR:
+      if (value == null) {
+        unsetError();
+      } else {
+        setError((Double)value);
+      }
+      break;
+
+    case ERROR_WITHOUT:
+      if (value == null) {
+        unsetErrorWithout();
+      } else {
+        setErrorWithout((Double)value);
+      }
+      break;
+    case SAMPLES:
+      if (value == null) {
+        unsetSamples();
+      } else {
+        setSamples((Double)value);
+      }
+      break;
+
+    case SAMPLES_WITHOUT:
+      if (value == null) {
+        unsetSamplesWithout();
+      } else {
+        setSamplesWithout((Double)value);
+      }
+      break;
+
+    case SIGNIFICANCE:
+      if (value == null) {
+        unsetSignificance();
+      } else {
+        setSignificance((Double)value);
+      }
+      break;
+
     case APP_LABEL:
       if (value == null) {
         unsetAppLabel();
@@ -658,6 +865,18 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     case EXPECTED_VALUE_WITHOUT:
       return Double.valueOf(getExpectedValueWithout());
 
+    case ERROR:
+      return Double.valueOf(getError());
+
+    case ERROR_WITHOUT:
+      return Double.valueOf(getErrorWithout());
+    case SAMPLES:
+      return Double.valueOf(getSamples());
+    case SAMPLES_WITHOUT:
+      return Double.valueOf(getSamplesWithout());
+
+    case SIGNIFICANCE:
+      return Double.valueOf(getSignificance());
     case APP_LABEL:
       return getAppLabel();
 
@@ -691,6 +910,16 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       return isSetExpectedValue();
     case EXPECTED_VALUE_WITHOUT:
       return isSetExpectedValueWithout();
+    case ERROR:
+      return isSetError();
+    case ERROR_WITHOUT:
+      return isSetErrorWithout();
+    case SAMPLES:
+      return isSetSamples();
+    case SAMPLES_WITHOUT:
+      return isSetSamplesWithout();
+    case SIGNIFICANCE:
+      return isSetSignificance();
     case APP_LABEL:
       return isSetAppLabel();
     case APP_PRIORITY:
@@ -784,6 +1013,49 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         return false;
     }
 
+    boolean this_present_error = true && this.isSetError();
+    boolean that_present_error = true && that.isSetError();
+    if (this_present_error || that_present_error) {
+      if (!(this_present_error && that_present_error))
+        return false;
+      if (this.error != that.error)
+        return false;
+    }
+
+    boolean this_present_errorWithout = true && this.isSetErrorWithout();
+    boolean that_present_errorWithout = true && that.isSetErrorWithout();
+    if (this_present_errorWithout || that_present_errorWithout) {
+      if (!(this_present_errorWithout && that_present_errorWithout))
+        return false;
+      if (this.errorWithout != that.errorWithout)
+        return false;
+    }
+    boolean this_present_samples = true && this.isSetSamples();
+    boolean that_present_samples = true && that.isSetSamples();
+    if (this_present_samples || that_present_samples) {
+      if (!(this_present_samples && that_present_samples))
+        return false;
+      if (this.samples != that.samples)
+        return false;
+    }
+
+    boolean this_present_samplesWithout = true && this.isSetSamplesWithout();
+    boolean that_present_samplesWithout = true && that.isSetSamplesWithout();
+    if (this_present_samplesWithout || that_present_samplesWithout) {
+      if (!(this_present_samplesWithout && that_present_samplesWithout))
+        return false;
+      if (this.samplesWithout != that.samplesWithout)
+        return false;
+    }
+
+    boolean this_present_significance = true && this.isSetSignificance();
+    boolean that_present_significance = true && that.isSetSignificance();
+    if (this_present_significance || that_present_significance) {
+      if (!(this_present_significance && that_present_significance))
+        return false;
+      if (this.significance != that.significance)
+        return false;
+    }
     boolean this_present_appLabel = true && this.isSetAppLabel();
     boolean that_present_appLabel = true && that.isSetAppLabel();
     if (this_present_appLabel || that_present_appLabel) {
@@ -898,6 +1170,56 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetError()).compareTo(typedOther.isSetError());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetError()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.error, typedOther.error);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetErrorWithout()).compareTo(typedOther.isSetErrorWithout());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetErrorWithout()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorWithout, typedOther.errorWithout);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSamples()).compareTo(typedOther.isSetSamples());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSamples()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.samples, typedOther.samples);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSamplesWithout()).compareTo(typedOther.isSetSamplesWithout());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSamplesWithout()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.samplesWithout, typedOther.samplesWithout);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSignificance()).compareTo(typedOther.isSetSignificance());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSignificance()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.significance, typedOther.significance);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetAppLabel()).compareTo(typedOther.isSetAppLabel());
     if (lastComparison != 0) {
       return lastComparison;
@@ -1003,6 +1325,36 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (!first) sb.append(", ");
       sb.append("expectedValueWithout:");
       sb.append(this.expectedValueWithout);
+      first = false;
+    }
+    if (isSetError()) {
+      if (!first) sb.append(", ");
+      sb.append("error:");
+      sb.append(this.error);
+      first = false;
+    }
+    if (isSetErrorWithout()) {
+      if (!first) sb.append(", ");
+      sb.append("errorWithout:");
+      sb.append(this.errorWithout);
+      first = false;
+    }
+    if (isSetSamples()) {
+      if (!first) sb.append(", ");
+      sb.append("samples:");
+      sb.append(this.samples);
+      first = false;
+    }
+    if (isSetSamplesWithout()) {
+      if (!first) sb.append(", ");
+      sb.append("samplesWithout:");
+      sb.append(this.samplesWithout);
+      first = false;
+    }
+    if (isSetSignificance()) {
+      if (!first) sb.append(", ");
+      sb.append("significance:");
+      sb.append(this.significance);
       first = false;
     }
     if (isSetAppLabel()) {
@@ -1173,7 +1525,47 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 9: // APP_LABEL
+          case 9: // ERROR
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.error = iprot.readDouble();
+              struct.setErrorIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 10: // ERROR_WITHOUT
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.errorWithout = iprot.readDouble();
+              struct.setErrorWithoutIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 11: // SAMPLES
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.samples = iprot.readDouble();
+              struct.setSamplesIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 12: // SAMPLES_WITHOUT
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.samplesWithout = iprot.readDouble();
+              struct.setSamplesWithoutIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 13: // SIGNIFICANCE
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.significance = iprot.readDouble();
+              struct.setSignificanceIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 14: // APP_LABEL
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.appLabel = iprot.readString();
               struct.setAppLabelIsSet(true);
@@ -1181,7 +1573,7 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 10: // APP_PRIORITY
+          case 15: // APP_PRIORITY
             if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
               struct.appPriority = iprot.readString();
               struct.setAppPriorityIsSet(true);
@@ -1282,6 +1674,31 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         oprot.writeDouble(struct.expectedValueWithout);
         oprot.writeFieldEnd();
       }
+      if (struct.isSetError()) {
+        oprot.writeFieldBegin(ERROR_FIELD_DESC);
+        oprot.writeDouble(struct.error);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetErrorWithout()) {
+        oprot.writeFieldBegin(ERROR_WITHOUT_FIELD_DESC);
+        oprot.writeDouble(struct.errorWithout);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetSamples()) {
+        oprot.writeFieldBegin(SAMPLES_FIELD_DESC);
+        oprot.writeDouble(struct.samples);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetSamplesWithout()) {
+        oprot.writeFieldBegin(SAMPLES_WITHOUT_FIELD_DESC);
+        oprot.writeDouble(struct.samplesWithout);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetSignificance()) {
+        oprot.writeFieldBegin(SIGNIFICANCE_FIELD_DESC);
+        oprot.writeDouble(struct.significance);
+        oprot.writeFieldEnd();
+      }
       if (struct.appLabel != null) {
         if (struct.isSetAppLabel()) {
           oprot.writeFieldBegin(APP_LABEL_FIELD_DESC);
@@ -1338,13 +1755,28 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (struct.isSetExpectedValueWithout()) {
         optionals.set(7);
       }
-      if (struct.isSetAppLabel()) {
+      if (struct.isSetError()) {
         optionals.set(8);
       }
-      if (struct.isSetAppPriority()) {
+      if (struct.isSetErrorWithout()) {
         optionals.set(9);
       }
-      oprot.writeBitSet(optionals, 10);
+      if (struct.isSetSamples()) {
+        optionals.set(10);
+      }
+      if (struct.isSetSamplesWithout()) {
+        optionals.set(11);
+      }
+      if (struct.isSetSignificance()) {
+        optionals.set(12);
+      }
+      if (struct.isSetAppLabel()) {
+        optionals.set(13);
+      }
+      if (struct.isSetAppPriority()) {
+        optionals.set(14);
+      }
+      oprot.writeBitSet(optionals, 15);
       if (struct.isSetAppName()) {
         oprot.writeString(struct.appName);
       }
@@ -1393,6 +1825,21 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
       if (struct.isSetExpectedValueWithout()) {
         oprot.writeDouble(struct.expectedValueWithout);
       }
+      if (struct.isSetError()) {
+        oprot.writeDouble(struct.error);
+      }
+      if (struct.isSetErrorWithout()) {
+        oprot.writeDouble(struct.errorWithout);
+      }
+      if (struct.isSetSamples()) {
+        oprot.writeDouble(struct.samples);
+      }
+      if (struct.isSetSamplesWithout()) {
+        oprot.writeDouble(struct.samplesWithout);
+      }
+      if (struct.isSetSignificance()) {
+        oprot.writeDouble(struct.significance);
+      }
       if (struct.isSetAppLabel()) {
         oprot.writeString(struct.appLabel);
       }
@@ -1404,7 +1851,7 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, HogsBugs struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(10);
+      BitSet incoming = iprot.readBitSet(15);
       if (incoming.get(0)) {
         struct.appName = iprot.readString();
         struct.setAppNameIsSet(true);
@@ -1474,10 +1921,30 @@ public class HogsBugs implements org.apache.thrift.TBase<HogsBugs, HogsBugs._Fie
         struct.setExpectedValueWithoutIsSet(true);
       }
       if (incoming.get(8)) {
+        struct.error = iprot.readDouble();
+        struct.setErrorIsSet(true);
+      }
+      if (incoming.get(9)) {
+        struct.errorWithout = iprot.readDouble();
+        struct.setErrorWithoutIsSet(true);
+      }
+      if (incoming.get(10)) {
+        struct.samples = iprot.readDouble();
+        struct.setSamplesIsSet(true);
+      }
+      if (incoming.get(11)) {
+        struct.samplesWithout = iprot.readDouble();
+        struct.setSamplesWithoutIsSet(true);
+      }
+      if (incoming.get(12)) {
+        struct.significance = iprot.readDouble();
+        struct.setSignificanceIsSet(true);
+      }
+      if (incoming.get(13)) {
         struct.appLabel = iprot.readString();
         struct.setAppLabelIsSet(true);
       }
-      if (incoming.get(9)) {
+      if (incoming.get(14)) {
         struct.appPriority = iprot.readString();
         struct.setAppPriorityIsSet(true);
       }
