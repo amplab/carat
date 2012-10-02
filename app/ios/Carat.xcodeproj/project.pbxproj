@@ -46,6 +46,8 @@
 		AB7A113714E1FE4B004D155C /* bug.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7A113614E1FE4B004D155C /* bug.png */; };
 		AB7A113914E1FEAB004D155C /* 32-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7A113814E1FEAB004D155C /* 32-iphone.png */; };
 		AB7A113D14E2049F004D155C /* ActionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7A113B14E2049F004D155C /* ActionItemCell.m */; };
+		AB7BAABF161A58670058AC33 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7BAABE161A58670058AC33 /* Default-568h@2x.png */; };
+		AB7BAAC2161A5DE90058AC33 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7BAAC1161A5DE90058AC33 /* CopyLabel.m */; };
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
 		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
 		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
@@ -246,6 +248,9 @@
 		AB7A113814E1FEAB004D155C /* 32-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "32-iphone.png"; sourceTree = "<group>"; };
 		AB7A113A14E2049F004D155C /* ActionItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionItemCell.h; sourceTree = "<group>"; };
 		AB7A113B14E2049F004D155C /* ActionItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionItemCell.m; sourceTree = "<group>"; };
+		AB7BAABE161A58670058AC33 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		AB7BAAC0161A5DE90058AC33 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
+		AB7BAAC1161A5DE90058AC33 /* CopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyLabel.m; sourceTree = "<group>"; };
 		AB91E432149162F7007786F0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AB91E433149162F7007786F0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		AB91E4411499264F007786F0 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
@@ -660,6 +665,8 @@
 				AB91E433149162F7007786F0 /* Utilities.m */,
 				AB583D6C14DB27AC00480241 /* UIImageDoNotCache.h */,
 				AB583D6D14DB27AC00480241 /* UIImageDoNotCache.m */,
+				AB7BAAC0161A5DE90058AC33 /* CopyLabel.h */,
+				AB7BAAC1161A5DE90058AC33 /* CopyLabel.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -675,6 +682,7 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
+				AB7BAABE161A58670058AC33 /* Default-568h@2x.png */,
 				ABE8DA7815247BDB0024C111 /* icon144.png */,
 				ABE8DA7615247B790024C111 /* Default-Landscape@2x~ipad.png */,
 				ABE8DA7415247B3E0024C111 /* Default-Portrait@2x~ipad.png */,
@@ -1619,6 +1627,7 @@
 				ABE8DA7515247B3E0024C111 /* Default-Portrait@2x~ipad.png in Resources */,
 				ABE8DA7715247B790024C111 /* Default-Landscape@2x~ipad.png in Resources */,
 				ABE8DA7915247BDB0024C111 /* icon144.png in Resources */,
+				AB7BAABF161A58670058AC33 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1746,6 +1755,7 @@
 				ABEC9B6614F1CFA7005CE813 /* ProcessItemCell.m in Sources */,
 				AB34BBEE151A3EB8006C4C76 /* ConsentViewController.m in Sources */,
 				AB73A68415B0D7B300726C21 /* SVPullToRefresh.m in Sources */,
+				AB7BAAC2161A5DE90058AC33 /* CopyLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
