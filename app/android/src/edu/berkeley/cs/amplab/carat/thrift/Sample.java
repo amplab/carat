@@ -22,7 +22,6 @@ import java.util.HashSet;
 import java.util.EnumSet;
 import java.util.Collections;
 import java.util.BitSet;
-import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 

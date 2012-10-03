@@ -167,9 +167,15 @@ public class SimpleHogBug implements Serializable{
     
     // TODO: FAKE ERROR
     // error of with dist in %/s
-    private double error = -1;
+    private double error = 0;
     // error of without dist in %/s
-    private double errorWithout = -1;
+    private double errorWithout = 0;
+    
+    private int samples = -1;
+    
+    private int samplesWithout = -1;
+    
+    private double significance = -1;
     
     public double getError(){ return error;}
     public void setError(double error){this.error = error;}
@@ -189,7 +195,7 @@ public class SimpleHogBug implements Serializable{
         double error = getError();
         double errorWo = getErrorWithout();
         // Fake error:
-        if (error == -1 && errorWo == -1){
+        if (error == 0 && errorWo == 0){
             error = (ev - evWo) / 20;
             errorWo = error;
         }
@@ -200,5 +206,29 @@ public class SimpleHogBug implements Serializable{
         int errorMins = (int) ((benefit - minimumBenefit) / 60);
 
         return hours + "h " + min + "m \u00B1 " + errorMins + "m";
+    }
+
+    public int getSamples() {
+        return samples;
+    }
+
+    public void setSamples(double samples) {
+        this.samples = (int) samples;
+    }
+
+    public int getSamplesWithout() {
+        return samplesWithout;
+    }
+
+    public void setSamplesWithout(double samplesWithout) {
+        this.samplesWithout = (int) samplesWithout;
+    }
+
+    public double getSignificance() {
+        return significance;
+    }
+
+    public void setSignificance(double significance) {
+        this.significance = significance;
     }
 }

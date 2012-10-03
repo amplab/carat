@@ -33,6 +33,7 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
   private static final org.apache.thrift.protocol.TField BATTERY_VOLTAGE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryVoltage", org.apache.thrift.protocol.TType.DOUBLE, (short)3);
   private static final org.apache.thrift.protocol.TField BATTERY_TEMPERATURE_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTemperature", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
   private static final org.apache.thrift.protocol.TField BATTERY_TECHNOLOGY_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryTechnology", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField BATTERY_CAPACITY_FIELD_DESC = new org.apache.thrift.protocol.TField("batteryCapacity", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -45,6 +46,7 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
   public double batteryVoltage; // optional
   public double batteryTemperature; // optional
   public String batteryTechnology; // optional
+  public double batteryCapacity; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -52,7 +54,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
     BATTERY_HEALTH((short)2, "batteryHealth"),
     BATTERY_VOLTAGE((short)3, "batteryVoltage"),
     BATTERY_TEMPERATURE((short)4, "batteryTemperature"),
-    BATTERY_TECHNOLOGY((short)5, "batteryTechnology");
+    BATTERY_TECHNOLOGY((short)5, "batteryTechnology"),
+    BATTERY_CAPACITY((short)6, "batteryCapacity");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -77,6 +80,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
           return BATTERY_TEMPERATURE;
         case 5: // BATTERY_TECHNOLOGY
           return BATTERY_TECHNOLOGY;
+        case 6: // BATTERY_CAPACITY
+          return BATTERY_CAPACITY;
         default:
           return null;
       }
@@ -119,8 +124,9 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
   // isset id assignments
   private static final int __BATTERYVOLTAGE_ISSET_ID = 0;
   private static final int __BATTERYTEMPERATURE_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
-  private _Fields optionals[] = {_Fields.BATTERY_CHARGER,_Fields.BATTERY_HEALTH,_Fields.BATTERY_VOLTAGE,_Fields.BATTERY_TEMPERATURE,_Fields.BATTERY_TECHNOLOGY};
+  private static final int __BATTERYCAPACITY_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
+  private _Fields optionals[] = {_Fields.BATTERY_CHARGER,_Fields.BATTERY_HEALTH,_Fields.BATTERY_VOLTAGE,_Fields.BATTERY_TEMPERATURE,_Fields.BATTERY_TECHNOLOGY,_Fields.BATTERY_CAPACITY};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -134,6 +140,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     tmpMap.put(_Fields.BATTERY_TECHNOLOGY, new org.apache.thrift.meta_data.FieldMetaData("batteryTechnology", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.BATTERY_CAPACITY, new org.apache.thrift.meta_data.FieldMetaData("batteryCapacity", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(BatteryDetails.class, metaDataMap);
   }
@@ -158,6 +166,7 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
     if (other.isSetBatteryTechnology()) {
       this.batteryTechnology = other.batteryTechnology;
     }
+    this.batteryCapacity = other.batteryCapacity;
   }
 
   public BatteryDetails deepCopy() {
@@ -173,6 +182,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
     setBatteryTemperatureIsSet(false);
     this.batteryTemperature = 0.0;
     this.batteryTechnology = null;
+    setBatteryCapacityIsSet(false);
+    this.batteryCapacity = 0.0;
   }
 
   public String getBatteryCharger() {
@@ -293,6 +304,28 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
     }
   }
 
+  public double getBatteryCapacity() {
+    return this.batteryCapacity;
+  }
+
+  public BatteryDetails setBatteryCapacity(double batteryCapacity) {
+    this.batteryCapacity = batteryCapacity;
+    setBatteryCapacityIsSet(true);
+    return this;
+  }
+
+  public void unsetBatteryCapacity() {
+    __isset_bit_vector.clear(__BATTERYCAPACITY_ISSET_ID);
+  }
+
+  /** Returns true if field batteryCapacity is set (has been assigned a value) and false otherwise */
+  public boolean isSetBatteryCapacity() {
+    return __isset_bit_vector.get(__BATTERYCAPACITY_ISSET_ID);
+  }
+
+  public void setBatteryCapacityIsSet(boolean value) {
+    __isset_bit_vector.set(__BATTERYCAPACITY_ISSET_ID, value);
+  }
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case BATTERY_CHARGER:
@@ -335,6 +368,14 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
       }
       break;
 
+    case BATTERY_CAPACITY:
+      if (value == null) {
+        unsetBatteryCapacity();
+      } else {
+        setBatteryCapacity((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -355,6 +396,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
     case BATTERY_TECHNOLOGY:
       return getBatteryTechnology();
 
+    case BATTERY_CAPACITY:
+      return Double.valueOf(getBatteryCapacity());
     }
     throw new IllegalStateException();
   }
@@ -376,6 +419,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
       return isSetBatteryTemperature();
     case BATTERY_TECHNOLOGY:
       return isSetBatteryTechnology();
+    case BATTERY_CAPACITY:
+      return isSetBatteryCapacity();
     }
     throw new IllegalStateException();
   }
@@ -438,6 +483,14 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
         return false;
     }
 
+    boolean this_present_batteryCapacity = true && this.isSetBatteryCapacity();
+    boolean that_present_batteryCapacity = true && that.isSetBatteryCapacity();
+    if (this_present_batteryCapacity || that_present_batteryCapacity) {
+      if (!(this_present_batteryCapacity && that_present_batteryCapacity))
+        return false;
+      if (this.batteryCapacity != that.batteryCapacity)
+        return false;
+    }
     return true;
   }
 
@@ -504,6 +557,16 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetBatteryCapacity()).compareTo(typedOther.isSetBatteryCapacity());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetBatteryCapacity()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.batteryCapacity, typedOther.batteryCapacity);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -563,6 +626,12 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
       } else {
         sb.append(this.batteryTechnology);
       }
+      first = false;
+    }
+    if (isSetBatteryCapacity()) {
+      if (!first) sb.append(", ");
+      sb.append("batteryCapacity:");
+      sb.append(this.batteryCapacity);
       first = false;
     }
     sb.append(")");
@@ -649,6 +718,14 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 6: // BATTERY_CAPACITY
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.batteryCapacity = iprot.readDouble();
+              struct.setBatteryCapacityIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -695,6 +772,11 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
           oprot.writeFieldEnd();
         }
       }
+      if (struct.isSetBatteryCapacity()) {
+        oprot.writeFieldBegin(BATTERY_CAPACITY_FIELD_DESC);
+        oprot.writeDouble(struct.batteryCapacity);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -728,7 +810,10 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
       if (struct.isSetBatteryTechnology()) {
         optionals.set(4);
       }
-      oprot.writeBitSet(optionals, 5);
+      if (struct.isSetBatteryCapacity()) {
+        optionals.set(5);
+      }
+      oprot.writeBitSet(optionals, 6);
       if (struct.isSetBatteryCharger()) {
         oprot.writeString(struct.batteryCharger);
       }
@@ -744,12 +829,15 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
       if (struct.isSetBatteryTechnology()) {
         oprot.writeString(struct.batteryTechnology);
       }
+      if (struct.isSetBatteryCapacity()) {
+        oprot.writeDouble(struct.batteryCapacity);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, BatteryDetails struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(5);
+      BitSet incoming = iprot.readBitSet(6);
       if (incoming.get(0)) {
         struct.batteryCharger = iprot.readString();
         struct.setBatteryChargerIsSet(true);
@@ -769,6 +857,10 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
       if (incoming.get(4)) {
         struct.batteryTechnology = iprot.readString();
         struct.setBatteryTechnologyIsSet(true);
+      }
+      if (incoming.get(5)) {
+        struct.batteryCapacity = iprot.readDouble();
+        struct.setBatteryCapacityIsSet(true);
       }
     }
   }

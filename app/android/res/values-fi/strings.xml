@@ -118,8 +118,9 @@
     <string name="wifionly">Käytä vain WiFiä</string>
     <string name="wifionlyused">Vain WiFi käytössä</string>
     
-    
     <string name="samples">Mittauksia:</string>
+    <string name="samplesWithout">Mittauksia ilman:</string>
+    <string name="error">Mittausvirhe:</string>
     <string name="significance">Merkittävyys:</string>
     
     <string name="best">Jo paras</string>

@@ -32,6 +32,11 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
   private static final org.apache.thrift.protocol.TField X_VALS_FIELD_DESC = new org.apache.thrift.protocol.TField("xVals", org.apache.thrift.protocol.TType.LIST, (short)2);
   private static final org.apache.thrift.protocol.TField Y_VALS_FIELD_DESC = new org.apache.thrift.protocol.TField("yVals", org.apache.thrift.protocol.TType.LIST, (short)3);
   private static final org.apache.thrift.protocol.TField EXPECTED_VALUE_FIELD_DESC = new org.apache.thrift.protocol.TField("expectedValue", org.apache.thrift.protocol.TType.DOUBLE, (short)4);
+  private static final org.apache.thrift.protocol.TField ERROR_FIELD_DESC = new org.apache.thrift.protocol.TField("error", org.apache.thrift.protocol.TType.DOUBLE, (short)5);
+  private static final org.apache.thrift.protocol.TField ERROR_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("errorWithout", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
+  private static final org.apache.thrift.protocol.TField SAMPLES_FIELD_DESC = new org.apache.thrift.protocol.TField("samples", org.apache.thrift.protocol.TType.DOUBLE, (short)7);
+  private static final org.apache.thrift.protocol.TField SAMPLES_WITHOUT_FIELD_DESC = new org.apache.thrift.protocol.TField("samplesWithout", org.apache.thrift.protocol.TType.DOUBLE, (short)8);
+  private static final org.apache.thrift.protocol.TField SIGNIFICANCE_FIELD_DESC = new org.apache.thrift.protocol.TField("significance", org.apache.thrift.protocol.TType.DOUBLE, (short)9);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -43,13 +48,23 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
   public List<Double> xVals; // optional
   public List<Double> yVals; // optional
   public double expectedValue; // optional
+  public double error; // optional
+  public double errorWithout; // optional
+  public double samples; // optional
+  public double samplesWithout; // optional
+  public double significance; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     SCORE((short)1, "score"),
     X_VALS((short)2, "xVals"),
     Y_VALS((short)3, "yVals"),
-    EXPECTED_VALUE((short)4, "expectedValue");
+    EXPECTED_VALUE((short)4, "expectedValue"),
+    ERROR((short)5, "error"),
+    ERROR_WITHOUT((short)6, "errorWithout"),
+    SAMPLES((short)7, "samples"),
+    SAMPLES_WITHOUT((short)8, "samplesWithout"),
+    SIGNIFICANCE((short)9, "significance");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -72,6 +87,16 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
           return Y_VALS;
         case 4: // EXPECTED_VALUE
           return EXPECTED_VALUE;
+        case 5: // ERROR
+          return ERROR;
+        case 6: // ERROR_WITHOUT
+          return ERROR_WITHOUT;
+        case 7: // SAMPLES
+          return SAMPLES;
+        case 8: // SAMPLES_WITHOUT
+          return SAMPLES_WITHOUT;
+        case 9: // SIGNIFICANCE
+          return SIGNIFICANCE;
         default:
           return null;
       }
@@ -114,8 +139,13 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
   // isset id assignments
   private static final int __SCORE_ISSET_ID = 0;
   private static final int __EXPECTEDVALUE_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
-  private _Fields optionals[] = {_Fields.SCORE,_Fields.X_VALS,_Fields.Y_VALS,_Fields.EXPECTED_VALUE};
+  private static final int __ERROR_ISSET_ID = 2;
+  private static final int __ERRORWITHOUT_ISSET_ID = 3;
+  private static final int __SAMPLES_ISSET_ID = 4;
+  private static final int __SAMPLESWITHOUT_ISSET_ID = 5;
+  private static final int __SIGNIFICANCE_ISSET_ID = 6;
+  private BitSet __isset_bit_vector = new BitSet(7);
+  private _Fields optionals[] = {_Fields.SCORE,_Fields.X_VALS,_Fields.Y_VALS,_Fields.EXPECTED_VALUE,_Fields.ERROR,_Fields.ERROR_WITHOUT,_Fields.SAMPLES,_Fields.SAMPLES_WITHOUT,_Fields.SIGNIFICANCE};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -128,6 +158,16 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE))));
     tmpMap.put(_Fields.EXPECTED_VALUE, new org.apache.thrift.meta_data.FieldMetaData("expectedValue", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.ERROR, new org.apache.thrift.meta_data.FieldMetaData("error", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.ERROR_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("errorWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SAMPLES, new org.apache.thrift.meta_data.FieldMetaData("samples", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SAMPLES_WITHOUT, new org.apache.thrift.meta_data.FieldMetaData("samplesWithout", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SIGNIFICANCE, new org.apache.thrift.meta_data.FieldMetaData("significance", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(DetailScreenReport.class, metaDataMap);
@@ -158,6 +198,11 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       this.yVals = __this__yVals;
     }
     this.expectedValue = other.expectedValue;
+    this.error = other.error;
+    this.errorWithout = other.errorWithout;
+    this.samples = other.samples;
+    this.samplesWithout = other.samplesWithout;
+    this.significance = other.significance;
   }
 
   public DetailScreenReport deepCopy() {
@@ -172,6 +217,16 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
     this.yVals = null;
     setExpectedValueIsSet(false);
     this.expectedValue = 0.0;
+    setErrorIsSet(false);
+    this.error = 0.0;
+    setErrorWithoutIsSet(false);
+    this.errorWithout = 0.0;
+    setSamplesIsSet(false);
+    this.samples = 0.0;
+    setSamplesWithoutIsSet(false);
+    this.samplesWithout = 0.0;
+    setSignificanceIsSet(false);
+    this.significance = 0.0;
   }
 
   public double getScore() {
@@ -298,6 +353,119 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
     __isset_bit_vector.set(__EXPECTEDVALUE_ISSET_ID, value);
   }
 
+  public double getError() {
+    return this.error;
+  }
+
+  public DetailScreenReport setError(double error) {
+    this.error = error;
+    setErrorIsSet(true);
+    return this;
+  }
+
+  public void unsetError() {
+    __isset_bit_vector.clear(__ERROR_ISSET_ID);
+  }
+
+  /** Returns true if field error is set (has been assigned a value) and false otherwise */
+  public boolean isSetError() {
+    return __isset_bit_vector.get(__ERROR_ISSET_ID);
+  }
+
+  public void setErrorIsSet(boolean value) {
+    __isset_bit_vector.set(__ERROR_ISSET_ID, value);
+  }
+
+  public double getErrorWithout() {
+    return this.errorWithout;
+  }
+
+  public DetailScreenReport setErrorWithout(double errorWithout) {
+    this.errorWithout = errorWithout;
+    setErrorWithoutIsSet(true);
+    return this;
+  }
+
+  public void unsetErrorWithout() {
+    __isset_bit_vector.clear(__ERRORWITHOUT_ISSET_ID);
+  }
+
+  /** Returns true if field errorWithout is set (has been assigned a value) and false otherwise */
+  public boolean isSetErrorWithout() {
+    return __isset_bit_vector.get(__ERRORWITHOUT_ISSET_ID);
+  }
+
+  public void setErrorWithoutIsSet(boolean value) {
+    __isset_bit_vector.set(__ERRORWITHOUT_ISSET_ID, value);
+  }
+  public double getSamples() {
+    return this.samples;
+  }
+
+  public DetailScreenReport setSamples(double samples) {
+    this.samples = samples;
+    setSamplesIsSet(true);
+    return this;
+  }
+
+  public void unsetSamples() {
+    __isset_bit_vector.clear(__SAMPLES_ISSET_ID);
+  }
+
+  /** Returns true if field samples is set (has been assigned a value) and false otherwise */
+  public boolean isSetSamples() {
+    return __isset_bit_vector.get(__SAMPLES_ISSET_ID);
+  }
+
+  public void setSamplesIsSet(boolean value) {
+    __isset_bit_vector.set(__SAMPLES_ISSET_ID, value);
+  }
+
+  public double getSamplesWithout() {
+    return this.samplesWithout;
+  }
+
+  public DetailScreenReport setSamplesWithout(double samplesWithout) {
+    this.samplesWithout = samplesWithout;
+    setSamplesWithoutIsSet(true);
+    return this;
+  }
+
+  public void unsetSamplesWithout() {
+    __isset_bit_vector.clear(__SAMPLESWITHOUT_ISSET_ID);
+  }
+
+  /** Returns true if field samplesWithout is set (has been assigned a value) and false otherwise */
+  public boolean isSetSamplesWithout() {
+    return __isset_bit_vector.get(__SAMPLESWITHOUT_ISSET_ID);
+  }
+
+  public void setSamplesWithoutIsSet(boolean value) {
+    __isset_bit_vector.set(__SAMPLESWITHOUT_ISSET_ID, value);
+  }
+
+  public double getSignificance() {
+    return this.significance;
+  }
+
+  public DetailScreenReport setSignificance(double significance) {
+    this.significance = significance;
+    setSignificanceIsSet(true);
+    return this;
+  }
+
+  public void unsetSignificance() {
+    __isset_bit_vector.clear(__SIGNIFICANCE_ISSET_ID);
+  }
+
+  /** Returns true if field significance is set (has been assigned a value) and false otherwise */
+  public boolean isSetSignificance() {
+    return __isset_bit_vector.get(__SIGNIFICANCE_ISSET_ID);
+  }
+
+  public void setSignificanceIsSet(boolean value) {
+    __isset_bit_vector.set(__SIGNIFICANCE_ISSET_ID, value);
+  }
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case SCORE:
@@ -332,6 +500,45 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       }
       break;
 
+    case ERROR:
+      if (value == null) {
+        unsetError();
+      } else {
+        setError((Double)value);
+      }
+      break;
+
+    case ERROR_WITHOUT:
+      if (value == null) {
+        unsetErrorWithout();
+      } else {
+        setErrorWithout((Double)value);
+      }
+      break;
+    case SAMPLES:
+      if (value == null) {
+        unsetSamples();
+      } else {
+        setSamples((Double)value);
+      }
+      break;
+
+    case SAMPLES_WITHOUT:
+      if (value == null) {
+        unsetSamplesWithout();
+      } else {
+        setSamplesWithout((Double)value);
+      }
+      break;
+
+    case SIGNIFICANCE:
+      if (value == null) {
+        unsetSignificance();
+      } else {
+        setSignificance((Double)value);
+      }
+      break;
+
     }
   }
 
@@ -349,6 +556,18 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
     case EXPECTED_VALUE:
       return Double.valueOf(getExpectedValue());
 
+    case ERROR:
+      return Double.valueOf(getError());
+
+    case ERROR_WITHOUT:
+      return Double.valueOf(getErrorWithout());
+    case SAMPLES:
+      return Double.valueOf(getSamples());
+    case SAMPLES_WITHOUT:
+      return Double.valueOf(getSamplesWithout());
+
+    case SIGNIFICANCE:
+      return Double.valueOf(getSignificance());
     }
     throw new IllegalStateException();
   }
@@ -368,6 +587,16 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       return isSetYVals();
     case EXPECTED_VALUE:
       return isSetExpectedValue();
+    case ERROR:
+      return isSetError();
+    case ERROR_WITHOUT:
+      return isSetErrorWithout();
+    case SAMPLES:
+      return isSetSamples();
+    case SAMPLES_WITHOUT:
+      return isSetSamplesWithout();
+    case SIGNIFICANCE:
+      return isSetSignificance();
     }
     throw new IllegalStateException();
   }
@@ -421,6 +650,49 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
         return false;
     }
 
+    boolean this_present_error = true && this.isSetError();
+    boolean that_present_error = true && that.isSetError();
+    if (this_present_error || that_present_error) {
+      if (!(this_present_error && that_present_error))
+        return false;
+      if (this.error != that.error)
+        return false;
+    }
+
+    boolean this_present_errorWithout = true && this.isSetErrorWithout();
+    boolean that_present_errorWithout = true && that.isSetErrorWithout();
+    if (this_present_errorWithout || that_present_errorWithout) {
+      if (!(this_present_errorWithout && that_present_errorWithout))
+        return false;
+      if (this.errorWithout != that.errorWithout)
+        return false;
+    }
+    boolean this_present_samples = true && this.isSetSamples();
+    boolean that_present_samples = true && that.isSetSamples();
+    if (this_present_samples || that_present_samples) {
+      if (!(this_present_samples && that_present_samples))
+        return false;
+      if (this.samples != that.samples)
+        return false;
+    }
+
+    boolean this_present_samplesWithout = true && this.isSetSamplesWithout();
+    boolean that_present_samplesWithout = true && that.isSetSamplesWithout();
+    if (this_present_samplesWithout || that_present_samplesWithout) {
+      if (!(this_present_samplesWithout && that_present_samplesWithout))
+        return false;
+      if (this.samplesWithout != that.samplesWithout)
+        return false;
+    }
+
+    boolean this_present_significance = true && this.isSetSignificance();
+    boolean that_present_significance = true && that.isSetSignificance();
+    if (this_present_significance || that_present_significance) {
+      if (!(this_present_significance && that_present_significance))
+        return false;
+      if (this.significance != that.significance)
+        return false;
+    }
     return true;
   }
 
@@ -477,6 +749,56 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetError()).compareTo(typedOther.isSetError());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetError()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.error, typedOther.error);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetErrorWithout()).compareTo(typedOther.isSetErrorWithout());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetErrorWithout()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.errorWithout, typedOther.errorWithout);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSamples()).compareTo(typedOther.isSetSamples());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSamples()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.samples, typedOther.samples);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSamplesWithout()).compareTo(typedOther.isSetSamplesWithout());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSamplesWithout()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.samplesWithout, typedOther.samplesWithout);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSignificance()).compareTo(typedOther.isSetSignificance());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSignificance()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.significance, typedOther.significance);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -526,6 +848,36 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       if (!first) sb.append(", ");
       sb.append("expectedValue:");
       sb.append(this.expectedValue);
+      first = false;
+    }
+    if (isSetError()) {
+      if (!first) sb.append(", ");
+      sb.append("error:");
+      sb.append(this.error);
+      first = false;
+    }
+    if (isSetErrorWithout()) {
+      if (!first) sb.append(", ");
+      sb.append("errorWithout:");
+      sb.append(this.errorWithout);
+      first = false;
+    }
+    if (isSetSamples()) {
+      if (!first) sb.append(", ");
+      sb.append("samples:");
+      sb.append(this.samples);
+      first = false;
+    }
+    if (isSetSamplesWithout()) {
+      if (!first) sb.append(", ");
+      sb.append("samplesWithout:");
+      sb.append(this.samplesWithout);
+      first = false;
+    }
+    if (isSetSignificance()) {
+      if (!first) sb.append(", ");
+      sb.append("significance:");
+      sb.append(this.significance);
       first = false;
     }
     sb.append(")");
@@ -624,6 +976,46 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 5: // ERROR
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.error = iprot.readDouble();
+              struct.setErrorIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 6: // ERROR_WITHOUT
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.errorWithout = iprot.readDouble();
+              struct.setErrorWithoutIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 7: // SAMPLES
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.samples = iprot.readDouble();
+              struct.setSamplesIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 8: // SAMPLES_WITHOUT
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.samplesWithout = iprot.readDouble();
+              struct.setSamplesWithoutIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 9: // SIGNIFICANCE
+            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
+              struct.significance = iprot.readDouble();
+              struct.setSignificanceIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -677,6 +1069,31 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
         oprot.writeDouble(struct.expectedValue);
         oprot.writeFieldEnd();
       }
+      if (struct.isSetError()) {
+        oprot.writeFieldBegin(ERROR_FIELD_DESC);
+        oprot.writeDouble(struct.error);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetErrorWithout()) {
+        oprot.writeFieldBegin(ERROR_WITHOUT_FIELD_DESC);
+        oprot.writeDouble(struct.errorWithout);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetSamples()) {
+        oprot.writeFieldBegin(SAMPLES_FIELD_DESC);
+        oprot.writeDouble(struct.samples);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetSamplesWithout()) {
+        oprot.writeFieldBegin(SAMPLES_WITHOUT_FIELD_DESC);
+        oprot.writeDouble(struct.samplesWithout);
+        oprot.writeFieldEnd();
+      }
+      if (struct.isSetSignificance()) {
+        oprot.writeFieldBegin(SIGNIFICANCE_FIELD_DESC);
+        oprot.writeDouble(struct.significance);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -707,7 +1124,22 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       if (struct.isSetExpectedValue()) {
         optionals.set(3);
       }
-      oprot.writeBitSet(optionals, 4);
+      if (struct.isSetError()) {
+        optionals.set(4);
+      }
+      if (struct.isSetErrorWithout()) {
+        optionals.set(5);
+      }
+      if (struct.isSetSamples()) {
+        optionals.set(6);
+      }
+      if (struct.isSetSamplesWithout()) {
+        optionals.set(7);
+      }
+      if (struct.isSetSignificance()) {
+        optionals.set(8);
+      }
+      oprot.writeBitSet(optionals, 9);
       if (struct.isSetScore()) {
         oprot.writeDouble(struct.score);
       }
@@ -732,12 +1164,27 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       if (struct.isSetExpectedValue()) {
         oprot.writeDouble(struct.expectedValue);
       }
+      if (struct.isSetError()) {
+        oprot.writeDouble(struct.error);
+      }
+      if (struct.isSetErrorWithout()) {
+        oprot.writeDouble(struct.errorWithout);
+      }
+      if (struct.isSetSamples()) {
+        oprot.writeDouble(struct.samples);
+      }
+      if (struct.isSetSamplesWithout()) {
+        oprot.writeDouble(struct.samplesWithout);
+      }
+      if (struct.isSetSignificance()) {
+        oprot.writeDouble(struct.significance);
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, DetailScreenReport struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(9);
       if (incoming.get(0)) {
         struct.score = iprot.readDouble();
         struct.setScoreIsSet(true);
@@ -771,6 +1218,26 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
       if (incoming.get(3)) {
         struct.expectedValue = iprot.readDouble();
         struct.setExpectedValueIsSet(true);
+      }
+      if (incoming.get(4)) {
+        struct.error = iprot.readDouble();
+        struct.setErrorIsSet(true);
+      }
+      if (incoming.get(5)) {
+        struct.errorWithout = iprot.readDouble();
+        struct.setErrorWithoutIsSet(true);
+      }
+      if (incoming.get(6)) {
+        struct.samples = iprot.readDouble();
+        struct.setSamplesIsSet(true);
+      }
+      if (incoming.get(7)) {
+        struct.samplesWithout = iprot.readDouble();
+        struct.setSamplesWithoutIsSet(true);
+      }
+      if (incoming.get(8)) {
+        struct.significance = iprot.readDouble();
+        struct.setSignificanceIsSet(true);
       }
     }
   }

@@ -84,11 +84,10 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 			((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
 					.setProgress(pp.getProgress());
 
-			double[] xVals = null;
 			String appName = w.getAppName();
 			
-			w.setParams(activityType, appName, xVals, xVals, xVals,
-					xVals, w.getEv(), w.getEvWithout(), w.getSampleCount(), w.getSignificance(), (ViewGroup) detailPage);
+			w.setParams(activityType, appName,
+					w.getEv(), w.getEvWithout(), w.getSampleCount(), w.getSampleCountWithout(), w.getSignificance(), w.getError(), w.getErrorWithout(), (ViewGroup) detailPage);
 			//w.postInvalidate();
 		}
 
