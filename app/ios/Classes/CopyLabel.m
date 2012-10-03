@@ -1,5 +1,6 @@
 // from https://github.com/zoul/UILabel-Clipboard-Sample
 #import "CopyLabel.h"
+#import "Utilities.h"
 
 @implementation CopyLabel
 
@@ -31,7 +32,7 @@
 
 - (void) copy: (id) sender
 {
-    NSLog(@"Copy handler, label: “%@”.", self.text);
+    DLog(@"Copy handler, label: “%@”.", self.text);
     UIPasteboard *pboard = [UIPasteboard generalPasteboard];
     pboard.string = self.text;
 }
