@@ -69,6 +69,7 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
 
 - (void)dealloc {
     [self stopObservingScrollView];
+    [super dealloc];
 }
 
 - (id)initWithScrollView:(UIScrollView *)scrollView {
