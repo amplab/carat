@@ -504,7 +504,7 @@ static char UIScrollViewInfiniteScrollingView;
                                         (id)[self.arrowColor colorWithAlphaComponent:0].CGColor,
                                         (id)[self.arrowColor colorWithAlphaComponent:1].CGColor,
                                         nil];
-        alphaGradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)alphaGradientColors, alphaGradientLocations);
+        alphaGradient = CGGradientCreateWithColors(colorSpace, (CFArrayRef)alphaGradientColors, alphaGradientLocations);
     }else{
         const CGFloat * components = CGColorGetComponents([self.arrowColor CGColor]);
         int numComponents = CGColorGetNumberOfComponents([self.arrowColor CGColor]);        

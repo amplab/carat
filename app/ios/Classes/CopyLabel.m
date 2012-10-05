@@ -17,8 +17,8 @@
 
 - (id) initWithFrame: (CGRect) frame
 {
-    [super initWithFrame:frame];
-    [self attachTapHandler];
+    self = [super initWithFrame:frame];
+    if (self) [self attachTapHandler];
     return self;
 }
 
