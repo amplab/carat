@@ -7,7 +7,6 @@
 //
 
 #import "CurrentViewController.h"
-#import "SHK.h"
 #import "Utilities.h"
 #import "DetailViewController.h"
 #import "FlurryAnalytics.h"

@@ -10,8 +10,6 @@
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
 #import "FlurryAnalytics.h"
-#import "SHK.h"
-#import "SHKFacebook.h"
 #import "Utilities.h"
 #import "CoreDataManager.h"
 
@@ -21,6 +19,8 @@
 #import "BugReportViewController.h"
 #import "ConsentViewController.h"
 #import "AboutViewController.h"
+
+#import <Socialize/Socialize.h>
 
 @implementation CaratAppDelegate
 
@@ -158,8 +158,11 @@ void onUncaughtException(NSException *exception)
     [FlurryAnalytics logAllPageViews:navController3];
     [FlurryAnalytics setUserID:[[Globals instance] getUUID]];
     
-    // flush any sharing actions that were performed offline and cached
-    [SHK flushOfflineQueue];
+    // set the socialize api key and secret, app registered here: http://www.getsocialize.com/apps/
+    [Socialize storeConsumerKey:@"8d0ddf53-fac1-48b1-ab25-b8c819455124"];
+    [Socialize storeConsumerSecret:@"a043bea4-b4c0-432d-a007-5b74207d184e"];
+    [SZFacebookUtils setAppId:@"258193747569113"];
+    [SZTwitterUtils setConsumerKey:@"JkGB6jsTAAfitYT6xASvxA" consumerSecret:@"crj455prhsA22L48VmxH2aEimR8Rmi0yYJgoclQpwPw"];
     
     [[CoreDataManager instance] sampleNow:@"applicationDidBecomeActive"];
     
@@ -218,13 +221,13 @@ void onUncaughtException(NSException *exception)
   sourceApplication:(NSString *)sourceApplication 
          annotation:(id)annotation 
 {
-    return [SHKFacebook handleOpenURL:url];
+    return [Socialize handleOpenURL:url];
 }
 
 - (BOOL)application:(UIApplication *)application 
       handleOpenURL:(NSURL *)url 
 {
-    return [SHKFacebook handleOpenURL:url];
+    return [Socialize handleOpenURL:url];
 }
 
 #pragma mark -
@@ -285,7 +288,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
                 verticalAccuracy:newLocation.verticalAccuracy]; 
     
     // Do any prep work before sampling. Note that we may be in the background, so nothing heavy.
-    [[Globals instance] setDistanceTraveled:[newLocation distanceFromLocation:oldLocation]];
+    [(Globals *)[Globals instance] setDistanceTraveled:[newLocation distanceFromLocation:oldLocation]];
     [[CoreDataManager instance] sampleNow:@"didUpdateToLocation"];
 }
 

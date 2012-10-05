@@ -56,6 +56,16 @@
 				<string>fb258193747569113</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Open SmartDownloads</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sz457629</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>121001</string>
