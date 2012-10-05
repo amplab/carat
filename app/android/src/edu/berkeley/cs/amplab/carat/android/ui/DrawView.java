@@ -19,7 +19,6 @@ public class DrawView extends View {
     private int sampleCountWo = 0;
     private double error = 0.0;
     private double errorWo = 0.0;
-    private double sig = 0.0;
     private String textBenefit = null;
     
 
@@ -62,17 +61,12 @@ public class DrawView extends View {
         return sampleCountWo;
     }
 
-    public double getSignificance() {
-        return sig;
-    }
-
     public void setHogsBugs(SimpleHogBug bugOrHog, String appName,
             boolean isBug, View parent) {
 
         this.ev = bugOrHog.getExpectedValue();
         this.evWithout = bugOrHog.getExpectedValueWithout();
         this.sampleCount = bugOrHog.getxVals().length;
-        this.sig = bugOrHog.getwDistance();
         this.textBenefit = bugOrHog.textBenefit();
         this.error = bugOrHog.getError();
         this.errorWo = bugOrHog.getErrorWithout();
@@ -85,12 +79,11 @@ public class DrawView extends View {
     }
 
     public void setParams(Type type, String appName,
-            double ev, double evWithout, int sampleCount, int sampleCountWo, double significance,
+            double ev, double evWithout, int sampleCount, int sampleCountWo,
             double error, double errorWo, View parent) {
         this.ev = ev;
         this.evWithout = evWithout;
         this.sampleCount = sampleCount;
-        this.sig = significance;
         this.error = error;
         this.errorWo = errorWo;
         this.sampleCount = (int) sampleCount;

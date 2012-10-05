@@ -383,7 +383,7 @@ public class CaratDataStorage {
             result[i].setErrorWithout(item.getErrorWithout());
             result[i].setSamples(item.getSamples());
             result[i].setSamplesWithout(item.getSamplesWithout());
-            result[i].setSignificance(item.getSignificance());
+            //result[i].setSignificance(item.getSignificance());
             /*result[i].setyVals(convert(item.getYVals()));
             result[i].setxValsWithout(convert(item.getXValsWithout()));
             result[i].setyValsWithout(convert(item.getYValsWithout()));*/

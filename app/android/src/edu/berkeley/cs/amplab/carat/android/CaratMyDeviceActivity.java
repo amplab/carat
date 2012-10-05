@@ -74,15 +74,15 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                 String appName = v.getAppName();
                 if (v == previous.osView) {
                     osView.setParams(t, appName, 
-                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getSignificance(), v.getError(), v.getErrorWithout(), osViewPage);
+                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), osViewPage);
                     //osView.postInvalidate();
                 } else if (v == previous.modelView) {
                     modelView.setParams(t, appName, 
-                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getSignificance(), v.getError(), v.getErrorWithout(), modelViewPage);
+                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), modelViewPage);
                    // modelView.postInvalidate();
                 } else if (v == previous.appsView) {
                     appsView.setParams(t, appName,
-                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getSignificance(), v.getError(), v.getErrorWithout(), appsViewPage);
+                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), appsViewPage);
                     //appsView.postInvalidate();
                 }
             }
@@ -240,7 +240,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             ((ProgressBar) osViewPage.findViewById(R.id.confidenceBar))
                     .setProgress((int) (os.getScore() * 100));
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
-                    os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) os.getSamplesWithout(), os.getScore(), os.getError(), os.getErrorWithout(), osViewPage);
+                    os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) osWithout.getSamples(), os.getError(), osWithout.getError(), osViewPage);
         }
         switchView(osViewPage);
     }
@@ -267,7 +267,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             ((ProgressBar) modelViewPage.findViewById(R.id.confidenceBar))
                     .setProgress((int) (model.getScore() * 100));
             modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
-                    model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) model.getSamplesWithout(), model.getScore(), model.getError(), model.getErrorWithout(), modelViewPage);
+                    model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) modelWithout.getSamples(), model.getError(), modelWithout.getError(), modelViewPage);
         }
         switchView(modelViewPage);
     }
@@ -296,7 +296,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     .setProgress((int) (similar.getScore() * 100));
 
             appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
-                    similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similar.getSamplesWithout(), similar.getScore(), similar.getError(), similar.getErrorWithout(), appsViewPage);
+                    similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similarWithout.getSamples(), similar.getError(), similarWithout.getError(), appsViewPage);
         }
         switchView(appsViewPage);
     }

@@ -87,7 +87,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 			String appName = w.getAppName();
 			
 			w.setParams(activityType, appName,
-					w.getEv(), w.getEvWithout(), w.getSampleCount(), w.getSampleCountWithout(), w.getSignificance(), w.getError(), w.getErrorWithout(), (ViewGroup) detailPage);
+					w.getEv(), w.getEvWithout(), w.getSampleCount(), w.getSampleCountWithout(), w.getError(), w.getErrorWithout(), (ViewGroup) detailPage);
 			//w.postInvalidate();
 		}
 

@@ -175,8 +175,6 @@ public class SimpleHogBug implements Serializable{
     
     private int samplesWithout = -1;
     
-    private double significance = -1;
-    
     public double getError(){ return error;}
     public void setError(double error){this.error = error;}
     public double getErrorWithout(){ return errorWithout; }
@@ -222,13 +220,5 @@ public class SimpleHogBug implements Serializable{
 
     public void setSamplesWithout(double samplesWithout) {
         this.samplesWithout = (int) samplesWithout;
-    }
-
-    public double getSignificance() {
-        return significance;
-    }
-
-    public void setSignificance(double significance) {
-        this.significance = significance;
     }
 }
