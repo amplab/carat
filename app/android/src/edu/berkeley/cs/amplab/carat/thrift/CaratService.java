@@ -37,6 +37,7 @@ public class CaratService {
 
     public HogBugReport getHogOrBugReport(String uuId, List<Feature> features) throws org.apache.thrift.TException;
 
+    public HogBugReport getQuickHogsAndMaybeRegister(Registration registration, List<String> processList) throws org.apache.thrift.TException;
   }
 
   public interface AsyncIface {
@@ -48,6 +49,7 @@ public class CaratService {
     public void getReports(String uuId, List<Feature> features, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getReports_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getHogOrBugReport(String uuId, List<Feature> features, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getHogOrBugReport_call> resultHandler) throws org.apache.thrift.TException;
+    public void getQuickHogsAndMaybeRegister(Registration registration, List<String> processList, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getQuickHogsAndMaybeRegister_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -152,6 +154,30 @@ public class CaratService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getHogOrBugReport failed: unknown result");
+    }
+
+    public HogBugReport getQuickHogsAndMaybeRegister(Registration registration, List<String> processList) throws org.apache.thrift.TException
+    {
+      send_getQuickHogsAndMaybeRegister(registration, processList);
+      return recv_getQuickHogsAndMaybeRegister();
+    }
+
+    public void send_getQuickHogsAndMaybeRegister(Registration registration, List<String> processList) throws org.apache.thrift.TException
+    {
+      getQuickHogsAndMaybeRegister_args args = new getQuickHogsAndMaybeRegister_args();
+      args.setRegistration(registration);
+      args.setProcessList(processList);
+      sendBase("getQuickHogsAndMaybeRegister", args);
+    }
+
+    public HogBugReport recv_getQuickHogsAndMaybeRegister() throws org.apache.thrift.TException
+    {
+      getQuickHogsAndMaybeRegister_result result = new getQuickHogsAndMaybeRegister_result();
+      receiveBase(result, "getQuickHogsAndMaybeRegister");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getQuickHogsAndMaybeRegister failed: unknown result");
     }
 
   }
@@ -305,6 +331,40 @@ public class CaratService {
       }
     }
 
+    public void getQuickHogsAndMaybeRegister(Registration registration, List<String> processList, org.apache.thrift.async.AsyncMethodCallback<getQuickHogsAndMaybeRegister_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getQuickHogsAndMaybeRegister_call method_call = new getQuickHogsAndMaybeRegister_call(registration, processList, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getQuickHogsAndMaybeRegister_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private Registration registration;
+      private List<String> processList;
+      public getQuickHogsAndMaybeRegister_call(Registration registration, List<String> processList, org.apache.thrift.async.AsyncMethodCallback<getQuickHogsAndMaybeRegister_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.registration = registration;
+        this.processList = processList;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getQuickHogsAndMaybeRegister", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getQuickHogsAndMaybeRegister_args args = new getQuickHogsAndMaybeRegister_args();
+        args.setRegistration(registration);
+        args.setProcessList(processList);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public HogBugReport getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getQuickHogsAndMaybeRegister();
+      }
+    }
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -322,6 +382,7 @@ public class CaratService {
       processMap.put("uploadSample", new uploadSample());
       processMap.put("getReports", new getReports());
       processMap.put("getHogOrBugReport", new getHogOrBugReport());
+      processMap.put("getQuickHogsAndMaybeRegister", new getQuickHogsAndMaybeRegister());
       return processMap;
     }
 
@@ -389,6 +450,21 @@ public class CaratService {
       }
     }
 
+    private static class getQuickHogsAndMaybeRegister<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getQuickHogsAndMaybeRegister_args> {
+      public getQuickHogsAndMaybeRegister() {
+        super("getQuickHogsAndMaybeRegister");
+      }
+
+      protected getQuickHogsAndMaybeRegister_args getEmptyArgsInstance() {
+        return new getQuickHogsAndMaybeRegister_args();
+      }
+
+      protected getQuickHogsAndMaybeRegister_result getResult(I iface, getQuickHogsAndMaybeRegister_args args) throws org.apache.thrift.TException {
+        getQuickHogsAndMaybeRegister_result result = new getQuickHogsAndMaybeRegister_result();
+        result.success = iface.getQuickHogsAndMaybeRegister(args.registration, args.processList);
+        return result;
+      }
+    }
   }
 
   public static class registerMe_args implements org.apache.thrift.TBase<registerMe_args, registerMe_args._Fields>, java.io.Serializable, Cloneable   {
@@ -3153,6 +3229,868 @@ public class CaratService {
 
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, getHogOrBugReport_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new HogBugReport();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getQuickHogsAndMaybeRegister_args implements org.apache.thrift.TBase<getQuickHogsAndMaybeRegister_args, getQuickHogsAndMaybeRegister_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getQuickHogsAndMaybeRegister_args");
+
+    private static final org.apache.thrift.protocol.TField REGISTRATION_FIELD_DESC = new org.apache.thrift.protocol.TField("registration", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+    private static final org.apache.thrift.protocol.TField PROCESS_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("processList", org.apache.thrift.protocol.TType.LIST, (short)2);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getQuickHogsAndMaybeRegister_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getQuickHogsAndMaybeRegister_argsTupleSchemeFactory());
+    }
+
+    public Registration registration; // required
+    public List<String> processList; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      REGISTRATION((short)1, "registration"),
+      PROCESS_LIST((short)2, "processList");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // REGISTRATION
+            return REGISTRATION;
+          case 2: // PROCESS_LIST
+            return PROCESS_LIST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.REGISTRATION, new org.apache.thrift.meta_data.FieldMetaData("registration", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Registration.class)));
+      tmpMap.put(_Fields.PROCESS_LIST, new org.apache.thrift.meta_data.FieldMetaData("processList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getQuickHogsAndMaybeRegister_args.class, metaDataMap);
+    }
+
+    public getQuickHogsAndMaybeRegister_args() {
+    }
+
+    public getQuickHogsAndMaybeRegister_args(
+      Registration registration,
+      List<String> processList)
+    {
+      this();
+      this.registration = registration;
+      this.processList = processList;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getQuickHogsAndMaybeRegister_args(getQuickHogsAndMaybeRegister_args other) {
+      if (other.isSetRegistration()) {
+        this.registration = new Registration(other.registration);
+      }
+      if (other.isSetProcessList()) {
+        List<String> __this__processList = new ArrayList<String>();
+        for (String other_element : other.processList) {
+          __this__processList.add(other_element);
+        }
+        this.processList = __this__processList;
+      }
+    }
+
+    public getQuickHogsAndMaybeRegister_args deepCopy() {
+      return new getQuickHogsAndMaybeRegister_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.registration = null;
+      this.processList = null;
+    }
+
+    public Registration getRegistration() {
+      return this.registration;
+    }
+
+    public getQuickHogsAndMaybeRegister_args setRegistration(Registration registration) {
+      this.registration = registration;
+      return this;
+    }
+
+    public void unsetRegistration() {
+      this.registration = null;
+    }
+
+    /** Returns true if field registration is set (has been assigned a value) and false otherwise */
+    public boolean isSetRegistration() {
+      return this.registration != null;
+    }
+
+    public void setRegistrationIsSet(boolean value) {
+      if (!value) {
+        this.registration = null;
+      }
+    }
+
+    public int getProcessListSize() {
+      return (this.processList == null) ? 0 : this.processList.size();
+    }
+
+    public java.util.Iterator<String> getProcessListIterator() {
+      return (this.processList == null) ? null : this.processList.iterator();
+    }
+
+    public void addToProcessList(String elem) {
+      if (this.processList == null) {
+        this.processList = new ArrayList<String>();
+      }
+      this.processList.add(elem);
+    }
+
+    public List<String> getProcessList() {
+      return this.processList;
+    }
+
+    public getQuickHogsAndMaybeRegister_args setProcessList(List<String> processList) {
+      this.processList = processList;
+      return this;
+    }
+
+    public void unsetProcessList() {
+      this.processList = null;
+    }
+
+    /** Returns true if field processList is set (has been assigned a value) and false otherwise */
+    public boolean isSetProcessList() {
+      return this.processList != null;
+    }
+
+    public void setProcessListIsSet(boolean value) {
+      if (!value) {
+        this.processList = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case REGISTRATION:
+        if (value == null) {
+          unsetRegistration();
+        } else {
+          setRegistration((Registration)value);
+        }
+        break;
+
+      case PROCESS_LIST:
+        if (value == null) {
+          unsetProcessList();
+        } else {
+          setProcessList((List<String>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case REGISTRATION:
+        return getRegistration();
+
+      case PROCESS_LIST:
+        return getProcessList();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case REGISTRATION:
+        return isSetRegistration();
+      case PROCESS_LIST:
+        return isSetProcessList();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getQuickHogsAndMaybeRegister_args)
+        return this.equals((getQuickHogsAndMaybeRegister_args)that);
+      return false;
+    }
+
+    public boolean equals(getQuickHogsAndMaybeRegister_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_registration = true && this.isSetRegistration();
+      boolean that_present_registration = true && that.isSetRegistration();
+      if (this_present_registration || that_present_registration) {
+        if (!(this_present_registration && that_present_registration))
+          return false;
+        if (!this.registration.equals(that.registration))
+          return false;
+      }
+
+      boolean this_present_processList = true && this.isSetProcessList();
+      boolean that_present_processList = true && that.isSetProcessList();
+      if (this_present_processList || that_present_processList) {
+        if (!(this_present_processList && that_present_processList))
+          return false;
+        if (!this.processList.equals(that.processList))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getQuickHogsAndMaybeRegister_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getQuickHogsAndMaybeRegister_args typedOther = (getQuickHogsAndMaybeRegister_args)other;
+
+      lastComparison = Boolean.valueOf(isSetRegistration()).compareTo(typedOther.isSetRegistration());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetRegistration()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.registration, typedOther.registration);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetProcessList()).compareTo(typedOther.isSetProcessList());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetProcessList()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.processList, typedOther.processList);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getQuickHogsAndMaybeRegister_args(");
+      boolean first = true;
+
+      sb.append("registration:");
+      if (this.registration == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.registration);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("processList:");
+      if (this.processList == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.processList);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+          throw new java.io.IOException(te.getMessage());
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+          throw new java.io.IOException(te.getMessage());
+      }
+    }
+
+    private static class getQuickHogsAndMaybeRegister_argsStandardSchemeFactory implements SchemeFactory {
+      public getQuickHogsAndMaybeRegister_argsStandardScheme getScheme() {
+        return new getQuickHogsAndMaybeRegister_argsStandardScheme();
+      }
+    }
+
+    private static class getQuickHogsAndMaybeRegister_argsStandardScheme extends StandardScheme<getQuickHogsAndMaybeRegister_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getQuickHogsAndMaybeRegister_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // REGISTRATION
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.registration = new Registration();
+                struct.registration.read(iprot);
+                struct.setRegistrationIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // PROCESS_LIST
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list88 = iprot.readListBegin();
+                  struct.processList = new ArrayList<String>(_list88.size);
+                  for (int _i89 = 0; _i89 < _list88.size; ++_i89)
+                  {
+                    String _elem90; // required
+                    _elem90 = iprot.readString();
+                    struct.processList.add(_elem90);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setProcessListIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getQuickHogsAndMaybeRegister_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.registration != null) {
+          oprot.writeFieldBegin(REGISTRATION_FIELD_DESC);
+          struct.registration.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        if (struct.processList != null) {
+          oprot.writeFieldBegin(PROCESS_LIST_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.processList.size()));
+            for (String _iter91 : struct.processList)
+            {
+              oprot.writeString(_iter91);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getQuickHogsAndMaybeRegister_argsTupleSchemeFactory implements SchemeFactory {
+      public getQuickHogsAndMaybeRegister_argsTupleScheme getScheme() {
+        return new getQuickHogsAndMaybeRegister_argsTupleScheme();
+      }
+    }
+
+    private static class getQuickHogsAndMaybeRegister_argsTupleScheme extends TupleScheme<getQuickHogsAndMaybeRegister_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getQuickHogsAndMaybeRegister_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetRegistration()) {
+          optionals.set(0);
+        }
+        if (struct.isSetProcessList()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetRegistration()) {
+          struct.registration.write(oprot);
+        }
+        if (struct.isSetProcessList()) {
+          {
+            oprot.writeI32(struct.processList.size());
+            for (String _iter92 : struct.processList)
+            {
+              oprot.writeString(_iter92);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getQuickHogsAndMaybeRegister_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.registration = new Registration();
+          struct.registration.read(iprot);
+          struct.setRegistrationIsSet(true);
+        }
+        if (incoming.get(1)) {
+          {
+            org.apache.thrift.protocol.TList _list93 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.processList = new ArrayList<String>(_list93.size);
+            for (int _i94 = 0; _i94 < _list93.size; ++_i94)
+            {
+              String _elem95; // required
+              _elem95 = iprot.readString();
+              struct.processList.add(_elem95);
+            }
+          }
+          struct.setProcessListIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getQuickHogsAndMaybeRegister_result implements org.apache.thrift.TBase<getQuickHogsAndMaybeRegister_result, getQuickHogsAndMaybeRegister_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getQuickHogsAndMaybeRegister_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getQuickHogsAndMaybeRegister_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getQuickHogsAndMaybeRegister_resultTupleSchemeFactory());
+    }
+
+    public HogBugReport success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, HogBugReport.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getQuickHogsAndMaybeRegister_result.class, metaDataMap);
+    }
+
+    public getQuickHogsAndMaybeRegister_result() {
+    }
+
+    public getQuickHogsAndMaybeRegister_result(
+      HogBugReport success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getQuickHogsAndMaybeRegister_result(getQuickHogsAndMaybeRegister_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new HogBugReport(other.success);
+      }
+    }
+
+    public getQuickHogsAndMaybeRegister_result deepCopy() {
+      return new getQuickHogsAndMaybeRegister_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public HogBugReport getSuccess() {
+      return this.success;
+    }
+
+    public getQuickHogsAndMaybeRegister_result setSuccess(HogBugReport success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((HogBugReport)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getQuickHogsAndMaybeRegister_result)
+        return this.equals((getQuickHogsAndMaybeRegister_result)that);
+      return false;
+    }
+
+    public boolean equals(getQuickHogsAndMaybeRegister_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getQuickHogsAndMaybeRegister_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getQuickHogsAndMaybeRegister_result typedOther = (getQuickHogsAndMaybeRegister_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getQuickHogsAndMaybeRegister_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+          throw new java.io.IOException(te.getMessage());
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+          throw new java.io.IOException(te.getMessage());
+      }
+    }
+
+    private static class getQuickHogsAndMaybeRegister_resultStandardSchemeFactory implements SchemeFactory {
+      public getQuickHogsAndMaybeRegister_resultStandardScheme getScheme() {
+        return new getQuickHogsAndMaybeRegister_resultStandardScheme();
+      }
+    }
+
+    private static class getQuickHogsAndMaybeRegister_resultStandardScheme extends StandardScheme<getQuickHogsAndMaybeRegister_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getQuickHogsAndMaybeRegister_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new HogBugReport();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getQuickHogsAndMaybeRegister_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getQuickHogsAndMaybeRegister_resultTupleSchemeFactory implements SchemeFactory {
+      public getQuickHogsAndMaybeRegister_resultTupleScheme getScheme() {
+        return new getQuickHogsAndMaybeRegister_resultTupleScheme();
+      }
+    }
+
+    private static class getQuickHogsAndMaybeRegister_resultTupleScheme extends TupleScheme<getQuickHogsAndMaybeRegister_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getQuickHogsAndMaybeRegister_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getQuickHogsAndMaybeRegister_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {

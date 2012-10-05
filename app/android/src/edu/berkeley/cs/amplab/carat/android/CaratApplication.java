@@ -35,6 +35,8 @@ public class CaratApplication extends Application {
     public static final long FRESHNESS_TIMEOUT = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
     // Blacklist freshness timeout. Default 24h.
     public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24 * 3600 * 1000;
+    // Blacklist freshness timeout. Default 2 days.
+    public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 2* 24 * 3600 * 1000;
     // If this preference is true, register this as a new device on the Carat
     // server.
     public static final String PREFERENCE_FIRST_RUN = "carat.first.run";

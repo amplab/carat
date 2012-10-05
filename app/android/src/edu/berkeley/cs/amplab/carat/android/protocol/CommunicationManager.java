@@ -22,9 +22,11 @@ import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
+import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Registration;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -290,6 +292,17 @@ public class CommunicationManager {
                     a.getString(R.string.tab_hogs), true);
             Log.d(TAG, "Failed getting hog report");
         }
+        
+        // NOTE: Check for having a J-Score, and in case there is none, send the new message
+        Reports r = CaratApplication.s.getReports();
+        if (r == null || r.jScoreWith == null || r.jScoreWith.expectedValue <= 0){
+            success = getQuickHogsAndMaybeRegister(uuId, OS, model);
+            if (success)
+                Log.d(TAG, "Got quickHogs.");
+            else
+                Log.d(TAG, "Failed getting GuickHogs.");
+        }
+        
         if (bl) {
             refreshBlacklist();
         }
@@ -406,6 +419,39 @@ public class CommunicationManager {
                 CaratApplication.s.writeBlacklistFreshness();
             }
         }.start();
+    }
+    
+    private boolean getQuickHogsAndMaybeRegister(String uuid, String os, String model) {
+        if (System.currentTimeMillis() - CaratApplication.s.getQuickHogsFreshness() < CaratApplication.FRESHNESS_TIMEOUT_QUICKHOGS)
+            return false;
+        CaratService.Client instance = null;
+        try {
+            instance = ProtocolClient.open(a.getApplicationContext());
+            Registration registration = new Registration(uuid);
+            registration.setPlatformId(model);
+            registration.setSystemVersion(os);
+            registration.setTimestamp(System.currentTimeMillis() / 1000.0);
+            List<ProcessInfo> pi = SamplingLibrary.getRunningAppInfo(a.getApplicationContext());
+            List<String> processList = new ArrayList<String>();
+            for (ProcessInfo p: pi)
+                processList.add(p.pName);
+            
+            HogBugReport r = instance.getQuickHogsAndMaybeRegister(registration, processList);
+            // Assume multiple invocations, do not close
+            // ProtocolClient.close();
+            if (r != null){
+                CaratApplication.s.writeHogReport(r);
+                CaratApplication.s.writeQuickHogsFreshness();
+            }
+            // Assume freshness written by caller.
+            // s.writeFreshness();
+            safeClose(instance);
+            return true;
+        } catch (Throwable th) {
+            Log.e(TAG, "Error refreshing main reports.", th);
+            safeClose(instance);
+        }
+        return false;
     }
 
     public static void safeClose(CaratService.Client c) {

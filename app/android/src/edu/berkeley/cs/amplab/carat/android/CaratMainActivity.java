@@ -472,7 +472,7 @@ public class CaratMainActivity extends TabActivity {
                 sendIntent.setType("message/rfc822");
             sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"carat@eecs.berkeley.edu"});
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] "+getString(R.string.feedbackfrom) +" "+model);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os)+": "+os+"\n"+getString(R.string.model)+": "+model+"\nuuId: "+uuId+"\nJ-Score: "+jscore+"\n");
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os)+": "+os+"\n"+getString(R.string.model)+": "+model+"\nuuId: "+uuId+"\nJ-Score: "+jscore+"\n"+ fullVersion+"\n");
             startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
             return true;
         }
