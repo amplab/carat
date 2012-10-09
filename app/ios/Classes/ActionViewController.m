@@ -13,10 +13,10 @@
 #import "InstructionViewController.h"
 #import "FlurryAnalytics.h"
 #import "ActionObject.h"
-#import "SHK.h"
 #import "CoreDataManager.h"
 #import "Reachability.h"
 #import "SVPullToRefresh.h"
+#import <Socialize/Socialize.h>
 
 @implementation ActionViewController
 
@@ -73,16 +73,6 @@
 - (void)loadData
 {    
     [self updateView];
-    
-    // The checkmark image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
-//    UIImage *icon = [UIImage newImageNotCached:@"37x-Checkmark.png"];
-//    UIImageView *imgView = [[UIImageView alloc] initWithImage:icon];
-//    HUD.customView = imgView;
-//    [HUD setMode:MBProgressHUDModeCustomView];
-//    HUD.labelText = @"List Update Complete";
-//    [icon release];
-//    [imgView release];
-//    sleep(1);
 }
 
 - (BOOL) isFresh
@@ -212,7 +202,7 @@
 
 }
 
-#pragma mark - share handler
+#pragma mark - sharing
 
 - (void)shareHandler {
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
@@ -224,21 +214,80 @@
 //    [alert release];
 
     // Create the item to share (in this example, a url)
-    NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
-    SHKItem *item = [SHKItem URL:url
-                           title:[[@"My J-Score is "
-             stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]]
-             stringByAppendingString:@". Find out yours and improve your battery life!"]];
-    [item setCustomValue:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"image"];
-    [item setCustomValue:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"picture"];
-                                            
+//    NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
+//    SHKItem *item = [SHKItem URL:url
+//                           title:[[@"My J-Score is "
+//             stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]]
+//             stringByAppendingString:@". Find out yours and improve your battery life!"]];
+//    [item setCustomValue:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"image"];
+//    [item setCustomValue:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"picture"];
+    
     // Get the ShareKit action sheet
-    SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-       
+//    SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+    
     // Display the action sheet
-    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+//    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    
+    [self showShareDialog];
     
     [FlurryAnalytics logEvent:@"selectedSpreadTheWord"];
+}
+
+- (void)showShareDialog {
+    id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
+    [SZShareUtils showShareDialogWithViewController:self entity:entity completion:^(NSArray *shares) {
+        // `shares` is a list of all shares created during the lifetime of the share dialog
+        NSLog(@"Created %d shares: %@", [shares count], shares);
+    } cancellation:^{
+        NSLog(@"Share creation cancelled");
+    }];
+}
+
+- (void)createEntityWithCustomPageInfo {
+    SZEntity *entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
+
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+                            [[@"My J-Score is " stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]] stringByAppendingString:@". Find out yours and improve your battery life!"], @"szsd_title",
+                            @"Carat is a free app that tells you what is using up your battery, whether that's normal, and what you can do about it.", @"szsd_description",
+                            @"http://carat.cs.berkeley.edu/img/icon144.png", @"szsd_thumb",
+                            nil];
+    
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
+    NSAssert(error == nil, @"Error writing json: %@", [error localizedDescription]);
+    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    entity.meta = jsonString;
+    
+    [SZEntityUtils addEntity:entity success:^(id<SZEntity> serverEntity) {
+        NSLog(@"Successfully updated entity meta: %@", [serverEntity meta]);
+    } failure:^(NSError *error) {
+        NSLog(@"Failure: %@", [error localizedDescription]);
+    }];
+}
+
+- (void)customizeFacebook {
+    id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
+    SZShareOptions *options = [SZShareUtils userShareOptions];
+    
+    // http://developers.facebook.com/docs/reference/api/link/
+    
+    options.willAttemptPostingToSocialNetworkBlock = ^(SZSocialNetwork network, SZSocialNetworkPostData *postData) {
+        //[postData.params setObject:@"" forKey:@"message"];
+        [postData.params setObject:@"http://carat.cs.berkeley.edu/" forKey:@"link"];
+        [postData.params setObject:[[@"My J-Score is " stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]] stringByAppendingString:@". Find out yours and improve your battery life!"] forKey:@"caption"];
+        [postData.params setObject:@"Carat" forKey:@"name"];
+        [postData.params setObject:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"picture"];
+        [postData.params setObject:@"Carat is a free app that tells you what is using up your battery, whether that's normal, and what you can do about it." forKey:@"description"];
+    };
+    
+    [SZShareUtils shareViaSocialNetworksWithEntity:entity networks:SZAvailableSocialNetworks() options:options success:^(id<SZShare> share) {
+        
+        NSLog(@"Created share: %@", share);
+        
+    } failure:^(NSError *error) {
+        
+        NSLog(@"Error creating share: %@", [error localizedDescription]);
+    }];
 }
 
 

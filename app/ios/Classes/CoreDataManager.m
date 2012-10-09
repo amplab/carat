@@ -332,7 +332,7 @@ static NSMutableDictionary * daemonsList = nil;
         NSString *fh = [NSString stringWithContentsOfFile:self.daemonsFilePath 
                                                  encoding:NSUTF8StringEncoding 
                                                     error:NULL];
-        DLog(@"%s Cache file already exists with contents %s, loading...", __PRETTY_FUNCTION__, fh); 
+        DLog(@"%s Cache file already exists with contents %@, loading...", __PRETTY_FUNCTION__, fh);
         for (NSString *line in [fh componentsSeparatedByString:@"\n"]) {
             [daemonsList setObject:@"1" forKey:line];
         }
@@ -1320,7 +1320,7 @@ static id instance = nil;
         long available = dispatch_semaphore_wait(sendStoredDataToServerSemaphore, DISPATCH_TIME_NOW);
         if (available != 0)
         {
-            DLog(@"%s Not enough resources available, aborting %u.", __PRETTY_FUNCTION__);
+            DLog(@"%s Not enough resources available, aborting.", __PRETTY_FUNCTION__);
             return;
         }
         
@@ -1702,7 +1702,7 @@ static id instance = nil;
 - (UIImage *) getIconForApp: (NSString *)appName
 {
     NSString *iconURL = [[@"https://s3.amazonaws.com/carat.icons/" stringByAppendingString:appName] stringByAppendingString:@".jpg"];
-    DLog(@"Getting icon at %s", iconURL);
+    DLog(@"Getting icon at %@", iconURL);
     return [[[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconURL]]] autorelease];
 }
 
