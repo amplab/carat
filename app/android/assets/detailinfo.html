@@ -2,10 +2,12 @@
     <head>
     </head>
     <body>
-        <h3>How do I interpret this plot?</h3>
-        <p>You are looking at two probability distributions of the rate of energy use. Larger values further to the right mean a much higher rate of energy use (the x-axis is a log scale). Essentially, we took all of the energy rates Carat has measured across all devices and divided them into two sets. The content of each set, and which colored line it corresponds to, appears above the plot in a matching color.</p>
-        <center><img src="energyratedist.png"></center>
-        <p> <b>Example:</b> A Hog plot shows one distribution for the set of measurements when the app was running and another for when it was not. You'll probably notice places where the distribution for "Running" is higher than the distribution for "Not Running". This is the underlying reason why Carat calls the app a Hog: running it correlates with atypically high energy use. Note that this is not simply saying that the app uses energy, which is obvious. The distribution for "Not Running" also includes measurements for when other apps are running. (All of them, in fact.) So a Hog doesn't just use energy, it uses so much energy that it stands out from the crowd.</p>
+        <h3>What are these numbers?</h3>
+        <p><b>Expected benefit</p> is the amount of battery life that fixing the hog/bug is expected to yield. Fixing hogs means killing the app and using it less, while fixing a bug may mean just restarting the app, updating it to the latest version, or changing some of the app's settings.</p>
+        <p><b>Samples</b> shows how many measurements we have of this app, across all users. More samples means the app is common and its energy use well known.
+        </p>
+        <p>As there are more samples, the <b>Measurement error</b> (in minutes) will decrease.</p>
+	<p><b>Measurements without</b> shows how many measurements Carat has that do not include the app in question. Both measurements with and without the app are required to ascertain its energy behavior.</p>
     </body>
 </html>
 
