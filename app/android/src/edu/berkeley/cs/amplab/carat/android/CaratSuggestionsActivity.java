@@ -194,8 +194,8 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             webview.loadUrl("file:///android_asset/killapp-2.2.html");
         else
             webview.loadUrl("file:///android_asset/killapp.html");
-        killPage.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(android.R.id.list)), true));
+        // FIXME: This does not work with the embedded WebView (randomly goes back); no idea why
+        killPage.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(android.R.id.list)), false));
         Button AppManagerButton = (Button) killPage.findViewById(R.id.appManager);

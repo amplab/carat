@@ -153,11 +153,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         View detailPage = inflater.inflate(R.layout.graph, null);
         ViewGroup g = (ViewGroup) detailPage;
         DrawView w = new DrawView(getApplicationContext());
-        g.addView(w);
+        //g.addView(w);
         vf.addView(detailPage);
 
         g.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex,
-                true));
+                false));
         result[0] = w;
         result[1] = detailPage;
 

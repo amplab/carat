@@ -103,7 +103,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 		detailPage = inflater.inflate(R.layout.graph, null);
 		ViewGroup g = (ViewGroup) detailPage;
 		w = new DrawView(getApplicationContext());
-		g.addView(w);
+		//g.addView(w);
 		vf.addView(detailPage);
 
 		OnClickListener detailViewer = new OnClickListener() {
@@ -130,7 +130,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 		item.setOnClickListener(detailViewer);
 
 		detailPage.setOnTouchListener(new FlipperBackListener(this, vf,
-				baseViewIndex, true));
+				baseViewIndex, false));
 
 		final ListView lv = (ListView) findViewById(android.R.id.list);
 		lv.setOnItemClickListener(new OnItemClickListener() {

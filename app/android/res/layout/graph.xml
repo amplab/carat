@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Color set for the GUI designer -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    >
+
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:background="@color/background"
     android:orientation="vertical"
     android:paddingBottom="5dip"
@@ -78,16 +83,6 @@
             android:src="@drawable/arrow" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/statistics"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginLeft="10dip"
-        android:layout_marginRight="10dip"
-        android:layout_marginTop="10dip"
-        android:background="@color/background"
-        android:orientation="vertical" >
-
             <TextView
                 android:id="@+id/killBenefitLegend"
                 android:layout_width="wrap_content"
@@ -161,7 +156,7 @@
                 android:text="@string/zero"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/green" />
-            <TextView
+            <!--<TextView
                 android:id="@+id/errorWoLegend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -170,7 +165,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/green" />
 
-            <TextView
+             <TextView
                 android:id="@+id/errorWo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -178,7 +173,6 @@
                 android:layout_marginTop="10dip"
                 android:text="@string/zeroh"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/green" />
-    </LinearLayout>
-
-</LinearLayout>
+                android:textColor="@color/green" />-->
+  </LinearLayout>
+</ScrollView>

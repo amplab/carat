@@ -207,8 +207,14 @@ Carat My Device Screen layout
                     android:onClick="viewProcessList"
                     android:text="@string/viewprocess"
                     android:textColor="@color/green" />
-
-                <ImageView
+				<!-- Spacer: -->
+                <View
+                    android:layout_width="24dip"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right|center_vertical"
+                    android:background="@null"
+                    />
+                <!-- <ImageView
                     android:id="@+id/appInfo"
                     android:layout_width="24dip"
                     android:layout_height="match_parent"
@@ -216,7 +222,7 @@ Carat My Device Screen layout
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
                     android:onClick="showAppInfo"
-                    android:src="@drawable/arrow" />
+                    android:src="@drawable/arrow" />-->
             </LinearLayout>
 
             <LinearLayout

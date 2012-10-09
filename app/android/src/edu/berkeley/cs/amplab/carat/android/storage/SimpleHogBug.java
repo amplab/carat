@@ -58,54 +58,6 @@ public class SimpleHogBug implements Serializable{
         this.wDistance = wDistance;
     }
     /**
-     * @return the xVals
-     */
-    public double[] getxVals() {
-        return xVals;
-    }
-    /**
-     * @param xVals the xVals to set
-     */
-    public void setxVals(double[] xVals) {
-        this.xVals = xVals;
-    }
-    /**
-     * @return the yVals
-     */
-    public double[] getyVals() {
-        return yVals;
-    }
-    /**
-     * @param yVals the yVals to set
-     */
-    public void setyVals(double[] yVals) {
-        this.yVals = yVals;
-    }
-    /**
-     * @return the xValsWithout
-     */
-    public double[] getxValsWithout() {
-        return xValsWithout;
-    }
-    /**
-     * @param xValsWithout the xValsWithout to set
-     */
-    public void setxValsWithout(double[] xValsWithout) {
-        this.xValsWithout = xValsWithout;
-    }
-    /**
-     * @return the yValsWithout
-     */
-    public double[] getyValsWithout() {
-        return yValsWithout;
-    }
-    /**
-     * @param yValsWithout the yValsWithout to set
-     */
-    public void setyValsWithout(double[] yValsWithout) {
-        this.yValsWithout = yValsWithout;
-    }
-    /**
      * @return the expectedValue
      */
     public double getExpectedValue() {
@@ -156,10 +108,6 @@ public class SimpleHogBug implements Serializable{
         this.appPriority = appPriority;
     }
     private double wDistance; // optional
-    private double[] xVals; // optional
-    private double[] yVals; // optional
-    private double[] xValsWithout; // optional
-    private double[] yValsWithout; // optional
     private double expectedValue; // optional
     private double expectedValueWithout; // optional
     private String appLabel; // optional
@@ -184,26 +132,9 @@ public class SimpleHogBug implements Serializable{
     public String textBenefit() {
         double ev = getExpectedValue();
         double evWo = getExpectedValueWithout();
-        double benefit = 100.0 / evWo - 100.0 / ev;
-
-        int min = (int) (benefit / 60);
-        int hours = (int) (min / 60);
-        min -= hours * 60;
-
         double error = getError();
         double errorWo = getErrorWithout();
-        // Fake error:
-        if (error == 0 && errorWo == 0){
-            error = (ev - evWo) / 20;
-            errorWo = error;
-        }
-        //Log.i("SHB", "benefit: " + benefit);
-        //Log.i("SHB", "min benefit: 100 / (" +evWo+" + " + errorWo +") - 100 / (" + ev + " - " + error + ")");
-        double minimumBenefit = 100 / (evWo + errorWo) - 100 / (ev - error);
-
-        int errorMins = (int) ((benefit - minimumBenefit) / 60);
-
-        return hours + "h " + min + "m \u00B1 " + errorMins + "m";
+        return textBenefit(ev, error, evWo, errorWo);
     }
 
     public int getSamples() {
@@ -220,5 +151,33 @@ public class SimpleHogBug implements Serializable{
 
     public void setSamplesWithout(double samplesWithout) {
         this.samplesWithout = (int) samplesWithout;
+    }
+    
+    public static String textBenefit(double ev, double error, double evWo, double errorWo){
+        double benefit = 100.0 / evWo - 100.0 / ev;
+
+        int min = (int) (benefit / 60);
+        int hours = (int) (min / 60);
+        min -= hours * 60;
+
+        double minimumBenefit = 100 / (evWo + errorWo) - 100 / (ev - error);
+
+        int errorMins = (int) ((benefit - minimumBenefit) / 60);
+
+        return hours + "h " + min + "m \u00B1 " + errorMins + "m";
+    }
+    
+    public static String textError(double ev, double error, double evWo, double errorWo){
+        double benefit = 100.0 / evWo - 100.0 / ev;
+
+        int min = (int) (benefit / 60);
+        int hours = (int) (min / 60);
+        min -= hours * 60;
+
+        double minimumBenefit = 100 / (evWo + errorWo) - 100 / (ev - error);
+
+        int errorMins = (int) ((benefit - minimumBenefit) / 60);
+
+        return errorMins + "m";
     }
 }

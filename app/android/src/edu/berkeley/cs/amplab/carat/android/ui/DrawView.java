@@ -66,7 +66,6 @@ public class DrawView extends View {
 
         this.ev = bugOrHog.getExpectedValue();
         this.evWithout = bugOrHog.getExpectedValueWithout();
-        this.sampleCount = bugOrHog.getxVals().length;
         this.textBenefit = bugOrHog.textBenefit();
         this.error = bugOrHog.getError();
         this.errorWo = bugOrHog.getErrorWithout();
@@ -100,44 +99,28 @@ public class DrawView extends View {
         
         TextView samplesWoT = (TextView) parent.findViewById(R.id.samplesWo);
         TextView errorT = (TextView) parent.findViewById(R.id.error);
-        TextView errorWoT = (TextView) parent.findViewById(R.id.errorWo);
+        //TextView errorWoT = (TextView) parent.findViewById(R.id.errorWo);
         
         if (sampleCount > 0){
-        samplesWoT.setText(sampleCountWo +"");
-        // TODO: Should be sample count == n, not number of x vals
-        samples.setText(sampleCount + "");
+            samplesWoT.setText(sampleCountWo +"");
+            samples.setText(sampleCount + "");
         } else {
-            samples.setText("?");
-            samplesWoT.setText("?");
+            samples.setText("0");
+            samplesWoT.setText("0");
         }
         
-        if (ev > 0 && error > 0){
-          int errorM = (int) (100 / ev - 100 / (ev + error)) / 60;
-          errorT.setText("\u00B1 "+errorM+"m");
-          int errorMWo = (int) (100 / evWithout - 100 / (evWithout + errorWo)) / 60;
-          errorWoT.setText("\u00B1 "+errorMWo+"m");
-        }else {
-            errorT.setText("?");
-            errorWoT.setText("?");  
+        if (ev > 0){
+          errorT.setText(SimpleHogBug.textError(ev, error, evWithout, errorWo));
         }
-        
-        // TODO: Should be real error for os/model, currently 1m
-        // TODO: Should be real error for hogs/bugs, currently ev/10
 
         if (textBenefit != null) {
             killBenefit.setText(textBenefit);
         } else {
-            int errorMins = 1;
             double benefit = 100.0 / evWithout - 100.0 / ev;
             if (benefit < 0) {
                 killBenefit.setText(c.getString(R.string.best));
             } else {
-                int min = (int) (benefit / 60);
-                int hours = (int) (min / 60);
-                min -= hours * 60;
-
-                killBenefit.setText(hours + "h " + min + "m \u00B1 "
-                        + errorMins + "m");
+                killBenefit.setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
             }
         }
     }

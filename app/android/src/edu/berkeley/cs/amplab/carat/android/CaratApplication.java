@@ -487,18 +487,24 @@ public class CaratApplication extends Application {
         final long h = l / 3600000;
         final long min = (l - h * 3600000) / 60000;
         double bl = 0;
+        double error = 0;
         int jscore = -1;
+        
         if (r != null) {
             // Try exact battery life
             if (r.jScoreWith != null) {
                 double exp = r.jScoreWith.expectedValue;
-                if (exp > 0.0)
+                if (exp > 0.0){
                     bl = 100 / exp;
+                    error =  100/(exp+r.jScoreWith.error);
+                }
                 else if (r.getModel() != null) {
                     exp = r.getModel().expectedValue;
                     Log.d(TAG, "Model expected value: " + exp);
-                    if (exp > 0.0)
+                    if (exp > 0.0){
                         bl = 100 / exp;
+                        error = 100 / (exp + r.getModel().error);
+                    }
                 }
                 // If not possible, try model battery life
             }
@@ -508,12 +514,25 @@ public class CaratApplication extends Application {
 
         if (jscore == -1 || jscore == 0)
             setMyDeviceText(R.id.jscore_value, "N/A");
-
+        
+        // Only take the error part
+        error = bl - error;
+                
         int blh = (int) (bl / 3600);
         bl -= blh * 3600;
         int blmin = (int) (bl / 60);
-        int bls = (int) (bl - blmin * 60);
-        final String blS = blh + "h " + blmin + "m " + bls + "s";
+        
+        
+        int errorH = 0;
+        int errorMin = 0; 
+        if (error > 7200){
+            errorH = (int) (error/3600);
+            error-= errorH*3600;
+        }
+        
+        errorMin = (int) (error/60);
+        
+        final String blS = blh + "h " + blmin + "m \u00B1 "+ (errorH > 0 ? errorH+"h ":"") + errorMin +" m";
 
         // Log.v(TAG, "Freshness: " + freshness);
         if (main != null) {

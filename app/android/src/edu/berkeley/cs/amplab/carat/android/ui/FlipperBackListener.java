@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ViewFlipper;
@@ -60,7 +61,7 @@ public class FlipperBackListener extends BaseSwipeListener {
         if (y < oldY) {
             yDiff = oldY - y;
         }
-
+        //Log.i("FBL", "Oldx="+oldX+" x="+x + " oldY="+oldY + " y="+y + " w="+w);
         if (xDiff > w / 3.0 && xDiff > yDiff) {
             // moved horizontally. Lets change tabs to the right direction:
             if (left) {
