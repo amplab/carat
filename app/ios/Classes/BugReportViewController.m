@@ -60,8 +60,8 @@
     if (bugs != nil) {
         [self setReport:bugs];
         [self.dataTable reloadData];
-        [self.view setNeedsDisplay];
     }
+    [self.view setNeedsDisplay];
 }
 
 #pragma mark - View lifecycle
@@ -88,7 +88,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    //[self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
         [self.dataTable.pullToRefreshView stopAnimating];

@@ -60,6 +60,18 @@
 	HUD = nil;
 }
 
+
+#pragma mark - button actions
+
+- (IBAction)hideAppsPressed:(id)sender {
+    
+}
+
+- (IBAction)showHiddenAppsPressed:(id)sender {
+    
+}
+
+
 #pragma mark - table methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -173,10 +185,9 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
-    [self.dataTable reloadData];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated

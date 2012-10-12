@@ -37,4 +37,7 @@
 - (void)loadDataWithHUD:(id)obj;
 - (DetailViewController *)getDetailView;
 
+- (IBAction)hideAppsPressed:(id)sender;
+- (IBAction)showHiddenAppsPressed:(id)sender;
+
 @end
