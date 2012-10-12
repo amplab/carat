@@ -65,6 +65,35 @@ static id instance = nil;
     return self.myUUID;
 }
 
+- (void) hideApp : (NSString *) appName {
+    NSArray *hiddenApps = [defaults arrayForKey:@"HiddenApps"];
+    if (hiddenApps != nil) {
+        for (NSString *appstr in hiddenApps) {
+            if ([appstr isEqualToString:appName]) return;
+        }
+        [defaults setObject:[hiddenApps arrayByAddingObject:appName] forKey:@"HiddenApps"];
+    } else {
+        [defaults setObject:[NSArray arrayWithObject:appName] forKey:@"HiddenApps"];
+    }
+    [defaults synchronize];
+}
+
+- (void) showApp : (NSString *) appName {
+    NSArray *hiddenApps = [defaults arrayForKey:@"HiddenApps"];
+    if (hiddenApps != nil) {
+        NSMutableArray *tmpArray = [NSMutableArray array];
+        for (NSString *appstr in hiddenApps) {
+            if (![appstr isEqualToString:appName]) [tmpArray addObject:appstr];
+        }
+        [defaults setObject:[NSArray arrayWithArray:tmpArray] forKey:@"HiddenApps"];
+    } // don't need an else clause because empty array shows everything
+    [defaults synchronize];
+}
+
+- (NSArray *) getHiddenApps {
+    return [defaults arrayForKey:@"HiddenApps"];
+}
+
 //
 // Convert local datetime to UTC.
 // From: http://stackoverflow.com/questions/1081647/how-to-convert-time-to-the-timezone-of-the-iphone-device

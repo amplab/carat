@@ -64,11 +64,11 @@
 #pragma mark - button actions
 
 - (IBAction)hideAppsPressed:(id)sender {
-    
+    //TODO
 }
 
 - (IBAction)showHiddenAppsPressed:(id)sender {
-    
+    //TODO
 }
 
 

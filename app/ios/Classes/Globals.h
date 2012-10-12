@@ -26,6 +26,9 @@
 - (BOOL) hasUserConsented;
 - (void) setDistanceTraveled : (double) distance;
 - (double) getDistanceTraveled;
+- (NSArray *) getHiddenApps;
+- (void) hideApp : (NSString *) appName;
+- (void) showApp : (NSString *) appName;
 
 @end
 #endif
