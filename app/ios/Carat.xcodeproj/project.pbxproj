@@ -48,6 +48,8 @@
 		AB7A113D14E2049F004D155C /* ActionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7A113B14E2049F004D155C /* ActionItemCell.m */; };
 		AB7BAABF161A58670058AC33 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7BAABE161A58670058AC33 /* Default-568h@2x.png */; };
 		AB7BAAC2161A5DE90058AC33 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7BAAC1161A5DE90058AC33 /* CopyLabel.m */; };
+		AB7FA69E1628D4B900838F7A /* HiddenAppsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7FA69C1628D4B800838F7A /* HiddenAppsViewController.m */; };
+		AB7FA69F1628D4B900838F7A /* HiddenAppsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7FA69D1628D4B900838F7A /* HiddenAppsView.xib */; };
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
 		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
 		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
@@ -411,6 +413,9 @@
 		AB7BAABE161A58670058AC33 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		AB7BAAC0161A5DE90058AC33 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
 		AB7BAAC1161A5DE90058AC33 /* CopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyLabel.m; sourceTree = "<group>"; };
+		AB7FA69B1628D4B800838F7A /* HiddenAppsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiddenAppsViewController.h; sourceTree = "<group>"; };
+		AB7FA69C1628D4B800838F7A /* HiddenAppsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HiddenAppsViewController.m; sourceTree = "<group>"; };
+		AB7FA69D1628D4B900838F7A /* HiddenAppsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HiddenAppsView.xib; path = Classes/HiddenAppsView.xib; sourceTree = "<group>"; };
 		AB91E432149162F7007786F0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AB91E433149162F7007786F0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		AB91E4411499264F007786F0 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
@@ -964,6 +969,7 @@
 				AB7A112C14E06520004D155C /* ActionView.xib */,
 				AB244AF714E10D660055FCD6 /* ActionItemCell.xib */,
 				AB41CE2D145229FE0090CC09 /* CurrentView.xib */,
+				AB7FA69D1628D4B900838F7A /* HiddenAppsView.xib */,
 				AB105EB914EDC9E2000DB145 /* ProcessListView.xib */,
 				2840D7CD1179279E00D7F93C /* ReportView.xib */,
 				ABC07A13148569F200FCC2C2 /* ReportItemCell.xib */,
@@ -1427,12 +1433,12 @@
 				AB91E4421499264F007786F0 /* ReportViewController.m */,
 				AB7A113114E1F738004D155C /* ActionViewController.h */,
 				AB7A113214E1F738004D155C /* ActionViewController.m */,
-				AB99EB0614EA6E6F0008E440 /* ActionObject.h */,
-				AB99EB0714EA6E6F0008E440 /* ActionObject.m */,
 				AB34BBEB151A3EB8006C4C76 /* ConsentViewController.h */,
 				AB34BBEC151A3EB8006C4C76 /* ConsentViewController.m */,
 				AB91E4441499266A007786F0 /* DetailViewController.h */,
 				AB91E4451499266B007786F0 /* DetailViewController.m */,
+				AB7FA69B1628D4B800838F7A /* HiddenAppsViewController.h */,
+				AB7FA69C1628D4B800838F7A /* HiddenAppsViewController.m */,
 				ABA3A0F814E4592F009B3D33 /* InstructionViewController.h */,
 				ABA3A0F914E4592F009B3D33 /* InstructionViewController.m */,
 				28216C950DB411BC00E5133A /* BugReportViewController.h */,
@@ -1449,6 +1455,8 @@
 				AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */,
 				AB7A113A14E2049F004D155C /* ActionItemCell.h */,
 				AB7A113B14E2049F004D155C /* ActionItemCell.m */,
+				AB99EB0614EA6E6F0008E440 /* ActionObject.h */,
+				AB99EB0714EA6E6F0008E440 /* ActionObject.m */,
 				ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */,
 				ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */,
 				ABEC9B6414F1CFA6005CE813 /* ProcessItemCell.h */,
@@ -1888,6 +1896,7 @@
 				ABAAA9F4161F798700504A9E /* SocializeTableViewController.xib in Resources */,
 				ABAAA9F5161F798700504A9E /* SZBaseShareViewController.xib in Resources */,
 				ABAAA9F6161F798700504A9E /* SZStatusImageLabelView.xib in Resources */,
+				AB7FA69F1628D4B900838F7A /* HiddenAppsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1958,6 +1967,7 @@
 				AB34BBEE151A3EB8006C4C76 /* ConsentViewController.m in Sources */,
 				AB73A68415B0D7B300726C21 /* SVPullToRefresh.m in Sources */,
 				AB7BAAC2161A5DE90058AC33 /* CopyLabel.m in Sources */,
+				AB7FA69E1628D4B900838F7A /* HiddenAppsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,18 +1,18 @@
 //
-//  ProcessListViewController.m
+//  HiddenAppsViewController.m
 //  Carat
 //
-//  Created by Adam Oliner on 2/16/12.
+//  Created by Adam Oliner on 10/12/12.
 //  Copyright (c) 2012 UC Berkeley. All rights reserved.
 //
 
-#import "ProcessListViewController.h"
+#import "HiddenAppsViewController.h"
 #import "ProcessItemCell.h"
-#import "UIDeviceHardware.h"
 #import "UIImageDoNotCache.h"
 #import "Utilities.h"
+#import "Globals.h"
 
-@implementation ProcessListViewController
+@implementation HiddenAppsViewController
 
 @synthesize lastUpdate;
 @synthesize processList;
@@ -30,8 +30,8 @@
 - (void)didReceiveMemoryWarning
 {
     DLog(@"Memory warning.");
-    // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - table methods
@@ -45,7 +45,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"Process List";
+    return @"Hidden Apps";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -64,7 +64,7 @@
     }
     
     NSDictionary *selectedProc = [self.processList objectAtIndex:indexPath.row];
-
+    
     // Set up the cell...
     NSString *appName = [selectedProc objectForKey:@"ProcessName"];
     cell.appName.text = appName;
@@ -76,7 +76,7 @@
     cell.appIcon.image = img;
     [img release];
     
-    cell.procID.text = [selectedProc objectForKey:@"ProcessID"];    
+    cell.procID.text = [selectedProc objectForKey:@"ProcessID"];
     return cell;
 }
 
@@ -89,6 +89,7 @@
 // loads the selected detail view
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
+
 
 #pragma mark - View lifecycle
 
@@ -109,9 +110,8 @@
 
 - (void)updateView
 {
-    self.processList = [[UIDevice currentDevice] runningProcesses];
+    self.processList = [[Globals instance] getHiddenApps];
     self.lastUpdate = [NSDate date];
-    // TODO filter!
     [self.procTable reloadData];
     [self.view setNeedsDisplay];
 }
