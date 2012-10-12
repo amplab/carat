@@ -235,58 +235,51 @@
 
 - (void)showShareDialog {
     id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
-    [SZShareUtils showShareDialogWithViewController:self entity:entity completion:^(NSArray *shares) {
-        // `shares` is a list of all shares created during the lifetime of the share dialog
-        NSLog(@"Created %d shares: %@", [shares count], shares);
-    } cancellation:^{
-        NSLog(@"Share creation cancelled");
-    }];
-}
-
-- (void)createEntityWithCustomPageInfo {
-    SZEntity *entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
-
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
-                            [[@"My J-Score is " stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]] stringByAppendingString:@". Find out yours and improve your battery life!"], @"szsd_title",
-                            @"Carat is a free app that tells you what is using up your battery, whether that's normal, and what you can do about it.", @"szsd_description",
-                            @"http://carat.cs.berkeley.edu/img/icon144.png", @"szsd_thumb",
-                            nil];
     
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:params options:0 error:&error];
-    NSAssert(error == nil, @"Error writing json: %@", [error localizedDescription]);
-    NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    entity.meta = jsonString;
     
-    [SZEntityUtils addEntity:entity success:^(id<SZEntity> serverEntity) {
-        NSLog(@"Successfully updated entity meta: %@", [serverEntity meta]);
-    } failure:^(NSError *error) {
-        NSLog(@"Failure: %@", [error localizedDescription]);
-    }];
-}
-
-- (void)customizeFacebook {
-    id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
     SZShareOptions *options = [SZShareUtils userShareOptions];
     
     // http://developers.facebook.com/docs/reference/api/link/
     
     options.willAttemptPostingToSocialNetworkBlock = ^(SZSocialNetwork network, SZSocialNetworkPostData *postData) {
-        //[postData.params setObject:@"" forKey:@"message"];
-        [postData.params setObject:@"http://carat.cs.berkeley.edu/" forKey:@"link"];
-        [postData.params setObject:[[@"My J-Score is " stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]] stringByAppendingString:@". Find out yours and improve your battery life!"] forKey:@"caption"];
-        [postData.params setObject:@"Carat" forKey:@"name"];
-        [postData.params setObject:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"picture"];
-        [postData.params setObject:@"Carat is a free app that tells you what is using up your battery, whether that's normal, and what you can do about it." forKey:@"description"];
+        
+        if (network == SZSocialNetworkFacebook) {
+            [postData.params setObject:[[@"My J-Score is " stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]] stringByAppendingString:@". Find out yours and improve your battery life!"] forKey:@"message"];
+            [postData.params setObject:@"http://carat.cs.berkeley.edu" forKey:@"link"];
+            [postData.params setObject:@"Carat: Collaborative Energy Diagnosis" forKey:@"caption"];
+            [postData.params setObject:@"Carat" forKey:@"name"];
+            [postData.params setObject:@"Carat is a free app that tells you what is using up your battery, whether that's normal, and what you can do about it." forKey:@"description"];
+            [postData.params setObject:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"picture"];
+        } else if (network == SZSocialNetworkTwitter) {
+            [postData.params setObject:[[@"My J-Score is " stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]] stringByAppendingString:@". Find out yours and improve your battery life! bit.ly/xurpWS"] forKey:@"status"];
+        }
+        
     };
     
-    [SZShareUtils shareViaSocialNetworksWithEntity:entity networks:SZAvailableSocialNetworks() options:options success:^(id<SZShare> share) {
+    options.willShowEmailComposerBlock = ^(SZEmailShareData *emailData) {
+        emailData.subject = @"Battery Diagnosis with Carat";
         
-        NSLog(@"Created share: %@", share);
+//        NSString *appURL = [emailData.propagationInfo objectForKey:@"http://bit.ly/xurpWS"];
+//        NSString *entityURL = [emailData.propagationInfo objectForKey:@"entity_url"];
+//        id<SZEntity> entity = emailData.share.entity;
+        NSString *appName = emailData.share.application.name;
         
-    } failure:^(NSError *error) {
+        emailData.messageBody = [NSString stringWithFormat:@"Check out this free app called %@ that tells you what is using up your mobile device's battery, whether that's normal, and what you can do about it: http://bit.ly/xurpWS", appName];
+    };
+    
+    options.willShowSMSComposerBlock = ^(SZSMSShareData *smsData) {
+//        NSString *appURL = [smsData.propagationInfo objectForKey:@"application_url"];
+//        NSString *entityURL = [smsData.propagationInfo objectForKey:@"entity_url"];
+//        id<SZEntity> entity = smsData.share.entity;
+        NSString *appName = smsData.share.application.name;
         
-        NSLog(@"Error creating share: %@", [error localizedDescription]);
+        smsData.body = [NSString stringWithFormat:@"Check out this free app called %@ that helps improve your mobile device's battery life: bit.ly/xurpWS", appName];
+    };
+    
+    [SZShareUtils showShareDialogWithViewController:self options:options entity:entity completion:^(NSArray *shares) {
+        DLog(@"Created %d shares: %@", [shares count], shares);
+    } cancellation:^{
+        DLog(@"Share creation cancelled");
     }];
 }
 
