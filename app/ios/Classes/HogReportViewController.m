@@ -55,7 +55,7 @@
 }
 
 - (void)updateView {
-    HogBugReport * hogs = [[CoreDataManager instance] getHogs:NO];
+    HogBugReport * hogs = [[CoreDataManager instance] getHogs:NO withoutHidden:YES];
     if (hogs != nil) {
         [self setReport:hogs];
         [self.dataTable reloadData];
@@ -69,7 +69,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    [self setReport:[[CoreDataManager instance] getHogs:NO]];
+    [self setReport:[[CoreDataManager instance] getHogs:NO withoutHidden:YES]];
     
     [self.dataTable addPullToRefreshWithActionHandler:^{
         if ([[CommunicationManager instance] isInternetReachable] == YES && // online
@@ -95,7 +95,7 @@
         [self.dataTable.pullToRefreshView startAnimating];
     }
     
-    [self setReport:[[CoreDataManager instance] getHogs:NO]];
+    [self setReport:[[CoreDataManager instance] getHogs:NO withoutHidden:YES]];
     
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     [self.dataTable reloadData];

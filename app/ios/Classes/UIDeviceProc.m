@@ -128,6 +128,7 @@
         }
     }
     
+    free(process);
     return nil;
 }
 

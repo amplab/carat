@@ -1433,11 +1433,12 @@ static id instance = nil;
 /**
  * Fetch the list of bugs from core data.
  */
-- (HogBugReport *) getBugs : (BOOL) filterNonRunning
+- (HogBugReport *) getBugs : (BOOL) filterNonRunning withoutHidden : (BOOL) filterHidden
 {
     DLog(@"Getting bugs from core data...");
     NSError *error = nil;
     NSArray *runningProcessNames = nil;
+    NSArray *hiddenProcessNames = [[Globals instance] getHiddenApps];
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     
     if (managedObjectContext != nil) 
@@ -1477,6 +1478,14 @@ static id instance = nil;
                 continue; 
             }
             
+            if ((filterHidden) && ([hiddenProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
+            {
+                DLog(@"%s '%@' hidden by user, filtering it out.",
+                     __PRETTY_FUNCTION__,
+                     [cdataAppReport valueForKey:@"appName"]);
+                continue;
+            }
+            
             HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
             [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
             [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
@@ -1493,25 +1502,16 @@ static id instance = nil;
     }
     return nil;
 }
-/*- (HogBugReport *) getBugs
-{
-    //HogBugReport* bugs = nil;
-    //if ([lockCoreDataStore tryLock]) {
-    //    bugs = [self getBugsFromCoreData];
-    //    [lockCoreDataStore unlock];
-    //} else {DLog(@"%s Cannot get a lock on coredata, sending nil for bug report.", __PRETTY_FUNCTION__);}
-    //return bugs;
-    return [self getBugsFromCoreData];
-}*/
 
 /**
  * Fetch the list of hogs from core data.
  */
-- (HogBugReport *) getHogs : (BOOL) filterNonRunning
+- (HogBugReport *) getHogs : (BOOL) filterNonRunning withoutHidden : (BOOL) filterHidden
 {
     DLog(@"Getting hogs from core data...");
     NSError *error = nil;
     NSArray *runningProcessNames = nil;
+    NSArray *hiddenProcessNames = [[Globals instance] getHiddenApps];
     NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
     if (managedObjectContext != nil) 
     {
@@ -1550,6 +1550,14 @@ static id instance = nil;
                      __PRETTY_FUNCTION__,
                      [cdataAppReport valueForKey:@"appName"]);
                 continue; 
+            }
+            
+            if ((filterHidden) && ([hiddenProcessNames containsObject:[cdataAppReport valueForKey:@"appName"]]))
+            {
+                DLog(@"%s '%@' hidden by user, filtering it out.",
+                     __PRETTY_FUNCTION__,
+                     [cdataAppReport valueForKey:@"appName"]);
+                continue;
             }
             
             HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];

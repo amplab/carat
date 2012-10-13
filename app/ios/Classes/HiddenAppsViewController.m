@@ -63,20 +63,19 @@
         }
     }
     
-    NSDictionary *selectedProc = [self.processList objectAtIndex:indexPath.row];
+    NSString *selectedProcName = [self.processList objectAtIndex:indexPath.row];
     
     // Set up the cell...
-    NSString *appName = [selectedProc objectForKey:@"ProcessName"];
-    cell.appName.text = appName;
+    cell.appName.text = selectedProcName;
     
-    UIImage *img = [UIImage newImageNotCached:[appName stringByAppendingString:@".png"]];
+    UIImage *img = [UIImage newImageNotCached:[selectedProcName stringByAppendingString:@".png"]];
     if (img == nil) {
         img = [UIImage newImageNotCached:@"icon57.png"];
     }
     cell.appIcon.image = img;
     [img release];
     
-    cell.procID.text = [selectedProc objectForKey:@"ProcessID"];
+    //cell.procID.text = [selectedProc objectForKey:@"ProcessID"]; // TODO change cell type and get correct data
     return cell;
 }
 

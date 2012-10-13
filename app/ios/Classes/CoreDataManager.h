@@ -66,8 +66,8 @@
 - (NSURL *) applicationDocumentsDirectory;
 - (NSDate *) getLastReportUpdateTimestamp; 
 - (double) secondsSinceLastUpdate;
-- (HogBugReport *) getHogs : (BOOL) filterNonRunning;
-- (HogBugReport *) getBugs : (BOOL) filterNonRunning;
+- (HogBugReport *) getHogs : (BOOL) filterNonRunning withoutHidden : (BOOL) filterHidden;
+- (HogBugReport *) getBugs : (BOOL) filterNonRunning withoutHidden : (BOOL) filterHidden;
 - (double) getJScore;
 - (DetailScreenReport *) getJScoreInfo : (BOOL) with;
 - (DetailScreenReport *) getOSInfo : (BOOL) with;
