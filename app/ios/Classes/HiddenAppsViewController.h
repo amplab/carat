@@ -10,12 +10,12 @@
 
 @interface HiddenAppsViewController : UIViewController {
     NSDate *lastUpdate;
-    NSArray *processList;
+    NSMutableArray *processList;
     UITableView *procTable;
 }
 
 @property (retain, nonatomic) NSDate *lastUpdate;
-@property (retain, nonatomic) NSArray *processList;
+@property (retain, nonatomic) NSMutableArray *processList;
 @property (retain, nonatomic) IBOutlet UITableView *procTable;
 
 - (void) updateView;

@@ -11,6 +11,7 @@
 #import "CorePlot-CocoaTouch.h"
 #import "Utilities.h"
 #import "DetailViewController.h"
+#import "HiddenAppsViewController.h"
 #import "FlurryAnalytics.h"
 #import "UIImageDoNotCache.h"
 
@@ -49,6 +50,9 @@
 
 // overridden by subclasses
 - (void)loadDataWithHUD:(id)obj { }
+- (void)updateView { }
+- (void)reloadReport { }
+
 
 #pragma mark - MBProgressHUDDelegate method
 
@@ -63,12 +67,11 @@
 
 #pragma mark - button actions
 
-- (IBAction)hideAppsPressed:(id)sender {
-    //TODO
-}
-
 - (IBAction)showHiddenAppsPressed:(id)sender {
-    //TODO
+    HiddenAppsViewController *haView = [[[HiddenAppsViewController alloc] initWithNibName:@"HiddenAppsView" bundle:nil] autorelease];
+    [self.navigationController pushViewController:haView animated:YES];
+    
+    [FlurryAnalytics logEvent:@"selectedShowHiddenApps"];
 }
 
 
@@ -105,12 +108,6 @@
     NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] appName];
     cell.appName.text = appName;
     
-    /*UIImage *img = [UIImage newImageNotCached:[appName stringByAppendingString:@".png"]];
-    if (img == nil) {
-        img = [UIImage newImageNotCached:@"icon57.png"];
-    }
-    cell.appIcon.image = img;
-    [img release];*/
     NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" 
                            stringByAppendingString:appName] 
                           stringByAppendingString:@".jpg"];
@@ -166,6 +163,38 @@
     
     [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (IBAction)hideAppsPressed:(id)sender {
+    BOOL editing = ![self.dataTable isEditing];
+    [super setEditing:editing animated:YES];
+    [self.dataTable setEditing:editing animated:YES];
+    if (editing) {
+        [(UIButton *)sender setTitle:@"Done" forState:UIControlStateNormal];
+        [(UIButton *)sender setTitleColor:[UIColor colorWithRed:1.0 green:0.4 blue:0 alpha:1.0] forState:UIControlStateNormal];
+    } else {
+        [(UIButton *)sender setTitle:@"Hide Apps" forState:UIControlStateNormal];
+        [(UIButton *)sender setTitleColor:[UIColor colorWithRed:0.0 green:0.4 blue:0.0 alpha:1.0] forState:UIControlStateNormal];
+    }
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // If row is deleted, remove it from the list.
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [[Globals instance] hideApp:((ReportItemCell *)[tableView cellForRowAtIndexPath:indexPath]).appName.text];
+        [self reloadReport]; // reloads hogs/bugs underlying data to exclude new app
+        // Animate the deletion
+        [self.dataTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 #pragma mark - View lifecycle

@@ -36,7 +36,7 @@
 				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">274</int>
 				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUITableView" id="829932768">
+					<object class="IBUITableView" id="785639982">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">274</int>
 						<string key="NSFrameSize">{320, 367}</string>
@@ -52,6 +52,7 @@
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
 						<int key="IBUISeparatorStyle">1</int>
 						<int key="IBUISectionIndexMinimumDisplayRowCount">0</int>
+						<bool key="IBUIAllowsSelectionDuringEditing">YES</bool>
 						<bool key="IBUIShowsSelectionImmediatelyOnTouchBegin">YES</bool>
 						<float key="IBUIRowHeight">60</float>
 						<float key="IBUISectionHeaderHeight">22</float>
@@ -90,14 +91,14 @@
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">procTable</string>
 						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="829932768"/>
+						<reference key="destination" ref="785639982"/>
 					</object>
 					<int key="connectionID">9</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">dataSource</string>
-						<reference key="source" ref="829932768"/>
+						<reference key="source" ref="785639982"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">10</int>
@@ -105,7 +106,7 @@
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">delegate</string>
-						<reference key="source" ref="829932768"/>
+						<reference key="source" ref="785639982"/>
 						<reference key="destination" ref="372490531"/>
 					</object>
 					<int key="connectionID">11</int>
@@ -123,9 +124,9 @@
 						<int key="objectID">1</int>
 						<reference key="object" ref="191373211"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="829932768"/>
-							<object class="IBNSLayoutConstraint" id="631117907">
-								<reference key="firstItem" ref="829932768"/>
+							<reference ref="785639982"/>
+							<object class="IBNSLayoutConstraint" id="1030483361">
+								<reference key="firstItem" ref="785639982"/>
 								<int key="firstAttribute">3</int>
 								<int key="relation">0</int>
 								<reference key="secondItem" ref="191373211"/>
@@ -140,8 +141,8 @@
 								<float key="scoringTypeFloat">29</float>
 								<int key="contentType">3</int>
 							</object>
-							<object class="IBNSLayoutConstraint" id="158005967">
-								<reference key="firstItem" ref="829932768"/>
+							<object class="IBNSLayoutConstraint" id="795396725">
+								<reference key="firstItem" ref="785639982"/>
 								<int key="firstAttribute">5</int>
 								<int key="relation">0</int>
 								<reference key="secondItem" ref="191373211"/>
@@ -156,8 +157,8 @@
 								<float key="scoringTypeFloat">29</float>
 								<int key="contentType">3</int>
 							</object>
-							<object class="IBNSLayoutConstraint" id="529143632">
-								<reference key="firstItem" ref="829932768"/>
+							<object class="IBNSLayoutConstraint" id="440583418">
+								<reference key="firstItem" ref="785639982"/>
 								<int key="firstAttribute">4</int>
 								<int key="relation">0</int>
 								<reference key="secondItem" ref="191373211"/>
@@ -172,8 +173,8 @@
 								<float key="scoringTypeFloat">29</float>
 								<int key="contentType">3</int>
 							</object>
-							<object class="IBNSLayoutConstraint" id="6759572">
-								<reference key="firstItem" ref="829932768"/>
+							<object class="IBNSLayoutConstraint" id="503810815">
+								<reference key="firstItem" ref="785639982"/>
 								<int key="firstAttribute">6</int>
 								<int key="relation">0</int>
 								<reference key="secondItem" ref="191373211"/>
@@ -204,27 +205,27 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">4</int>
-						<reference key="object" ref="829932768"/>
+						<reference key="object" ref="785639982"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">5</int>
-						<reference key="object" ref="6759572"/>
+						<reference key="object" ref="503810815"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">6</int>
-						<reference key="object" ref="529143632"/>
+						<reference key="object" ref="440583418"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">7</int>
-						<reference key="object" ref="158005967"/>
+						<reference key="object" ref="795396725"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">8</int>
-						<reference key="object" ref="631117907"/>
+						<reference key="object" ref="1030483361"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 				</array>
@@ -236,10 +237,10 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<array key="1.IBViewMetadataConstraints">
-					<reference ref="6759572"/>
-					<reference ref="529143632"/>
-					<reference ref="158005967"/>
-					<reference ref="631117907"/>
+					<reference ref="503810815"/>
+					<reference ref="440583418"/>
+					<reference ref="795396725"/>
+					<reference ref="1030483361"/>
 				</array>
 				<string key="4.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<boolean value="NO" key="4.IBViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
@@ -259,6 +260,17 @@
 				<object class="IBPartialClassDescription">
 					<string key="className">HiddenAppsViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<string key="NS.key.0">enterEditMode:</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="actionInfosByName">
+						<string key="NS.key.0">enterEditMode:</string>
+						<object class="IBActionInfo" key="NS.object.0">
+							<string key="name">enterEditMode:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">procTable</string>
 						<string key="NS.object.0">UITableView</string>

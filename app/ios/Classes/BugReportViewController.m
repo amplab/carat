@@ -55,10 +55,16 @@
     }
 }
 
-- (void)updateView {
+- (void)reloadReport {
     HogBugReport * bugs = [[CoreDataManager instance] getBugs:NO withoutHidden:YES];
     if (bugs != nil) {
         [self setReport:bugs];
+    }
+}
+
+- (void)updateView {
+    [self reloadReport];
+    if (self.report != nil) {
         [self.dataTable reloadData];
     }
     [self.view setNeedsDisplay];

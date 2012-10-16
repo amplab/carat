@@ -7,10 +7,11 @@
 //
 
 #import "HiddenAppsViewController.h"
-#import "ProcessItemCell.h"
-#import "UIImageDoNotCache.h"
+#import "ReportItemCell.h"
 #import "Utilities.h"
 #import "Globals.h"
+#import "FlurryAnalytics.h"
+#import "UIImageDoNotCache.h"
 
 @implementation HiddenAppsViewController
 
@@ -50,32 +51,33 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *CellIdentifier = @"ProcessItemCell";
+    static NSString *CellIdentifier = @"ReportItemCell";
     
-    ProcessItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    ReportItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ProcessItemCell" owner:nil options:nil];
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"ReportItemCell" owner:nil options:nil];
         for (id currentObject in topLevelObjects) {
-            if ([currentObject isKindOfClass:[ProcessItemCell class]]) {
-                cell = (ProcessItemCell *)currentObject;
+            if ([currentObject isKindOfClass:[ReportItemCell class]]) {
+                cell = (ReportItemCell *)currentObject;
                 break;
             }
         }
     }
     
-    NSString *selectedProcName = [self.processList objectAtIndex:indexPath.row];
+    NSString *appName = [self.processList objectAtIndex:indexPath.row];
     
     // Set up the cell...
-    cell.appName.text = selectedProcName;
+    cell.appName.text = appName;
     
-    UIImage *img = [UIImage newImageNotCached:[selectedProcName stringByAppendingString:@".png"]];
-    if (img == nil) {
-        img = [UIImage newImageNotCached:@"icon57.png"];
-    }
-    cell.appIcon.image = img;
-    [img release];
+    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/"
+                           stringByAppendingString:appName]
+                          stringByAppendingString:@".jpg"];
     
-    //cell.procID.text = [selectedProc objectForKey:@"ProcessID"]; // TODO change cell type and get correct data
+    [cell.appIcon setImageWithURL:[NSURL URLWithString:imageURL]
+                 placeholderImage:[UIImage imageNamed:@"icon57.png"]];
+    
+    cell.appScore.progress = 0;
+    
     return cell;
 }
 
@@ -89,6 +91,30 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.procTable setEditing:editing animated:YES];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // If row is deleted, remove it from the list.
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [[Globals instance] showApp:[self.processList objectAtIndex:indexPath.row]];
+        [self.processList removeObjectAtIndex:indexPath.row];
+        // Animate the deletion
+        [self.procTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
 
 #pragma mark - View lifecycle
 
@@ -97,6 +123,12 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [self updateView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [self updateView];
 }
 
@@ -109,7 +141,7 @@
 
 - (void)updateView
 {
-    self.processList = [[Globals instance] getHiddenApps];
+    self.processList = [NSMutableArray arrayWithArray:[[Globals instance] getHiddenApps]];
     self.lastUpdate = [NSDate date];
     [self.procTable reloadData];
     [self.view setNeedsDisplay];

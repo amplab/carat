@@ -36,8 +36,10 @@
 
 - (void)loadDataWithHUD:(id)obj;
 - (DetailViewController *)getDetailView;
+- (void)updateView;
+- (void)reloadReport;
 
-- (IBAction)hideAppsPressed:(id)sender;
 - (IBAction)showHiddenAppsPressed:(id)sender;
+- (IBAction)hideAppsPressed:(id)sender;
 
 @end

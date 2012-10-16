@@ -205,29 +205,6 @@
 #pragma mark - sharing
 
 - (void)shareHandler {
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Temporarily Disabled" 
-//                                                    message:@"This feature is disabled while Carat is in beta." 
-//                                                   delegate:nil 
-//                                          cancelButtonTitle:@"OK"
-//                                          otherButtonTitles:nil];
-//    [alert show];
-//    [alert release];
-
-    // Create the item to share (in this example, a url)
-//    NSURL *url = [NSURL URLWithString:@"http://carat.cs.berkeley.edu"];
-//    SHKItem *item = [SHKItem URL:url
-//                           title:[[@"My J-Score is "
-//             stringByAppendingString:[[NSNumber numberWithInt:(int)(MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100)] stringValue]]
-//             stringByAppendingString:@". Find out yours and improve your battery life!"]];
-//    [item setCustomValue:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"image"];
-//    [item setCustomValue:@"http://carat.cs.berkeley.edu/img/icon144.png" forKey:@"picture"];
-    
-    // Get the ShareKit action sheet
-//    SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
-    
-    // Display the action sheet
-//    [actionSheet showFromTabBar:self.tabBarController.tabBar];
-    
     [self showShareDialog];
     
     [FlurryAnalytics logEvent:@"selectedSpreadTheWord"];
@@ -235,7 +212,6 @@
 
 - (void)showShareDialog {
     id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
-    
     
     SZShareOptions *options = [SZShareUtils userShareOptions];
     

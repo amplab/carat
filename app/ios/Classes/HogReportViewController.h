@@ -12,5 +12,6 @@
 
 - (void)loadDataWithHUD:(id)obj;
 - (void)updateView;
+- (void)reloadReport;
 
 @end

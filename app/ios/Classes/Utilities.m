@@ -40,8 +40,7 @@
 
 + (BOOL) canUpgradeOS {
     NSString *osVersion = [UIDevice currentDevice].systemVersion;
-    return ([osVersion rangeOfString:@"5.1.1"].location == NSNotFound &&
-            [osVersion rangeOfString:@"6."].location == NSNotFound);
+    return ([osVersion rangeOfString:@"6."].location == NSNotFound);
 }
 
 @end
