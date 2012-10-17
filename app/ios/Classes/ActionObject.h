@@ -12,11 +12,13 @@
 @interface ActionObject : NSObject {
     NSString *actionText;
     NSInteger actionBenefit;
+    NSInteger actionError;
     ActionType actionType;
 }
 
 @property (retain, nonatomic) NSString *actionText;
 @property (nonatomic)         NSInteger actionBenefit;
+@property (nonatomic)         NSInteger actionError;
 @property (nonatomic)         ActionType actionType;
 
 @end

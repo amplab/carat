@@ -124,7 +124,8 @@
         cell.actionValue.text = @"+100 karma!";
         cell.actionType = ActionTypeSpreadTheWord;
     } else {
-        cell.actionValue.text = [Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionBenefit] doubleValue]];
+        cell.actionValue.text = [[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionBenefit] doubleValue]]
+                                 stringByAppendingString:[@"±" stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionError] doubleValue]]]];
         cell.actionType = act.actionType;
     }
     
@@ -362,11 +363,14 @@
         for (HogsBugs *hb in tmp) {
             if ([hb appName] != nil &&
                 [hb expectedValue] > 0 &&
-                [hb expectedValueWithout] > 0) {
+                [hb expectedValueWithout] > 0 &&
+                [hb error] > 0 &&
+                [hb errorWithout] > 0) {
                 
                 NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                DLog(@"Benefit is %d for hog '%@'", benefit, [hb appName]);
-                if (benefit > 60) {
+                NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+                DLog(@"Benefit is %d±%d for hog '%@'", benefit, error, [hb appName]);
+                if (benefit > 60) { // TODO need positive gap, also check for below
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
                     [tmpAction setActionType:ActionTypeKillApp];
@@ -385,10 +389,13 @@
         for (HogsBugs *hb in tmp) {
             if ([hb appName] != nil &&
                 [hb expectedValue] > 0 &&
-                [hb expectedValueWithout] > 0) {
+                [hb expectedValueWithout] > 0 &&
+                [hb error] > 0 &&
+                [hb errorWithout] > 0) {
                 
                 NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                DLog(@"Benefit is %d for bug '%@'", benefit, [hb appName]);
+                NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+                DLog(@"Benefit is %d±%d for bug '%@'", benefit, error, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
@@ -411,9 +418,12 @@
     if (dscWith != nil && dscWithout != nil) {
         if (dscWith.expectedValue > 0 &&
             dscWithout.expectedValue > 0 &&
+            dscWith.error > 0 &&
+            dscWithout.error > 0 &&
             canUpgradeOS) {
             NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
-            DLog(@"OS benefit is %d", benefit);
+            NSInteger error = (int) (100/dscWith.error + 100/dscWithout.error);
+            DLog(@"OS benefit is %d±%d", benefit, error);
             if (benefit > 60) {
                 tmpAction = [[ActionObject alloc] init];
                 [tmpAction setActionText:@"Upgrade the Operating System"];
@@ -434,6 +444,7 @@
     [tmpAction setActionText:@"Help Spread the Word!"];
     [tmpAction setActionType:ActionTypeSpreadTheWord];
     [tmpAction setActionBenefit:-1];
+    [tmpAction setActionError:-1];
     [myList addObject:tmpAction];
     [tmpAction release];
     

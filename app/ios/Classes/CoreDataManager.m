@@ -1560,6 +1560,7 @@ static id instance = nil;
                 continue;
             }
             
+            // TODO need to add err, etc.
             HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
             [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
             [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
@@ -1571,6 +1572,8 @@ static id instance = nil;
             [hog setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
             [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
             [hbList addObject:hog];
+            
+            //DLog(@"%s '%@' action list candidate: %d %d", __PRETTY_FUNCTION__, [cdataAppReport valueForKey:@"appName"], );
         }
         return hogs;
     } else {
