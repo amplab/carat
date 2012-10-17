@@ -65,6 +65,10 @@ static NSMutableDictionary * daemonsList = nil;
             cdataSubReport.score = [NSNumber numberWithDouble:0.0];
             cdataSubReport.expectedValue = [NSNumber numberWithDouble:0.0];
             cdataSubReport.expectedValueWithout = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.error = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.errorWithout = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.samples = [NSNumber numberWithDouble:0.0];
+            cdataSubReport.samplesWithout = [NSNumber numberWithDouble:0.0];
             cdataSubReport.distributionXWith = [[[NSArray alloc] init] autorelease];
             cdataSubReport.distributionXWithout = [[[NSArray alloc] init] autorelease];
             cdataSubReport.distributionYWith = [[[NSArray alloc] init] autorelease];
@@ -150,10 +154,14 @@ static NSMutableDictionary * daemonsList = nil;
                     JScoreInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     JScoreInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     JScoreInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
+                    JScoreInfo.error = [[subReport valueForKey:@"error"] doubleValue];
+                    JScoreInfo.samples = [[subReport valueForKey:@"samples"] doubleValue];
                     if (JScoreInfoWithout == nil)
                         JScoreInfoWithout = [[DetailScreenReport alloc] init];
                     JScoreInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     JScoreInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
+                    JScoreInfoWithout.error = [[subReport valueForKey:@"errorWithout"] doubleValue];
+                    JScoreInfoWithout.samples = [[subReport valueForKey:@"samplesWithout"] doubleValue];
                     JScoreInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
                     JScoreInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 }
@@ -165,11 +173,15 @@ static NSMutableDictionary * daemonsList = nil;
                     OSInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     OSInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     OSInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
+                    OSInfo.error = [[subReport valueForKey:@"error"] doubleValue];
+                    OSInfo.samples = [[subReport valueForKey:@"samples"] doubleValue];
                     if (OSInfoWithout == nil)
                         OSInfoWithout = [[DetailScreenReport alloc] init];
                     OSInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     OSInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
-                    OSInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    OSInfoWithout.error = [[subReport valueForKey:@"errorWithout"] doubleValue];
+                    OSInfoWithout.samples = [[subReport valueForKey:@"samplesWithout"] doubleValue];
+                    OSInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];
                     OSInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 } 
                 else if ([subReportName isEqualToString:@"ModelInfo"]) 
@@ -180,12 +192,15 @@ static NSMutableDictionary * daemonsList = nil;
                     ModelInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     ModelInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     ModelInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
-                    
+                    ModelInfo.error = [[subReport valueForKey:@"error"] doubleValue];
+                    ModelInfo.samples = [[subReport valueForKey:@"samples"] doubleValue];
                     if (ModelInfoWithout == nil)
                         ModelInfoWithout = [[DetailScreenReport alloc] init];
                     ModelInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     ModelInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
-                    ModelInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    ModelInfoWithout.error = [[subReport valueForKey:@"errorWithout"] doubleValue];
+                    ModelInfoWithout.samples = [[subReport valueForKey:@"samplesWithout"] doubleValue];
+                    ModelInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];
                     ModelInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 }
                 else if ([subReportName isEqualToString:@"SimilarAppsInfo"])
@@ -196,12 +211,15 @@ static NSMutableDictionary * daemonsList = nil;
                     SimilarAppsInfo.xVals = (NSArray *) [subReport valueForKey:@"distributionXWith"];  
                     SimilarAppsInfo.yVals = (NSArray *) [subReport valueForKey:@"distributionYWith"];
                     SimilarAppsInfo.expectedValue = [[subReport valueForKey:@"expectedValue"] doubleValue];
-                    
+                    SimilarAppsInfo.error = [[subReport valueForKey:@"error"] doubleValue];
+                    SimilarAppsInfo.samples = [[subReport valueForKey:@"samples"] doubleValue];
                     if (SimilarAppsInfoWithout == nil)
                         SimilarAppsInfoWithout = [[DetailScreenReport alloc] init];
                     SimilarAppsInfoWithout.score = [[subReport valueForKey:@"score"] doubleValue]; 
                     SimilarAppsInfoWithout.expectedValue = [[subReport valueForKey:@"expectedValueWithout"] doubleValue];
-                    SimilarAppsInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];  
+                    SimilarAppsInfoWithout.error = [[subReport valueForKey:@"errorWithout"] doubleValue];
+                    SimilarAppsInfoWithout.samples = [[subReport valueForKey:@"samplesWithout"] doubleValue];
+                    SimilarAppsInfoWithout.xVals = (NSArray *) [subReport valueForKey:@"distributionXWithout"];
                     SimilarAppsInfoWithout.yVals = (NSArray *) [subReport valueForKey:@"distributionYWithout"];
                 }
             }
@@ -621,6 +639,18 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataAppReport setExpectedValueWithout:(hog.expectedValueWithoutIsSet ? 
                                                          [NSNumber numberWithDouble:hog.expectedValueWithout] : 
                                                          [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setError:(hog.errorIsSet ?
+                                                  [NSNumber numberWithDouble:hog.error] :
+                                                  [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setErrorWithout:(hog.errorWithoutIsSet ?
+                                          [NSNumber numberWithDouble:hog.errorWithout] :
+                                          [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setSamples:(hog.samplesIsSet ?
+                                                  [NSNumber numberWithDouble:hog.samples] :
+                                                  [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setSamplesWithout:(hog.samplesWithoutIsSet ?
+                                            [NSNumber numberWithDouble:hog.samplesWithout] :
+                                            [NSNumber numberWithDouble:0.0])];
                 [cdataAppReport setReportType:entityType];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
@@ -633,6 +663,7 @@ static NSMutableDictionary * daemonsList = nil;
                 cdataDetail.distributionXWithout = hog.xValsWithoutIsSet ? hog.xValsWithout : [[[NSArray alloc] init] autorelease];
                 cdataDetail.distributionYWith = hog.yValsIsSet ? hog.yVals : [[[NSArray alloc] init] autorelease];
                 cdataDetail.distributionYWithout = hog.yValsWithoutIsSet ? hog.yValsWithout : [[[NSArray alloc] init] autorelease];
+                
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
@@ -694,6 +725,18 @@ static NSMutableDictionary * daemonsList = nil;
                 [cdataAppReport setExpectedValueWithout:(bug.expectedValueWithoutIsSet ? 
                                                          [NSNumber numberWithDouble:bug.expectedValueWithout] : 
                                                          [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setError:(bug.errorIsSet ?
+                                          [NSNumber numberWithDouble:bug.error] :
+                                          [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setErrorWithout:(bug.errorWithoutIsSet ?
+                                                 [NSNumber numberWithDouble:bug.errorWithout] :
+                                                 [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setSamples:(bug.samplesIsSet ?
+                                            [NSNumber numberWithDouble:bug.samples] :
+                                            [NSNumber numberWithDouble:0.0])];
+                [cdataAppReport setSamplesWithout:(bug.samplesWithoutIsSet ?
+                                                   [NSNumber numberWithDouble:bug.samplesWithout] :
+                                                   [NSNumber numberWithDouble:0.0])];
                 [cdataAppReport setReportType:entityType];
                 [cdataAppReport setLastUpdated:[NSDate date]];
                 CoreDataDetail *cdataDetail = (CoreDataDetail *) [NSEntityDescription 
@@ -706,6 +749,7 @@ static NSMutableDictionary * daemonsList = nil;
                 cdataDetail.distributionXWithout = bug.xValsWithoutIsSet ? bug.xValsWithout : [[[NSArray alloc] init] autorelease];
                 cdataDetail.distributionYWith = bug.yValsIsSet ? bug.yVals : [[[NSArray alloc] init] autorelease];
                 cdataDetail.distributionYWithout = bug.yValsWithoutIsSet ? bug.yValsWithout : [[[NSArray alloc] init] autorelease];
+
                 [cdataDetail setAppReport:cdataAppReport];
                 [cdataAppReport setAppDetails:cdataDetail];
             }
@@ -1077,106 +1121,6 @@ static NSMutableDictionary * daemonsList = nil;
     }
 }
 
-/*#pragma mark - Hogs & Bugs
-- (HogBugReport *) getBugsFromCoreData 
-{
-    DLog(@"Getting bugs from core data...");
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) 
-    {
-        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Bug"];
-        [fetchRequest setPredicate:predicate];
-        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
-                                                                        ascending:NO] autorelease];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
-                                                  inManagedObjectContext:managedObjectContext];
-        [fetchRequest setEntity:entity];
-        
-        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (fetchedObjects == nil) {
-            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-            return nil;
-        }
-        
-        DLog(@"%s Found %d bug, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
-        
-        HogBugReport * bugs = [[[HogBugReport alloc] init] autorelease];
-        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
-        [bugs setHbList:hbList];
-        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
-        {
-            HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
-            [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
-            [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
-            [bug setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
-            [bug setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
-            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
-            [bug setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
-            [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
-            [bug setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
-            [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
-            [hbList addObject:bug];
-        }
-        return bugs;
-    }
-    return nil;
-}
-
-- (HogBugReport *) getHogsFromCoreData 
-{
-    DLog(@"Getting hogs from core data...");
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) 
-    {
-        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"reportType == %@", @"Hog"];
-        [fetchRequest setPredicate:predicate];
-        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"appScore" 
-                                                                        ascending:NO] autorelease];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        [fetchRequest setSortDescriptors:sortDescriptors];
-        
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataAppReport" 
-                                                  inManagedObjectContext:managedObjectContext];
-        [fetchRequest setEntity:entity];
-        
-        NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-        if (fetchedObjects == nil) {
-            DLog(@"%s Could not fetch app report data, error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
-            return nil;
-        }
-        
-        DLog(@"%s Found %d hogs, loading...",__PRETTY_FUNCTION__, [fetchedObjects count]);
-        if ([fetchedObjects count] == 0)
-            return nil;
-        
-        HogBugReport * hogs = [[[HogBugReport alloc] init] autorelease];
-        NSMutableArray * hbList = [[[NSMutableArray alloc] init] autorelease];
-        [hogs setHbList:hbList];
-        for (CoreDataAppReport *cdataAppReport in fetchedObjects)
-        {
-            HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
-            [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
-            [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
-            [hog setExpectedValue:[[cdataAppReport valueForKey:@"expectedValue"] doubleValue]];
-            [hog setExpectedValueWithout:[[cdataAppReport valueForKey:@"expectedValueWithout"] doubleValue]];
-            CoreDataDetail *cdataDetail = cdataAppReport.appDetails;
-            [hog setXVals:(NSArray *) [cdataDetail valueForKey:@"distributionXWith"]];
-            [hog setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
-            [hog setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
-            [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
-            [hbList addObject:hog];
-        }
-        return hogs;
-    }
-    return nil;
-}*/
 
 @end
 
@@ -1407,7 +1351,7 @@ static id instance = nil;
     } 
     else
     {
-        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc]init] autorelease];
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         DLog(@"%s LastUpdateDate null, defaulting to %@", __PRETTY_FUNCTION__, [dateFormatter dateFromString:@"1970-01-01"]);
         return [dateFormatter dateFromString:@"1970-01-01"];
@@ -1485,7 +1429,7 @@ static id instance = nil;
                      [cdataAppReport valueForKey:@"appName"]);
                 continue;
             }
-            
+
             HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
             [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
             [bug setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
@@ -1496,7 +1440,15 @@ static id instance = nil;
             [bug setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
             [bug setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
             [bug setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            
+            [bug setError:[[cdataAppReport valueForKey:@"error"] doubleValue]];
+            [bug setErrorWithout:[[cdataAppReport valueForKey:@"errorWithout"] doubleValue]];
+            [bug setSamples:[[cdataAppReport valueForKey:@"samples"] doubleValue]];
+            [bug setSamplesWithout:[[cdataAppReport valueForKey:@"samplesWithout"] doubleValue]];
+            
             [hbList addObject:bug];
+            
+            DLog(@"%s '%@' action list bug candidate: %.9f %.9f", __PRETTY_FUNCTION__, [cdataAppReport valueForKey:@"appName"], [bug error], [bug errorWithout]);
         }
         return bugs;
     }
@@ -1559,8 +1511,7 @@ static id instance = nil;
                      [cdataAppReport valueForKey:@"appName"]);
                 continue;
             }
-            
-            // TODO need to add err, etc.
+
             HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
             [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
             [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
@@ -1571,9 +1522,15 @@ static id instance = nil;
             [hog setXValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionXWithout"]];
             [hog setYVals:(NSArray *) [cdataDetail valueForKey:@"distributionYWith"]];
             [hog setYValsWithout:(NSArray *) [cdataDetail valueForKey:@"distributionYWithout"]];
+            
+            [hog setError:[[cdataAppReport valueForKey:@"error"] doubleValue]];
+            [hog setErrorWithout:[[cdataAppReport valueForKey:@"errorWithout"] doubleValue]];
+            [hog setSamples:[[cdataAppReport valueForKey:@"samples"] doubleValue]];
+            [hog setSamplesWithout:[[cdataAppReport valueForKey:@"samplesWithout"] doubleValue]];
+            
             [hbList addObject:hog];
             
-            //DLog(@"%s '%@' action list candidate: %d %d", __PRETTY_FUNCTION__, [cdataAppReport valueForKey:@"appName"], );
+            DLog(@"%s '%@' action list hog candidate: %.9f %.9f", __PRETTY_FUNCTION__, [cdataAppReport valueForKey:@"appName"], [hog error], [hog errorWithout]);
         }
         return hogs;
     } else {

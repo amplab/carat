@@ -53,9 +53,6 @@ void onUncaughtException(NSException *exception)
     localNotif.alertAction = NSLocalizedString(@"Launch Carat", nil);
     localNotif.repeatInterval = 0;
     
-    //localNotif.soundName = UILocalNotificationDefaultSoundName; // TODO turn on sound after preventing night-time firing
-    //localNotif.applicationIconBadgeNumber = 1;
-    
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
     [localNotif release];
 }

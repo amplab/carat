@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11D50" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CoreDataAppReport" representedClassName="CoreDataAppReport" syncable="YES">
         <attribute name="appName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="appScore" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="errorWithout" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="expectedValue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="expectedValueWithout" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="reportType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="samples" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="samplesWithout" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="appDetails" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataDetail" inverseName="appReport" inverseEntity="CoreDataDetail" syncable="YES"/>
     </entity>
     <entity name="CoreDataDetail" representedClassName="CoreDataDetail" syncable="YES">
@@ -52,19 +56,23 @@
         <attribute name="distributionXWithout" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="distributionYWith" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="distributionYWithout" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="error" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="errorWithout" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="expectedValue" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="expectedValueWithout" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="samples" optional="YES" attributeType="Double" defaultValueString="0" syncable="YES"/>
+        <attribute name="samplesWithout" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="score" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="mainreport" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CoreDataMainReport" inverseName="subreports" inverseEntity="CoreDataMainReport" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CoreDataAppReport" positionX="-101" positionY="405" width="128" height="150"/>
+        <element name="CoreDataAppReport" positionX="-101" positionY="405" width="128" height="210"/>
         <element name="CoreDataDetail" positionX="-288" positionY="369" width="128" height="135"/>
         <element name="CoreDataMainReport" positionX="-45" positionY="36" width="128" height="105"/>
         <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
         <element name="CoreDataRegistration" positionX="-27" positionY="189" width="128" height="90"/>
         <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="225"/>
-        <element name="CoreDataSubReport" positionX="-333" positionY="117" width="128" height="180"/>
+        <element name="CoreDataSubReport" positionX="-333" positionY="117" width="128" height="240"/>
     </elements>
 </model>

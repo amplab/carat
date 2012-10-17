@@ -304,7 +304,7 @@
 					<object class="IBUILabel" id="208092514">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">292</int>
-						<string key="NSFrame">{{155, 68}, {145, 33}}</string>
+						<string key="NSFrame">{{155, 68}, {120, 33}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="736184022"/>
@@ -568,6 +568,28 @@
 						<reference key="IBUIFontDescription" ref="244504842"/>
 						<reference key="IBUIFont" ref="265680228"/>
 					</object>
+					<object class="IBUIButton" id="689531582">
+						<reference key="NSNextResponder" ref="191373211"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{285, 75}, {18, 19}}</string>
+						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:225</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUIButtonType">4</int>
+						<bool key="IBUIShowsTouchWhenHighlighted">YES</bool>
+						<reference key="IBUIHighlightedTitleColor" ref="839945567"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="231843224"/>
+						<reference key="IBUIFontDescription" ref="244504842"/>
+						<reference key="IBUIFont" ref="265680228"/>
+					</object>
 					<object class="IBUIImageView" id="640265424">
 						<reference key="NSNextResponder" ref="191373211"/>
 						<int key="NSvFlags">269</int>
@@ -732,7 +754,7 @@
 					<object class="IBUILabel" id="853464318">
 						<reference key="NSNextResponder" ref="552361349"/>
 						<int key="NSvFlags">288</int>
-						<string key="NSFrame">{{196, 55}, {264, 33}}</string>
+						<string key="NSFrame">{{196, 55}, {236, 33}}</string>
 						<reference key="NSSuperview" ref="552361349"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="432304668"/>
@@ -1112,6 +1134,28 @@
 						<reference key="IBUIFontDescription" ref="244504842"/>
 						<reference key="IBUIFont" ref="265680228"/>
 					</object>
+					<object class="IBUIButton" id="519783826">
+						<reference key="NSNextResponder" ref="552361349"/>
+						<int key="NSvFlags">292</int>
+						<string key="NSFrame">{{442, 62}, {18, 19}}</string>
+						<reference key="NSSuperview" ref="552361349"/>
+						<reference key="NSWindow"/>
+						<string key="NSReuseIdentifierKey">_NS:225</string>
+						<bool key="IBUIOpaque">NO</bool>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+						<int key="IBUIContentHorizontalAlignment">0</int>
+						<int key="IBUIContentVerticalAlignment">0</int>
+						<int key="IBUIButtonType">4</int>
+						<bool key="IBUIShowsTouchWhenHighlighted">YES</bool>
+						<reference key="IBUIHighlightedTitleColor" ref="839945567"/>
+						<object class="NSColor" key="IBUINormalTitleColor">
+							<int key="NSColorSpace">1</int>
+							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+						</object>
+						<reference key="IBUINormalTitleShadowColor" ref="231843224"/>
+						<reference key="IBUIFontDescription" ref="244504842"/>
+						<reference key="IBUIFont" ref="265680228"/>
+					</object>
 					<object class="IBUIButton" id="623966957">
 						<reference key="NSNextResponder" ref="552361349"/>
 						<int key="NSvFlags">292</int>
@@ -1446,6 +1490,24 @@
 					</object>
 					<int key="connectionID">149</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">getActiveBatteryLifeInfoScreen:</string>
+						<reference key="source" ref="519783826"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">164</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">getActiveBatteryLifeInfoScreen:</string>
+						<reference key="source" ref="689531582"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">165</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1486,6 +1548,7 @@
 							<reference ref="555082286"/>
 							<reference ref="255984849"/>
 							<reference ref="112485376"/>
+							<reference ref="689531582"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">portrait</string>
@@ -1585,6 +1648,7 @@
 							<reference ref="705960614"/>
 							<reference ref="160870396"/>
 							<reference ref="19790087"/>
+							<reference ref="519783826"/>
 						</object>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">landscape</string>
@@ -1765,6 +1829,16 @@
 						<reference key="object" ref="112485376"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">160</int>
+						<reference key="object" ref="519783826"/>
+						<reference key="parent" ref="552361349"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">162</int>
+						<reference key="object" ref="689531582"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1806,6 +1880,8 @@
 					<string>156.IBPluginDependency</string>
 					<string>157.CustomClassName</string>
 					<string>157.IBPluginDependency</string>
+					<string>160.IBPluginDependency</string>
+					<string>162.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
 					<string>21.IBPluginDependency</string>
 					<string>22.IBPluginDependency</string>
@@ -1882,6 +1958,8 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -1896,7 +1974,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">159</int>
+			<int key="maxID">165</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1916,6 +1994,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>getActiveBatteryLifeInfoScreen:</string>
 							<string>getJScoreInfoScreen:</string>
 							<string>getMemoryInfo:</string>
 							<string>getProcessList:</string>
@@ -1925,6 +2004,7 @@
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1937,6 +2017,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>getActiveBatteryLifeInfoScreen:</string>
 							<string>getJScoreInfoScreen:</string>
 							<string>getMemoryInfo:</string>
 							<string>getProcessList:</string>
@@ -1946,6 +2027,10 @@
 						</object>
 						<object class="NSArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">getActiveBatteryLifeInfoScreen:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">getJScoreInfoScreen:</string>
 								<string key="candidateClassName">id</string>

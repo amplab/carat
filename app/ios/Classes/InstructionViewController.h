@@ -14,6 +14,7 @@ typedef enum {
     ActionTypeUpgradeOS,
     ActionTypeDimScreen,
     ActionTypeSpreadTheWord,
+    ActionTypeActiveBatteryLifeInfo,
     ActionTypeJScoreInfo,
     ActionTypeMemoryInfo,
     ActionTypeDetailInfo

@@ -88,6 +88,13 @@
     [FlurryAnalytics logEvent:@"selectedProcessList"];
 }
 
+- (IBAction)getActiveBatteryLifeInfoScreen:(id)sender {
+    InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeActiveBatteryLifeInfo];
+    [self.navigationController pushViewController:ivController animated:YES];
+    [ivController release];
+    [FlurryAnalytics logEvent:@"selectedActiveBatteryLifeInfo"];
+}
+
 - (IBAction)getJScoreInfoScreen:(id)sender
 {
     InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeJScoreInfo];

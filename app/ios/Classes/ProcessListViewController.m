@@ -111,7 +111,7 @@
 {
     self.processList = [[UIDevice currentDevice] runningProcesses];
     self.lastUpdate = [NSDate date];
-    // TODO filter!
+    // TODO filter (based on "Filter Daemons" button)
     [self.procTable reloadData];
     [self.view setNeedsDisplay];
 }

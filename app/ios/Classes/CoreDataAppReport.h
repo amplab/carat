@@ -19,6 +19,10 @@
 @property (nonatomic, retain) NSNumber * expectedValueWithout;
 @property (nonatomic, retain) NSDate * lastUpdated;
 @property (nonatomic, retain) NSString * reportType;
+@property (nonatomic, retain) NSNumber * error;
+@property (nonatomic, retain) NSNumber * errorWithout;
+@property (nonatomic, retain) NSNumber * samples;
+@property (nonatomic, retain) NSNumber * samplesWithout;
 @property (nonatomic, retain) CoreDataDetail *appDetails;
 
 @end

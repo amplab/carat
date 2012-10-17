@@ -19,6 +19,10 @@
 @property (nonatomic, retain) NSNumber * score;
 @property (nonatomic, retain) NSNumber * expectedValue;
 @property (nonatomic, retain) NSNumber * expectedValueWithout;
+@property (nonatomic, retain) NSNumber * error;
+@property (nonatomic, retain) NSNumber * errorWithout;
+@property (nonatomic, retain) NSNumber * samples;
+@property (nonatomic, retain) NSNumber * samplesWithout;
 @property (nonatomic, retain) id distributionXWith;
 @property (nonatomic, retain) id distributionYWithout;
 @property (nonatomic, retain) CoreDataMainReport *mainreport;

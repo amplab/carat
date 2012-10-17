@@ -49,6 +49,7 @@
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;
 - (IBAction)getSimilarAppsDetail:(id)sender;
+- (IBAction)getActiveBatteryLifeInfoScreen:(id)sender;
 - (IBAction)getJScoreInfoScreen:(id)sender;
 - (IBAction)getProcessList:(id)sender;
 - (IBAction)getMemoryInfo:(id)sender;

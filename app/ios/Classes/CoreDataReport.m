@@ -16,6 +16,10 @@
 @dynamic appScore;
 @dynamic expectedValue;
 @dynamic expectedValueWithout;
+@dynamic error;
+@dynamic errorWithout;
+@dynamic samples;
+@dynamic samplesWithout;
 @dynamic reportType;
 @dynamic lastUpdated;
 @dynamic appDetails;

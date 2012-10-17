@@ -85,6 +85,12 @@
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"upgradeos.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
             break;
             
+        case ActionTypeActiveBatteryLifeInfo:
+            DLog(@"Loading Active Battery Life info");
+            self.navigationItem.title = @"Active Battery Life Info";
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"activebatterylife.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
+            break;
+            
         case ActionTypeJScoreInfo:
             DLog(@"Loading J-Score info");
             self.navigationItem.title = @"J-Score Info";

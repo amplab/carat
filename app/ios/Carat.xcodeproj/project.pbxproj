@@ -305,6 +305,7 @@
 		ABD318EA148D8703000A8DC7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318E9148D8703000A8DC7 /* Security.framework */; };
 		ABD318EC148D8733000A8DC7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318EB148D8732000A8DC7 /* MessageUI.framework */; };
 		ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD31902148EC41B000A8DC7 /* QuartzCore.framework */; };
+		ABD75499162F5FC100817924 /* activebatterylife.html in Resources */ = {isa = PBXBuildFile; fileRef = ABD75498162F5FC100817924 /* activebatterylife.html */; };
 		ABDB096814D110C900885FB7 /* UIDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDB096714D110C900885FB7 /* UIDeviceHardware.m */; };
 		ABE8DA7515247B3E0024C111 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE8DA7415247B3E0024C111 /* Default-Portrait@2x~ipad.png */; };
 		ABE8DA7715247B790024C111 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE8DA7615247B790024C111 /* Default-Landscape@2x~ipad.png */; };
@@ -763,6 +764,7 @@
 		ABD318EB148D8732000A8DC7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		ABD318EE148D88D1000A8DC7 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
 		ABD31902148EC41B000A8DC7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		ABD75498162F5FC100817924 /* activebatterylife.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = activebatterylife.html; sourceTree = "<group>"; };
 		ABDB096614D110C900885FB7 /* UIDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceHardware.h; sourceTree = "<group>"; };
 		ABDB096714D110C900885FB7 /* UIDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDeviceHardware.m; sourceTree = "<group>"; };
 		ABE8DA7415247B3E0024C111 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
@@ -1163,6 +1165,7 @@
 		ABA3A10214E4A560009B3D33 /* html */ = {
 			isa = PBXGroup;
 			children = (
+				ABD75498162F5FC100817924 /* activebatterylife.html */,
 				AB99EB0014EA6C130008E440 /* upgradeos.html */,
 				AB9525AD14EA1B5900343418 /* about.html */,
 				AB7568D7151B0DAC0082AEE9 /* consent.html */,
@@ -1897,6 +1900,7 @@
 				ABAAA9F5161F798700504A9E /* SZBaseShareViewController.xib in Resources */,
 				ABAAA9F6161F798700504A9E /* SZStatusImageLabelView.xib in Resources */,
 				AB7FA69F1628D4B900838F7A /* HiddenAppsView.xib in Resources */,
+				ABD75499162F5FC100817924 /* activebatterylife.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
