@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Carat</string>
-    <string name="version_name">0.79</string>
+    <string name="version_name">0.80</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Average Battery Life:</string>
     <string name="osver">OS version:</string>
@@ -71,7 +71,7 @@
     <string name="expected">Expected improvement:</string>
     <string name="killappname">Kill App Name</string>
     <string name="benefitdefault">1d 9h 15m 40s</string>
-    <string name="confidence">Confidence:</string>
+    <!-- <string name="confidence">Confidence:</string>-->
     <string name="appname">App Name</string>
     <string name="priority">Priority:</string>
     <string name="priorityDefault">Not running</string>
@@ -139,7 +139,7 @@
     
     <string name="samples">Samples:</string>
     <string name="samplesWithout">Samples without:</string>
-    <string name="error">Measurement error:</string>
+    <string name="error">Error:</string>
     <string name="significance">Significance:</string>
     
     <string name="best">Already best</string>

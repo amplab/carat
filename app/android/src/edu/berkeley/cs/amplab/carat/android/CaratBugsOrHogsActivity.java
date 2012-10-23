@@ -72,8 +72,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 					.findViewById(R.id.name);
 			ImageView pi = (ImageView) previous.detailPage
 					.findViewById(R.id.appIcon);
-			ProgressBar pp = (ProgressBar) previous.detailPage
-					.findViewById(R.id.confidenceBar);
+			TextView pp = (TextView) previous.detailPage.findViewById(R.id.benefit);
 			
 			DrawView w = previous.w;
 
@@ -81,8 +80,8 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 					.getText());
 			((ImageView) detailPage.findViewById(R.id.appIcon))
 					.setImageDrawable(pi.getDrawable());
-			((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
-					.setProgress(pp.getProgress());
+			((TextView) detailPage.findViewById(R.id.benefit))
+					.setText(pp.getText());
 
 			String appName = w.getAppName();
 			
@@ -116,10 +115,10 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 		View moreinfo = detailPage.findViewById(R.id.moreinfo);
 		moreinfo.setOnClickListener(detailViewer);
 
-		View item = detailPage.findViewById(R.id.confidenceBar);
+		View item = detailPage.findViewById(R.id.benefit);
 		item.setClickable(true);
 		item.setOnClickListener(detailViewer);
-		item = detailPage.findViewById(R.id.confidenceLegend);
+		item = detailPage.findViewById(R.id.benefit);
 		item.setClickable(true);
 		item.setOnClickListener(detailViewer);
 		item = detailPage.findViewById(R.id.name);
@@ -148,8 +147,8 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 				((TextView) detailPage.findViewById(R.id.name)).setText(label);
 				((ImageView) detailPage.findViewById(R.id.appIcon))
 						.setImageDrawable(icon);
-				((ProgressBar) detailPage.findViewById(R.id.confidenceBar))
-						.setProgress((int) (fullObject.getwDistance() * 100));
+				((TextView) detailPage.findViewById(R.id.benefit))
+						.setText(fullObject.textBenefit());
 				w.setHogsBugs(fullObject, label, isBugsActivity, target);
 				//detailPage.postInvalidate();
 				switchView(target);

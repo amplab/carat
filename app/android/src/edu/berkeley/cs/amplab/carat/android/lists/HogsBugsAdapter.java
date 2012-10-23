@@ -76,8 +76,8 @@ public class HogsBugsAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.appIcon = (ImageView) convertView.findViewById(R.id.appIcon);
             holder.txtName = (TextView) convertView.findViewById(R.id.appName);
-            holder.progConfidence = (ProgressBar) convertView
-                    .findViewById(R.id.confidenceBar);
+            holder.textBenefit = (TextView) convertView
+                    .findViewById(R.id.benefit);
             holder.moreInfo = (ImageView) convertView
                     .findViewById(R.id.moreinfo);
 
@@ -98,7 +98,7 @@ public class HogsBugsAdapter extends BaseAdapter {
             label = a.getString(R.string.unknown);
         holder.txtName.setText(label);
         holder.appIcon.setImageDrawable(icon);
-        holder.progConfidence.setProgress((int) (item.getwDistance() * 100));
+        holder.textBenefit.setText(item.textBenefit());
         // holder.moreInfo...
 
         return convertView;
@@ -107,7 +107,7 @@ public class HogsBugsAdapter extends BaseAdapter {
     static class ViewHolder {
         ImageView appIcon;
         TextView txtName;
-        ProgressBar progConfidence;
+        TextView textBenefit;
         ImageView moreInfo;
     }
 }

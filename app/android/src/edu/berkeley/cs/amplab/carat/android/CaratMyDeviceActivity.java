@@ -5,6 +5,7 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
@@ -101,13 +102,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     private void restorePage(View thisPage, View oldPage){
         TextView pn = (TextView) oldPage.findViewById(R.id.name);
         ImageView pi = (ImageView) oldPage.findViewById(R.id.appIcon);
-        ProgressBar pp = (ProgressBar) oldPage.findViewById(R.id.confidenceBar);
+        TextView pp = (TextView) oldPage.findViewById(R.id.benefit);
         
         ((TextView) thisPage.findViewById(R.id.name)).setText(pn.getText());
         ((ImageView) thisPage.findViewById(R.id.appIcon))
                 .setImageDrawable(pi.getDrawable());
-        ((ProgressBar) thisPage.findViewById(R.id.confidenceBar))
-                .setProgress(pp.getProgress());
+        ((TextView) thisPage.findViewById(R.id.benefit))
+                .setText(pp.getText());
     }
 
     private void initJscoreView() {
@@ -237,8 +238,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             ((ImageView) osViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
             Log.v("OsInfo", "Os score: " + os.getScore());
-            ((ProgressBar) osViewPage.findViewById(R.id.confidenceBar))
-                    .setProgress((int) (os.getScore() * 100));
+            
+            double ev = os.getExpectedValue();
+            double error = os.getError();
+            double evWithout = osWithout.getExpectedValue();
+            double errorWo = osWithout.getError();
+            ((TextView) osViewPage.findViewById(R.id.benefit))
+                    .setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
                     os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) osWithout.getSamples(), os.getError(), osWithout.getError(), osViewPage);
         }
@@ -264,8 +270,12 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     .setImageDrawable(icon);
 
             Log.v("ModelInfo", "Model score: " + model.getScore());
-            ((ProgressBar) modelViewPage.findViewById(R.id.confidenceBar))
-                    .setProgress((int) (model.getScore() * 100));
+            double ev = model.getExpectedValue();
+            double error = model.getError();
+            double evWithout = modelWithout.getExpectedValue();
+            double errorWo = modelWithout.getError();
+            ((TextView) modelViewPage.findViewById(R.id.benefit))
+                    .setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
             modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
                     model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) modelWithout.getSamples(), model.getError(), modelWithout.getError(), modelViewPage);
         }
@@ -273,6 +283,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     }
 
     /**
+     * @deprecated This is no longer used.
      * Called when App list additional info button is clicked.
      * 
      * @param v
@@ -292,9 +303,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
 
             Log.v("SimilarInfo", "Similar score: " + similar.getScore());
 
-            ((ProgressBar) appsViewPage.findViewById(R.id.confidenceBar))
-                    .setProgress((int) (similar.getScore() * 100));
-
+            double ev = similar.getExpectedValue();
+            double error = similar.getError();
+            double evWithout = similarWithout.getExpectedValue();
+            double errorWo = similarWithout.getError();
+            ((TextView) osViewPage.findViewById(R.id.benefit))
+                    .setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
+            
             appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
                     similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similarWithout.getSamples(), similar.getError(), similarWithout.getError(), appsViewPage);
         }

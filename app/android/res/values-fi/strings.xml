@@ -52,7 +52,7 @@
     <string name="expected">Arvioitu parannus:</string>
     <string name="killappname">Tapa Sovellus</string>
     <string name="benefitdefault">1d 9h 15m 40s</string>
-    <string name="confidence">Luotettavuus:</string>
+    <!-- <string name="confidence">Luotettavuus:</string>-->
     <string name="appname">Sovelluksen nimi</string>
     <string name="priority">Prioriteetti:</string>
     <string name="priorityDefault">Ei käynnissä</string>
