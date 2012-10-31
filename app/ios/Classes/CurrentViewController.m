@@ -197,43 +197,6 @@
     }
 }
 
-- (IBAction)getSimilarAppsDetail:(id)sender
-{
-    DetailScreenReport *dsr = [[CoreDataManager instance] getSimilarAppsInfo:YES];
-    if (dsr == nil || [dsr xVals] == nil || [[dsr xVals] count] == 0) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
-                                                        message:@"Please check back later; we should have results for your device soon." 
-                                                       delegate:nil 
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        [alert release];
-    } else {
-        DetailViewController *dvController = [self getDetailView];
-        
-        [dvController setXVals:[dsr xVals]];
-        [dvController setYVals:[dsr yVals]];
-        dsr = [[CoreDataManager instance] getSimilarAppsInfo:NO];
-        [dvController setXValsWithout:[dsr xVals]];
-        [dvController setYValsWithout:[dsr yVals]];
-        
-        [self.navigationController pushViewController:dvController animated:YES];
-        
-        [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
-        UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
-        [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
-        [img release];
-        for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getSimilarAppsInfo:YES] score],0.0),1.0)];
-        }
-        
-        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Similar Apps"];
-        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Apps"];
-        
-        [FlurryAnalytics logEvent:@"selectedSimilarApps"];
-    }
-}
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
