@@ -11,8 +11,8 @@
 @implementation ReportItemCell
 
 @synthesize appName;
+@synthesize appImpact;
 @synthesize appIcon;
-@synthesize appScore;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -76,7 +76,7 @@
     [cell.appIcon setImageWithURL:[NSURL URLWithString:imageURL]
                  placeholderImage:[UIImage imageNamed:@"icon57.png"]];
     
-    cell.appScore.progress = 0;
+    cell.appImpact.text = @"???";
     
     return cell;
 }

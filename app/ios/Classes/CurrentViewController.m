@@ -121,7 +121,7 @@
 - (IBAction)getSameOSDetail:(id)sender
 {
     DetailScreenReport *dsr = [[CoreDataManager instance] getOSInfo:YES];
-    if (dsr == nil || [dsr xVals] == nil || [[dsr xVals] count] == 0) {
+    if (dsr == nil || ![dsr expectedValueIsSet] || [dsr expectedValue] <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
                                                        delegate:nil 
@@ -132,25 +132,21 @@
     } else {
         DetailViewController *dvController = [self getDetailView];
 
-        [dvController setXVals:[dsr xVals]];
-        [dvController setYVals:[dsr yVals]];
+        double expectedValueWithout = [[[CoreDataManager instance] getOSInfo:NO] expectedValue];
         
-        dsr = [[CoreDataManager instance] getOSInfo:NO];
-        [dvController setXValsWithout:[dsr xVals]];
-        [dvController setYValsWithout:[dsr yVals]];
+        NSInteger benefit = (int) (100/expectedValueWithout - 100/[dsr expectedValue]);
+        NSInteger error = (int) (100/[dsr error] + 100/[dsr errorWithout]);
         
         [self.navigationController pushViewController:dvController animated:YES];
         
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
+        [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
         UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
-        for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0)];
-        }
         
-        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same OS"];
-        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different OS"];
+        [[dvController samplesWith] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samples]] stringValue]];
+        [[dvController samplesWithout] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samplesWithout]] stringValue]];
         
         [FlurryAnalytics logEvent:@"selectedSameOS"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
@@ -160,7 +156,7 @@
 - (IBAction)getSameModelDetail:(id)sender
 {
     DetailScreenReport *dsr = [[CoreDataManager instance] getModelInfo:YES];
-    if (dsr == nil || [dsr xVals] == nil || [[dsr xVals] count] == 0) {
+    if (dsr == nil || ![dsr expectedValueIsSet] || [dsr expectedValue] <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
                                                        delegate:nil 
@@ -171,24 +167,21 @@
     } else {
         DetailViewController *dvController = [self getDetailView];
 
-        [dvController setXVals:[dsr xVals]];
-        [dvController setYVals:[dsr yVals]];
-        dsr = [[CoreDataManager instance] getModelInfo:NO];
-        [dvController setXValsWithout:[dsr xVals]];
-        [dvController setYValsWithout:[dsr yVals]];
+        double expectedValueWithout = [[[CoreDataManager instance] getModelInfo:NO] expectedValue];
+        
+        NSInteger benefit = (int) (100/expectedValueWithout - 100/[dsr expectedValue]);
+        NSInteger error = (int) (100/[dsr error] + 100/[dsr errorWithout]);
         
         [self.navigationController pushViewController:dvController animated:YES];
         
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
+        [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
         UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
-        for (UIProgressView *pBar in [dvController appScore]) {
-            [pBar setProgress:MIN(MAX([[[CoreDataManager instance] getModelInfo:YES] score],0.0),1.0)];
-        }
         
-        [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Model"];
-        [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:@"Different Model"];
+        [[dvController samplesWith] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samples]] stringValue]];
+        [[dvController samplesWithout] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samplesWithout]] stringValue]];
         
         UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
         [FlurryAnalytics logEvent:@"selectedSameModel"

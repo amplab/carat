@@ -11,12 +11,12 @@
 @interface ReportItemCell : UITableViewCell
 {
     IBOutlet UILabel *appName;
+    IBOutlet UILabel *appImpact;
     IBOutlet UIImageView *appIcon;
-    IBOutlet UIProgressView *appScore;
 }
 
 @property (retain, nonatomic) IBOutlet UILabel *appName;
+@property (retain, nonatomic) IBOutlet UILabel *appImpact;
 @property (retain, nonatomic) IBOutlet UIImageView *appIcon;
-@property (retain, nonatomic) IBOutlet UIProgressView *appScore;
 
 @end

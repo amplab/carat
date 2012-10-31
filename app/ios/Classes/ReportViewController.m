@@ -8,7 +8,6 @@
 
 #import "ReportViewController.h"
 #import "ReportItemCell.h"
-#import "CorePlot-CocoaTouch.h"
 #import "Utilities.h"
 #import "DetailViewController.h"
 #import "HiddenAppsViewController.h"
@@ -105,7 +104,8 @@
     }
     
     // Set up the cell...
-    NSString *appName = [[[report hbList] objectAtIndex:indexPath.row] appName];
+    HogsBugs *hb = [[report hbList] objectAtIndex:indexPath.row];
+    NSString *appName = [hb appName];
     cell.appName.text = appName;
     
     NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" 
@@ -115,7 +115,10 @@
     [cell.appIcon setImageWithURL:[NSURL URLWithString:imageURL]
                  placeholderImage:[UIImage imageNamed:@"icon57.png"]];
     
-    cell.appScore.progress = [[[report hbList] objectAtIndex:indexPath.row] wDistance];    
+    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+    NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+    
+    cell.appImpact.text = [[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]];
     return cell;
 }
 
@@ -136,16 +139,16 @@
     
     DetailViewController *dvController = [self getDetailView];
     HogsBugs *hb = [[self.report hbList] objectAtIndex:indexPath.row];
-    [dvController setXVals:[hb xVals]];
-    [dvController setYVals:[hb yVals]];
-    [dvController setXValsWithout:[hb xValsWithout]];
-    [dvController setYValsWithout:[hb yValsWithout]];
+    
+    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+    NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+    
     [self.navigationController pushViewController:dvController animated:YES];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
-    
-    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/" 
-                           stringByAppendingString:selectedCell.appName.text] 
+    [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
+    NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/"
+                           stringByAppendingString:selectedCell.appName.text]
                           stringByAppendingString:@".jpg"];
     DLog(imageURL);
     
@@ -153,13 +156,9 @@
         [appimg setImageWithURL:[NSURL URLWithString:imageURL]
                placeholderImage:[UIImage imageNamed:@"icon57.png"]];
     }
-
-    for (UIProgressView *pBar in [dvController appScore]) {
-        [pBar setProgress:selectedCell.appScore.progress];
-    }
     
-    [[dvController thisText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thisText];
-    [[dvController thatText] makeObjectsPerformSelector:@selector(setText:) withObject:self.thatText];
+    [[dvController samplesWith] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[hb samples]] stringValue]];
+    [[dvController samplesWithout] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[hb samplesWithout]] stringValue]];
     
     [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
