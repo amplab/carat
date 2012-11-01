@@ -116,7 +116,8 @@
                  placeholderImage:[UIImage imageNamed:@"icon57.png"]];
     
     NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-    NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+    NSInteger benefit_max = (int) (100/([hb expectedValueWithout]-[hb errorWithout]) - 100/([hb expectedValue]+[hb error]));
+    NSInteger error = (int) (benefit_max-benefit);
     
     cell.appImpact.text = [[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]];
     return cell;
@@ -141,7 +142,8 @@
     HogsBugs *hb = [[self.report hbList] objectAtIndex:indexPath.row];
     
     NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-    NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+    NSInteger benefit_max = (int) (100/([hb expectedValueWithout]-[hb errorWithout]) - 100/([hb expectedValue]+[hb error]));
+    NSInteger error = (int) (benefit_max-benefit);
     
     [self.navigationController pushViewController:dvController animated:YES];
     

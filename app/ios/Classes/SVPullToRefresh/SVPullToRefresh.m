@@ -119,7 +119,7 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
 
 - (SVPullToRefreshArrow *)arrow {
     if(!arrow && pullToRefreshActionHandler) {
-		self.arrow = [[SVPullToRefreshArrow alloc]initWithFrame:CGRectMake(0, 6, 22, 48)];
+		self.arrow = [[[SVPullToRefreshArrow alloc]initWithFrame:CGRectMake(0, 6, 22, 48)] autorelease];
         arrow.backgroundColor = [UIColor clearColor];
 		
 		// assign a different default color for arrow
@@ -173,7 +173,7 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
     [_scrollView addSubview:self];
     self.showsPullToRefresh = YES;
     
-    self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, 150, 20)];
+    self.titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(0, 20, 150, 20)] autorelease];
     titleLabel.text = NSLocalizedString(@"Pull to refresh...",);
     titleLabel.font = [UIFont boldSystemFontOfSize:14];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -429,7 +429,7 @@ static char UIScrollViewInfiniteScrollingView;
 - (SVPullToRefresh *)pullToRefreshView {
     SVPullToRefresh *pullToRefreshView = objc_getAssociatedObject(self, &UIScrollViewPullToRefreshView);
     if(!pullToRefreshView) {
-        pullToRefreshView = [[SVPullToRefresh alloc] initWithScrollView:self];
+        pullToRefreshView = [[[SVPullToRefresh alloc] initWithScrollView:self] autorelease];
         self.pullToRefreshView = pullToRefreshView;
     }
     return pullToRefreshView;
@@ -446,7 +446,7 @@ static char UIScrollViewInfiniteScrollingView;
 - (SVPullToRefresh *)infiniteScrollingView {
     SVPullToRefresh *infiniteScrollingView = objc_getAssociatedObject(self, &UIScrollViewInfiniteScrollingView);
     if(!infiniteScrollingView) {
-        infiniteScrollingView = [[SVPullToRefresh alloc] initWithScrollView:self];
+        infiniteScrollingView = [[[SVPullToRefresh alloc] initWithScrollView:self] autorelease];
         self.infiniteScrollingView = infiniteScrollingView;
     }
     return infiniteScrollingView;

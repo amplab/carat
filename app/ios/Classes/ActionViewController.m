@@ -368,13 +368,15 @@
                 [hb errorWithout] > 0) {
                 
                 NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+                NSInteger benefit_max = (int) (100/([hb expectedValueWithout]-[hb errorWithout]) - 100/([hb expectedValue]+[hb error]));
+                NSInteger error = (int) (benefit_max-benefit);
                 DLog(@"Benefit is %d ± %d for hog '%@'", benefit, error, [hb appName]);
                 if (benefit > 60) { // TODO need positive gap, also check for below
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Kill " stringByAppendingString:[hb appName]]];
                     [tmpAction setActionType:ActionTypeKillApp];
                     [tmpAction setActionBenefit:benefit];
+                    [tmpAction setActionError:error];
                     [myList addObject:tmpAction];
                     [tmpAction release];
                 }
@@ -394,13 +396,15 @@
                 [hb errorWithout] > 0) {
                 
                 NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-                NSInteger error = (int) (100/[hb error] + 100/[hb errorWithout]);
+                NSInteger benefit_max = (int) (100/([hb expectedValueWithout]-[hb errorWithout]) - 100/([hb expectedValue]+[hb error]));
+                NSInteger error = (int) (benefit_max-benefit);
                 DLog(@"Benefit is %d ± %d for bug '%@'", benefit, error, [hb appName]);
                 if (benefit > 60) {
                     tmpAction = [[ActionObject alloc] init];
                     [tmpAction setActionText:[@"Restart " stringByAppendingString:[hb appName]]];
                     [tmpAction setActionType:ActionTypeRestartApp];
                     [tmpAction setActionBenefit:benefit];
+                    [tmpAction setActionError:error];
                     [myList addObject:tmpAction];
                     [tmpAction release];
                 }
@@ -422,13 +426,15 @@
             dscWithout.error > 0 &&
             canUpgradeOS) {
             NSInteger benefit = (int) (100/dscWithout.expectedValue - 100/dscWith.expectedValue);
-            NSInteger error = (int) (100/dscWith.error + 100/dscWithout.error);
+            NSInteger benefit_max = (int) (100/(dscWithout.expectedValue - dscWithout.error) - 100/(dscWith.expectedValue + dscWith.error));
+            NSInteger error = (int) (benefit_max-benefit);
             DLog(@"OS benefit is %d ± %d", benefit, error);
             if (benefit > 60) {
                 tmpAction = [[ActionObject alloc] init];
                 [tmpAction setActionText:@"Upgrade the Operating System"];
                 [tmpAction setActionType:ActionTypeUpgradeOS];
                 [tmpAction setActionBenefit:benefit];
+                [tmpAction setActionError:error];
                 [myList addObject:tmpAction];
                 [tmpAction release];
             }

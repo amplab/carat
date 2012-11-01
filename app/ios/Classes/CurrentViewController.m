@@ -135,7 +135,8 @@
         double expectedValueWithout = [[[CoreDataManager instance] getOSInfo:NO] expectedValue];
         
         NSInteger benefit = (int) (100/expectedValueWithout - 100/[dsr expectedValue]);
-        NSInteger error = (int) (100/[dsr error] + 100/[dsr errorWithout]);
+        NSInteger benefit_max = (int) (100/(expectedValueWithout-[dsr errorWithout]) - 100/([dsr expectedValue]+[dsr error]));
+        NSInteger error = (int) (benefit_max-benefit);
         
         [self.navigationController pushViewController:dvController animated:YES];
         
@@ -170,7 +171,8 @@
         double expectedValueWithout = [[[CoreDataManager instance] getModelInfo:NO] expectedValue];
         
         NSInteger benefit = (int) (100/expectedValueWithout - 100/[dsr expectedValue]);
-        NSInteger error = (int) (100/[dsr error] + 100/[dsr errorWithout]);
+        NSInteger benefit_max = (int) (100/(expectedValueWithout-[dsr errorWithout]) - 100/([dsr expectedValue]+[dsr error]));
+        NSInteger error = (int) (benefit_max-benefit);
         
         [self.navigationController pushViewController:dvController animated:YES];
         

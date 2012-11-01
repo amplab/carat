@@ -388,7 +388,7 @@ static NSMutableDictionary * daemonsList = nil;
 #pragma mark -
 - (void) initialize
 {
-    self.lockReportSync = [[NSLock alloc] init];
+    self.lockReportSync = [[[NSLock alloc] init] autorelease];
     
     //  We don't want to create huge number of threads to send 
     //  registrations/samples, so limit them.
@@ -1551,7 +1551,7 @@ static id instance = nil;
 
 - (double) getJScore
 {
-    DLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
+    //DLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
     return JScore;
 }
 
