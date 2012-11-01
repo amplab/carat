@@ -121,7 +121,7 @@
 - (IBAction)getSameOSDetail:(id)sender
 {
     DetailScreenReport *dsr = [[CoreDataManager instance] getOSInfo:YES];
-    if (dsr == nil || ![dsr expectedValueIsSet] || [dsr expectedValue] <= 0) {
+    if (dsr == nil || ![dsr expectedValueIsSet] || [dsr expectedValue] <= 0 || ![dsr errorIsSet] || [dsr error] <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
                                                        delegate:nil 
@@ -157,7 +157,7 @@
 - (IBAction)getSameModelDetail:(id)sender
 {
     DetailScreenReport *dsr = [[CoreDataManager instance] getModelInfo:YES];
-    if (dsr == nil || ![dsr expectedValueIsSet] || [dsr expectedValue] <= 0) {
+    if (dsr == nil || ![dsr expectedValueIsSet] || [dsr expectedValue] <= 0 || ![dsr errorIsSet] || [dsr error] <= 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Report!" 
                                                         message:@"Please check back later; we should have results for your device soon." 
                                                        delegate:nil 
