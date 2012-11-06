@@ -1429,6 +1429,13 @@ static id instance = nil;
                      [cdataAppReport valueForKey:@"appName"]);
                 continue;
             }
+            
+            if ([[cdataAppReport valueForKey:@"samples"] doubleValue] <= 0) {
+                DLog(@"%s '%@' has no samples, filtering it out.",
+                     __PRETTY_FUNCTION__,
+                     [cdataAppReport valueForKey:@"appName"]);
+                continue;
+            }
 
             HogsBugs *bug = [[[HogsBugs alloc] init] autorelease];
             [bug setAppName:[cdataAppReport valueForKey:@"appName"]];
@@ -1512,6 +1519,13 @@ static id instance = nil;
                 continue;
             }
 
+            if ([[cdataAppReport valueForKey:@"samples"] doubleValue] <= 0) {
+                DLog(@"%s '%@' has no samples, filtering it out.",
+                     __PRETTY_FUNCTION__,
+                     [cdataAppReport valueForKey:@"appName"]);
+                continue;
+            }
+            
             HogsBugs *hog = [[[HogsBugs alloc] init] autorelease];
             [hog setAppName:[cdataAppReport valueForKey:@"appName"]];
             [hog setWDistance:[[cdataAppReport valueForKey:@"appScore"] doubleValue]];
