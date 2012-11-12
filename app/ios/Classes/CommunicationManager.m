@@ -133,6 +133,15 @@ static NSString * networkStatusString;
 }
 
 //
+//
+//
+- (HogBugReport *) getHogsImmediatelyAndMaybeRegister:(Registration *) registrationMessage  : (NSArray *) processList {
+    //TODO
+    return nil;
+}
+
+
+//
 //  Send sample to the server.
 //
 - (BOOL) sendSample:(Sample *)sample
