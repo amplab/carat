@@ -57,6 +57,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         baseViewIndex = vf.indexOfChild(baseView);
         initJscoreView();
         initMemoryView();
+        initBatteryLifeView();
         initProcessListView();
         initOsView();
         initModelView();
@@ -123,6 +124,14 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.memoryView);
        
         webview.loadUrl("file:///android_asset/memoryinfo.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));
+    }
+    
+    private void initBatteryLifeView() {
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.batteryLifeView);
+       
+        webview.loadUrl("file:///android_asset/batterylifeinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
@@ -326,6 +335,16 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         switchView(R.id.memoryView);
     }
 
+    /**
+     * Called when Battery Life additional info button is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void showBatteryLifeInfo(View v) {
+        switchView(R.id.batteryLifeView);
+    }
+    
     /**
      * Called when J-Score additional info button is clicked.
      * 

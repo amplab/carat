@@ -101,6 +101,15 @@ Carat My Device Screen layout
                     android:text="@string/zeroh"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/green" />
+				<ImageView
+                    android:id="@+id/batteryLifeInfo"
+                    android:layout_width="24dip"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right|center_vertical"
+                    android:background="@null"
+                    android:contentDescription="@string/moreinfo"
+                    android:onClick="showBatteryLifeInfo"
+                    android:src="@drawable/arrow" />
             </LinearLayout>
 
             <LinearLayout
@@ -340,6 +349,12 @@ Carat My Device Screen layout
         android:layout_height="match_parent" >
     </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
 
+    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/batteryLifeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+        
     <ListView
         android:id="@+id/processList"
         android:layout_width="fill_parent"
