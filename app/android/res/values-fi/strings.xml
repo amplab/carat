@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="jscore">J-Scoresi:</string>
-    <string name="batterylife">Keskim. akunkesto:</string>
+    <string name="batterylife">Aktiivinen akunkesto:</string>
     <string name="osver">KJ-versio:</string>
     <string name="dev">Laitemalli:</string>
     <string name="apps">Käynnissä:</string>
