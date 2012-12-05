@@ -7,6 +7,7 @@ import java.util.Properties;
 import com.flurry.android.FlurryAgent;
 
 import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
+import edu.berkeley.cs.amplab.carat.android.protocol.HelloServer;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Context;
@@ -156,6 +157,13 @@ public class CaratMainActivity extends TabActivity {
         });
 
         tabHost.setCurrentTab(0);
+        // Uncomment the following to enable listening on local port 8080:
+        /*try {
+            HelloServer h = new HelloServer();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
     }
 
     public void setTitleNormal() {
