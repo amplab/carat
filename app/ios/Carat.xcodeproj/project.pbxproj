@@ -244,7 +244,7 @@
 		AB3B90BC16C04930007C8596 /* SocializeTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB3B8FDF16C0492F007C8596 /* SocializeTableViewController.xib */; };
 		AB3B90BD16C04930007C8596 /* SZBaseShareViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB3B8FE016C0492F007C8596 /* SZBaseShareViewController.xib */; };
 		AB3B90BE16C04930007C8596 /* SZStatusImageLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB3B8FE116C0492F007C8596 /* SZStatusImageLabelView.xib */; };
-		AB3B90BF16C04930007C8596 /* Socialize.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B8FE216C0492F007C8596 /* Socialize.framework */; };
+		AB3B90BF16C04930007C8596 /* Socialize.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B8FE216C0492F007C8596 /* Socialize.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
 		AB41CDF4144E1E520090CC09 /* CaratAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */; };
 		AB41CDF8144E27200090CC09 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB41CDF7144E27200090CC09 /* CoreLocation.framework */; };
@@ -273,6 +273,9 @@
 		AB7BAAC2161A5DE90058AC33 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7BAAC1161A5DE90058AC33 /* CopyLabel.m */; };
 		AB7FA69E1628D4B900838F7A /* HiddenAppsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7FA69C1628D4B800838F7A /* HiddenAppsViewController.m */; };
 		AB7FA69F1628D4B900838F7A /* HiddenAppsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7FA69D1628D4B900838F7A /* HiddenAppsView.xib */; };
+		AB8121DE16C04E92005FBE96 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8121DD16C04E92005FBE96 /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AB8121E116C04EA2005FBE96 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8121E016C04EA2005FBE96 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		AB8121E316C04F5B005FBE96 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8121E216C04F5B005FBE96 /* libsqlite3.0.dylib */; };
 		AB91E434149162F7007786F0 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E433149162F7007786F0 /* Utilities.m */; };
 		AB91E44314992650007786F0 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4421499264F007786F0 /* ReportViewController.m */; };
 		AB91E4461499266C007786F0 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB91E4451499266B007786F0 /* DetailViewController.m */; };
@@ -642,6 +645,9 @@
 		AB7FA69B1628D4B800838F7A /* HiddenAppsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HiddenAppsViewController.h; sourceTree = "<group>"; };
 		AB7FA69C1628D4B800838F7A /* HiddenAppsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HiddenAppsViewController.m; sourceTree = "<group>"; };
 		AB7FA69D1628D4B900838F7A /* HiddenAppsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = HiddenAppsView.xib; path = Classes/HiddenAppsView.xib; sourceTree = "<group>"; };
+		AB8121DD16C04E92005FBE96 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		AB8121E016C04EA2005FBE96 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		AB8121E216C04F5B005FBE96 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		AB8C851E1641D49F002E948C /* TObjective-C.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TObjective-C.h"; sourceTree = "<group>"; };
 		AB91E432149162F7007786F0 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		AB91E433149162F7007786F0 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
@@ -874,8 +880,11 @@
 				C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */,
 				AB3B89C916C03A26007C8596 /* Social.framework in Frameworks */,
 				ABD2871115004CE800BDC79C /* libFlurryAnalytics.a in Frameworks */,
-				AB3B8D4716C047DF007C8596 /* FacebookSDK.framework in Frameworks */,
+				AB8121E316C04F5B005FBE96 /* libsqlite3.0.dylib in Frameworks */,
+				AB8121DE16C04E92005FBE96 /* AdSupport.framework in Frameworks */,
 				AB3B90BF16C04930007C8596 /* Socialize.framework in Frameworks */,
+				AB8121E116C04EA2005FBE96 /* Accounts.framework in Frameworks */,
+				AB3B8D4716C047DF007C8596 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -995,6 +1004,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB8121E016C04EA2005FBE96 /* Accounts.framework */,
+				AB8121DD16C04E92005FBE96 /* AdSupport.framework */,
 				C14F5C32145BD54800087F74 /* CFNetwork.framework */,
 				C18E106D1466591A0028095B /* CoreData.framework */,
 				288765070DF74369002DB57D /* CoreGraphics.framework */,
@@ -1003,14 +1014,15 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				ABAAA9F9161F79D600504A9E /* MapKit.framework */,
 				ABD318EB148D8732000A8DC7 /* MessageUI.framework */,
-				ABD318E9148D8703000A8DC7 /* Security.framework */,
 				ABD31902148EC41B000A8DC7 /* QuartzCore.framework */,
-				AB41CDF9144E3B660090CC09 /* SystemConfiguration.framework */,
+				ABD318E9148D8703000A8DC7 /* Security.framework */,
 				AB3B89C816C03A26007C8596 /* Social.framework */,
 				AB3B8F0416C0492F007C8596 /* Socialize.embeddedframework */,
+				AB41CDF9144E3B660090CC09 /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */,
 				ABD2871015004CE800BDC79C /* libFlurryAnalytics.a */,
+				AB8121E216C04F5B005FBE96 /* libsqlite3.0.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
