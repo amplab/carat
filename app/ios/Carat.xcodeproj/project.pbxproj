@@ -22,7 +22,7 @@
 		AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB244AF714E10D660055FCD6 /* ActionItemCell.xib */; };
 		AB34BBE9151A3E85006C4C76 /* ConsentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB34BBE8151A3E85006C4C76 /* ConsentView.xib */; };
 		AB34BBEE151A3EB8006C4C76 /* ConsentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB34BBEC151A3EB8006C4C76 /* ConsentViewController.m */; };
-		AB3B89C916C03A26007C8596 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B89C816C03A26007C8596 /* Social.framework */; };
+		AB3B89C916C03A26007C8596 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B89C816C03A26007C8596 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AB3B8D4716C047DF007C8596 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B8D4616C047DF007C8596 /* FacebookSDK.framework */; };
 		AB3B8FE316C0492F007C8596 /* _SZCommentsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB3B8F0616C0492F007C8596 /* _SZCommentsListViewController.xib */; };
 		AB3B8FE416C0492F007C8596 /* _SZComposeCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB3B8F0716C0492F007C8596 /* _SZComposeCommentViewController.xib */; };
