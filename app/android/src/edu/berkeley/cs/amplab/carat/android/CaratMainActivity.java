@@ -459,17 +459,7 @@ public class CaratMainActivity extends TabActivity {
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
             Context a = getApplicationContext();
             SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
-            
-            // Which uuid scheme is the user using?
-            boolean newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
-                    false);
-            boolean registered = !p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
-            String uuId = "";
-            if (registered && !newuuid){
-                uuId = SamplingLibrary.getAndroidId(a);
-            }else{
-                uuId = SamplingLibrary.getUuid(a);
-            }
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
             String os = SamplingLibrary.getOsVersion();
             String model = SamplingLibrary.getModel();
             

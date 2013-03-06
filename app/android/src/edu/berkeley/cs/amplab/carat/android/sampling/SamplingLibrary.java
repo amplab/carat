@@ -154,6 +154,19 @@ public final class SamplingLibrary {
     }
     
     public static String getUuid(Context c) {
+    	return getTimeBasedUuid(c, false);
+    }
+    
+    public static String getTimeBasedUuid(Context c) {
+    	return getTimeBasedUuid(c, true);
+    }
+    
+    /**
+     * Generate a time-based, random identifier.
+     * @param c the app's Context
+     * @return a time-based, random identifier.
+     */
+    public static String getTimeBasedUuid(Context c, boolean includeTimestamp) {
         String aID = getAndroidId(c);
         String wifiMac = getWifiMacAddress(c);
         String devid = getDeviceId(c);
@@ -174,6 +187,10 @@ public final class SamplingLibrary {
                 concat += " ";
         } else
             concat += "000000000000000";
+        if (includeTimestamp){
+        	long timestamp = System.currentTimeMillis();
+        	concat += timestamp;
+        }
 
         //Log.d(STAG, "AID="+aID+" wifiMac="+wifiMac+" devid="+devid+" rawUUID=" +concat );
         try {
@@ -1511,11 +1528,8 @@ public final class SamplingLibrary {
         // Construct sample and return it in the end
         Sample mySample = new Sample();
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean newUuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID, false);
-        if (newUuid)
-            mySample.setUuId(SamplingLibrary.getUuid(context));
-        else
-            mySample.setUuId(SamplingLibrary.getAndroidId(context));
+        String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+        mySample.setUuId(uuId);
         mySample.setTriggeredBy(action);
         // required always
         long now = System.currentTimeMillis();

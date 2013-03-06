@@ -41,6 +41,7 @@ public class CommunicationManager {
     private boolean registered = false;
     private boolean register = true;
     private boolean newuuid = false;
+    private boolean timeBasedUuid = false;
     private SharedPreferences p = null;
 
     public CommunicationManager(CaratApplication a) {
@@ -53,7 +54,8 @@ public class CommunicationManager {
          * 3. registered, with stored uuid, but uuid, model or os are different -> register
          * 4. registered, all fields equal to stored -> do not register
          */
-        
+        timeBasedUuid = p.getBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID,
+                false);
         newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
                 false);
         registered = !p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
@@ -68,12 +70,7 @@ public class CommunicationManager {
                 String storedModel = p.getString(
                         CaratApplication.REGISTERED_MODEL, null);
 
-                String uuid = null;
-                if (!newuuid) {
-                    uuid = SamplingLibrary.getAndroidId(a);
-                } else {
-                    uuid = SamplingLibrary.getUuid(a);
-                }
+                String uuid = storedUuid;
 
                 String os = SamplingLibrary.getOsVersion();
                 String model = SamplingLibrary.getModel();
@@ -84,8 +81,7 @@ public class CommunicationManager {
                         || storedModel == null
                         || storedOs == null
                         || uuid == null
-                        || !(uuid.equals(storedUuid) && storedOs.equals(os) && storedModel
-                                .equals(model))) {
+                        || !(storedOs.equals(os) && storedModel.equals(model))) {
                     // need to re-reg
                     register = true;
                 } else
@@ -169,10 +165,15 @@ public class CommunicationManager {
         if (register) {
             String uuId = null;
             // Only use new uuid if reg'd after this version for the first time.
-            if (registered && !newuuid){
+            if (registered && (!newuuid && !timeBasedUuid)){
                 uuId = SamplingLibrary.getAndroidId(a);
-            }else{
+            } else if (registered && !timeBasedUuid){
+            	// "new" uuid
                 uuId = SamplingLibrary.getUuid(a);
+            } else{
+            	// Time-based ID scheme
+            	uuId = SamplingLibrary.getTimeBasedUuid(a);
+            	Log.d("CommunicationManager", "Generated a new time-based UUID: "+uuId);
             }
             String os = SamplingLibrary.getOsVersion();
             String model = SamplingLibrary.getModel();
@@ -186,9 +187,9 @@ public class CommunicationManager {
                                 false).commit();
                 if (!registered){
                 // Use new uuid after this registration.
-                p.edit().putBoolean(CaratApplication.PREFERENCE_NEW_UUID, true)
+                p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true)
                         .commit();
-                    newuuid = true;
+                    timeBasedUuid = true;
                 }
                 register = false;
                 registered = true;
@@ -227,12 +228,7 @@ public class CommunicationManager {
             }
         }
 
-        // Only use new uuid if reg'd after this version for the first time.
-        newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID,
-                false);
-        String uuId = SamplingLibrary.getAndroidId(a);
-        if (newuuid)
-            uuId = SamplingLibrary.getUuid(a);
+        String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
         String model = SamplingLibrary.getModel();
         String OS = SamplingLibrary.getOsVersion();
 

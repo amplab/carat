@@ -45,6 +45,7 @@ public class CaratApplication extends Application {
     public static final String REGISTERED_MODEL = "carat.registered.model";
     public static final String PREFERENCE_WIFI_ONLY = "carat.use.wifi";
     public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
+    public static final String PREFERENCE_TIME_BASED_UUID = "carat.uuid.timebased";
 
     // Check for and send new samples at most every 15 minutes, but only when
     // the user wakes up/starts Carat
