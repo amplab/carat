@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -67,6 +69,8 @@ import android.os.SystemClock;
  * 
  */
 public final class SamplingLibrary {
+	private static final boolean collectSignatures = false;
+	
     private static final int READ_BUFFER_SIZE = 2 * 1024;
     // Network status constants
     public static String NETWORKSTATUS_DISCONNECTED = "disconnected";
@@ -652,9 +656,12 @@ public final class SamplingLibrary {
                 return null;
                     
             try{
-                packagelist = pm
-                    .getInstalledPackages(0);
-            }catch (Throwable th){
+				if (collectSignatures)
+					packagelist = pm
+							.getInstalledPackages(PackageManager.GET_SIGNATURES);
+				else
+					packagelist = pm.getInstalledPackages(0);
+			} catch (Throwable th) {
                 // Forget about it...
             }
             if (packagelist == null)
@@ -719,7 +726,15 @@ public final class SamplingLibrary {
                 isSystemApp = isSystemApp
                         || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
-            }
+                /*if (collectSignatures && pak.signatures != null && pak.signatures.length > 0){
+					Signature[] sigs = pak.signatures;
+					List<String> sigList = new LinkedList<String>();
+					for (Signature s : sigs) {
+						sigList.add(s.toString());
+					}
+					item.setSignatureList(sigList);
+				}*/
+			}
             item.setImportance(pi.getImportance());
             item.setPId(pi.getPId());
             item.setPName(pi.getPName());
