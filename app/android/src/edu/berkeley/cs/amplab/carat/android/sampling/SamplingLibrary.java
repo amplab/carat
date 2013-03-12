@@ -14,9 +14,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.flurry.android.FlurryAgent;
 
@@ -430,6 +432,7 @@ public final class SamplingLibrary {
                     + Long.parseLong(toks[4]) + Long.parseLong(toks[6])
                     + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
 
+            reader.close();
             return new long[] { idle1, cpu1 };
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -743,14 +746,19 @@ public final class SamplingLibrary {
                 isSystemApp = isSystemApp
                         || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
-                /*if (collectSignatures && pak.signatures != null && pak.signatures.length > 0){
+                if (collectSignatures && pak.signatures != null && pak.signatures.length > 0){
 					Signature[] sigs = pak.signatures;
 					List<String> sigList = new LinkedList<String>();
+					Set<Integer> sigLengths = new HashSet<Integer>();
 					for (Signature s : sigs) {
-						sigList.add(s.toString());
+						sigList.add(s.toCharsString());
+						sigLengths.add(s.toCharsString().length());
 					}
-					item.setSignatureList(sigList);
-				}*/
+					for (String sig: sigList)
+						Log.d("Sigs", sig);
+					Log.d("Sigs", "lengths = "+sigLengths.toString());
+					//item.setAppSignatures(sigList);
+				}
 			}
             item.setImportance(pi.getImportance());
             item.setPId(pi.getPId());
