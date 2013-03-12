@@ -71,7 +71,8 @@ import android.os.SystemClock;
  * 
  */
 public final class SamplingLibrary {
-	private static final boolean collectSignatures = false;
+	private static final boolean collectSignatures = true;
+	private static final String SIG_SENT = "sig-sent:";
 	
     private static final int READ_BUFFER_SIZE = 2 * 1024;
     // Network status constants
@@ -721,6 +722,8 @@ public final class SamplingLibrary {
      */
     public static List<ProcessInfo> getRunningProcessInfoForSample(
             Context context) {
+    	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+    	
         // Reset list for each sample
         runningAppInfo = null;
         List<ProcessInfo> list = getRunningAppInfo(context);
@@ -731,10 +734,16 @@ public final class SamplingLibrary {
         int[] procMem = new int[list.size()];
 
         for (ProcessInfo pi : list) {
+        	String pname = pi.getPName();
             ProcessInfo item = new ProcessInfo();
-            PackageInfo pak = getPackageInfo(context, pi.getPName());
+            PackageInfo pak = getPackageInfo(context, pname);
             if (pak != null) {
+            	String ver = pak.versionName;
+            	int vc = pak.versionCode;
+            	item.setVersionName(ver);
+            	item.setVersionCode(vc);
                 ApplicationInfo info = pak.applicationInfo;
+                
                 // Human readable label (if any)
                 String label = pm.getApplicationLabel(info).toString();
                 if (label != null && label.length() > 0)
@@ -746,38 +755,30 @@ public final class SamplingLibrary {
                 isSystemApp = isSystemApp
                         || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
-                if (collectSignatures && pak.signatures != null && pak.signatures.length > 0){
+                boolean sigSent = p.getBoolean(SIG_SENT+pname, false);
+                if (collectSignatures && !sigSent && pak.signatures != null && pak.signatures.length > 0){
 					Signature[] sigs = pak.signatures;
 					List<String> sigList = new LinkedList<String>();
-					Set<Integer> sigLengths = new HashSet<Integer>();
 					for (Signature s : sigs) {
-						sigList.add(s.toCharsString());
-						sigLengths.add(s.toCharsString().length());
-					}
-					
-					for (String sig: sigList){
-						Log.d(pak.packageName, sig);
 						MessageDigest md;
 						try {
 							md = MessageDigest.getInstance("SHA-1");
-							md.update(sig.getBytes());
+							md.update(s.toByteArray());
 							byte[] dig = md.digest();
-							Log.d("Digest length", ""+dig.length);
-							Log.d("Digest", convertToHex(dig));
+							sigList.add(convertToHex(dig));
 						} catch (NoSuchAlgorithmException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+							// Do nothing
 						}
-			            
-			            
-					}					
-					Log.d("Sigs", "lengths = "+sigLengths.toString());
-					//item.setAppSignatures(sigList);
+					}
+					item.setAppSignatures(sigList);
+					p.edit()
+                    .putBoolean(SIG_SENT+pname,
+                            true).commit();
 				}
 			}
             item.setImportance(pi.getImportance());
             item.setPId(pi.getPId());
-            item.setPName(pi.getPName());
+            item.setPName(pname);
 
             procMem[list.indexOf(pi)] = pi.getPId();
             // FIXME: More fields will need to be added here, but ProcessInfo
