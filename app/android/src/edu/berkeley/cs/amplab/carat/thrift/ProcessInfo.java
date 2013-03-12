@@ -33,7 +33,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
   private static final org.apache.thrift.protocol.TField APPLICATION_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("applicationLabel", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField IS_SYSTEM_APP_FIELD_DESC = new org.apache.thrift.protocol.TField("isSystemApp", org.apache.thrift.protocol.TType.BOOL, (short)4);
   private static final org.apache.thrift.protocol.TField IMPORTANCE_FIELD_DESC = new org.apache.thrift.protocol.TField("importance", org.apache.thrift.protocol.TType.STRING, (short)5);
-  private static final org.apache.thrift.protocol.TField APP_SIGNATURES_FIELD_DESC = new org.apache.thrift.protocol.TField("appSignatures", org.apache.thrift.protocol.TType.LIST, (short)6);
+  private static final org.apache.thrift.protocol.TField VERSION_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("versionName", org.apache.thrift.protocol.TType.STRING, (short)6);
+  private static final org.apache.thrift.protocol.TField VERSION_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("versionCode", org.apache.thrift.protocol.TType.I32, (short)7);
+  private static final org.apache.thrift.protocol.TField APP_SIGNATURES_FIELD_DESC = new org.apache.thrift.protocol.TField("appSignatures", org.apache.thrift.protocol.TType.LIST, (short)8);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -46,6 +48,8 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
   public String applicationLabel; // optional
   public boolean isSystemApp; // optional
   public String importance; // optional
+  public String versionName; // optional
+  public int versionCode; // optional
   public List<String> appSignatures; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -55,7 +59,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     APPLICATION_LABEL((short)3, "applicationLabel"),
     IS_SYSTEM_APP((short)4, "isSystemApp"),
     IMPORTANCE((short)5, "importance"),
-    APP_SIGNATURES((short)6, "appSignatures");
+    VERSION_NAME((short)6, "versionName"),
+    VERSION_CODE((short)7, "versionCode"),
+    APP_SIGNATURES((short)8, "appSignatures");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -80,7 +86,11 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
           return IS_SYSTEM_APP;
         case 5: // IMPORTANCE
           return IMPORTANCE;
-        case 6: // APP_SIGNATURES
+        case 6: // VERSION_NAME
+          return VERSION_NAME;
+        case 7: // VERSION_CODE
+          return VERSION_CODE;
+        case 8: // APP_SIGNATURES
           return APP_SIGNATURES;
         default:
           return null;
@@ -124,8 +134,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
   // isset id assignments
   private static final int __PID_ISSET_ID = 0;
   private static final int __ISSYSTEMAPP_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
-  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME,_Fields.APPLICATION_LABEL,_Fields.IS_SYSTEM_APP,_Fields.IMPORTANCE,_Fields.APP_SIGNATURES};
+  private static final int __VERSIONCODE_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
+  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME,_Fields.APPLICATION_LABEL,_Fields.IS_SYSTEM_APP,_Fields.IMPORTANCE,_Fields.VERSION_NAME,_Fields.VERSION_CODE,_Fields.APP_SIGNATURES};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -139,6 +150,10 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.IMPORTANCE, new org.apache.thrift.meta_data.FieldMetaData("importance", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.VERSION_NAME, new org.apache.thrift.meta_data.FieldMetaData("versionName", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.VERSION_CODE, new org.apache.thrift.meta_data.FieldMetaData("versionCode", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.APP_SIGNATURES, new org.apache.thrift.meta_data.FieldMetaData("appSignatures", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
@@ -166,6 +181,10 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     if (other.isSetImportance()) {
       this.importance = other.importance;
     }
+    if (other.isSetVersionName()) {
+      this.versionName = other.versionName;
+    }
+    this.versionCode = other.versionCode;
     if (other.isSetAppSignatures()) {
       List<String> __this__appSignatures = new ArrayList<String>();
       for (String other_element : other.appSignatures) {
@@ -188,6 +207,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     setIsSystemAppIsSet(false);
     this.isSystemApp = false;
     this.importance = null;
+    this.versionName = null;
+    setVersionCodeIsSet(false);
+    this.versionCode = 0;
     this.appSignatures = null;
   }
 
@@ -309,6 +331,53 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     }
   }
 
+  public String getVersionName() {
+    return this.versionName;
+  }
+
+  public ProcessInfo setVersionName(String versionName) {
+    this.versionName = versionName;
+    return this;
+  }
+
+  public void unsetVersionName() {
+    this.versionName = null;
+  }
+
+  /** Returns true if field versionName is set (has been assigned a value) and false otherwise */
+  public boolean isSetVersionName() {
+    return this.versionName != null;
+  }
+
+  public void setVersionNameIsSet(boolean value) {
+    if (!value) {
+      this.versionName = null;
+    }
+  }
+
+  public int getVersionCode() {
+    return this.versionCode;
+  }
+
+  public ProcessInfo setVersionCode(int versionCode) {
+    this.versionCode = versionCode;
+    setVersionCodeIsSet(true);
+    return this;
+  }
+
+  public void unsetVersionCode() {
+    __isset_bit_vector.clear(__VERSIONCODE_ISSET_ID);
+  }
+
+  /** Returns true if field versionCode is set (has been assigned a value) and false otherwise */
+  public boolean isSetVersionCode() {
+    return __isset_bit_vector.get(__VERSIONCODE_ISSET_ID);
+  }
+
+  public void setVersionCodeIsSet(boolean value) {
+    __isset_bit_vector.set(__VERSIONCODE_ISSET_ID, value);
+  }
+
   public int getAppSignaturesSize() {
     return (this.appSignatures == null) ? 0 : this.appSignatures.size();
   }
@@ -390,6 +459,22 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       }
       break;
 
+    case VERSION_NAME:
+      if (value == null) {
+        unsetVersionName();
+      } else {
+        setVersionName((String)value);
+      }
+      break;
+
+    case VERSION_CODE:
+      if (value == null) {
+        unsetVersionCode();
+      } else {
+        setVersionCode((Integer)value);
+      }
+      break;
+
     case APP_SIGNATURES:
       if (value == null) {
         unsetAppSignatures();
@@ -418,6 +503,12 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     case IMPORTANCE:
       return getImportance();
 
+    case VERSION_NAME:
+      return getVersionName();
+
+    case VERSION_CODE:
+      return Integer.valueOf(getVersionCode());
+
     case APP_SIGNATURES:
       return getAppSignatures();
 
@@ -442,6 +533,10 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       return isSetIsSystemApp();
     case IMPORTANCE:
       return isSetImportance();
+    case VERSION_NAME:
+      return isSetVersionName();
+    case VERSION_CODE:
+      return isSetVersionCode();
     case APP_SIGNATURES:
       return isSetAppSignatures();
     }
@@ -503,6 +598,24 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (!(this_present_importance && that_present_importance))
         return false;
       if (!this.importance.equals(that.importance))
+        return false;
+    }
+
+    boolean this_present_versionName = true && this.isSetVersionName();
+    boolean that_present_versionName = true && that.isSetVersionName();
+    if (this_present_versionName || that_present_versionName) {
+      if (!(this_present_versionName && that_present_versionName))
+        return false;
+      if (!this.versionName.equals(that.versionName))
+        return false;
+    }
+
+    boolean this_present_versionCode = true && this.isSetVersionCode();
+    boolean that_present_versionCode = true && that.isSetVersionCode();
+    if (this_present_versionCode || that_present_versionCode) {
+      if (!(this_present_versionCode && that_present_versionCode))
+        return false;
+      if (this.versionCode != that.versionCode)
         return false;
     }
 
@@ -581,6 +694,26 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetVersionName()).compareTo(typedOther.isSetVersionName());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetVersionName()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.versionName, typedOther.versionName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetVersionCode()).compareTo(typedOther.isSetVersionCode());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetVersionCode()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.versionCode, typedOther.versionCode);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     lastComparison = Boolean.valueOf(isSetAppSignatures()).compareTo(typedOther.isSetAppSignatures());
     if (lastComparison != 0) {
       return lastComparison;
@@ -650,6 +783,22 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       } else {
         sb.append(this.importance);
       }
+      first = false;
+    }
+    if (isSetVersionName()) {
+      if (!first) sb.append(", ");
+      sb.append("versionName:");
+      if (this.versionName == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.versionName);
+      }
+      first = false;
+    }
+    if (isSetVersionCode()) {
+      if (!first) sb.append(", ");
+      sb.append("versionCode:");
+      sb.append(this.versionCode);
       first = false;
     }
     if (isSetAppSignatures()) {
@@ -746,7 +895,23 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 6: // APP_SIGNATURES
+          case 6: // VERSION_NAME
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.versionName = iprot.readString();
+              struct.setVersionNameIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 7: // VERSION_CODE
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.versionCode = iprot.readI32();
+              struct.setVersionCodeIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 8: // APP_SIGNATURES
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
@@ -810,6 +975,18 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
           oprot.writeFieldEnd();
         }
       }
+      if (struct.versionName != null) {
+        if (struct.isSetVersionName()) {
+          oprot.writeFieldBegin(VERSION_NAME_FIELD_DESC);
+          oprot.writeString(struct.versionName);
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.isSetVersionCode()) {
+        oprot.writeFieldBegin(VERSION_CODE_FIELD_DESC);
+        oprot.writeI32(struct.versionCode);
+        oprot.writeFieldEnd();
+      }
       if (struct.appSignatures != null) {
         if (struct.isSetAppSignatures()) {
           oprot.writeFieldBegin(APP_SIGNATURES_FIELD_DESC);
@@ -857,10 +1034,16 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (struct.isSetImportance()) {
         optionals.set(4);
       }
-      if (struct.isSetAppSignatures()) {
+      if (struct.isSetVersionName()) {
         optionals.set(5);
       }
-      oprot.writeBitSet(optionals, 6);
+      if (struct.isSetVersionCode()) {
+        optionals.set(6);
+      }
+      if (struct.isSetAppSignatures()) {
+        optionals.set(7);
+      }
+      oprot.writeBitSet(optionals, 8);
       if (struct.isSetPId()) {
         oprot.writeI32(struct.pId);
       }
@@ -876,6 +1059,12 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (struct.isSetImportance()) {
         oprot.writeString(struct.importance);
       }
+      if (struct.isSetVersionName()) {
+        oprot.writeString(struct.versionName);
+      }
+      if (struct.isSetVersionCode()) {
+        oprot.writeI32(struct.versionCode);
+      }
       if (struct.isSetAppSignatures()) {
         {
           oprot.writeI32(struct.appSignatures.size());
@@ -890,7 +1079,7 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, ProcessInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(6);
+      BitSet incoming = iprot.readBitSet(8);
       if (incoming.get(0)) {
         struct.pId = iprot.readI32();
         struct.setPIdIsSet(true);
@@ -912,6 +1101,14 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         struct.setImportanceIsSet(true);
       }
       if (incoming.get(5)) {
+        struct.versionName = iprot.readString();
+        struct.setVersionNameIsSet(true);
+      }
+      if (incoming.get(6)) {
+        struct.versionCode = iprot.readI32();
+        struct.setVersionCodeIsSet(true);
+      }
+      if (incoming.get(7)) {
         {
           org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
           struct.appSignatures = new ArrayList<String>(_list5.size);
