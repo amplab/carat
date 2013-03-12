@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -11,6 +12,7 @@ import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -144,12 +146,18 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 						getApplicationContext(), fullObject.getAppName());
 				Drawable icon = CaratApplication.iconForApp(
 						getApplicationContext(), fullObject.getAppName());
-				((TextView) detailPage.findViewById(R.id.name)).setText(label);
+				PackageInfo pak = SamplingLibrary.getPackageInfo(
+						getApplicationContext(), fullObject.getAppName());
+				String ver = "";
+				if (pak != null)
+					ver = pak.versionName;
+				final String s = label + " " + ver;
+				((TextView) detailPage.findViewById(R.id.name)).setText(s);
 				((ImageView) detailPage.findViewById(R.id.appIcon))
 						.setImageDrawable(icon);
 				((TextView) detailPage.findViewById(R.id.benefit))
 						.setText(fullObject.textBenefit());
-				w.setHogsBugs(fullObject, label, isBugsActivity, target);
+				w.setHogsBugs(fullObject, s, isBugsActivity, target);
 				//detailPage.postInvalidate();
 				switchView(target);
 			}

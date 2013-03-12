@@ -6,6 +6,7 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,8 @@ public class HogsBugsAdapter extends BaseAdapter {
             }
         allBugsOrHogs = new SimpleHogBug[items];
         int i = 0;
-        if (results != null && results.length > 0 && allBugsOrHogs.length > 0 && i < allBugsOrHogs.length)
+        if (results != null && results.length > 0 && allBugsOrHogs.length > 0
+                && i < allBugsOrHogs.length)
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
@@ -49,7 +51,8 @@ public class HogsBugsAdapter extends BaseAdapter {
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
                 // Apparently the number of items changes from "items" above?
-                if (!SamplingLibrary.isHidden(c, appName) && i < allBugsOrHogs.length) {
+                if (!SamplingLibrary.isHidden(c, appName)
+                        && i < allBugsOrHogs.length) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }
@@ -85,18 +88,27 @@ public class HogsBugsAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-		if (allBugsOrHogs == null || position < 0 || position >= allBugsOrHogs.length)
-			return convertView;
-        
+        if (allBugsOrHogs == null || position < 0
+                || position >= allBugsOrHogs.length)
+            return convertView;
+
         SimpleHogBug item = allBugsOrHogs[position];
         if (item == null)
             return convertView;
 
-        Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(), item.getAppName());
-        String label = CaratApplication.labelForApp(a.getApplicationContext(), item.getAppName());
+        Drawable icon = CaratApplication.iconForApp(a.getApplicationContext(),
+                item.getAppName());
+        String label = CaratApplication.labelForApp(a.getApplicationContext(),
+                item.getAppName());
         if (label == null)
             label = a.getString(R.string.unknown);
-        holder.txtName.setText(label);
+
+        PackageInfo pak = SamplingLibrary.getPackageInfo(
+                a.getApplicationContext(), item.getAppName());
+        String ver = "";
+        if (pak != null)
+            ver = pak.versionName;
+        holder.txtName.setText(label + " " + ver);
         holder.appIcon.setImageDrawable(icon);
         holder.textBenefit.setText(item.textBenefit());
         // holder.moreInfo...

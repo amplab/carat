@@ -76,7 +76,6 @@ public class CaratMainActivity extends TabActivity {
         fullVersion = getString(R.string.app_name) + " "
                 + getString(R.string.version_name);
 
-        setTitleNormal();
 
         Resources res = getResources(); // Resource object to get Drawables
         tabHost = getTabHost(); // The activity TabHost
@@ -164,14 +163,19 @@ public class CaratMainActivity extends TabActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }*/
+        
+        setTitleNormal();
     }
 
     public void setTitleNormal() {
-        long s = CaratApplication.s.getSamplesReported();
+    	if (CaratApplication.s != null){
+    	long s = CaratApplication.s.getSamplesReported();
         if (s > 0)
             this.setTitle(fullVersion + " - " + s + " "+getString(R.string.samplesreported));
         else
             this.setTitle(fullVersion);
+    	}
+    	   this.setTitle(fullVersion);
     }
 
     public void setTitleUpdating(String what) {

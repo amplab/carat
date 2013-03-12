@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -99,45 +100,48 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     final String label = CaratApplication.labelForApp(c, raw);
 
                     icon.setImageDrawable(CaratApplication.iconForApp(c, raw));
-                    
+
                     Type type = fullObject.getType();
                     if (type == Type.BUG || type == Type.HOG) {
                         txtName.setText(label);
-                        killButton.setText(getString(R.string.kill) +" "+ label);
+                        PackageInfo pak = SamplingLibrary
+                                .getPackageInfo(c, raw);
+                        String ver = "";
+                        if (pak != null)
+                            ver = pak.versionName;
+                        final String s = label + " " + ver;
+                        killButton.setText(getString(R.string.kill) + " " + s);
                         killButton.setEnabled(true);
                         killButton.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View arg0) {
                                 killButton.setEnabled(false);
-                                killButton.setText(label + " " +getString(R.string.killed));
+                                killButton.setText(s + " "
+                                        + getString(R.string.killed));
                                 SamplingLibrary.killApp(c, raw, label);
-                                //onBackPressed();
+                                // onBackPressed();
                             }
                         });
                     } else { // Other action
                         txtName.setText(label);
                         killButton.setText(label);
                     }
-                    txtType.setText(CaratApplication.translatedPriority(fullObject.getAppPriority()));
+                    txtType.setText(CaratApplication
+                            .translatedPriority(fullObject.getAppPriority()));
 
-                    /*if (raw.equals("Disable bluetooth")) {
-                        double benefitOther = PowerProfileHelper.
-                                bluetoothBenefit(c);
-                        hours = (int) (benefitOther);
-                        min = (int) (benefitOther * 60);
-                        min -= hours * 60;
-                    } else if (raw.equals("Disable Wifi")) {
-                        double benefitOther = PowerProfileHelper.wifiBenefit(c);
-                        hours = (int) (benefitOther);
-                        min = (int) (benefitOther * 60);
-                        min -= hours * 60;
-                    } else if (raw.equals("Dim the Screen")) {
-                        double benefitOther = PowerProfileHelper.
-                                screenBrightnessBenefit(c);
-                        hours = (int) (benefitOther);
-                        min = (int) (benefitOther * 60);
-                        min -= hours * 60;
-                    }*/
+                    /*
+                     * if (raw.equals("Disable bluetooth")) { double
+                     * benefitOther = PowerProfileHelper. bluetoothBenefit(c);
+                     * hours = (int) (benefitOther); min = (int) (benefitOther *
+                     * 60); min -= hours * 60; } else if
+                     * (raw.equals("Disable Wifi")) { double benefitOther =
+                     * PowerProfileHelper.wifiBenefit(c); hours = (int)
+                     * (benefitOther); min = (int) (benefitOther * 60); min -=
+                     * hours * 60; } else if (raw.equals("Dim the Screen")) {
+                     * double benefitOther = PowerProfileHelper.
+                     * screenBrightnessBenefit(c); hours = (int) (benefitOther);
+                     * min = (int) (benefitOther * 60); min -= hours * 60; }
+                     */
 
                     txtBenefit.setText(fullObject.textBenefit());
 
@@ -148,39 +152,42 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
 
         initUpgradeOsView();
 
-        
         Object o = getLastNonConfigurationInstance();
         if (o != null) {
             CaratSuggestionsActivity previous = (CaratSuggestionsActivity) o;
             viewIndex = previous.viewIndex;
-            if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)){
+            if (previous.killView != null
+                    && previous.killView == previous.vf.getChildAt(viewIndex)) {
                 restoreKillView(previous.killView);
             }
         }
-        
+
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
     }
     
-    private void restoreKillView(View previous){
-            ImageView icon = (ImageView) killView
-                    .findViewById(R.id.suggestion_app_icon);
-            
-            icon.setImageDrawable(((ImageView) previous.findViewById(R.id.suggestion_app_icon)).getDrawable());
-            TextView txtName = (TextView) killView
-                    .findViewById(R.id.actionName);
-            txtName.setText(((TextView) previous.findViewById(R.id.actionName)).getText());
-            TextView txtType = (TextView) killView
-                    .findViewById(R.id.suggestion_type);
-            txtType.setText(((TextView) previous.findViewById(R.id.suggestion_type)).getText());
-            TextView txtBenefit = (TextView) killView
-                    .findViewById(R.id.expectedBenefit);
-            txtBenefit.setText(((TextView) previous.findViewById(R.id.expectedBenefit)).getText());
-            Button killButton = (Button) killView
-                    .findViewById(R.id.killButton);
-            killButton.setText(((Button) previous.findViewById(R.id.killButton)).getText());
+    private void restoreKillView(View previous) {
+        ImageView icon = (ImageView) killView
+                .findViewById(R.id.suggestion_app_icon);
+
+        icon.setImageDrawable(((ImageView) previous
+                .findViewById(R.id.suggestion_app_icon)).getDrawable());
+        TextView txtName = (TextView) killView.findViewById(R.id.actionName);
+        txtName.setText(((TextView) previous.findViewById(R.id.actionName))
+                .getText());
+        TextView txtType = (TextView) killView
+                .findViewById(R.id.suggestion_type);
+        txtType.setText(((TextView) previous.findViewById(R.id.suggestion_type))
+                .getText());
+        TextView txtBenefit = (TextView) killView
+                .findViewById(R.id.expectedBenefit);
+        txtBenefit.setText(((TextView) previous
+                .findViewById(R.id.expectedBenefit)).getText());
+        Button killButton = (Button) killView.findViewById(R.id.killButton);
+        killButton.setText(((Button) previous.findViewById(R.id.killButton))
+                .getText());
     }
 
     private void initKillView() {
