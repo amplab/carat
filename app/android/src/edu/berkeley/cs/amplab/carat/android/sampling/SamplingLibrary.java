@@ -754,8 +754,23 @@ public final class SamplingLibrary {
 						sigList.add(s.toCharsString());
 						sigLengths.add(s.toCharsString().length());
 					}
-					for (String sig: sigList)
-						Log.d("Sigs", sig);
+					
+					for (String sig: sigList){
+						Log.d(pak.packageName, sig);
+						MessageDigest md;
+						try {
+							md = MessageDigest.getInstance("SHA-1");
+							md.update(sig.getBytes());
+							byte[] dig = md.digest();
+							Log.d("Digest length", ""+dig.length);
+							Log.d("Digest", convertToHex(dig));
+						} catch (NoSuchAlgorithmException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			            
+			            
+					}					
 					Log.d("Sigs", "lengths = "+sigLengths.toString());
 					//item.setAppSignatures(sigList);
 				}
@@ -1527,6 +1542,19 @@ public final class SamplingLibrary {
             }
         }
         return false;
+    }
+    
+    private static String convertToHex(byte[] data) {
+        StringBuilder buf = new StringBuilder();
+        for (byte b : data) {
+            int halfbyte = (b >>> 4) & 0x0F;
+            int two_halfs = 0;
+            do {
+                buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte) : (char) ('a' + (halfbyte - 10)));
+                halfbyte = b & 0x0F;
+            } while (two_halfs++ < 1);
+        }
+        return buf.toString();
     }
 
     public static Sample getSample(Context context, Intent intent,
