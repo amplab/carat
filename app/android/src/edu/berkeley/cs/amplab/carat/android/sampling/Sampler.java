@@ -1,7 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
@@ -171,8 +170,9 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
     public void onLocationChanged(Location location) {
         if (lastKnownLocation != null && location != null) {
             distance = lastKnownLocation.distanceTo(location);
+            /*
             HashMap<String, Double> m = new HashMap<String, Double>();
-            m.put("distanceTraveled", distance);
+            m.put("distanceTraveled", distance);*/
             //FlurryAgent.logEvent("LocationChanged", m);
             /*CharSequence text = "Location change with distance = " + distance;
             Toast.makeText(context, text, Toast.LENGTH_LONG).show();*/
