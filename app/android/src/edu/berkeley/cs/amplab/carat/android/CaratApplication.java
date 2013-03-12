@@ -548,7 +548,15 @@ public class CaratApplication extends Application {
                         main.getString(R.string.updated) + " " + h + "h " + min
                                 + "m " + main.getString(R.string.ago));
         }
-        setMyDeviceText(R.id.batterylife_value, blS);
+        
+		if (myDevice != null) {
+			SharedPreferences p = PreferenceManager
+					.getDefaultSharedPreferences(CaratApplication.myDevice
+							.getApplicationContext());
+			String cid = p.getString(REGISTERED_UUID, "0");
+			setMyDeviceText(R.id.carat_id_value, cid);
+			setMyDeviceText(R.id.batterylife_value, blS);
+		}
     }
 
     @Override

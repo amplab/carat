@@ -5,6 +5,7 @@
     <string name="version_name">0.82</string>
     <string name="jscore">Your J-Score:</string>
     <string name="batterylife">Active Battery Life:</string>
+    <string name="caratid">Carat ID:</string>
     <string name="osver">OS version:</string>
     <string name="dev">Device model:</string>
     <string name="apps">Running apps:</string>
@@ -13,6 +14,7 @@
     <string name="cpu">CPU Usage:</string>
     <string name="updated0">(Updated 0m 0s ago)</string>
     <string name="jsna">N/A</string>
+    <string name="fake_id">0</string>
     <string name="fake_os">4.0.3</string>
     <string name="fake_dev">Samsung Galaxy Nexus</string>
     <string name="viewprocess">View Process List</string>
