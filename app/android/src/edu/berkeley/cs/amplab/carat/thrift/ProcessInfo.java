@@ -33,6 +33,7 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
   private static final org.apache.thrift.protocol.TField APPLICATION_LABEL_FIELD_DESC = new org.apache.thrift.protocol.TField("applicationLabel", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField IS_SYSTEM_APP_FIELD_DESC = new org.apache.thrift.protocol.TField("isSystemApp", org.apache.thrift.protocol.TType.BOOL, (short)4);
   private static final org.apache.thrift.protocol.TField IMPORTANCE_FIELD_DESC = new org.apache.thrift.protocol.TField("importance", org.apache.thrift.protocol.TType.STRING, (short)5);
+  private static final org.apache.thrift.protocol.TField APP_SIGNATURES_FIELD_DESC = new org.apache.thrift.protocol.TField("appSignatures", org.apache.thrift.protocol.TType.LIST, (short)6);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -45,6 +46,7 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
   public String applicationLabel; // optional
   public boolean isSystemApp; // optional
   public String importance; // optional
+  public List<String> appSignatures; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -52,7 +54,8 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     P_NAME((short)2, "pName"),
     APPLICATION_LABEL((short)3, "applicationLabel"),
     IS_SYSTEM_APP((short)4, "isSystemApp"),
-    IMPORTANCE((short)5, "importance");
+    IMPORTANCE((short)5, "importance"),
+    APP_SIGNATURES((short)6, "appSignatures");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -77,6 +80,8 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
           return IS_SYSTEM_APP;
         case 5: // IMPORTANCE
           return IMPORTANCE;
+        case 6: // APP_SIGNATURES
+          return APP_SIGNATURES;
         default:
           return null;
       }
@@ -120,7 +125,7 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
   private static final int __PID_ISSET_ID = 0;
   private static final int __ISSYSTEMAPP_ISSET_ID = 1;
   private BitSet __isset_bit_vector = new BitSet(2);
-  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME,_Fields.APPLICATION_LABEL,_Fields.IS_SYSTEM_APP,_Fields.IMPORTANCE};
+  private _Fields optionals[] = {_Fields.P_ID,_Fields.P_NAME,_Fields.APPLICATION_LABEL,_Fields.IS_SYSTEM_APP,_Fields.IMPORTANCE,_Fields.APP_SIGNATURES};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -134,6 +139,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.IMPORTANCE, new org.apache.thrift.meta_data.FieldMetaData("importance", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.APP_SIGNATURES, new org.apache.thrift.meta_data.FieldMetaData("appSignatures", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(ProcessInfo.class, metaDataMap);
   }
@@ -158,6 +166,13 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     if (other.isSetImportance()) {
       this.importance = other.importance;
     }
+    if (other.isSetAppSignatures()) {
+      List<String> __this__appSignatures = new ArrayList<String>();
+      for (String other_element : other.appSignatures) {
+        __this__appSignatures.add(other_element);
+      }
+      this.appSignatures = __this__appSignatures;
+    }
   }
 
   public ProcessInfo deepCopy() {
@@ -173,6 +188,7 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     setIsSystemAppIsSet(false);
     this.isSystemApp = false;
     this.importance = null;
+    this.appSignatures = null;
   }
 
   public int getPId() {
@@ -293,6 +309,45 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
     }
   }
 
+  public int getAppSignaturesSize() {
+    return (this.appSignatures == null) ? 0 : this.appSignatures.size();
+  }
+
+  public java.util.Iterator<String> getAppSignaturesIterator() {
+    return (this.appSignatures == null) ? null : this.appSignatures.iterator();
+  }
+
+  public void addToAppSignatures(String elem) {
+    if (this.appSignatures == null) {
+      this.appSignatures = new ArrayList<String>();
+    }
+    this.appSignatures.add(elem);
+  }
+
+  public List<String> getAppSignatures() {
+    return this.appSignatures;
+  }
+
+  public ProcessInfo setAppSignatures(List<String> appSignatures) {
+    this.appSignatures = appSignatures;
+    return this;
+  }
+
+  public void unsetAppSignatures() {
+    this.appSignatures = null;
+  }
+
+  /** Returns true if field appSignatures is set (has been assigned a value) and false otherwise */
+  public boolean isSetAppSignatures() {
+    return this.appSignatures != null;
+  }
+
+  public void setAppSignaturesIsSet(boolean value) {
+    if (!value) {
+      this.appSignatures = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case P_ID:
@@ -335,6 +390,14 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       }
       break;
 
+    case APP_SIGNATURES:
+      if (value == null) {
+        unsetAppSignatures();
+      } else {
+        setAppSignatures((List<String>)value);
+      }
+      break;
+
     }
   }
 
@@ -354,6 +417,9 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
 
     case IMPORTANCE:
       return getImportance();
+
+    case APP_SIGNATURES:
+      return getAppSignatures();
 
     }
     throw new IllegalStateException();
@@ -376,6 +442,8 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       return isSetIsSystemApp();
     case IMPORTANCE:
       return isSetImportance();
+    case APP_SIGNATURES:
+      return isSetAppSignatures();
     }
     throw new IllegalStateException();
   }
@@ -435,6 +503,15 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (!(this_present_importance && that_present_importance))
         return false;
       if (!this.importance.equals(that.importance))
+        return false;
+    }
+
+    boolean this_present_appSignatures = true && this.isSetAppSignatures();
+    boolean that_present_appSignatures = true && that.isSetAppSignatures();
+    if (this_present_appSignatures || that_present_appSignatures) {
+      if (!(this_present_appSignatures && that_present_appSignatures))
+        return false;
+      if (!this.appSignatures.equals(that.appSignatures))
         return false;
     }
 
@@ -504,6 +581,16 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetAppSignatures()).compareTo(typedOther.isSetAppSignatures());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAppSignatures()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.appSignatures, typedOther.appSignatures);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -562,6 +649,16 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
         sb.append("null");
       } else {
         sb.append(this.importance);
+      }
+      first = false;
+    }
+    if (isSetAppSignatures()) {
+      if (!first) sb.append(", ");
+      sb.append("appSignatures:");
+      if (this.appSignatures == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.appSignatures);
       }
       first = false;
     }
@@ -649,6 +746,24 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 6: // APP_SIGNATURES
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                struct.appSignatures = new ArrayList<String>(_list0.size);
+                for (int _i1 = 0; _i1 < _list0.size; ++_i1)
+                {
+                  String _elem2; // required
+                  _elem2 = iprot.readString();
+                  struct.appSignatures.add(_elem2);
+                }
+                iprot.readListEnd();
+              }
+              struct.setAppSignaturesIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -695,6 +810,20 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
           oprot.writeFieldEnd();
         }
       }
+      if (struct.appSignatures != null) {
+        if (struct.isSetAppSignatures()) {
+          oprot.writeFieldBegin(APP_SIGNATURES_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.appSignatures.size()));
+            for (String _iter3 : struct.appSignatures)
+            {
+              oprot.writeString(_iter3);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -728,7 +857,10 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (struct.isSetImportance()) {
         optionals.set(4);
       }
-      oprot.writeBitSet(optionals, 5);
+      if (struct.isSetAppSignatures()) {
+        optionals.set(5);
+      }
+      oprot.writeBitSet(optionals, 6);
       if (struct.isSetPId()) {
         oprot.writeI32(struct.pId);
       }
@@ -744,12 +876,21 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (struct.isSetImportance()) {
         oprot.writeString(struct.importance);
       }
+      if (struct.isSetAppSignatures()) {
+        {
+          oprot.writeI32(struct.appSignatures.size());
+          for (String _iter4 : struct.appSignatures)
+          {
+            oprot.writeString(_iter4);
+          }
+        }
+      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, ProcessInfo struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(5);
+      BitSet incoming = iprot.readBitSet(6);
       if (incoming.get(0)) {
         struct.pId = iprot.readI32();
         struct.setPIdIsSet(true);
@@ -769,6 +910,19 @@ public class ProcessInfo implements org.apache.thrift.TBase<ProcessInfo, Process
       if (incoming.get(4)) {
         struct.importance = iprot.readString();
         struct.setImportanceIsSet(true);
+      }
+      if (incoming.get(5)) {
+        {
+          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+          struct.appSignatures = new ArrayList<String>(_list5.size);
+          for (int _i6 = 0; _i6 < _list5.size; ++_i6)
+          {
+            String _elem7; // required
+            _elem7 = iprot.readString();
+            struct.appSignatures.add(_elem7);
+          }
+        }
+        struct.setAppSignaturesIsSet(true);
       }
     }
   }
