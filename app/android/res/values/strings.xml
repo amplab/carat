@@ -24,7 +24,8 @@
     <string name="default_type">Foreground App</string>
 
     <string name="emptySuggestion">Nothing to report!</string>
-    <string name="checkback">Please check back later.</string>
+    <string name="checkback">It may take a week for Carat to generate reports.</string>
+    <!-- <string name="checkback2">You have no current issues.</string> -->
     <string name="feedback">Give feedback</string>
     <string name="share">Share …</string>
     <string name="sharewith">Share with:</string>

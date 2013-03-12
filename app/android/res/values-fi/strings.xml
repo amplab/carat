@@ -18,7 +18,8 @@
     <string name="appicon">Kuvake</string>
     <string name="default_type">Pääsovellus</string>
     <string name="emptySuggestion">Ei raportoitavaa!</string>
-    <string name="checkback">Tarkista uudelleen myöhemmin.</string>
+    <string name="checkback">Datan kerääminen voi kestää noin viikon.</string>
+    <!-- <string name="checkback2">Carat ei löytänyt ongelmia tällä kertaa.</string> -->
     <string name="feedback">Anna palautetta</string>
     <string name="share">Jaa …</string>
     <string name="sharewith">Jaa käyttäen:</string>
