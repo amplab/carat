@@ -119,6 +119,12 @@
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];
             break;
 
+        case ActionTypeCollectData:
+            DLog(@"Loading Data Collection info");
+            self.navigationItem.title = @"Data Collection Info";
+            [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"collectdata.html" relativeToURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]]]];
+            break;
+            
         default:
             DLog(@"Unrecognized Action Type!");
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"html"] isDirectory:NO]]];

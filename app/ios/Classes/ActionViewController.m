@@ -120,9 +120,12 @@
     // Set up the cell...
     ActionObject *act = [self.actionList objectAtIndex:indexPath.row];
     cell.actionString.text = act.actionText;
-    if (act.actionBenefit <= 0) { // already filtered out benefits < 60 seconds
+    if (act.actionBenefit == -2) { // already filtered out benefits < 60 seconds
         cell.actionValue.text = @"+100 karma!";
         cell.actionType = ActionTypeSpreadTheWord;
+    } else if (act.actionBenefit == -1) {
+        cell.actionValue.text = @"better Carat results!";
+        cell.actionType = ActionTypeCollectData;
     } else {
         cell.actionValue.text = [[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionBenefit] doubleValue]]
                                  stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionError] doubleValue]]]];
@@ -444,13 +447,25 @@
     [dscWith release];
     [dscWithout release];
 
-    DLog(@"Loading Action");
+    DLog(@"Loading Actions");
+    
+    // data collection action
+    if ([myList count] == 0) {
+        tmpAction = [[ActionObject alloc] init];
+        [tmpAction setActionText:@"Help Carat Collect Data"];
+        [tmpAction setActionType:ActionTypeCollectData];
+        [tmpAction setActionBenefit:-1];
+        [tmpAction setActionError:-1];
+        [myList addObject:tmpAction];
+        [tmpAction release];
+    }
+        
     // sharing Action
     tmpAction = [[ActionObject alloc] init];
-    [tmpAction setActionText:@"Help Spread the Word!"];
+    [tmpAction setActionText:@"Help Spread the Word"];
     [tmpAction setActionType:ActionTypeSpreadTheWord];
-    [tmpAction setActionBenefit:-1];
-    [tmpAction setActionError:-1];
+    [tmpAction setActionBenefit:-2];
+    [tmpAction setActionError:-2];
     [myList addObject:tmpAction];
     [tmpAction release];
     
