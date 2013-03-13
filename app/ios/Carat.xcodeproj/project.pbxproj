@@ -312,6 +312,7 @@
 		ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD31902148EC41B000A8DC7 /* QuartzCore.framework */; };
 		ABD75499162F5FC100817924 /* activebatterylife.html in Resources */ = {isa = PBXBuildFile; fileRef = ABD75498162F5FC100817924 /* activebatterylife.html */; };
 		ABDB096814D110C900885FB7 /* UIDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = ABDB096714D110C900885FB7 /* UIDeviceHardware.m */; };
+		ABE5C2A516F0F36300780085 /* collectdata.html in Resources */ = {isa = PBXBuildFile; fileRef = ABE5C2A416F0F36300780085 /* collectdata.html */; };
 		ABE8DA7515247B3E0024C111 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE8DA7415247B3E0024C111 /* Default-Portrait@2x~ipad.png */; };
 		ABE8DA7715247B790024C111 /* Default-Landscape@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE8DA7615247B790024C111 /* Default-Landscape@2x~ipad.png */; };
 		ABE8DA7915247BDB0024C111 /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE8DA7815247BDB0024C111 /* icon144.png */; };
@@ -778,6 +779,7 @@
 		ABD75498162F5FC100817924 /* activebatterylife.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = activebatterylife.html; sourceTree = "<group>"; };
 		ABDB096614D110C900885FB7 /* UIDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceHardware.h; sourceTree = "<group>"; };
 		ABDB096714D110C900885FB7 /* UIDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDeviceHardware.m; sourceTree = "<group>"; };
+		ABE5C2A416F0F36300780085 /* collectdata.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = collectdata.html; sourceTree = "<group>"; };
 		ABE8DA7415247B3E0024C111 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
 		ABE8DA7615247B790024C111 /* Default-Landscape@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x~ipad.png"; sourceTree = "<group>"; };
 		ABE8DA7815247BDB0024C111 /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon144.png; sourceTree = "<group>"; };
@@ -1423,6 +1425,7 @@
 			isa = PBXGroup;
 			children = (
 				ABD75498162F5FC100817924 /* activebatterylife.html */,
+				ABE5C2A416F0F36300780085 /* collectdata.html */,
 				AB99EB0014EA6C130008E440 /* upgradeos.html */,
 				AB9525AD14EA1B5900343418 /* about.html */,
 				AB7568D7151B0DAC0082AEE9 /* consent.html */,
@@ -1923,6 +1926,7 @@
 				AB3B90BC16C04930007C8596 /* SocializeTableViewController.xib in Resources */,
 				AB3B90BD16C04930007C8596 /* SZBaseShareViewController.xib in Resources */,
 				AB3B90BE16C04930007C8596 /* SZStatusImageLabelView.xib in Resources */,
+				ABE5C2A516F0F36300780085 /* collectdata.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
