@@ -19,6 +19,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 /**
@@ -227,6 +229,20 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
 
         setMemory();
         super.onResume();
+    }
+    
+    /**
+     * Called when Carat ID is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void copyCaratId(View v) {
+        TextView tv = (TextView) findViewById(R.id.carat_id_value);
+        String copied = tv.getText().toString();
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        clipboard.setText(copied);
+        Toast.makeText(CaratMyDeviceActivity.this, getString(R.string.copied) +" "+copied, Toast.LENGTH_LONG).show();
     }
 
     /**

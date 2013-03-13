@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.flurry.android.FlurryAgent;
@@ -41,6 +42,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
@@ -720,7 +722,7 @@ public final class SamplingLibrary {
      * @param context
      * @return
      */
-    public static List<ProcessInfo> getRunningProcessInfoForSample(
+    private static List<ProcessInfo> getRunningProcessInfoForSample(
             Context context) {
     	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
     	
@@ -732,9 +734,12 @@ public final class SamplingLibrary {
         PackageManager pm = context.getPackageManager();
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
+        
+        Set<String> procs = new HashSet<String>();
 
         for (ProcessInfo pi : list) {
         	String pname = pi.getPName();
+        	procs.add(pname);
             ProcessInfo item = new ProcessInfo();
             PackageInfo pak = getPackageInfo(context, pname);
             if (pak != null) {
@@ -788,6 +793,41 @@ public final class SamplingLibrary {
              */
             // add to result
             result.add(item);
+        }
+        
+        Set<String> ap = p.getAll().keySet();
+        for (String pref : ap) {
+            if (pref.startsWith(SIG_SENT)) {
+                String pname = pref.substring(SIG_SENT.length());
+                if (!procs.contains(pname)) {
+                    boolean sent = p.getBoolean(pref, false);
+                    if (sent) {
+                        try {
+                            PackageInfo pi = pm.getPackageInfo(
+                                    pref.substring(SIG_SENT.length()), 0);
+                            if (pi == null) {
+                                // uninstalled
+                                ProcessInfo item = new ProcessInfo();
+                                item.setPName(pname);
+                                List<String> sigs = new LinkedList<String>();
+                                sigs.add("uninstalled");
+                                item.setAppSignatures(sigs);
+                                item.setPId(-1);
+                                result.add(item);
+                            }
+                        } catch (NameNotFoundException e) {
+                            // Uninstalled
+                            ProcessInfo item = new ProcessInfo();
+                            item.setPName(pname);
+                            List<String> sigs = new LinkedList<String>();
+                            sigs.add("uninstalled");
+                            item.setAppSignatures(sigs);
+                            item.setPId(-1);
+                            result.add(item);
+                        }
+                    }
+                }
+            }
         }
 
         // FIXME: These are not used yet.

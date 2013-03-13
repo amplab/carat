@@ -1,8 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -20,6 +17,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.TextView;
 
 /**
@@ -83,7 +81,7 @@ public class CaratApplication extends Application {
     public static final int IMPORTANCE_SUGGESTION = 123456789;
     // Used to map importances to human readable strings for sending samples to
     // the server, and showing them in the process list.
-    private static final Map<Integer, String> importanceToString = new HashMap<Integer, String>();
+    private static final SparseArray<String> importanceToString = new SparseArray<String>();
     {
         importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY,
                 "Not running");

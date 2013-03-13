@@ -76,7 +76,6 @@ public class CaratMainActivity extends TabActivity {
         fullVersion = getString(R.string.app_name) + " "
                 + getString(R.string.version_name);
 
-
         Resources res = getResources(); // Resource object to get Drawables
         tabHost = getTabHost(); // The activity TabHost
         TabHost.TabSpec spec; // Resusable TabSpec for each tab
@@ -163,7 +162,6 @@ public class CaratMainActivity extends TabActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }*/
-        
         setTitleNormal();
     }
 
@@ -174,7 +172,7 @@ public class CaratMainActivity extends TabActivity {
             this.setTitle(fullVersion + " - " + s + " "+getString(R.string.samplesreported));
         else
             this.setTitle(fullVersion);
-    	}
+    	}else
     	   this.setTitle(fullVersion);
     }
 
