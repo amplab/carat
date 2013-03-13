@@ -22,6 +22,7 @@
     <string name="checkback2">Jos juuri aloit käyttää Caratia, tarvitsemme lisää aikaa tietojen keräämiseen laitteeltasi, joskus viikon tai enemmän. Tarkistathan uudelleen myöhemmin. Silläaikaa yritämme kovasti ottaa selvää mitä akunkestollesi tapahtuu&#8230;</string>
     <string name="checkback3">Parhaiden tulosten saamiseksi avaa Carat kerran päivässä viikon ajan.</string>
     <string name="copied">Kopioitu:</string>
+    <string name="helpcarat">Auta Caratia keräämään dataa</string>
     <string name="feedback">Anna palautetta</string>
     <string name="share">Jaa …</string>
     <string name="sharewith">Jaa käyttäen:</string>

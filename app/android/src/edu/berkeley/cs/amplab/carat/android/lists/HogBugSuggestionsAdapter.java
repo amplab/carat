@@ -100,6 +100,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
         //acceptDisableVibration(results);
         //acceptSetScreenTimeout(results);
         //acceptDisableAutoSync(results);
+	    if (results.isEmpty())
+	        helpCaratCollectMoreData(results);
 	}
 
 	private void acceptDimScreen(ArrayList<SimpleHogBug> result) {
@@ -200,14 +202,21 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
            }
        } 
        
-       private void acceptDisableAutoSync(ArrayList<SimpleHogBug> result) {
-           
-               if(ContentResolver.getMasterSyncAutomatically()==true){               
-                   SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disableautomaticsync), Type.OS);
-                   // TODO Get expected benefit
-                   result.add(item);
-               }
-           }
+    private void acceptDisableAutoSync(ArrayList<SimpleHogBug> result) {
+
+        if (ContentResolver.getMasterSyncAutomatically() == true) {
+            SimpleHogBug item = new SimpleHogBug(
+                    a.getString(R.string.disableautomaticsync), Type.OS);
+            // TODO Get expected benefit
+            result.add(item);
+        }
+    }
+
+    private void helpCaratCollectMoreData(ArrayList<SimpleHogBug> result) {
+            SimpleHogBug item = new SimpleHogBug(
+                    a.getString(R.string.helpcarat), Type.OS);
+            result.add(item);
+    }
 
 	public int getCount() {
 		return indexes.length;
@@ -295,7 +304,13 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                 hours = (int) (benefitOther);
                 min = (int) ((benefitOther- hours)*60); 
             }*/
-            
+            // Do not show a benefit for things that have none.
+            if (item.getExpectedValue() == 0 && item.getExpectedValueWithout() == 0){
+                holder.txtBenefit.setText("");
+                TextView bl = (TextView) convertView
+                        .findViewById(R.id.benefitLegend);
+                bl.setText("");
+            }else
             holder.txtBenefit.setText(item.textBenefit());
 
             // holder.moreInfo...

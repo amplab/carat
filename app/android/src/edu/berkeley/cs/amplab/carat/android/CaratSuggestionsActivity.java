@@ -31,6 +31,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     private static final String TAG = "CaratSuggestions";
     private View tv = null;
     private View killView = null;
+    private View collectDataView = null;
     private int emptyIndex = -1;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         lv.setCacheColorHint(0);
 
         initKillView();
+        initCollectDataView();
 
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -85,6 +87,9 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     GoToDisplayScreen();
                 else if (raw.equals(getString(R.string.disableautomaticsync)))
                     GoToSyncScreen();
+                else if (raw.equals(getString(R.string.helpcarat))){
+                    switchView(collectDataView);
+                }
                 else {
                     ImageView icon = (ImageView) killView
                             .findViewById(R.id.suggestion_app_icon);
@@ -214,6 +219,16 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         });
         killView = killPage;
         vf.addView(killView);
+    }
+    
+    private void initCollectDataView() {
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View collectPage = inflater.inflate(R.layout.collectdata, null);
+        LocalizedWebView webview = (LocalizedWebView) collectPage.findViewById(R.id.collectDataView);
+        webview.loadUrl("file:///android_asset/collectdata.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex));
+        vf.addView(webview);
     }
 
     private void initUpgradeOsView() {
