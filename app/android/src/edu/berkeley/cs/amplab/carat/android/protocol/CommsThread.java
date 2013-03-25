@@ -1,6 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android.protocol;
 
 import java.util.SortedMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -77,32 +79,38 @@ public class CommsThread extends Thread {
                         int tries = 0;
                         while (tries < 2) {
                             try {
-                                boolean success = app.c.uploadSamples(map
-                                        .values());
-                                if (success) {
+                                int success = app.c.uploadSamples(map.values());
+                                
                                     tries = 2;
                                     //FlurryAgent.logEvent("UploadSamples");
-                                    Log.d(TAG, "Uploaded " + map.size()
-                                            + " samples.");
-                                    CaratApplication.s.samplesReported(map.size());
+                                    Log.d(TAG, "Uploaded " + success
+                                            + " samples out of "+map.size());
+                                    if (success > 0)
+                                        CaratApplication.s.samplesReported(success);
                                     Sample last = map.get(map.lastKey());
                                     Log.d(TAG,
-                                            "Deleting " + map.size()
+                                            "Deleting " + success
                                                     + " samples older than "
                                                     + last.getTimestamp());
-                                    Log.i(TAG, "Sent samples:");
+                                    /*Log.i(TAG, "Sent samples:");
                                     for (Sample k: map.values()){
                                         Log.i(TAG, k.getTimestamp() + " " + k.getBatteryLevel()); 
+                                    }*/
+                                    SortedSet<Long> uploaded = new TreeSet<Long>();
+                                    int i = 0;
+                                    for (Long s: map.keySet()){
+                                        if (i < success)
+                                            uploaded.add(s);
+                                        i+=1;
                                     }
                                     int deleted = CaratSampleDB.getInstance(c)
-                                            .deleteSamples(map.keySet());
+                                            .deleteSamples(uploaded);
                                     /*
                                      * .deleteOldestSamples(
                                      * last.getTimestamp());
                                      */
                                     Log.d(TAG, "Deleted " + deleted
                                             + " samples.");
-                                }
                             } catch (Throwable th) {
                                 // Any sort of malformed response, too short
                                 // string, etc...
