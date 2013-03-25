@@ -105,10 +105,11 @@ public class CommunicationManager {
         instance.registerMe(registration);
     }
 
-    public boolean uploadSamples(Collection<Sample> samples) {
+    public int uploadSamples(Collection<Sample> samples) {
         CaratService.Client instance = null;
         int succeeded = 0;
         ArrayList<Sample> samplesLeft = new ArrayList<Sample>();
+        registerLocal();
         try {
             instance = ProtocolClient.open(a.getApplicationContext());
             registerOnFirstRun(instance);
@@ -127,38 +128,37 @@ public class CommunicationManager {
             }
 
             safeClose(instance);
-            if (succeeded == samples.size())
-                return true;
         } catch (Throwable th) {
             Log.e(TAG, "Error refreshing main reports.", th);
             safeClose(instance);
         }
-
-        if (succeeded < samples.size()) {
-            Log.i(TAG, "Trying to upload " + (samples.size() - succeeded)
-                    + " samples again.");
-            // Try again once.
-            // Try again once with samples left:
-            try {
-                instance = ProtocolClient.open(a.getApplicationContext());
-                if (samplesLeft.size() == 0)
-                    samplesLeft.addAll(samples);
-                for (Sample s : samplesLeft) {
-                    boolean success = instance.uploadSample(s);
-                    if (success)
-                        succeeded++;
-                    else
-                        samplesLeft.add(s);
+        // Do not try again. It can cause a massive sample attack on the server.
+        return succeeded;
+    }
+    
+    private void registerLocal() {
+        if (register) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+            if (uuId == null) {
+                if (registered && (!newuuid && !timeBasedUuid)) {
+                    uuId = SamplingLibrary.getAndroidId(a);
+                } else if (registered && !timeBasedUuid) {
+                    // "new" uuid
+                    uuId = SamplingLibrary.getUuid(a);
+                } else {
+                    // Time-based ID scheme
+                    uuId = SamplingLibrary.getTimeBasedUuid(a);
+                    Log.d("CommunicationManager",
+                            "Generated a new time-based UUID: " + uuId);
+                    // This needs to be saved now, so that if server
+                    // communication
+                    // fails we have a stable UUID.
+                    p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
+                    p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true).commit();
+                    timeBasedUuid = true;
                 }
-                safeClose(instance);
-                if (succeeded == samples.size())
-                    return true;
-            } catch (Throwable th) {
-                Log.e(TAG, "Error refreshing main reports.", th);
-                safeClose(instance);
             }
         }
-        return false;
     }
 
     private void registerOnFirstRun(CaratService.Client instance) {
@@ -173,7 +173,12 @@ public class CommunicationManager {
             } else{
             	// Time-based ID scheme
             	uuId = SamplingLibrary.getTimeBasedUuid(a);
-            	Log.d("CommunicationManager", "Generated a new time-based UUID: "+uuId);
+                Log.d("CommunicationManager",
+                        "Generated a new time-based UUID: " + uuId);
+                // This needs to be saved now, so that if server communication fails we have a stable UUID.
+                p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
+                p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true).commit();
+                timeBasedUuid = true;
             }
             String os = SamplingLibrary.getOsVersion();
             String model = SamplingLibrary.getModel();
@@ -185,12 +190,6 @@ public class CommunicationManager {
                 p.edit()
                         .putBoolean(CaratApplication.PREFERENCE_FIRST_RUN,
                                 false).commit();
-                if (!registered){
-                // Use new uuid after this registration.
-                p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true)
-                        .commit();
-                    timeBasedUuid = true;
-                }
                 register = false;
                 registered = true;
                 p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
@@ -210,6 +209,7 @@ public class CommunicationManager {
      * @throws TException
      */
     public void refreshAllReports() {
+        registerLocal();
         // Do not refresh if not connected
         if (!SamplingLibrary.networkAvailable(a.getApplicationContext()))
             return;
