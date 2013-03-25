@@ -149,8 +149,11 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 				PackageInfo pak = SamplingLibrary.getPackageInfo(
 						getApplicationContext(), fullObject.getAppName());
 				String ver = "";
-				if (pak != null)
+				if (pak != null){
 					ver = pak.versionName;
+					if (ver == null)
+					    ver = pak.versionCode+"";
+				}
 				final String s = label + " " + ver;
 				((TextView) detailPage.findViewById(R.id.name)).setText(s);
 				((ImageView) detailPage.findViewById(R.id.appIcon))

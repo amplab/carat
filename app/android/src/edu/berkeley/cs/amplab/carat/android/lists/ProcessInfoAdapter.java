@@ -67,8 +67,11 @@ public class ProcessInfoAdapter extends BaseAdapter {
 
         PackageInfo pak = SamplingLibrary.getPackageInfo(c, x.getPName());
         String ver = "";
-        if (pak != null)
+        if (pak != null){
             ver = pak.versionName;
+            if (ver == null)
+                ver = pak.versionCode+"";
+        }
 
         holder.appIcon.setImageDrawable(CaratApplication.iconForApp(c, x.getPName()));
         holder.txtName.setText(CaratApplication.labelForApp(c, x.getPName())+ " " + ver);

@@ -114,6 +114,8 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                         String ver = "";
                         if (pak != null)
                             ver = pak.versionName;
+                        if (ver == null)
+                            ver = "";
                         final String s = label + " " + ver;
                         killButton.setText(getString(R.string.kill) + " " + s);
                         killButton.setEnabled(true);

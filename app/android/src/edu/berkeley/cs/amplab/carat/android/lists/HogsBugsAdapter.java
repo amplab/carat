@@ -106,8 +106,12 @@ public class HogsBugsAdapter extends BaseAdapter {
         PackageInfo pak = SamplingLibrary.getPackageInfo(
                 a.getApplicationContext(), item.getAppName());
         String ver = "";
-        if (pak != null)
+        if (pak != null){
             ver = pak.versionName;
+            if (ver == null)
+                ver = pak.versionCode+"";
+        }
+        
         holder.txtName.setText(label + " " + ver);
         holder.appIcon.setImageDrawable(icon);
         holder.textBenefit.setText(item.textBenefit());
