@@ -62,7 +62,7 @@ public class ProtocolClient {
         if (SERVER_ADDRESS == null || SERVER_PORT == 0)
             return null;
 
-        TSocket soc = new TSocket(SERVER_ADDRESS, SERVER_PORT);
+        TSocket soc = new TSocket(SERVER_ADDRESS, SERVER_PORT, 60000);
         TProtocol p = new TBinaryProtocol(soc, true, true);
         CaratService.Client instance = new CaratService.Client(p);
 
