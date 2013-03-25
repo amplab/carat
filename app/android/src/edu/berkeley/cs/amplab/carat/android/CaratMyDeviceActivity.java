@@ -208,6 +208,8 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         appsView = (DrawView) viewAndPage[0];
         appsViewPage = viewAndPage[1];
     }
+    
+    long[] lastPoint = null;
 
     /**
      * (non-Javadoc)
@@ -268,8 +270,12 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             double error = os.getError();
             double evWithout = osWithout.getExpectedValue();
             double errorWo = osWithout.getError();
+            
+            String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
+            if (benefitText == null)
+                benefitText = getString(R.string.jsna);
             ((TextView) osViewPage.findViewById(R.id.benefit))
-                    .setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
+                    .setText(benefitText);
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
                     os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) osWithout.getSamples(), os.getError(), osWithout.getError(), osViewPage);
         }
@@ -299,8 +305,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             double error = model.getError();
             double evWithout = modelWithout.getExpectedValue();
             double errorWo = modelWithout.getError();
+            String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
+            if (benefitText == null)
+                benefitText = getString(R.string.jsna);
             ((TextView) modelViewPage.findViewById(R.id.benefit))
-                    .setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
+                    .setText(benefitText);
             modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
                     model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) modelWithout.getSamples(), model.getError(), modelWithout.getError(), modelViewPage);
         }
@@ -332,8 +341,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             double error = similar.getError();
             double evWithout = similarWithout.getExpectedValue();
             double errorWo = similarWithout.getError();
+            String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
+            if (benefitText == null)
+                benefitText = getString(R.string.jsna);
             ((TextView) osViewPage.findViewById(R.id.benefit))
-                    .setText(SimpleHogBug.textBenefit(ev, error, evWithout, errorWo));
+                    .setText(benefitText);
             
             appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
                     similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similarWithout.getSamples(), similar.getError(), similarWithout.getError(), appsViewPage);
@@ -418,7 +430,14 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
 
         runOnUiThread(new Runnable() {
             public void run() {
-                final double cpu = SamplingLibrary.readUsage();
+                long[] currentPoint = SamplingLibrary.readUsagePoint();
+                
+                double cpu = 0;
+                if (lastPoint == null)
+                    lastPoint = currentPoint;
+                else
+                    cpu = SamplingLibrary.getUsage(lastPoint, currentPoint);
+                    
                 /* CPU usage */
                 ProgressBar mText = (ProgressBar) win.findViewById(R.id.cpubar);
                 mText.setMax(100);
