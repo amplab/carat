@@ -168,7 +168,8 @@
                                              selector:@selector(checkForUpdatable:) 
                                                  name:kReachabilityChangedNotification 
                                                object:nil];
-    internetReachable = [Reachability reachabilityWithHostName:@"server.caratproject.com"];
+    //internetReachable = [Reachability reachabilityWithHostName:@"server.caratproject.com"];
+    internetReachable = [Reachability reachabilityWithHostName:@"caratserver.kurolabs.co"];
     if ([internetReachable startNotifier]) { DLog(@"%s Success!", __PRETTY_FUNCTION__); }
 }
 

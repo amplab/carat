@@ -36,7 +36,8 @@ static NSString * networkStatusString;
         instance = [[self alloc] init];
     }
     
-    caratServerAddress = @"server.caratproject.com";
+    //caratServerAddress = @"server.caratproject.com";
+    caratServerAddress = @"caratserver.kurolabs.co";
     
     [instance setupReachabilityNotifications];
 }
