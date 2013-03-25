@@ -166,6 +166,55 @@ public class SimpleHogBug implements Serializable{
         double ebMax = blMaxWo - blMin;
 
         double benefit = 100.0 / evWo - 100.0 / ev;
+        
+        if (benefit < 0){
+            return null;
+        }
+        else{
+        int min = (int) (benefit / 60);
+        int hours = (int) (min / 60);
+        // correct seconds value will be in benefit
+        benefit -= min * 60;
+        min -= hours * 60;
+        
+
+        double maxError = benefit - ebMin;
+        if (ebMax - benefit > maxError)
+            maxError = ebMax - benefit;
+        
+        int errorMins = (int) (maxError / 60);
+        
+        StringBuilder b = new StringBuilder();
+        if (hours > 0)
+            b.append(hours + "h ");
+        if (min > 0)
+            b.append(min + "m ");
+        if (hours <= 0){
+            b.append(((int) benefit)+ "s ");
+        }
+        b.append("\u00B1 ");
+        //int errorMins = (int) ((benefit - ebMin) / 60);
+        if (errorMins == 0)
+            b.append(((int) maxError) + "s");
+        else
+            b.append(errorMins + "m");
+        return b.toString();
+        }
+    }
+    
+    public static String textError(double ev, double error, double evWo, double errorWo){
+        // Max battery life: What if the we swing entirely to the left end of the 95% error bar?
+        double blMax = 100.0/(ev - error);
+        double blMaxWo = 100.0/(evWo - errorWo);
+        
+        // Min battery life
+        double blMin = 100.0/(ev + error);
+        double blMinWo = 100.0/(evWo + errorWo);
+        
+        double ebMin = blMinWo - blMax;
+        double ebMax = blMaxWo - blMin;
+
+        double benefit = 100.0 / evWo - 100.0 / ev;
 
         int min = (int) (benefit / 60);
         int hours = (int) (min / 60);
@@ -176,22 +225,9 @@ public class SimpleHogBug implements Serializable{
             maxError = ebMax - benefit;
         
         int errorMins = (int) (maxError / 60);
-        //int errorMins = (int) ((benefit - ebMin) / 60);
-
-        return hours + "h " + min + "m \u00B1 " + errorMins + "m";
-    }
-    
-    public static String textError(double ev, double error, double evWo, double errorWo){
-        double benefit = 100.0 / evWo - 100.0 / ev;
-
-        int min = (int) (benefit / 60);
-        int hours = (int) (min / 60);
-        min -= hours * 60;
-
-        double minimumBenefit = 100 / (evWo + errorWo) - 100 / (ev - error);
-
-        int errorMins = (int) ((benefit - minimumBenefit) / 60);
-
-        return errorMins + "m";
+        if (errorMins == 0)
+            return ((int)maxError) + "s";
+        else
+            return errorMins + "m";
     }
 }
