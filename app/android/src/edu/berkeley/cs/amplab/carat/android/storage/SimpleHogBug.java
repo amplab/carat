@@ -171,16 +171,17 @@ public class SimpleHogBug implements Serializable{
             return null;
         }
         else{
+            double maxError = benefit - ebMin;
+            if (ebMax - benefit > maxError)
+                maxError = ebMax - benefit;
+            
         int min = (int) (benefit / 60);
         int hours = (int) (min / 60);
         // correct seconds value will be in benefit
         benefit -= min * 60;
         min -= hours * 60;
-        
 
-        double maxError = benefit - ebMin;
-        if (ebMax - benefit > maxError)
-            maxError = ebMax - benefit;
+        
         
         int errorMins = (int) (maxError / 60);
         
