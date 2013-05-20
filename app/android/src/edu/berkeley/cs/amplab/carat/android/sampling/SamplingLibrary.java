@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,6 +11,12 @@ import java.io.RandomAccessFile;
 import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,7 +25,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.flurry.android.FlurryAgent;
@@ -75,6 +81,7 @@ import android.os.SystemClock;
 public final class SamplingLibrary {
 	private static final boolean collectSignatures = true;
 	private static final String SIG_SENT = "sig-sent:";
+	private static final String SIG_SENT_256 = "sigs-sent:";
 	
     private static final int READ_BUFFER_SIZE = 2 * 1024;
     // Network status constants
@@ -138,7 +145,7 @@ public final class SamplingLibrary {
     public static double distance = 0;
 
     private static final String STAG = "getSample";
-    private static final String TAG="FeaturesPowerConsumption";
+    //private static final String TAG="FeaturesPowerConsumption";
          
     public static final int UUID_LENGTH = 16;
 
@@ -760,24 +767,75 @@ public final class SamplingLibrary {
                 isSystemApp = isSystemApp
                         || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
-                boolean sigSent = p.getBoolean(SIG_SENT+pname, false);
+                boolean sigSent = p.getBoolean(SIG_SENT_256+pname, false);
                 if (collectSignatures && !sigSent && pak.signatures != null && pak.signatures.length > 0){
 					Signature[] sigs = pak.signatures;
 					List<String> sigList = new LinkedList<String>();
 					for (Signature s : sigs) {
-						MessageDigest md;
-						try {
-							md = MessageDigest.getInstance("SHA-1");
-							md.update(s.toByteArray());
-							byte[] dig = md.digest();
-							sigList.add(convertToHex(dig));
-						} catch (NoSuchAlgorithmException e) {
-							// Do nothing
-						}
+                        MessageDigest md = null;
+                        try {
+                            md = MessageDigest.getInstance("SHA-1");
+                            md.update(s.toByteArray());
+                            byte[] dig = md.digest();
+                            // Add SHA-1
+                            sigList.add(convertToHex(dig));
+
+                            CertificateFactory fac = CertificateFactory
+                                    .getInstance("X.509");
+                            if (fac == null)
+                                continue;
+                            X509Certificate cert = (X509Certificate) fac
+                                    .generateCertificate(new ByteArrayInputStream(
+                                            s.toByteArray()));
+                            if (cert == null)
+                                continue;
+                            PublicKey pkPublic = cert.getPublicKey();
+                            if (pkPublic == null)
+                                continue;
+                            String al = pkPublic.getAlgorithm();
+                            if (al.equals("RSA")) {
+                                md = MessageDigest.getInstance("SHA-256");
+                                RSAPublicKey rsa = (RSAPublicKey) pkPublic;
+                                byte[] data = rsa.getModulus().toByteArray();
+                                if (data[0] == 0) {
+                                    byte[] copy = new byte[data.length - 1];
+                                    System.arraycopy(data, 1, copy, 0,
+                                            data.length - 1);
+                                    md.update(copy);
+                                } else
+                                    md.update(data);
+                                dig = md.digest();
+                                // Add SHA-256 of modulus
+                                sigList.add(convertToHex(dig));
+                            } else if (al.equals("DSA")) {
+                                DSAPublicKey dsa = (DSAPublicKey) pkPublic;
+                                md = MessageDigest.getInstance("SHA-256");
+                                byte[] data = dsa.getY().toByteArray();
+                                if (data[0] == 0) {
+                                    byte[] copy = new byte[data.length - 1];
+                                    System.arraycopy(data, 1, copy, 0,
+                                            data.length - 1);
+                                    md.update(copy);
+                                } else
+                                    md.update(data);
+                                dig = md.digest();
+                                // Add SHA-256 of public key (DSA)
+                                sigList.add(convertToHex(dig));
+                            } else {
+                                Log.e("SamplingLibrary", "Weird algorithm: "
+                                        + al + " for " + label);
+                            }
+                        } catch (NoSuchAlgorithmException e) {
+                            // Do nothing
+                        } catch (CertificateException e) {
+                            // Do nothing
+	                    }
 					}
 					item.setAppSignatures(sigList);
-					p.edit()
-                    .putBoolean(SIG_SENT+pname,
+					boolean sigSentOld = p.getBoolean(SIG_SENT+pname, false);
+					if (sigSentOld)
+					    p.edit().remove(SIG_SENT+pname);
+                    p.edit().putBoolean(SIG_SENT_256+pname,
                             true).commit();
 				}
 			}
@@ -797,14 +855,14 @@ public final class SamplingLibrary {
         
         Set<String> ap = p.getAll().keySet();
         for (String pref : ap) {
-            if (pref.startsWith(SIG_SENT)) {
-                String pname = pref.substring(SIG_SENT.length());
+            if (pref.startsWith(SIG_SENT_256)) {
+                String pname = pref.substring(SIG_SENT_256.length());
                 if (!procs.contains(pname)) {
                     boolean sent = p.getBoolean(pref, false);
                     if (sent) {
                         try {
                             PackageInfo pi = pm.getPackageInfo(
-                                    pref.substring(SIG_SENT.length()), 0);
+                                    pref.substring(SIG_SENT_256.length()), 0);
                             if (pi == null) {
                                 // uninstalled
                                 ProcessInfo item = new ProcessInfo();
