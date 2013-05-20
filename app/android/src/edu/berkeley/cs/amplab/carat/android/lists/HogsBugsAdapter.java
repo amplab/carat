@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.lists;
 
+import java.util.Arrays;
+
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -57,6 +59,7 @@ public class HogsBugsAdapter extends BaseAdapter {
                     i++;
                 }
             }
+        Arrays.sort(allBugsOrHogs);
         mInflater = LayoutInflater.from(c);
     }
 

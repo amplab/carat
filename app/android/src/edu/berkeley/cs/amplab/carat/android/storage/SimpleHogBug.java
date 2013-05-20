@@ -10,7 +10,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
  * @author Eemil Lagerspetz
  *
  */
-public class SimpleHogBug implements Serializable{
+public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     /**
      * Auto-generated UID for serialization
      */
@@ -230,5 +230,19 @@ public class SimpleHogBug implements Serializable{
             return ((int)maxError) + "s";
         else
             return errorMins + "m";
+    }
+
+    @Override
+    public int compareTo(SimpleHogBug another) {
+        double benefit = 100.0 / expectedValueWithout - 100.0 / expectedValue;
+        double benefit2 = 100.0 / another.expectedValueWithout - 100.0 / another.expectedValue;
+        
+        double diff = benefit2 - benefit;
+        if (diff > 0)
+            return 1;
+        else if (diff < 0)
+            return -1;
+        else
+            return 0;
     }
 }
