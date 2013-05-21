@@ -19,6 +19,7 @@
     <string name="fake_dev">Samsung Galaxy Nexus</string>
     <string name="viewprocess">View Process List</string>
     <string name="alogo">AmpLab Logo</string>
+    <string name="ulogo">University of Helsinki Logo</string>
     <string name="moreinfo">More Information</string>
     <string name="appicon">App Icon</string>
     <string name="default_type">Foreground App</string>

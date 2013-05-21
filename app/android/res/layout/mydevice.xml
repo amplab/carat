@@ -355,12 +355,26 @@ Carat My Device Screen layout
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/alogo"
-                android:src="@drawable/amplab_logo" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:layout_marginTop="10dip" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:contentDescription="@string/ulogo"
+                    android:src="@drawable/uh_logo" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/alogo"
+                    android:src="@drawable/amplab_logo" />
+
+            </LinearLayout>
+            
         </LinearLayout>
 
     </ScrollView>
