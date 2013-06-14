@@ -16,6 +16,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class Sampler extends BroadcastReceiver implements LocationListener{
@@ -50,7 +51,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
         if (providers != null){
             for (String provider: providers){
             lm.requestLocationUpdates(provider, CaratApplication.FRESHNESS_TIMEOUT, 0, this);
-            Log.v(TAG, "Location updates requested for " + provider);
+            //Log.v(TAG, "Location updates requested for " + provider);
             }
         }
 	}
@@ -65,6 +66,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
             context.registerReceiver(getInstance(), intentFilter);
         }*/
 	    
+	    
 		if (ds == null) {
 		    this.context = context;
 			ds = new CaratSampleDB(context);
@@ -72,6 +74,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		}
 		final Context c = context;
 		final Intent i = intent;
+		//Log.i(TAG, "Intent: "+i.getAction() +" ds: " +i.getData());
 		
 		if (i.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 			//NOTE: This is disabled to simplify how Carat behaves. 
@@ -80,6 +83,20 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		            editor.putLong("bootTime", new Date().getTime()); 
 		            editor.commit();
 			//onBoot(context);
+		}
+		
+		/* If a package is uninstalled, remove it from our sent-sigs so if it is reinstalled, it will be sent again.
+		 * Also, send the uninstallation flag in the next sample. */
+		if (i.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
+			String uninstalledPackage = i.getDataString();
+			// package:
+			// 012345678
+			uninstalledPackage = uninstalledPackage.substring(8);
+			//Log.i(TAG,  "UNINSTALLED: "+ uninstalledPackage);
+			SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+			p.edit().remove(SamplingLibrary.SIG_SENT_256+uninstalledPackage)
+			.remove(SamplingLibrary.SIG_SENT+uninstalledPackage)
+			.putBoolean(SamplingLibrary.UNINSTALLED+uninstalledPackage, true).commit();
 		}
 		
 		/* 
@@ -144,7 +161,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 				lastSample);
 		// Set distance to current distance value
 		if (s != null){
-		    Log.v(TAG, "distanceTravelled=" + distance);
+		    //Log.v(TAG, "distanceTravelled=" + distance);
 		    s.setDistanceTraveled(distance);
 		    // FIX: Do not use same distance again.
 		    distance = 0;
@@ -154,7 +171,7 @@ public class Sampler extends BroadcastReceiver implements LocationListener{
 		// But only after first real numbers
 		if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
 			long id = ds.putSample(s);
-			Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
+			//Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
 			//FlurryAgent.logEvent(intent.getAction());
 			/*Toast.makeText(context,
 					"Took sample " + id + " for " + intent.getAction(),

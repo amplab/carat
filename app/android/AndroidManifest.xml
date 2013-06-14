@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.berkeley.cs.amplab.carat.android"
-    android:versionCode="56"
+    android:versionCode="57"
     android:versionName="@string/version_name"
     >
 
@@ -112,6 +112,8 @@
 <!-- 
                 <action android:name="android.intent.action.BOOT_COMPLETED" />-->
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" /> 
                 <!-- BATTERY_CHANGED seems to activate in all these conditions: -->
                 <!-- <action android:name="android.intent.action.BATTERY_LOW" />
                 <action android:name="android.intent.action.BATTERY_OKAY" />

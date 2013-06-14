@@ -79,10 +79,11 @@ import android.os.SystemClock;
  * 
  */
 public final class SamplingLibrary {
-	private static final boolean collectSignatures = true;
-	private static final String SIG_SENT = "sig-sent:";
-	private static final String SIG_SENT_256 = "sigs-sent:";
-	
+    private static final boolean collectSignatures = true;
+    public static final String SIG_SENT = "sig-sent:";
+    public static final String SIG_SENT_256 = "sigs-sent:";
+    public static final String UNINSTALLED = "uninstalled:";
+
     private static final int READ_BUFFER_SIZE = 2 * 1024;
     // Network status constants
     public static String NETWORKSTATUS_DISCONNECTED = "disconnected";
@@ -145,8 +146,8 @@ public final class SamplingLibrary {
     public static double distance = 0;
 
     private static final String STAG = "getSample";
-    //private static final String TAG="FeaturesPowerConsumption";
-         
+    // private static final String TAG="FeaturesPowerConsumption";
+
     public static final int UUID_LENGTH = 16;
 
     /** Library class, prevent instantiation */
@@ -164,18 +165,20 @@ public final class SamplingLibrary {
     public static String getAndroidId(Context c) {
         return Secure.getString(c.getContentResolver(), Secure.ANDROID_ID);
     }
-    
+
     public static String getUuid(Context c) {
-    	return getTimeBasedUuid(c, false);
+        return getTimeBasedUuid(c, false);
     }
-    
+
     public static String getTimeBasedUuid(Context c) {
-    	return getTimeBasedUuid(c, true);
+        return getTimeBasedUuid(c, true);
     }
-    
+
     /**
      * Generate a time-based, random identifier.
-     * @param c the app's Context
+     * 
+     * @param c
+     *            the app's Context
      * @return a time-based, random identifier.
      */
     public static String getTimeBasedUuid(Context c, boolean includeTimestamp) {
@@ -185,32 +188,34 @@ public final class SamplingLibrary {
         String concat = "";
         if (aID != null)
             concat = aID;
-        else  
+        else
             concat = "0000000000000000";
         if (wifiMac != null)
             concat += wifiMac;
         else
             concat += "00:00:00:00:00:00";
-        
-        // IMEI is 15 characters, decimal, while MEID is 14 characters, hex. Add a space if length is less than 15:
+
+        // IMEI is 15 characters, decimal, while MEID is 14 characters, hex. Add
+        // a space if length is less than 15:
         if (devid != null) {
             concat += devid;
             if (devid.length() < 15)
                 concat += " ";
         } else
             concat += "000000000000000";
-        if (includeTimestamp){
-        	long timestamp = System.currentTimeMillis();
-        	concat += timestamp;
+        if (includeTimestamp) {
+            long timestamp = System.currentTimeMillis();
+            concat += timestamp;
         }
 
-        //Log.d(STAG, "AID="+aID+" wifiMac="+wifiMac+" devid="+devid+" rawUUID=" +concat );
+        // Log.d(STAG,
+        // "AID="+aID+" wifiMac="+wifiMac+" devid="+devid+" rawUUID=" +concat );
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             md.update(concat.getBytes());
             byte[] mdbytes = md.digest();
             StringBuilder hexString = new StringBuilder();
-            for (int i=0;i<mdbytes.length;i++) {
+            for (int i = 0; i < mdbytes.length; i++) {
                 String hx = Integer.toHexString(0xFF & mdbytes[i]);
                 if (hx.equals("0"))
                     hexString.append("00");
@@ -218,7 +223,7 @@ public final class SamplingLibrary {
                     hexString.append(hx);
             }
             String uuid = hexString.toString().substring(0, UUID_LENGTH);
-            //FlurryAgent.logEvent("ANDROID_ID=" + aID +" UUID=" + uuid);
+            // FlurryAgent.logEvent("ANDROID_ID=" + aID +" UUID=" + uuid);
             return uuid;
         } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
@@ -361,8 +366,7 @@ public final class SamplingLibrary {
      * @return int[] with total and used memory, in kB, in that order.
      */
     public static int[] readMemory(Context c) {
-        ActivityManager man = (ActivityManager) c
-                .getSystemService(Activity.ACTIVITY_SERVICE);
+        ActivityManager man = (ActivityManager) c.getSystemService(Activity.ACTIVITY_SERVICE);
         /* Get available (free) memory */
         ActivityManager.MemoryInfo info = new ActivityManager.MemoryInfo();
         man.getMemoryInfo(info);
@@ -371,10 +375,8 @@ public final class SamplingLibrary {
         /* Get memory used by all running processes. */
 
         /* Step 1: gather pids */
-        List<ActivityManager.RunningAppProcessInfo> procs = man
-                .getRunningAppProcesses();
-        List<ActivityManager.RunningServiceInfo> servs = man
-                .getRunningServices(Integer.MAX_VALUE);
+        List<ActivityManager.RunningAppProcessInfo> procs = man.getRunningAppProcesses();
+        List<ActivityManager.RunningServiceInfo> servs = man.getRunningServices(Integer.MAX_VALUE);
         int[] pids = new int[procs.size() + servs.size()];
         int i = 0;
         for (ActivityManager.RunningAppProcessInfo pinfo : procs) {
@@ -438,9 +440,8 @@ public final class SamplingLibrary {
             String[] toks = load.split(" ");
 
             long idle1 = Long.parseLong(toks[5]);
-            long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
-                    + Long.parseLong(toks[4]) + Long.parseLong(toks[6])
-                    + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
+            long cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3]) + Long.parseLong(toks[4])
+                    + Long.parseLong(toks[6]) + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
 
             reader.close();
             return new long[] { idle1, cpu1 };
@@ -466,66 +467,20 @@ public final class SamplingLibrary {
         return (now[1] - then[1]) / idleAndCpuDiff;
     }
 
-    /**
-     * Deprecated: We cannot sleep during sampling, since that freezes the UI.
-     * Read CPU usage from /proc/stat, return a fraction of
-     * usage/(usage+idletime)
-     * 
-     * @return a fraction of usage/(usage+idletime)
-     */
-    @Deprecated
-    public static double readUsage() {
-        try {
-            RandomAccessFile reader = new RandomAccessFile("/proc/stat", "r");
-            String load = reader.readLine();
-
-            String[] toks = load.split(" ");
-
-            double idle1 = Long.parseLong(toks[5]);
-            double cpu1 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
-                    + Long.parseLong(toks[4]) + Long.parseLong(toks[6])
-                    + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-
-            try {
-                Thread.sleep(360);
-            } catch (Exception e) {
-            }
-
-            reader.seek(0);
-            load = reader.readLine();
-            reader.close();
-
-            toks = load.split(" ");
-
-            double idle2 = Long.parseLong(toks[5]);
-            double cpu2 = Long.parseLong(toks[2]) + Long.parseLong(toks[3])
-                    + Long.parseLong(toks[4]) + Long.parseLong(toks[6])
-                    + Long.parseLong(toks[7]) + Long.parseLong(toks[8]);
-
-            return (cpu2 - cpu1) / ((cpu2 + idle2) - (cpu1 + idle1));
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        return 0;
-    }
-
     private static WeakReference<List<RunningAppProcessInfo>> runningAppInfo = null;
 
-    public static List<ProcessInfo> getRunningAppInfo(Context c){
+    public static List<ProcessInfo> getRunningAppInfo(Context c) {
         List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(c);
         List<RunningServiceInfo> runningServices = getRunningServiceInfo(c);
-        
+
         List<ProcessInfo> l = new ArrayList<ProcessInfo>();
-        
+
         if (runningProcs != null) {
             for (RunningAppProcessInfo pi : runningProcs) {
                 if (pi == null)
                     continue;
                 ProcessInfo item = new ProcessInfo();
-                item.setImportance(CaratApplication
-                        .importanceString(pi.importance));
+                item.setImportance(CaratApplication.importanceString(pi.importance));
                 item.setPId(pi.pid);
                 item.setPName(pi.processName);
                 l.add(item);
@@ -543,17 +498,14 @@ public final class SamplingLibrary {
                 l.add(item);
             }
         }
-            
+
         return l;
     }
-    
-    private static List<RunningAppProcessInfo> getRunningProcessInfo(
-            Context context) {
+
+    private static List<RunningAppProcessInfo> getRunningProcessInfo(Context context) {
         if (runningAppInfo == null || runningAppInfo.get() == null) {
-            ActivityManager pActivityManager = (ActivityManager) context
-                    .getSystemService(Activity.ACTIVITY_SERVICE);
-            List<RunningAppProcessInfo> runningProcs = pActivityManager
-                    .getRunningAppProcesses();
+            ActivityManager pActivityManager = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
+            List<RunningAppProcessInfo> runningProcs = pActivityManager.getRunningAppProcesses();
             /*
              * TODO: Is this the right thing to do? Remove part after ":" in
              * process names
@@ -567,44 +519,40 @@ public final class SamplingLibrary {
                 }
             }
 
-            runningAppInfo = new WeakReference<List<RunningAppProcessInfo>>(
-                    runningProcs);
+            runningAppInfo = new WeakReference<List<RunningAppProcessInfo>>(runningProcs);
         }
         return runningAppInfo.get();
     }
-    
-    public static List<RunningServiceInfo> getRunningServiceInfo(Context c){
-        ActivityManager pActivityManager = (ActivityManager) c
-                .getSystemService(Activity.ACTIVITY_SERVICE);
+
+    public static List<RunningServiceInfo> getRunningServiceInfo(Context c) {
+        ActivityManager pActivityManager = (ActivityManager) c.getSystemService(Activity.ACTIVITY_SERVICE);
         return pActivityManager.getRunningServices(0);
     }
-    
 
     public static boolean isRunning(Context context, String appName) {
         List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(context);
         for (RunningAppProcessInfo i : runningProcs) {
-            if (i.processName.equals(appName)
-                    && i.importance != RunningAppProcessInfo.IMPORTANCE_EMPTY)
+            if (i.processName.equals(appName) && i.importance != RunningAppProcessInfo.IMPORTANCE_EMPTY)
                 return true;
         }
         return false;
     }
-    
-    public static void resetRunningProcessInfo(){
+
+    public static void resetRunningProcessInfo() {
         runningAppInfo = null;
     }
-    
 
     static WeakReference<Map<String, PackageInfo>> packages = null;
 
-    public static boolean isHidden(Context c, String processName){
+    public static boolean isHidden(Context c, String processName) {
         boolean isSystem = isSystem(c, processName);
         boolean blocked = (isSystem && !isWhiteListed(c, processName));
         return blocked || isBlacklisted(c, processName);
     }
-    
+
     /**
      * For debugging always returns true.
+     * 
      * @param c
      * @param processName
      * @return
@@ -612,63 +560,59 @@ public final class SamplingLibrary {
     private static boolean isWhiteListed(Context c, String processName) {
         return !isBlacklisted(c, processName);
     }
-    
+
     /**
      * For debugging always returns true.
+     * 
      * @param c
      * @param processName
      * @return
      */
     private static boolean isBlacklisted(Context c, String processName) {
         /*
-         * Whitelist:
-         * Messaging, Voice Search, Bluetooth Share
+         * Whitelist: Messaging, Voice Search, Bluetooth Share
          * 
-         * Blacklist:
-         * Key chain, google partner set up, package installer, package access helper
-         * 
-         */    
+         * Blacklist: Key chain, google partner set up, package installer,
+         * package access helper
+         */
         if (CaratApplication.s != null) {
             List<String> blacklist = CaratApplication.s.getBlacklist();
-            if (blacklist != null && blacklist.size() > 0
-                    && processName != null && blacklist.contains(processName)) {
+            if (blacklist != null && blacklist.size() > 0 && processName != null && blacklist.contains(processName)) {
                 return true;
             }
-            
+
             blacklist = CaratApplication.s.getGloblist();
-            if (blacklist != null && blacklist.size() > 0 && processName != null){
-                for (String glob: blacklist){
+            if (blacklist != null && blacklist.size() > 0 && processName != null) {
+                for (String glob : blacklist) {
                     if (glob == null)
                         continue;
                     // something*
-                    if (glob.endsWith("*") && processName.startsWith(glob.substring(0, glob.length()-1)))
-                            return true;
+                    if (glob.endsWith("*") && processName.startsWith(glob.substring(0, glob.length() - 1)))
+                        return true;
                     // *something
                     if (glob.startsWith("*") && processName.endsWith(glob.substring(1)))
-                            return true;
+                        return true;
                 }
             }
         }
         String label = CaratApplication.labelForApp(c, processName);
-        
-        
-        if (processName != null && label != null && label.equals(processName)){
-            //Log.v("Hiding uninstalled", processName);
+
+        if (processName != null && label != null && label.equals(processName)) {
+            // Log.v("Hiding uninstalled", processName);
             return true;
         }
-        
-        //FlurryAgent.logEvent("Whitelisted "+processName + " \""+ label+"\"");
+
+        // FlurryAgent.logEvent("Whitelisted "+processName + " \""+ label+"\"");
         return false;
     }
-    
+
     private static boolean isSystem(Context context, String processName) {
         PackageInfo pak = getPackageInfo(context, processName);
         if (pak != null) {
             ApplicationInfo i = pak.applicationInfo;
             int flags = i.flags;
             boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
-            isSystemApp = isSystemApp
-                    || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
+            isSystemApp = isSystemApp || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
             // Log.v(STAG, processName + " is System app? " + isSystemApp);
             return isSystemApp;
         }
@@ -677,40 +621,39 @@ public final class SamplingLibrary {
 
     public static PackageInfo getPackageInfo(Context context, String processName) {
         List<android.content.pm.PackageInfo> packagelist = null;
-        
-        if (packages == null || packages.get() == null
-                || packages.get().size() == 0) {
+
+        if (packages == null || packages.get() == null || packages.get().size() == 0) {
             Map<String, PackageInfo> mp = new HashMap<String, PackageInfo>();
             PackageManager pm = context.getPackageManager();
             if (pm == null)
                 return null;
-                    
-            try{
-				if (collectSignatures)
-					packagelist = pm
-							.getInstalledPackages(PackageManager.GET_SIGNATURES);
-				else
-					packagelist = pm.getInstalledPackages(0);
-			} catch (Throwable th) {
+
+            try {
+                if (collectSignatures)
+                    packagelist = pm.getInstalledPackages(PackageManager.GET_SIGNATURES
+                            | PackageManager.GET_PERMISSIONS);
+                else
+                    packagelist = pm.getInstalledPackages(0);
+            } catch (Throwable th) {
                 // Forget about it...
             }
             if (packagelist == null)
                 return null;
             for (PackageInfo pak : packagelist) {
-                if (pak == null || pak.applicationInfo == null ||  pak.applicationInfo.processName == null)
+                if (pak == null || pak.applicationInfo == null || pak.applicationInfo.processName == null)
                     continue;
                 mp.put(pak.applicationInfo.processName, pak);
             }
 
             packages = new WeakReference<Map<String, PackageInfo>>(mp);
-            
+
             if (mp == null || mp.size() == 0)
                 return null;
             if (!mp.containsKey(processName))
                 return null;
             PackageInfo pak = mp.get(processName);
             return pak;
-        }else{
+        } else {
             if (packages == null)
                 return null;
             Map<String, PackageInfo> p = packages.get();
@@ -719,7 +662,7 @@ public final class SamplingLibrary {
             if (!p.containsKey(processName))
                 return null;
             PackageInfo pak = p.get(processName);
-            return pak;    
+            return pak;
         }
     }
 
@@ -729,10 +672,9 @@ public final class SamplingLibrary {
      * @param context
      * @return
      */
-    private static List<ProcessInfo> getRunningProcessInfoForSample(
-            Context context) {
-    	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
-    	
+    private static List<ProcessInfo> getRunningProcessInfoForSample(Context context) {
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
+
         // Reset list for each sample
         runningAppInfo = null;
         List<ProcessInfo> list = getRunningAppInfo(context);
@@ -741,21 +683,21 @@ public final class SamplingLibrary {
         PackageManager pm = context.getPackageManager();
         // Collected in the same loop to save computation.
         int[] procMem = new int[list.size()];
-        
+
         Set<String> procs = new HashSet<String>();
 
         for (ProcessInfo pi : list) {
-        	String pname = pi.getPName();
-        	procs.add(pname);
+            String pname = pi.getPName();
+            procs.add(pname);
             ProcessInfo item = new ProcessInfo();
             PackageInfo pak = getPackageInfo(context, pname);
             if (pak != null) {
-            	String ver = pak.versionName;
-            	int vc = pak.versionCode;
-            	item.setVersionName(ver);
-            	item.setVersionCode(vc);
+                String ver = pak.versionName;
+                int vc = pak.versionCode;
+                item.setVersionName(ver);
+                item.setVersionCode(vc);
                 ApplicationInfo info = pak.applicationInfo;
-                
+
                 // Human readable label (if any)
                 String label = pm.getApplicationLabel(info).toString();
                 if (label != null && label.length() > 0)
@@ -764,14 +706,22 @@ public final class SamplingLibrary {
                 int flags = pak.applicationInfo.flags;
                 // Check if it is a system app
                 boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
-                isSystemApp = isSystemApp
-                        || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
+                isSystemApp = isSystemApp || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
-                boolean sigSent = p.getBoolean(SIG_SENT_256+pname, false);
-                if (collectSignatures && !sigSent && pak.signatures != null && pak.signatures.length > 0){
-					Signature[] sigs = pak.signatures;
-					List<String> sigList = new LinkedList<String>();
-					for (Signature s : sigs) {
+                boolean sigSent = p.getBoolean(SIG_SENT_256 + pname, false);
+                if (collectSignatures && !sigSent && pak.signatures != null && pak.signatures.length > 0) {
+                    List<String> sigList = new LinkedList<String>();
+                    String[] pmInfos = pak.requestedPermissions;
+                    if (pmInfos != null) {
+                        byte[] bytes = getPermissionBytes(pmInfos);
+                        String hexB = convertToHex(bytes);
+                        // Log.i(STAG, "Permissions of " + label +":"+
+                        // hexB+": "+Arrays.toString(pmInfos));
+                        sigList.add(hexB);
+                    }
+                    Signature[] sigs = pak.signatures;
+
+                    for (Signature s : sigs) {
                         MessageDigest md = null;
                         try {
                             md = MessageDigest.getInstance("SHA-1");
@@ -780,13 +730,11 @@ public final class SamplingLibrary {
                             // Add SHA-1
                             sigList.add(convertToHex(dig));
 
-                            CertificateFactory fac = CertificateFactory
-                                    .getInstance("X.509");
+                            CertificateFactory fac = CertificateFactory.getInstance("X.509");
                             if (fac == null)
                                 continue;
-                            X509Certificate cert = (X509Certificate) fac
-                                    .generateCertificate(new ByteArrayInputStream(
-                                            s.toByteArray()));
+                            X509Certificate cert = (X509Certificate) fac.generateCertificate(new ByteArrayInputStream(s
+                                    .toByteArray()));
                             if (cert == null)
                                 continue;
                             PublicKey pkPublic = cert.getPublicKey();
@@ -799,8 +747,7 @@ public final class SamplingLibrary {
                                 byte[] data = rsa.getModulus().toByteArray();
                                 if (data[0] == 0) {
                                     byte[] copy = new byte[data.length - 1];
-                                    System.arraycopy(data, 1, copy, 0,
-                                            data.length - 1);
+                                    System.arraycopy(data, 1, copy, 0, data.length - 1);
                                     md.update(copy);
                                 } else
                                     md.update(data);
@@ -813,8 +760,7 @@ public final class SamplingLibrary {
                                 byte[] data = dsa.getY().toByteArray();
                                 if (data[0] == 0) {
                                     byte[] copy = new byte[data.length - 1];
-                                    System.arraycopy(data, 1, copy, 0,
-                                            data.length - 1);
+                                    System.arraycopy(data, 1, copy, 0, data.length - 1);
                                     md.update(copy);
                                 } else
                                     md.update(data);
@@ -822,23 +768,21 @@ public final class SamplingLibrary {
                                 // Add SHA-256 of public key (DSA)
                                 sigList.add(convertToHex(dig));
                             } else {
-                                Log.e("SamplingLibrary", "Weird algorithm: "
-                                        + al + " for " + label);
+                                Log.e("SamplingLibrary", "Weird algorithm: " + al + " for " + label);
                             }
                         } catch (NoSuchAlgorithmException e) {
                             // Do nothing
                         } catch (CertificateException e) {
                             // Do nothing
-	                    }
-					}
-					item.setAppSignatures(sigList);
-					boolean sigSentOld = p.getBoolean(SIG_SENT+pname, false);
-					if (sigSentOld)
-					    p.edit().remove(SIG_SENT+pname);
-                    p.edit().putBoolean(SIG_SENT_256+pname,
-                            true).commit();
-				}
-			}
+                        }
+                    }
+                    boolean sigSentOld = p.getBoolean(SIG_SENT + pname, false);
+                    if (sigSentOld)
+                        p.edit().remove(SIG_SENT + pname);
+                    p.edit().putBoolean(SIG_SENT_256 + pname, true).commit();
+                    item.setAppSignatures(sigList);
+                }
+            }
             item.setImportance(pi.getImportance());
             item.setPId(pi.getPId());
             item.setPName(pname);
@@ -852,7 +796,7 @@ public final class SamplingLibrary {
             // add to result
             result.add(item);
         }
-        
+
         Set<String> ap = p.getAll().keySet();
         for (String pref : ap) {
             if (pref.startsWith(SIG_SENT_256)) {
@@ -861,47 +805,51 @@ public final class SamplingLibrary {
                     boolean sent = p.getBoolean(pref, false);
                     if (sent) {
                         try {
-                            PackageInfo pi = pm.getPackageInfo(
-                                    pref.substring(SIG_SENT_256.length()), 0);
+                            PackageInfo pi = pm.getPackageInfo(pref.substring(SIG_SENT_256.length()), 0);
                             if (pi == null) {
                                 // uninstalled
-                                ProcessInfo item = new ProcessInfo();
-                                item.setPName(pname);
-                                List<String> sigs = new LinkedList<String>();
-                                sigs.add("uninstalled");
-                                item.setAppSignatures(sigs);
-                                item.setPId(-1);
-                                result.add(item);
+                                result.add(uninstalledItem(pname, pref, p));
                             }
                         } catch (NameNotFoundException e) {
-                            // Uninstalled
-                            ProcessInfo item = new ProcessInfo();
-                            item.setPName(pname);
-                            List<String> sigs = new LinkedList<String>();
-                            sigs.add("uninstalled");
-                            item.setAppSignatures(sigs);
-                            item.setPId(-1);
-                            result.add(item);
+                            result.add(uninstalledItem(pname, pref, p));
                         }
                     }
+                }
+            } else if (pref.startsWith(UNINSTALLED)) {
+                String pname = pref.substring(UNINSTALLED.length());
+                //Log.i(STAG, "Uninstalled:" + pname);
+                boolean uninstalled = p.getBoolean(pref, false);
+                if (uninstalled) {
+                    result.add(uninstalledItem(pname, pref, p));
                 }
             }
         }
 
         // FIXME: These are not used yet.
-        /*ActivityManager pActivityManager = (ActivityManager) context
-                .getSystemService(Activity.ACTIVITY_SERVICE);
-        Debug.MemoryInfo[] memoryInfo = pActivityManager
-                .getProcessMemoryInfo(procMem);
-        for (Debug.MemoryInfo info : memoryInfo) {
-            // Decide which ones of info.* we want, add to a new and improved
-            // ProcessInfo object
-            // FIXME: Not used yet, Sample needs more fields
-            // FIXME: Which memory fields to choose?
-            //int memory = info.dalvikPrivateDirty;
-        }*/
+        /*
+         * ActivityManager pActivityManager = (ActivityManager) context
+         * .getSystemService(Activity.ACTIVITY_SERVICE); Debug.MemoryInfo[]
+         * memoryInfo = pActivityManager .getProcessMemoryInfo(procMem); for
+         * (Debug.MemoryInfo info : memoryInfo) { // Decide which ones of info.*
+         * we want, add to a new and improved // ProcessInfo object // FIXME:
+         * Not used yet, Sample needs more fields // FIXME: Which memory fields
+         * to choose? //int memory = info.dalvikPrivateDirty; }
+         */
 
         return result;
+    }
+
+    private static ProcessInfo uninstalledItem(String pname, String pref, SharedPreferences p) {
+        ProcessInfo item = new ProcessInfo();
+        item.setPName(pname);
+        List<String> sigs = new LinkedList<String>();
+        sigs.add("uninstalled");
+        item.setAppSignatures(sigs);
+        item.setPId(-1);
+        // Remember to remove it so we do not send
+        // multiple uninstall events
+        p.edit().remove(pref).commit();
+        return item;
     }
 
     /**
@@ -1000,8 +948,7 @@ public final class SamplingLibrary {
     }
 
     public static String getNetworkStatus(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null)
             return NETWORKSTATUS_DISCONNECTED;
         NetworkInfo i = cm.getActiveNetworkInfo();
@@ -1021,8 +968,7 @@ public final class SamplingLibrary {
     }
 
     public static String getNetworkType(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm == null)
             return TYPE_UNKNOWN;
         NetworkInfo i = cm.getActiveNetworkInfo();
@@ -1038,20 +984,19 @@ public final class SamplingLibrary {
 
     /* Get current WiFi signal Strength */
     public static int getWifiSignalStrength(Context context) {
-        WifiManager myWifiManager = (WifiManager) context
-                .getSystemService(Context.WIFI_SERVICE);
+        WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
         int wifiRssi = myWifiInfo.getRssi();
-        Log.v("WifiRssi", "Rssi:" + wifiRssi);
+        //Log.v("WifiRssi", "Rssi:" + wifiRssi);
         return wifiRssi;
 
     }
-    
+
     /**
-     * Get Wifi MAC ADDR. Hashed and used in UUID calculation. */
+     * Get Wifi MAC ADDR. Hashed and used in UUID calculation.
+     */
     private static String getWifiMacAddress(Context context) {
-        WifiManager myWifiManager = (WifiManager) context
-                .getSystemService(Context.WIFI_SERVICE);
+        WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         if (myWifiManager == null)
             return null;
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
@@ -1062,12 +1007,11 @@ public final class SamplingLibrary {
 
     /* Get current WiFi link speed */
     public static int getWifiLinkSpeed(Context context) {
-        WifiManager myWifiManager = (WifiManager) context
-                .getSystemService(Context.WIFI_SERVICE);
+        WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo myWifiInfo = myWifiManager.getConnectionInfo();
         int linkSpeed = myWifiInfo.getLinkSpeed();
 
-        Log.v("linkSpeed", "Link speed:" + linkSpeed);
+        //Log.v("linkSpeed", "Link speed:" + linkSpeed);
         return linkSpeed;
     }
 
@@ -1075,17 +1019,15 @@ public final class SamplingLibrary {
     public static boolean getWifiEnabled(Context context) {
         boolean wifiEnabled = false;
 
-        WifiManager myWifiManager = (WifiManager) context
-                .getSystemService(Context.WIFI_SERVICE);
+        WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         wifiEnabled = myWifiManager.isWifiEnabled();
-        Log.v("WifiEnabled", "Wifi is enabled:" + wifiEnabled);
+        //Log.v("WifiEnabled", "Wifi is enabled:" + wifiEnabled);
         return wifiEnabled;
     }
 
     /* Get Wifi state: */
     public static String getWifiState(Context context) {
-        WifiManager myWifiManager = (WifiManager) context
-                .getSystemService(Context.WIFI_SERVICE);
+        WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         int wifiState = myWifiManager.getWifiState();
         switch (wifiState) {
         case WifiManager.WIFI_STATE_DISABLED:
@@ -1102,10 +1044,9 @@ public final class SamplingLibrary {
     }
 
     public static WifiInfo getWifiInfo(Context context) {
-        WifiManager myWifiManager = (WifiManager) context
-                .getSystemService(Context.WIFI_SERVICE);
+        WifiManager myWifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         WifiInfo connectionInfo = myWifiManager.getConnectionInfo();
-        Log.v("WifiInfo", "Wifi information:" + connectionInfo);
+        //Log.v("WifiInfo", "Wifi information:" + connectionInfo);
         return connectionInfo;
 
     }
@@ -1121,16 +1062,14 @@ public final class SamplingLibrary {
     public static boolean getBackgroundDataEnabled(Context context) {
         boolean bacDataEnabled = false;
         try {
-            if (Settings.Secure.getInt(context.getContentResolver(),
-                    Settings.Secure.BACKGROUND_DATA) == 1) {
+            if (Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.BACKGROUND_DATA) == 1) {
                 bacDataEnabled = true;
             }
         } catch (SettingNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        Log.v("BackgroundDataEnabled", "Background data enabled? "
-                + bacDataEnabled);
+        //Log.v("BackgroundDataEnabled", "Background data enabled? " + bacDataEnabled);
         // return bacDataEnabled;
         return true;
     }
@@ -1140,42 +1079,36 @@ public final class SamplingLibrary {
 
         int screenBrightnessValue = 0;
         try {
-            screenBrightnessValue = android.provider.Settings.System.getInt(
-                    context.getContentResolver(),
+            screenBrightnessValue = android.provider.Settings.System.getInt(context.getContentResolver(),
                     android.provider.Settings.System.SCREEN_BRIGHTNESS);
         } catch (SettingNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        Log.v("ScreenBrightness", "Screen brightness value:"
-                + screenBrightnessValue);
+        //Log.v("ScreenBrightness", "Screen brightness value:" + screenBrightnessValue);
         return screenBrightnessValue;
     }
 
     public static boolean isAutoBrightness(Context context) {
         boolean autoBrightness = false;
         try {
-            autoBrightness = Settings.System.getInt(
-                    context.getContentResolver(),
+            autoBrightness = Settings.System.getInt(context.getContentResolver(),
                     Settings.System.SCREEN_BRIGHTNESS_MODE) == Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
         } catch (SettingNotFoundException e) {
             e.printStackTrace();
         }
-        Log.v("AutoScreenBrightness",
-                "Automatic Screen brightness mode is enabled:" + autoBrightness);
+        //Log.v("AutoScreenBrightness", "Automatic Screen brightness mode is enabled:" + autoBrightness);
         return autoBrightness;
     }
 
     /* Check whether GPS are enabled */
     public static boolean getGpsEnabled(Context context) {
         boolean gpsEnabled = false;
-        LocationManager myLocationManager = (LocationManager) context
-                .getSystemService(Context.LOCATION_SERVICE);
+        LocationManager myLocationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
-        gpsEnabled = myLocationManager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Log.v("GPS", "GPS is :" + gpsEnabled);
+        gpsEnabled = myLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //Log.v("GPS", "GPS is :" + gpsEnabled);
         return gpsEnabled;
     }
 
@@ -1183,8 +1116,7 @@ public final class SamplingLibrary {
     public static CellInfo getCellInfo(Context context) {
         CellInfo curCell = new CellInfo();
 
-        TelephonyManager myTelManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager myTelManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         String netOperator = myTelManager.getNetworkOperator();
 
@@ -1200,10 +1132,9 @@ public final class SamplingLibrary {
          */
 
         if (SamplingLibrary.getPhoneType(context) == PHONE_TYPE_CDMA) {
-            CdmaCellLocation cdmaLocation = (CdmaCellLocation) myTelManager
-                    .getCellLocation();
+            CdmaCellLocation cdmaLocation = (CdmaCellLocation) myTelManager.getCellLocation();
             if (cdmaLocation == null) {
-                Log.v("cdmaLocation", "CDMA Location:" + cdmaLocation);
+                //Log.v("cdmaLocation", "CDMA Location:" + cdmaLocation);
             } else {
                 int cid = cdmaLocation.getBaseStationId();
                 int lac = cdmaLocation.getNetworkId();
@@ -1214,21 +1145,19 @@ public final class SamplingLibrary {
                 curCell.LAC = lac;
                 curCell.MNC = mnc;
                 curCell.MCC = mcc;
-                curCell.radioType = SamplingLibrary
-                        .getMobileNetworkType(context);
+                curCell.radioType = SamplingLibrary.getMobileNetworkType(context);
 
-                Log.v("MCC", "MCC is:" + mcc);
-                Log.v("MNC", "MNC is:" + mnc);
-                Log.v("CID", "CID is:" + cid);
-                Log.v("LAC", "LAC is:" + lac);
+                //Log.v("MCC", "MCC is:" + mcc);
+                //Log.v("MNC", "MNC is:" + mnc);
+                //Log.v("CID", "CID is:" + cid);
+                //Log.v("LAC", "LAC is:" + lac);
             }
 
         } else if (SamplingLibrary.getPhoneType(context) == PHONE_TYPE_GSM) {
-            GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager
-                    .getCellLocation();
+            GsmCellLocation gsmLocation = (GsmCellLocation) myTelManager.getCellLocation();
 
             if (gsmLocation == null) {
-                Log.v("gsmLocation", "GSM Location:" + gsmLocation);
+                //Log.v("gsmLocation", "GSM Location:" + gsmLocation);
             } else {
                 int cid = gsmLocation.getCid();
                 int lac = gsmLocation.getLac();
@@ -1239,13 +1168,12 @@ public final class SamplingLibrary {
                 curCell.MNC = mnc;
                 curCell.LAC = lac;
                 curCell.CID = cid;
-                curCell.radioType = SamplingLibrary
-                        .getMobileNetworkType(context);
+                curCell.radioType = SamplingLibrary.getMobileNetworkType(context);
 
-                Log.v("MCC", "MCC is:" + mcc);
-                Log.v("MNC", "MNC is:" + mnc);
-                Log.v("CID", "CID is:" + cid);
-                Log.v("LAC", "LAC is:" + lac);
+                //Log.v("MCC", "MCC is:" + mcc);
+                //Log.v("MNC", "MNC is:" + mnc);
+                //Log.v("CID", "CID is:" + cid);
+                //Log.v("LAC", "LAC is:" + lac);
             }
         }
         return curCell;
@@ -1271,7 +1199,8 @@ public final class SamplingLibrary {
 
     public static Location getLastKnownLocation(Context c) {
         String provider = getBestProvider(c);
-        // FIXME: Some buggy device is giving GPS to us, even though we cannot use it.
+        // FIXME: Some buggy device is giving GPS to us, even though we cannot
+        // use it.
         if (provider != null && !provider.equals("gps")) {
             Location l = getLastKnownLocation(c, provider);
             return l;
@@ -1279,20 +1208,17 @@ public final class SamplingLibrary {
         return null;
     }
 
-    private static Location getLastKnownLocation(Context context,
-            String provider) {
-        LocationManager lm = (LocationManager) context
-                .getSystemService(Context.LOCATION_SERVICE);
+    private static Location getLastKnownLocation(Context context, String provider) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Location l = lm.getLastKnownLocation(provider);
         return l;
     }
 
     /* Get the distance users between two locations */
-    public static double getDistance(double startLatitude,
-            double startLongitude, double endLatitude, double endLongitude) {
+    public static double getDistance(double startLatitude, double startLongitude, double endLatitude,
+            double endLongitude) {
         float[] results = new float[1];
-        Location.distanceBetween(startLatitude, startLongitude, endLatitude,
-                endLongitude, results);
+        Location.distanceBetween(startLatitude, startLongitude, endLatitude, endLongitude, results);
         return results[0];
     }
 
@@ -1304,14 +1230,12 @@ public final class SamplingLibrary {
      * @return
      */
     public static List<String> getEnabledLocationProviders(Context context) {
-        LocationManager lm = (LocationManager) context
-                .getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         return lm.getProviders(true);
     }
 
     public static String getBestProvider(Context context) {
-        LocationManager lm = (LocationManager) context
-                .getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         Criteria c = new Criteria();
         c.setAccuracy(Criteria.ACCURACY_COARSE);
         c.setPowerRequirement(Criteria.POWER_LOW);
@@ -1322,20 +1246,17 @@ public final class SamplingLibrary {
     /* Check the maximum number of satellites can be used in the satellite list */
     public static int getMaxNumSatellite(Context context) {
 
-        LocationManager locationManager = (LocationManager) context
-                .getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         GpsStatus gpsStatus = locationManager.getGpsStatus(null);
         int maxNumSatellite = gpsStatus.getMaxSatellites();
 
-        Log.v("maxNumStatellite", "Maxmium number of satellites:"
-                + maxNumSatellite);
+        //Log.v("maxNumStatellite", "Maxmium number of satellites:" + maxNumSatellite);
         return maxNumSatellite;
     }
 
     /* Get call status */
     public static String getCallState(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         int callState = telManager.getCallState();
         switch (callState) {
@@ -1347,10 +1268,9 @@ public final class SamplingLibrary {
             return CALL_STATE_IDLE;
         }
     }
-    
+
     private static String getDeviceId(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         if (telManager == null)
             return null;
         return telManager.getDeviceId();
@@ -1358,8 +1278,7 @@ public final class SamplingLibrary {
 
     /* Get network type */
     public static String getMobileNetworkType(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         int netType = telManager.getNetworkType();
         switch (netType) {
@@ -1392,8 +1311,7 @@ public final class SamplingLibrary {
 
     /* Get Phone Type */
     public static String getPhoneType(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         int phoneType = telManager.getPhoneType();
         switch (phoneType) {
@@ -1410,18 +1328,16 @@ public final class SamplingLibrary {
     public static boolean getRoamingStatus(Context context) {
         boolean roamStatus = false;
 
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         roamStatus = telManager.isNetworkRoaming();
-        Log.v("RoamingStatus", "Roaming status:" + roamStatus);
+        //Log.v("RoamingStatus", "Roaming status:" + roamStatus);
         return roamStatus;
     }
 
     /* Get data state */
     public static String getDataState(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         int dataState = telManager.getDataState();
         switch (dataState) {
@@ -1438,8 +1354,7 @@ public final class SamplingLibrary {
 
     /* Get data activity */
     public static String getDataActivity(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         int dataActivity = telManager.getDataActivity();
         switch (dataActivity) {
@@ -1456,11 +1371,10 @@ public final class SamplingLibrary {
 
     /* Get the current location of the device */
     public static CellLocation getDeviceLocation(Context context) {
-        TelephonyManager telManager = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
         CellLocation LocDevice = telManager.getCellLocation();
-        Log.v("DeviceLocation", "Device Location:" + LocDevice);
+        //Log.v("DeviceLocation", "Device Location:" + LocDevice);
         return LocDevice;
     }
 
@@ -1487,12 +1401,10 @@ public final class SamplingLibrary {
         long now = System.currentTimeMillis();
         long bootTime = now - uptime;
 
-        String[] queries = new String[] { android.provider.CallLog.Calls.TYPE,
-                android.provider.CallLog.Calls.DATE,
+        String[] queries = new String[] { android.provider.CallLog.Calls.TYPE, android.provider.CallLog.Calls.DATE,
                 android.provider.CallLog.Calls.DURATION };
 
-        Cursor cur = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI, queries,
+        Cursor cur = context.getContentResolver().query(android.provider.CallLog.Calls.CONTENT_URI, queries,
                 android.provider.CallLog.Calls.DATE + " > " + bootTime, null,
                 android.provider.CallLog.Calls.DATE + " ASC");
 
@@ -1543,14 +1455,11 @@ public final class SamplingLibrary {
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM");
         CallMonth curMonth = null;
 
-        String[] queryFields = new String[] {
-                android.provider.CallLog.Calls.TYPE,
-                android.provider.CallLog.Calls.DATE,
+        String[] queryFields = new String[] { android.provider.CallLog.Calls.TYPE, android.provider.CallLog.Calls.DATE,
                 android.provider.CallLog.Calls.DURATION };
 
-        Cursor myCursor = context.getContentResolver().query(
-                android.provider.CallLog.Calls.CONTENT_URI, queryFields, null,
-                null, android.provider.CallLog.Calls.DATE + " DESC");
+        Cursor myCursor = context.getContentResolver().query(android.provider.CallLog.Calls.CONTENT_URI, queryFields,
+                null, null, android.provider.CallLog.Calls.DATE + " DESC");
 
         if (myCursor.moveToFirst()) {
             for (int i = 0; i < myCursor.getColumnCount(); i++) {
@@ -1571,29 +1480,24 @@ public final class SamplingLibrary {
                 if (callType == 1) {
                     curMonth.tolCallInNum++;
                     curMonth.tolCallInDur += callDur;
-                    callInDur.put("tolCallInNum",
-                            String.valueOf(curMonth.tolCallInNum));
-                    callInDur.put("tolCallInDur",
-                            String.valueOf(curMonth.tolCallInDur));
+                    callInDur.put("tolCallInNum", String.valueOf(curMonth.tolCallInNum));
+                    callInDur.put("tolCallInDur", String.valueOf(curMonth.tolCallInDur));
                 }
                 if (callType == 2) {
                     curMonth.tolCallOutNum++;
                     curMonth.tolCallOutDur += callDur;
-                    callOutDur.put("tolCallOutNum",
-                            String.valueOf(curMonth.tolCallOutNum));
-                    callOutDur.put("tolCallOutDur",
-                            String.valueOf(curMonth.tolCallOutDur));
+                    callOutDur.put("tolCallOutNum", String.valueOf(curMonth.tolCallOutNum));
+                    callOutDur.put("tolCallOutDur", String.valueOf(curMonth.tolCallOutDur));
                 }
                 if (callType == 3) {
                     curMonth.tolMissedCallNum++;
-                    callInDur.put("tolMissedCallNum",
-                            String.valueOf(curMonth.tolMissedCallNum));
+                    callInDur.put("tolMissedCallNum", String.valueOf(curMonth.tolMissedCallNum));
                 }
             }
         } else {
-            Log.v("MonthType", "callType=None");
-            Log.v("MonthDate", "callDate=None");
-            Log.v("MonthDuration", "callduration =None");
+            //Log.v("MonthType", "callType=None");
+            //Log.v("MonthDate", "callDate=None");
+            //Log.v("MonthDuration", "callduration =None");
         }
         return callMonth;
     }
@@ -1606,13 +1510,10 @@ public final class SamplingLibrary {
         call = callInfo.get(time);
         return call;
     }
-    
-
-    
 
     private static Location lastKnownLocation = null;
-    
-    public static double getBatteryLevel(Context context, Intent intent){
+
+    public static double getBatteryLevel(Context context, Intent intent) {
         double level = intent.getIntExtra("level", -1);
         double scale = intent.getIntExtra("scale", 100);
 
@@ -1624,40 +1525,40 @@ public final class SamplingLibrary {
         }
         return batteryLevel;
     }
-    
-    public static boolean killApp(Context context, String packageName, String label){
-        ActivityManager am = (ActivityManager) context
-                .getSystemService(Activity.ACTIVITY_SERVICE);
-        if (am != null){
-            try{
+
+    public static boolean killApp(Context context, String packageName, String label) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
+        if (am != null) {
+            try {
                 PackageInfo p = getPackageInfo(context, packageName);
-                Log.v(STAG, "Trying to kill proc="+packageName + " pak=" + p.packageName);
-                FlurryAgent.logEvent("Killing app="+(label==null?"null":label)+" proc="+packageName+" pak="+ (p==null?"null":p.packageName));
+                //Log.v(STAG, "Trying to kill proc=" + packageName + " pak=" + p.packageName);
+                FlurryAgent.logEvent("Killing app=" + (label == null ? "null" : label) + " proc=" + packageName
+                        + " pak=" + (p == null ? "null" : p.packageName));
                 am.killBackgroundProcesses(packageName);
-                
+
                 return true;
-            }catch (Throwable th){
+            } catch (Throwable th) {
                 Log.e(STAG, "Could not kill process: " + packageName, th);
             }
         }
         return false;
     }
-    
+
     private static String convertToHex(byte[] data) {
         StringBuilder buf = new StringBuilder();
         for (byte b : data) {
             int halfbyte = (b >>> 4) & 0x0F;
             int two_halfs = 0;
             do {
-                buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte) : (char) ('a' + (halfbyte - 10)));
+                buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte)
+                        : (char) ('a' + (halfbyte - 10)));
                 halfbyte = b & 0x0F;
             } while (two_halfs++ < 1);
         }
         return buf.toString();
     }
 
-    public static Sample getSample(Context context, Intent intent,
-            Sample lastSample) {
+    public static Sample getSample(Context context, Intent intent, Sample lastSample) {
         String action = intent.getAction();
 
         // Construct sample and return it in the end
@@ -1678,36 +1579,32 @@ public final class SamplingLibrary {
 
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
-        boolean autoScreenBrightness = SamplingLibrary
-                .isAutoBrightness(context);
+        boolean autoScreenBrightness = SamplingLibrary.isAutoBrightness(context);
         if (autoScreenBrightness)
             mySample.setScreenBrightness(-1); // Auto
         // boolean gpsEnabled = SamplingLibrary.getGpsEnabled(context);
         // Location providers
-        List<String> enabledLocationProviders = SamplingLibrary
-                .getEnabledLocationProviders(context);
+        List<String> enabledLocationProviders = SamplingLibrary.getEnabledLocationProviders(context);
         mySample.setLocationProviders(enabledLocationProviders);
 
         // TODO: not in Sample yet
         // int maxNumSatellite = SamplingLibrary.getMaxNumSatellite(context);
 
-        
         String network = SamplingLibrary.getNetworkStatus(context);
         String networkType = SamplingLibrary.getNetworkType(context);
-        String mobileNetworkType = SamplingLibrary
-                .getMobileNetworkType(context);
-        
+        String mobileNetworkType = SamplingLibrary.getMobileNetworkType(context);
+
         // Required in new Carat protocol
-        if (network.equals(NETWORKSTATUS_CONNECTED)){
+        if (network.equals(NETWORKSTATUS_CONNECTED)) {
             if (networkType.equals("WIFI"))
                 mySample.setNetworkStatus(networkType);
             else
                 mySample.setNetworkStatus(mobileNetworkType);
-        }else
+        } else
             mySample.setNetworkStatus(network);
-        
-        //String ns = mySample.getNetworkStatus();
-        //Log.d(STAG, "Set networkStatus="+ns);
+
+        // String ns = mySample.getNetworkStatus();
+        // Log.d(STAG, "Set networkStatus="+ns);
 
         // Network details
         NetworkDetails nd = new NetworkDetails();
@@ -1777,7 +1674,7 @@ public final class SamplingLibrary {
         // if we have real data, change old value
         if (level > 0 && scale > 0) {
             batteryLevel = (level / scale);
-            Log.d(STAG, "BatteryLevel: " + batteryLevel);
+            //Log.d(STAG, "BatteryLevel: " + batteryLevel);
         }
 
         // FIXED: Not used yet, Sample needs more fields
@@ -1858,8 +1755,7 @@ public final class SamplingLibrary {
         mySample.setBatteryState(batteryStatus);
 
         int[] usedFreeActiveInactive = SamplingLibrary.readMeminfo();
-        if (usedFreeActiveInactive != null
-                && usedFreeActiveInactive.length == 4) {
+        if (usedFreeActiveInactive != null && usedFreeActiveInactive.length == 4) {
             mySample.setMemoryUser(usedFreeActiveInactive[0]);
             mySample.setMemoryFree(usedFreeActiveInactive[1]);
             mySample.setMemoryActive(usedFreeActiveInactive[2]);
@@ -1880,8 +1776,89 @@ public final class SamplingLibrary {
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
 
-        //printAverageFeaturePower(context);
-        
+        // printAverageFeaturePower(context);
+
         return mySample;
+    }
+
+    public static byte[] getPermissionBytes(String[] perms) {
+        if (perms == null)
+            return null;
+        if (permList.size() == 0)
+            populatePermList();
+        //Log.i(STAG, "PermList Size: " + permList.size());
+        byte[] bytes = new byte[permList.size() / 8 + 1];
+        for (String p : perms) {
+            int idx = permList.indexOf(p);
+            if (idx > 0){
+                int i = idx / 8;
+                idx = (int) Math.pow(2, idx - i * 8);
+                bytes[i] = (byte) (bytes[i] | idx);
+            }
+        }
+        return bytes;
+    }
+
+    private static final ArrayList<String> permList = new ArrayList<String>();
+
+    private static void populatePermList() {
+        final String[] permArray = { "android.permission.ACCESS_CHECKIN_PROPERTIES",
+                "android.permission.ACCESS_COARSE_LOCATION", "android.permission.ACCESS_FINE_LOCATION",
+                "android.permission.ACCESS_LOCATION_EXTRA_COMMANDS", "android.permission.ACCESS_MOCK_LOCATION",
+                "android.permission.ACCESS_NETWORK_STATE", "android.permission.ACCESS_SURFACE_FLINGER",
+                "android.permission.ACCESS_WIFI_STATE", "android.permission.ACCOUNT_MANAGER",
+                "android.permission.AUTHENTICATE_ACCOUNTS", "android.permission.BATTERY_STATS",
+                "android.permission.BIND_APPWIDGET", "android.permission.BIND_DEVICE_ADMIN",
+                "android.permission.BIND_INPUT_METHOD", "android.permission.BIND_WALLPAPER",
+                "android.permission.BLUETOOTH", "android.permission.BLUETOOTH_ADMIN", "android.permission.BRICK",
+                "android.permission.BROADCAST_PACKAGE_REMOVED", "android.permission.BROADCAST_SMS",
+                "android.permission.BROADCAST_STICKY", "android.permission.BROADCAST_WAP_PUSH",
+                "android.permission.CALL_PHONE", "android.permission.CALL_PRIVILEGED", "android.permission.CAMERA",
+                "android.permission.CHANGE_COMPONENT_ENABLED_STATE", "android.permission.CHANGE_CONFIGURATION",
+                "android.permission.CHANGE_NETWORK_STATE", "android.permission.CHANGE_WIFI_MULTICAST_STATE",
+                "android.permission.CHANGE_WIFI_STATE", "android.permission.CLEAR_APP_CACHE",
+                "android.permission.CLEAR_APP_USER_DATA", "android.permission.CONTROL_LOCATION_UPDATES",
+                "android.permission.DELETE_CACHE_FILES", "android.permission.DELETE_PACKAGES",
+                "android.permission.DEVICE_POWER", "android.permission.DIAGNOSTIC",
+                "android.permission.DISABLE_KEYGUARD", "android.permission.DUMP",
+                "android.permission.EXPAND_STATUS_BAR", "android.permission.FACTORY_TEST",
+                "android.permission.FLASHLIGHT", "android.permission.FORCE_BACK", "android.permission.GET_ACCOUNTS",
+                "android.permission.GET_PACKAGE_SIZE", "android.permission.GET_TASKS",
+                "android.permission.GLOBAL_SEARCH", "android.permission.HARDWARE_TEST",
+                "android.permission.INJECT_EVENTS", "android.permission.INSTALL_LOCATION_PROVIDER",
+                "android.permission.INSTALL_PACKAGES", "android.permission.INTERNAL_SYSTEM_WINDOW",
+                "android.permission.INTERNET", "android.permission.KILL_BACKGROUND_PROCESSES",
+                "android.permission.MANAGE_ACCOUNTS", "android.permission.MANAGE_APP_TOKENS",
+                "android.permission.MASTER_CLEAR", "android.permission.MODIFY_AUDIO_SETTINGS",
+                "android.permission.MODIFY_PHONE_STATE", "android.permission.MOUNT_FORMAT_FILESYSTEMS",
+                "android.permission.MOUNT_UNMOUNT_FILESYSTEMS", "android.permission.PERSISTENT_ACTIVITY",
+                "android.permission.PROCESS_OUTGOING_CALLS", "android.permission.READ_CALENDAR",
+                "android.permission.READ_CONTACTS", "android.permission.READ_FRAME_BUFFER",
+                "com.android.browser.permission.READ_HISTORY_BOOKMARKS", "android.permission.READ_INPUT_STATE",
+                "android.permission.READ_LOGS", "android.permission.READ_OWNER_DATA",
+                "android.permission.READ_PHONE_STATE", "android.permission.READ_SMS",
+                "android.permission.READ_SYNC_SETTINGS", "android.permission.READ_SYNC_STATS",
+                "android.permission.REBOOT", "android.permission.RECEIVE_BOOT_COMPLETED",
+                "android.permission.RECEIVE_MMS", "android.permission.RECEIVE_SMS",
+                "android.permission.RECEIVE_WAP_PUSH", "android.permission.RECORD_AUDIO",
+                "android.permission.REORDER_TASKS", "android.permission.RESTART_PACKAGES",
+                "android.permission.SEND_SMS", "android.permission.SET_ACTIVITY_WATCHER",
+                "android.permission.SET_ALWAYS_FINISH", "android.permission.SET_ANIMATION_SCALE",
+                "android.permission.SET_DEBUG_APP", "android.permission.SET_ORIENTATION",
+                "android.permission.SET_PREFERRED_APPLICATIONS", "android.permission.SET_PROCESS_LIMIT",
+                "android.permission.SET_TIME", "android.permission.SET_TIME_ZONE", "android.permission.SET_WALLPAPER",
+                "android.permission.SET_WALLPAPER_HINTS", "android.permission.SIGNAL_PERSISTENT_PROCESSES",
+                "android.permission.STATUS_BAR", "android.permission.SUBSCRIBED_FEEDS_READ",
+                "android.permission.SUBSCRIBED_FEEDS_WRITE", "android.permission.SYSTEM_ALERT_WINDOW",
+                "android.permission.UPDATE_DEVICE_STATS", "android.permission.USE_CREDENTIALS",
+                "android.permission.VIBRATE", "android.permission.WAKE_LOCK", "android.permission.WRITE_APN_SETTINGS",
+                "android.permission.WRITE_CALENDAR", "android.permission.WRITE_CONTACTS",
+                "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.WRITE_GSERVICES",
+                "com.android.browser.permission.WRITE_HISTORY_BOOKMARKS", "android.permission.WRITE_OWNER_DATA",
+                "android.permission.WRITE_SECURE_SETTINGS", "android.permission.WRITE_SETTINGS",
+                "android.permission.WRITE_SMS", "android.permission.WRITE_SYNC_SETTINGS" };
+
+        for (String s : permArray)
+            permList.add(s);
     }
 }

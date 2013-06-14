@@ -372,6 +372,8 @@ public class CaratApplication extends Application {
                 // Let sampling happen on battery change
                 intentFilter = new IntentFilter();
                 intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+                /*intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+                intentFilter.addDataScheme("package"); // add addDataScheme*/
                 sampler = Sampler.getInstance();
                 // Unregister, since Carat may have been started multiple times
                 // since reboot
