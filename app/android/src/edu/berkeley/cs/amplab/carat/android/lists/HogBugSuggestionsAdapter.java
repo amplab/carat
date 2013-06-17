@@ -86,23 +86,27 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		}
 	}
 	
-	private void addFeatureActions(ArrayList<SimpleHogBug> results){
-	    // Disable all for now, benefits are not calculated correctly yet.
-	    /*acceptDimScreen(results);
-        acceptDisableWifi(results);
-        acceptDisableBluetooth(results);
-        */
+    private void addFeatureActions(ArrayList<SimpleHogBug> results) {
+        // Disable all for now, benefits are not calculated correctly yet.
+        /*
+         * acceptDimScreen(results); acceptDisableWifi(results);
+         * acceptDisableBluetooth(results);
+         */
         // TODO: These need benefits, disabled for now:
-        //acceptDisableLocSev(results);
-        //acceptDisableHapticFb(results);
-        //acceptSetAutoBrightness(results);
-        //acceptDisableNetwork(results);
-        //acceptDisableVibration(results);
-        //acceptSetScreenTimeout(results);
-        //acceptDisableAutoSync(results);
-	    if (results.isEmpty())
-	        helpCaratCollectMoreData(results);
-	}
+        // acceptDisableLocSev(results);
+        // acceptDisableHapticFb(results);
+        // acceptSetAutoBrightness(results);
+        // acceptDisableNetwork(results);
+        // acceptDisableVibration(results);
+        // acceptSetScreenTimeout(results);
+        // acceptDisableAutoSync(results);
+        if (results.isEmpty())
+            helpCaratCollectMoreData(results);
+        // TODO: This should come from the server. 
+        boolean questionnaireEnabled = true;
+        if (questionnaireEnabled)
+            questionnaire(results);
+    }
 
 	private void acceptDimScreen(ArrayList<SimpleHogBug> result) {
 	    /*set the screen threshold to be 50 */
@@ -217,6 +221,12 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                     a.getString(R.string.helpcarat), Type.OS);
             result.add(item);
     }
+    
+    private void questionnaire(ArrayList<SimpleHogBug> result) {
+        SimpleHogBug item = new SimpleHogBug(
+                a.getString(R.string.questionnaire), Type.OS);
+        result.add(item);
+}
 
 	public int getCount() {
 		return indexes.length;
