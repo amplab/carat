@@ -65,7 +65,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     }
     /**
      * @param expectedValue the expectedValue to set
-     * TODO: FAKE ERROR
      */
     public void setExpectedValue(double expectedValue) {
         this.expectedValue = expectedValue;
@@ -78,7 +77,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     }
     /**
      * @param expectedValueWithout the expectedValueWithout to set
-     * TODO: FAKE ERROR
      */
     public void setExpectedValueWithout(double expectedValueWithout) {
         this.expectedValueWithout = expectedValueWithout;
@@ -113,7 +111,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     private String appLabel; // optional
     private String appPriority; // optional
     
-    // TODO: FAKE ERROR
     // error of with dist in %/s
     private double error = 0;
     // error of without dist in %/s

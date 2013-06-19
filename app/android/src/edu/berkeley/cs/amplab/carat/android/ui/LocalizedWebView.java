@@ -98,7 +98,6 @@ public class LocalizedWebView extends WebView {
                 }
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         // If all else fails:

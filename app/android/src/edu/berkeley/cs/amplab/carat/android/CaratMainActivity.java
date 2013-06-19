@@ -191,7 +191,6 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     protected void onStart() {
-        // TODO Auto-generated method stub
         super.onStart();
 
         String secretKey = null;
@@ -222,7 +221,6 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     protected void onStop() {
-        // TODO Auto-generated method stub
         super.onStop();
         FlurryAgent.onEndSession(getApplicationContext());
     }
@@ -294,7 +292,6 @@ public class CaratMainActivity extends TabActivity {
     /**
      * 
      * Starts a Thread that communicates with the server to send stored samples.
-     * TODO: latest sample for GUI usage.
      * 
      * @see android.app.Activity#onResume()
      */

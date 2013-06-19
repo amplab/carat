@@ -326,17 +326,13 @@ public class CaratApplication extends Application {
      * 1. Create CaratDataStorage and read reports from disk. Does not seem too
      * slow.
      * 
-     * 2. Take a sample in a new thread so that the GUI has fresh data TODO:
-     * Sampling is currently delayed until we get battery stats. What to do on
-     * the first time?
+     * 2. Take a sample in a new thread so that the GUI has fresh data.
      * 
-     * 3. Create CommunicationManager for communicating with the Carat server
-     * TODO: Uses fake data at the moment. TODO: When and by which class to
-     * record UUID, OS, MODEL for this?
+     * 3. Create CommunicationManager for communicating with the Carat server.
      * 
      * 4. Communicate with the server to fetch new reports if current ones are
      * outdated, and to send old stored and the new just-recorded sample. See
-     * CaratMainActivity for this task. TODO: latest sample for GUI usage.
+     * CaratMainActivity for this task.
      */
     @Override
     public void onCreate() {
@@ -561,13 +557,11 @@ public class CaratApplication extends Application {
 
     @Override
     public void onLowMemory() {
-        // TODO Auto-generated method stub
         super.onLowMemory();
     }
 
     @Override
     public void onTerminate() {
-        // TODO Auto-generated method stub
         super.onTerminate();
     }
 }

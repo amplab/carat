@@ -245,13 +245,10 @@ public class CaratSampleDB {
                 if (o != null)
                     s = (Sample) o;
             } catch (StreamCorruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -316,7 +313,6 @@ public class CaratSampleDB {
                 oo.writeObject(s);
                 initialValues.put(COLUMN_SAMPLE, bo.toByteArray());
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

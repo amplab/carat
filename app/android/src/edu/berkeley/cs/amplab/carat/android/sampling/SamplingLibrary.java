@@ -226,7 +226,6 @@ public final class SamplingLibrary {
             // FlurryAgent.logEvent("ANDROID_ID=" + aID +" UUID=" + uuid);
             return uuid;
         } catch (NoSuchAlgorithmException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return aID;
         }
@@ -702,7 +701,6 @@ public final class SamplingLibrary {
                 String label = pm.getApplicationLabel(info).toString();
                 if (label != null && label.length() > 0)
                     item.setApplicationLabel(label);
-                // TODO: get more application details and assign to item
                 int flags = pak.applicationInfo.flags;
                 // Check if it is a system app
                 boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
@@ -1628,9 +1626,6 @@ public final class SamplingLibrary {
         nd.setWifiLinkSpeed(wifiLinkSpeed);
         // Add NetworkDetails substruct to Sample
         mySample.setNetworkDetails(nd);
-
-        // TODO: is this used for something?
-        // WifiInfo connectionInfo=SamplingLibrary.getWifiInfo(context);
 
         /* Calling Information */
         // List<String> callInfo;
