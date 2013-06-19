@@ -102,8 +102,8 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
         // acceptDisableAutoSync(results);
         if (results.isEmpty())
             helpCaratCollectMoreData(results);
-        // TODO: This should come from the server. 
-        boolean questionnaireEnabled = true;
+        String url = CaratApplication.s.getQuestionnaireUrl(); 
+        boolean questionnaireEnabled = url != null && url.length() > 0;
         if (questionnaireEnabled)
             questionnaire(results);
     }
@@ -279,7 +279,6 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 
 		if (raw.equals(FAKE_ITEM)){
             holder.txtName.setText(a.getString(R.string.osupgrade));
-            // TODO: Include process type=priority in Sample?
             holder.txtType.setText(a.getString(R.string.information));
             holder.txtBenefit.setText(a.getString(R.string.unknown));
         } else {

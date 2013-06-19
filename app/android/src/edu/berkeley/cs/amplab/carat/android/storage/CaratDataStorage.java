@@ -23,6 +23,7 @@ public class CaratDataStorage {
 
     public static final String FILENAME = "carat-reports.dat";
     public static final String BLACKLIST_FILE = "carat-blacklist.dat";
+    public static final String QUESTIONNAIRE_URL_FILE = "questionnaire-url.txt";
     public static final String BLACKLIST_FRESHNESS = "carat-blacklist-freshness.dat";
     public static final String QUICKHOGS_FRESHNESS = "carat-quickhogs-freshness.dat";
     public static final String GLOBLIST_FILE = "carat-globlist.dat";
@@ -38,6 +39,7 @@ public class CaratDataStorage {
     private long blacklistFreshness = 0;
     private long quickHogsFreshness = 0;
     private long samples_reported = 0;
+    private String questionnaireUrl = null;
     private WeakReference<Reports> caratData = null;
     private WeakReference<SimpleHogBug[]> bugData = null;
     private WeakReference<SimpleHogBug[]> hogData = null;
@@ -305,6 +307,40 @@ public class CaratDataStorage {
             return;
         blacklistedGlobs = new WeakReference<List<String>>(globlist);
         writeObject(globlist, GLOBLIST_FILE);
+    }
+    
+    /**
+     * @return the questionnaire base URL, read from storage or memory.
+     */
+    public String getQuestionnaireUrl() {
+        if (questionnaireUrl != null)
+            return questionnaireUrl;
+        else
+            return readQuestionnaireUrl();
+    }
+    
+    /**
+     * 
+     * @return the questionnaire base URL, read from storage.
+     */
+    public String readQuestionnaireUrl() {
+        String url = readText(QUESTIONNAIRE_URL_FILE);
+        //Log.d("CaratDataStorage", "Read blacklist: " + o);
+        if (url != null) {
+            return url;
+        } else
+            return null;
+    }
+    
+    /**
+     * Write questionnaire URL to permanent storage.
+     * @param url the questionnaire base URL.
+     */
+    public void writeQuestionnaireUrl(String url) {
+        if (url == null)
+            return;
+        questionnaireUrl = url;
+        writeText(url, QUESTIONNAIRE_URL_FILE);
     }
     
     

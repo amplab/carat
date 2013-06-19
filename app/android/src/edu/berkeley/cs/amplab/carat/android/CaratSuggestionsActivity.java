@@ -315,18 +315,17 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
      * Open a Carat-related questionnaire.
      */
     public void openQuestionnaire(){
-        /*TODO: Get questionnaire url and whether questionnaire is enabled, 
-         * when connected to the Internet, but only when connected. Do not show this option if not connected.
-         */
         
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String caratId = Uri.encode(p.getString(CaratApplication.REGISTERED_UUID, ""));
         String os = Uri.encode(SamplingLibrary.getOsVersion());
         String model = Uri.encode(SamplingLibrary.getModel());
-        
-        String url = "https://docs.google.com/forms/d/1UuRtuGKAZMoj2b0nxaCwUqLfHAo1fiusausOBx2U-lw/viewform?entry.139951253="+caratId+"&entry.1837589261="+model+"&entry.1502438884="+os;
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
+        String url = CaratApplication.s.getQuestionnaireUrl();
+        if (url != null) {
+            url = url.replace("caratid", caratId).replace("caratos", os).replace("caratmodel", model);
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(browserIntent);
+        }
     }
 
     /*

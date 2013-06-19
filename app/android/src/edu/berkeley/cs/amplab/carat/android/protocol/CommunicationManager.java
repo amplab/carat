@@ -35,6 +35,7 @@ public class CommunicationManager {
 
     private static final String TAG = "CommsManager";
     private static final String DAEMONS_URL = "http://carat.cs.berkeley.edu/daemons.txt";
+    private static final String QUESTIONNAIRE_URL = "http://www.cs.helsinki.fi/u/lagerspe/caratapp/questionnaire-url.txt";
 
     private CaratApplication a = null;
 
@@ -301,6 +302,7 @@ public class CommunicationManager {
         
         if (bl) {
             refreshBlacklist();
+            refreshQuestionnaireLink();
         }
 
         CaratApplication.s.writeFreshness();
@@ -413,6 +415,30 @@ public class CommunicationManager {
                 }
                 // So we don't try again too often.
                 CaratApplication.s.writeBlacklistFreshness();
+            }
+        }.start();
+    }
+    
+    private void refreshQuestionnaireLink() {
+        // I/O, let's do it on the background.
+        new Thread() {
+            public void run() {
+                String s = null;
+                try {
+                    URL u = new URL(QUESTIONNAIRE_URL);
+                    URLConnection c = u.openConnection();
+                    InputStream is = c.getInputStream();
+                    if (is != null) {
+                        BufferedReader rd = new BufferedReader(
+                                new InputStreamReader(is));
+                        s = rd.readLine();
+                        rd.close();
+                        if (s != null && s.length() > 0)
+                            CaratApplication.s.writeQuestionnaireUrl(s);
+                    }
+                } catch (Throwable th) {
+                    Log.e(TAG, "Could not retrieve blacklist!", th);
+                }
             }
         }.start();
     }
