@@ -224,7 +224,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
     
     private void questionnaire(ArrayList<SimpleHogBug> result) {
         SimpleHogBug item = new SimpleHogBug(
-                a.getString(R.string.questionnaire), Type.OS);
+                a.getString(R.string.questionnaire), Type.OTHER, a.getString(R.string.questionnaire2));
         result.add(item);
 }
 
@@ -296,6 +296,9 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             else{ // Other action
                 holder.txtName.setText(label);
             }
+            if (type == Type.OTHER)
+                holder.txtType.setText(item.getAppPriority());
+            else
             holder.txtType.setText(CaratApplication.translatedPriority(item.getAppPriority()));
             
             /*if (raw.equals(a.getString(R.string.disablebluetooth))){

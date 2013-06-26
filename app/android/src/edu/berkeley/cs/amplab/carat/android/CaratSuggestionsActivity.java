@@ -137,6 +137,10 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                         txtName.setText(label);
                         killButton.setText(label);
                     }
+                    if (fullObject.getType() == Type.OTHER){
+                        // Already translated
+                        txtType.setText(fullObject.getAppPriority());
+                    }else
                     txtType.setText(CaratApplication
                             .translatedPriority(fullObject.getAppPriority()));
 

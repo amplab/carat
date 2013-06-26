@@ -30,7 +30,8 @@
     <string name="checkback3">For best results, open Carat once a day for a week.</string>
     <string name="copied">Copied:</string>
     <string name="helpcarat">Help Carat collect data</string>
-    <string name="questionnaire">Please answer a Carat-related questionnaire</string>
+    <string name="questionnaire">Please help us improve Carat</string>
+    <string name="questionnaire2">Answer a questionnaire (takes 5&#8211;10 minutes)</string>
     <string name="feedback">Give feedback</string>
     <string name="share">Share …</string>
     <string name="sharewith">Share with:</string>

@@ -31,6 +31,15 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
         this.appName = appName;
     }
     
+    public SimpleHogBug(String appName, Type type, String priority){
+        this.type = type;
+        if (type == Type.OTHER)
+            appPriority = priority;
+        else if (type == Type.OS)
+            appPriority = CaratApplication.importanceString(CaratApplication.IMPORTANCE_SUGGESTION);
+        this.appName = appName;
+    }
+    
     
     private String appName; // optional
     /**
