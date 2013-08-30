@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -82,6 +83,7 @@ public class CaratApplication extends Application {
     // Used to map importances to human readable strings for sending samples to
     // the server, and showing them in the process list.
     private static final SparseArray<String> importanceToString = new SparseArray<String>();
+    public static final int COMMS_MAX_BATCHES = 50;
     {
         importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY,
                 "Not running");
@@ -472,6 +474,9 @@ public class CaratApplication extends Application {
                     refreshHogs();
                     setActionProgress(90, getString(R.string.finishing), false);
                 }
+                CaratApplication.setActionFinished();
+                SampleSender.sendSamples(connected, CaratApplication.this);
+                CaratApplication.setActionFinished();
             }
         }.start();
     }

@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import com.flurry.android.FlurryAgent;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.CommsThread;
+import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.protocol.HelloServer;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
@@ -45,12 +45,6 @@ public class CaratMainActivity extends TabActivity {
 
     // 250 ms
     public static final long ANIMATION_DURATION = 250;
-
-    // Thread that sends samples when phone is woken up, GUI is started, or at
-    // 15 min intervals.
-    private CommsThread sampleSender = null;
-    // private distanceThread distanceInfo = null;
-    //private UiRefreshThread uiRefreshThread = null;
 
     // Hold the tabs of the UI.
     public static TabHost tabHost = null;
@@ -299,36 +293,19 @@ public class CaratMainActivity extends TabActivity {
     protected void onResume() {
         Log.i(TAG, "Resumed");
         CaratApplication.setMain(this);
-        // Thread for sending samples every 15 mins
 
-        if (sampleSender == null) {
-            sampleSender = new CommsThread((CaratApplication) getApplication());
-            sampleSender.start();
-        } else {
-            Log.d("CaratMainActivity", "Resuming SampleSender");
-            new Thread() {
-                public void run() {
-                    sampleSender.appResumed();
-                }
-            }.start();
-        }
-
-        /*
-         * if (distanceInfo == null) { distanceInfo= new
-         * distanceThread((CaratApplication) getApplication());
-         * distanceInfo.start(); } else { Log.d("CaratMainActivity",
-         * "Resuming location distance calculation!"); new Thread() { public
-         * void run() { distanceInfo.appResumed(); } }.start(); }
-         */
-        // Thread for refreshing the UI with new reports every 5 mins and on
-        // resume
+        /*Thread for refreshing the UI with new reports every 5 mins and on
+         * resume. Also sends samples and updates blacklist/questionnaire url. */
         
         Log.d(TAG, "Refreshing UI");
-        new Thread() {
-            public void run() {
-                ((CaratApplication) getApplication()).refreshUi();
-            }
-        }.start();
+        // This spawns a thread, so it does not need to be in a thread.
+        /*
+         * new Thread() { public void run() {
+         */
+        ((CaratApplication) getApplication()).refreshUi();
+        /*
+         * } }.start();
+         */
         super.onResume();
     }
 
@@ -341,7 +318,6 @@ public class CaratMainActivity extends TabActivity {
     protected void onPause() {
         Log.i(TAG, "Paused");
         SamplingLibrary.resetRunningProcessInfo();
-        sampleSender.paused();
         super.onPause();
     }
 
@@ -352,13 +328,6 @@ public class CaratMainActivity extends TabActivity {
      */
     @Override
     public void finish() {
-        sampleSender.stopRunning();
-        sampleSender.appResumed();
-        // distanceInfo.appResumed();
-        // distanceInfo.stopRunning();
-        //uiRefreshThread.stopRunning();
-        //uiRefreshThread.appResumed();
-
         Log.d(TAG, "Finishing up");
         super.finish();
     }
