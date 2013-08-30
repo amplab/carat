@@ -103,7 +103,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
         if (results.isEmpty())
             helpCaratCollectMoreData(results);
         String url = CaratApplication.s.getQuestionnaireUrl(); 
-        boolean questionnaireEnabled = url != null && url.length() > 0;
+        boolean questionnaireEnabled = url != null && url.length() > 7; // http://
         if (questionnaireEnabled)
             questionnaire(results);
     }
