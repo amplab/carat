@@ -435,6 +435,8 @@ public class CommunicationManager {
                         rd.close();
                         if (s != null && s.length() > 0)
                             CaratApplication.s.writeQuestionnaireUrl(s);
+                        else
+                            CaratApplication.s.writeQuestionnaireUrl(" ");
                     }
                 } catch (Throwable th) {
                     Log.e(TAG, "Could not retrieve blacklist!", th);
