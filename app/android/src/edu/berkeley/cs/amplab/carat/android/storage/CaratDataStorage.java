@@ -343,7 +343,6 @@ public class CaratDataStorage {
         writeText(url, QUESTIONNAIRE_URL_FILE);
     }
     
-    
     public void samplesReported(int howmany) {
     	samples_reported += howmany;
         writeText(samples_reported+ "", SAMPLES_REPORTED);

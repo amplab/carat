@@ -129,6 +129,40 @@ public class CaratSampleDB {
         }
         return cursor;
     }
+    
+    public int countSamples() {
+        try {
+            synchronized (dbLock) {
+                if (db == null || !db.isOpen()) {
+                    try{
+                        db = helper.getWritableDatabase();
+                    }catch (android.database.sqlite.SQLiteException ex){
+                        Log.e(TAG, "Could not open database", ex);
+                        return -1;
+                    }
+                }
+                
+                Cursor cursor = db.rawQuery("select count(timestamp) FROM "+SAMPLES_VIRTUAL_TABLE, null);
+
+                if (cursor == null) {
+                    // There are no results
+                    return -1;
+                } else {
+                    int ret = -1;
+                    cursor.moveToFirst();
+                    while (!cursor.isAfterLast()) {
+                        ret = cursor.getInt(0);
+                        cursor.moveToNext();
+                    }
+                    cursor.close();
+                    return ret;
+                }
+            }
+        } catch (Throwable th) {
+            Log.e(TAG, "Failed to query oldest samples!", th);
+        }
+        return -1;
+    }
 
     public SortedMap<Long, Sample> queryOldestSamples(int howmany) {
         SortedMap<Long, Sample> results = new TreeMap<Long, Sample>();
