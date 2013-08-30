@@ -475,7 +475,7 @@ public class CaratApplication extends Application {
                     setActionProgress(90, getString(R.string.finishing), false);
                 }
                 CaratApplication.setActionFinished();
-                SampleSender.sendSamples(connected, CaratApplication.this);
+                SampleSender.sendSamples(CaratApplication.this);
                 CaratApplication.setActionFinished();
             }
         }.start();

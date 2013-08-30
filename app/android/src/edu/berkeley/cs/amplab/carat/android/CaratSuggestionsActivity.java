@@ -319,7 +319,6 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
      * Open a Carat-related questionnaire.
      */
     public void openQuestionnaire(){
-        
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String caratId = Uri.encode(p.getString(CaratApplication.REGISTERED_UUID, ""));
         String os = Uri.encode(SamplingLibrary.getOsVersion());
