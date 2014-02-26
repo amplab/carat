@@ -49,6 +49,8 @@ public class ProcessInfoAdapter extends BaseAdapter {
                     .findViewById(R.id.app_icon);
             holder.txtName = (TextView) convertView
                     .findViewById(R.id.processName);
+            holder.pkgName = (TextView) convertView
+                    .findViewById(R.id.pkgName);
             holder.txtBenefit = (TextView) convertView
                     .findViewById(R.id.processPriority);
             // holder.moreInfo = (ImageView)
@@ -65,7 +67,8 @@ public class ProcessInfoAdapter extends BaseAdapter {
         if (x == null)
             return convertView;
 
-        PackageInfo pak = SamplingLibrary.getPackageInfo(c, x.getPName());
+        String p = x.getPName();
+        PackageInfo pak = SamplingLibrary.getPackageInfo(c, p);
         String ver = "";
         if (pak != null){
             ver = pak.versionName;
@@ -73,8 +76,9 @@ public class ProcessInfoAdapter extends BaseAdapter {
                 ver = pak.versionCode+"";
         }
 
-        holder.appIcon.setImageDrawable(CaratApplication.iconForApp(c, x.getPName()));
-        holder.txtName.setText(CaratApplication.labelForApp(c, x.getPName())+ " " + ver);
+        holder.appIcon.setImageDrawable(CaratApplication.iconForApp(c, p));
+        holder.pkgName.setText(p);
+        holder.txtName.setText(CaratApplication.labelForApp(c, p)+ " " + ver);
         holder.txtBenefit.setText(CaratApplication.translatedPriority(x.getImportance()));
         // holder.moreInfo...
 
@@ -85,6 +89,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
         ImageView appIcon;
         TextView txtName;
         TextView txtBenefit;
+        TextView pkgName;
         // ImageView moreInfo;
     }
 }
