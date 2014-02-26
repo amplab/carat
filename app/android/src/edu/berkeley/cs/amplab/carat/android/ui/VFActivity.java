@@ -5,4 +5,6 @@ public interface VFActivity {
     public void setViewId(int id);
     
     public int getViewId();
+    
+    public void refresh();
 }

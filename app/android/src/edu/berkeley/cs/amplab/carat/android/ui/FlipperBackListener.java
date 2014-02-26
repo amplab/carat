@@ -69,6 +69,7 @@ public class FlipperBackListener extends BaseSwipeListener {
                 vf.setInAnimation(CaratMainActivity.inFromLeft);
                 vf.setDisplayedChild(backViewIndex);
                 vfa.setViewId(backViewIndex);
+                vfa.refresh();
                 return true;
             }
         }

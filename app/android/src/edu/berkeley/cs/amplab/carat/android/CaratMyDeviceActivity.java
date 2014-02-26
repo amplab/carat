@@ -445,4 +445,10 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             }
         });
     }
+
+    @Override
+    public void refresh() {
+        // TODO Auto-generated method stub
+        
+    }
 }
