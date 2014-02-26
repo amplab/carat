@@ -58,6 +58,7 @@ import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.CellLocation;
+import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
@@ -1819,6 +1820,11 @@ public final class SamplingLibrary {
     
     public static void printMobileSignalStrength(Context context){
         TelephonyManager m = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        List<NeighboringCellInfo> list = m.getNeighboringCellInfo();
+        if (list != null && list.size() > 0){
+            NeighboringCellInfo i = list.get(0);
+            i.getRssi();
+        }
     }
 
     public static byte[] getPermissionBytes(String[] perms) {
