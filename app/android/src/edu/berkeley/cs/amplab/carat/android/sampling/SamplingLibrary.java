@@ -19,6 +19,7 @@ import java.security.interfaces.DSAPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import com.flurry.android.FlurryAgent;
 
@@ -1523,7 +1525,44 @@ public final class SamplingLibrary {
         }
         return batteryLevel;
     }
+    
+    /**
+     * Get whether the screen is on or off.
+     * @return true if the screen is on.
+     */
+    public static boolean isScreenOn(Context context){
+        android.os.PowerManager powerManager =
+                (android.os.PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        if (powerManager != null)
+            return powerManager.isScreenOn();
+        return false;
+    }
+    
+    /**
+     * Get the current timezone of the device.
+     */
 
+    public static String getTimeZone(Context context) {
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
+        return tz.getDisplayName();
+    }
+    /*
+     * TODO:
+     * Make the app running when the system reboots, and provide a stop button.
+     * CPU and Memory info per application
+     * CPU core/ frequency, CPU governors usage
+     * How to motivate user to upload more samples.
+     */
+    
+
+    /**
+     * Safely terminate (kill) the given app.
+     * @param context
+     * @param packageName
+     * @param label
+     * @return
+     */
     public static boolean killApp(Context context, String packageName, String label) {
         ActivityManager am = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
         if (am != null) {
@@ -1772,8 +1811,14 @@ public final class SamplingLibrary {
         mySample.setCpuStatus(cs);
 
         // printAverageFeaturePower(context);
+        
+        //printMobileSignalStrength(context);
 
         return mySample;
+    }
+    
+    public static void printMobileSignalStrength(Context context){
+        TelephonyManager m = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     public static byte[] getPermissionBytes(String[] perms) {
