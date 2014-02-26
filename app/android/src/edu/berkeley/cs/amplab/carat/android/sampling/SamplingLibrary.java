@@ -1812,19 +1812,8 @@ public final class SamplingLibrary {
         mySample.setCpuStatus(cs);
 
         // printAverageFeaturePower(context);
-        
-        //printMobileSignalStrength(context);
 
         return mySample;
-    }
-    
-    public static void printMobileSignalStrength(Context context){
-        TelephonyManager m = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        List<NeighboringCellInfo> list = m.getNeighboringCellInfo();
-        if (list != null && list.size() > 0){
-            NeighboringCellInfo i = list.get(0);
-            i.getRssi();
-        }
     }
 
     public static byte[] getPermissionBytes(String[] perms) {
