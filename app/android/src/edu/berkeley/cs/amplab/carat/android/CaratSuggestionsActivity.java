@@ -36,6 +36,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     private View killView = null;
     private View collectDataView = null;
     private int emptyIndex = -1;
+    private LocalizedWebView webview = null;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +58,8 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         final ListView lv = (ListView) findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
 
-        initKillView();
-        initCollectDataView();
+        //initKillView();
+        //initCollectDataView();
 
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -91,10 +92,12 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                 else if (raw.equals(getString(R.string.disableautomaticsync)))
                     GoToSyncScreen();
                 else if (raw.equals(getString(R.string.helpcarat))){
+                    initCollectDataView();
                     switchView(collectDataView);
                 }else if (raw.equals(getString(R.string.questionnaire))){
                     openQuestionnaire();
                 } else {
+                    initKillView();
                     ImageView icon = (ImageView) killView
                             .findViewById(R.id.suggestion_app_icon);
                     TextView txtName = (TextView) killView
@@ -206,6 +209,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     }
 
     private void initKillView() {
+        if (killView == null){
         LayoutInflater inflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View killPage = inflater.inflate(R.layout.killlayout, null);
@@ -229,16 +233,19 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         });
         killView = killPage;
         vf.addView(killView);
+        }
     }
     
     private void initCollectDataView() {
+        if (webview == null){
         LayoutInflater inflater = (LayoutInflater) getApplicationContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View collectPage = inflater.inflate(R.layout.collectdata, null);
-        LocalizedWebView webview = (LocalizedWebView) collectPage.findViewById(R.id.collectDataView);
+        webview = (LocalizedWebView) collectPage.findViewById(R.id.collectDataView);
         webview.loadUrl("file:///android_asset/collectdata.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex));
         vf.addView(webview);
+        }
     }
 
     private void initUpgradeOsView() {

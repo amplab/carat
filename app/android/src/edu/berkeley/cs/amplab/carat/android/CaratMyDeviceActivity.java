@@ -57,13 +57,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         View baseView = findViewById(R.id.scrollView1);
         baseView.setOnTouchListener(SwipeListener.instance);
         baseViewIndex = vf.indexOfChild(baseView);
-        initJscoreView();
-        initMemoryView();
-        initBatteryLifeView();
+        //initJscoreView();
+        //initMemoryView();
+        //initBatteryLifeView();
         initProcessListView();
-        initOsView();
-        initModelView();
-        initAppsView();
+        //initOsView();
+        //initModelView();
+        //initAppsView();
         setModelAndVersion();
 
         Object o = getLastNonConfigurationInstance();
@@ -114,30 +114,6 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                 .setText(pp.getText());
     }
 
-    private void initJscoreView() {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.jscoreView);
-       
-        webview.loadUrl("file:///android_asset/jscoreinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
-    }
-
-    private void initMemoryView() {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.memoryView);
-       
-        webview.loadUrl("file:///android_asset/memoryinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
-    }
-    
-    private void initBatteryLifeView() {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.batteryLifeView);
-       
-        webview.loadUrl("file:///android_asset/batterylifeinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
-    }
-
     private void initProcessListView() {
         final ListView lv = (ListView) findViewById(R.id.processList);
         lv.setCacheColorHint(0);
@@ -151,9 +127,6 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
          * Toast.makeText(CaratMyDeviceActivity.this, "You have chosen: " + " "
          * + fullObject.processName, Toast.LENGTH_LONG).show(); } });
          */
-        List<ProcessInfo> searchResults = SamplingLibrary
-                .getRunningAppInfo(getApplicationContext());
-        lv.setAdapter(new ProcessInfoAdapter(this, searchResults));
         lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
     }
@@ -189,24 +162,6 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         });
 
         return result;
-    }
-
-    private void initOsView() {
-        View[] viewAndPage = construct();
-        osView = (DrawView) viewAndPage[0];
-        osViewPage = viewAndPage[1];
-    }
-
-    private void initModelView() {
-        View[] viewAndPage = construct();
-        modelView = (DrawView) viewAndPage[0];
-        modelViewPage = viewAndPage[1];
-    }
-
-    private void initAppsView() {
-        View[] viewAndPage = construct();
-        appsView = (DrawView) viewAndPage[0];
-        appsViewPage = viewAndPage[1];
     }
     
     long[] lastPoint = null;
@@ -254,6 +209,9 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showOsInfo(View v) {
+        View[] viewAndPage = construct();
+        osView = (DrawView) viewAndPage[0];
+        osViewPage = viewAndPage[1];
         Reports r = CaratApplication.s.getReports();
         if (r != null) {
             DetailScreenReport os = r.getOs();
@@ -289,6 +247,9 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showDeviceInfo(View v) {
+        View[] viewAndPage = construct();
+        modelView = (DrawView) viewAndPage[0];
+        modelViewPage = viewAndPage[1];
         Reports r = CaratApplication.s.getReports();
         if (r != null) {
             DetailScreenReport model = r.getModel();
@@ -360,6 +321,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showMemoryInfo(View v) {
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.memoryView);
+        
+        webview.loadUrl("file:///android_asset/memoryinfo.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));
         switchView(R.id.memoryView);
     }
 
@@ -370,6 +336,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showBatteryLifeInfo(View v) {
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.batteryLifeView);
+        
+        webview.loadUrl("file:///android_asset/batterylifeinfo.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));
         switchView(R.id.batteryLifeView);
     }
     
@@ -380,6 +351,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void viewJscoreInfo(View v) {
+        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.jscoreView);
+        
+        webview.loadUrl("file:///android_asset/jscoreinfo.html");
+        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));
         switchView(R.id.jscoreView);
     }
 
