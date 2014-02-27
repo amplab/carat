@@ -20,7 +20,7 @@
 package org.apache.thrift.transport;
 
 
-
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -29,13 +29,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
-import android.util.Log;
-
 /**
  * Socket implementation of the TTransport interface. To be commented soon!
  *
  */
 public class TSocket extends TIOStreamTransport {
+
+
 
   /**
    * Wrapped Socket object
@@ -119,7 +119,7 @@ public class TSocket extends TIOStreamTransport {
       socket_.setTcpNoDelay(true);
       socket_.setSoTimeout(timeout_);
     } catch (SocketException sx) {
-      Log.e("Thrift", "Could not configure socket.", sx);
+      Log.e("Protocol", "Could not configure socket.", sx);
     }
   }
 

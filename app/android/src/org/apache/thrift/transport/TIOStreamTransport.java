@@ -20,13 +20,11 @@
 package org.apache.thrift.transport;
 
 
-
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import android.util.Log;
 
 /**
  * This is the most commonly used base transport. It takes an InputStream
@@ -36,6 +34,8 @@ import android.util.Log;
  *
  */
 public class TIOStreamTransport extends TTransport {
+
+
 
   /** Underlying inputStream */
   protected InputStream inputStream_ = null;

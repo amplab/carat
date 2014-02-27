@@ -30,15 +30,14 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
+
 import android.util.Log;
-
-
-
 
 /**
  * Wrapper around ServerSocketChannel
  */
 public class TNonblockingServerSocket extends TNonblockingServerTransport {
+
 
   /**
    * This channel is where all the nonblocking magic happens.

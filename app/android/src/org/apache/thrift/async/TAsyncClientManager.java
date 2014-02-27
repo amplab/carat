@@ -33,12 +33,11 @@ import org.apache.thrift.TException;
 
 import android.util.Log;
 
-
-
 /**
  * Contains selector thread which transitions method call objects
  */
 public class TAsyncClientManager {
+
 
   private final SelectThread selectThread;
   private final ConcurrentLinkedQueue<TAsyncMethodCall> pendingCalls = new ConcurrentLinkedQueue<TAsyncMethodCall>();
@@ -108,13 +107,13 @@ public class TAsyncClientManager {
               }
             }
           } catch (IOException e) {
-            Log.e("Thrift", "Caught IOException in TAsyncClientManager!", e);
+            Log.e("Protocol", "Caught IOException in TAsyncClientManager!", e);
           }
           transitionMethods();
           timeoutMethods();
           startPendingMethods();
         } catch (Exception exception) {
-          Log.e("Thrift", "Ignoring uncaught exception in SelectThread", exception);
+          Log.e("Protocol", "Ignoring uncaught exception in SelectThread", exception);
         }
       }
     }
@@ -142,7 +141,7 @@ public class TAsyncClientManager {
           }
         }
       } catch (ClosedSelectorException e) {
-        Log.e("Thrift", "Caught ClosedSelectorException in TAsyncClientManager!", e);
+        Log.e("Protocol", "Caught ClosedSelectorException in TAsyncClientManager!", e);
       }
     }
 

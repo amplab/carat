@@ -44,6 +44,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningServiceInfo;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -787,8 +788,21 @@ public final class SamplingLibrary {
             item.setImportance(pi.getImportance());
             item.setPId(pi.getPId());
             item.setPName(pname);
+            
+            String installationSource = null;
+            if (!pi.isSystemApp) {
+                try{
+                Log.w(STAG, "Calling getInstallerPackageName with: " + pname);
+                installationSource = pm.getInstallerPackageName(pname);
+                }catch (IllegalArgumentException iae){
+                    Log.e(STAG, "Could not get installer for " + pname, iae);
+                }
+            }
+            if (installationSource == null)
+                installationSource = "null";
+            item.setInstallationPkg(installationSource);
 
-            procMem[list.indexOf(pi)] = pi.getPId();
+            //procMem[list.indexOf(pi)] = pi.getPId();
             // FIXME: More fields will need to be added here, but ProcessInfo
             // needs to change.
             /*
@@ -1531,12 +1545,13 @@ public final class SamplingLibrary {
      * Get whether the screen is on or off.
      * @return true if the screen is on.
      */
-    public static boolean isScreenOn(Context context){
+    public static int isScreenOn(Context context){
         android.os.PowerManager powerManager =
                 (android.os.PowerManager) context.getSystemService(Context.POWER_SERVICE);
         if (powerManager != null)
-            return powerManager.isScreenOn();
-        return false;
+            if (powerManager.isScreenOn())
+                return 1;
+        return 0;
     }
     
     /**
@@ -1548,6 +1563,31 @@ public final class SamplingLibrary {
         TimeZone tz = cal.getTimeZone();
         return tz.getDisplayName();
     }
+    
+    /**
+     * 
+     * @param context
+     * @return true when app installation from unknown sources is enabled. 
+     */
+    public static int allowUnknownSources(Context context){
+        ContentResolver res = context.getContentResolver();
+        int unknownSources = Settings.Secure.getInt(res, Settings.Secure.INSTALL_NON_MARKET_APPS, 0);
+        return unknownSources;
+    }
+    
+    /**
+     * 
+     * @param context
+     * @return true when developer mode is enabled. 
+     */
+    public static int isDeveloperModeOn(Context context){
+        ContentResolver res = context.getContentResolver();
+        int adb = Settings.Secure.getInt(res, Settings.Secure.ADB_ENABLED, 0);
+        // In API level 17, this is Settings.Global.ADB_ENABLED.
+        return adb;
+    }
+    
+    
     /*
      * TODO:
      * Make the app running when the system reboots, and provide a stop button.
@@ -1811,6 +1851,11 @@ public final class SamplingLibrary {
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
 
+        
+        mySample.setDeveloperMode(isDeveloperModeOn(context));
+        mySample.setUnknownSources(allowUnknownSources(context));
+        mySample.setScreenOn(isScreenOn(context));
+        mySample.setTimeZone(getTimeZone(context));
         // printAverageFeaturePower(context);
 
         return mySample;

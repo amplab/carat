@@ -17,27 +17,10 @@
  * under the License.
  */
 
-package org.apache.thrift;
-
-import org.apache.thrift.transport.TTransport;
-
 /**
- * The default processor factory just returns a singleton
- * instance.
+ * Interface for storing server's connection context
  */
-public class TProcessorFactory {
+ 
+package org.apache.thrift.server;
 
-  private final TProcessor processor_;
-
-  public TProcessorFactory(TProcessor processor) {
-    processor_ = processor;
-  }
-
-  public TProcessor getProcessor(TTransport trans) {
-    return processor_;
-  }
-
-  public boolean isAsyncProcessor() {
-      return processor_ instanceof TBaseAsyncProcessor;
-  }
-}
+public interface ServerContext {}

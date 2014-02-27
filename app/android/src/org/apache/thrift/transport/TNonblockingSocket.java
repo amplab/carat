@@ -30,15 +30,15 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
+
 import android.util.Log;
-
-
-
 
 /**
  * Transport for use with async client.
  */
 public class TNonblockingSocket extends TNonblockingTransport {
+
+
 
   /**
    * Host and port if passed in, used for lazy non-blocking connect.

@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.apache.thrift.TBaseAsyncProcessor;
 import org.apache.thrift.TByteArrayOutputStream;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
@@ -40,8 +41,6 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
 import android.util.Log;
-
-
 
 /**
  * Provides common methods and classes used by nonblocking TServer
@@ -63,12 +62,12 @@ public abstract class AbstractNonblockingServer extends TServer {
    * time. Without this limit, the server will gladly allocate client buffers
    * right into an out of memory exception, rather than waiting.
    */
-  private final long MAX_READ_BUFFER_BYTES;
+  final long MAX_READ_BUFFER_BYTES;
 
   /**
    * How many bytes are currently allocated to read buffers.
    */
-  private final AtomicLong readBufferBytesAllocated = new AtomicLong(0);
+  final AtomicLong readBufferBytesAllocated = new AtomicLong(0);
 
   public AbstractNonblockingServer(AbstractNonblockingServerArgs args) {
     super(args);
@@ -124,7 +123,7 @@ public abstract class AbstractNonblockingServer extends TServer {
       serverTransport_.listen();
       return true;
     } catch (TTransportException ttx) {
-      Log.e("Thrift", "Failed to start listening on server socket!", ttx);
+      Log.e("Protocol", "Failed to start listening on server socket!", ttx);
       return false;
     }
   }
@@ -266,23 +265,41 @@ public abstract class AbstractNonblockingServer extends TServer {
    * response data back to the client. In the process it manages flipping the
    * read and write bits on the selection key for its client.
    */
-  protected class FrameBuffer {
+   public class FrameBuffer {
+
     // the actual transport hooked up to the client.
-    private final TNonblockingTransport trans_;
+    protected final TNonblockingTransport trans_;
 
     // the SelectionKey that corresponds to our transport
-    private final SelectionKey selectionKey_;
+    protected final SelectionKey selectionKey_;
 
     // the SelectThread that owns the registration of our transport
-    private final AbstractSelectThread selectThread_;
+    protected final AbstractSelectThread selectThread_;
 
     // where in the process of reading/writing are we?
-    private FrameBufferState state_ = FrameBufferState.READING_FRAME_SIZE;
+    protected FrameBufferState state_ = FrameBufferState.READING_FRAME_SIZE;
 
     // the ByteBuffer we'll be using to write and read, depending on the state
-    private ByteBuffer buffer_;
+    protected ByteBuffer buffer_;
 
-    private TByteArrayOutputStream response_;
+    protected final TByteArrayOutputStream response_;
+    
+    // the frame that the TTransport should wrap.
+    protected final TMemoryInputTransport frameTrans_;
+    
+    // the transport that should be used to connect to clients
+    protected final TTransport inTrans_;
+    
+    protected final TTransport outTrans_;
+    
+    // the input protocol to use on frames
+    protected final TProtocol inProt_;
+    
+    // the output protocol to use on frames
+    protected final TProtocol outProt_;
+    
+    // context associated with this connection
+    protected final ServerContext context_;
 
     public FrameBuffer(final TNonblockingTransport trans,
         final SelectionKey selectionKey,
@@ -291,6 +308,19 @@ public abstract class AbstractNonblockingServer extends TServer {
       selectionKey_ = selectionKey;
       selectThread_ = selectThread;
       buffer_ = ByteBuffer.allocate(4);
+
+      frameTrans_ = new TMemoryInputTransport();
+      response_ = new TByteArrayOutputStream();
+      inTrans_ = inputTransportFactory_.getTransport(frameTrans_);
+      outTrans_ = outputTransportFactory_.getTransport(new TIOStreamTransport(response_));
+      inProt_ = inputProtocolFactory_.getProtocol(inTrans_);
+      outProt_ = outputProtocolFactory_.getProtocol(outTrans_);
+
+      if (eventHandler_ != null) {
+        context_ = eventHandler_.createContext(inProt_, outProt_);
+      } else {
+        context_  = null;
+      }
     }
 
     /**
@@ -313,7 +343,7 @@ public abstract class AbstractNonblockingServer extends TServer {
           // pull out the frame size as an integer.
           int frameSize = buffer_.getInt(0);
           if (frameSize <= 0) {
-            Log.e("Thrift", "Read an invalid frame size of " + frameSize
+            Log.e("Protocol", "Read an invalid frame size of " + frameSize
                 + ". Are you using TFramedTransport on the client side?");
             return false;
           }
@@ -321,7 +351,7 @@ public abstract class AbstractNonblockingServer extends TServer {
           // if this frame will always be too large for this server, log the
           // error and close the connection.
           if (frameSize > MAX_READ_BUFFER_BYTES) {
-            Log.e("Thrift", "Read a frame size of " + frameSize
+            Log.e("Protocol", "Read a frame size of " + frameSize
                 + ", which is bigger than the maximum allowable buffer size for ALL connections.");
             return false;
           }
@@ -333,10 +363,11 @@ public abstract class AbstractNonblockingServer extends TServer {
           }
 
           // increment the amount of memory allocated to read buffers
-          readBufferBytesAllocated.addAndGet(frameSize);
+          readBufferBytesAllocated.addAndGet(frameSize + 4);
 
           // reallocate the readbuffer as a frame-sized buffer
-          buffer_ = ByteBuffer.allocate(frameSize);
+          buffer_ = ByteBuffer.allocate(frameSize + 4);
+          buffer_.putInt(frameSize);
 
           state_ = FrameBufferState.READING_FRAME;
         } else {
@@ -368,7 +399,7 @@ public abstract class AbstractNonblockingServer extends TServer {
       }
 
       // if we fall through to this point, then the state must be invalid.
-      Log.e("Thrift", "Read was called but state is invalid (" + state_ + ")");
+      Log.e("Protocol", "Read was called but state is invalid (" + state_ + ")");
       return false;
     }
 
@@ -393,7 +424,7 @@ public abstract class AbstractNonblockingServer extends TServer {
         return true;
       }
 
-      Log.e("Thrift", "Write was called, but state is invalid (" + state_ + ")");
+      Log.e("Protocol", "Write was called, but state is invalid (" + state_ + ")");
       return false;
     }
 
@@ -412,7 +443,7 @@ public abstract class AbstractNonblockingServer extends TServer {
         close();
         selectionKey_.cancel();
       } else {
-        Log.e("Thrift", "changeSelectInterest was called, but state is invalid (" + state_ + ")");
+        Log.e("Protocol", "changeSelectInterest was called, but state is invalid (" + state_ + ")");
       }
     }
 
@@ -426,6 +457,9 @@ public abstract class AbstractNonblockingServer extends TServer {
         readBufferBytesAllocated.addAndGet(-buffer_.array().length);
       }
       trans_.close();
+      if (eventHandler_ != null) {
+        eventHandler_.deleteContext(context_, inProt_, outProt_);
+      }
     }
 
     /**
@@ -470,38 +504,24 @@ public abstract class AbstractNonblockingServer extends TServer {
      * Actually invoke the method signified by this FrameBuffer.
      */
     public void invoke() {
-      TTransport inTrans = getInputTransport();
-      TProtocol inProt = inputProtocolFactory_.getProtocol(inTrans);
-      TProtocol outProt = outputProtocolFactory_.getProtocol(getOutputTransport());
-
+      frameTrans_.reset(buffer_.array());
+      response_.reset();
+      
       try {
-        processorFactory_.getProcessor(inTrans).process(inProt, outProt);
+        if (eventHandler_ != null) {
+          eventHandler_.processContext(context_, inTrans_, outTrans_);
+        }
+        processorFactory_.getProcessor(inTrans_).process(inProt_, outProt_);
         responseReady();
         return;
       } catch (TException te) {
         Log.w("Thrift", "Exception while invoking!", te);
       } catch (Throwable t) {
-        Log.e("Thrift", "Unexpected throwable while invoking!", t);
+        Log.e("Protocol", "Unexpected throwable while invoking!", t);
       }
       // This will only be reached when there is a throwable.
       state_ = FrameBufferState.AWAITING_CLOSE;
       requestSelectInterestChange();
-    }
-
-    /**
-     * Wrap the read buffer in a memory-based transport so a processor can read
-     * the data it needs to handle an invocation.
-     */
-    private TTransport getInputTransport() {
-      return new TMemoryInputTransport(buffer_.array());
-    }
-
-    /**
-     * Get the transport that should be used by the invoker for responding.
-     */
-    private TTransport getOutputTransport() {
-      response_ = new TByteArrayOutputStream();
-      return outputTransportFactory_.getTransport(new TIOStreamTransport(response_));
     }
 
     /**
@@ -542,7 +562,7 @@ public abstract class AbstractNonblockingServer extends TServer {
      * current thread is this FrameBuffer's select thread, then it just does the
      * interest change immediately.
      */
-    private void requestSelectInterestChange() {
+    protected void requestSelectInterestChange() {
       if (Thread.currentThread() == this.selectThread_) {
         changeSelectInterests();
       } else {
@@ -550,4 +570,39 @@ public abstract class AbstractNonblockingServer extends TServer {
       }
     }
   } // FrameBuffer
+
+  public class AsyncFrameBuffer extends FrameBuffer {
+    public AsyncFrameBuffer(TNonblockingTransport trans, SelectionKey selectionKey, AbstractSelectThread selectThread) {
+      super(trans, selectionKey, selectThread);
+    }
+
+    public TProtocol getInputProtocol() {
+      return  inProt_;
+    }
+
+    public TProtocol getOutputProtocol() {
+      return outProt_;
+    }
+
+
+    public void invoke() {
+      frameTrans_.reset(buffer_.array());
+      response_.reset();
+
+      try {
+        if (eventHandler_ != null) {
+          eventHandler_.processContext(context_, inTrans_, outTrans_);
+        }
+        ((TBaseAsyncProcessor)processorFactory_.getProcessor(inTrans_)).process(this);
+        return;
+      } catch (TException te) {
+        Log.w("Thrift", "Exception while invoking!", te);
+      } catch (Throwable t) {
+        Log.e("Protocol", "Unexpected throwable while invoking!", t);
+      }
+      // This will only be reached when there is a throwable.
+      state_ = FrameBufferState.AWAITING_CLOSE;
+      requestSelectInterestChange();
+    }
+  }
 }

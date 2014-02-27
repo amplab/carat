@@ -20,7 +20,7 @@
 package org.apache.thrift.transport;
 
 
-
+import android.util.Log;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -28,13 +28,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
-import android.util.Log;
-
 /**
  * Wrapper around ServerSocket for Thrift.
  *
  */
 public class TServerSocket extends TServerTransport {
+
+
 
   /**
    * Underlying ServerSocket object
@@ -100,7 +100,7 @@ public class TServerSocket extends TServerTransport {
       try {
         serverSocket_.setSoTimeout(0);
       } catch (SocketException sx) {
-        Log.e("Thrift", "Could not set socket timeout.", sx);
+        Log.e("Protocol", "Could not set socket timeout.", sx);
       }
     }
   }
