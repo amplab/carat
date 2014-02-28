@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.lists;
 
+import java.util.Collections;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.R;
@@ -25,6 +26,7 @@ public class ProcessInfoAdapter extends BaseAdapter {
     public ProcessInfoAdapter(Context context, List<ProcessInfo> results) {
         this.c = context;
         searchArrayList = results;
+        Collections.sort(searchArrayList, new AlphabeticalProcessInfoSort(context));
         mInflater = LayoutInflater.from(context);
     }
 
