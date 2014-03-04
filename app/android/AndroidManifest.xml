@@ -123,6 +123,7 @@
                 <!--  <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" /> -->
             </intent-filter>
         </receiver>
+        <service android:label="SamplingService" android:name=".sampling.SamplerService"></service>
     </application>
 
 </manifest>
