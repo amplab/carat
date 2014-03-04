@@ -3,10 +3,12 @@ package edu.berkeley.cs.amplab.carat.android.storage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -37,7 +39,8 @@ public class CaratSampleDB {
 
     public static final String DATABASE_NAME = "caratdata";
     public static final String SAMPLES_VIRTUAL_TABLE = "sampleobjects";
-    private static final int DATABASE_VERSION = 2;
+    // TODO: Bump version here when changing the protocol, new one incompatible with old
+    private static final int DATABASE_VERSION = 3;
 
     private static final HashMap<String, String> mColumnMap = buildColumnMap();
 
@@ -57,7 +60,7 @@ public class CaratSampleDB {
         return instance;
     }
 
-    public CaratSampleDB(Context context) {
+    private CaratSampleDB(Context context) {
         synchronized (dbLock) {
             helper = new SampleDbOpenHelper(context);
         }
@@ -189,9 +192,11 @@ public class CaratSampleDB {
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
                         Sample s = fillSample(cursor);
-                        results.put(cursor.getLong(cursor
-                                .getColumnIndex(BaseColumns._ID)), s);
-                        cursor.moveToNext();
+                        if (s != null) {
+                            results.put(cursor.getLong(cursor
+                                    .getColumnIndex(BaseColumns._ID)), s);
+                            cursor.moveToNext();
+                        }
                     }
                     cursor.close();
 
@@ -269,6 +274,7 @@ public class CaratSampleDB {
      */
     private Sample fillSample(Cursor cursor) {
         Sample s = null;
+
         byte[] sampleB = cursor.getBlob(cursor
                 .getColumnIndex(CaratSampleDB.COLUMN_SAMPLE));
         if (sampleB != null) {
@@ -277,7 +283,7 @@ public class CaratSampleDB {
                 oi = new ObjectInputStream(new ByteArrayInputStream(sampleB));
                 Object o = oi.readObject();
                 if (o != null)
-                    s = (Sample) o;
+                    s = SampleReader.readSample(o);
             } catch (StreamCorruptedException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -286,7 +292,6 @@ public class CaratSampleDB {
                 e.printStackTrace();
             }
         }
-
         return s;
     }
 
@@ -320,7 +325,7 @@ public class CaratSampleDB {
                 // force init
                 id = addSample(s);
                 if (id >= 0)
-                    lastSample = s;
+                    lastSample = SampleReader.readSample(s);
                 if (db != null && db.isOpen()) {
                     db.close();
                 }
@@ -338,13 +343,13 @@ public class CaratSampleDB {
      */
     private long addSample(Sample s) {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(COLUMN_TIMESTAMP, s.getTimestamp());
-        // Add the piList as a blob
+        initialValues.put(COLUMN_TIMESTAMP, s.timestamp);
+        // Write the sample hashmap as a blob
         if (s != null) {
             try {
                 ByteArrayOutputStream bo = new ByteArrayOutputStream();
                 ObjectOutputStream oo = new ObjectOutputStream(bo);
-                oo.writeObject(s);
+                oo.writeObject(SampleReader.writeSample(s));
                 initialValues.put(COLUMN_SAMPLE, bo.toByteArray());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -396,6 +401,10 @@ public class CaratSampleDB {
             mDatabase = db;
             try {
                 mDatabase.execSQL(FTS_TABLE_CREATE);
+                /**
+                 * Compact database here
+                 */
+                mDatabase.execSQL("PRAGMA auto_vacuum = 1;");
             } catch (Throwable th) {
                 // Already created
                 Log.e(TAG, "DB create failed!", th);
