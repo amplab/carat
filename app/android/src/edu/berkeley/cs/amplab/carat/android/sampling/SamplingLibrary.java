@@ -792,7 +792,7 @@ public final class SamplingLibrary {
             String installationSource = null;
             if (!pi.isSystemApp) {
                 try{
-                Log.w(STAG, "Calling getInstallerPackageName with: " + pname);
+                //Log.w(STAG, "Calling getInstallerPackageName with: " + pname);
                 installationSource = pm.getInstallerPackageName(pname);
                 }catch (IllegalArgumentException iae){
                     Log.e(STAG, "Could not get installer for " + pname);
