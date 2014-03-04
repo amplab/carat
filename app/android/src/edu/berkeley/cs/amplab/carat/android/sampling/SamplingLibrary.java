@@ -795,7 +795,7 @@ public final class SamplingLibrary {
                 Log.w(STAG, "Calling getInstallerPackageName with: " + pname);
                 installationSource = pm.getInstallerPackageName(pname);
                 }catch (IllegalArgumentException iae){
-                    Log.e(STAG, "Could not get installer for " + pname, iae);
+                    Log.e(STAG, "Could not get installer for " + pname);
                 }
             }
             if (installationSource == null)
