@@ -107,8 +107,8 @@ public class SampleReader {
                                     .get(pif);
                             if (pmd.valueMetaData.type == org.apache.thrift.protocol.TType.LIST) {
                                 if (pi.appSignatures != null) {
-                                    for (int j = 0; j < pi.appSignatures.size(); i++) {
-                                        String sig = pi.appSignatures.get(i);
+                                    for (int j = 0; j < pi.appSignatures.size(); j++) {
+                                        String sig = pi.appSignatures.get(j);
                                         b.append(sig);
                                         if (j + 1 < len)
                                             b.append("#");
