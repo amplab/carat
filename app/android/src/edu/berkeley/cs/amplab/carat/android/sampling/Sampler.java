@@ -4,9 +4,9 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -62,43 +62,15 @@ public class Sampler extends WakefulBroadcastReceiver implements
         if (lastKnownLocation == null)
             lastKnownLocation = SamplingLibrary.getLastKnownLocation(context);
 
+        
+        //Log.i(TAG, "Carat received Intent: "+intent.getAction());
+        
         Intent service = new Intent(context, SamplerService.class);
         service.putExtra("OriginalAction", intent.getAction());
         service.fillIn(intent, 0);
         service.putExtra("lastBatteryLevel", lastBatteryLevel);
         service.putExtra("distance", distance);
         startWakefulService(context, service);
-    }
-
-    /**
-     * Used to start Sampler on reboot even when Carat is not started. Not used
-     * at the moment to keep Carat simple.
-     * 
-     * @param context
-     */
-
-    private void onBoot(Context context) {
-        // Schedule recurring sampling event:
-        // What to start when the event fires (this is unused at the moment)
-        Intent in = new Intent(context, Sampler.class);
-        in.setAction(CaratApplication.ACTION_CARAT_SAMPLE);
-        // In reality, you would want to have a static variable for the
-        // request code instead of 192837
-        /*
-         * PendingIntent sender = PendingIntent.getBroadcast(context, 192837,
-         * in, PendingIntent.FLAG_UPDATE_CURRENT);
-         */
-        // Get the AlarmManager service
-        /*
-         * AlarmManager am = (AlarmManager) context
-         * .getSystemService(Activity.ALARM_SERVICE); // 1 min first, 15 min
-         * intervals am.setInexactRepeating(AlarmManager.RTC_WAKEUP,
-         * CaratApplication.FIRST_SAMPLE_DELAY_MS,
-         * CaratApplication.SAMPLE_INTERVAL_MS, sender);
-         */
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-        context.registerReceiver(new Sampler(), intentFilter);
     }
 
     @Override

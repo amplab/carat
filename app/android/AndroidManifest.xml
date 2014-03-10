@@ -11,8 +11,7 @@
 
     <!-- Not actually required. -->
 <!--     <uses-permission android:name="android.permission.BATTERY_STATS" /> -->
-    <!-- Not used at the moment -->
-<!--     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <!-- For sending and receiving Samples and reports. -->
@@ -92,6 +91,15 @@
         </activity>
 
         <receiver
+            android:name=".sampling.BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Start Carat on boot" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>                
+        </receiver>
+        <receiver
             android:name=".sampling.Sampler"
             android:enabled="true"
             android:exported="true"
@@ -108,19 +116,16 @@
 
                 <!-- This event cannot be registered to from the manifest either. -->
 <!--                 <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
-                <!-- Let's not make Carat immortal for now. -->
-<!-- 
-                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <data android:scheme="package" /> 
                 <!-- BATTERY_CHANGED seems to activate in all these conditions: -->
                 <!-- <action android:name="android.intent.action.BATTERY_LOW" />
-                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />-->
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />-->
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
                 <!-- Sample on timer if nothing else happens for 15 mins -->
-                <!--  <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" /> -->
+                <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
             </intent-filter>
         </receiver>
         <service android:label="SamplingService" android:name=".sampling.SamplerService"></service>

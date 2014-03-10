@@ -2,15 +2,23 @@ package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.Date;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class SamplerService extends IntentService {
@@ -42,7 +50,7 @@ public class SamplerService extends IntentService {
         Context context = getApplicationContext();
         
         String action = intent.getStringExtra("OriginalAction");
-        Log.i(TAG, "Original intent: " +action);
+        //Log.i(TAG, "Original intent: " +action);
         if (action != null){
         double lastBatteryLevel = intent.getDoubleExtra("lastBatteryLevel", 0.0);
         double distance = intent.getDoubleExtra("distance", 0.0);
@@ -77,6 +85,22 @@ public class SamplerService extends IntentService {
                     .putBoolean(
                             SamplingLibrary.UNINSTALLED + uninstalledPackage,
                             true).commit();
+        }else if (action.equals(CaratApplication.ACTION_CARAT_SAMPLE)){
+            // set up sampling.
+            // Let sampling happen on battery change
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+            /*intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+            intentFilter.addDataScheme("package"); // add addDataScheme*/
+            Sampler sampler = Sampler.getInstance();
+            // Unregister, since Carat may have been started multiple times
+            // since reboot
+            try {
+                unregisterReceiver(sampler);
+            } catch (IllegalArgumentException e) {
+                // No-op
+            }
+            registerReceiver(sampler, intentFilter);
         }
         
         CaratSampleDB ds = CaratSampleDB.getInstance(context);
@@ -87,23 +111,49 @@ public class SamplerService extends IntentService {
          */
 
         double bl = SamplingLibrary.getBatteryLevel(context, intent);
-        if (bl <= 0){
-            wl.release();
-            return;
+            if (bl > 0) {
+
+                Sample lastSample = ds.getLastSample(context);
+
+                if ((lastSample == null && lastBatteryLevel != bl)
+                        || (lastSample != null && lastSample.getBatteryLevel() != bl)) {
+                    // Log.i(TAG,
+                    // "Sampling for intent="+i.getAction()+" lastSample=" +
+                    // (lastSample != null ? lastSample.getBatteryLevel()+"":
+                    // "null") + " current battery="+bl);
+                    // Take a sample.
+                    getSample(ds, context, intent, lastSample, distance);
+                    lastBatteryLevel = bl;
+                    
+                    notify(context);
+                }
+            }
         }
         
-        Sample lastSample = ds.getLastSample(context);
-        
-        if ((lastSample == null && lastBatteryLevel != bl) || (lastSample != null && lastSample.getBatteryLevel() != bl)) {
-            //Log.i(TAG, "Sampling for intent="+i.getAction()+" lastSample=" + (lastSample != null ? lastSample.getBatteryLevel()+"": "null") + " current battery="+bl);
-            // Take a sample.
-            getSample(ds, context, intent, lastSample, distance);
-            lastBatteryLevel = bl;
-        }
-        
-        }
         wl.release();
         Sampler.completeWakefulIntent(intent);
+    }
+    
+    
+    private void notify(Context context){
+        int samples = CaratSampleDB.getInstance(context).countSamples();
+        if (samples >= 200){
+        PendingIntent launchCarat = PendingIntent.getActivity(context, 0,
+                new Intent(context, CaratMainActivity.class), 0);
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+                context)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("Please open Carat")
+                .setContentText("Please open Carat. Samples to send:")
+                .setNumber(samples);
+        mBuilder.setContentIntent(launchCarat);
+        mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        mBuilder.setAutoCancel(true);
+        NotificationManager mNotificationManager = (NotificationManager) context
+                .getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());
+        }
     }
 
     /**
@@ -129,9 +179,6 @@ public class SamplerService extends IntentService {
             long id = ds.putSample(s);
             //Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
             //FlurryAgent.logEvent(intent.getAction());
-            /*Toast.makeText(context,
-                    "Took sample " + id + " for " + intent.getAction(),
-                    Toast.LENGTH_LONG).show();*/
         }
         return s;
     }
