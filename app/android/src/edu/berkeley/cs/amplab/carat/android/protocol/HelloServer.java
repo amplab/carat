@@ -3,8 +3,6 @@ package edu.berkeley.cs.amplab.carat.android.protocol;
 import java.io.*;
 import java.util.*;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.NanoHTTPD.Response;
-
 
 /**
  * An example of subclassing NanoHTTPD to make a custom HTTP server.

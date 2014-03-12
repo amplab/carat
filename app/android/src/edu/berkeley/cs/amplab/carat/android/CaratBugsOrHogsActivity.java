@@ -22,7 +22,6 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 import android.widget.AdapterView.OnItemClickListener;
@@ -102,7 +101,6 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 		LayoutInflater inflater = (LayoutInflater) getApplicationContext()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		detailPage = inflater.inflate(R.layout.graph, null);
-		ViewGroup g = (ViewGroup) detailPage;
 		w = new DrawView(getApplicationContext());
 		//g.addView(w);
 		vf.addView(detailPage);

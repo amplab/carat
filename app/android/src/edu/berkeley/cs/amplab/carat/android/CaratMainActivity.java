@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import com.flurry.android.FlurryAgent;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
-import edu.berkeley.cs.amplab.carat.android.protocol.HelloServer;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Context;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -15,7 +14,7 @@ import android.os.Bundle;
 public class Sampler extends WakefulBroadcastReceiver implements
         LocationListener {
 
-    private static final String TAG = "Sampler";
+    //private static final String TAG = "Sampler";
 
     private static Sampler instance = null;
 

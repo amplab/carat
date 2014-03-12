@@ -3,7 +3,6 @@ package edu.berkeley.cs.amplab.carat.android.lists;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
@@ -11,13 +10,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
-import android.bluetooth.BluetoothAdapter;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
-import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,8 +101,9 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             questionnaire(results);
     }
 
+    /*
 	private void acceptDimScreen(ArrayList<SimpleHogBug> result) {
-	    /*set the screen threshold to be 50 */
+	    // set the screen threshold to be 50
 	    if(!SamplingLibrary.isAutoBrightness(a.getApplicationContext()) && SamplingLibrary.getScreenBrightness(a.getApplicationContext())>50){
 	 	        
 	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.dimscreen), Type.OS);
@@ -214,7 +208,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
             // TODO Get expected benefit
             result.add(item);
         }
-    }
+    }*/
 
     private void helpCaratCollectMoreData(ArrayList<SimpleHogBug> result) {
             SimpleHogBug item = new SimpleHogBug(

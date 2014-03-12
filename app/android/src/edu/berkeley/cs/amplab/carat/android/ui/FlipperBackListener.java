@@ -1,6 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ViewFlipper;
