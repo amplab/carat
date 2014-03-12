@@ -21,11 +21,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 
@@ -39,7 +41,6 @@ import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
 import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -59,7 +60,6 @@ import android.provider.Settings;
 import android.provider.Settings.Secure;
 import android.provider.Settings.SettingNotFoundException;
 import android.telephony.CellLocation;
-import android.telephony.NeighboringCellInfo;
 import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
@@ -256,35 +256,75 @@ public final class SamplingLibrary {
     public static String getManufacturer() {
         return android.os.Build.MANUFACTURER;
     }
-
+    
     /**
-     * Returns the OS version of the device running Carat, for example 2.3.3 or
-     * 4.0.2.
+	 * Returns the OS version of the device running Carat, for example 2.3.3 or
+	 * 4.0.2.
+	 * 
+	 * @return the OS version of the device running Carat, for example 2.3.3 or
+	 *         4.0.2.
+	 */
+	public static String getOsVersion() {
+		return android.os.Build.VERSION.RELEASE;
+	}
+    
+    /**
+     * Returns the product name.
      * 
-     * @return the OS version of the device running Carat, for example 2.3.3 or
-     *         4.0.2.
+     * @return the product name.
      */
-    public static String getOsVersion() {
-        return android.os.Build.VERSION.RELEASE;
+    public static String getProductName() {
+        return android.os.Build.PRODUCT;
     }
 
-    /**
-     * This may only work for 2.3 and later:
-     * 
-     * @return
-     */
+	/**
+	 * Returns the kernel version, e.g. 3.4-1101.
+	 * 
+	 * @return the kernel version, e.g. 3.4-1101.
+	 */
+	public static String getKernelVersion() {
+		return System.getProperty("os.version", TYPE_UNKNOWN);
+	}
 
-    public static String getBuildSerial() {
-        // return android.os.Build.Serial;
-        return System.getProperty("ro.serial", TYPE_UNKNOWN);
-    }
+	/**
+	 * Returns the build serial number. May only work for 2.3 and up.
+	 * 
+	 * @return the build serial number.
+	 */
+	public static String getBuildSerial() {
+		// return android.os.Build.Serial;
+		return System.getProperty("ro.serial", TYPE_UNKNOWN);
+	}
 
-    /**
-     * Return misc system details that we might want to use later. Currently
-     * does nothing.
-     * 
-     * @return
-     */
+	/**
+	 * Print all system properties for debugging.
+	 * 
+	 */
+	public static void printAllProperties() {
+		Properties list = System.getProperties();
+		Enumeration<Object> keys = list.keys();
+		while (keys.hasMoreElements()) {
+			String k = (String) keys.nextElement();
+			String v = list.getProperty(k);
+			Log.d("PROPS", k + "=" + v);
+		}
+	}
+
+	/**
+	 * Returns the brand for which the device is customized, e.g. Verizon.
+	 * 
+	 * @return the brand for which the device is customized, e.g. Verizon.
+	 */
+	public static String getBrand() {
+		return android.os.Build.BRAND;
+	}
+
+	/**
+	 * Return misc system details that we might want to use later. Currently
+	 * does nothing.
+	 * 
+	 * @return
+	 */
     public static Map<String, String> getSystemDetails() {
         Map<String, String> results = new HashMap<String, String>();
         // TODO: Some of this should be added to registration to identify the

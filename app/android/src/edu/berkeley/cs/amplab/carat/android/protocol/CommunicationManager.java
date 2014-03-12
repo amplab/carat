@@ -102,6 +102,8 @@ public class CommunicationManager {
         registration.setPlatformId(model);
         registration.setSystemVersion(os);
         registration.setTimestamp(System.currentTimeMillis() / 1000.0);
+        registration.setKernelVersion(SamplingLibrary.getKernelVersion());
+        registration.setSystemDistribution(SamplingLibrary.getManufacturer()+";"+SamplingLibrary.getBrand());
         FlurryAgent.logEvent("Registering "+uuId+","+model+","+os);
         instance.registerMe(registration);
     }
@@ -164,7 +166,7 @@ public class CommunicationManager {
 
     private void registerOnFirstRun(CaratService.Client instance) {
         if (register) {
-            String uuId = null;
+        	String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
             // Only use new uuid if reg'd after this version for the first time.
             if (registered && (!newuuid && !timeBasedUuid)){
                 uuId = SamplingLibrary.getAndroidId(a);
@@ -173,7 +175,8 @@ public class CommunicationManager {
                 uuId = SamplingLibrary.getUuid(a);
             } else{
             	// Time-based ID scheme
-            	uuId = SamplingLibrary.getTimeBasedUuid(a);
+            	if (uuId == null)
+            		uuId = SamplingLibrary.getTimeBasedUuid(a);
                 Log.d("CommunicationManager",
                         "Generated a new time-based UUID: " + uuId);
                 // This needs to be saved now, so that if server communication fails we have a stable UUID.
