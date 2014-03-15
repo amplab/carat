@@ -22,7 +22,6 @@ import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
@@ -436,7 +435,7 @@ public class CommunicationManager {
                                 new InputStreamReader(is));
                         s = rd.readLine();
                         rd.close();
-                        if (s != null && s.length() > 0)
+                        if (s != null && s.length() > 7 && s.startsWith("http"))
                             CaratApplication.s.writeQuestionnaireUrl(s);
                         else
                             CaratApplication.s.writeQuestionnaireUrl(" ");

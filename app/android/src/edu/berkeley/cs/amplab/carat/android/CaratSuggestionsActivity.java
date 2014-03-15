@@ -331,7 +331,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         String os = Uri.encode(SamplingLibrary.getOsVersion());
         String model = Uri.encode(SamplingLibrary.getModel());
         String url = CaratApplication.s.getQuestionnaireUrl();
-        if (url != null && url.length() > 7) { // http://
+        if (url != null && url.length() > 7 && url.startsWith("http")) { // http://
             url = url.replace("caratid", caratId).replace("caratos", os).replace("caratmodel", model);
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(browserIntent);
