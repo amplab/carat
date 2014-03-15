@@ -59,6 +59,7 @@ public class CaratApplication extends Application {
     public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
     // If true, install Sampling events to occur at boot. Currently not used.
     public static final String PREFERENCE_SAMPLE_FIRST_RUN = "carat.sample.first.run";
+    public static final String PREFERENCE_SEND_INSTALLED_PACKAGES = "carat.sample.send.installed";
 
     // default icon and Carat package name:
     public static String CARAT_PACKAGE = "edu.berkeley.cs.amplab.carat.android";
@@ -80,6 +81,12 @@ public class CaratApplication extends Application {
     public static final int IMPORTANCE_PERCEPTIBLE = 130;
     // Used for non-app suggestions
     public static final int IMPORTANCE_SUGGESTION = 123456789;
+    
+    public static final String IMPORTANCE_NOT_RUNNING = "Not Running";
+    public static final String IMPORTANCE_UNINSTALLED = "uninstalled";
+    public static final String IMPORTANCE_INSTALLED = "installed";
+    public static final String IMPORTANCE_REPLACED = "replaced";
+    
     // Used to map importances to human readable strings for sending samples to
     // the server, and showing them in the process list.
     private static final SparseArray<String> importanceToString = new SparseArray<String>();

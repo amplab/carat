@@ -17,7 +17,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 public class SamplerService extends IntentService {
@@ -64,27 +63,7 @@ public class SamplerService extends IntentService {
             // onBoot(context);
         }
 
-        /*
-         * If a package is uninstalled, remove it from our sent-sigs so if it is
-         * reinstalled, it will be sent again. Also, send the uninstallation
-         * flag in the next sample.
-         */
-        if (action.equals(Intent.ACTION_PACKAGE_REMOVED)) {
-            String uninstalledPackage = intent.getDataString();
-            // package:
-            // 012345678
-            uninstalledPackage = uninstalledPackage.substring(8);
-            // Log.i(TAG, "UNINSTALLED: "+ uninstalledPackage);
-            SharedPreferences p = PreferenceManager
-                    .getDefaultSharedPreferences(context
-                            .getApplicationContext());
-            p.edit()
-                    .remove(SamplingLibrary.SIG_SENT_256 + uninstalledPackage)
-                    .remove(SamplingLibrary.SIG_SENT + uninstalledPackage)
-                    .putBoolean(
-                            SamplingLibrary.UNINSTALLED + uninstalledPackage,
-                            true).commit();
-        }else if (action.equals(CaratApplication.ACTION_CARAT_SAMPLE)){
+        if (action.equals(CaratApplication.ACTION_CARAT_SAMPLE)){
             // set up sampling.
             // Let sampling happen on battery change
             IntentFilter intentFilter = new IntentFilter();

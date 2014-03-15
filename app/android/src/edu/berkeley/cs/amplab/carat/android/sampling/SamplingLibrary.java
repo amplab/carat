@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
@@ -86,6 +87,8 @@ public final class SamplingLibrary {
     private static final boolean collectSignatures = true;
     public static final String SIG_SENT = "sig-sent:";
     public static final String SIG_SENT_256 = "sigs-sent:";
+    public static final String INSTALLED = "installed:";
+    public static final String REPLACED = "replaced:";
     public static final String UNINSTALLED = "uninstalled:";
 
     private static final int READ_BUFFER_SIZE = 2 * 1024;
@@ -661,8 +664,13 @@ public final class SamplingLibrary {
         }
         return false;
     }
-
-    public static PackageInfo getPackageInfo(Context context, String processName) {
+    
+    /**
+     * Helper to ensure the WeakReferenced `packages` is populated.
+     * @param context
+     * @return The content of `packages` or null in case of failure.
+     */
+    private static Map<String, PackageInfo> getPackages(Context context){
         List<android.content.pm.PackageInfo> packagelist = null;
 
         if (packages == null || packages.get() == null || packages.get().size() == 0) {
@@ -692,21 +700,127 @@ public final class SamplingLibrary {
 
             if (mp == null || mp.size() == 0)
                 return null;
-            if (!mp.containsKey(processName))
-                return null;
-            PackageInfo pak = mp.get(processName);
-            return pak;
+            return mp;
         } else {
             if (packages == null)
                 return null;
             Map<String, PackageInfo> p = packages.get();
             if (p == null || p.size() == 0)
                 return null;
-            if (!p.containsKey(processName))
-                return null;
-            PackageInfo pak = p.get(processName);
-            return pak;
+            return p;
         }
+    }
+
+    /**
+     * Get info for a single package from the WeakReferenced packagelist.
+     * @param context
+     * @param processName The package to get info for.
+     * @return info for a single package from the WeakReferenced packagelist.
+     */
+    public static PackageInfo getPackageInfo(Context context, String processName) {
+        Map<String, PackageInfo> mp = getPackages(context);
+            if (mp == null || !mp.containsKey(processName))
+                return null;
+            PackageInfo pak = mp.get(processName);
+            return pak;
+    }
+    
+    /**
+     * Returns a list of installed packages on the device.
+     * Will be called for the first Carat sample on a phone, to get signatures for the
+     * malware detection project. Later on, single package information is got by receiving the package installed intent. 
+     * 
+     * @param context
+     * @param filterSystem if true, exclude system packages.
+     * @return a list of installed packages on the device.
+     */
+    public static Map<String, ProcessInfo> getInstalledPackages(Context context, boolean filterSystem) {
+        Map<String, PackageInfo> packageMap = getPackages(context);
+        PackageManager pm = context.getPackageManager();
+        if (pm == null)
+            return null;
+
+        Map<String, ProcessInfo> result = new HashMap<String, ProcessInfo>();
+
+        for (Entry<String, PackageInfo> pentry: packageMap.entrySet()) {
+            try {
+                String pkg = pentry.getKey();
+                PackageInfo pak = pentry.getValue();
+                if (pak != null) {
+                    int vc = pak.versionCode;
+                    ApplicationInfo info = pak.applicationInfo;
+                    String label = pm.getApplicationLabel(info).toString();
+                    int flags = pak.applicationInfo.flags;
+                    // Check if it is a system app
+                    boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
+                    isSystemApp = isSystemApp || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
+                    if (filterSystem & isSystemApp)
+                        continue;
+                    if (pak.signatures.length > 0) {
+                        List<String> sigList = getSignatures(pak);
+                        ProcessInfo pi = new ProcessInfo();
+                        pi.setPName(pkg);
+                        pi.setApplicationLabel(label);
+                        pi.setVersionCode(vc);
+                        pi.setPId(-1);
+                        pi.setIsSystemApp(isSystemApp);
+                        pi.setAppSignatures(sigList);
+                        pi.setImportance(CaratApplication.IMPORTANCE_NOT_RUNNING);
+                        pi.setInstallationPkg(pm.getInstallerPackageName(pkg));
+                        pi.setVersionName(pak.versionName);
+                        result.put(pkg, pi);
+                    }
+                }
+            } catch (Throwable th) {
+                // Forget about it...
+            }
+        }
+        return result;
+    }
+    
+    /**
+     * Returns info about an installed package.
+     * Will be called when receiving the PACKAGE_ADDED or PACKAGE_REPLACED intent. 
+     * 
+     * @param context
+     * @param filterSystem if true, exclude system packages.
+     * @return a list of installed packages on the device.
+     */
+    public static ProcessInfo getInstalledPackage(Context context, String pkg) {
+        PackageManager pm = context.getPackageManager();
+        if (pm == null)
+            return null;
+        PackageInfo pak;
+        try {
+            pak = pm.getPackageInfo(pkg, PackageManager.GET_SIGNATURES | PackageManager.GET_PERMISSIONS);
+        } catch (NameNotFoundException e) {
+            return null;
+        }
+        if (pak == null)
+            return null;
+
+        ProcessInfo pi = new ProcessInfo();
+        int vc = pak.versionCode;
+        ApplicationInfo info = pak.applicationInfo;
+        String label = pm.getApplicationLabel(info).toString();
+        int flags = pak.applicationInfo.flags;
+        // Check if it is a system app
+        boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
+        isSystemApp = isSystemApp || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
+
+        if (pak.signatures.length > 0) {
+            List<String> sigList = getSignatures(pak);
+            pi.setPName(pkg);
+            pi.setApplicationLabel(label);
+            pi.setVersionCode(vc);
+            pi.setPId(-1);
+            pi.setIsSystemApp(isSystemApp);
+            pi.setAppSignatures(sigList);
+            pi.setImportance(CaratApplication.IMPORTANCE_NOT_RUNNING);
+            pi.setInstallationPkg(pm.getInstallerPackageName(pkg));
+            pi.setVersionName(pak.versionName);
+        }
+        return pi;
     }
 
     /**
@@ -728,9 +842,18 @@ public final class SamplingLibrary {
         int[] procMem = new int[list.size()];
 
         Set<String> procs = new HashSet<String>();
-
+        
+        
+        boolean inst = p.getBoolean(CaratApplication.PREFERENCE_SEND_INSTALLED_PACKAGES, true);
+        
+        Map<String, ProcessInfo> ipkg = null;
+        if (inst)
+            ipkg = getInstalledPackages(context, false);
+        
         for (ProcessInfo pi : list) {
             String pname = pi.getPName();
+            if (ipkg != null && ipkg.containsKey(pname))
+                ipkg.remove(pname);
             procs.add(pname);
             ProcessInfo item = new ProcessInfo();
             PackageInfo pak = getPackageInfo(context, pname);
@@ -750,80 +873,15 @@ public final class SamplingLibrary {
                 boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
                 isSystemApp = isSystemApp || (flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) > 0;
                 item.setIsSystemApp(isSystemApp);
-                boolean sigSent = p.getBoolean(SIG_SENT_256 + pname, false);
+                /*boolean sigSent = p.getBoolean(SIG_SENT_256 + pname, false);
                 if (collectSignatures && !sigSent && pak.signatures != null && pak.signatures.length > 0) {
-                    List<String> sigList = new LinkedList<String>();
-                    String[] pmInfos = pak.requestedPermissions;
-                    if (pmInfos != null) {
-                        byte[] bytes = getPermissionBytes(pmInfos);
-                        String hexB = convertToHex(bytes);
-                        // Log.i(STAG, "Permissions of " + label +":"+
-                        // hexB+": "+Arrays.toString(pmInfos));
-                        sigList.add(hexB);
-                    }
-                    Signature[] sigs = pak.signatures;
-
-                    for (Signature s : sigs) {
-                        MessageDigest md = null;
-                        try {
-                            md = MessageDigest.getInstance("SHA-1");
-                            md.update(s.toByteArray());
-                            byte[] dig = md.digest();
-                            // Add SHA-1
-                            sigList.add(convertToHex(dig));
-
-                            CertificateFactory fac = CertificateFactory.getInstance("X.509");
-                            if (fac == null)
-                                continue;
-                            X509Certificate cert = (X509Certificate) fac.generateCertificate(new ByteArrayInputStream(s
-                                    .toByteArray()));
-                            if (cert == null)
-                                continue;
-                            PublicKey pkPublic = cert.getPublicKey();
-                            if (pkPublic == null)
-                                continue;
-                            String al = pkPublic.getAlgorithm();
-                            if (al.equals("RSA")) {
-                                md = MessageDigest.getInstance("SHA-256");
-                                RSAPublicKey rsa = (RSAPublicKey) pkPublic;
-                                byte[] data = rsa.getModulus().toByteArray();
-                                if (data[0] == 0) {
-                                    byte[] copy = new byte[data.length - 1];
-                                    System.arraycopy(data, 1, copy, 0, data.length - 1);
-                                    md.update(copy);
-                                } else
-                                    md.update(data);
-                                dig = md.digest();
-                                // Add SHA-256 of modulus
-                                sigList.add(convertToHex(dig));
-                            } else if (al.equals("DSA")) {
-                                DSAPublicKey dsa = (DSAPublicKey) pkPublic;
-                                md = MessageDigest.getInstance("SHA-256");
-                                byte[] data = dsa.getY().toByteArray();
-                                if (data[0] == 0) {
-                                    byte[] copy = new byte[data.length - 1];
-                                    System.arraycopy(data, 1, copy, 0, data.length - 1);
-                                    md.update(copy);
-                                } else
-                                    md.update(data);
-                                dig = md.digest();
-                                // Add SHA-256 of public key (DSA)
-                                sigList.add(convertToHex(dig));
-                            } else {
-                                Log.e("SamplingLibrary", "Weird algorithm: " + al + " for " + label);
-                            }
-                        } catch (NoSuchAlgorithmException e) {
-                            // Do nothing
-                        } catch (CertificateException e) {
-                            // Do nothing
-                        }
-                    }
+                    List<String> sigList = getSignatures(pak);
                     boolean sigSentOld = p.getBoolean(SIG_SENT + pname, false);
                     if (sigSentOld)
                         p.edit().remove(SIG_SENT + pname);
                     p.edit().putBoolean(SIG_SENT_256 + pname, true).commit();
                     item.setAppSignatures(sigList);
-                }
+                }*/
             }
             item.setImportance(pi.getImportance());
             item.setPId(pi.getPId());
@@ -851,34 +909,52 @@ public final class SamplingLibrary {
             // add to result
             result.add(item);
         }
-
+        
+        // Send installed packages if we were to do so.
+        if (ipkg != null && ipkg.size() > 0){
+            result.addAll(ipkg.values());
+            p.edit().putBoolean(CaratApplication.PREFERENCE_SEND_INSTALLED_PACKAGES, false).commit();
+        }
+        
+        // Go through the preferences and look for UNINSTALL, INSTALL and REPLACE keys set by InstallReceiver.
         Set<String> ap = p.getAll().keySet();
+        SharedPreferences.Editor e = p.edit();
+        boolean edited = false;
         for (String pref : ap) {
-            if (pref.startsWith(SIG_SENT_256)) {
-                String pname = pref.substring(SIG_SENT_256.length());
-                if (!procs.contains(pname)) {
-                    boolean sent = p.getBoolean(pref, false);
-                    if (sent) {
-                        try {
-                            PackageInfo pi = pm.getPackageInfo(pref.substring(SIG_SENT_256.length()), 0);
-                            if (pi == null) {
-                                // uninstalled
-                                result.add(uninstalledItem(pname, pref, p));
-                            }
-                        } catch (NameNotFoundException e) {
-                            result.add(uninstalledItem(pname, pref, p));
-                        }
-                    }
+            if (pref.startsWith(INSTALLED)) {
+                String pname = pref.substring(INSTALLED.length());
+                boolean installed = p.getBoolean(pref, false);
+                if (installed) {
+                    Log.i(STAG, "Installed:" + pname);
+                    ProcessInfo i = getInstalledPackage(context, pname);
+                    i.setImportance(CaratApplication.IMPORTANCE_INSTALLED);
+                    result.add(i);
+                    e.remove(pref);
+                    edited = true;
+                }
+            } else if (pref.startsWith(REPLACED)) {
+                String pname = pref.substring(REPLACED.length());
+                boolean replaced = p.getBoolean(pref, false);
+                if (replaced) {
+                    Log.i(STAG, "Replaced:" + pname);
+                    ProcessInfo i = getInstalledPackage(context, pname);
+                    i.setImportance(CaratApplication.IMPORTANCE_REPLACED);
+                    result.add(i);
+                    e.remove(pref);
+                    edited = true;
                 }
             } else if (pref.startsWith(UNINSTALLED)) {
                 String pname = pref.substring(UNINSTALLED.length());
-                //Log.i(STAG, "Uninstalled:" + pname);
                 boolean uninstalled = p.getBoolean(pref, false);
                 if (uninstalled) {
-                    result.add(uninstalledItem(pname, pref, p));
+                    Log.i(STAG, "Uninstalled:" + pname);
+                    result.add(uninstalledItem(pname, pref, e));
+                    edited = true;
                 }
             }
         }
+        if (edited)
+            e.commit();
 
         // FIXME: These are not used yet.
         /*
@@ -893,17 +969,18 @@ public final class SamplingLibrary {
 
         return result;
     }
-
-    private static ProcessInfo uninstalledItem(String pname, String pref, SharedPreferences p) {
+    
+    private static ProcessInfo uninstalledItem(String pname, String pref, SharedPreferences.Editor e) {
         ProcessInfo item = new ProcessInfo();
         item.setPName(pname);
         List<String> sigs = new LinkedList<String>();
         sigs.add("uninstalled");
         item.setAppSignatures(sigs);
         item.setPId(-1);
+        item.setImportance(CaratApplication.IMPORTANCE_UNINSTALLED);
         // Remember to remove it so we do not send
         // multiple uninstall events
-        p.edit().remove(pref).commit();
+        e.remove(pref);
         return item;
     }
 
@@ -1899,6 +1976,74 @@ public final class SamplingLibrary {
         // printAverageFeaturePower(context);
 
         return mySample;
+    }
+    
+    public static List<String> getSignatures(PackageInfo pak) {
+        List<String> sigList = new LinkedList<String>();
+        String[] pmInfos = pak.requestedPermissions;
+        if (pmInfos != null) {
+            byte[] bytes = getPermissionBytes(pmInfos);
+            String hexB = convertToHex(bytes);
+            sigList.add(hexB);
+        }
+        Signature[] sigs = pak.signatures;
+
+        for (Signature s : sigs) {
+            MessageDigest md = null;
+            try {
+                md = MessageDigest.getInstance("SHA-1");
+                md.update(s.toByteArray());
+                byte[] dig = md.digest();
+                // Add SHA-1
+                sigList.add(convertToHex(dig));
+
+                CertificateFactory fac = CertificateFactory.getInstance("X.509");
+                if (fac == null)
+                    continue;
+                X509Certificate cert = (X509Certificate) fac.generateCertificate(new ByteArrayInputStream(s.toByteArray()));
+                if (cert == null)
+                    continue;
+                PublicKey pkPublic = cert.getPublicKey();
+                if (pkPublic == null)
+                    continue;
+                String al = pkPublic.getAlgorithm();
+                if (al.equals("RSA")) {
+                    md = MessageDigest.getInstance("SHA-256");
+                    RSAPublicKey rsa = (RSAPublicKey) pkPublic;
+                    byte[] data = rsa.getModulus().toByteArray();
+                    if (data[0] == 0) {
+                        byte[] copy = new byte[data.length - 1];
+                        System.arraycopy(data, 1, copy, 0, data.length - 1);
+                        md.update(copy);
+                    } else
+                        md.update(data);
+                    dig = md.digest();
+                    // Add SHA-256 of modulus
+                    sigList.add(convertToHex(dig));
+                } else if (al.equals("DSA")) {
+                    DSAPublicKey dsa = (DSAPublicKey) pkPublic;
+                    md = MessageDigest.getInstance("SHA-256");
+                    byte[] data = dsa.getY().toByteArray();
+                    if (data[0] == 0) {
+                        byte[] copy = new byte[data.length - 1];
+                        System.arraycopy(data, 1, copy, 0, data.length - 1);
+                        md.update(copy);
+                    } else
+                        md.update(data);
+                    dig = md.digest();
+                    // Add SHA-256 of public key (DSA)
+                    sigList.add(convertToHex(dig));
+                } else {
+                    Log.e("SamplingLibrary", "Weird algorithm: " + al + " for " + pak.packageName);
+                }
+            } catch (NoSuchAlgorithmException e) {
+                // Do nothing
+            } catch (CertificateException e) {
+                // Do nothing
+            }
+
+        }
+        return sigList;
     }
 
     public static byte[] getPermissionBytes(String[] perms) {
