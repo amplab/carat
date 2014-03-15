@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.berkeley.cs.amplab.carat.android"
-    android:versionCode="59"
+    android:versionCode="60"
     android:versionName="@string/version_name"
     >
 
@@ -129,6 +129,14 @@
             </intent-filter>
         </receiver>
         <service android:label="SamplingService" android:name=".sampling.SamplerService"></service>
+        <receiver android:name=".sampling.InstallReceiver" android:label="Installation Intent Receiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <data android:scheme="package" /> 
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
