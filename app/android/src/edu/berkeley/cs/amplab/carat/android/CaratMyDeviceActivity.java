@@ -44,9 +44,10 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     private View osViewPage = null;
     private DrawView modelView = null;
     private View modelViewPage = null;
-    private DrawView appsView = null;
+    /*private DrawView appsView = null;
     private View appsViewPage = null;
-
+     */
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,31 +70,31 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         Object o = getLastNonConfigurationInstance();
         if (o != null) {
             CaratMyDeviceActivity previous = (CaratMyDeviceActivity) o;
-            List<DrawView> views = new ArrayList<DrawView>();
-            views.add(previous.osView);
-            views.add(previous.modelView);
-            views.add(previous.appsView);
-            for (DrawView v : views) {
+            if (previous.osViewPage != null
+                    && previous.osViewPage == previous.vf.getChildAt(viewIndex)) {
+                DrawView v = previous.osView;
+                View[] viewAndPage = construct();
+                osView = (DrawView) viewAndPage[0];
+                osViewPage = viewAndPage[1];
                 Type t = v.getType();
                 String appName = v.getAppName();
-                if (v == previous.osView) {
-                    osView.setParams(t, appName, 
-                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), osViewPage);
-                    //osView.postInvalidate();
-                } else if (v == previous.modelView) {
-                    modelView.setParams(t, appName, 
-                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), modelViewPage);
-                   // modelView.postInvalidate();
-                } else if (v == previous.appsView) {
-                    appsView.setParams(t, appName,
-                            v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), appsViewPage);
-                    //appsView.postInvalidate();
-                }
+                osView.setParams(t, appName, 
+                        v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), osViewPage);
+                restorePage(osViewPage, previous.osViewPage);
+                viewIndex = vf.indexOfChild(osViewPage);
+            }else if (previous.modelViewPage != null
+                    && previous.modelViewPage == previous.vf.getChildAt(viewIndex)) {
+                View[] viewAndPage = construct();
+                modelView = (DrawView) viewAndPage[0];
+                modelViewPage = viewAndPage[1];
+                DrawView v = previous.modelView;
+                Type t = v.getType();
+                String appName = v.getAppName();
+                modelView.setParams(t, appName, 
+                        v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), modelViewPage);
+                restorePage(modelViewPage, previous.modelViewPage);
+                viewIndex = vf.indexOfChild(modelViewPage);
             }
-
-            restorePage(osViewPage, previous.osViewPage);
-            restorePage(modelViewPage, previous.modelViewPage);
-            restorePage(appsViewPage, previous.appsViewPage);
         }
 
         if (viewIndex == 0)
@@ -284,7 +285,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      * @param v
      *            The source of the click.
      */
-    public void showAppInfo(View v) {
+    /*public void showAppInfo(View v) {
         Reports r = CaratApplication.s.getReports();
         if (r != null) {
             DetailScreenReport similar = r.getSimilarApps();
@@ -312,7 +313,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similarWithout.getSamples(), similar.getError(), similarWithout.getError(), appsViewPage);
         }
         switchView(appsViewPage);
-    }
+    }*/
 
     /**
      * Called when Memory additional info button is clicked.

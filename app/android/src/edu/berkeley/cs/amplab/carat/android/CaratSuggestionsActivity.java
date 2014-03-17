@@ -187,8 +187,8 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     }
     
     private void restoreKillView(View previous) {
-        ImageView icon = (ImageView) killView
-                .findViewById(R.id.suggestion_app_icon);
+        initKillView();
+        ImageView icon = (ImageView) killView.findViewById(R.id.suggestion_app_icon);
 
         icon.setImageDrawable(((ImageView) previous
                 .findViewById(R.id.suggestion_app_icon)).getDrawable());
