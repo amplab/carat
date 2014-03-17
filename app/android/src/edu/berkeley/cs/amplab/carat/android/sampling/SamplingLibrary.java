@@ -927,10 +927,12 @@ public final class SamplingLibrary {
                 if (installed) {
                     Log.i(STAG, "Installed:" + pname);
                     ProcessInfo i = getInstalledPackage(context, pname);
-                    i.setImportance(CaratApplication.IMPORTANCE_INSTALLED);
-                    result.add(i);
-                    e.remove(pref);
-                    edited = true;
+                    if (i != null){
+                        i.setImportance(CaratApplication.IMPORTANCE_INSTALLED);
+                        result.add(i);
+                        e.remove(pref);
+                        edited = true;
+                    }
                 }
             } else if (pref.startsWith(REPLACED)) {
                 String pname = pref.substring(REPLACED.length());
@@ -938,10 +940,12 @@ public final class SamplingLibrary {
                 if (replaced) {
                     Log.i(STAG, "Replaced:" + pname);
                     ProcessInfo i = getInstalledPackage(context, pname);
-                    i.setImportance(CaratApplication.IMPORTANCE_REPLACED);
-                    result.add(i);
-                    e.remove(pref);
-                    edited = true;
+                    if (i != null) {
+                        i.setImportance(CaratApplication.IMPORTANCE_REPLACED);
+                        result.add(i);
+                        e.remove(pref);
+                        edited = true;
+                    }
                 }
             } else if (pref.startsWith(UNINSTALLED)) {
                 String pname = pref.substring(UNINSTALLED.length());
