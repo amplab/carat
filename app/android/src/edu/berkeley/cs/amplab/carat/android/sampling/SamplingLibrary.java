@@ -133,15 +133,22 @@ public final class SamplingLibrary {
     public static String NETWORK_TYPE_CDMA = "cdma";
     public static String NETWORK_TYPE_EVDO_0 = "evdo_0";
     public static String NETWORK_TYPE_EVDO_A = "evdo_a";
-    // public static String NETWORK_TYPE_EVDO_B="evdo_b";
+     public static String NETWORK_TYPE_EVDO_B="evdo_b";
     public static String NETWORK_TYPE_1xRTT = "1xrtt";
     public static String NETWORK_TYPE_HSDPA = "hsdpa";
     public static String NETWORK_TYPE_HSUPA = "hsupa";
     public static String NETWORK_TYPE_HSPA = "hspa";
     public static String NETWORK_TYPE_IDEN = "iden";
-    // public static String NETWORK_TYPE_LTE="lte";
-    // public static String NETWORK_TYPE_EHRPD="ehrpd";
-    // public static String NETWORK_TYPE_HSPAP="hspap";
+    public static String NETWORK_TYPE_LTE="lte";
+    public static String NETWORK_TYPE_EHRPD="ehrpd";
+    public static String NETWORK_TYPE_HSPAP="hspap";
+    
+    private static final int EVDO_B = 12;
+    private static final int LTE = 13;
+    private static final int EHRPD = 14;
+    private static final int HSPAP = 15;
+    
+    
     // Phone type constants
     public static String PHONE_TYPE_CDMA = "cdma";
     public static String PHONE_TYPE_GSM = "gsm";
@@ -1424,24 +1431,33 @@ public final class SamplingLibrary {
             return NETWORK_TYPE_CDMA;
         case TelephonyManager.NETWORK_TYPE_EDGE:
             return NETWORK_TYPE_EDGE;
+        case EHRPD:
+            return NETWORK_TYPE_EHRPD;
         case TelephonyManager.NETWORK_TYPE_EVDO_0:
             return NETWORK_TYPE_EVDO_0;
         case TelephonyManager.NETWORK_TYPE_EVDO_A:
             return NETWORK_TYPE_EVDO_A;
+        case EVDO_B:
+            return NETWORK_TYPE_EVDO_B;
         case TelephonyManager.NETWORK_TYPE_GPRS:
             return NETWORK_TYPE_GPRS;
         case TelephonyManager.NETWORK_TYPE_HSDPA:
             return NETWORK_TYPE_HSDPA;
         case TelephonyManager.NETWORK_TYPE_HSPA:
             return NETWORK_TYPE_HSPA;
+        case HSPAP:
+            return NETWORK_TYPE_HSPAP;
         case TelephonyManager.NETWORK_TYPE_HSUPA:
             return NETWORK_TYPE_HSUPA;
         case TelephonyManager.NETWORK_TYPE_IDEN:
             return NETWORK_TYPE_IDEN;
+        case LTE:
+            return NETWORK_TYPE_LTE;
         case TelephonyManager.NETWORK_TYPE_UMTS:
             return NETWORK_TYPE_UMTS;
         default:
-            return NETWORK_TYPE_UNKNOWN;
+            // If we don't know the type, just return the number and let the backend take care of it
+            return netType+"";
         }
     }
 
