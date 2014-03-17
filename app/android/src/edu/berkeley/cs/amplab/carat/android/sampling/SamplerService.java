@@ -113,9 +113,18 @@ public class SamplerService extends IntentService {
     }
     
     
+    
     private void notify(Context context){
+        long now = System.currentTimeMillis();
+        long lastNotify = Sampler.getInstance().getLastNotify();
+        
+        // Do not notify if it is less than 2 days from last notification
+        if (lastNotify + CaratApplication.FRESHNESS_TIMEOUT_QUICKHOGS > now)
+            return;
+        
         int samples = CaratSampleDB.getInstance(context).countSamples();
-        if (samples >= 200){
+        if (samples >= Sampler.MAX_SAMPLES){
+            Sampler.getInstance().setLastNotify(now);
         PendingIntent launchCarat = PendingIntent.getActivity(context, 0,
                 new Intent(context, CaratMainActivity.class), 0);
 

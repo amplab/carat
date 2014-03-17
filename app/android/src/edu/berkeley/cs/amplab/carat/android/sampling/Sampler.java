@@ -16,6 +16,8 @@ public class Sampler extends WakefulBroadcastReceiver implements
 
     //private static final String TAG = "Sampler";
 
+    public static final int MAX_SAMPLES = 250;
+
     private static Sampler instance = null;
 
     public static Sampler getInstance() {
@@ -30,6 +32,8 @@ public class Sampler extends WakefulBroadcastReceiver implements
     private double lastBatteryLevel = 0;
     private Location lastKnownLocation = null;
     private double distance = 0.0;
+
+    private long lastNotify;
 
     public Sampler() {
         Sampler.instance = this;
@@ -103,5 +107,13 @@ public class Sampler extends WakefulBroadcastReceiver implements
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         requestLocationUpdates();
+    }
+
+    public long getLastNotify() {
+        return lastNotify;
+    }
+
+    public void setLastNotify(long now) {
+        this.lastNotify = now;
     }
 }
