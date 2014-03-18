@@ -88,13 +88,15 @@ public class SampleReader {
                     for (Feature f : s.extra) {
                         b.append(f.key + ";" + f.value + "\n");
                     }
-                    b.deleteCharAt(b.lastIndexOf("\n"));
+                    if (b.length() > 1)
+                    	b.deleteCharAt(b.lastIndexOf("\n"));
                     m.put(sf.getFieldName(), b.toString());
                 } else if (md.fieldName.equals(Sample._Fields.LOCATION_PROVIDERS.getFieldName()) && s.locationProviders != null) {
                     StringBuilder b = new StringBuilder();
                     for (String lp : s.locationProviders)
                         b.append(lp + "\n");
-                    b.deleteCharAt(b.lastIndexOf("\n"));
+                    if (b.length() > 1)
+                    	b.deleteCharAt(b.lastIndexOf("\n"));
                     m.put(sf.getFieldName(), b.toString());
                 } else if (md.fieldName.equals(Sample._Fields.PI_LIST.getFieldName()) && s.piList != null) {
                     StringBuilder b = new StringBuilder();
@@ -122,7 +124,8 @@ public class SampleReader {
                         }
                         b.append("\n");
                     }
-                    b.deleteCharAt(b.lastIndexOf("\n"));
+                    if (b.length() > 1)
+                    	b.deleteCharAt(b.lastIndexOf("\n"));
                     m.put(sf.getFieldName(), b.toString());
                 }
                 break;
