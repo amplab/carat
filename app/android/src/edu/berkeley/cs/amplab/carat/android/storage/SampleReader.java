@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.thrift.meta_data.FieldMetaData;
 
+import android.util.Log;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
 import edu.berkeley.cs.amplab.carat.thrift.Feature;
@@ -25,6 +26,8 @@ import edu.berkeley.cs.amplab.carat.thrift.Sample._Fields;
  * 
  */
 public class SampleReader {
+	
+	public static final String TAG = "SampleReader"; 
 
     /**
      * Library class, instantiation prohibited.
@@ -215,26 +218,41 @@ public class SampleReader {
                                  * automatically.
                                  */
                                 for (int i = 1; i <= items.length; i++) {
+                                	if (items[i-1] == null)
+                                		continue;
                                     ProcessInfo._Fields pif = ProcessInfo._Fields
                                             .findByThriftId(i);
                                     FieldMetaData pmd = ProcessInfo.metaDataMap.get(pif);
+                                    String cleaned = items[i - 1].replaceAll("\"", "");
                                     switch (pmd.valueMetaData.type) {
                                     case org.apache.thrift.protocol.TType.STRING:
-                                        pi.setFieldValue(pif, items[i - 1]);
+                                        pi.setFieldValue(pif, cleaned);
                                         break;
                                     case org.apache.thrift.protocol.TType.I32:
-                                        pi.setFieldValue(pif, Integer.parseInt(items[i - 1]));
+                                    	try{
+                                        pi.setFieldValue(pif, Integer.parseInt(cleaned));
+                                    	}catch (NumberFormatException e){
+                                    		Log.e(TAG, "Could not read "+md.fieldName+": \""+cleaned+"\" as an int");
+                                    	}
                                         break;
                                     case org.apache.thrift.protocol.TType.DOUBLE:
-                                        pi.setFieldValue(pif, Double.parseDouble(items[i - 1]));
+                                    	try{
+                                        pi.setFieldValue(pif, Double.parseDouble(cleaned));
+                                    	}catch (NumberFormatException e){
+                                    		Log.e(TAG, "Could not read "+md.fieldName+": \""+cleaned+"\" as a double");
+                                    	}
                                         break;
                                     case org.apache.thrift.protocol.TType.BOOL:
+                                    	try{
                                         pi.setFieldValue(pif,
-                                                Boolean.parseBoolean(items[i - 1]));
+                                                Boolean.parseBoolean(cleaned));
+                                    	}catch (NumberFormatException e){
+                                    		Log.e(TAG, "Could not read "+md.fieldName+": \""+cleaned+"\" as a bool");
+                                    	}
                                         break;
                                     case org.apache.thrift.protocol.TType.LIST:
                                         List<String> list = new LinkedList<String>();
-                                        String[] arr = items[i - 1].split("#");
+                                        String[] arr = cleaned.split("#");
                                         for (String sig : arr)
                                             list.add(sig);
                                         pi.setFieldValue(pif, list);
@@ -261,18 +279,31 @@ public class SampleReader {
         for (int i = 1; i <= items.length; i++) {
             CpuStatus._Fields pif = CpuStatus._Fields.findByThriftId(i);
             FieldMetaData md = CpuStatus.metaDataMap.get(pif);
+            String cleaned = items[i - 1].replaceAll("\"", "");
             switch (md.valueMetaData.type) {
             case org.apache.thrift.protocol.TType.STRING:
-                cs.setFieldValue(pif, items[i - 1]);
+                cs.setFieldValue(pif, cleaned);
                 break;
             case org.apache.thrift.protocol.TType.I32:
-                cs.setFieldValue(pif, Integer.parseInt(items[i - 1]));
+            	try{
+                cs.setFieldValue(pif, Integer.parseInt(cleaned));
+            }catch (NumberFormatException e){
+        		Log.e(TAG, "Could not read "+md.fieldName+": \""+cleaned+"\" as an int");
+        	}
                 break;
             case org.apache.thrift.protocol.TType.DOUBLE:
-                cs.setFieldValue(pif, Double.parseDouble(items[i - 1]));
+            	try{
+                cs.setFieldValue(pif, Double.parseDouble(cleaned));
+            }catch (NumberFormatException e){
+        		Log.e(TAG, "Could not read "+md.fieldName+": \""+cleaned+"\" as a double");
+        	}
                 break;
             case org.apache.thrift.protocol.TType.BOOL:
-                cs.setFieldValue(pif, Boolean.parseBoolean(items[i - 1]));
+            	try{
+                cs.setFieldValue(pif, Boolean.parseBoolean(cleaned));
+            	}catch (NumberFormatException e){
+            		Log.e(TAG, "Could not read "+md.fieldName+": \""+cleaned+"\" as a bool");
+            	}
                 break;
             case org.apache.thrift.protocol.TType.LIST:
                 List<String> list = new LinkedList<String>();
@@ -286,65 +317,94 @@ public class SampleReader {
         }
     }
 
-    private static void fillBatteryDetails(String string, BatteryDetails bd) {
-        String[] items = string.split("\n");
-        for (int i = 1; i <= items.length; i++) {
-            BatteryDetails._Fields pif = BatteryDetails._Fields
-                    .findByThriftId(i);
-            FieldMetaData md = BatteryDetails.metaDataMap.get(pif);
-            switch (md.valueMetaData.type) {
-            case org.apache.thrift.protocol.TType.STRING:
-                bd.setFieldValue(pif, items[i - 1]);
-                break;
-            case org.apache.thrift.protocol.TType.I32:
-                bd.setFieldValue(pif, Integer.parseInt(items[i - 1]));
-                break;
-            case org.apache.thrift.protocol.TType.DOUBLE:
-                bd.setFieldValue(pif, Double.parseDouble(items[i - 1]));
-                break;
-            case org.apache.thrift.protocol.TType.BOOL:
-                bd.setFieldValue(pif, Boolean.parseBoolean(items[i - 1]));
-                break;
-            case org.apache.thrift.protocol.TType.LIST:
-                List<String> list = new LinkedList<String>();
-                String[] arr = items[i - 1].split(";");
-                for (String sig : arr)
-                    list.add(sig);
-                bd.setFieldValue(pif, list);
-                break;
-            default:
-            }
-        }
-    }
+	private static void fillBatteryDetails(String string, BatteryDetails bd) {
+		String[] items = string.split("\n");
+		for (int i = 1; i <= items.length; i++) {
+			BatteryDetails._Fields pif = BatteryDetails._Fields
+					.findByThriftId(i);
+			FieldMetaData md = BatteryDetails.metaDataMap.get(pif);
+			String cleaned = items[i - 1].replaceAll("\"", "");
+			switch (md.valueMetaData.type) {
+			case org.apache.thrift.protocol.TType.STRING:
+				bd.setFieldValue(pif, cleaned);
+				break;
+			case org.apache.thrift.protocol.TType.I32:
+				try {
+					bd.setFieldValue(pif, Integer.parseInt(cleaned));
+				} catch (NumberFormatException e) {
+					Log.e(TAG, "Could not read "+md.fieldName+": \"" + cleaned + "\" as an int");
+				}
+				break;
+			case org.apache.thrift.protocol.TType.DOUBLE:
+				try {
+					bd.setFieldValue(pif, Double.parseDouble(cleaned));
+				} catch (NumberFormatException e) {
+					Log.e(TAG, "Could not read "+md.fieldName+": \"" + cleaned + "\" as a double");
+				}
+				break;
+			case org.apache.thrift.protocol.TType.BOOL:
+				try {
+					bd.setFieldValue(pif, Boolean.parseBoolean(cleaned));
+				} catch (NumberFormatException e) {
+					Log.e(TAG, "Could not read "+md.fieldName+": \"" + cleaned + "\" as a bool");
+				}
+				break;
+			case org.apache.thrift.protocol.TType.LIST:
+				List<String> list = new LinkedList<String>();
+				String[] arr = items[i - 1].split(";");
+				for (String sig : arr)
+					list.add(sig);
+				bd.setFieldValue(pif, list);
+				break;
+			default:
+			}
+		}
+	}
 
-    private static void fillNetworkDetails(String string, NetworkDetails nd) {
-        String[] items = string.split("\n");
-        for (int i = 1; i <= items.length; i++) {
-            NetworkDetails._Fields pif = NetworkDetails._Fields
-                    .findByThriftId(i);
-            FieldMetaData md = NetworkDetails.metaDataMap.get(pif);
-            switch (md.valueMetaData.type) {
-            case org.apache.thrift.protocol.TType.STRING:
-                nd.setFieldValue(pif, items[i - 1]);
-                break;
-            case org.apache.thrift.protocol.TType.I32:
-                nd.setFieldValue(pif, Integer.parseInt(items[i - 1]));
-                break;
-            case org.apache.thrift.protocol.TType.DOUBLE:
-                nd.setFieldValue(pif, Double.parseDouble(items[i - 1]));
-                break;
-            case org.apache.thrift.protocol.TType.BOOL:
-                nd.setFieldValue(pif, Boolean.parseBoolean(items[i - 1]));
-                break;
-            case org.apache.thrift.protocol.TType.LIST:
-                List<String> list = new LinkedList<String>();
-                String[] arr = items[i - 1].split(";");
-                for (String sig : arr)
-                    list.add(sig);
-                nd.setFieldValue(pif, list);
-                break;
-            default:
-            }
+	private static void fillNetworkDetails(String string, NetworkDetails nd) {
+		String[] items = string.split("\n");
+		for (int i = 1; i <= items.length; i++) {
+			NetworkDetails._Fields pif = NetworkDetails._Fields
+					.findByThriftId(i);
+			FieldMetaData md = NetworkDetails.metaDataMap.get(pif);
+			String cleaned = items[i - 1].replaceAll("\"", "");
+			switch (md.valueMetaData.type) {
+			case org.apache.thrift.protocol.TType.STRING:
+				nd.setFieldValue(pif, cleaned);
+				break;
+			case org.apache.thrift.protocol.TType.I32:
+				try {
+					nd.setFieldValue(pif, Integer.parseInt(cleaned));
+				} catch (NumberFormatException e) {
+					Log.e(TAG, "Could not read " + md.fieldName + ": \""
+							+ cleaned + "\" as an int");
+				}
+				break;
+			case org.apache.thrift.protocol.TType.DOUBLE:
+				try {
+					nd.setFieldValue(pif, Double.parseDouble(cleaned));
+				} catch (NumberFormatException e) {
+					Log.e(TAG, "Could not read " + md.fieldName + ": \""
+							+ cleaned + "\" as a double");
+				}
+				break;
+			case org.apache.thrift.protocol.TType.BOOL:
+				try {
+					nd.setFieldValue(pif, Boolean.parseBoolean(cleaned));
+				} catch (NumberFormatException e) {
+					Log.e(TAG, "Could not read " + md.fieldName + ": \""
+							+ cleaned + "\" as a bool");
+				}
+				break;
+			case org.apache.thrift.protocol.TType.LIST:
+				List<String> list = new LinkedList<String>();
+				String[] arr = items[i - 1].split(";");
+				for (String sig : arr)
+					list.add(sig);
+				nd.setFieldValue(pif, list);
+				break;
+			default:
+			}
         }
     }
 }
