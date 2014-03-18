@@ -38,7 +38,7 @@ public class CaratSampleDB {
     public static final String DATABASE_NAME = "caratdata";
     public static final String SAMPLES_VIRTUAL_TABLE = "sampleobjects";
     // TODO: Bump version here when changing the protocol, new one incompatible with old
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private static final HashMap<String, String> mColumnMap = buildColumnMap();
 
