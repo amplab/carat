@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,9 +21,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
-
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
@@ -104,7 +106,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                             .findViewById(R.id.actionName);
                     TextView txtType = (TextView) killView
                             .findViewById(R.id.suggestion_type);
-                    TextView txtBenefit = (TextView) killView
+                    final TextView txtBenefit = (TextView) killView
                             .findViewById(R.id.expectedBenefit);
                     final Button killButton = (Button) killView
                             .findViewById(R.id.killButton);
@@ -116,7 +118,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                     Type type = fullObject.getType();
                     if (type == Type.BUG || type == Type.HOG) {
                         txtName.setText(label);
-                        PackageInfo pak = SamplingLibrary
+                        final PackageInfo pak = SamplingLibrary
                                 .getPackageInfo(c, raw);
                         String ver = "";
                         if (pak != null)
@@ -129,6 +131,19 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                         killButton.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View arg0) {
+                            	HashMap<String, String> options = new HashMap<String, String>();
+                            	SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                                options.put(ClickTracking.USERNAME, uuId);
+                                options.put(ClickTracking.NAME, "killbutton");
+                                if (pak != null) {
+                                	options.put("app", pak.packageName);
+                                	options.put("version", pak.versionName);
+                                	options.put("versionCode", pak.versionCode+"");
+                                	options.put("label", label);
+                                }
+                                options.put("benefit",txtBenefit.getText().toString().replace('\u00B1', '+'));
+                                ClickTracking.track(options);
                                 killButton.setEnabled(false);
                                 killButton.setText(s + " "
                                         + getString(R.string.killed));
