@@ -51,14 +51,14 @@ public class SampleReader {
             case org.apache.thrift.protocol.TType.STRING:
             case org.apache.thrift.protocol.TType.I32:
             case org.apache.thrift.protocol.TType.DOUBLE:
-                m.put(sf.getFieldName(), s.getFieldValue(sf).toString().replaceAll("\n", " ").replaceAll(";", ","));
+                m.put(sf.getFieldName(), cleanStr(s.getFieldValue(sf).toString()));
                 break;
             case org.apache.thrift.protocol.TType.STRUCT:
                 if (md.fieldName.equals(Sample._Fields.NETWORK_DETAILS.getFieldName()) && s.networkDetails != null) {
                     int len = NetworkDetails._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append((""+s.networkDetails.getFieldValue(NetworkDetails._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
+                        b.append(cleanStr(""+s.networkDetails.getFieldValue(NetworkDetails._Fields.findByThriftId(i))));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -67,7 +67,7 @@ public class SampleReader {
                     int len = BatteryDetails._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append((""+s.batteryDetails.getFieldValue(BatteryDetails._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
+                        b.append(cleanStr(""+s.batteryDetails.getFieldValue(BatteryDetails._Fields.findByThriftId(i))));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -76,7 +76,7 @@ public class SampleReader {
                     int len = CpuStatus._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append((""+s.cpuStatus.getFieldValue(CpuStatus._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
+                        b.append(cleanStr(""+s.cpuStatus.getFieldValue(CpuStatus._Fields.findByThriftId(i))));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -89,7 +89,7 @@ public class SampleReader {
                 if (md.fieldName.equals(Sample._Fields.EXTRA.getFieldName()) && s.extra != null) {
                     StringBuilder b = new StringBuilder();
                     for (Feature f : s.extra) {
-                        b.append(f.key.replaceAll("\n", " ").replaceAll(";", ",") + ";" + f.value.replaceAll("\n", " ").replaceAll(";", ",") + "\n");
+                        b.append(cleanStr(f.key) + ";" + cleanStr(f.value) + "\n");
                     }
                     if (b.length() > 1)
                     	b.deleteCharAt(b.lastIndexOf("\n"));
@@ -120,7 +120,7 @@ public class SampleReader {
                                     }
                                 }
                             } else {
-                                b.append(("" + pi.getFieldValue(pif)).replaceAll("\n", " ").replaceAll(";", ","));
+                                b.append(cleanStr("" + pi.getFieldValue(pif)));
                             }
                             if (i < len)
                                 b.append(";");
