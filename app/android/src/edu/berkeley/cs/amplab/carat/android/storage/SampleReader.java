@@ -418,4 +418,8 @@ public class SampleReader {
 			}
         }
     }
+	
+	private static String cleanStr(String dirty){
+		return dirty.replace('\n', ' ').replace(';', ',');
+	}
 }
