@@ -51,14 +51,14 @@ public class SampleReader {
             case org.apache.thrift.protocol.TType.STRING:
             case org.apache.thrift.protocol.TType.I32:
             case org.apache.thrift.protocol.TType.DOUBLE:
-                m.put(sf.getFieldName(), s.getFieldValue(sf).toString());
+                m.put(sf.getFieldName(), s.getFieldValue(sf).toString().replaceAll("\n", " ").replaceAll(";", ","));
                 break;
             case org.apache.thrift.protocol.TType.STRUCT:
                 if (md.fieldName.equals(Sample._Fields.NETWORK_DETAILS.getFieldName()) && s.networkDetails != null) {
                     int len = NetworkDetails._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append(""+s.networkDetails.getFieldValue(NetworkDetails._Fields.findByThriftId(i)));
+                        b.append((""+s.networkDetails.getFieldValue(NetworkDetails._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -67,7 +67,7 @@ public class SampleReader {
                     int len = BatteryDetails._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append(""+s.batteryDetails.getFieldValue(BatteryDetails._Fields.findByThriftId(i)));
+                        b.append((""+s.batteryDetails.getFieldValue(BatteryDetails._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -76,7 +76,7 @@ public class SampleReader {
                     int len = CpuStatus._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append(""+s.cpuStatus.getFieldValue(CpuStatus._Fields.findByThriftId(i)));
+                        b.append((""+s.cpuStatus.getFieldValue(CpuStatus._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -89,7 +89,7 @@ public class SampleReader {
                 if (md.fieldName.equals(Sample._Fields.EXTRA.getFieldName()) && s.extra != null) {
                     StringBuilder b = new StringBuilder();
                     for (Feature f : s.extra) {
-                        b.append(f.key + ";" + f.value + "\n");
+                        b.append(f.key.replaceAll("\n", " ").replaceAll(";", ",") + ";" + f.value.replaceAll("\n", " ").replaceAll(";", ",") + "\n");
                     }
                     if (b.length() > 1)
                     	b.deleteCharAt(b.lastIndexOf("\n"));
@@ -120,7 +120,7 @@ public class SampleReader {
                                     }
                                 }
                             } else {
-                                b.append("" + pi.getFieldValue(pif));
+                                b.append(("" + pi.getFieldValue(pif)).replaceAll("\n", " ").replaceAll(";", ","));
                             }
                             if (i < len)
                                 b.append(";");
@@ -161,15 +161,26 @@ public class SampleReader {
                 if (sf != null) {
                     // Top level Sample field.
                     FieldMetaData md = Sample.metaDataMap.get(sf);
+                    String cleaned = m.get(k).replaceAll("\"", "");
                     switch (md.valueMetaData.type) {
                     case org.apache.thrift.protocol.TType.STRING:
-                        s.setFieldValue(sf, m.get(k));
+                        s.setFieldValue(sf, cleaned);
                         break;
                     case org.apache.thrift.protocol.TType.I32:
-                        s.setFieldValue(sf, Integer.parseInt(m.get(k)));
-                        break;
-                    case org.apache.thrift.protocol.TType.DOUBLE:
-                        s.setFieldValue(sf, Double.parseDouble(m.get(k)));
+						try {
+							s.setFieldValue(sf, Integer.parseInt(cleaned));
+						} catch (NumberFormatException e) {
+							Log.e(TAG, "Could not read " + md.fieldName
+									+ ": \"" + cleaned + "\" as an int");
+						}
+						break;
+					case org.apache.thrift.protocol.TType.DOUBLE:
+						try {
+							s.setFieldValue(sf, Double.parseDouble(cleaned));
+						} catch (NumberFormatException e) {
+							Log.e(TAG, "Could not read " + md.fieldName
+									+ ": \"" + cleaned + "\" as a double");
+						}
                         break;
                     case org.apache.thrift.protocol.TType.STRUCT:
                         if (md.fieldName.equals(Sample._Fields.NETWORK_DETAILS.getFieldName())) {
@@ -223,7 +234,7 @@ public class SampleReader {
                                     ProcessInfo._Fields pif = ProcessInfo._Fields
                                             .findByThriftId(i);
                                     FieldMetaData pmd = ProcessInfo.metaDataMap.get(pif);
-                                    String cleaned = items[i - 1].replaceAll("\"", "");
+                                    cleaned = items[i - 1].replaceAll("\"", "");
                                     switch (pmd.valueMetaData.type) {
                                     case org.apache.thrift.protocol.TType.STRING:
                                         pi.setFieldValue(pif, cleaned);
