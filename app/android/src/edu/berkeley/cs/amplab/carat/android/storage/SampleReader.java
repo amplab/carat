@@ -434,11 +434,17 @@ public class SampleReader {
     }
 	
 	private static String cleanStr(String dirty){
+		if (dirty == null)
+			return null;
+		/*
+		 * At least the Norwegian translation of Samsung's Story Album has a newline in the app name.
+		 */
+		String d = dirty.replace('\n', ' ').replace(';', ',');
 	    try {
-            return URLEncoder.encode(dirty, "UTF-8").replace('\n', ' ').replace(';', ',');
+            return URLEncoder.encode(d, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            Log.e(TAG, "UTF-8 unsupported when encoding: "+dirty);
+            Log.e(TAG, "UTF-8 unsupported when encoding: "+d);
         }
-	    return URLEncoder.encode(dirty).replace('\n', ' ').replace(';', ',');
+	    return URLEncoder.encode(d).replace('\n', ' ').replace(';', ',');
 	}
 }
