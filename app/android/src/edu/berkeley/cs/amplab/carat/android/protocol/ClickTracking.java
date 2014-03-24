@@ -76,22 +76,35 @@ public class ClickTracking {
 		HttpAsyncTask task = new HttpAsyncTask(options);
 		task.execute(ADDRESS_OLD, ADDRESS_VM);
 	}
+	
+	public static void track(String name, String user, HashMap<String, String> options) {
+		HttpAsyncTask task = new HttpAsyncTask(name, user, options);
+		task.execute(ADDRESS_OLD, ADDRESS_VM);
+	}
 		
    
     static class HttpAsyncTask extends AsyncTask<String, Void, String> {
      HashMap<String, String> options = null;
+	private String name = null;
+	private String user = null;
     	
     	public HttpAsyncTask(HashMap<String, String> options){
+    		this(options.remove(NAME), options.remove(USERNAME), options);
+    	}
+    	
+    	public HttpAsyncTask(String name, String user, HashMap<String, String> options){
+    		this.name = name; 
+    		this.user = user;
     		this.options = options;
+    		// Every event should have time, so add it here.
+    		options.put("time", System.currentTimeMillis()+"");
     	}
     	
         @Override
         protected String doInBackground(String... urls) {
              
         	Action action = new Action();
-        	String name = options.remove(NAME);
-        	String user = options.remove(USERNAME);
-        			
+        	
         	/*Toast t = Toast.makeText(context, "execute for uuid="+user+" button="+name+" app="+options.get("app"), Toast.LENGTH_LONG);
             t.show();*/
         	action.setName(name);
