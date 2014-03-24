@@ -2,10 +2,12 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Properties;
 
 import com.flurry.android.FlurryAgent;
 
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.app.TabActivity;
 import android.content.Context;
@@ -132,9 +134,9 @@ public class CaratMainActivity extends TabActivity {
                 int newTab = tabHost.getCurrentTab();
                 View old = tabHost.getTabContentView().getChildAt(oldTab);
                 View newView = tabHost.getTabContentView().getChildAt(newTab);
-                Log.d("onTabChanged", "oldTab=" + oldTab + " old=" + old
+                /*Log.d("onTabChanged", "oldTab=" + oldTab + " old=" + old
                         + " newTabId=" + tabId + " newTab=" + newTab
-                        + " newView=" + newView);
+                        + " newView=" + newView);*/
                 /*
                  * if (old != null && newView != null) { if (oldTab < newTab) {
                  * old.setAnimation(outtoLeft);
@@ -142,6 +144,16 @@ public class CaratMainActivity extends TabActivity {
                  * newView.setAnimation(inFromLeft);
                  * old.setAnimation(outtoRight); } }
                  */
+                
+                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				if (p != null) {
+					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+					HashMap<String, String> options = new HashMap<String, String>();
+					options.put("from", tabHost.getTag(oldTab).toString());
+					options.put("to", tabHost.getCurrentTabTag());
+					options.put("status", getTitle().toString());
+					ClickTracking.track(uuId, "tabswitch", options);
+				}
                 oldTab = newTab;
             }
         });
