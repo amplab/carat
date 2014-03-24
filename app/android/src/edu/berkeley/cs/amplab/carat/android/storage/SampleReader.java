@@ -1,5 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android.storage;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,16 +52,18 @@ public class SampleReader {
             FieldMetaData md = Sample.metaDataMap.get(sf);
             switch (md.valueMetaData.type) {
             case org.apache.thrift.protocol.TType.STRING:
+                m.put(sf.getFieldName(), cleanStr(s.getFieldValue(sf).toString()));
+                break;
             case org.apache.thrift.protocol.TType.I32:
             case org.apache.thrift.protocol.TType.DOUBLE:
-                m.put(sf.getFieldName(), s.getFieldValue(sf).toString().replaceAll("\n", " ").replaceAll(";", ","));
+                m.put(sf.getFieldName(), s.getFieldValue(sf).toString());
                 break;
             case org.apache.thrift.protocol.TType.STRUCT:
                 if (md.fieldName.equals(Sample._Fields.NETWORK_DETAILS.getFieldName()) && s.networkDetails != null) {
                     int len = NetworkDetails._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append((""+s.networkDetails.getFieldValue(NetworkDetails._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
+                        b.append(cleanStr(""+s.networkDetails.getFieldValue(NetworkDetails._Fields.findByThriftId(i))));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -67,7 +72,7 @@ public class SampleReader {
                     int len = BatteryDetails._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append((""+s.batteryDetails.getFieldValue(BatteryDetails._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
+                        b.append(cleanStr(""+s.batteryDetails.getFieldValue(BatteryDetails._Fields.findByThriftId(i))));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -76,7 +81,7 @@ public class SampleReader {
                     int len = CpuStatus._Fields.values().length;
                     StringBuilder b = new StringBuilder();
                     for (int i = 1; i <= len; i++){
-                        b.append((""+s.cpuStatus.getFieldValue(CpuStatus._Fields.findByThriftId(i))).replaceAll("\n", " ").replaceAll(";", ","));
+                        b.append(cleanStr(""+s.cpuStatus.getFieldValue(CpuStatus._Fields.findByThriftId(i))));
                         if ( i < len)
                             b.append("\n");
                     }
@@ -89,7 +94,7 @@ public class SampleReader {
                 if (md.fieldName.equals(Sample._Fields.EXTRA.getFieldName()) && s.extra != null) {
                     StringBuilder b = new StringBuilder();
                     for (Feature f : s.extra) {
-                        b.append(f.key.replaceAll("\n", " ").replaceAll(";", ",") + ";" + f.value.replaceAll("\n", " ").replaceAll(";", ",") + "\n");
+                        b.append(cleanStr(f.key) + ";" + cleanStr(f.value) + "\n");
                     }
                     if (b.length() > 1)
                     	b.deleteCharAt(b.lastIndexOf("\n"));
@@ -120,7 +125,7 @@ public class SampleReader {
                                     }
                                 }
                             } else {
-                                b.append(("" + pi.getFieldValue(pif)).replaceAll("\n", " ").replaceAll(";", ","));
+                                b.append(cleanStr("" + pi.getFieldValue(pif)));
                             }
                             if (i < len)
                                 b.append(";");
@@ -161,7 +166,7 @@ public class SampleReader {
                 if (sf != null) {
                     // Top level Sample field.
                     FieldMetaData md = Sample.metaDataMap.get(sf);
-                    String cleaned = m.get(k).replaceAll("\"", "");
+                    String cleaned = origStr(m.get(k));
                     switch (md.valueMetaData.type) {
                     case org.apache.thrift.protocol.TType.STRING:
                         s.setFieldValue(sf, cleaned);
@@ -204,8 +209,8 @@ public class SampleReader {
                                 Feature f = new Feature();
                                 String[] feat = e.split(";");
                                 if (feat.length > 1) {
-                                    f.setKey(feat[0]);
-                                    f.setValue(feat[1]);
+                                    f.setKey(origStr(feat[0]));
+                                    f.setValue(origStr(feat[1]));
                                 }
                                 list.add(f);
                             }
@@ -234,7 +239,7 @@ public class SampleReader {
                                     ProcessInfo._Fields pif = ProcessInfo._Fields
                                             .findByThriftId(i);
                                     FieldMetaData pmd = ProcessInfo.metaDataMap.get(pif);
-                                    cleaned = items[i - 1].replaceAll("\"", "");
+                                    cleaned = origStr(items[i - 1]);
                                     switch (pmd.valueMetaData.type) {
                                     case org.apache.thrift.protocol.TType.STRING:
                                         pi.setFieldValue(pif, cleaned);
@@ -290,7 +295,7 @@ public class SampleReader {
         for (int i = 1; i <= items.length; i++) {
             CpuStatus._Fields pif = CpuStatus._Fields.findByThriftId(i);
             FieldMetaData md = CpuStatus.metaDataMap.get(pif);
-            String cleaned = items[i - 1].replaceAll("\"", "");
+            String cleaned = origStr(items[i - 1]);
             switch (md.valueMetaData.type) {
             case org.apache.thrift.protocol.TType.STRING:
                 cs.setFieldValue(pif, cleaned);
@@ -334,7 +339,7 @@ public class SampleReader {
 			BatteryDetails._Fields pif = BatteryDetails._Fields
 					.findByThriftId(i);
 			FieldMetaData md = BatteryDetails.metaDataMap.get(pif);
-			String cleaned = items[i - 1].replaceAll("\"", "");
+			String cleaned = origStr(items[i - 1]);
 			switch (md.valueMetaData.type) {
 			case org.apache.thrift.protocol.TType.STRING:
 				bd.setFieldValue(pif, cleaned);
@@ -378,7 +383,7 @@ public class SampleReader {
 			NetworkDetails._Fields pif = NetworkDetails._Fields
 					.findByThriftId(i);
 			FieldMetaData md = NetworkDetails.metaDataMap.get(pif);
-			String cleaned = items[i - 1].replaceAll("\"", "");
+			String cleaned = origStr(items[i - 1]);
 			switch (md.valueMetaData.type) {
 			case org.apache.thrift.protocol.TType.STRING:
 				nd.setFieldValue(pif, cleaned);
@@ -419,7 +424,27 @@ public class SampleReader {
         }
     }
 	
+	private static String origStr(String clean){
+        try {
+            return URLDecoder.decode(clean, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "UTF-8 unsupported when decoding: "+clean);
+        } 
+        return URLDecoder.decode(clean);
+    }
+	
 	private static String cleanStr(String dirty){
-		return dirty.replace('\n', ' ').replace(';', ',');
+		if (dirty == null)
+			return null;
+		/*
+		 * At least the Norwegian translation of Samsung's Story Album has a newline in the app name.
+		 */
+		String d = dirty.replace('\n', ' ').replace(';', ',');
+	    try {
+            return URLEncoder.encode(d, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "UTF-8 unsupported when encoding: "+d);
+        }
+	    return URLEncoder.encode(d).replace('\n', ' ').replace(';', ',');
 	}
 }
