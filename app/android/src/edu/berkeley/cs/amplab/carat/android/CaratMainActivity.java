@@ -128,6 +128,7 @@ public class CaratMainActivity extends TabActivity {
         // Bind animations to tab changes:
         tabHost.setOnTabChangedListener(new OnTabChangeListener() {
             int oldTab = tabHost.getCurrentTab();
+            String oldTag  = tabHost.getCurrentTabTag();
 
             @Override
             public void onTabChanged(String tabId) {
@@ -145,16 +146,19 @@ public class CaratMainActivity extends TabActivity {
                  * old.setAnimation(outtoRight); } }
                  */
                 
+                String tag = tabHost.getCurrentTabTag();
+                
                 SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				if (p != null) {
-					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-					HashMap<String, String> options = new HashMap<String, String>();
-					options.put("from", tabHost.getTag(oldTab).toString());
-					options.put("to", tabHost.getCurrentTabTag());
-					options.put("status", getTitle().toString());
-					ClickTracking.track(uuId, "tabswitch", options);
-				}
+                if (p != null) {
+                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                    HashMap<String, String> options = new HashMap<String, String>();
+                    options.put("from", oldTag);
+                    options.put("to", tag);
+                    options.put("status", getTitle().toString());
+                    ClickTracking.track(uuId, "tabswitch", options);
+                }
                 oldTab = newTab;
+                oldTag = tag;
             }
         });
 
