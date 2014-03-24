@@ -17,12 +17,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class ClickTracking {
+    
+    private static final String TAG = "ClickTracking";
 
     private static final String ADDRESS_OLD = "http://data-bakharzy.rhcloud.com/api/app/applications/70dff194-2871-4ad8-9795-3f27f0021713/actions";
     private static final String ADDRESS_VM = "http://86.50.18.40:8080/data/app/applications/f233a990-0421-4d84-b333-d0c93e7f171f/actions";
 
-    public static void track(String name, String user, HashMap<String, String> options) {
-        HttpAsyncTask task = new HttpAsyncTask(name, user, options);
+    public static void track(String user, String name, HashMap<String, String> options) {
+        HttpAsyncTask task = new HttpAsyncTask(user, name, options);
         /* TODO: We need to store the click in this task, not send yet.
          * SampleSender will then later get them from storage and send.
          */
@@ -46,7 +48,7 @@ public class ClickTracking {
             ObjectMapper mapper = new ObjectMapper();
             json = mapper.writeValueAsString(action);
 
-            Log.e("InputStream", "JSON=\n" + json);
+            Log.i(TAG, "JSON=\n" + json);
             // 5. set json to StringEntity
             StringEntity se = new StringEntity(json);
 
@@ -70,7 +72,7 @@ public class ClickTracking {
                 result = "Did not work!";
 
         } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
+            Log.e(TAG, e.getLocalizedMessage());
         }
 
         // 11. return result
@@ -82,7 +84,7 @@ public class ClickTracking {
         private String name = null;
         private String user = null;
 
-        public HttpAsyncTask(String name, String user, HashMap<String, String> options) {
+        public HttpAsyncTask(String user, String name, HashMap<String, String> options) {
             this.name = name;
             this.user = user;
             this.options = options;
@@ -112,7 +114,7 @@ public class ClickTracking {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Log.e("InputStream", result);
+            //Log.e("InputStream", result);
         }
     }
 
