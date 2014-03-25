@@ -11,6 +11,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import android.os.AsyncTask;
@@ -50,14 +51,14 @@ public class ClickTracking {
 
             Log.i(TAG, "JSON=\n" + json);
             // 5. set json to StringEntity
-            StringEntity se = new StringEntity(json);
+            StringEntity se = new StringEntity(json, HTTP.UTF_8);
 
             // 6. set httpPost Entity
             httpPost.setEntity(se);
 
             // 7. Set some headers to inform server about the type of the content
             httpPost.setHeader("Accept", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
+            httpPost.setHeader("Content-type", "application/json; charset=UTF-8");
 
             // 8. Execute POST request to the given URL
             HttpResponse httpResponse = httpclient.execute(httpPost);
