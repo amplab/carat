@@ -146,6 +146,27 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                                 // onBackPressed();
                             }
                         });
+                        
+                        Button AppManagerButton = (Button) killView.findViewById(R.id.appManager);
+                        AppManagerButton.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                if (p != null) {
+                                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                                    HashMap<String, String> options = new HashMap<String, String>();
+                                    if (pak != null) {
+                                        options.put("app", pak.packageName);
+                                        options.put("version", pak.versionName);
+                                        options.put("versionCode", pak.versionCode + "");
+                                        options.put("label", label);
+                                    }
+                                    options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
+                                    ClickTracking.track(uuId, "appmanagerbutton", options);
+                                }
+                                GoToAppScreen();
+                            }
+                        });
                     } else { // Other action
                         txtName.setText(label);
                         killButton.setText(label);
@@ -217,13 +238,6 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             // FIXME: This does not work with the embedded WebView (randomly goes back); no idea why
             killPage.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
             webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list)), false));
-            Button AppManagerButton = (Button) killPage.findViewById(R.id.appManager);
-            AppManagerButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    GoToAppScreen();
-                }
-            });
             killView = killPage;
             vf.addView(killView);
         }
