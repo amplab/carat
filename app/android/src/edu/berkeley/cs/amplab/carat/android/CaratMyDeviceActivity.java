@@ -1,9 +1,11 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
@@ -15,10 +17,11 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
-
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -238,6 +241,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
                     os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) osWithout.getSamples(), os.getError(), osWithout.getError(), osViewPage);
         }
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "osinfo", options);
+        }
         switchView(osViewPage);
     }
 
@@ -274,6 +284,14 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     .setText(benefitText);
             modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
                     model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) modelWithout.getSamples(), model.getError(), modelWithout.getError(), modelViewPage);
+        }
+        
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "deviceinfo", options);
         }
         switchView(modelViewPage);
     }
@@ -327,6 +345,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         webview.loadUrl("file:///android_asset/memoryinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "memoryinfo", options);
+        }
         switchView(R.id.memoryView);
     }
 
@@ -342,6 +367,14 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         webview.loadUrl("file:///android_asset/batterylifeinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
+        
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "batterylifeinfo", options);
+        }
         switchView(R.id.batteryLifeView);
     }
     
@@ -357,6 +390,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         webview.loadUrl("file:///android_asset/jscoreinfo.html");
         webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
                 .indexOfChild(findViewById(R.id.scrollView1))));
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "jscoreinfo", options);
+        }
         switchView(R.id.jscoreView);
     }
 
@@ -372,6 +412,13 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
         List<ProcessInfo> searchResults = SamplingLibrary
                 .getRunningAppInfo(getApplicationContext());
         lv.setAdapter(new ProcessInfoAdapter(this, searchResults));
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "processlist", options);
+        }
         // switch views:
         switchView(R.id.processList);
     }
