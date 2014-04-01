@@ -46,8 +46,10 @@ public class SamplerService extends IntentService {
         wl.acquire();
         
         Context context = getApplicationContext();
-        
-        String action = intent.getStringExtra("OriginalAction");
+       
+        String action = null;
+        if (intent != null)
+          action = intent.getStringExtra("OriginalAction");
         //Log.i(TAG, "Original intent: " +action);
         if (action != null){
         double lastBatteryLevel = intent.getDoubleExtra("lastBatteryLevel", 0.0);
