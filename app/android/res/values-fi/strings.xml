@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- These will be different -->
+	
     <string name="jscore">J-Scoresi:</string>
     <string name="batterylife">Aktiivinen akunkesto:</string>
     <string name="osver">KJ-versio:</string>
@@ -9,11 +11,9 @@
     <string name="memactive">Aktiivisena:</string>
     <string name="cpu">CPU-käyttö:</string>
     <string name="updated0">(Päivitetty 0m 0s sitten)</string>
-    <string name="jsna">N/A</string>
-    <string name="fake_os">4.0.3</string>
-    <string name="fake_dev">Samsung Galaxy Nexus</string>
+
     <string name="viewprocess">Sovelluslista</string>
-    <string name="alogo">AmpLab Logo</string>
+
     <string name="moreinfo">Lisätietoja</string>
     <string name="appicon">Kuvake</string>
     <string name="default_type">Pääsovellus</string>
@@ -37,6 +37,7 @@
     <string name="appmanager">Sovellushallinta</string>
     
     <!-- Tabs. Also used elsewhere. -->
+    
     <string name="tab_actions">Ehdotukset</string>
     <string name="tab_my_device">Laite</string>
     <string name="tab_bugs">Bugit</string>
@@ -44,6 +45,7 @@
     <string name="tab_about">Tietoja</string>
     
     <!-- Updating etc -->
+    
     <string name="samplesreported"> mittausta lähetetty</string>
     <string name="updating">Päivitetään</string>
     <string name="updated">(Päivitetty </string>
@@ -57,8 +59,7 @@
 
     <string name="expected">Arvioitu parannus:</string>
     <string name="killappname">Tapa Sovellus</string>
-    <string name="benefitdefault">1d 9h 15m 40s</string>
-    <!-- <string name="confidence">Luotettavuus:</string>-->
+
     <string name="appname">Sovelluksen nimi</string>
     <string name="priority">Prioriteetti:</string>
     <string name="priorityDefault">Ei käynnissä</string>
@@ -132,4 +133,3 @@
     <string name="best">Jo paras</string>
     
 </resources>
-
