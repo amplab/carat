@@ -8,7 +8,6 @@ import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -137,7 +136,7 @@ public class SamplerService extends IntentService {
                 .setContentText("Please open Carat. Samples to send:")
                 .setNumber(samples);
         mBuilder.setContentIntent(launchCarat);
-        mBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        //mBuilder.setSound(null);
         mBuilder.setAutoCancel(true);
         NotificationManager mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
