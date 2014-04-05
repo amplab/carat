@@ -49,7 +49,7 @@ public class SampleSender {
     
             boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
                     || networkType.equals("WIFI");
-    
+            
             if (connected) {
                 CaratSampleDB db = CaratSampleDB.getInstance(c);
                 int samples = db.countSamples();
@@ -58,7 +58,7 @@ public class SampleSender {
                 String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
                 HashMap<String, String> options = new HashMap<String, String>();
                 options.put("count", samples+"");
-                ClickTracking.track(uuId, "sendingsamples", options);
+                ClickTracking.track(uuId, "sendingsamples", options, c);
                 /* End Click Tracking: Track sample sending. */
                 
                 int successSum = 0;
@@ -129,7 +129,7 @@ public class SampleSender {
                 
                 /* Click Tracking: Track sample sending. */
                 options.put("count", successSum+"");
-                ClickTracking.track(uuId, "sentsamples", options);
+                ClickTracking.track(uuId, "sentsamples", options, c);
                 /* End Click Tracking: Track sample sending. */
                 
             }/* else if (networkStatus

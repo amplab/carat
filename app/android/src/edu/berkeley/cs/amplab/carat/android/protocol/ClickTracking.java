@@ -14,6 +14,10 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -24,13 +28,16 @@ public class ClickTracking {
     private static final String ADDRESS_OLD = "http://data-bakharzy.rhcloud.com/api/app/applications/70dff194-2871-4ad8-9795-3f27f0021713/actions";
     private static final String ADDRESS_VM = "http://86.50.18.40:8080/data/app/applications/f233a990-0421-4d84-b333-d0c93e7f171f/actions";
 
-    public static void track(String user, String name, HashMap<String, String> options) {
+    public static void track(String user, String name, HashMap<String, String> options, Context c) {
+        /*Track only on WIFI for now. See TODO below. */
+        String networkType = SamplingLibrary.getNetworkType(c);
+        if (networkType != null && networkType.equals("WIFI")) {
         HttpAsyncTask task = new HttpAsyncTask(user, name, options);
         /* TODO: We need to store the click in this task, not send yet.
          * SampleSender will then later get them from storage and send.
          */
         task.execute(ADDRESS_OLD, ADDRESS_VM);
-
+        }
     }
 
     private static String POST(String url, Action action) {

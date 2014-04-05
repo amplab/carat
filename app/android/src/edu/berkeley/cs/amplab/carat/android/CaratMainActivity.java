@@ -140,7 +140,7 @@ public class CaratMainActivity extends TabActivity {
                     options.put("from", oldTag);
                     options.put("to", tag);
                     options.put("status", getTitle().toString());
-                    ClickTracking.track(uuId, "tabswitch", options);
+                    ClickTracking.track(uuId, "tabswitch", options, getApplicationContext());
                 }
                 oldTag = tag;
             }
@@ -161,7 +161,7 @@ public class CaratMainActivity extends TabActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratstarted", options);
+            ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
         }
     }
 
@@ -318,7 +318,7 @@ public class CaratMainActivity extends TabActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratresumed", options);
+            ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
         }
     }
 
@@ -335,7 +335,7 @@ public class CaratMainActivity extends TabActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratpaused", options);
+            ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
         }
         SamplingLibrary.resetRunningProcessInfo();
         super.onPause();
@@ -354,7 +354,7 @@ public class CaratMainActivity extends TabActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratstopped", options);
+            ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
         }
         super.finish();
     }
@@ -396,7 +396,7 @@ public class CaratMainActivity extends TabActivity {
                         String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
                         HashMap<String, String> options = new HashMap<String, String>();
                         options.put("status", getTitle().toString());
-                        ClickTracking.track(uuId, "wifionlyoff", options);
+                        ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
                     }
                 }else{
                     p.edit()
@@ -409,7 +409,7 @@ public class CaratMainActivity extends TabActivity {
                         String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
                         HashMap<String, String> options = new HashMap<String, String>();
                         options.put("status", getTitle().toString());
-                        ClickTracking.track(uuId, "wifionlyon", options);
+                        ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
                     }
                 }
                 return true;
@@ -432,7 +432,7 @@ public class CaratMainActivity extends TabActivity {
                     HashMap<String, String> options = new HashMap<String, String>();
                     options.put("status", getTitle().toString());
                     options.put("sharetext", getString(R.string.myjscoreis)+" "+jscore);
-                    ClickTracking.track(uuId, "caratshared", options);
+                    ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
                 }
                 return true;
             }
@@ -483,7 +483,7 @@ public class CaratMainActivity extends TabActivity {
                 options.put("hogs", len+"");
                 options.put("status", getTitle().toString());
                 options.put("sharetext", getString(R.string.myjscoreis)+" "+jscore);
-                ClickTracking.track(uuId, "caratshared", options);
+                ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
             }
             startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
             return true;

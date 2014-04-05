@@ -120,7 +120,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 		            options.put("type", activityType.name());
 		            options.put("app", ((TextView) detailPage.findViewById(R.id.name)).getText()+"");
 		            options.put("benefit", ((TextView) detailPage.findViewById(R.id.benefit)).getText().toString().replace('\u00B1', '+'));
-		            ClickTracking.track(uuId, "whatnumbers", options);
+		            ClickTracking.track(uuId, "whatnumbers", options, getApplicationContext());
 		        }
 				switchView(R.id.detailView);
 			}
@@ -188,7 +188,7 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
                         options.put("label", label);
                     }
                     options.put("benefit", fullObject.textBenefit().replace('\u00B1', '+'));
-                    ClickTracking.track(uuId, "samplesview", options);
+                    ClickTracking.track(uuId, "samplesview", options, getApplicationContext());
                 }
 				
 				switchView(target);

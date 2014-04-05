@@ -137,7 +137,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                                         options.put("label", label);
                                     }
                                     options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
-                                    ClickTracking.track(uuId, "killbutton", options);
+                                    ClickTracking.track(uuId, "killbutton", options, getApplicationContext());
                                 }
                                 /* Change kill button text and make it unclickable until screen is exited */
                                 killButton.setEnabled(false);
@@ -162,7 +162,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                                         options.put("label", label);
                                     }
                                     options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
-                                    ClickTracking.track(uuId, "appmanagerbutton", options);
+                                    ClickTracking.track(uuId, "appmanagerbutton", options, getApplicationContext());
                                 }
                                 GoToAppScreen();
                             }

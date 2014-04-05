@@ -246,7 +246,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "osinfo", options);
+            ClickTracking.track(uuId, "osinfo", options, getApplicationContext());
         }
         switchView(osViewPage);
     }
@@ -291,7 +291,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "deviceinfo", options);
+            ClickTracking.track(uuId, "deviceinfo", options, getApplicationContext());
         }
         switchView(modelViewPage);
     }
@@ -350,7 +350,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "memoryinfo", options);
+            ClickTracking.track(uuId, "memoryinfo", options, getApplicationContext());
         }
         switchView(R.id.memoryView);
     }
@@ -373,7 +373,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "batterylifeinfo", options);
+            ClickTracking.track(uuId, "batterylifeinfo", options, getApplicationContext());
         }
         switchView(R.id.batteryLifeView);
     }
@@ -395,7 +395,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "jscoreinfo", options);
+            ClickTracking.track(uuId, "jscoreinfo", options, getApplicationContext());
         }
         switchView(R.id.jscoreView);
     }
@@ -417,7 +417,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
             options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "processlist", options);
+            ClickTracking.track(uuId, "processlist", options, getApplicationContext());
         }
         // switch views:
         switchView(R.id.processList);
