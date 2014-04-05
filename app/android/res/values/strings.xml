@@ -54,6 +54,11 @@ Delete these from your file.
     <string name="checkback">Please check back later.</string>
     <string name="checkback2">If you just started using Carat, we will need time to collect the necessary data: sometimes a week or more. Please check back later. Meanwhile, we\'ll be hard at work trying to figure out what\'s going on with your battery life&#8230;</string>
     <string name="checkback3">For best results, open Carat once a day for a week.</string>
+    <string name="emptyBugsOnly">You have no bugs.</string>
+    <string name="checkbackEmptyBugs">Please check back in a week.</string>
+    <string name="checkbackEmptyBugs2">If your apps are behaving normally, there will be no bugs here.</string>
+    <string name="checkbackEmptyBugs3">When an app starts to use significantly more energy on your device than on others, it will show up here.</string>
+   
     <string name="copied">Copied:</string>
     <string name="helpcarat">Help Carat collect data</string>
     <string name="questionnaire">Please help us improve Carat</string>

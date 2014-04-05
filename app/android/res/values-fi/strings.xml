@@ -21,6 +21,11 @@
     <string name="checkback">Tarkistathan uudelleen myöhemmin.</string>
     <string name="checkback2">Jos juuri aloit käyttää Caratia, tarvitsemme lisää aikaa tietojen keräämiseen laitteeltasi, joskus viikon tai enemmän. Tarkistathan uudelleen myöhemmin. Silläaikaa yritämme kovasti ottaa selvää mitä akunkestollesi tapahtuu&#8230;</string>
     <string name="checkback3">Parhaiden tulosten saamiseksi avaa Carat kerran päivässä viikon ajan.</string>
+    <string name="emptyBugsOnly">Sinulla ei ole bugeja.</string>
+    <string name="checkbackEmptyBugs">Tarkista tilanne viikon päästä.</string>
+    <string name="checkbackEmptyBugs2">Jos sovelluksesi käyttäytyvät normaalisti, tämä välilehti on tyhjä.</string>
+    <string name="checkbackEmptyBugs3">Kun jokin sovellus alkaa käyttää huomattavasti enemmän energiaa tällä laitteella verrattuna muihin, se ilmestyy tähän.</string>
+    
     <string name="copied">Kopioitu:</string>
     <string name="helpcarat">Auta Caratia keräämään dataa</string>
     <string name="questionnaire">Auta meitä parantamaan Caratia</string>
