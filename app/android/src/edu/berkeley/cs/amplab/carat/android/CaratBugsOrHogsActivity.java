@@ -1,7 +1,10 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.HashMap;
+
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
@@ -9,12 +12,13 @@ import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
-
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +123,16 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 		OnClickListener detailViewer = new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+			    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		        if (p != null) {
+		            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+		            HashMap<String, String> options = new HashMap<String, String>();
+		            options.put("status", getTitle().toString());
+		            options.put("type", activityType.name());
+		            options.put("app", ((TextView) detailPage.findViewById(R.id.name)).getText()+"");
+		            options.put("benefit", ((TextView) detailPage.findViewById(R.id.benefit)).getText().toString().replace('\u00B1', '+'));
+		            ClickTracking.track(uuId, "whatnumbers", options, getApplicationContext());
+		        }
 				switchView(R.id.detailView);
 			}
 		};
@@ -171,6 +185,23 @@ public class CaratBugsOrHogsActivity extends BaseVFActivity {
 						.setText(fullObject.textBenefit());
 				w.setHogsBugs(fullObject, s, isBugsActivity, target);
 				//detailPage.postInvalidate();
+				
+				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if (p != null) {
+                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                    HashMap<String, String> options = new HashMap<String, String>();
+                    options.put("status", getTitle().toString());
+                    options.put("type", activityType.name());
+                    if (pak != null) {
+                        options.put("app", pak.packageName);
+                        options.put("version", pak.versionName);
+                        options.put("versionCode", pak.versionCode + "");
+                        options.put("label", label);
+                    }
+                    options.put("benefit", fullObject.textBenefit().replace('\u00B1', '+'));
+                    ClickTracking.track(uuId, "samplesview", options, getApplicationContext());
+                }
+				
 				switchView(target);
 			}
 		});

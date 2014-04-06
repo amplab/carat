@@ -2,11 +2,14 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Properties;
 
 import com.flurry.android.FlurryAgent;
 
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -125,24 +127,22 @@ public class CaratMainActivity extends TabActivity {
 
         // Bind animations to tab changes:
         tabHost.setOnTabChangedListener(new OnTabChangeListener() {
-            int oldTab = tabHost.getCurrentTab();
+            String oldTag  = tabHost.getCurrentTabTag();
 
             @Override
             public void onTabChanged(String tabId) {
-                int newTab = tabHost.getCurrentTab();
-                View old = tabHost.getTabContentView().getChildAt(oldTab);
-                View newView = tabHost.getTabContentView().getChildAt(newTab);
-                Log.d("onTabChanged", "oldTab=" + oldTab + " old=" + old
-                        + " newTabId=" + tabId + " newTab=" + newTab
-                        + " newView=" + newView);
-                /*
-                 * if (old != null && newView != null) { if (oldTab < newTab) {
-                 * old.setAnimation(outtoLeft);
-                 * newView.setAnimation(inFromRight); } else {
-                 * newView.setAnimation(inFromLeft);
-                 * old.setAnimation(outtoRight); } }
-                 */
-                oldTab = newTab;
+                String tag = tabHost.getCurrentTabTag();
+                
+                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if (p != null) {
+                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                    HashMap<String, String> options = new HashMap<String, String>();
+                    options.put("from", oldTag);
+                    options.put("to", tag);
+                    options.put("status", getTitle().toString());
+                    ClickTracking.track(uuId, "tabswitch", options, getApplicationContext());
+                }
+                oldTag = tag;
             }
         });
 
@@ -154,7 +154,15 @@ public class CaratMainActivity extends TabActivity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }*/
-        setTitleNormal();
+        setTitleNormal();        
+        
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
+        }
     }
 
     public void setTitleNormal() {
@@ -305,6 +313,13 @@ public class CaratMainActivity extends TabActivity {
          * } }.start();
          */
         super.onResume();
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
+        }
     }
 
     /*
@@ -315,6 +330,13 @@ public class CaratMainActivity extends TabActivity {
     @Override
     protected void onPause() {
         Log.i(TAG, "Paused");
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
+        }
         SamplingLibrary.resetRunningProcessInfo();
         super.onPause();
     }
@@ -327,6 +349,13 @@ public class CaratMainActivity extends TabActivity {
     @Override
     public void finish() {
         Log.d(TAG, "Finishing up");
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
+        }
         super.finish();
     }
 
@@ -362,12 +391,26 @@ public class CaratMainActivity extends TabActivity {
                             false).commit();
                     //wifiOnly.setChecked(false);
                     wifiOnly.setTitle(R.string.wifionly);
+                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    if (p != null) {
+                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                        HashMap<String, String> options = new HashMap<String, String>();
+                        options.put("status", getTitle().toString());
+                        ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
+                    }
                 }else{
                     p.edit()
                     .putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY,
                             true).commit();
                     //wifiOnly.setChecked(true);
                     wifiOnly.setTitle(R.string.wifionlyused);
+                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    if (p != null) {
+                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                        HashMap<String, String> options = new HashMap<String, String>();
+                        options.put("status", getTitle().toString());
+                        ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
+                    }
                 }
                 return true;
             }
@@ -383,6 +426,14 @@ public class CaratMainActivity extends TabActivity {
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis)+" "+jscore);
                 sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1)+" "+jscore+getString(R.string.sharetext2));
                 startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
+                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if (p != null) {
+                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                    HashMap<String, String> options = new HashMap<String, String>();
+                    options.put("status", getTitle().toString());
+                    options.put("sharetext", getString(R.string.myjscoreis)+" "+jscore);
+                    ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
+                }
                 return true;
             }
         });
@@ -406,7 +457,7 @@ public class CaratMainActivity extends TabActivity {
             Intent sendIntent = new Intent(Intent.ACTION_SEND);
             Context a = getApplicationContext();
             SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             String os = SamplingLibrary.getOsVersion();
             String model = SamplingLibrary.getModel();
             
@@ -418,6 +469,22 @@ public class CaratMainActivity extends TabActivity {
             sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"carat@eecs.berkeley.edu"});
             sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] "+getString(R.string.feedbackfrom) +" "+model);
             sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os)+": "+os+"\n"+getString(R.string.model)+": "+model+"\nCarat ID: "+uuId+"\nJ-Score: "+jscore+"\n"+ fullVersion+"\n");
+            if (p != null) {
+                HashMap<String, String> options = new HashMap<String, String>();
+                options.put("os", os);
+                options.put("model", model);
+                SimpleHogBug[] b = CaratApplication.s.getBugReport();
+                int len = 0;
+                if (b != null) len = b.length;
+                options.put("bugs", len+"");
+                b = CaratApplication.s.getHogReport();
+                len = 0;
+                if (b != null) len = b.length;
+                options.put("hogs", len+"");
+                options.put("status", getTitle().toString());
+                options.put("sharetext", getString(R.string.myjscoreis)+" "+jscore);
+                ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
+            }
             startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
             return true;
         }

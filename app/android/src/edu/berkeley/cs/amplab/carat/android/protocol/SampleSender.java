@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.protocol;
 
+import java.util.HashMap;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -48,10 +49,18 @@ public class SampleSender {
     
             boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
                     || networkType.equals("WIFI");
-    
+            
             if (connected) {
                 CaratSampleDB db = CaratSampleDB.getInstance(c);
                 int samples = db.countSamples();
+                
+                /* Click Tracking: Track sample sending. */
+                String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                HashMap<String, String> options = new HashMap<String, String>();
+                options.put("count", samples+"");
+                ClickTracking.track(uuId, "sendingsamples", options, c);
+                /* End Click Tracking: Track sample sending. */
+                
                 int successSum = 0;
                 for (int batches = 0; batches < CaratApplication.COMMS_MAX_BATCHES
                         && batches < samples
@@ -117,6 +126,12 @@ public class SampleSender {
                         Log.w(TAG, "No samples to send." + TRY_AGAIN);
                     }
                 }
+                
+                /* Click Tracking: Track sample sending. */
+                options.put("count", successSum+"");
+                ClickTracking.track(uuId, "sentsamples", options, c);
+                /* End Click Tracking: Track sample sending. */
+                
             }/* else if (networkStatus
                     .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
                 Log.w(TAG, "Network status: " + networkStatus

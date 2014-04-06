@@ -50,6 +50,7 @@ Delete these from your file.
     <string name="moreinfo">More Information</string>
     <string name="appicon">App Icon</string>
     <string name="default_type">Foreground App</string>
+
     <string name="emptySuggestion">Nothing to report yet!</string>
     <string name="checkback">Please check back later.</string>
     <string name="checkback2">If you just started using Carat, we will need time to collect the necessary data: sometimes a week or more. Please check back later. Meanwhile, we\'ll be hard at work trying to figure out what\'s going on with your battery life&#8230;</string>
@@ -82,7 +83,7 @@ Delete these from your file.
     <string name="tab_about">About</string>
 
     <!-- Updating etc -->
-    
+
     <string name="samplesreported">Samples reported</string>
     <string name="updating">Updating</string>
     <string name="updated">(Updated </string>
