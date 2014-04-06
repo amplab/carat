@@ -30,7 +30,7 @@ Delete these from your file.
 
     <!-- These should be the same. Delete these from your file. -->
     <string name="app_name">Carat</string>
-    <string name="version_name">0.91</string>
+    <string name="version_name">0.92beta</string>
 
     <!-- These will be different -->
     
