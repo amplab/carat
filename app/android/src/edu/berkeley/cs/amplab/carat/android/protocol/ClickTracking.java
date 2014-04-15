@@ -14,8 +14,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import android.content.Context;
 import android.os.AsyncTask;

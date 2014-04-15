@@ -483,7 +483,7 @@ public class CaratMainActivity extends TabActivity {
                 options.put("hogs", len+"");
                 options.put("status", getTitle().toString());
                 options.put("sharetext", getString(R.string.myjscoreis)+" "+jscore);
-                ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
+                ClickTracking.track(uuId, "feedbackbutton", options, getApplicationContext());
             }
             startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
             return true;

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    
     <!--
 These are the same for all languages. When translating,
-Delete these from your file.
+delete these from your file.
     -->
+    <string name="app_name">Carat</string>
+    <string name="version_name">0.92beta</string>
+       
     <string name="jsna">N/A</string>
     <string name="fake_id">0</string>
     <string name="fake_os">4.0.3</string>
@@ -26,11 +29,6 @@ Delete these from your file.
     <string name="zero">0</string>
     <string name="benefitdefault">1d 9h 15m 40s</string>
     <!-- <string name="confidence">Confidence:</string> -->
-
-
-    <!-- These should be the same. Delete these from your file. -->
-    <string name="app_name">Carat</string>
-    <string name="version_name">0.92beta</string>
 
     <!-- These will be different -->
     
