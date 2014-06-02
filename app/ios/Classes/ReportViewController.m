@@ -146,6 +146,8 @@
     NSInteger error = (int) (benefit_max-benefit);
     
     [self.navigationController pushViewController:dvController animated:YES];
+    // Force view to load. Without this, IBOutletCollections will have zero elements at this point.
+    [dvController loadView];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
     [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
