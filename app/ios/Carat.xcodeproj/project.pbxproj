@@ -355,6 +355,7 @@
 		C1D52F391465F85A008D6D09 /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F291465F85A008D6D09 /* TSocketClient.m */; };
 		C1D52F3A1465F85A008D6D09 /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2C1465F85A008D6D09 /* TTransportException.m */; };
 		C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */; };
+		C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */ = {isa = PBXBuildFile; fileRef = C7A5C0601945A10F0007EDC9 /* twologo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -861,6 +862,7 @@
 		C1D52F2C1465F85A008D6D09 /* TTransportException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTransportException.m; sourceTree = "<group>"; };
 		C1D52F2D1465F85A008D6D09 /* TSharedProcessorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSharedProcessorFactory.h; sourceTree = "<group>"; };
 		C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSharedProcessorFactory.m; sourceTree = "<group>"; };
+		C7A5C0601945A10F0007EDC9 /* twologo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twologo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1296,6 +1298,7 @@
 		AB41CE15144F78450090CC09 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				C7A5C0601945A10F0007EDC9 /* twologo.png */,
 				AB9B580A148FEA10004F92F2 /* 37x-Checkmark.png */,
 				AB9B580C148FF31D004F92F2 /* 37x-X.png */,
 				ABC07A151485828A00FCC2C2 /* amplab_logo.png */,
@@ -1817,6 +1820,7 @@
 				AB3B904A16C0492F007C8596 /* socialize-checkmark.png in Resources */,
 				AB3B904B16C0492F007C8596 /* socialize-checkmark@2x.png in Resources */,
 				AB3B904C16C0492F007C8596 /* socialize-comment-background-text-input.png in Resources */,
+				C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */,
 				AB3B904D16C04930007C8596 /* socialize-comment-background-text-input@2x.png in Resources */,
 				AB3B904E16C04930007C8596 /* socialize-comment-button-active.png in Resources */,
 				AB3B904F16C04930007C8596 /* socialize-comment-button-active@2x.png in Resources */,
