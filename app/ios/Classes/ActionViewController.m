@@ -11,7 +11,7 @@
 #import "ActionItemCell.h"
 #import "UIImageDoNotCache.h"
 #import "InstructionViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "ActionObject.h"
 #import "CoreDataManager.h"
 #import "Reachability.h"
@@ -156,7 +156,7 @@
         InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:selectedCell.actionType];
         [self.navigationController pushViewController:ivController animated:YES];
         [ivController release];
-        [FlurryAnalytics logEvent:@"selectedInstructionView"];
+        [Flurry logEvent:@"selectedInstructionView"];
     }
 }
 
@@ -212,7 +212,7 @@
 - (void)shareHandler {
     [self showShareDialog];
     
-    [FlurryAnalytics logEvent:@"selectedSpreadTheWord"];
+    [Flurry logEvent:@"selectedSpreadTheWord"];
 }
 
 - (void)showShareDialog {

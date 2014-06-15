@@ -9,7 +9,7 @@
 #import "CurrentViewController.h"
 #import "Utilities.h"
 #import "DetailViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "CoreDataManager.h"
 #import "CommunicationManager.h"
 #import "UIDeviceHardware.h"
@@ -85,14 +85,14 @@
     ProcessListViewController *plvController = [[ProcessListViewController alloc] initWithNibName:@"ProcessListView" bundle:nil];
     [self.navigationController pushViewController:plvController animated:YES];
     [plvController release];
-    [FlurryAnalytics logEvent:@"selectedProcessList"];
+    [Flurry logEvent:@"selectedProcessList"];
 }
 
 - (IBAction)getActiveBatteryLifeInfoScreen:(id)sender {
     InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeActiveBatteryLifeInfo];
     [self.navigationController pushViewController:ivController animated:YES];
     [ivController release];
-    [FlurryAnalytics logEvent:@"selectedActiveBatteryLifeInfo"];
+    [Flurry logEvent:@"selectedActiveBatteryLifeInfo"];
 }
 
 - (IBAction)getJScoreInfoScreen:(id)sender
@@ -100,7 +100,7 @@
     InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeJScoreInfo];
     [self.navigationController pushViewController:ivController animated:YES];
     [ivController release];
-    [FlurryAnalytics logEvent:@"selectedJScoreInfo"];
+    [Flurry logEvent:@"selectedJScoreInfo"];
 }
 
 - (IBAction)getMemoryInfo:(id)sender
@@ -108,7 +108,7 @@
     InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeMemoryInfo];
     [self.navigationController pushViewController:ivController animated:YES];
     [ivController release];
-    [FlurryAnalytics logEvent:@"selectedMemoryInfo"];
+    [Flurry logEvent:@"selectedMemoryInfo"];
 }
 
 - (DetailViewController *)getDetailView
@@ -149,7 +149,7 @@
         [[dvController samplesWith] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samples]] stringValue]];
         [[dvController samplesWithout] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samplesWithout]] stringValue]];
         
-        [FlurryAnalytics logEvent:@"selectedSameOS"
+        [Flurry logEvent:@"selectedSameOS"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[[UIDevice currentDevice] systemVersion], @"OS Version", nil]];
     }
 }
@@ -186,7 +186,7 @@
         [[dvController samplesWithout] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[dsr samplesWithout]] stringValue]];
         
         UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
-        [FlurryAnalytics logEvent:@"selectedSameModel"
+        [Flurry logEvent:@"selectedSameModel"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[h platformString], @"Model", nil]];
         [h release];
     }

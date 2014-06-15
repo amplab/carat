@@ -10,7 +10,7 @@
 #import "ReportItemCell.h"
 #import "Utilities.h"
 #import "Globals.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UIImageDoNotCache.h"
 
 @implementation HiddenAppsViewController

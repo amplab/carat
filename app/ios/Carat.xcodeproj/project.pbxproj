@@ -81,7 +81,6 @@
 		ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A2214859EBE00FCC2C2 /* AboutViewController.m */; };
 		ABC07A331486C21A00FCC2C2 /* 53-house.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC07A321486C21A00FCC2C2 /* 53-house.png */; };
 		ABC07A681487FC9F00FCC2C2 /* ReportItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */; };
-		ABD2871115004CE800BDC79C /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD2871015004CE800BDC79C /* libFlurryAnalytics.a */; };
 		ABD317E114882E93000A8DC7 /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABD317E014882E93000A8DC7 /* DetailView.xib */; };
 		ABD317E514882F1C000A8DC7 /* HogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */; };
 		ABD317FD14884F6F000A8DC7 /* BugDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ABD317FB14884F6F000A8DC7 /* BugDetailViewController.m */; };
@@ -134,6 +133,7 @@
 		C1D52F391465F85A008D6D09 /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F291465F85A008D6D09 /* TSocketClient.m */; };
 		C1D52F3A1465F85A008D6D09 /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2C1465F85A008D6D09 /* TTransportException.m */; };
 		C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */; };
+		C70C03CE194E3F1E008C8B01 /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */; };
 		C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */ = {isa = PBXBuildFile; fileRef = C7A5C0601945A10F0007EDC9 /* twologo.png */; };
 		C7C571001946615F00E8E384 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C7C570FF1946615F00E8E384 /* Podfile */; };
 /* End PBXBuildFile section */
@@ -245,7 +245,6 @@
 		ABC07A321486C21A00FCC2C2 /* 53-house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "53-house.png"; sourceTree = "<group>"; };
 		ABC07A661487FC9E00FCC2C2 /* ReportItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportItemCell.h; sourceTree = "<group>"; };
 		ABC07A671487FC9E00FCC2C2 /* ReportItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportItemCell.m; sourceTree = "<group>"; };
-		ABD2871015004CE800BDC79C /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurryAnalytics.a; sourceTree = "<group>"; };
 		ABD317E014882E93000A8DC7 /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		ABD317E214882F1C000A8DC7 /* HogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HogDetailViewController.h; sourceTree = "<group>"; };
 		ABD317E314882F1C000A8DC7 /* HogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HogDetailViewController.m; sourceTree = "<group>"; };
@@ -255,7 +254,6 @@
 		ABD31806148D8304000A8DC7 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		ABD318E9148D8703000A8DC7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		ABD318EB148D8732000A8DC7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		ABD318EE148D88D1000A8DC7 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
 		ABD31902148EC41B000A8DC7 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		ABD75498162F5FC100817924 /* activebatterylife.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = activebatterylife.html; sourceTree = "<group>"; };
 		ABDB096614D110C900885FB7 /* UIDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceHardware.h; sourceTree = "<group>"; };
@@ -342,6 +340,8 @@
 		C1D52F2C1465F85A008D6D09 /* TTransportException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTransportException.m; sourceTree = "<group>"; };
 		C1D52F2D1465F85A008D6D09 /* TSharedProcessorFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSharedProcessorFactory.h; sourceTree = "<group>"; };
 		C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSharedProcessorFactory.m; sourceTree = "<group>"; };
+		C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.0.0.a; sourceTree = "<group>"; };
+		C70C03D0194E3F30008C8B01 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		C7A5C0601945A10F0007EDC9 /* twologo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twologo.png; sourceTree = "<group>"; };
 		C7C570FF1946615F00E8E384 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E4A720DBC61F40BDB6246B59 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,9 +363,9 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */,
+				C70C03CE194E3F1E008C8B01 /* libFlurry_5.0.0.a in Frameworks */,
 				C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */,
 				AB3B89C916C03A26007C8596 /* Social.framework in Frameworks */,
-				ABD2871115004CE800BDC79C /* libFlurryAnalytics.a in Frameworks */,
 				AB8121E316C04F5B005FBE96 /* libsqlite3.0.dylib in Frameworks */,
 				AB8121DE16C04E92005FBE96 /* AdSupport.framework in Frameworks */,
 				AB8121E116C04EA2005FBE96 /* Accounts.framework in Frameworks */,
@@ -379,13 +379,13 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C70C03CF194E3F30008C8B01 /* Flurry */,
 				C12F3A8014F07D01007504BA /* SDWebImage */,
 				C18B00E414EEF3EC008ED60F /* CoreDataManager.m */,
 				C18B00E514EEF3EC008ED60F /* CoreDataManager.h */,
 				AB41CE0A144F572D0090CC09 /* iPhone */,
 				AB41CE0C144F574A0090CC09 /* iPad */,
 				C1D52F0C1465F85A008D6D09 /* Thrift */,
-				ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */,
 				ABF64FE614C8D8DE00C21D8E /* PGTableWithEmptyView */,
 				AB73A68115B0D7B200726C21 /* SVPullToRefresh */,
 				AB1E7AB814D0BF420010617A /* UIDeviceHardware */,
@@ -431,6 +431,7 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
+				C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */,
 				C7C570FF1946615F00E8E384 /* Podfile */,
 				AB7BAABE161A58670058AC33 /* Default-568h@2x.png */,
 				ABE8DA7815247BDB0024C111 /* icon144.png */,
@@ -505,7 +506,6 @@
 				AB41CDF9144E3B660090CC09 /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				AB9B57F2148EC51C004F92F2 /* libCorePlot-CocoaTouch.a */,
-				ABD2871015004CE800BDC79C /* libFlurryAnalytics.a */,
 				AB8121E216C04F5B005FBE96 /* libsqlite3.0.dylib */,
 				E4A720DBC61F40BDB6246B59 /* libPods.a */,
 			);
@@ -654,14 +654,6 @@
 			name = UI;
 			sourceTree = "<group>";
 		};
-		ABD318ED148D88D1000A8DC7 /* FlurryAnalytics */ = {
-			isa = PBXGroup;
-			children = (
-				ABD318EE148D88D1000A8DC7 /* FlurryAnalytics.h */,
-			);
-			path = FlurryAnalytics;
-			sourceTree = "<group>";
-		};
 		ABF64FE614C8D8DE00C21D8E /* PGTableWithEmptyView */ = {
 			isa = PBXGroup;
 			children = (
@@ -757,6 +749,14 @@
 				C1D52F2C1465F85A008D6D09 /* TTransportException.m */,
 			);
 			path = transport;
+			sourceTree = "<group>";
+		};
+		C70C03CF194E3F30008C8B01 /* Flurry */ = {
+			isa = PBXGroup;
+			children = (
+				C70C03D0194E3F30008C8B01 /* Flurry.h */,
+			);
+			path = Flurry;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1024,9 +1024,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Classes/FlurryAnalytics\"",
+					"\"$(SRCROOT)/Classes/Flurry\"",
 					"\"$(SRCROOT)/Classes\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -1062,9 +1063,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Classes/FlurryAnalytics\"",
+					"\"$(SRCROOT)/Classes/Flurry\"",
 					"\"$(SRCROOT)/Classes\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (
@@ -1124,9 +1126,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Classes/FlurryAnalytics\"",
+					"\"$(SRCROOT)/Classes/Flurry\"",
 					"\"$(SRCROOT)/Classes\"",
-					"\"$(SRCROOT)\"",
+					"$(SRCROOT)",
+					"$(PROJECT_DIR)",
 				);
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = (

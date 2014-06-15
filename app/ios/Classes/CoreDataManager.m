@@ -9,7 +9,7 @@
 //
 
 #import "CoreDataManager.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UIDeviceHardware.h"
 #import "Utilities.h"
 
@@ -871,7 +871,7 @@ static NSMutableDictionary * daemonsList = nil;
         if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
         {
             DLog(@"%s Could not save sample in coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
-            [FlurryAnalytics logEvent:@"sampleForeground Error"
+            [Flurry logEvent:@"sampleForeground Error"
                        withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
         }
     }
@@ -1221,7 +1221,7 @@ static id instance = nil;
         /*
          Error is logged, but we soldier on without saving our registration. :-(
          */
-        [FlurryAnalytics logEvent:@"generateSaveRegistration Error"
+        [Flurry logEvent:@"generateSaveRegistration Error"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@", error, [error userInfo]], @"Error Info", nil]];
         DLog(@"%s Unresolved error %@, %@", __PRETTY_FUNCTION__,error, [error userInfo]);
     } 
@@ -1235,19 +1235,19 @@ static id instance = nil;
     dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
         {
-            [FlurryAnalytics logEvent:@"sampleNowBackground"
+            [Flurry logEvent:@"sampleNowBackground"
                        withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"BG Sample Triggered", nil]
                                 timed:YES];
             [self sampleBackground:triggeredBy];
-            [FlurryAnalytics endTimedEvent:@"sampleNowBackground" withParameters:nil];
+            [Flurry endTimedEvent:@"sampleNowBackground" withParameters:nil];
         }
         else
         {
-            [FlurryAnalytics logEvent:@"sampleNowForeround"
+            [Flurry logEvent:@"sampleNowForeround"
                        withParameters:[NSDictionary dictionaryWithObjectsAndKeys:triggeredBy, @"FG Sample Triggered", nil]
                                 timed:YES];
             [self sampleForeground:triggeredBy];
-            [FlurryAnalytics endTimedEvent:@"sampleNowForeround" withParameters:nil];
+            [Flurry endTimedEvent:@"sampleNowForeround" withParameters:nil];
         }
     });    
 }
@@ -1809,7 +1809,7 @@ static id instance = nil;
          Error is logged, but we soldier on. Should probably implement one of the solutions above.
          */
         
-        [FlurryAnalytics logEvent:@"sampleForeground Error"
+        [Flurry logEvent:@"sampleForeground Error"
                    withParameters:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Unresolved error %@, %@, trying to fix by deleting persistent store", error, [error userInfo]], @"Error Info", nil]];
         
         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];

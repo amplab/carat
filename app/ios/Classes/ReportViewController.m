@@ -11,7 +11,7 @@
 #import "Utilities.h"
 #import "DetailViewController.h"
 #import "HiddenAppsViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "UIImageDoNotCache.h"
 
 @implementation ReportViewController
@@ -70,7 +70,7 @@
     HiddenAppsViewController *haView = [[[HiddenAppsViewController alloc] initWithNibName:@"HiddenAppsView" bundle:nil] autorelease];
     [self.navigationController pushViewController:haView animated:YES];
     
-    [FlurryAnalytics logEvent:@"selectedShowHiddenApps"];
+    [Flurry logEvent:@"selectedShowHiddenApps"];
 }
 
 
@@ -164,7 +164,7 @@
     [[dvController samplesWith] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[hb samples]] stringValue]];
     [[dvController samplesWithout] makeObjectsPerformSelector:@selector(setText:) withObject:[[NSNumber numberWithDouble:[hb samplesWithout]] stringValue]];
     
-    [FlurryAnalytics logEvent:[@"selected" stringByAppendingString:self.detailViewName]
+    [Flurry logEvent:[@"selected" stringByAppendingString:self.detailViewName]
                withParameters:[NSDictionary dictionaryWithObjectsAndKeys:selectedCell.appName.text, @"App Name", nil]];
 }
 

@@ -9,7 +9,7 @@
 #import "CaratAppDelegate.h"
 #import "UIDeviceProc.h"
 #import <CoreData/CoreData.h>
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 #import "Utilities.h"
 #import "CoreDataManager.h"
 
@@ -32,7 +32,7 @@
 
 void onUncaughtException(NSException *exception)
 {
-    [FlurryAnalytics logError:@"Uncaught" message:[[exception callStackSymbols] componentsJoinedByString:@"\n"] exception:exception];
+    [Flurry logError:@"Uncaught" message:[[exception callStackSymbols] componentsJoinedByString:@"\n"] exception:exception];
     NSLog(@"uncaught exception: %@", exception.description);
 }
 
@@ -147,13 +147,13 @@ void onUncaughtException(NSException *exception)
     [[CoreDataManager instance] generateSaveRegistration];
     
     // Analytics
-    [FlurryAnalytics startSession:@"4XITISYNWHTBTL4E533E"];
-    [FlurryAnalytics logAllPageViews:self.tabBarController];
-    [FlurryAnalytics logAllPageViews:navController0];
-    [FlurryAnalytics logAllPageViews:navController1];
-    [FlurryAnalytics logAllPageViews:navController2];
-    [FlurryAnalytics logAllPageViews:navController3];
-    [FlurryAnalytics setUserID:[[Globals instance] getUUID]];
+    [Flurry startSession:@"4XITISYNWHTBTL4E533E"];
+    [Flurry logAllPageViews:self.tabBarController];
+    [Flurry logAllPageViews:navController0];
+    [Flurry logAllPageViews:navController1];
+    [Flurry logAllPageViews:navController2];
+    [Flurry logAllPageViews:navController3];
+    [Flurry setUserID:[[Globals instance] getUUID]];
     
     // set the socialize api key and secret, app registered here: http://www.getsocialize.com/apps/
     [Socialize storeConsumerKey:@"8d0ddf53-fac1-48b1-ab25-b8c819455124"];
@@ -279,7 +279,7 @@ didReceiveLocalNotification:(UILocalNotification *)notification {
     didUpdateToLocation:(CLLocation *)newLocation 
            fromLocation:(CLLocation *)oldLocation
 {
-    [FlurryAnalytics setLatitude:newLocation.coordinate.latitude 
+    [Flurry setLatitude:newLocation.coordinate.latitude 
                        longitude:newLocation.coordinate.longitude 
               horizontalAccuracy:newLocation.horizontalAccuracy            
                 verticalAccuracy:newLocation.verticalAccuracy]; 

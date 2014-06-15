@@ -9,7 +9,7 @@
 #import "DetailViewController.h"
 #import "Utilities.h"
 #import "InstructionViewController.h"
-#import "FlurryAnalytics.h"
+#import "Flurry.h"
 
 @implementation DetailViewController
 
@@ -45,7 +45,7 @@
     InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:ActionTypeDetailInfo];
     [self.navigationController pushViewController:ivController animated:YES];
     [ivController release];
-    [FlurryAnalytics logEvent:@"selectedDetailScreenInfo"];
+    [Flurry logEvent:@"selectedDetailScreenInfo"];
 }
 
 #pragma mark - View lifecycle
