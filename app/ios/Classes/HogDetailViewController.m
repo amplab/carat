@@ -7,7 +7,7 @@
 //
 
 #import "HogDetailViewController.h"
-#import "CorePlot-CocoaTouch.h"
+//#import "CorePlot-CocoaTouch.h"
 
 @implementation HogDetailViewController
 

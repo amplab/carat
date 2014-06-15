@@ -7,7 +7,7 @@
 //
 
 #import "BugDetailViewController.h"
-#import "CorePlot-CocoaTouch.h"
+//#import  q"CorePlot-CocoaTouch.h"
 
 @implementation BugDetailViewController
 

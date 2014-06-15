@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CorePlot-CocoaTouch.h"
+//#import "CorePlot-CocoaTouch.h"
 #import "DetailViewController.h"
 
 @interface BugDetailViewController : DetailViewController
