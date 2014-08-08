@@ -431,8 +431,10 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
+				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 				C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */,
 				C7C570FF1946615F00E8E384 /* Podfile */,
+				5232799E42F24276948A951D /* Pods.xcconfig */,
 				AB7BAABE161A58670058AC33 /* Default-568h@2x.png */,
 				ABE8DA7815247BDB0024C111 /* icon144.png */,
 				ABE8DA7615247B790024C111 /* Default-Landscape@2x~ipad.png */,
@@ -450,7 +452,6 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				5232799E42F24276948A951D /* Pods.xcconfig */,
 			);
 			name = Carat;
 			sourceTree = "<group>";
@@ -482,7 +483,6 @@
 				AB34BBE8151A3E85006C4C76 /* ConsentView.xib */,
 				ABD317E014882E93000A8DC7 /* DetailView.xib */,
 				AB41CE15144F78450090CC09 /* img */,
-				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 			);
 			name = Resources;
 			path = ..;
@@ -791,7 +791,7 @@
 				ORGANIZATIONNAME = "UC Berkeley";
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = 395MZN37X2;
+						DevelopmentTeam = 6DTUZ33TN6;
 					};
 				};
 			};
@@ -1048,8 +1048,8 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1074,8 +1074,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3DBC0ACB-391A-432E-A03D-BABA65FE0DC1";
+				PROVISIONING_PROFILE = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
 				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
 				VALIDATE_PRODUCT = YES;
@@ -1169,8 +1169,8 @@
 			buildSettings = {
 				ARCHS = armv7;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1178,8 +1178,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "3DBC0ACB-391A-432E-A03D-BABA65FE0DC1";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3DBC0ACB-391A-432E-A03D-BABA65FE0DC1";
+				PROVISIONING_PROFILE = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
