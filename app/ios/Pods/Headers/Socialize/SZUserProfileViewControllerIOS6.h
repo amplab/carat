@@ -1,0 +1,1 @@
+../../Socialize/Socialize/SZUserProfileViewControllerIOS6.h

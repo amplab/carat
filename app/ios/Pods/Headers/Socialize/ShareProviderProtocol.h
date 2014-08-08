@@ -1,0 +1,1 @@
+../../Socialize/Socialize-noarc/ShareProviderProtocol.h

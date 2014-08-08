@@ -1,0 +1,1 @@
+../../Socialize/Socialize-noarc/SocializeConfiguration.h

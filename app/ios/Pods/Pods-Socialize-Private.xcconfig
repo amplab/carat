@@ -1,0 +1,5 @@
+#include "Pods-Socialize.xcconfig"
+GCC_PREPROCESSOR_DEFINITIONS = COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/Socialize" "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/Facebook-iOS-SDK" "${PODS_ROOT}/Headers/Facebook-iOS-SDK/FacebookSDK" "${PODS_ROOT}/Headers/Loopy" "${PODS_ROOT}/Headers/SZBlocksKit" "${PODS_ROOT}/Headers/SZJSONKit" "${PODS_ROOT}/Headers/SZOAuthConsumer" "${PODS_ROOT}/Headers/SZOAuthConsumer/OAuthConsumer" "${PODS_ROOT}/Headers/Socialize"
+OTHER_LDFLAGS = -ObjC
+PODS_ROOT = ${SRCROOT}

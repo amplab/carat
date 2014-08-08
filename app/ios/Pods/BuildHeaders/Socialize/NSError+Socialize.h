@@ -1,0 +1,1 @@
+../../Socialize/Socialize-noarc/NSError+Socialize.h

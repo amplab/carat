@@ -1,0 +1,1 @@
+../../Socialize/Socialize-noarc/CommentsTableFooterViewIOS6.h

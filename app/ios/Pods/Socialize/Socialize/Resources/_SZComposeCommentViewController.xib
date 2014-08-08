@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1552" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="_SZComposeCommentViewController">
+            <connections>
+                <outlet property="activateLocationButton" destination="12" id="15"/>
+                <outlet property="bottomContainerDisabledView" destination="66" id="68"/>
+                <outlet property="commentTextView" destination="5" id="14"/>
+                <outlet property="doNotShareLocationButton" destination="11" id="16"/>
+                <outlet property="enableSubscribeButton" destination="49" id="54"/>
+                <outlet property="locationText" destination="22" id="23"/>
+                <outlet property="lowerContainer" destination="45" id="46"/>
+                <outlet property="mapContainer" destination="9" id="29"/>
+                <outlet property="mapViewContainer" destination="69" id="70"/>
+                <outlet property="messageActionButtonContainer" destination="60" id="61"/>
+                <outlet property="subscribeContainer" destination="37" id="58"/>
+                <outlet property="unsubscribeButton" destination="51" id="53"/>
+                <outlet property="upperContainer" destination="44" id="47"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1" userLabel="View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="44" userLabel="Upper Container">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="191"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <accessibility key="accessibilityConfiguration" label="Comment Entry"/>
+                            <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="19"/>
+                            </connections>
+                        </textView>
+                        <view contentMode="scaleToFill" id="6" userLabel="locationStatusViewContainer">
+                            <rect key="frame" x="0.0" y="191" width="320" height="39"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="socialize-comment-location-bar-background.png" id="8">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </imageView>
+                                <label opaque="NO" clipsSubviews="YES" contentMode="left" text="South Beach, San Fransisco" lineBreakMode="tailTruncation" minimumFontSize="10" id="22">
+                                    <rect key="frame" x="41" y="11" width="175" height="21"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="12" userLabel="Button - South Beach, San Francisco">
+                                    <rect key="frame" x="0.0" y="6" width="197" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                                    <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <state key="normal" image="socialize-comment-location-enabled.png">
+                                        <color key="titleColor" red="0.1058823529" green="0.71764705880000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    </state>
+                                    <state key="highlighted" image="socialize-comment-location-enabled.png">
+                                        <color key="titleColor" red="0.1058823529" green="0.71764705880000002" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="activateLocationButtonPressed:" destination="-1" eventType="touchUpInside" id="18"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" id="60" userLabel="Message Action Button Container" customClass="SZHorizontalContainerView">
+                                    <rect key="frame" x="198" y="0.0" width="122" height="39"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="49" userLabel="Notifications Button">
+                                            <rect key="frame" x="82" y="1" width="40" height="40"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <state key="normal" image="socialize-comment-notification-disabled.png">
+                                                <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <state key="selected" image="socialize-comment-notification-enabled.png"/>
+                                            <state key="highlighted">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="enableSubscribeButtonPressed:" destination="-1" eventType="touchUpInside" id="57"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="0.0" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                </view>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.38677003170000002" green="1" blue="0.33408703070000001" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" id="45" userLabel="Lower Container">
+                    <rect key="frame" x="0.0" y="230" width="320" height="249"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES"/>
+                    <subviews>
+                        <view hidden="YES" contentMode="scaleToFill" id="66" userLabel="Map Disabled View">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="249"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.25098040700000002" green="0.29803922770000002" blue="0.33333334329999997" alpha="1" colorSpace="deviceRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.25490196079999999" green="0.30196078430000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="37" userLabel="Subscribe View Container">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="socialize-comment-detail-bottom-shadow-background.png" id="38" userLabel="Image View - socialize-activity-bg.png">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="51">
+                    <rect key="frame" x="40" y="151" width="239" height="47"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                    <state key="normal" title="Unsubscribe">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="unsubscribeButtonPressed:" destination="-1" eventType="touchUpInside" id="56"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" image="socialize-iphone-subcribe-notification-icon.png" id="42">
+                    <rect key="frame" x="78" y="17" width="165" height="77"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Subscribed to this discussion." lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" id="41">
+                    <rect key="frame" x="59" y="102" width="206" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="14"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <color key="shadowColor" red="0.25" green="0.25" blue="0.25" alpha="1" colorSpace="calibratedRGB"/>
+                    <size key="shadowOffset" width="0.0" height="1"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="We will notify you when someone replies." lineBreakMode="tailTruncation" minimumFontSize="10" adjustsFontSizeToFit="NO" id="40">
+                    <rect key="frame" x="51" y="116" width="220" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
+                    <color key="textColor" red="0.60392156860000001" green="0.66666666669999997" blue="0.71372549019999998" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <color key="shadowColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <size key="shadowOffset" width="0.0" height="1"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.25490196079999999" green="0.30196078430000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+        </view>
+        <view contentMode="scaleToFill" id="9" userLabel="locationMapViewContainer">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="socialize-comment-detail-bottom-shadow-background.png" id="25" userLabel="Image View - socialize-activity-bg.png">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="217"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="11">
+                    <rect key="frame" x="40" y="151" width="239" height="47"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <fontDescription key="fontDescription" name="Helvetica-Bold" family="Helvetica" pointSize="15"/>
+                    <state key="normal" title="Don't Share Location">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="doNotShareLocationButtonPressed:" destination="-1" eventType="touchUpInside" id="17"/>
+                    </connections>
+                </button>
+                <view opaque="NO" contentMode="scaleToFill" id="69" userLabel="Actual Map Container">
+                    <rect key="frame" x="20" y="20" width="280" height="121"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.25490196079999999" green="0.30196078430000001" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="socialize-comment-detail-bottom-shadow-background.png" width="2" height="213"/>
+        <image name="socialize-comment-location-bar-background.png" width="1" height="39"/>
+        <image name="socialize-comment-location-enabled.png" width="24" height="25"/>
+        <image name="socialize-comment-notification-disabled.png" width="30" height="30"/>
+        <image name="socialize-comment-notification-enabled.png" width="30" height="30"/>
+        <image name="socialize-iphone-subcribe-notification-icon.png" width="165" height="77"/>
+    </resources>
+</document>

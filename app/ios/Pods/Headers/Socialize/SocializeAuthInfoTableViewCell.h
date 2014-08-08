@@ -1,0 +1,1 @@
+../../Socialize/Socialize-noarc/SocializeAuthInfoTableViewCell.h

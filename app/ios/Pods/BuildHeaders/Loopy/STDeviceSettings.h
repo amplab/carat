@@ -1,0 +1,1 @@
+../../Loopy/Loopy/STDeviceSettings.h
