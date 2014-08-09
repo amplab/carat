@@ -23,6 +23,24 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
+				<string>icon120</string>
+				<string>icon114.png</string>
+				<string>icon72.png</string>
+				<string>icon57.png</string>
+				<string>Default-Portrait@2x~ipad.png</string>
+				<string>Default-Landscape@2x~ipad.png</string>
+				<string>icon144.png</string>
+			</array>
+		</dict>
+	</dict>
+	<key>CFBundleIcons~ipad</key>
+	<dict>
+		<key>CFBundlePrimaryIcon</key>
+		<dict>
+			<key>CFBundleIconFiles</key>
+			<array>
+				<string>icon76</string>
+				<string>icon120</string>
 				<string>icon114.png</string>
 				<string>icon72.png</string>
 				<string>icon57.png</string>
@@ -73,6 +91,29 @@
 	<integer>0</integer>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UILaunchImages~ipad</key>
+	<array>
+		<dict>
+			<key>UILaunchImageMinimumOSVersion</key>
+			<string>7.0</string>
+			<key>UILaunchImageName</key>
+			<string>Default-Landscape</string>
+			<key>UILaunchImageOrientation</key>
+			<string>Landscape</string>
+			<key>UILaunchImageSize</key>
+			<string>{768, 1024}</string>
+		</dict>
+		<dict>
+			<key>UILaunchImageMinimumOSVersion</key>
+			<string>7.0</string>
+			<key>UILaunchImageName</key>
+			<string>Default-Portrait</string>
+			<key>UILaunchImageOrientation</key>
+			<string>Portrait</string>
+			<key>UILaunchImageSize</key>
+			<string>{768, 1024}</string>
+		</dict>
+	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

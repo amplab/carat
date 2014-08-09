@@ -133,6 +133,12 @@
 		C1D52F3A1465F85A008D6D09 /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2C1465F85A008D6D09 /* TTransportException.m */; };
 		C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */; };
 		C70C03CE194E3F1E008C8B01 /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */; };
+		C7547E0219963433007A01CF /* icon76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0019963433007A01CF /* icon76.png */; };
+		C7547E0319963433007A01CF /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0119963433007A01CF /* icon120.png */; };
+		C7547E0819963590007A01CF /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0419963590007A01CF /* Default-Landscape.png */; };
+		C7547E0919963590007A01CF /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0519963590007A01CF /* Default-Landscape@2x.png */; };
+		C7547E0A19963590007A01CF /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0619963590007A01CF /* Default-Portrait.png */; };
+		C7547E0B19963590007A01CF /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0719963590007A01CF /* Default-Portrait@2x.png */; };
 		C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */ = {isa = PBXBuildFile; fileRef = C7A5C0601945A10F0007EDC9 /* twologo.png */; };
 		C7C571001946615F00E8E384 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C7C570FF1946615F00E8E384 /* Podfile */; };
 /* End PBXBuildFile section */
@@ -340,6 +346,12 @@
 		C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSharedProcessorFactory.m; sourceTree = "<group>"; };
 		C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFlurry_5.0.0.a; sourceTree = "<group>"; };
 		C70C03D0194E3F30008C8B01 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
+		C7547E0019963433007A01CF /* icon76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon76.png; sourceTree = "<group>"; };
+		C7547E0119963433007A01CF /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon120.png; sourceTree = "<group>"; };
+		C7547E0419963590007A01CF /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
+		C7547E0519963590007A01CF /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
+		C7547E0619963590007A01CF /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		C7547E0719963590007A01CF /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		C7A5C0601945A10F0007EDC9 /* twologo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twologo.png; sourceTree = "<group>"; };
 		C7C570FF1946615F00E8E384 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E4A720DBC61F40BDB6246B59 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -428,6 +440,12 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
+				C7547E0419963590007A01CF /* Default-Landscape.png */,
+				C7547E0519963590007A01CF /* Default-Landscape@2x.png */,
+				C7547E0619963590007A01CF /* Default-Portrait.png */,
+				C7547E0719963590007A01CF /* Default-Portrait@2x.png */,
+				C7547E0019963433007A01CF /* icon76.png */,
+				C7547E0119963433007A01CF /* icon120.png */,
 				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 				C70C03CD194E3F1E008C8B01 /* libFlurry_5.0.0.a */,
 				C7C570FF1946615F00E8E384 /* Podfile */,
@@ -846,10 +864,12 @@
 				AB7A113714E1FE4B004D155C /* bug.png in Resources */,
 				AB7A113914E1FEAB004D155C /* 32-iphone.png in Resources */,
 				ABA3A0F714E45711009B3D33 /* InstructionView.xib in Resources */,
+				C7547E0919963590007A01CF /* Default-Landscape@2x.png in Resources */,
 				ABB1221C14E9E7C300FE959A /* procmanager1.png in Resources */,
 				ABB1221D14E9E7C300FE959A /* procmanager2.png in Resources */,
 				AB9525AE14EA1B5900343418 /* about.html in Resources */,
 				AB9525B014EA1B6F00343418 /* killapp.html in Resources */,
+				C7547E0319963433007A01CF /* icon120.png in Resources */,
 				AB99EB0114EA6C130008E440 /* upgradeos.html in Resources */,
 				AB99EB0414EA6CCD0008E440 /* deviceselect.png in Resources */,
 				AB99EB0514EA6CCD0008E440 /* updatecheck.png in Resources */,
@@ -857,8 +877,10 @@
 				AB105EBF14EDCCD2000DB145 /* jscoreinfo.html in Resources */,
 				AB105EC114EDD0CE000DB145 /* jscoreplot.png in Resources */,
 				AB105EC314EDD2D3000DB145 /* ProcessItemCell.xib in Resources */,
+				C7547E0B19963590007A01CF /* Default-Portrait@2x.png in Resources */,
 				ABEC9B6814F1DA00005CE813 /* license.txt in Resources */,
 				ABEF5E5C14F4700C002AB4DE /* Default-Portrait~ipad.png in Resources */,
+				C7547E0819963590007A01CF /* Default-Landscape.png in Resources */,
 				ABEF5E5E14F47044002AB4DE /* Default-Landscape~ipad.png in Resources */,
 				ABFCF9F814F6CDF600A508E0 /* memoryinfo.html in Resources */,
 				ABFCF9FA14F6DAAE00A508E0 /* energyratedist.png in Resources */,
@@ -873,6 +895,8 @@
 				ABD75499162F5FC100817924 /* activebatterylife.html in Resources */,
 				C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */,
 				C7C571001946615F00E8E384 /* Podfile in Resources */,
+				C7547E0219963433007A01CF /* icon76.png in Resources */,
+				C7547E0A19963590007A01CF /* Default-Portrait.png in Resources */,
 				ABE5C2A516F0F36300780085 /* collectdata.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
