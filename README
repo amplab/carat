@@ -1,1 +1,8 @@
+The latest Android build in this branch requires ActionBarSherlock, which is present here as a git
+submodule. Download submodules to get it.
+
+To compile with it, create a new Eclipse project with Import existing Android code into workspace
+with the folder ActionBarSherlock/actionbarsherlock. Then copy the Android support library from
+app/android/libs to ActionBarSherlock/actionbarsherlock/libs, replacing the one there.
+
 For details, visit http://carat.cs.berkeley.edu/
