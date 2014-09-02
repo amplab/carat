@@ -59,7 +59,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CaratSuggestionsActivity"
+            android:name=".CaratSuggestionsFragment"
             android:label="@string/app_name" >
         </activity>
         <!-- Info and later button to kill apps -->
@@ -68,11 +68,11 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".CaratMyDeviceActivity"
+            android:name=".CaratMyDeviceFragment"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".CaratBugsOrHogsActivity"
+            android:name=".CaratBugsOrHogsFragment"
             android:label="@string/app_name" >
         </activity>
         <!-- 
@@ -82,7 +82,7 @@
         </activity>
         -->
         <activity
-            android:name=".CaratAboutActivity"
+            android:name=".CaratAboutFragment"
             android:label="@string/app_name" >
         </activity>
         <activity

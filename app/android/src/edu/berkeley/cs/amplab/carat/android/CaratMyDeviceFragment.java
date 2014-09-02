@@ -1,6 +1,5 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,26 +7,24 @@ import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
-import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
-import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
+import android.app.Activity;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.text.ClipboardManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,7 +38,7 @@ import android.widget.ViewFlipper;
  * @author Eemil Lagerspetz
  * 
  */
-public class CaratMyDeviceActivity extends BaseVFActivity {
+public class CaratMyDeviceFragment extends Fragment {
 
     private DrawView osView = null;
     private View osViewPage = null;
@@ -51,28 +48,33 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
     private View appsViewPage = null;
      */
     
-    /** Called when the activity is first created. */
+    
+    // TODO: FIXME: These should be gone.
+    int viewIndex = 0;
+    int baseViewIndex = 0;
+    ViewFlipper vf = null;
+    
+    private void switchView(View v){}
+    
+    private void switchView(int id){}
+    
+    /**
+     * Set up Fragment and subscreens. Transformations from Fragment
+     * to another should be handled at a higher level.
+     */
+    
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.mydevice);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        vf = new ViewFlipper(getActivity());
+        View root = inflater.inflate(R.layout.mydevice, container, false);
 
-        vf = (ViewFlipper) findViewById(R.id.viewFlipper);
-        View baseView = findViewById(R.id.scrollView1);
-        baseView.setOnTouchListener(SwipeListener.instance);
-        baseViewIndex = vf.indexOfChild(baseView);
-        //initJscoreView();
-        //initMemoryView();
-        //initBatteryLifeView();
-        initProcessListView();
-        //initOsView();
-        //initModelView();
-        //initAppsView();
-        setModelAndVersion();
+        initProcessListView(root);
+        setModelAndVersion(root);
 
-        Object o = getLastNonConfigurationInstance();
+        if (savedInstanceState != null){
+        Object o = savedInstanceState.get("savedInstance");
         if (o != null) {
-            CaratMyDeviceActivity previous = (CaratMyDeviceActivity) o;
+            CaratMyDeviceFragment previous = (CaratMyDeviceFragment) o;
             if (previous.osViewPage != null
                     && previous.osViewPage == previous.vf.getChildAt(viewIndex)) {
                 DrawView v = previous.osView;
@@ -99,13 +101,16 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                 viewIndex = vf.indexOfChild(modelViewPage);
             }
         }
-
+        }
+        
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
+        
+        return root;
     }
-    
+
     private void restorePage(View thisPage, View oldPage){
         TextView pn = (TextView) oldPage.findViewById(R.id.name);
         ImageView pi = (ImageView) oldPage.findViewById(R.id.appIcon);
@@ -118,43 +123,33 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                 .setText(pp.getText());
     }
 
-    private void initProcessListView() {
-        final ListView lv = (ListView) findViewById(R.id.processList);
+    private void initProcessListView(View root) {
+        final ListView lv = (ListView) root.findViewById(R.id.processList);
         lv.setCacheColorHint(0);
-        // Ignore clicks here.
-        /*
-         * lv.setOnItemClickListener(new OnItemClickListener() {
-         * 
-         * @Override public void onItemClick(AdapterView<?> a, View v, int
-         * position, long id) { Object o = lv.getItemAtPosition(position);
-         * RunningAppProcessInfo fullObject = (RunningAppProcessInfo) o;
-         * Toast.makeText(CaratMyDeviceActivity.this, "You have chosen: " + " "
-         * + fullObject.processName, Toast.LENGTH_LONG).show(); } });
-         */
-        lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
+        /*lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(getView().findViewById(R.id.scrollView1))));*/
     }
 
     private View[] construct() {
         View[] result = new View[2];
-        LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+        LayoutInflater inflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View detailPage = inflater.inflate(R.layout.graph, null);
         ViewGroup g = (ViewGroup) detailPage;
-        DrawView w = new DrawView(getApplicationContext());
+        DrawView w = new DrawView(getActivity());
         //g.addView(w);
         vf.addView(detailPage);
 
-        g.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex,
-                false));
+        /*g.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex,
+                false));*/
         result[0] = w;
         result[1] = detailPage;
 
-        final LocalizedWebView webview = new LocalizedWebView(getApplicationContext());
+        final LocalizedWebView webview = new LocalizedWebView(getActivity());
 
         webview.loadUrl("file:///android_asset/detailinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(detailPage), false));
+        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(detailPage), false));*/
         vf.addView(webview);
 
         View moreinfo = detailPage.findViewById(R.id.moreinfo);
@@ -176,7 +171,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      * @see android.app.Activity#onResume()
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         CaratApplication.setMyDevice(this);
         CaratApplication.setReportData();
         /*UiRefreshThread.setReportData();
@@ -199,11 +194,11 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void copyCaratId(View v) {
-        TextView tv = (TextView) findViewById(R.id.carat_id_value);
+        TextView tv = (TextView) getView().findViewById(R.id.carat_id_value);
         String copied = tv.getText().toString();
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
         clipboard.setText(copied);
-        Toast.makeText(CaratMyDeviceActivity.this, getString(R.string.copied) +" "+copied, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), getString(R.string.copied) +" "+copied, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -222,7 +217,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport osWithout = r.getOsWithout();
 
             String label = getString(R.string.os) +": " + SamplingLibrary.getOsVersion();
-            Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
+            Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
             ((TextView) osViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) osViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
@@ -241,12 +236,12 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
                     os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) osWithout.getSamples(), os.getError(), osWithout.getError(), osViewPage);
         }
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (p != null) {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "osinfo", options, getApplicationContext());
+            options.put("status", getActivity().getTitle().toString());
+            ClickTracking.track(uuId, "osinfo", options, getActivity());
         }
         switchView(osViewPage);
     }
@@ -267,7 +262,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport modelWithout = r.getModelWithout();
 
             String label = getString(R.string.model) +": " + SamplingLibrary.getModel();
-            Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
+            Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
             ((TextView) modelViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) modelViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
@@ -286,12 +281,12 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) modelWithout.getSamples(), model.getError(), modelWithout.getError(), modelViewPage);
         }
         
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (p != null) {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "deviceinfo", options, getApplicationContext());
+            options.put("status", getActivity().getTitle().toString());
+            ClickTracking.track(uuId, "deviceinfo", options, getActivity());
         }
         switchView(modelViewPage);
     }
@@ -310,7 +305,7 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
             DetailScreenReport similarWithout = r.getSimilarAppsWithout();
 
             String label = getString(R.string.similarapps);
-            Drawable icon = CaratApplication.iconForApp(getApplicationContext(), "Carat");
+            Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
             ((TextView) appsViewPage.findViewById(R.id.name)).setText(label);
             ((ImageView) appsViewPage.findViewById(R.id.appIcon))
                     .setImageDrawable(icon);
@@ -340,17 +335,17 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showMemoryInfo(View v) {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.memoryView);
+        LocalizedWebView webview = (LocalizedWebView) getView().findViewById(R.id.memoryView);
         
         webview.loadUrl("file:///android_asset/memoryinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(getView().findViewById(R.id.scrollView1))));*/
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (p != null) {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "memoryinfo", options, getApplicationContext());
+            options.put("status", getActivity().getTitle().toString());
+            ClickTracking.track(uuId, "memoryinfo", options, getActivity());
         }
         switchView(R.id.memoryView);
     }
@@ -362,18 +357,18 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void showBatteryLifeInfo(View v) {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.batteryLifeView);
+        LocalizedWebView webview = (LocalizedWebView) getView().findViewById(R.id.batteryLifeView);
         
         webview.loadUrl("file:///android_asset/batterylifeinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
+        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));*/
         
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (p != null) {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "batterylifeinfo", options, getApplicationContext());
+            options.put("status", getActivity().getTitle().toString());
+            ClickTracking.track(uuId, "batterylifeinfo", options, getActivity());
         }
         switchView(R.id.batteryLifeView);
     }
@@ -385,17 +380,17 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      *            The source of the click.
      */
     public void viewJscoreInfo(View v) {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.jscoreView);
+        LocalizedWebView webview = (LocalizedWebView) getView().findViewById(R.id.jscoreView);
         
         webview.loadUrl("file:///android_asset/jscoreinfo.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
+                .indexOfChild(findViewById(R.id.scrollView1))));*/
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (p != null) {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "jscoreinfo", options, getApplicationContext());
+            options.put("status", getActivity().getTitle().toString());
+            ClickTracking.track(uuId, "jscoreinfo", options, getActivity());
         }
         switchView(R.id.jscoreView);
     }
@@ -408,51 +403,50 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
      */
     public void viewProcessList(View v) {
         // prepare content:
-        ListView lv = (ListView) findViewById(R.id.processList);
+        ListView lv = (ListView) getView().findViewById(R.id.processList);
         List<ProcessInfo> searchResults = SamplingLibrary
-                .getRunningAppInfo(getApplicationContext());
-        lv.setAdapter(new ProcessInfoAdapter(this, searchResults));
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                .getRunningAppInfo(getActivity());
+        lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         if (p != null) {
             String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
             HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "processlist", options, getApplicationContext());
+            options.put("status", getActivity().getTitle().toString());
+            ClickTracking.track(uuId, "processlist", options, getActivity());
         }
         // switch views:
         switchView(R.id.processList);
     }
 
-    private void setModelAndVersion() {
+    private void setModelAndVersion(View root) {
         // Device model
         String model = SamplingLibrary.getModel();
 
         // Android version
         String version = SamplingLibrary.getOsVersion();
 
-        Window win = this.getWindow();
         // The info icon needs to change from dark to light.
-        TextView mText = (TextView) win.findViewById(R.id.dev_value);
+        TextView mText = (TextView) root.findViewById(R.id.dev_value);
         mText.setText(model);
-        mText = (TextView) win.findViewById(R.id.os_ver_value);
+        mText = (TextView) root.findViewById(R.id.os_ver_value);
         mText.setText(version);
     }
 
     private void setMemory() {
-        final Window win = this.getWindow();
+        final Activity a = getActivity();
         // Set memory values to the progress bar.
-        ProgressBar mText = (ProgressBar) win.findViewById(R.id.progressBar1);
+        ProgressBar mText = (ProgressBar) a.findViewById(R.id.progressBar1);
         int[] totalAndUsed = SamplingLibrary.readMeminfo();
         mText.setMax(totalAndUsed[0] + totalAndUsed[1]);
         mText.setProgress(totalAndUsed[0]);
-        mText = (ProgressBar) win.findViewById(R.id.progressBar2);
+        mText = (ProgressBar) a.findViewById(R.id.progressBar2);
 
         if (totalAndUsed.length > 2) {
             mText.setMax(totalAndUsed[2] + totalAndUsed[3]);
             mText.setProgress(totalAndUsed[2]);
         }
 
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 long[] currentPoint = SamplingLibrary.readUsagePoint();
                 
@@ -463,16 +457,10 @@ public class CaratMyDeviceActivity extends BaseVFActivity {
                     cpu = SamplingLibrary.getUsage(lastPoint, currentPoint);
                     
                 /* CPU usage */
-                ProgressBar mText = (ProgressBar) win.findViewById(R.id.cpubar);
+                ProgressBar mText = (ProgressBar) a.findViewById(R.id.cpubar);
                 mText.setMax(100);
                 mText.setProgress((int) (cpu * 100));
             }
         });
-    }
-
-    @Override
-    public void refresh() {
-        // TODO Auto-generated method stub
-        
     }
 }

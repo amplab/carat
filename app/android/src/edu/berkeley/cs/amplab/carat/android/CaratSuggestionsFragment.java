@@ -1,5 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import android.content.Context;
@@ -9,10 +10,12 @@ import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -26,13 +29,23 @@ import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
-import edu.berkeley.cs.amplab.carat.android.ui.FlipperBackListener;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
-import edu.berkeley.cs.amplab.carat.android.ui.SwipeListener;
 
-public class CaratSuggestionsActivity extends BaseVFActivity {
+public class CaratSuggestionsFragment extends Fragment implements Serializable{
 
+    int viewIndex = 0;
+    int baseViewIndex = 0;
+    ViewFlipper vf = null;
+    
+    private void switchView(View v){}
+    
+    private void switchView(int id){}
+
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -6034269327947014085L;
     private static final String TAG = "CaratSuggestions";
     private View tv = null;
     private View killView = null;
@@ -40,28 +53,21 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
     private int emptyIndex = -1;
     private LocalizedWebView webview = null;
 
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.suggestions);
-        final Context c = getApplicationContext();
-        LayoutInflater mInflater = LayoutInflater.from(c);
-        vf = (ViewFlipper) findViewById(R.id.suggestionsFlipper);
-        View baseView = findViewById(android.R.id.list);
-        baseView.setOnTouchListener(SwipeListener.instance);
-        vf.setOnTouchListener(SwipeListener.instance);
-        baseViewIndex = vf.indexOfChild(baseView);
+    /**
+     *
+     * 
+     * 
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        vf = new ViewFlipper(getActivity());
+        View root = inflater.inflate(R.layout.suggestions, container, false);
+        final Context c = getActivity();
 
-        tv = mInflater.inflate(R.layout.emptyactions, null);
-        if (tv != null) {
-            vf.addView(tv);
-            emptyIndex = vf.indexOfChild(tv);
-        }
-
-        final ListView lv = (ListView) findViewById(android.R.id.list);
+        tv = inflater.inflate(R.layout.emptyactions, null);
+        
+        final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
-
-        // initKillView();
-        // initCollectDataView();
 
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -126,7 +132,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                             public void onClick(View arg0) {
                                 /* Killbutton clicked. Track click: */
 
-                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
                                 if (p != null) {
                                     String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
                                     HashMap<String, String> options = new HashMap<String, String>();
@@ -137,7 +143,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                                         options.put("label", label);
                                     }
                                     options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
-                                    ClickTracking.track(uuId, "killbutton", options, getApplicationContext());
+                                    ClickTracking.track(uuId, "killbutton", options, getActivity());
                                 }
                                 /* Change kill button text and make it unclickable until screen is exited */
                                 killButton.setEnabled(false);
@@ -151,7 +157,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                         AppManagerButton.setOnClickListener(new OnClickListener() {
                             @Override
                             public void onClick(View arg0) {
-                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
                                 if (p != null) {
                                     String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
                                     HashMap<String, String> options = new HashMap<String, String>();
@@ -162,7 +168,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
                                         options.put("label", label);
                                     }
                                     options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
-                                    ClickTracking.track(uuId, "appmanagerbutton", options, getApplicationContext());
+                                    ClickTracking.track(uuId, "appmanagerbutton", options, getActivity());
                                 }
                                 GoToAppScreen();
                             }
@@ -192,21 +198,25 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             }
         });
 
-        initUpgradeOsView();
+        initUpgradeOsView(root);
 
-        Object o = getLastNonConfigurationInstance();
+        if (savedInstanceState != null){
+        Object o = savedInstanceState.get("savedInstance");
         if (o != null) {
-            CaratSuggestionsActivity previous = (CaratSuggestionsActivity) o;
+            CaratSuggestionsFragment previous = (CaratSuggestionsFragment) o;
             viewIndex = previous.viewIndex;
             if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)) {
                 restoreKillView(previous.killView);
             }
+        }
         }
 
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
+        
+        return root;
     }
 
     private void restoreKillView(View previous) {
@@ -226,7 +236,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
 
     private void initKillView() {
         if (killView == null) {
-            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View killPage = inflater.inflate(R.layout.killlayout, null);
             LocalizedWebView webview = (LocalizedWebView) killPage.findViewById(R.id.killView);
             String osVer = SamplingLibrary.getOsVersion();
@@ -236,8 +246,8 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             else
                 webview.loadUrl("file:///android_asset/killapp.html");
             // FIXME: This does not work with the embedded WebView (randomly goes back); no idea why
-            killPage.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
-            webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list)), false));
+            /*killPage.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
+            webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list)), false));*/
             killView = killPage;
             vf.addView(killView);
         }
@@ -245,19 +255,19 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
 
     private void initCollectDataView() {
         if (webview == null) {
-            LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View collectPage = inflater.inflate(R.layout.collectdata, null);
             webview = (LocalizedWebView) collectPage.findViewById(R.id.collectDataView);
             webview.loadUrl("file:///android_asset/collectdata.html");
-            webview.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex));
+            //webview.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex));
             vf.addView(webview);
         }
     }
 
-    private void initUpgradeOsView() {
-        LocalizedWebView webview = (LocalizedWebView) findViewById(R.id.upgradeOsView);
+    private void initUpgradeOsView(View root) {
+        LocalizedWebView webview = (LocalizedWebView) root.findViewById(R.id.upgradeOsView);
         webview.loadUrl("file:///android_asset/upgradeos.html");
-        webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list))));
+        //webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list))));
     }
 
     /* Show the bluetooth setting */
@@ -316,7 +326,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
         } catch (Throwable th) {
             Log.e(TAG, "Could not start activity: " + intent, th);
             if (thing != null) {
-                Toast t = Toast.makeText(getApplicationContext(), getString(R.string.opening) + thing + getString(R.string.notsupported),
+                Toast t = Toast.makeText(getActivity(), getString(R.string.opening) + thing + getString(R.string.notsupported),
                         Toast.LENGTH_SHORT);
                 t.show();
             }
@@ -327,7 +337,7 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
      * Open a Carat-related questionnaire.
      */
     public void openQuestionnaire() {
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String caratId = Uri.encode(p.getString(CaratApplication.REGISTERED_UUID, ""));
         String os = Uri.encode(SamplingLibrary.getOsVersion());
         String model = Uri.encode(SamplingLibrary.getModel());
@@ -345,15 +355,15 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
      * @see android.app.Activity#onResume()
      */
     @Override
-    protected void onResume() {
+    public void onResume() {
         CaratApplication.setActionList(this);
         refresh();
         super.onResume();
     }
 
     public void refresh() {
-        CaratApplication app = (CaratApplication) getApplication();
-        final ListView lv = (ListView) findViewById(android.R.id.list);
+        CaratApplication app = (CaratApplication) getActivity().getApplication();
+        final ListView lv = (ListView) getView().findViewById(android.R.id.list);
         lv.setAdapter(new HogBugSuggestionsAdapter(app, CaratApplication.s.getHogReport(), CaratApplication.s.getBugReport()));
         emptyCheck(lv);
     }
@@ -368,22 +378,19 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             }
         }
     }
+    
+    
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onRetainNonConfigurationInstance()
-     */
     @Override
-    public Object onRetainNonConfigurationInstance() {
-        return this;
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable("savedInstance", this);
+        super.onSaveInstanceState(outState);
     }
 
     /*
-     * (non-Javadoc)
-     * 
-     * @see edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity#onBackPressed()
+     * Needs to happen in Activity
      */
+    /*
     @Override
     public void onBackPressed() {
         if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
@@ -395,5 +402,5 @@ public class CaratSuggestionsActivity extends BaseVFActivity {
             viewIndex = baseViewIndex;
         } else
             finish();
-    }
+    }*/
 }

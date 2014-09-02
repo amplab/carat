@@ -117,10 +117,10 @@ public class CaratApplication extends Application {
     // Activity pointers so that all activity UIs can be updated with a callback
     // to CaratApplication
     private static CaratMainActivity main = null;
-    private static CaratMyDeviceActivity myDevice = null;
-    private static CaratBugsOrHogsActivity bugsActivity = null;
-    private static CaratBugsOrHogsActivity hogsActivity = null;
-    private static CaratSuggestionsActivity actionList = null;
+    private static CaratMyDeviceFragment myDevice = null;
+    private static CaratBugsOrHogsFragment bugsActivity = null;
+    private static CaratBugsOrHogsFragment hogsActivity = null;
+    private static CaratSuggestionsFragment actionList = null;
     // The Sampler samples the battery level when it changes.
     private static Sampler sampler = null;
 
@@ -215,7 +215,7 @@ public class CaratApplication extends Application {
         if (myDevice != null) {
             main.runOnUiThread(new Runnable() {
                 public void run() {
-                    TextView t = (TextView) myDevice.findViewById(viewId);
+                    TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
                     if (t != null)
                         t.setText(text);
                 }
@@ -313,19 +313,19 @@ public class CaratApplication extends Application {
         main = a;
     }
 
-    public static void setMyDevice(CaratMyDeviceActivity a) {
+    public static void setMyDevice(CaratMyDeviceFragment a) {
         myDevice = a;
     }
 
-    public static void setBugs(CaratBugsOrHogsActivity a) {
+    public static void setBugs(CaratBugsOrHogsFragment a) {
         bugsActivity = a;
     }
 
-    public static void setHogs(CaratBugsOrHogsActivity a) {
+    public static void setHogs(CaratBugsOrHogsFragment a) {
         hogsActivity = a;
     }
 
-    public static void setActionList(CaratSuggestionsActivity a) {
+    public static void setActionList(CaratSuggestionsFragment a) {
         actionList = a;
     }
 
@@ -560,7 +560,7 @@ public class CaratApplication extends Application {
 		if (myDevice != null) {
 			SharedPreferences p = PreferenceManager
 					.getDefaultSharedPreferences(CaratApplication.myDevice
-							.getApplicationContext());
+							.getActivity());
 			String cid = p.getString(REGISTERED_UUID, "0");
 			setMyDeviceText(R.id.carat_id_value, cid);
 			setMyDeviceText(R.id.batterylife_value, blS);
