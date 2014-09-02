@@ -236,14 +236,13 @@ Carat My Device Screen layout
                     android:textColor="@color/brown" />
 
                 <Button
-                    android:id="@+id/button1"
+                    android:id="@+id/viewProcessButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_weight="1"
                     android:layout_marginRight="-3dip"
                     android:layout_marginLeft="-3dip"
-                    android:onClick="viewProcessList"
                     android:text="@string/viewprocess"
                     android:textColor="@color/green" />
 				<!-- Spacer: -->

@@ -108,6 +108,31 @@ public class CaratMyDeviceFragment extends Fragment {
         else
             vf.setDisplayedChild(viewIndex);
         
+        root.findViewById(R.id.viewProcessButton).setOnClickListener(new OnClickListener(){
+
+            /**
+             * Called when View Process List is clicked.
+             * 
+             * @param v
+             *            The source of the click.
+             */
+            public void onClick(View v) {
+                // prepare content:
+                ListView lv = (ListView) getView().findViewById(R.id.processList);
+                List<ProcessInfo> searchResults = SamplingLibrary
+                        .getRunningAppInfo(getActivity());
+                lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
+                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                if (p != null) {
+                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                    HashMap<String, String> options = new HashMap<String, String>();
+                    options.put("status", getActivity().getTitle().toString());
+                    ClickTracking.track(uuId, "processlist", options, getActivity());
+                }
+                // switch views:
+                switchView(R.id.processList);
+            }            
+        });
         return root;
     }
 
@@ -393,29 +418,6 @@ public class CaratMyDeviceFragment extends Fragment {
             ClickTracking.track(uuId, "jscoreinfo", options, getActivity());
         }
         switchView(R.id.jscoreView);
-    }
-
-    /**
-     * Called when View Process List is clicked.
-     * 
-     * @param v
-     *            The source of the click.
-     */
-    public void viewProcessList(View v) {
-        // prepare content:
-        ListView lv = (ListView) getView().findViewById(R.id.processList);
-        List<ProcessInfo> searchResults = SamplingLibrary
-                .getRunningAppInfo(getActivity());
-        lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getActivity().getTitle().toString());
-            ClickTracking.track(uuId, "processlist", options, getActivity());
-        }
-        // switch views:
-        switchView(R.id.processList);
     }
 
     private void setModelAndVersion(View root) {
