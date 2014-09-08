@@ -42,7 +42,7 @@ Carat My Device Screen layout
                         android:layout_height="wrap_content"
                         android:text="@string/jscore"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textSize="32dip"
+                        android:textSize="32sp"
                         android:textColor="@color/brown" />
 
                     <TextView
@@ -60,9 +60,7 @@ Carat My Device Screen layout
                     android:layout_gravity="center_vertical"
                     android:text="@string/jsna"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="48dip"
-                    android:clickable="true"
-                    android:onClick="viewJscoreInfo"
+                    android:textSize="48sp"
                     android:textColor="@color/green" />
                 
                 <ImageView

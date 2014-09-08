@@ -108,6 +108,13 @@ public class CaratMyDeviceFragment extends Fragment {
         else
             vf.setDisplayedChild(viewIndex);
         
+        root.findViewById(R.id.jscore_value).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				viewJscoreInfo(v);
+			}
+		});
+        
         root.findViewById(R.id.viewProcessButton).setOnClickListener(new OnClickListener(){
 
             /**
@@ -160,7 +167,7 @@ public class CaratMyDeviceFragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater) getActivity()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View detailPage = inflater.inflate(R.layout.graph, null);
-        ViewGroup g = (ViewGroup) detailPage;
+        //  ViewGroup g = (ViewGroup) detailPage;
         DrawView w = new DrawView(getActivity());
         //g.addView(w);
         vf.addView(detailPage);
@@ -221,8 +228,8 @@ public class CaratMyDeviceFragment extends Fragment {
     public void copyCaratId(View v) {
         TextView tv = (TextView) getView().findViewById(R.id.carat_id_value);
         String copied = tv.getText().toString();
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
-        clipboard.setText(copied);
+//        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
+//        clipboard.setText(copied);
         Toast.makeText(getActivity(), getString(R.string.copied) +" "+copied, Toast.LENGTH_LONG).show();
     }
 
