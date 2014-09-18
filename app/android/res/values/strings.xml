@@ -160,5 +160,23 @@ delete these from your file.
     <string name="error">Error:</string>
     <string name="significance">Significance:</string>
     <string name="best">Already best</string>
+    
+    <string name="action_websearch">Search</string>
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    
+    <string name="greetings_album">Album</string>
+    <string name="greetings_artist">Artist</string>
 
 </resources>

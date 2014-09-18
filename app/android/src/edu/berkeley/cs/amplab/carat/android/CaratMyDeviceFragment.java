@@ -64,6 +64,11 @@ public class CaratMyDeviceFragment extends Fragment {
      */
     
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         vf = new ViewFlipper(getActivity());
         View root = inflater.inflate(R.layout.mydevice, container, false);
@@ -71,75 +76,75 @@ public class CaratMyDeviceFragment extends Fragment {
         initProcessListView(root);
         setModelAndVersion(root);
 
-        if (savedInstanceState != null){
-        Object o = savedInstanceState.get("savedInstance");
-        if (o != null) {
-            CaratMyDeviceFragment previous = (CaratMyDeviceFragment) o;
-            if (previous.osViewPage != null
-                    && previous.osViewPage == previous.vf.getChildAt(viewIndex)) {
-                DrawView v = previous.osView;
-                View[] viewAndPage = construct();
-                osView = (DrawView) viewAndPage[0];
-                osViewPage = viewAndPage[1];
-                Type t = v.getType();
-                String appName = v.getAppName();
-                osView.setParams(t, appName, 
-                        v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), osViewPage);
-                restorePage(osViewPage, previous.osViewPage);
-                viewIndex = vf.indexOfChild(osViewPage);
-            }else if (previous.modelViewPage != null
-                    && previous.modelViewPage == previous.vf.getChildAt(viewIndex)) {
-                View[] viewAndPage = construct();
-                modelView = (DrawView) viewAndPage[0];
-                modelViewPage = viewAndPage[1];
-                DrawView v = previous.modelView;
-                Type t = v.getType();
-                String appName = v.getAppName();
-                modelView.setParams(t, appName, 
-                        v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), modelViewPage);
-                restorePage(modelViewPage, previous.modelViewPage);
-                viewIndex = vf.indexOfChild(modelViewPage);
-            }
-        }
-        }
+//        if (savedInstanceState != null){
+//        Object o = savedInstanceState.get("savedInstance");
+//        if (o != null) {
+//            CaratMyDeviceFragment previous = (CaratMyDeviceFragment) o;
+//            if (previous.osViewPage != null
+//                    && previous.osViewPage == previous.vf.getChildAt(viewIndex)) {
+//                DrawView v = previous.osView;
+//                View[] viewAndPage = construct();
+//                osView = (DrawView) viewAndPage[0];
+//                osViewPage = viewAndPage[1];
+//                Type t = v.getType();
+//                String appName = v.getAppName();
+//                osView.setParams(t, appName, 
+//                        v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), osViewPage);
+//                restorePage(osViewPage, previous.osViewPage);
+//                viewIndex = vf.indexOfChild(osViewPage);
+//            }else if (previous.modelViewPage != null
+//                    && previous.modelViewPage == previous.vf.getChildAt(viewIndex)) {
+//                View[] viewAndPage = construct();
+//                modelView = (DrawView) viewAndPage[0];
+//                modelViewPage = viewAndPage[1];
+//                DrawView v = previous.modelView;
+//                Type t = v.getType();
+//                String appName = v.getAppName();
+//                modelView.setParams(t, appName, 
+//                        v.getEv(), v.getEvWithout(), v.getSampleCount(), v.getSampleCountWithout(), v.getError(), v.getErrorWithout(), modelViewPage);
+//                restorePage(modelViewPage, previous.modelViewPage);
+//                viewIndex = vf.indexOfChild(modelViewPage);
+//            }
+//        }
+//        }
         
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);
         else
             vf.setDisplayedChild(viewIndex);
         
-        root.findViewById(R.id.jscore_value).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				viewJscoreInfo(v);
-			}
-		});
+//        root.findViewById(R.id.jscore_value).setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				viewJscoreInfo(v);
+//			}
+//		});
         
-        root.findViewById(R.id.viewProcessButton).setOnClickListener(new OnClickListener(){
-
-            /**
-             * Called when View Process List is clicked.
-             * 
-             * @param v
-             *            The source of the click.
-             */
-            public void onClick(View v) {
-                // prepare content:
-                ListView lv = (ListView) getView().findViewById(R.id.processList);
-                List<ProcessInfo> searchResults = SamplingLibrary
-                        .getRunningAppInfo(getActivity());
-                lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
-                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                if (p != null) {
-                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                    HashMap<String, String> options = new HashMap<String, String>();
-                    options.put("status", getActivity().getTitle().toString());
-                    ClickTracking.track(uuId, "processlist", options, getActivity());
-                }
-                // switch views:
-                switchView(R.id.processList);
-            }            
-        });
+//        root.findViewById(R.id.viewProcessButton).setOnClickListener(new OnClickListener(){
+//
+//            /**
+//             * Called when View Process List is clicked.
+//             * 
+//             * @param v
+//             *            The source of the click.
+//             */
+//            public void onClick(View v) {
+//                // prepare content:
+//                ListView lv = (ListView) getView().findViewById(R.id.processList);
+//                List<ProcessInfo> searchResults = SamplingLibrary
+//                        .getRunningAppInfo(getActivity());
+//                lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
+//                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+//                if (p != null) {
+//                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+//                    HashMap<String, String> options = new HashMap<String, String>();
+//                    options.put("status", getActivity().getTitle().toString());
+//                    ClickTracking.track(uuId, "processlist", options, getActivity());
+//                }
+//                // switch views:
+//                switchView(R.id.processList);
+//            }            
+//        });
         return root;
     }
 
@@ -472,4 +477,10 @@ public class CaratMyDeviceFragment extends Fragment {
             }
         });
     }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+    
 }
