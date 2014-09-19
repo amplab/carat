@@ -163,6 +163,8 @@ public class CaratMainActivity extends ActionBarActivity {
                         this, "my device", CaratMyDeviceFragment.class));
 	    actionBar.addTab(tab);
     	
+	    // The following two lines of code cause a crash, fix them or delete them
+	    
         // This does not show if it is not updated
 //        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 //        getWindow().requestFeature(Window.FEATURE_PROGRESS);
@@ -193,15 +195,15 @@ public class CaratMainActivity extends ActionBarActivity {
             }
         });*/
 
-//        setTitleNormal();
+        setTitleNormal();
 
-//        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        if (p != null) {
-//            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//            HashMap<String, String> options = new HashMap<String, String>();
-//            options.put("status", getTitle().toString());
-//            ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
-//        }
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
+        }
         
         
 //        mTabHost = (TabHost) findViewById(android.R.id.tabhost);
@@ -361,39 +363,39 @@ public class CaratMainActivity extends ActionBarActivity {
      * 
      * @see android.app.Activity#onStart()
      */
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//
-//        String secretKey = null;
-//        Properties properties = new Properties();
-//        try {
-//            InputStream raw = CaratMainActivity.this.getAssets().open(FLURRY_KEYFILE);
-//            if (raw != null) {
-//                properties.load(raw);
-//                if (properties.containsKey("secretkey"))
-//                    secretKey = properties.getProperty("secretkey", "secretkey");
-//                Log.d(TAG, "Set Flurry secret key.");
-//            } else
-//                Log.e(TAG, "Could not open Flurry key file!");
-//        } catch (IOException e) {
-//            Log.e(TAG, "Could not open Flurry key file: " + e.toString());
-//        }
-//        if (secretKey != null) {
-//            FlurryAgent.onStartSession(getApplicationContext(), secretKey);
-//        }
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        String secretKey = null;
+        Properties properties = new Properties();
+        try {
+            InputStream raw = CaratMainActivity.this.getAssets().open(FLURRY_KEYFILE);
+            if (raw != null) {
+                properties.load(raw);
+                if (properties.containsKey("secretkey"))
+                    secretKey = properties.getProperty("secretkey", "secretkey");
+                Log.d(TAG, "Set Flurry secret key.");
+            } else
+                Log.e(TAG, "Could not open Flurry key file!");
+        } catch (IOException e) {
+            Log.e(TAG, "Could not open Flurry key file: " + e.toString());
+        }
+        if (secretKey != null) {
+            FlurryAgent.onStartSession(getApplicationContext(), secretKey);
+        }
+    }
 
     /*
      * (non-Javadoc)
      * 
      * @see android.app.ActivityGroup#onStop()
      */
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        FlurryAgent.onEndSession(getApplicationContext());
-//    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FlurryAgent.onEndSession(getApplicationContext());
+    }
 
 //    public void changeTab(int tab) {
 //        if (mTabHost == null)
@@ -457,53 +459,53 @@ public class CaratMainActivity extends ActionBarActivity {
      * 
      * @see android.app.Activity#onResume()
      */
-//    @Override
-//    protected void onResume() {
-//        Log.i(TAG, "Resumed");
-//        CaratApplication.setMain(this);
-//
-//        /*
-//         * Thread for refreshing the UI with new reports every 5 mins and on
-//         * resume. Also sends samples and updates blacklist/questionnaire url.
-//         */
-//
-//        Log.d(TAG, "Refreshing UI");
-//        // This spawns a thread, so it does not need to be in a thread.
-//        /*
-//         * new Thread() { public void run() {
-//         */
-//        ((CaratApplication) getApplication()).refreshUi();
-//        /*
-//         * } }.start();
-//         */
-//        super.onResume();
-//        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        if (p != null) {
-//            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//            HashMap<String, String> options = new HashMap<String, String>();
-//            options.put("status", getTitle().toString());
-//            ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
-//        }
-//    }
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "Resumed");
+        CaratApplication.setMain(this);
+
+        /*
+         * Thread for refreshing the UI with new reports every 5 mins and on
+         * resume. Also sends samples and updates blacklist/questionnaire url.
+         */
+
+        Log.d(TAG, "Refreshing UI");
+        // This spawns a thread, so it does not need to be in a thread.
+        /*
+         * new Thread() { public void run() {
+         */
+        ((CaratApplication) getApplication()).refreshUi();
+        /*
+         * } }.start();
+         */
+        super.onResume();
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
+        }
+    }
 
     /*
      * (non-Javadoc)
      * 
      * @see android.app.ActivityGroup#onPause()
      */
-//    @Override
-//    protected void onPause() {
-//        Log.i(TAG, "Paused");
-//        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        if (p != null) {
-//            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//            HashMap<String, String> options = new HashMap<String, String>();
-//            options.put("status", getTitle().toString());
-//            ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
-//        }
-//        SamplingLibrary.resetRunningProcessInfo();
-//        super.onPause();
-//    }
+    @Override
+    protected void onPause() {
+        Log.i(TAG, "Paused");
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
+        }
+        SamplingLibrary.resetRunningProcessInfo();
+        super.onPause();
+    }
 
     /*
      * (non-Javadoc)
