@@ -31,8 +31,6 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-// THIS FRAGMET IS CAUSING A CRASH ON PAUSE. Check the method onSaveInstanceState for the cause.
-
 public class CaratSuggestionsFragment extends Fragment implements Serializable{
 
     int viewIndex = 0;
@@ -385,8 +383,7 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-    //  TODO: THE FOLLOWING LINE IS CAUSING A CRASH ON PAUSE. FIX IT.
-    //  outState.putSerializable("savedInstance", this);
+        outState.putSerializable("savedInstance", this);
         super.onSaveInstanceState(outState);
     }
 
