@@ -68,6 +68,7 @@ public class CaratBugsOrHogsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             isBugs = savedInstanceState.getBoolean(IS_BUGS);
+        	//   isBugs=getArguments().getBoolean(IS_BUGS);
         }
         vf = new ViewFlipper(getActivity());
         View root = inflater.inflate(R.layout.hogs, container, false);

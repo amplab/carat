@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
+
 import com.flurry.android.FlurryAgent;
+
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -15,6 +17,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -41,19 +44,51 @@ public class CaratMainActivity extends ActionBarActivity {
 	
 	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
 	    private Fragment mFragment;
-	    private final Activity mActivity;
+	    private final ActionBarActivity mActivity;
 	    private final String mTag;
 	    private final Class<T> mClass;
-
+	    private final Bundle mArgs;
+	    private FragmentTransaction fft;
+//        public static final String TAG = TabListener.class.getSimpleName();
+        
 	    /** Constructor used each time a new tab is created.
 	      * @param activity  The host Activity, used to instantiate the fragment
 	      * @param tag  The identifier tag for the fragment
 	      * @param clz  The fragment's Class, used to instantiate the fragment
+	      * read the comments on the main constructor below. 
+	      * The current constructor is for completeness and convenience
 	      */
-	    public TabListener(Activity activity, String tag, Class<T> clz) {
+	    public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
+	    	 this(activity, tag, clz, null);
+	    }
+	    
+	    /** Constructor used each time a new tab is created.
+	      * @param activity  The host Activity, used to instantiate the fragment
+	      * @param tag  The identifier tag for the fragment
+	      * @param clz  The fragment's Class, used to instantiate the fragment
+	      * @param args The bundle containing extra info that the destination fragment 
+	      * makes use of (e.g. IS_BUG boolean variable for the CaratBugsOrHogsFragment).
+	      * Note that only the mentioned fragment has this extra argument, so make sure to 
+	      * provide a constructor with only the first three parameters (because 
+	      * when instantiating a TabListener class (when creating tabs), we use that constructor 
+	      * too). Inside that constructor, call this main constructor with 4 parameters 
+	      * passing null as the last argument
+	      */
+	    public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
 	        mActivity = activity;
 	        mTag = tag;
 	        mClass = clz;
+	        mArgs = args;
+	        
+	        // we shall check if there's already a fragment attached, and if so, detach it
+	        // before attaching a new fragment
+	        FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
+	        mFragment = fragmentManager.findFragmentByTag(mTag);
+            if (mFragment != null && !mFragment.isDetached()) {
+                fft = fragmentManager.beginTransaction();
+                fft.detach(mFragment);
+                fft.commit();
+            }
 	    }
 
 	    /* The following are each of the ActionBar.TabListener callbacks */
@@ -62,7 +97,21 @@ public class CaratMainActivity extends ActionBarActivity {
 	        // Check if the fragment is already initialized
 	        if (mFragment == null) {
 	            // If not, instantiate and add it to the activity
-	            mFragment = Fragment.instantiate(mActivity, mClass.getName());
+	        	
+	        	// which one of our fragments (subclass of Fragment) is going to be instantiated?
+	        	// if we are going to instantiate CaratBugsOrHogsFragment, we need to pass an extra argument
+	        	// First we need to check if we have the extra info (as the mArgs Bundle) 
+	        	// that is consumed by one of our Fragments: CaratBugsOrHogsFragment.
+	        	// Since we have only one fragment for two separate tabs, we need to 
+	        	// put the flag IS_BUG in the bundle and pass it to the fragment,
+	        	// and when creating the fragment, we check to see if we shall do 
+	        	// the bugs-related stuff there or hogs's stuff 
+	        	if (mArgs == null) {
+	        		mFragment = Fragment.instantiate(mActivity, mClass.getName());
+	        	} else {
+//	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), (Bundle) tab.getTag());
+	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), mArgs);
+	        	}
 	            ft.add(android.R.id.content, mFragment, mTag);
 	        } else {
 	            // If it exists, simply attach it in order to show it
@@ -113,12 +162,25 @@ public class CaratMainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
     	
     	super.onCreate(savedInstanceState);
-//        setContentView(R.layout.main);
+    	
+	    // Activity.getWindow.requestFeature() method should get invoked before setContentView()
+    	// not after (or without) that method invocation, otherwise it will cause an app crash
+        // This does not show if it is not updated
+        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getWindow().requestFeature(Window.FEATURE_PROGRESS);
+    	
+        setContentView(R.layout.main);
     	
     	ActionBar actionBar = getSupportActionBar();
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	    actionBar.setDisplayShowTitleEnabled(true);
 	    Tab tab;
+	    // The following variable is used for passing in a flag/boolean variable (called IS_BUGS) 
+	    // to our dual-purpose fragment CaratBugsOrHogsFragment, 
+	    // using a Bundle object (model object/data structure).
+	    // Since we use this fragment for both Bogs and Hogs tabs, we need a way to distinguish between them
+	    // we do this in the mentioned fragment by checking the aforementioned boolean variable
+	    Bundle args = new Bundle();
 	    
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_actions)
@@ -126,16 +188,32 @@ public class CaratMainActivity extends ActionBarActivity {
                         this, "suggestions", CaratSuggestionsFragment.class));
 	    actionBar.addTab(tab);
 	    
+	    // specify if this tab indicates either Bugs or Hogs, and remember to pass in an extra argument 
+	    // (the args object) to the constructor of the TabListener class
+	    args.putBoolean(CaratBugsOrHogsFragment.IS_BUGS, true);
+//	    tab = actionBar.newTab()
+//                .setText(R.string.tab_bugs)
+//                .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
+//                        this, "bugs", CaratBugsOrHogsFragment.class));
+//	    tab.setTag(args);
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_bugs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-                        this, "bugs", CaratBugsOrHogsFragment.class));
+                        this, "bugs", CaratBugsOrHogsFragment.class, args));
 	    actionBar.addTab(tab);
 	    
+	    // specify if this tab indicates either Bugs or Hogs, and remember to pass in an extra argument 
+	    // (the args object) to the constructor of the TabListener class
+	    args.putBoolean(CaratBugsOrHogsFragment.IS_BUGS, false);
+//	    tab = actionBar.newTab()
+//                .setText(R.string.tab_hogs)
+//                .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
+//                        this, "hogs", CaratBugsOrHogsFragment.class));
+//	    tab.setTag(args);
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_hogs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-                        this, "hogs", CaratBugsOrHogsFragment.class));
+                        this, "hogs", CaratBugsOrHogsFragment.class, args));
 	    actionBar.addTab(tab);
 	    
 	    tab = actionBar.newTab()
@@ -156,22 +234,13 @@ public class CaratMainActivity extends ActionBarActivity {
 	                           this, "album", AlbumFragment.class));
 	    actionBar.addTab(tab);
 	    
-//	    MyDevice fragment causes a crash
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_my_device)
                 .setTabListener(new TabListener<CaratMyDeviceFragment>(
                         this, "my device", CaratMyDeviceFragment.class));
 	    actionBar.addTab(tab);
-    	
-	    // The following two lines of code cause a crash, fix them or delete them
-	    
-        // This does not show if it is not updated
-//        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-//        getWindow().requestFeature(Window.FEATURE_PROGRESS);
-        
         
         fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
-
 //        Resources res = getResources(); // Resource object to get Drawables
         
         /*// Bind animations to tab changes:
