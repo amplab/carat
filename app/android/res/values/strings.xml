@@ -79,6 +79,7 @@ delete these from your file.
     <string name="tab_bugs">Bugs</string>
     <string name="tab_hogs">Hogs</string>
     <string name="tab_about">About</string>
+    <string name="tab_app_recommendation">Recommendation</string>
 
     <!-- Updating etc -->
 
@@ -176,7 +177,6 @@ delete these from your file.
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
-    <string name="greetings_album">Album</string>
-    <string name="greetings_artist">Artist</string>
+    <string name="app_recommendation">App Recommendation</string>
 
 </resources>

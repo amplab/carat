@@ -187,6 +187,12 @@ public class CaratMainActivity extends ActionBarActivity {
                         this, "suggestions", CaratSuggestionsFragment.class));
 	    actionBar.addTab(tab);
 	    
+	    tab = actionBar.newTab()
+                .setText(R.string.tab_my_device)
+                .setTabListener(new TabListener<CaratMyDeviceFragment>(
+                        this, "my device", CaratMyDeviceFragment.class));
+	    actionBar.addTab(tab);
+	    
 	    // specify if this tab indicates either Bugs or Hogs, and remember to pass in an extra argument 
 	    // (the args object) to the constructor of the TabListener class
 	    args.putBoolean(CaratBugsOrHogsFragment.IS_BUGS, true);
@@ -201,14 +207,8 @@ public class CaratMainActivity extends ActionBarActivity {
                         this, "bugs", CaratBugsOrHogsFragment.class, args));
 	    actionBar.addTab(tab);
 	    
-	    // specify if this tab indicates either Bugs or Hogs, and remember to pass in an extra argument 
-	    // (the args object) to the constructor of the TabListener class
+	    // same comments as the previous tabs
 	    args.putBoolean(CaratBugsOrHogsFragment.IS_BUGS, false);
-//	    tab = actionBar.newTab()
-//                .setText(R.string.tab_hogs)
-//                .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-//                        this, "hogs", CaratBugsOrHogsFragment.class));
-//	    tab.setTag(args);
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_hogs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
@@ -222,23 +222,11 @@ public class CaratMainActivity extends ActionBarActivity {
 	    actionBar.addTab(tab);
 	    
 	    tab = actionBar.newTab()
-                .setText(R.string.greetings_artist)
-                .setTabListener(new TabListener<ArtistFragment>(
-                        this, "artist", ArtistFragment.class));
-	    actionBar.addTab(tab);
-
-	    tab = actionBar.newTab()
-	                   .setText(R.string.greetings_album)
-	                   .setTabListener(new TabListener<AlbumFragment>(
-	                           this, "album", AlbumFragment.class));
-	    actionBar.addTab(tab);
+                .setText(R.string.tab_app_recommendation)
+                .setTabListener(new TabListener<AppRecommendationFragment>(
+                        this, "app recommendation", AppRecommendationFragment.class));
+	    actionBar.addTab(tab);	
 	    
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_my_device)
-                .setTabListener(new TabListener<CaratMyDeviceFragment>(
-                        this, "my device", CaratMyDeviceFragment.class));
-	    actionBar.addTab(tab);
-        
         fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 //        Resources res = getResources(); // Resource object to get Drawables
         

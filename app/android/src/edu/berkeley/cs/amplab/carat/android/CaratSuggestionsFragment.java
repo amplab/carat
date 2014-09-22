@@ -379,8 +379,6 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
         }
     }
     
-    
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
 //        outState.putSerializable("savedInstance", this);
