@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -170,6 +171,7 @@ public class CaratMainActivity extends ActionBarActivity {
     	
         setContentView(R.layout.main);
     	
+        Resources res = getResources(); // Resource object to get Drawables
     	ActionBar actionBar = getSupportActionBar();
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	    actionBar.setDisplayShowTitleEnabled(true);
@@ -185,12 +187,14 @@ public class CaratMainActivity extends ActionBarActivity {
                 .setText(R.string.tab_actions)
                 .setTabListener(new TabListener<CaratSuggestionsFragment>(
                         this, "suggestions", CaratSuggestionsFragment.class));
+	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_actions));
 	    actionBar.addTab(tab);
 	    
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_my_device)
                 .setTabListener(new TabListener<CaratMyDeviceFragment>(
                         this, "my device", CaratMyDeviceFragment.class));
+	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_mydevice));
 	    actionBar.addTab(tab);
 	    
 	    // specify if this tab indicates either Bugs or Hogs, and remember to pass in an extra argument 
@@ -205,6 +209,7 @@ public class CaratMainActivity extends ActionBarActivity {
                 .setText(R.string.tab_bugs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
                         this, "bugs", CaratBugsOrHogsFragment.class, args));
+	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_bugs));
 	    actionBar.addTab(tab);
 	    
 	    // same comments as the previous tabs
@@ -213,12 +218,14 @@ public class CaratMainActivity extends ActionBarActivity {
                 .setText(R.string.tab_hogs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
                         this, "hogs", CaratBugsOrHogsFragment.class, args));
+	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_hogs));
 	    actionBar.addTab(tab);
 	    
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_about)
                 .setTabListener(new TabListener<CaratAboutFragment>(
                         this, "about", CaratAboutFragment.class));
+	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_about));
 	    actionBar.addTab(tab);
 	    
 	    tab = actionBar.newTab()
@@ -413,18 +420,18 @@ public class CaratMainActivity extends ActionBarActivity {
      * 
      * @see android.app.Activity#finish()
      */
-//    @Override
-//    public void finish() {
-//        Log.d(TAG, "Finishing up");
-//        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//        if (p != null) {
-//            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//            HashMap<String, String> options = new HashMap<String, String>();
-//            options.put("status", getTitle().toString());
-//            ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
-//        }
-//        super.finish();
-//    }
+    @Override
+    public void finish() {
+        Log.d(TAG, "Finishing up");
+        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (p != null) {
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", getTitle().toString());
+            ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
+        }
+        super.finish();
+    }
 
     /*
      * (non-Javadoc)
@@ -439,73 +446,73 @@ public class CaratMainActivity extends ActionBarActivity {
     /**
      * Show share, feedback, wifi only menu here.
      */
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        final MenuItem wifiOnly = menu.add(R.string.wifionly);
-//        // wifiOnly.setCheckable(true);
-//        // wifiOnly.setChecked(useWifiOnly);
-//        final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratMainActivity.this);
-//        if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
-//            wifiOnly.setTitle(R.string.wifionlyused);
-//        wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem arg0) {
-//                boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
-//                if (useWifiOnly) {
-//                    p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false).commit();
-//                    // wifiOnly.setChecked(false);
-//                    wifiOnly.setTitle(R.string.wifionly);
-//                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                    if (p != null) {
-//                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//                        HashMap<String, String> options = new HashMap<String, String>();
-//                        options.put("status", getTitle().toString());
-//                        ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
-//                    }
-//                } else {
-//                    p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, true).commit();
-//                    // wifiOnly.setChecked(true);
-//                    wifiOnly.setTitle(R.string.wifionlyused);
-//                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                    if (p != null) {
-//                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//                        HashMap<String, String> options = new HashMap<String, String>();
-//                        options.put("status", getTitle().toString());
-//                        ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
-//                    }
-//                }
-//                return true;
-//            }
-//        });
-//
-//        MenuItem shareItem = menu.add(R.string.share);
-//        shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem arg0) {
-//                int jscore = CaratApplication.getJscore();
-//                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-//                sendIntent.setType("text/plain");
-//                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis) + " " + jscore);
-//                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
-//                        + getString(R.string.sharetext2));
-//                startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
-//                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                if (p != null) {
-//                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//                    HashMap<String, String> options = new HashMap<String, String>();
-//                    options.put("status", getTitle().toString());
-//                    options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
-//                    ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
-//                }
-//                return true;
-//            }
-//        });
-//
-//        feedbackItem = menu.add(R.string.feedback);
-//        feedbackItem.setOnMenuItemClickListener(new MenuListener());
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        final MenuItem wifiOnly = menu.add(R.string.wifionly);
+        // wifiOnly.setCheckable(true);
+        // wifiOnly.setChecked(useWifiOnly);
+        final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratMainActivity.this);
+        if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
+            wifiOnly.setTitle(R.string.wifionlyused);
+        wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+                boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
+                if (useWifiOnly) {
+                    p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false).commit();
+                    // wifiOnly.setChecked(false);
+                    wifiOnly.setTitle(R.string.wifionly);
+                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    if (p != null) {
+                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                        HashMap<String, String> options = new HashMap<String, String>();
+                        options.put("status", getTitle().toString());
+                        ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
+                    }
+                } else {
+                    p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, true).commit();
+                    // wifiOnly.setChecked(true);
+                    wifiOnly.setTitle(R.string.wifionlyused);
+                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    if (p != null) {
+                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                        HashMap<String, String> options = new HashMap<String, String>();
+                        options.put("status", getTitle().toString());
+                        ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
+                    }
+                }
+                return true;
+            }
+        });
+
+        MenuItem shareItem = menu.add(R.string.share);
+        shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem arg0) {
+                int jscore = CaratApplication.getJscore();
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis) + " " + jscore);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
+                        + getString(R.string.sharetext2));
+                startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
+                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                if (p != null) {
+                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                    HashMap<String, String> options = new HashMap<String, String>();
+                    options.put("status", getTitle().toString());
+                    options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
+                    ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
+                }
+                return true;
+            }
+        });
+
+        feedbackItem = menu.add(R.string.feedback);
+        feedbackItem.setOnMenuItemClickListener(new MenuListener());
+        return true;
+    }
 
     /**
      * Class to handle feedback form.
@@ -513,49 +520,49 @@ public class CaratMainActivity extends ActionBarActivity {
      * @author Eemil Lagerspetz
      * 
      */
-//    private class MenuListener implements OnMenuItemClickListener {
-//
-//        @Override
-//        public boolean onMenuItemClick(MenuItem arg0) {
-//            int jscore = CaratApplication.getJscore();
-//            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-//            Context a = getApplicationContext();
-//            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
-//            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//            String os = SamplingLibrary.getOsVersion();
-//            String model = SamplingLibrary.getModel();
-//
-//            // Emulator does not support message/rfc822
-//            if (model.equals("sdk"))
-//                sendIntent.setType("text/plain");
-//            else
-//                sendIntent.setType("message/rfc822");
-//            sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@eecs.berkeley.edu" });
-//            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] " + getString(R.string.feedbackfrom) + " "
-//                    + model);
-//            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
-//                    + getString(R.string.model) + ": " + model + "\nCarat ID: " + uuId + "\nJ-Score: " + jscore + "\n"
-//                    + fullVersion + "\n");
-//            if (p != null) {
-//                HashMap<String, String> options = new HashMap<String, String>();
-//                options.put("os", os);
-//                options.put("model", model);
-//                SimpleHogBug[] b = CaratApplication.s.getBugReport();
-//                int len = 0;
-//                if (b != null)
-//                    len = b.length;
-//                options.put("bugs", len + "");
-//                b = CaratApplication.s.getHogReport();
-//                len = 0;
-//                if (b != null)
-//                    len = b.length;
-//                options.put("hogs", len + "");
-//                options.put("status", getTitle().toString());
-//                options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
-//                ClickTracking.track(uuId, "feedbackbutton", options, getApplicationContext());
-//            }
-//            startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
-//            return true;
-//        }
-//    }
+    private class MenuListener implements OnMenuItemClickListener {
+
+        @Override
+        public boolean onMenuItemClick(MenuItem arg0) {
+            int jscore = CaratApplication.getJscore();
+            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            Context a = getApplicationContext();
+            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
+            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+            String os = SamplingLibrary.getOsVersion();
+            String model = SamplingLibrary.getModel();
+
+            // Emulator does not support message/rfc822
+            if (model.equals("sdk"))
+                sendIntent.setType("text/plain");
+            else
+                sendIntent.setType("message/rfc822");
+            sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@eecs.berkeley.edu" });
+            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] " + getString(R.string.feedbackfrom) + " "
+                    + model);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
+                    + getString(R.string.model) + ": " + model + "\nCarat ID: " + uuId + "\nJ-Score: " + jscore + "\n"
+                    + fullVersion + "\n");
+            if (p != null) {
+                HashMap<String, String> options = new HashMap<String, String>();
+                options.put("os", os);
+                options.put("model", model);
+                SimpleHogBug[] b = CaratApplication.s.getBugReport();
+                int len = 0;
+                if (b != null)
+                    len = b.length;
+                options.put("bugs", len + "");
+                b = CaratApplication.s.getHogReport();
+                len = 0;
+                if (b != null)
+                    len = b.length;
+                options.put("hogs", len + "");
+                options.put("status", getTitle().toString());
+                options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
+                ClickTracking.track(uuId, "feedbackbutton", options, getApplicationContext());
+            }
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
+            return true;
+        }
+    }
 }
