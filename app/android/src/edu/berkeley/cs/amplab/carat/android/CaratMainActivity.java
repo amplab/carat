@@ -42,6 +42,7 @@ import android.view.animation.TranslateAnimation;
  */
 public class CaratMainActivity extends ActionBarActivity {
 	
+	public static final String IS_BUGS = "IS_BUGS";
 	
 	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
 	    private Fragment mFragment;
@@ -95,6 +96,14 @@ public class CaratMainActivity extends ActionBarActivity {
 	    /* The following are each of the ActionBar.TabListener callbacks */
 
 	    public void onTabSelected(Tab tab, FragmentTransaction ft) {
+	    	
+//	    	if (mArgs != null) {
+//	        	String isBugs = mArgs.getBoolean(IS_BUGS)? "IS_BUGS=true" : "IS_BUGS=false";
+//	        	Log.d("TabListener", isBugs);
+//	        } else {
+//	        	Log.d("TabListener", "mArgs=null");
+//	        }
+	    	
 	        // Check if the fragment is already initialized
 	        if (mFragment == null) {
 	            // If not, instantiate and add it to the activity
@@ -107,12 +116,14 @@ public class CaratMainActivity extends ActionBarActivity {
 	        	// put the flag IS_BUG in the bundle and pass it to the fragment,
 	        	// and when creating the fragment, we check to see if we shall do 
 	        	// the bugs-related stuff there or hogs's stuff 
-	        	if (mArgs == null) {
+	        	
+//	        	if (mArgs == null) {
 	        		mFragment = Fragment.instantiate(mActivity, mClass.getName());
-	        	} else {
-//	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), (Bundle) tab.getTag());
-	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), mArgs);
-	        	}
+//	        	} else {
+////	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), (Bundle) tab.getTag());
+//	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), mArgs);
+//	        	}
+	        	
 	            ft.add(android.R.id.content, mFragment, mTag);
 	        } else {
 	            // If it exists, simply attach it in order to show it
@@ -168,7 +179,6 @@ public class CaratMainActivity extends ActionBarActivity {
         // This does not show if it is not updated
         getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
-    	
         setContentView(R.layout.main);
     	
         Resources res = getResources(); // Resource object to get Drawables
@@ -176,12 +186,6 @@ public class CaratMainActivity extends ActionBarActivity {
 	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 	    actionBar.setDisplayShowTitleEnabled(true);
 	    Tab tab;
-	    // The following variable is used for passing in a flag/boolean variable (called IS_BUGS) 
-	    // to our dual-purpose fragment CaratBugsOrHogsFragment, 
-	    // using a Bundle object (model object/data structure).
-	    // Since we use this fragment for both Bogs and Hogs tabs, we need a way to distinguish between them
-	    // we do this in the mentioned fragment by checking the aforementioned boolean variable
-	    Bundle args = new Bundle();
 	    
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_actions)
@@ -197,27 +201,22 @@ public class CaratMainActivity extends ActionBarActivity {
 	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_mydevice));
 	    actionBar.addTab(tab);
 	    
-	    // specify if this tab indicates either Bugs or Hogs, and remember to pass in an extra argument 
-	    // (the args object) to the constructor of the TabListener class
-	    args.putBoolean(CaratBugsOrHogsFragment.IS_BUGS, true);
-//	    tab = actionBar.newTab()
-//                .setText(R.string.tab_bugs)
-//                .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-//                        this, "bugs", CaratBugsOrHogsFragment.class));
-//	    tab.setTag(args);
+	    // specify if this tab is going to display either bugs or hogs 
+	    // by setting a tag which will be checked in CaratBugsOrHogsFragment's onCreateView() 
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_bugs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-                        this, "bugs", CaratBugsOrHogsFragment.class, args));
+                        this, "bugs", CaratBugsOrHogsFragment.class));
+	    tab.setTag("bugs");
 	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_bugs));
 	    actionBar.addTab(tab);
 	    
-	    // same comments as the previous tabs
-	    args.putBoolean(CaratBugsOrHogsFragment.IS_BUGS, false);
+	    // same comments as above
 	    tab = actionBar.newTab()
                 .setText(R.string.tab_hogs)
                 .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-                        this, "hogs", CaratBugsOrHogsFragment.class, args));
+                        this, "hogs", CaratBugsOrHogsFragment.class));
+	    tab.setTag("hogs");
 	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_hogs));
 	    actionBar.addTab(tab);
 	    
@@ -235,8 +234,6 @@ public class CaratMainActivity extends ActionBarActivity {
 	    actionBar.addTab(tab);	
 	    
         fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
-//        Resources res = getResources(); // Resource object to get Drawables
-        
         setTitleNormal();
 
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -272,7 +269,7 @@ public class CaratMainActivity extends ActionBarActivity {
     public void setTitleUpdatingFailed(String what) {
         this.setTitle(fullVersion + " - " + getString(R.string.didntget) + " " + what);
     }
-
+    
     /*
      * (non-Javadoc)
      * 

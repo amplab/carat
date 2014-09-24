@@ -1,33 +1,33 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.HashMap;
-
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
-import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.ui.BaseVFActivity;
-import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
-import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar.Tab;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import android.widget.AdapterView.OnItemClickListener;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
 public class CaratBugsOrHogsFragment extends Fragment {
 
@@ -57,19 +57,27 @@ public class CaratBugsOrHogsFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            isBugs = savedInstanceState.getBoolean(IS_BUGS);
-        }
+//        if (savedInstanceState != null) {
+//            isBugs = savedInstanceState.getBoolean(IS_BUGS);
+//        } else {
+//        	Log.d("CaratBugsOrHogsFragment", "savedInstanceState=null");
+//        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            isBugs = savedInstanceState.getBoolean(IS_BUGS);
-        	//   isBugs=getArguments().getBoolean(IS_BUGS);
-        }
+    	
+    	Tab tab = ((ActionBarActivity)getActivity()).getSupportActionBar().getSelectedTab();
+    	String bugsOrHogs = tab.getTag().toString();
+    	if (bugsOrHogs.equals("bugs"))
+            isBugs = true;
+        else
+        	isBugs = false;
+    	
+    	String isBugsStr = isBugs? "IS_BUGS=true" : "IS_BUGS=false";
+    	Log.d("BugsOrHogs", isBugsStr);
+        
         vf = new ViewFlipper(getActivity());
         View root = inflater.inflate(R.layout.hogs, container, false);
         tv = inflater.inflate(R.layout.emptyactions, null);
@@ -257,7 +265,7 @@ public class CaratBugsOrHogsFragment extends Fragment {
      * @see android.app.Activity#onResume()
      */
     @Override
-    public void onResume() {
+    public void onResume() {    	
         if (isBugs)
             CaratApplication.setBugs(this);
         else
