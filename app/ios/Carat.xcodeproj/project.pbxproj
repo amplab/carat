@@ -7721,7 +7721,7 @@
 				ORGANIZATIONNAME = "UC Berkeley";
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
-						DevelopmentTeam = 6DTUZ33TN6;
+						DevelopmentTeam = QA5XMCRV5M;
 					};
 				};
 			};
@@ -9138,7 +9138,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "3DBC0ACB-391A-432E-A03D-BABA65FE0DC1";
+				PROVISIONING_PROFILE = "";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
 			};
 			name = Debug;
@@ -9151,8 +9151,8 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -9180,7 +9180,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
 				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
