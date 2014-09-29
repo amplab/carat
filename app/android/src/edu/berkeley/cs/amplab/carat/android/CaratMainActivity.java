@@ -14,12 +14,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar.Tab;
@@ -27,10 +31,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
+import android.view.View;
 import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 /**
  * Carat Android App Main Activity. Is loaded right after CaratApplication.
@@ -41,525 +49,624 @@ import android.view.animation.TranslateAnimation;
  * 
  */
 public class CaratMainActivity extends ActionBarActivity {
-	
-	public static final String IS_BUGS = "IS_BUGS";
-	
+
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
+
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+	private String[] mDrawerItems;
+
 	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-	    private Fragment mFragment;
-	    private final ActionBarActivity mActivity;
-	    private final String mTag;
-	    private final Class<T> mClass;
-	    private final Bundle mArgs;
-	    private FragmentTransaction fft;
-//        public static final String TAG = TabListener.class.getSimpleName();
-        
-	    /** Constructor used each time a new tab is created.
-	      * @param activity  The host Activity, used to instantiate the fragment
-	      * @param tag  The identifier tag for the fragment
-	      * @param clz  The fragment's Class, used to instantiate the fragment
-	      * read the comments on the main constructor below. 
-	      * The current constructor is for completeness and convenience
-	      */
-	    public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
-	    	 this(activity, tag, clz, null);
-	    }
-	    
-	    /** Constructor used each time a new tab is created.
-	      * @param activity  The host Activity, used to instantiate the fragment
-	      * @param tag  The identifier tag for the fragment
-	      * @param clz  The fragment's Class, used to instantiate the fragment
-	      * @param args The bundle containing extra info that the destination fragment 
-	      * makes use of (e.g. IS_BUG boolean variable for the CaratBugsOrHogsFragment).
-	      * Note that only the mentioned fragment has this extra argument, so make sure to 
-	      * provide a constructor with only the first three parameters (because 
-	      * when instantiating a TabListener class (when creating tabs), we use that constructor 
-	      * too). Inside that constructor, call this main constructor with 4 parameters 
-	      * passing null as the last argument
-	      */
-	    public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
-	        mActivity = activity;
-	        mTag = tag;
-	        mClass = clz;
-	        mArgs = args;
-	        
-	        // we shall check if there's already a fragment attached, and if so, detach it
-	        // before attaching a new fragment
-	        FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
-	        mFragment = fragmentManager.findFragmentByTag(mTag);
-            if (mFragment != null && !mFragment.isDetached()) {
-                fft = fragmentManager.beginTransaction();
-                fft.detach(mFragment);
-                fft.commit();
-            }
-	    }
+		private Fragment mFragment;
+		private final ActionBarActivity mActivity;
+		private final String mTag;
+		private final Class<T> mClass;
+		private final Bundle mArgs;
+		private FragmentTransaction fft;
 
-	    /* The following are each of the ActionBar.TabListener callbacks */
+		// public static final String TAG = TabListener.class.getSimpleName();
 
-	    public void onTabSelected(Tab tab, FragmentTransaction ft) {
-	    	
-//	    	if (mArgs != null) {
-//	        	String isBugs = mArgs.getBoolean(IS_BUGS)? "IS_BUGS=true" : "IS_BUGS=false";
-//	        	Log.d("TabListener", isBugs);
-//	        } else {
-//	        	Log.d("TabListener", "mArgs=null");
-//	        }
-	    	
-	        // Check if the fragment is already initialized
-	        if (mFragment == null) {
-	            // If not, instantiate and add it to the activity
-	        	
-	        	// which one of our fragments (subclass of Fragment) is going to be instantiated?
-	        	// if we are going to instantiate CaratBugsOrHogsFragment, we need to pass an extra argument
-	        	// First we need to check if we have the extra info (as the mArgs Bundle) 
-	        	// that is consumed by one of our Fragments: CaratBugsOrHogsFragment.
-	        	// Since we have only one fragment for two separate tabs, we need to 
-	        	// put the flag IS_BUG in the bundle and pass it to the fragment,
-	        	// and when creating the fragment, we check to see if we shall do 
-	        	// the bugs-related stuff there or hogs's stuff 
-	        	
-//	        	if (mArgs == null) {
-	        		mFragment = Fragment.instantiate(mActivity, mClass.getName());
-//	        	} else {
-////	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), (Bundle) tab.getTag());
-//	        		mFragment = Fragment.instantiate(mActivity, mClass.getName(), mArgs);
-//	        	}
-	        	
-	            ft.add(android.R.id.content, mFragment, mTag);
-	        } else {
-	            // If it exists, simply attach it in order to show it
-	            ft.attach(mFragment);
-	        }
-	    }
+		/**
+		 * Constructor used each time a new tab is created.
+		 * 
+		 * @param activity
+		 *            The host Activity, used to instantiate the fragment
+		 * @param tag
+		 *            The identifier tag for the fragment
+		 * @param clz
+		 *            The fragment's Class, used to instantiate the fragment
+		 *            read the comments on the main constructor below. The
+		 *            current constructor is for completeness and convenience
+		 */
+		public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
+			this(activity, tag, clz, null);
+		}
 
-	    public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-	        if (mFragment != null) {
-	            // Detach the fragment, because another one is being attached
-	            ft.detach(mFragment);
-	        }
-	    }
+		/**
+		 * Constructor used each time a new tab is created.
+		 * 
+		 * @param activity
+		 *            The host Activity, used to instantiate the fragment
+		 * @param tag
+		 *            The identifier tag for the fragment
+		 * @param clz
+		 *            The fragment's Class, used to instantiate the fragment
+		 * @param args
+		 *            The bundle containing extra info that the destination
+		 *            fragment makes use of (e.g. IS_BUG boolean variable for
+		 *            the CaratBugsOrHogsFragment). Note that only the mentioned
+		 *            fragment has this extra argument, so make sure to provide
+		 *            a constructor with only the first three parameters
+		 *            (because when instantiating a TabListener class (when
+		 *            creating tabs), we use that constructor too). Inside that
+		 *            constructor, call this main constructor with 4 parameters
+		 *            passing null as the last argument
+		 */
+		public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
+			mActivity = activity;
+			mTag = tag;
+			mClass = clz;
+			mArgs = args;
 
-	    public void onTabReselected(Tab tab, FragmentTransaction ft) {
-	        // User selected the already selected tab. Usually do nothing.
-	    }
-	}	
-	
-	
-    // Log tag
-    private static final String TAG = "CaratMain";
+			// we shall check if there's already a fragment attached, and if so,
+			// detach it
+			// before attaching a new fragment
+			FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
+			mFragment = fragmentManager.findFragmentByTag(mTag);
+			if (mFragment != null && !mFragment.isDetached()) {
+				fft = fragmentManager.beginTransaction();
+				fft.detach(mFragment);
+				fft.commit();
+			}
+		}
 
-    public static final String ACTION_BUGS = "bugs";
-    public static final String ACTION_HOGS = "hogs";
+		/* The following are each of the ActionBar.TabListener callbacks */
 
-    // 250 ms
-    public static final long ANIMATION_DURATION = 250;
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
 
-    // Hold the tabs of the UI.
-//    TabHost mTabHost;
-//    
-//    TabManager mTabManager;
+			// Check if the fragment is already initialized
+			if (mFragment == null) {
+				// If not, instantiate and add it to the activity
 
-    // Key File
-    private static final String FLURRY_KEYFILE = "flurry.properties";
+				mFragment = Fragment.instantiate(mActivity, mClass.getName());
 
-    private MenuItem feedbackItem = null;
+				ft.add(android.R.id.content, mFragment, mTag);
+			} else {
+				// If it exists, simply attach it in order to show it
+				ft.attach(mFragment);
+			}
+		}
 
-    private String fullVersion = null;
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+			if (mFragment != null) {
+				// Detach the fragment, because another one is being attached
+				ft.detach(mFragment);
+			}
+		}
 
-    /**
-     * 
-     * @param savedInstanceState
-     */
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+			// User selected the already selected tab. Usually do nothing.
+		}
+	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-    	
-	    // Activity.getWindow.requestFeature() method should get invoked before setContentView()
-    	// not after (or without) that method invocation, otherwise it will cause an app crash
-        // This does not show if it is not updated
-        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        getWindow().requestFeature(Window.FEATURE_PROGRESS);
-        setContentView(R.layout.main);
-    	
-        Resources res = getResources(); // Resource object to get Drawables
-    	ActionBar actionBar = getSupportActionBar();
-	    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-	    actionBar.setDisplayShowTitleEnabled(true);
-	    Tab tab;
-	    
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_actions)
-                .setTabListener(new TabListener<CaratSuggestionsFragment>(
-                        this, "suggestions", CaratSuggestionsFragment.class));
-	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_actions));
-	    actionBar.addTab(tab);
-	    
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_my_device)
-                .setTabListener(new TabListener<CaratMyDeviceFragment>(
-                        this, "my device", CaratMyDeviceFragment.class));
-	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_mydevice));
-	    actionBar.addTab(tab);
-	    
-	    // specify if this tab is going to display either bugs or hogs 
-	    // by setting a tag which will be checked in CaratBugsOrHogsFragment's onCreateView() 
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_bugs)
-                .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-                        this, "bugs", CaratBugsOrHogsFragment.class));
-	    tab.setTag("bugs");
-	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_bugs));
-	    actionBar.addTab(tab);
-	    
-	    // same comments as above
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_hogs)
-                .setTabListener(new TabListener<CaratBugsOrHogsFragment>(
-                        this, "hogs", CaratBugsOrHogsFragment.class));
-	    tab.setTag("hogs");
-	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_hogs));
-	    actionBar.addTab(tab);
-	    
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_about)
-                .setTabListener(new TabListener<CaratAboutFragment>(
-                        this, "about", CaratAboutFragment.class));
-	    tab.setIcon(res.getDrawable(R.drawable.ic_tab_about));
-	    actionBar.addTab(tab);
-	    
-	    tab = actionBar.newTab()
-                .setText(R.string.tab_app_recommendation)
-                .setTabListener(new TabListener<AppRecommendationFragment>(
-                        this, "app recommendation", AppRecommendationFragment.class));
-	    actionBar.addTab(tab);	
-	    
-        fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
-        setTitleNormal();
+	// Log tag
+	private static final String TAG = "CaratMain";
 
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
-        }
-        
-        // Uncomment the following to enable listening on local port 8080:
-        /*
-         * try { HelloServer h = new HelloServer(); } catch (IOException e) { //
-         * TODO Auto-generated catch block e.printStackTrace(); }
-         */
-    }
+	public static final String ACTION_BUGS = "bugs";
+	public static final String ACTION_HOGS = "hogs";
 
-    public void setTitleNormal() {
-        if (CaratApplication.s != null) {
-            long s = CaratApplication.s.getSamplesReported();
-            if (s > 0)
-                this.setTitle(fullVersion + " - " + s + " " + getString(R.string.samplesreported));
-            else
-                this.setTitle(fullVersion);
-        } else
-            this.setTitle(fullVersion);
-    }
+	// 250 ms
+	public static final long ANIMATION_DURATION = 250;
 
-    public void setTitleUpdating(String what) {
-        this.setTitle(fullVersion + " - " + getString(R.string.updating) + " " + what);
-    }
+	// Key File
+	private static final String FLURRY_KEYFILE = "flurry.properties";
 
-    public void setTitleUpdatingFailed(String what) {
-        this.setTitle(fullVersion + " - " + getString(R.string.didntget) + " " + what);
-    }
-    
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onStart()
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
+	private MenuItem feedbackItem = null;
 
-        String secretKey = null;
-        Properties properties = new Properties();
-        try {
-            InputStream raw = CaratMainActivity.this.getAssets().open(FLURRY_KEYFILE);
-            if (raw != null) {
-                properties.load(raw);
-                if (properties.containsKey("secretkey"))
-                    secretKey = properties.getProperty("secretkey", "secretkey");
-                Log.d(TAG, "Set Flurry secret key.");
-            } else
-                Log.e(TAG, "Could not open Flurry key file!");
-        } catch (IOException e) {
-            Log.e(TAG, "Could not open Flurry key file: " + e.toString());
-        }
-        if (secretKey != null) {
-            FlurryAgent.onStartSession(getApplicationContext(), secretKey);
-        }
-    }
+	private String fullVersion = null;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.ActivityGroup#onStop()
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        FlurryAgent.onEndSession(getApplicationContext());
-    }
+	/**
+	 * 
+	 * @param savedInstanceState
+	 */
 
-    /**
-     * Animation for sliding a screen in from the right.
-     * 
-     * @return
-     */
-    public static Animation inFromRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, +1.0f,
-            Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-    {
-        inFromRight.setDuration(ANIMATION_DURATION);
-        inFromRight.setInterpolator(new AccelerateInterpolator());
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    /**
-     * Animation for sliding a screen out to the left.
-     * 
-     * @return
-     */
-    public static Animation outtoLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
-            Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-    {
-        outtoLeft.setDuration(ANIMATION_DURATION);
-        outtoLeft.setInterpolator(new AccelerateInterpolator());
-    }
+		// Activity.getWindow.requestFeature() method should get invoked before
+		// setContentView()
+		// not after (or without) that method invocation, otherwise it will
+		// cause an app crash
+		// This does not show if it is not updated
+		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		getWindow().requestFeature(Window.FEATURE_PROGRESS);
+//		setContentView(R.layout.main);
+		setContentView(R.layout.activity_main);
 
-    /**
-     * Animation for sliding a screen in from the left.
-     * 
-     * @return
-     */
-    public static Animation inFromLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1.0f,
-            Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-    {
-        inFromLeft.setDuration(ANIMATION_DURATION);
-        inFromLeft.setInterpolator(new AccelerateInterpolator());
-    }
+//		Resources res = getResources(); // Resource object to get Drawables
+		ActionBar actionBar = getSupportActionBar();
+		
+		mTitle = mDrawerTitle = getTitle();
+		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		// set a custom shadow that overlays the main content when the drawer
+		// opens
+		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+		// set up the drawer's list view with items and click listener
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-    /**
-     * Animation for sliding a screen out to the right.
-     * 
-     * @return
-     */
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
+		// ActionBarDrawerToggle ties together the the proper interactions
+		// between the sliding drawer and the action bar app icon
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		) {
+			public void onDrawerClosed(View view) {
+				getSupportActionBar().setTitle(mTitle);
+				// invalidateOptionsMenu(); // creates call to
+				// onPrepareOptionsMenu()
+			}
 
-    public static Animation outtoRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
-            Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-    {
-        outtoRight.setDuration(ANIMATION_DURATION);
-        outtoRight.setInterpolator(new AccelerateInterpolator());
-    }
+			public void onDrawerOpened(View drawerView) {
+				getSupportActionBar().setTitle(mDrawerTitle);
+				// invalidateOptionsMenu(); // creates call to
+				// onPrepareOptionsMenu()
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-    /**
-     * 
-     * Starts a Thread that communicates with the server to send stored samples.
-     * 
-     * @see android.app.Activity#onResume()
-     */
-    @Override
-    protected void onResume() {
-        Log.i(TAG, "Resumed");
-        CaratApplication.setMain(this);
+		if (savedInstanceState == null) {
+			selectItem(0);
+		}
 
-        /*
-         * Thread for refreshing the UI with new reports every 5 mins and on
-         * resume. Also sends samples and updates blacklist/questionnaire url.
-         */
+		
+//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+//		actionBar.setDisplayShowTitleEnabled(true);
+//		Tab tab;
+//
+//		tab = actionBar
+//				.newTab()
+//				.setText(R.string.tab_actions)
+//				.setTabListener(
+//						new TabListener<CaratSuggestionsFragment>(this, "suggestions", CaratSuggestionsFragment.class));
+//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_actions));
+//		actionBar.addTab(tab);
+//
+//		tab = actionBar.newTab().setText(R.string.tab_my_device)
+//				.setTabListener(new TabListener<CaratMyDeviceFragment>(this, "my device", CaratMyDeviceFragment.class));
+//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_mydevice));
+//		actionBar.addTab(tab);
+//
+//		// specify if this tab is going to display either bugs or hogs
+//		// by setting a tag which will be checked in CaratBugsOrHogsFragment's
+//		// onCreateView()
+//		tab = actionBar.newTab().setText(R.string.tab_bugs)
+//				.setTabListener(new TabListener<CaratBugsOrHogsFragment>(this, "bugs", CaratBugsOrHogsFragment.class));
+//		tab.setTag("bugs");
+//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_bugs));
+//		actionBar.addTab(tab);
+//
+//		// same comments as above
+//		tab = actionBar.newTab().setText(R.string.tab_hogs)
+//				.setTabListener(new TabListener<CaratBugsOrHogsFragment>(this, "hogs", CaratBugsOrHogsFragment.class));
+//		tab.setTag("hogs");
+//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_hogs));
+//		actionBar.addTab(tab);
+//
+//		tab = actionBar.newTab().setText(R.string.tab_about)
+//				.setTabListener(new TabListener<CaratAboutFragment>(this, "about", CaratAboutFragment.class));
+//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_about));
+//		actionBar.addTab(tab);
+//
+//		tab = actionBar
+//				.newTab()
+//				.setText(R.string.tab_app_recommendation)
+//				.setTabListener(
+//						new TabListener<AppRecommendationFragment>(this, "app recommendation",
+//								AppRecommendationFragment.class));
+//		actionBar.addTab(tab);
+//
+//		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
+//		setTitleNormal();
 
-        Log.d(TAG, "Refreshing UI");
-        // This spawns a thread, so it does not need to be in a thread.
-        /*
-         * new Thread() { public void run() {
-         */
-        ((CaratApplication) getApplication()).refreshUi();
-        /*
-         * } }.start();
-         */
-        super.onResume();
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
-        }
-    }
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		if (p != null) {
+			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+			HashMap<String, String> options = new HashMap<String, String>();
+			options.put("status", getTitle().toString());
+			ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
+		}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.ActivityGroup#onPause()
-     */
-    @Override
-    protected void onPause() {
-        Log.i(TAG, "Paused");
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
-        }
-        SamplingLibrary.resetRunningProcessInfo();
-        super.onPause();
-    }
+		// Uncomment the following to enable listening on local port 8080:
+		/*
+		 * try { HelloServer h = new HelloServer(); } catch (IOException e) { //
+		 * TODO Auto-generated catch block e.printStackTrace(); }
+		 */
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#finish()
-     */
-    @Override
-    public void finish() {
-        Log.d(TAG, "Finishing up");
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getTitle().toString());
-            ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
-        }
-        super.finish();
-    }
+	/* The click listener for ListView in the navigation drawer */
+	private class DrawerItemClickListener implements ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			selectItem(position);
+		}
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.ActivityGroup#onDestroy()
-     */
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//    }
+	private void selectItem(int position) {
+		// update the main content by replacing fragments
+		Fragment fragment = new CaratSuggestionsFragment();
+		switch (position) {
+		case 0:
+			fragment = new CaratSuggestionsFragment();
+			break;
+		case 1:
+			fragment = new CaratMyDeviceFragment();
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			fragment = new CaratAboutFragment();
+			break;
+		case 5:
+			fragment = new AppRecommendationFragment();
+			break;
+		}
 
-    /**
-     * Show share, feedback, wifi only menu here.
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
-        final MenuItem wifiOnly = menu.add(R.string.wifionly);
-        // wifiOnly.setCheckable(true);
-        // wifiOnly.setChecked(useWifiOnly);
-        final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratMainActivity.this);
-        if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
-            wifiOnly.setTitle(R.string.wifionlyused);
-        wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem arg0) {
-                boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
-                if (useWifiOnly) {
-                    p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false).commit();
-                    // wifiOnly.setChecked(false);
-                    wifiOnly.setTitle(R.string.wifionly);
-                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    if (p != null) {
-                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                        HashMap<String, String> options = new HashMap<String, String>();
-                        options.put("status", getTitle().toString());
-                        ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
-                    }
-                } else {
-                    p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, true).commit();
-                    // wifiOnly.setChecked(true);
-                    wifiOnly.setTitle(R.string.wifionlyused);
-                    SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    if (p != null) {
-                        String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                        HashMap<String, String> options = new HashMap<String, String>();
-                        options.put("status", getTitle().toString());
-                        ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
-                    }
-                }
-                return true;
-            }
-        });
+		// update selected item and title, then close the drawer
+		mDrawerList.setItemChecked(position, true);
+		setTitle(mDrawerItems[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
+	}
 
-        MenuItem shareItem = menu.add(R.string.share);
-        shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem arg0) {
-                int jscore = CaratApplication.getJscore();
-                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis) + " " + jscore);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
-                        + getString(R.string.sharetext2));
-                startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
-                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                if (p != null) {
-                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                    HashMap<String, String> options = new HashMap<String, String>();
-                    options.put("status", getTitle().toString());
-                    options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
-                    ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
-                }
-                return true;
-            }
-        });
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getSupportActionBar().setTitle(mTitle);
+	}
 
-        feedbackItem = menu.add(R.string.feedback);
-        feedbackItem.setOnMenuItemClickListener(new MenuListener());
-        return true;
-    }
+	/**
+	 * When using the ActionBarDrawerToggle, you must call it during
+	 * onPostCreate() and onConfigurationChanged()...
+	 */
 
-    /**
-     * Class to handle feedback form.
-     * 
-     * @author Eemil Lagerspetz
-     * 
-     */
-    private class MenuListener implements OnMenuItemClickListener {
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
 
-        @Override
-        public boolean onMenuItemClick(MenuItem arg0) {
-            int jscore = CaratApplication.getJscore();
-            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-            Context a = getApplicationContext();
-            SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            String os = SamplingLibrary.getOsVersion();
-            String model = SamplingLibrary.getModel();
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggle
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 
-            // Emulator does not support message/rfc822
-            if (model.equals("sdk"))
-                sendIntent.setType("text/plain");
-            else
-                sendIntent.setType("message/rfc822");
-            sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@eecs.berkeley.edu" });
-            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] " + getString(R.string.feedbackfrom) + " "
-                    + model);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
-                    + getString(R.string.model) + ": " + model + "\nCarat ID: " + uuId + "\nJ-Score: " + jscore + "\n"
-                    + fullVersion + "\n");
-            if (p != null) {
-                HashMap<String, String> options = new HashMap<String, String>();
-                options.put("os", os);
-                options.put("model", model);
-                SimpleHogBug[] b = CaratApplication.s.getBugReport();
-                int len = 0;
-                if (b != null)
-                    len = b.length;
-                options.put("bugs", len + "");
-                b = CaratApplication.s.getHogReport();
-                len = 0;
-                if (b != null)
-                    len = b.length;
-                options.put("hogs", len + "");
-                options.put("status", getTitle().toString());
-                options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
-                ClickTracking.track(uuId, "feedbackbutton", options, getApplicationContext());
-            }
-            startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
-            return true;
-        }
-    }
+	public void setTitleNormal() {
+		if (CaratApplication.s != null) {
+			long s = CaratApplication.s.getSamplesReported();
+			if (s > 0)
+				this.setTitle(fullVersion + " - " + s + " " + getString(R.string.samplesreported));
+			else
+				this.setTitle(fullVersion);
+		} else
+			this.setTitle(fullVersion);
+	}
+
+	public void setTitleUpdating(String what) {
+		this.setTitle(fullVersion + " - " + getString(R.string.updating) + " " + what);
+	}
+
+	public void setTitleUpdatingFailed(String what) {
+		this.setTitle(fullVersion + " - " + getString(R.string.didntget) + " " + what);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		String secretKey = null;
+		Properties properties = new Properties();
+		try {
+			InputStream raw = CaratMainActivity.this.getAssets().open(FLURRY_KEYFILE);
+			if (raw != null) {
+				properties.load(raw);
+				if (properties.containsKey("secretkey"))
+					secretKey = properties.getProperty("secretkey", "secretkey");
+				Log.d(TAG, "Set Flurry secret key.");
+			} else
+				Log.e(TAG, "Could not open Flurry key file!");
+		} catch (IOException e) {
+			Log.e(TAG, "Could not open Flurry key file: " + e.toString());
+		}
+		if (secretKey != null) {
+			FlurryAgent.onStartSession(getApplicationContext(), secretKey);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.ActivityGroup#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(getApplicationContext());
+	}
+
+	/**
+	 * Animation for sliding a screen in from the right.
+	 * 
+	 * @return
+	 */
+	public static Animation inFromRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, +1.0f,
+			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+	{
+		inFromRight.setDuration(ANIMATION_DURATION);
+		inFromRight.setInterpolator(new AccelerateInterpolator());
+	}
+
+	/**
+	 * Animation for sliding a screen out to the left.
+	 * 
+	 * @return
+	 */
+	public static Animation outtoLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
+			Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+	{
+		outtoLeft.setDuration(ANIMATION_DURATION);
+		outtoLeft.setInterpolator(new AccelerateInterpolator());
+	}
+
+	/**
+	 * Animation for sliding a screen in from the left.
+	 * 
+	 * @return
+	 */
+	public static Animation inFromLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1.0f,
+			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+	{
+		inFromLeft.setDuration(ANIMATION_DURATION);
+		inFromLeft.setInterpolator(new AccelerateInterpolator());
+	}
+
+	/**
+	 * Animation for sliding a screen out to the right.
+	 * 
+	 * @return
+	 */
+
+	public static Animation outtoRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
+			Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+	{
+		outtoRight.setDuration(ANIMATION_DURATION);
+		outtoRight.setInterpolator(new AccelerateInterpolator());
+	}
+
+	/**
+	 * 
+	 * Starts a Thread that communicates with the server to send stored samples.
+	 * 
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		Log.i(TAG, "Resumed");
+		CaratApplication.setMain(this);
+
+		/*
+		 * Thread for refreshing the UI with new reports every 5 mins and on
+		 * resume. Also sends samples and updates blacklist/questionnaire url.
+		 */
+
+		Log.d(TAG, "Refreshing UI");
+		// This spawns a thread, so it does not need to be in a thread.
+		/*
+		 * new Thread() { public void run() {
+		 */
+		((CaratApplication) getApplication()).refreshUi();
+		/*
+		 * } }.start();
+		 */
+		super.onResume();
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		if (p != null) {
+			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+			HashMap<String, String> options = new HashMap<String, String>();
+			options.put("status", getTitle().toString());
+			ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.ActivityGroup#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		Log.i(TAG, "Paused");
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		if (p != null) {
+			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+			HashMap<String, String> options = new HashMap<String, String>();
+			options.put("status", getTitle().toString());
+			ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
+		}
+		SamplingLibrary.resetRunningProcessInfo();
+		super.onPause();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#finish()
+	 */
+	@Override
+	public void finish() {
+		Log.d(TAG, "Finishing up");
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		if (p != null) {
+			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+			HashMap<String, String> options = new HashMap<String, String>();
+			options.put("status", getTitle().toString());
+			ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
+		}
+		super.finish();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.ActivityGroup#onDestroy()
+	 */
+	// @Override
+	// protected void onDestroy() {
+	// super.onDestroy();
+	// }
+
+	/**
+	 * Show share, feedback, wifi only menu here.
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		final MenuItem wifiOnly = menu.add(R.string.wifionly);
+		// wifiOnly.setCheckable(true);
+		// wifiOnly.setChecked(useWifiOnly);
+		final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratMainActivity.this);
+		if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
+			wifiOnly.setTitle(R.string.wifionlyused);
+		wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
+				if (useWifiOnly) {
+					p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false).commit();
+					// wifiOnly.setChecked(false);
+					wifiOnly.setTitle(R.string.wifionly);
+					SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+					if (p != null) {
+						String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+						HashMap<String, String> options = new HashMap<String, String>();
+						options.put("status", getTitle().toString());
+						ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
+					}
+				} else {
+					p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, true).commit();
+					// wifiOnly.setChecked(true);
+					wifiOnly.setTitle(R.string.wifionlyused);
+					SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+					if (p != null) {
+						String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+						HashMap<String, String> options = new HashMap<String, String>();
+						options.put("status", getTitle().toString());
+						ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
+					}
+				}
+				return true;
+			}
+		});
+
+		MenuItem shareItem = menu.add(R.string.share);
+		shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem arg0) {
+				int jscore = CaratApplication.getJscore();
+				Intent sendIntent = new Intent(Intent.ACTION_SEND);
+				sendIntent.setType("text/plain");
+				sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis) + " " + jscore);
+				sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
+						+ getString(R.string.sharetext2));
+				startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
+				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				if (p != null) {
+					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+					HashMap<String, String> options = new HashMap<String, String>();
+					options.put("status", getTitle().toString());
+					options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
+					ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
+				}
+				return true;
+			}
+		});
+
+		feedbackItem = menu.add(R.string.feedback);
+		feedbackItem.setOnMenuItemClickListener(new MenuListener());
+		return true;
+	}
+
+	/**
+	 * Class to handle feedback form.
+	 * 
+	 * @author Eemil Lagerspetz
+	 * 
+	 */
+	private class MenuListener implements OnMenuItemClickListener {
+
+		@Override
+		public boolean onMenuItemClick(MenuItem arg0) {
+			int jscore = CaratApplication.getJscore();
+			Intent sendIntent = new Intent(Intent.ACTION_SEND);
+			Context a = getApplicationContext();
+			SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
+			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+			String os = SamplingLibrary.getOsVersion();
+			String model = SamplingLibrary.getModel();
+
+			// Emulator does not support message/rfc822
+			if (model.equals("sdk"))
+				sendIntent.setType("text/plain");
+			else
+				sendIntent.setType("message/rfc822");
+			sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@eecs.berkeley.edu" });
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] " + getString(R.string.feedbackfrom) + " "
+					+ model);
+			sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
+					+ getString(R.string.model) + ": " + model + "\nCarat ID: " + uuId + "\nJ-Score: " + jscore + "\n"
+					+ fullVersion + "\n");
+			if (p != null) {
+				HashMap<String, String> options = new HashMap<String, String>();
+				options.put("os", os);
+				options.put("model", model);
+				SimpleHogBug[] b = CaratApplication.s.getBugReport();
+				int len = 0;
+				if (b != null)
+					len = b.length;
+				options.put("bugs", len + "");
+				b = CaratApplication.s.getHogReport();
+				len = 0;
+				if (b != null)
+					len = b.length;
+				options.put("hogs", len + "");
+				options.put("status", getTitle().toString());
+				options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
+				ClickTracking.track(uuId, "feedbackbutton", options, getApplicationContext());
+			}
+			startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
+			return true;
+		}
+	}
 }
