@@ -58,6 +58,11 @@ public class CaratBugsOrHogsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Boolean bug = getArguments().getBoolean("isBugs");
+        if (bug)
+            isBugs = true;
+        else
+        	isBugs = false;
 //        if (savedInstanceState != null) {
 //            isBugs = savedInstanceState.getBoolean(IS_BUGS);
 //        } else {
@@ -68,12 +73,15 @@ public class CaratBugsOrHogsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	
-    	Tab tab = ((ActionBarActivity)getActivity()).getSupportActionBar().getSelectedTab();
-    	String bugsOrHogs = tab.getTag().toString();
-    	if (bugsOrHogs.equals("bugs"))
-            isBugs = true;
-        else
-        	isBugs = false;
+//    	Tab tab = ((ActionBarActivity)getActivity()).getSupportActionBar().getSelectedTab();
+//    	String bugsOrHogs = tab.getTag().toString();
+//    	Boolean bug = getArguments().getBoolean("isBugs");
+    	
+//    	if (bugsOrHogs.equals("bugs"))
+//    	if (bug)
+//            isBugs = true;
+//        else
+//        	isBugs = false;
     	
     	String isBugsStr = isBugs? "IS_BUGS=true" : "IS_BUGS=false";
     	Log.d("BugsOrHogs", isBugsStr);

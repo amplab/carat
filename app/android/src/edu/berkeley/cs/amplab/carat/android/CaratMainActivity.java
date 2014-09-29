@@ -58,98 +58,98 @@ public class CaratMainActivity extends ActionBarActivity {
 	private CharSequence mTitle;
 	private String[] mDrawerItems;
 
-	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-		private Fragment mFragment;
-		private final ActionBarActivity mActivity;
-		private final String mTag;
-		private final Class<T> mClass;
-		private final Bundle mArgs;
-		private FragmentTransaction fft;
-
-		// public static final String TAG = TabListener.class.getSimpleName();
-
-		/**
-		 * Constructor used each time a new tab is created.
-		 * 
-		 * @param activity
-		 *            The host Activity, used to instantiate the fragment
-		 * @param tag
-		 *            The identifier tag for the fragment
-		 * @param clz
-		 *            The fragment's Class, used to instantiate the fragment
-		 *            read the comments on the main constructor below. The
-		 *            current constructor is for completeness and convenience
-		 */
-		public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
-			this(activity, tag, clz, null);
-		}
-
-		/**
-		 * Constructor used each time a new tab is created.
-		 * 
-		 * @param activity
-		 *            The host Activity, used to instantiate the fragment
-		 * @param tag
-		 *            The identifier tag for the fragment
-		 * @param clz
-		 *            The fragment's Class, used to instantiate the fragment
-		 * @param args
-		 *            The bundle containing extra info that the destination
-		 *            fragment makes use of (e.g. IS_BUG boolean variable for
-		 *            the CaratBugsOrHogsFragment). Note that only the mentioned
-		 *            fragment has this extra argument, so make sure to provide
-		 *            a constructor with only the first three parameters
-		 *            (because when instantiating a TabListener class (when
-		 *            creating tabs), we use that constructor too). Inside that
-		 *            constructor, call this main constructor with 4 parameters
-		 *            passing null as the last argument
-		 */
-		public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
-			mActivity = activity;
-			mTag = tag;
-			mClass = clz;
-			mArgs = args;
-
-			// we shall check if there's already a fragment attached, and if so,
-			// detach it
-			// before attaching a new fragment
-			FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
-			mFragment = fragmentManager.findFragmentByTag(mTag);
-			if (mFragment != null && !mFragment.isDetached()) {
-				fft = fragmentManager.beginTransaction();
-				fft.detach(mFragment);
-				fft.commit();
-			}
-		}
-
-		/* The following are each of the ActionBar.TabListener callbacks */
-
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-
-			// Check if the fragment is already initialized
-			if (mFragment == null) {
-				// If not, instantiate and add it to the activity
-
-				mFragment = Fragment.instantiate(mActivity, mClass.getName());
-
-				ft.add(android.R.id.content, mFragment, mTag);
-			} else {
-				// If it exists, simply attach it in order to show it
-				ft.attach(mFragment);
-			}
-		}
-
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-			if (mFragment != null) {
-				// Detach the fragment, because another one is being attached
-				ft.detach(mFragment);
-			}
-		}
-
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			// User selected the already selected tab. Usually do nothing.
-		}
-	}
+//	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
+//		private Fragment mFragment;
+//		private final ActionBarActivity mActivity;
+//		private final String mTag;
+//		private final Class<T> mClass;
+//		private final Bundle mArgs;
+//		private FragmentTransaction fft;
+//
+//		// public static final String TAG = TabListener.class.getSimpleName();
+//
+//		/**
+//		 * Constructor used each time a new tab is created.
+//		 * 
+//		 * @param activity
+//		 *            The host Activity, used to instantiate the fragment
+//		 * @param tag
+//		 *            The identifier tag for the fragment
+//		 * @param clz
+//		 *            The fragment's Class, used to instantiate the fragment
+//		 *            read the comments on the main constructor below. The
+//		 *            current constructor is for completeness and convenience
+//		 */
+//		public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
+//			this(activity, tag, clz, null);
+//		}
+//
+//		/**
+//		 * Constructor used each time a new tab is created.
+//		 * 
+//		 * @param activity
+//		 *            The host Activity, used to instantiate the fragment
+//		 * @param tag
+//		 *            The identifier tag for the fragment
+//		 * @param clz
+//		 *            The fragment's Class, used to instantiate the fragment
+//		 * @param args
+//		 *            The bundle containing extra info that the destination
+//		 *            fragment makes use of (e.g. IS_BUG boolean variable for
+//		 *            the CaratBugsOrHogsFragment). Note that only the mentioned
+//		 *            fragment has this extra argument, so make sure to provide
+//		 *            a constructor with only the first three parameters
+//		 *            (because when instantiating a TabListener class (when
+//		 *            creating tabs), we use that constructor too). Inside that
+//		 *            constructor, call this main constructor with 4 parameters
+//		 *            passing null as the last argument
+//		 */
+//		public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
+//			mActivity = activity;
+//			mTag = tag;
+//			mClass = clz;
+//			mArgs = args;
+//
+//			// we shall check if there's already a fragment attached, and if so,
+//			// detach it
+//			// before attaching a new fragment
+//			FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
+//			mFragment = fragmentManager.findFragmentByTag(mTag);
+//			if (mFragment != null && !mFragment.isDetached()) {
+//				fft = fragmentManager.beginTransaction();
+//				fft.detach(mFragment);
+//				fft.commit();
+//			}
+//		}
+//
+//		/* The following are each of the ActionBar.TabListener callbacks */
+//
+//		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+//
+//			// Check if the fragment is already initialized
+//			if (mFragment == null) {
+//				// If not, instantiate and add it to the activity
+//
+//				mFragment = Fragment.instantiate(mActivity, mClass.getName());
+//
+//				ft.add(android.R.id.content, mFragment, mTag);
+//			} else {
+//				// If it exists, simply attach it in order to show it
+//				ft.attach(mFragment);
+//			}
+//		}
+//
+//		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+//			if (mFragment != null) {
+//				// Detach the fragment, because another one is being attached
+//				ft.detach(mFragment);
+//			}
+//		}
+//
+//		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+//			// User selected the already selected tab. Usually do nothing.
+//		}
+//	}
 
 	// Log tag
 	private static final String TAG = "CaratMain";
@@ -305,6 +305,8 @@ public class CaratMainActivity extends ActionBarActivity {
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
 		Fragment fragment = new CaratSuggestionsFragment();
+		Bundle args = new Bundle();
+		
 		switch (position) {
 		case 0:
 			fragment = new CaratSuggestionsFragment();
@@ -313,8 +315,14 @@ public class CaratMainActivity extends ActionBarActivity {
 			fragment = new CaratMyDeviceFragment();
 			break;
 		case 2:
+			args.putBoolean("isBugs", true);
+			fragment = new CaratBugsOrHogsFragment();
+			fragment.setArguments(args);
 			break;
 		case 3:
+			args.putBoolean("isBugs", false);
+			fragment = new CaratBugsOrHogsFragment();
+			fragment.setArguments(args);
 			break;
 		case 4:
 			fragment = new CaratAboutFragment();
