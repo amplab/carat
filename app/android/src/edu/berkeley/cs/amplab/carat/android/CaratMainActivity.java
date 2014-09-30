@@ -58,70 +58,6 @@ public class CaratMainActivity extends ActionBarActivity {
 	private CharSequence mTitle;
 	private String[] mDrawerItems;
 
-//	public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-//		private Fragment mFragment;
-//		private final ActionBarActivity mActivity;
-//		private final String mTag;
-//		private final Class<T> mClass;
-//		private final Bundle mArgs;
-//		private FragmentTransaction fft;
-//
-//		// public static final String TAG = TabListener.class.getSimpleName();
-//
-//		/**
-//		 * Constructor used each time a new tab is created.
-//		 * 
-//		 * @param activity
-//		 *            The host Activity, used to instantiate the fragment
-//		 * @param tag
-//		 *            The identifier tag for the fragment
-//		 * @param clz
-//		 *            The fragment's Class, used to instantiate the fragment
-//		 *            read the comments on the main constructor below. The
-//		 *            current constructor is for completeness and convenience
-//		 */
-//		public TabListener(ActionBarActivity activity, String tag, Class<T> clz) {
-//			this(activity, tag, clz, null);
-//		}
-//
-//		/**
-//		 * Constructor used each time a new tab is created.
-//		 * 
-//		 * @param activity
-//		 *            The host Activity, used to instantiate the fragment
-//		 * @param tag
-//		 *            The identifier tag for the fragment
-//		 * @param clz
-//		 *            The fragment's Class, used to instantiate the fragment
-//		 * @param args
-//		 *            The bundle containing extra info that the destination
-//		 *            fragment makes use of (e.g. IS_BUG boolean variable for
-//		 *            the CaratBugsOrHogsFragment). Note that only the mentioned
-//		 *            fragment has this extra argument, so make sure to provide
-//		 *            a constructor with only the first three parameters
-//		 *            (because when instantiating a TabListener class (when
-//		 *            creating tabs), we use that constructor too). Inside that
-//		 *            constructor, call this main constructor with 4 parameters
-//		 *            passing null as the last argument
-//		 */
-//		public TabListener(ActionBarActivity activity, String tag, Class<T> clz, Bundle args) {
-//			mActivity = activity;
-//			mTag = tag;
-//			mClass = clz;
-//			mArgs = args;
-//
-//			// we shall check if there's already a fragment attached, and if so,
-//			// detach it
-//			// before attaching a new fragment
-//			FragmentManager fragmentManager = mActivity.getSupportFragmentManager();
-//			mFragment = fragmentManager.findFragmentByTag(mTag);
-//			if (mFragment != null && !mFragment.isDetached()) {
-//				fft = fragmentManager.beginTransaction();
-//				fft.detach(mFragment);
-//				fft.commit();
-//			}
-//		}
-//
 //		/* The following are each of the ActionBar.TabListener callbacks */
 //
 //		public void onTabSelected(Tab tab, FragmentTransaction ft) {
@@ -188,7 +124,10 @@ public class CaratMainActivity extends ActionBarActivity {
 //		Resources res = getResources(); // Resource object to get Drawables
 		ActionBar actionBar = getSupportActionBar();
 		
-		mTitle = mDrawerTitle = getTitle();
+		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
+		setTitleNormal();
+		
+		mTitle = mDrawerTitle = fullVersion;
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -199,9 +138,7 @@ public class CaratMainActivity extends ActionBarActivity {
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-		// enable ActionBar app icon to behave as action to toggle nav drawer
-		actionBar.setDisplayHomeAsUpEnabled(true);
-		actionBar.setHomeButtonEnabled(true);
+
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
 		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
@@ -212,25 +149,25 @@ public class CaratMainActivity extends ActionBarActivity {
 		) {
 			public void onDrawerClosed(View view) {
 				getSupportActionBar().setTitle(mTitle);
-				// invalidateOptionsMenu(); // creates call to
-				// onPrepareOptionsMenu()
+				// invalidateOptionsMenu();   // creates call to onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				getSupportActionBar().setTitle(mDrawerTitle);
-				// invalidateOptionsMenu(); // creates call to
-				// onPrepareOptionsMenu()
+				// invalidateOptionsMenu();   // creates call to onPrepareOptionsMenu()
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+		// enable ActionBar app icon to behave as action to toggle nav drawer
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		actionBar.setHomeButtonEnabled(true);
+		
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
 
 		
-//		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-//		actionBar.setDisplayShowTitleEnabled(true);
 //		Tab tab;
 //
 //		tab = actionBar
@@ -275,8 +212,8 @@ public class CaratMainActivity extends ActionBarActivity {
 //								AppRecommendationFragment.class));
 //		actionBar.addTab(tab);
 //
-//		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
-//		setTitleNormal();
+		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
+		setTitleNormal();
 
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		if (p != null) {
@@ -364,6 +301,19 @@ public class CaratMainActivity extends ActionBarActivity {
 		// Pass any configuration change to the drawer toggle
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+          return true;
+        }
+        // Handle your other action bar items...
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
 	public void setTitleNormal() {
 		if (CaratApplication.s != null) {
