@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.HashMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -242,7 +243,16 @@ public class CaratBugsOrHogsFragment extends Fragment {
          */
     }
 
+    @Override
+    public void onDetach() {
+    	CaratApplication.setBugs(null);
+    	CaratApplication.setHogs(null);
+        super.onDetach();
+    }
+    
     public void refresh() {
+    	if (getActivity() == null)
+    		Log.e("CaratBugsOrHogsFragment", "unable to get activity");
         CaratApplication app = (CaratApplication) getActivity().getApplication();
         final ListView lv = (ListView) getActivity().findViewById(android.R.id.list);
         if (isBugs)

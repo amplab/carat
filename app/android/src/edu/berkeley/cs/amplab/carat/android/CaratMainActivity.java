@@ -183,7 +183,6 @@ public class CaratMainActivity extends ActionBarActivity {
 		// This does not show if it is not updated
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
-//		setContentView(R.layout.main);
 		setContentView(R.layout.activity_main);
 
 //		Resources res = getResources(); // Resource object to get Drawables

@@ -224,6 +224,12 @@ public class CaratMyDeviceFragment extends Fragment {
         super.onResume();
     }
     
+    @Override
+    public void onDetach() {
+    	CaratApplication.setMyDevice(null);
+        super.onDetach();
+    }
+    
     /**
      * Called when Carat ID is clicked.
      * 

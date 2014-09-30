@@ -221,6 +221,8 @@ public class CaratApplication extends Application {
                     TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
                     if (t != null)
                         t.setText(text);
+                    else 
+                    	Log.e("setMyDeviceText", "unable to find the text view in myDevice fragment");
                 }
 
             });
@@ -409,7 +411,9 @@ public class CaratApplication extends Application {
                 boolean connecting = false;
                 Context co = getApplicationContext();
                 
-                refreshActions();
+                // refreshing the CaratSuggestionFragment should only be done 
+                //if the fragment is in the foreground. It's already done in onResume() in CaratSuggestionFragment 
+//                refreshActions();
                 final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
                 final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
                 String networkStatus = SamplingLibrary
@@ -444,9 +448,13 @@ public class CaratApplication extends Application {
                 // do this regardless
                 setReportData();
                 // Update UI elements
-                CaratApplication.refreshActions();
-                CaratApplication.refreshBugs();
-                CaratApplication.refreshHogs();
+                
+                // should be only done if the fragment is attached.
+                // refresh() is already done in the onResume() method of the fragment
+//                CaratApplication.refreshActions();
+//                CaratApplication.refreshBugs();
+//                CaratApplication.refreshHogs();
+                
                 CaratApplication.setActionProgress(90,
                         getString(R.string.finishing), false);
 
@@ -521,6 +529,10 @@ public class CaratApplication extends Application {
                 // If not possible, try model battery life
             }
             jscore = ((int) (r.getJScore() * 100));
+            
+            // investigate why jscore is 0
+            Log.d("jscore", Integer.toString(jscore));
+            
             setMyDeviceText(R.id.jscore_value, jscore + "");
         }
 
