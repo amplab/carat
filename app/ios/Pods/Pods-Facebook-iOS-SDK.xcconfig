@@ -1,1 +1,0 @@
-PODS_FACEBOOK_IOS_SDK_OTHER_LDFLAGS = -framework CoreLocation -weak_framework Accounts -weak_framework AdSupport -weak_framework Security -weak_framework Social
