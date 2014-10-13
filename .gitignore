@@ -25,3 +25,5 @@ proguard/
 # Log Files
 *.log
 
+# compiled binary files (of the Support library)
+support-appcompat/bin/*

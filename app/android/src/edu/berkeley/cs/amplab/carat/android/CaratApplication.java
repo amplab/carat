@@ -529,10 +529,6 @@ public class CaratApplication extends Application {
                 // If not possible, try model battery life
             }
             jscore = ((int) (r.getJScore() * 100));
-            
-            // investigate why jscore is 0
-            Log.d("jscore", Integer.toString(jscore));
-            
             setMyDeviceText(R.id.jscore_value, jscore + "");
         }
 
@@ -545,7 +541,6 @@ public class CaratApplication extends Application {
         int blh = (int) (bl / 3600);
         bl -= blh * 3600;
         int blmin = (int) (bl / 60);
-        
         
         int errorH = 0;
         int errorMin = 0; 
