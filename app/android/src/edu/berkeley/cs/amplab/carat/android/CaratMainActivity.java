@@ -58,35 +58,6 @@ public class CaratMainActivity extends ActionBarActivity {
 	private CharSequence mTitle;
 	private String[] mDrawerItems;
 
-//		/* The following are each of the ActionBar.TabListener callbacks */
-//
-//		public void onTabSelected(Tab tab, FragmentTransaction ft) {
-//
-//			// Check if the fragment is already initialized
-//			if (mFragment == null) {
-//				// If not, instantiate and add it to the activity
-//
-//				mFragment = Fragment.instantiate(mActivity, mClass.getName());
-//
-//				ft.add(android.R.id.content, mFragment, mTag);
-//			} else {
-//				// If it exists, simply attach it in order to show it
-//				ft.attach(mFragment);
-//			}
-//		}
-//
-//		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-//			if (mFragment != null) {
-//				// Detach the fragment, because another one is being attached
-//				ft.detach(mFragment);
-//			}
-//		}
-//
-//		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-//			// User selected the already selected tab. Usually do nothing.
-//		}
-//	}
-
 	// Log tag
 	private static final String TAG = "CaratMain";
 
@@ -112,16 +83,13 @@ public class CaratMainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Activity.getWindow.requestFeature() method should get invoked before
-		// setContentView()
-		// not after (or without) that method invocation, otherwise it will
-		// cause an app crash
+		// Activity.getWindow.requestFeature() method should get invoked before setContentView()
+		// otherwise it will cause an app crash
 		// This does not show if it is not updated
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
-//		Resources res = getResources(); // Resource object to get Drawables
 		ActionBar actionBar = getSupportActionBar();
 		
 		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
@@ -131,8 +99,7 @@ public class CaratMainActivity extends ActionBarActivity {
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		// set a custom shadow that overlays the main content when the drawer
-		// opens
+		// set a custom shadow that overlays the main content when the drawer opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
@@ -167,52 +134,6 @@ public class CaratMainActivity extends ActionBarActivity {
 			selectItem(0);
 		}
 
-		
-//		Tab tab;
-//
-//		tab = actionBar
-//				.newTab()
-//				.setText(R.string.tab_actions)
-//				.setTabListener(
-//						new TabListener<CaratSuggestionsFragment>(this, "suggestions", CaratSuggestionsFragment.class));
-//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_actions));
-//		actionBar.addTab(tab);
-//
-//		tab = actionBar.newTab().setText(R.string.tab_my_device)
-//				.setTabListener(new TabListener<CaratMyDeviceFragment>(this, "my device", CaratMyDeviceFragment.class));
-//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_mydevice));
-//		actionBar.addTab(tab);
-//
-//		// specify if this tab is going to display either bugs or hogs
-//		// by setting a tag which will be checked in CaratBugsOrHogsFragment's
-//		// onCreateView()
-//		tab = actionBar.newTab().setText(R.string.tab_bugs)
-//				.setTabListener(new TabListener<CaratBugsOrHogsFragment>(this, "bugs", CaratBugsOrHogsFragment.class));
-//		tab.setTag("bugs");
-//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_bugs));
-//		actionBar.addTab(tab);
-//
-//		// same comments as above
-//		tab = actionBar.newTab().setText(R.string.tab_hogs)
-//				.setTabListener(new TabListener<CaratBugsOrHogsFragment>(this, "hogs", CaratBugsOrHogsFragment.class));
-//		tab.setTag("hogs");
-//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_hogs));
-//		actionBar.addTab(tab);
-//
-//		tab = actionBar.newTab().setText(R.string.tab_about)
-//				.setTabListener(new TabListener<CaratAboutFragment>(this, "about", CaratAboutFragment.class));
-//		tab.setIcon(res.getDrawable(R.drawable.ic_tab_about));
-//		actionBar.addTab(tab);
-//
-//		tab = actionBar
-//				.newTab()
-//				.setText(R.string.tab_app_recommendation)
-//				.setTabListener(
-//						new TabListener<AppRecommendationFragment>(this, "app recommendation",
-//								AppRecommendationFragment.class));
-//		actionBar.addTab(tab);
-//
-		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 		setTitleNormal();
 
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -240,7 +161,7 @@ public class CaratMainActivity extends ActionBarActivity {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-		Fragment fragment = new CaratSuggestionsFragment();
+		Fragment fragment = null;
 		Bundle args = new Bundle();
 		
 		switch (position) {
