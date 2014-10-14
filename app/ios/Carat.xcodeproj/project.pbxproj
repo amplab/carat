@@ -13,10 +13,7 @@
 		28216C970DB411BC00E5133A /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28216C960DB411BC00E5133A /* BugReportViewController.m */; };
 		2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* ReportView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
-		62101CACD88F4DE095BA58DA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A720DBC61F40BDB6246B59 /* libPods.a */; };
-		AB105EBD14EDCA57000DB145 /* ProcessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */; };
 		AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB244AF714E10D660055FCD6 /* ActionItemCell.xib */; };
-		AB3B89C916C03A26007C8596 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B89C816C03A26007C8596 /* Social.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */; };
 		AB41CDF4144E1E520090CC09 /* CaratAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */; };
 		AB41CDF8144E27200090CC09 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB41CDF7144E27200090CC09 /* CoreLocation.framework */; };
@@ -54,8 +51,6 @@
 		ABD318EC148D8733000A8DC7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD318EB148D8732000A8DC7 /* MessageUI.framework */; };
 		ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD31902148EC41B000A8DC7 /* QuartzCore.framework */; };
 		ABE8DA7515247B3E0024C111 /* Default-Portrait@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE8DA7415247B3E0024C111 /* Default-Portrait@2x~ipad.png */; };
-		ABEC9B5714F1CA71005CE813 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4014F1CA71005CE813 /* SDImageCache.m */; };
-		ABEC9B5814F1CA71005CE813 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4714F1CA71005CE813 /* SDWebImageDecoder.m */; };
 		ABEC9B6814F1DA00005CE813 /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = ABEC9B6714F1D9FF005CE813 /* license.txt */; };
 		C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C136F09A14662E5600F0A292 /* CommunicationManager.m */; };
 		C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C14F5C2D145BD4D300087F74 /* AsyncSocket.m */; };
@@ -76,6 +71,25 @@
 		C1D52F391465F85A008D6D09 /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F291465F85A008D6D09 /* TSocketClient.m */; };
 		C1D52F3A1465F85A008D6D09 /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2C1465F85A008D6D09 /* TTransportException.m */; };
 		C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */; };
+		C74130C319EDC3E500A1E8CE /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B89C816C03A26007C8596 /* Social.framework */; };
+		C74130C419EDC3F100A1E8CE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7548CAB19963D05007A01CF /* libPods.a */; };
+		C74130C519EDC6EA00A1E8CE /* SDImageCache.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B3F14F1CA71005CE813 /* SDImageCache.h */; };
+		C74130C619EDC6EA00A1E8CE /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4014F1CA71005CE813 /* SDImageCache.m */; };
+		C74130C719EDC6EA00A1E8CE /* SDImageCacheDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4114F1CA71005CE813 /* SDImageCacheDelegate.h */; };
+		C74130C819EDC6EA00A1E8CE /* SDWebImageCompat.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4514F1CA71005CE813 /* SDWebImageCompat.h */; };
+		C74130C919EDC6EA00A1E8CE /* SDWebImageDecoder.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4614F1CA71005CE813 /* SDWebImageDecoder.h */; };
+		C74130CA19EDC6EA00A1E8CE /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4714F1CA71005CE813 /* SDWebImageDecoder.m */; };
+		C74130CB19EDC6EA00A1E8CE /* SDWebImageDownloader.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4814F1CA71005CE813 /* SDWebImageDownloader.h */; };
+		C74130CC19EDC6EA00A1E8CE /* SDWebImageDownloaderDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4A14F1CA71005CE813 /* SDWebImageDownloaderDelegate.h */; };
+		C74130CD19EDC6EA00A1E8CE /* SDWebImageManager.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4B14F1CA71005CE813 /* SDWebImageManager.h */; };
+		C74130CE19EDC6EA00A1E8CE /* SDWebImageManagerDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4D14F1CA71005CE813 /* SDWebImageManagerDelegate.h */; };
+		C74130CF19EDC6EA00A1E8CE /* SDWebImagePrefetcher.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4E14F1CA71005CE813 /* SDWebImagePrefetcher.h */; };
+		C74130D019EDC6EA00A1E8CE /* UIButton+WebCache.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B5014F1CA71005CE813 /* UIButton+WebCache.h */; };
+		C74130D119EDC6EA00A1E8CE /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B5114F1CA71005CE813 /* UIButton+WebCache.m */; };
+		C74130D219EDC6EA00A1E8CE /* UIImageView+WebCache.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B5214F1CA71005CE813 /* UIImageView+WebCache.h */; };
+		C74130D319EDC72D00A1E8CE /* ProcessListViewController.h in Sources */ = {isa = PBXBuildFile; fileRef = AB105EBB14EDCA57000DB145 /* ProcessListViewController.h */; };
+		C74130D419EDC72D00A1E8CE /* ProcessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */; };
+		C74130D519EDC72D00A1E8CE /* ProcessItemCell.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B6414F1CFA6005CE813 /* ProcessItemCell.h */; };
 		C7547E0919963590007A01CF /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0519963590007A01CF /* Default-Landscape@2x.png */; };
 		C7547E0D19963CCD007A01CF /* icon152.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0C19963CCD007A01CF /* icon152.png */; };
 		C754886619963D03007A01CF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0F19963CFD007A01CF /* .gitignore */; };
@@ -88,7 +102,6 @@
 		C754887319963D03007A01CF /* ActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2619963CFD007A01CF /* ActionViewController.m */; };
 		C754887619963D03007A01CF /* BugDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2C19963CFD007A01CF /* BugDetailViewController.m */; };
 		C754887A19963D03007A01CF /* CaratProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E3519963CFD007A01CF /* CaratProtocol.m */; };
-		C754887B19963D03007A01CF /* CaratProtocol.pb.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E3719963CFD007A01CF /* CaratProtocol.pb.m */; };
 		C754887D19963D03007A01CF /* ConsentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E3B19963CFD007A01CF /* ConsentViewController.m */; };
 		C754887E19963D03007A01CF /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E3D19963CFD007A01CF /* CopyLabel.m */; };
 		C754887F19963D03007A01CF /* CoreDataAppReport.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E3F19963CFD007A01CF /* CoreDataAppReport.m */; };
@@ -114,17 +127,7 @@
 		C754889B19963D04007A01CF /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547ECD19963CFD007A01CF /* SDWebImageDownloader.m */; };
 		C754889C19963D04007A01CF /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547ED019963CFD007A01CF /* SDWebImageManager.m */; };
 		C754889D19963D04007A01CF /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547ED319963CFD007A01CF /* SDWebImagePrefetcher.m */; };
-		C754889E19963D04007A01CF /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547ED519963CFD007A01CF /* UIButton+WebCache.m */; };
 		C754889F19963D04007A01CF /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547ED719963CFD007A01CF /* UIImageView+WebCache.m */; };
-		C75488A019963D04007A01CF /* FBConnect.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C7547EDD19963CFD007A01CF /* FBConnect.bundle */; };
-		C75488A119963D04007A01CF /* FBConnectGlobal.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EDF19963CFD007A01CF /* FBConnectGlobal.m */; };
-		C75488A219963D04007A01CF /* FBFeedDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EE119963CFD007A01CF /* FBFeedDialog.m */; };
-		C75488A319963D04007A01CF /* FBLoginButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EE319963CFD007A01CF /* FBLoginButton.m */; };
-		C75488A419963D04007A01CF /* FBPermissionDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EE519963CFD007A01CF /* FBPermissionDialog.m */; };
-		C75488A519963D04007A01CF /* FBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EE719963CFD007A01CF /* FBSession.m */; };
-		C75488A619963D04007A01CF /* FBStreamDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EE919963CFD007A01CF /* FBStreamDialog.m */; };
-		C75488A719963D04007A01CF /* FBXMLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EEB19963CFD007A01CF /* FBXMLHandler.m */; };
-		C75488A819963D04007A01CF /* SHKFBStreamDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EED19963CFD007A01CF /* SHKFBStreamDialog.m */; };
 		C75488A919963D04007A01CF /* SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547EF019963CFD007A01CF /* SVPullToRefresh.m */; };
 		C75488B019963D04007A01CF /* THTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F0719963CFD007A01CF /* THTTPClient.m */; };
 		C75488B819963D04007A01CF /* UIImageDoNotCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F1819963CFD007A01CF /* UIImageDoNotCache.m */; };
@@ -143,7 +146,6 @@
 		C75488CA19963D04007A01CF /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2B19963CFD007A01CF /* DetailView.xib */; };
 		C75488CC19963D04007A01CF /* energyratedist.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2D19963CFD007A01CF /* energyratedist.png */; };
 		C75488CD19963D04007A01CF /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2E19963CFD007A01CF /* Entitlements.plist */; };
-		C75488CE19963D04007A01CF /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7547F2F19963CFD007A01CF /* FacebookSDK.framework */; };
 		C75488CF19963D04007A01CF /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3019963CFD007A01CF /* icon114.png */; };
 		C75488D019963D04007A01CF /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3119963CFD007A01CF /* icon120.png */; };
 		C75488D119963D04007A01CF /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3219963CFD007A01CF /* icon144.png */; };
@@ -160,98 +162,11 @@
 		C75488E919963D04007A01CF /* memoryinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4B19963CFD007A01CF /* memoryinfo.html */; };
 		C75488EA19963D04007A01CF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4C19963CFD007A01CF /* Podfile */; };
 		C75488EB19963D04007A01CF /* Podfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4D19963CFD007A01CF /* Podfile.lock */; };
-		C75488EC19963D04007A01CF /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5219963CFD007A01CF /* AFHTTPRequestOperation.m */; };
-		C75488ED19963D04007A01CF /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5419963CFD007A01CF /* AFHTTPRequestOperationManager.m */; };
-		C75488EE19963D04007A01CF /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5619963CFD007A01CF /* AFHTTPSessionManager.m */; };
-		C75488EF19963D04007A01CF /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5919963CFD007A01CF /* AFNetworkReachabilityManager.m */; };
-		C75488F019963D04007A01CF /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5B19963CFD007A01CF /* AFSecurityPolicy.m */; };
-		C75488F119963D04007A01CF /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5D19963CFD007A01CF /* AFURLConnectionOperation.m */; };
-		C75488F219963D04007A01CF /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F5F19963CFD007A01CF /* AFURLRequestSerialization.m */; };
-		C75488F319963D04007A01CF /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F6119963CFD007A01CF /* AFURLResponseSerialization.m */; };
-		C75488F419963D04007A01CF /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F6319963CFD007A01CF /* AFURLSessionManager.m */; };
 		C75488F519963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C7547F6419963CFD007A01CF /* LICENSE */; };
 		C75488F619963D04007A01CF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C7547F6519963CFD007A01CF /* README.md */; };
-		C75488F719963D04007A01CF /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F6819963CFD007A01CF /* AFNetworkActivityIndicatorManager.m */; };
-		C75488F819963D04007A01CF /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F6A19963CFD007A01CF /* UIActivityIndicatorView+AFNetworking.m */; };
-		C75488F919963D04007A01CF /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F6C19963CFD007A01CF /* UIAlertView+AFNetworking.m */; };
-		C75488FA19963D04007A01CF /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F6E19963CFD007A01CF /* UIButton+AFNetworking.m */; };
-		C75488FB19963D04007A01CF /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F7019963CFD007A01CF /* UIImageView+AFNetworking.m */; };
-		C75488FC19963D04007A01CF /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F7319963CFD007A01CF /* UIProgressView+AFNetworking.m */; };
-		C75488FD19963D04007A01CF /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F7519963CFD007A01CF /* UIRefreshControl+AFNetworking.m */; };
-		C75488FE19963D04007A01CF /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547F7719963CFD007A01CF /* UIWebView+AFNetworking.m */; };
 		C75488FF19963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C754813719963CFE007A01CF /* LICENSE */; };
 		C754890119963D04007A01CF /* README.mdown in Resources */ = {isa = PBXBuildFile; fileRef = C754813919963CFE007A01CF /* README.mdown */; };
-		C754890219963D04007A01CF /* FBBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = C754813D19963CFE007A01CF /* FBBase64.m */; };
-		C754890319963D04007A01CF /* FBCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = C754814019963CFE007A01CF /* FBCrypto.m */; };
-		C754890419963D04007A01CF /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C754814219963CFE007A01CF /* Facebook.m */; };
-		C754890519963D04007A01CF /* FBAccessTokenData.m in Sources */ = {isa = PBXBuildFile; fileRef = C754814619963CFE007A01CF /* FBAccessTokenData.m */; };
-		C754890619963D04007A01CF /* FBAppBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = C754814819963CFE007A01CF /* FBAppBridge.m */; };
-		C754890719963D04007A01CF /* FBAppBridgeTypeToJSONConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754814A19963CFE007A01CF /* FBAppBridgeTypeToJSONConverter.m */; };
-		C754890819963D04007A01CF /* FBAppCall.m in Sources */ = {isa = PBXBuildFile; fileRef = C754814D19963CFE007A01CF /* FBAppCall.m */; };
-		C754890919963D04007A01CF /* FBAppEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815019963CFE007A01CF /* FBAppEvents.m */; };
-		C754890A19963D04007A01CF /* FBAppLinkData.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815319963CFE007A01CF /* FBAppLinkData.m */; };
-		C754890B19963D04007A01CF /* FBCacheDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815519963CFE007A01CF /* FBCacheDescriptor.m */; };
-		C754890C19963D04007A01CF /* FBCacheIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815719963CFE007A01CF /* FBCacheIndex.m */; };
-		C754890D19963D04007A01CF /* FBDataDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815A19963CFE007A01CF /* FBDataDiskCache.m */; };
-		C754890E19963D04007A01CF /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815C19963CFE007A01CF /* FBDialog.m */; };
-		C754890F19963D04007A01CF /* FBDialogClosePNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C754815E19963CFE007A01CF /* FBDialogClosePNG.m */; };
-		C754891119963D04007A01CF /* FBDialogsData.m in Sources */ = {isa = PBXBuildFile; fileRef = C754816419963CFE007A01CF /* FBDialogsData.m */; };
-		C754891219963D04007A01CF /* FBDialogsParams.m in Sources */ = {isa = PBXBuildFile; fileRef = C754816719963CFE007A01CF /* FBDialogsParams.m */; };
-		C754891319963D04007A01CF /* FBDynamicFrameworkLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C754816919963CFE007A01CF /* FBDynamicFrameworkLoader.m */; };
-		C754891419963D04007A01CF /* FBError.m in Sources */ = {isa = PBXBuildFile; fileRef = C754816B19963CFE007A01CF /* FBError.m */; };
-		C754891519963D04007A01CF /* FBErrorUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = C754816E19963CFE007A01CF /* FBErrorUtility.m */; };
-		C754891619963D04007A01CF /* FBFetchedAppSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C754817019963CFE007A01CF /* FBFetchedAppSettings.m */; };
-		C754891719963D04007A01CF /* FBFrictionlessRecipientCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C754817319963CFE007A01CF /* FBFrictionlessRecipientCache.m */; };
-		C754891819963D04007A01CF /* FBFrictionlessRequestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C754817519963CFE007A01CF /* FBFrictionlessRequestSettings.m */; };
-		C754891A19963D04007A01CF /* FBFriendPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754817A19963CFE007A01CF /* FBFriendPickerViewController.m */; };
-		C754891B19963D04007A01CF /* FBFriendPickerViewDefaultPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C754817C19963CFE007A01CF /* FBFriendPickerViewDefaultPNG.m */; };
-		C754891C19963D04007A01CF /* FBGraphObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C754817F19963CFE007A01CF /* FBGraphObject.m */; };
-		C754891D19963D04007A01CF /* FBGraphObjectPagingLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C754818119963CFE007A01CF /* FBGraphObjectPagingLoader.m */; };
-		C754891E19963D04007A01CF /* FBGraphObjectTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C754818319963CFE007A01CF /* FBGraphObjectTableCell.m */; };
-		C754892019963D04007A01CF /* FBGraphObjectTableSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = C754818719963CFE007A01CF /* FBGraphObjectTableSelection.m */; };
-		C754892119963D04007A01CF /* FBImageResourceLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C754818B19963CFE007A01CF /* FBImageResourceLoader.m */; };
-		C754892219963D04007A01CF /* FBInsights.m in Sources */ = {isa = PBXBuildFile; fileRef = C754818D19963CFE007A01CF /* FBInsights.m */; };
-		C754892419963D04007A01CF /* FBLoginDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = C754819119963CFE007A01CF /* FBLoginDialog.m */; };
-		C754892519963D04007A01CF /* FBLoginDialogParams.m in Sources */ = {isa = PBXBuildFile; fileRef = C754819319963CFE007A01CF /* FBLoginDialogParams.m */; };
-		C754892719963D04007A01CF /* FBLoginViewButtonPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C754819719963CFE007A01CF /* FBLoginViewButtonPNG.m */; };
-		C754892819963D04007A01CF /* FBLoginViewButtonPressedPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C754819919963CFE007A01CF /* FBLoginViewButtonPressedPNG.m */; };
-		C754892919963D04007A01CF /* FBNativeDialogs.m in Sources */ = {isa = PBXBuildFile; fileRef = C754819B19963CFE007A01CF /* FBNativeDialogs.m */; };
-		C754892A19963D04007A01CF /* FBOpenGraphActionShareDialogParams.m in Sources */ = {isa = PBXBuildFile; fileRef = C754819E19963CFE007A01CF /* FBOpenGraphActionShareDialogParams.m */; };
-		C754892B19963D04007A01CF /* FBPlacePickerCacheDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481A119963CFE007A01CF /* FBPlacePickerCacheDescriptor.m */; };
-		C754892C19963D04007A01CF /* FBPlacePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481A419963CFE007A01CF /* FBPlacePickerViewController.m */; };
-		C754892D19963D04007A01CF /* FBPlacePickerViewGenericPlacePNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481A619963CFE007A01CF /* FBPlacePickerViewGenericPlacePNG.m */; };
-		C754892E19963D04007A01CF /* FBProfilePictureView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481A819963CFE007A01CF /* FBProfilePictureView.m */; };
-		C754892F19963D04007A01CF /* FBProfilePictureViewBlankProfilePortraitPNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481AA19963CFE007A01CF /* FBProfilePictureViewBlankProfilePortraitPNG.m */; };
-		C754893019963D04007A01CF /* FBProfilePictureViewBlankProfileSquarePNG.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481AC19963CFE007A01CF /* FBProfilePictureViewBlankProfileSquarePNG.m */; };
-		C754893119963D04007A01CF /* FBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481AF19963CFE007A01CF /* FBRequest.m */; };
-		C754893319963D04007A01CF /* FBRequestConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481B419963CFE007A01CF /* FBRequestConnection.m */; };
-		C754893419963D04007A01CF /* FBRequestConnectionRetryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481B619963CFE007A01CF /* FBRequestConnectionRetryManager.m */; };
-		C754893519963D04007A01CF /* FBRequestHandlerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481B819963CFE007A01CF /* FBRequestHandlerFactory.m */; };
-		C754893619963D04007A01CF /* FBRequestMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481BA19963CFE007A01CF /* FBRequestMetadata.m */; };
-		C754893719963D04007A01CF /* FBSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481C019963CFE007A01CF /* FBSession.m */; };
-		C754893819963D04007A01CF /* FBSessionAppEventsState.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481C219963CFE007A01CF /* FBSessionAppEventsState.m */; };
-		C754893919963D04007A01CF /* FBSessionAppSwitchingLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481C419963CFE007A01CF /* FBSessionAppSwitchingLoginStategy.m */; };
-		C754893A19963D04007A01CF /* FBSessionAuthLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481C619963CFE007A01CF /* FBSessionAuthLogger.m */; };
-		C754893B19963D04007A01CF /* FBSessionFacebookAppNativeLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481C819963CFE007A01CF /* FBSessionFacebookAppNativeLoginStategy.m */; };
-		C754893C19963D04007A01CF /* FBSessionFacebookAppWebLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481CA19963CFE007A01CF /* FBSessionFacebookAppWebLoginStategy.m */; };
-		C754893D19963D04007A01CF /* FBSessionInlineWebViewLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481CC19963CFE007A01CF /* FBSessionInlineWebViewLoginStategy.m */; };
-		C754893E19963D04007A01CF /* FBSessionLoginStrategyParams.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481CF19963CFE007A01CF /* FBSessionLoginStrategyParams.m */; };
-		C754893F19963D04007A01CF /* FBSessionManualTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481D119963CFE007A01CF /* FBSessionManualTokenCachingStrategy.m */; };
-		C754894019963D04007A01CF /* FBSessionSafariLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481D319963CFE007A01CF /* FBSessionSafariLoginStategy.m */; };
-		C754894119963D04007A01CF /* FBSessionSystemLoginStategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481D519963CFE007A01CF /* FBSessionSystemLoginStategy.m */; };
-		C754894219963D04007A01CF /* FBSessionTokenCachingStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481D719963CFE007A01CF /* FBSessionTokenCachingStrategy.m */; };
-		C754894319963D04007A01CF /* FBSessionUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481D919963CFE007A01CF /* FBSessionUtility.m */; };
-		C754894519963D04007A01CF /* FBShareDialogParams.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481DE19963CFE007A01CF /* FBShareDialogParams.m */; };
-		C754894719963D04007A01CF /* FBTask.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481E319963CFE007A01CF /* FBTask.m */; };
-		C754894819963D04007A01CF /* FBTaskCompletionSource.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481E519963CFE007A01CF /* FBTaskCompletionSource.m */; };
-		C754894919963D04007A01CF /* FBTestSession.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481E819963CFE007A01CF /* FBTestSession.m */; };
-		C754894A19963D04007A01CF /* FBURLConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481EA19963CFE007A01CF /* FBURLConnection.m */; };
-		C754894B19963D04007A01CF /* FBUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481EC19963CFE007A01CF /* FBUserSettingsViewController.m */; };
 		C754894C19963D04007A01CF /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C75481ED19963CFE007A01CF /* FBUserSettingsViewResources.bundle */; };
-		C754894D19963D04007A01CF /* FBUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481EF19963CFE007A01CF /* FBUtility.m */; };
-		C754894E19963D04007A01CF /* FBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481F219963CFE007A01CF /* FBViewController.m */; };
-		C754894F19963D04007A01CF /* FBWebDialogs.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481F419963CFE007A01CF /* FBWebDialogs.m */; };
-		C754895019963D04007A01CF /* NSError+FBError.m in Sources */ = {isa = PBXBuildFile; fileRef = C75481F619963CFE007A01CF /* NSError+FBError.m */; };
 		C754895119963D04007A01CF /* Socialize.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C75483B619963CFF007A01CF /* Socialize.podspec */; };
 		C754895219963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C75483B819963CFF007A01CF /* LICENSE */; };
 		C754895319963D04007A01CF /* LoopyApiInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = C75483BB19963CFF007A01CF /* LoopyApiInfo.plist */; };
@@ -261,42 +176,13 @@
 		C754895719963D04007A01CF /* TwitterLogo43x43.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483C019963CFF007A01CF /* TwitterLogo43x43.png */; };
 		C754895819963D04007A01CF /* TwitterLogo60x60.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483C119963CFF007A01CF /* TwitterLogo60x60.png */; };
 		C754895919963D04007A01CF /* TwitterLogo76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483C219963CFF007A01CF /* TwitterLogo76x76.png */; };
-		C754895A19963D04007A01CF /* STAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483C519963CFF007A01CF /* STAPIClient.m */; };
-		C754895B19963D04007A01CF /* STApp.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483C719963CFF007A01CF /* STApp.m */; };
-		C754895C19963D04007A01CF /* STClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483C919963CFF007A01CF /* STClient.m */; };
-		C754896119963D04007A01CF /* STEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483D319963CFF007A01CF /* STEvent.m */; };
-		C754896219963D04007A01CF /* STFacebookActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483D519963CFF007A01CF /* STFacebookActivity.m */; };
-		C754896319963D04007A01CF /* STGeo.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483D719963CFF007A01CF /* STGeo.m */; };
-		C754896419963D04007A01CF /* STHeadlessIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483D919963CFF007A01CF /* STHeadlessIdentifier.m */; };
-		C754896519963D04007A01CF /* STIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483DB19963CFF007A01CF /* STIdentifier.m */; };
-		C754896619963D04007A01CF /* STIdentifierFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483DD19963CFF007A01CF /* STIdentifierFactory.m */; };
-		C754896819963D04007A01CF /* STItem.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483E119963CFF007A01CF /* STItem.m */; };
-		C754896919963D04007A01CF /* STJSONUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483E319963CFF007A01CF /* STJSONUtils.m */; };
-		C754896A19963D04007A01CF /* STLog.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483E519963CFF007A01CF /* STLog.m */; };
-		C754896B19963D04007A01CF /* STObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483E719963CFF007A01CF /* STObject.m */; };
-		C754896C19963D04007A01CF /* STOpen.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483E919963CFF007A01CF /* STOpen.m */; };
-		C754896E19963D04007A01CF /* STShare.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483ED19963CFF007A01CF /* STShare.m */; };
-		C754896F19963D04007A01CF /* STShareActivityUI.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483EF19963CFF007A01CF /* STShareActivityUI.m */; };
-		C754897019963D04007A01CF /* STSharelink.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483F119963CFF007A01CF /* STSharelink.m */; };
-		C754897119963D04007A01CF /* STShortlink.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483F319963CFF007A01CF /* STShortlink.m */; };
-		C754897219963D04007A01CF /* STTwitterActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483F519963CFF007A01CF /* STTwitterActivity.m */; };
 		C754897319963D04007A01CF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C75483F619963CFF007A01CF /* README.md */; };
 		C754897419963D04007A01CF /* Manifest.lock in Resources */ = {isa = PBXBuildFile; fileRef = C75483F719963CFF007A01CF /* Manifest.lock */; };
 		C754897519963D04007A01CF /* Pods-acknowledgements.markdown in Resources */ = {isa = PBXBuildFile; fileRef = C75483F819963CFF007A01CF /* Pods-acknowledgements.markdown */; };
 		C754897619963D04007A01CF /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C75483F919963CFF007A01CF /* Pods-acknowledgements.plist */; };
-		C754897719963D04007A01CF /* Pods-AFNetworking-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483FA19963CFF007A01CF /* Pods-AFNetworking-dummy.m */; };
-		C754897A19963D04007A01CF /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C75483FE19963CFF007A01CF /* Pods-dummy.m */; };
-		C754897B19963D04007A01CF /* Pods-Facebook-iOS-SDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C754840019963CFF007A01CF /* Pods-Facebook-iOS-SDK-dummy.m */; };
-		C754897E19963D04007A01CF /* Pods-Loopy-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C754840419963D00007A01CF /* Pods-Loopy-dummy.m */; };
 		C754898119963D04007A01CF /* Pods-resources.sh in Resources */ = {isa = PBXBuildFile; fileRef = C754840819963D00007A01CF /* Pods-resources.sh */; };
-		C754898219963D04007A01CF /* Pods-Socialize-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C754840919963D00007A01CF /* Pods-Socialize-dummy.m */; };
-		C754898519963D04007A01CF /* Pods-SZBlocksKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C754840D19963D00007A01CF /* Pods-SZBlocksKit-dummy.m */; };
-		C754898819963D04007A01CF /* Pods-SZJSONKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C754841119963D00007A01CF /* Pods-SZJSONKit-dummy.m */; };
-		C754898B19963D04007A01CF /* Pods-SZOAuthConsumer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C754841519963D00007A01CF /* Pods-SZOAuthConsumer-dummy.m */; };
 		C754898F19963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C754841E19963D00007A01CF /* LICENSE */; };
 		C754899019963D04007A01CF /* README in Resources */ = {isa = PBXBuildFile; fileRef = C754841F19963D00007A01CF /* README */; };
-		C754899119963D04007A01CF /* Facebook+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C754842219963D00007A01CF /* Facebook+Socialize.m */; };
-		C754899219963D04007A01CF /* NSOperationQueue+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C754842419963D00007A01CF /* NSOperationQueue+Socialize.m */; };
 		C754899319963D04007A01CF /* _SZCommentsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754842619963D00007A01CF /* _SZCommentsListViewController.xib */; };
 		C754899419963D04007A01CF /* _SZComposeCommentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754842719963D00007A01CF /* _SZComposeCommentViewController.xib */; };
 		C754899519963D04007A01CF /* _SZLinkDialogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754842819963D00007A01CF /* _SZLinkDialogViewController.xib */; };
@@ -583,250 +469,15 @@
 		C7548AAE19963D04007A01CF /* TwitterLogo43x43.png in Resources */ = {isa = PBXBuildFile; fileRef = C754854119963D01007A01CF /* TwitterLogo43x43.png */; };
 		C7548AAF19963D04007A01CF /* TwitterLogo60x60.png in Resources */ = {isa = PBXBuildFile; fileRef = C754854219963D01007A01CF /* TwitterLogo60x60.png */; };
 		C7548AB019963D04007A01CF /* TwitterLogo76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C754854319963D01007A01CF /* TwitterLogo76x76.png */; };
-		C7548AB119963D04007A01CF /* SDKHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C754854519963D01007A01CF /* SDKHelpers.m */; };
-		C7548AB219963D04007A01CF /* SZActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C754854719963D01007A01CF /* SZActionBar.m */; };
-		C7548AB319963D04007A01CF /* SZActionBarIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754854919963D01007A01CF /* SZActionBarIOS6.m */; };
-		C7548AB519963D04007A01CF /* SZActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C754854E19963D01007A01CF /* SZActionButton.m */; };
-		C7548AB619963D04007A01CF /* SZActionButtonIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754855119963D01007A01CF /* SZActionButtonIOS6.m */; };
-		C7548AB719963D04007A01CF /* SZActionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754855319963D01007A01CF /* SZActionUtils.m */; };
-		C7548ABA19963D04007A01CF /* SZCommentsListViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754855919963D01007A01CF /* SZCommentsListViewControllerIOS6.m */; };
-		C7548ABC19963D04007A01CF /* SZComposeCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754855D19963D01007A01CF /* SZComposeCommentViewController.m */; };
-		C7548ABD19963D04007A01CF /* SZComposeCommentViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754855F19963D01007A01CF /* SZComposeCommentViewControllerIOS6.m */; };
-		C7548ABE19963D04007A01CF /* SZDisplayUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856119963D01007A01CF /* SZDisplayUtils.m */; };
-		C7548ABF19963D04007A01CF /* SZEntityUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856319963D01007A01CF /* SZEntityUtils.m */; };
-		C7548AC019963D04007A01CF /* SZEventUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856519963D01007A01CF /* SZEventUtils.m */; };
-		C7548AC119963D04007A01CF /* SZFacebookUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856719963D01007A01CF /* SZFacebookUtils.m */; };
-		C7548AC219963D04007A01CF /* SZHorizontalContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856919963D01007A01CF /* SZHorizontalContainerView.m */; };
-		C7548AC319963D04007A01CF /* SZIdentifierUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856B19963D01007A01CF /* SZIdentifierUtils.m */; };
-		C7548AC419963D04007A01CF /* SZLikeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856D19963D01007A01CF /* SZLikeButton.m */; };
-		C7548AC519963D04007A01CF /* SZLikeButtonIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754856F19963D01007A01CF /* SZLikeButtonIOS6.m */; };
-		C7548AC619963D04007A01CF /* SZLikeUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857119963D01007A01CF /* SZLikeUtils.m */; };
-		C7548AC719963D04007A01CF /* SZLinkDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857319963D01007A01CF /* SZLinkDialogViewController.m */; };
-		C7548AC819963D04007A01CF /* SZLinkDialogViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857519963D01007A01CF /* SZLinkDialogViewControllerIOS6.m */; };
-		C7548AC919963D04007A01CF /* SZLocationUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857719963D01007A01CF /* SZLocationUtils.m */; };
-		C7548ACA19963D04007A01CF /* SZNotificationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857919963D01007A01CF /* SZNotificationHandler.m */; };
-		C7548ACB19963D04007A01CF /* SZOARequest+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857B19963D01007A01CF /* SZOARequest+Socialize.m */; };
-		C7548ACC19963D04007A01CF /* SZOARequest+Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857D19963D01007A01CF /* SZOARequest+Twitter.m */; };
-		C7548ACD19963D04007A01CF /* SZOARequest.m in Sources */ = {isa = PBXBuildFile; fileRef = C754857F19963D01007A01CF /* SZOARequest.m */; };
-		C7548ACE19963D04007A01CF /* SZOpenURLHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858119963D01007A01CF /* SZOpenURLHandler.m */; };
-		C7548ACF19963D04007A01CF /* SZPinterestEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858319963D01007A01CF /* SZPinterestEngine.m */; };
-		C7548AD019963D04007A01CF /* SZPinterestUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858519963D01007A01CF /* SZPinterestUtils.m */; };
-		C7548AD119963D04007A01CF /* SZSelectNetworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858719963D01007A01CF /* SZSelectNetworkViewController.m */; };
-		C7548AD219963D04007A01CF /* SZShareDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858919963D01007A01CF /* SZShareDialogViewController.m */; };
-		C7548AD319963D04007A01CF /* SZShareDialogViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858B19963D01007A01CF /* SZShareDialogViewControllerIOS6.m */; };
-		C7548AD419963D04007A01CF /* SZShareUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858D19963D01007A01CF /* SZShareUtils.m */; };
-		C7548AD519963D04007A01CF /* SZSmartAlertUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754858F19963D01007A01CF /* SZSmartAlertUtils.m */; };
-		C7548AD619963D04007A01CF /* SZStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859119963D01007A01CF /* SZStatusView.m */; };
-		C7548AD719963D04007A01CF /* SZSubscriptionUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859319963D01007A01CF /* SZSubscriptionUtils.m */; };
-		C7548AD819963D04007A01CF /* SZTwitterLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859519963D01007A01CF /* SZTwitterLinkViewController.m */; };
-		C7548AD919963D04007A01CF /* SZTwitterUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859719963D01007A01CF /* SZTwitterUtils.m */; };
-		C7548ADA19963D04007A01CF /* SZUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859919963D01007A01CF /* SZUserProfileViewController.m */; };
-		C7548ADC19963D04007A01CF /* SZUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859D19963D01007A01CF /* SZUserSettings.m */; };
-		C7548ADD19963D04007A01CF /* SZUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754859F19963D01007A01CF /* SZUserSettingsViewController.m */; };
-		C7548ADE19963D04007A01CF /* SZUserSettingsViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485A119963D01007A01CF /* SZUserSettingsViewControllerIOS6.m */; };
-		C7548ADF19963D04007A01CF /* SZUserUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485A319963D01007A01CF /* SZUserUtils.m */; };
-		C7548AE019963D04007A01CF /* SZViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485A519963D01007A01CF /* SZViewControllerWrapper.m */; };
-		C7548AE119963D04007A01CF /* SZViewUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485A719963D01007A01CF /* SZViewUtils.m */; };
-		C7548AE219963D04007A01CF /* SZWhatsAppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485A919963D01007A01CF /* SZWhatsAppUtils.m */; };
-		C7548AE319963D04007A01CF /* SZWindowDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485AB19963D01007A01CF /* SZWindowDisplay.m */; };
-		C7548AE419963D04007A01CF /* UIViewController+Display.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485AD19963D01007A01CF /* UIViewController+Display.m */; };
-		C7548AE519963D04007A01CF /* _Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485B019963D01007A01CF /* _Socialize.m */; };
-		C7548AE619963D04007A01CF /* _SZCommentsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485B319963D01007A01CF /* _SZCommentsListViewController.m */; };
-		C7548AE819963D04007A01CF /* _SZLinkDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485B719963D01007A01CF /* _SZLinkDialogViewController.m */; };
-		C7548AE919963D04007A01CF /* _SZLinkDialogViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485B919963D01007A01CF /* _SZLinkDialogViewControllerIOS6.m */; };
-		C7548AEA19963D04007A01CF /* _SZSelectNetworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485BB19963D01007A01CF /* _SZSelectNetworkViewController.m */; };
-		C7548AEB19963D04007A01CF /* _SZShareDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485BD19963D01007A01CF /* _SZShareDialogViewController.m */; };
-		C7548AEC19963D04007A01CF /* _SZTwitterLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485BF19963D01007A01CF /* _SZTwitterLinkViewController.m */; };
-		C7548AED19963D04007A01CF /* _SZUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485C119963D01007A01CF /* _SZUserProfileViewController.m */; };
-		C7548AEE19963D04007A01CF /* _SZUserProfileViewControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485C319963D01007A01CF /* _SZUserProfileViewControllerIOS6.m */; };
-		C7548AEF19963D04007A01CF /* _SZUserSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485C519963D01007A01CF /* _SZUserSettingsViewController.m */; };
-		C7548AF019963D04007A01CF /* CommentDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485C819963D01007A01CF /* CommentDetailsView.m */; };
-		C7548AF119963D04007A01CF /* CommentMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485CA19963D01007A01CF /* CommentMapView.m */; };
-		C7548AF219963D04007A01CF /* CommentsTableFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485CC19963D01007A01CF /* CommentsTableFooterView.m */; };
-		C7548AF419963D04007A01CF /* CommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485D019963D01007A01CF /* CommentsTableViewCell.m */; };
-		C7548AF619963D04007A01CF /* HtmlPageCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485D419963D01007A01CF /* HtmlPageCreator.m */; };
-		C7548AF719963D04007A01CF /* ImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485D619963D01007A01CF /* ImageLoader.m */; };
-		C7548AF819963D04007A01CF /* ImagesCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485D819963D01007A01CF /* ImagesCache.m */; };
-		C7548AF919963D04007A01CF /* DataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485DB19963D01007A01CF /* DataHelper.m */; };
-		C7548AFA19963D04007A01CF /* DebugUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485DD19963D01007A01CF /* DebugUtil.m */; };
-		C7548AFB19963D04007A01CF /* NSArray+AssociativeArray.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485DF19963D01007A01CF /* NSArray+AssociativeArray.m */; };
-		C7548AFC19963D04007A01CF /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485E119963D01007A01CF /* NSData+Base64.m */; };
-		C7548AFD19963D04007A01CF /* NSHTTPCookieStorage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485E319963D01007A01CF /* NSHTTPCookieStorage+Utilities.m */; };
-		C7548AFE19963D04007A01CF /* NSMutableArray+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485E519963D01007A01CF /* NSMutableArray+Socialize.m */; };
-		C7548AFF19963D04007A01CF /* NSString+QueryString.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485E719963D01007A01CF /* NSString+QueryString.m */; };
-		C7548B0019963D04007A01CF /* StringHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485E919963D01007A01CF /* StringHelper.m */; };
-		C7548B0119963D04007A01CF /* UIBarButtonItem+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485EB19963D01007A01CF /* UIBarButtonItem+Socialize.m */; };
-		C7548B0319963D04007A01CF /* UITableView+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485EF19963D01007A01CF /* UITableView+Socialize.m */; };
-		C7548B0419963D04007A01CF /* UserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485F119963D01007A01CF /* UserHelper.m */; };
-		C7548B0619963D04007A01CF /* NSDateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485F519963D01007A01CF /* NSDateAdditions.m */; };
-		C7548B0719963D04007A01CF /* NSError+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485F719963D01007A01CF /* NSError+Socialize.m */; };
-		C7548B0819963D04007A01CF /* NSNumber+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485F919963D01007A01CF /* NSNumber+Additions.m */; };
-		C7548B0919963D04007A01CF /* NSString+MD5Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485FB19963D01007A01CF /* NSString+MD5Addition.m */; };
-		C7548B0A19963D04007A01CF /* NSString+PlaceMark.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485FD19963D01007A01CF /* NSString+PlaceMark.m */; };
-		C7548B0B19963D04007A01CF /* NSString+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75485FF19963D01007A01CF /* NSString+Socialize.m */; };
-		C7548B0C19963D04007A01CF /* NSString+UrlSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = C754860119963D01007A01CF /* NSString+UrlSerialization.m */; };
-		C7548B0D19963D04007A01CF /* NSString+UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = C754860319963D01007A01CF /* NSString+UUID.m */; };
-		C7548B0E19963D04007A01CF /* SampleEntityLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = C754860619963D01007A01CF /* SampleEntityLoader.m */; };
-		C7548B0F19963D04007A01CF /* SocializeActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = C754860B19963D01007A01CF /* SocializeActionBar.m */; };
-		C7548B1019963D04007A01CF /* SocializeActionView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754860E19963D01007A01CF /* SocializeActionView.m */; };
-		C7548B1119963D04007A01CF /* SocializeActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861019963D01007A01CF /* SocializeActivity.m */; };
-		C7548B1219963D04007A01CF /* SocializeActivityDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861219963D01007A01CF /* SocializeActivityDetailsView.m */; };
-		C7548B1319963D04007A01CF /* SocializeActivityDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861419963D01007A01CF /* SocializeActivityDetailsViewController.m */; };
-		C7548B1419963D04007A01CF /* SocializeActivityDetailsViewIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861719963D01007A01CF /* SocializeActivityDetailsViewIOS6.m */; };
-		C7548B1519963D04007A01CF /* SocializeActivityJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861919963D01007A01CF /* SocializeActivityJSONFormatter.m */; };
-		C7548B1719963D04007A01CF /* SocializeActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861D19963D01007A01CF /* SocializeActivityTableViewCell.m */; };
-		C7548B1819963D04007A01CF /* SocializeActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754861F19963D01007A01CF /* SocializeActivityViewController.m */; };
-		C7548B1919963D04007A01CF /* SocializeApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = C754862119963D01007A01CF /* SocializeApplication.m */; };
-		C7548B1A19963D04007A01CF /* SocializeApplicationJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754862319963D01007A01CF /* SocializeApplicationJSONFormatter.m */; };
-		C7548B1B19963D04007A01CF /* SocializeAuthenticateService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754862519963D01007A01CF /* SocializeAuthenticateService.m */; };
-		C7548B1C19963D04007A01CF /* SocializeAuthInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C754862719963D01007A01CF /* SocializeAuthInfoTableViewCell.m */; };
-		C7548B1F19963D04007A01CF /* SocializeBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754862E19963D01007A01CF /* SocializeBubbleView.m */; };
-		C7548B2019963D04007A01CF /* SocializeComment.m in Sources */ = {isa = PBXBuildFile; fileRef = C754863019963D01007A01CF /* SocializeComment.m */; };
-		C7548B2119963D04007A01CF /* SocializeCommentDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754863219963D01007A01CF /* SocializeCommentDetailsViewController.m */; };
-		C7548B2219963D04007A01CF /* SocializeCommentJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754863419963D01007A01CF /* SocializeCommentJSONFormatter.m */; };
-		C7548B2319963D04007A01CF /* SocializeCommentsService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754863619963D01007A01CF /* SocializeCommentsService.m */; };
-		C7548B2419963D04007A01CF /* SocializeComposeMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754863919963D01007A01CF /* SocializeComposeMessageViewController.m */; };
-		C7548B2619963D04007A01CF /* SocializeDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C754863D19963D01007A01CF /* SocializeDataFetcher.m */; };
-		C7548B2A19963D04007A01CF /* SocializeDeviceTokenService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754864519963D01007A01CF /* SocializeDeviceTokenService.m */; };
-		C7548B2B19963D04007A01CF /* SocializeDummyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754864719963D01007A01CF /* SocializeDummyViewController.m */; };
-		C7548B2C19963D04007A01CF /* SocializeDynamicTest.m in Sources */ = {isa = PBXBuildFile; fileRef = C754864919963D01007A01CF /* SocializeDynamicTest.m */; };
-		C7548B2D19963D04007A01CF /* SocializeEditValueTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C754864B19963D01007A01CF /* SocializeEditValueTableViewCell.m */; };
-		C7548B2E19963D04007A01CF /* SocializeEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = C754864D19963D02007A01CF /* SocializeEntity.m */; };
-		C7548B2F19963D04007A01CF /* SocializeEntityJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754864F19963D02007A01CF /* SocializeEntityJSONFormatter.m */; };
-		C7548B3019963D04007A01CF /* SocializeEntityService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865119963D02007A01CF /* SocializeEntityService.m */; };
-		C7548B3119963D04007A01CF /* SocializeError.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865319963D02007A01CF /* SocializeError.m */; };
-		C7548B3219963D04007A01CF /* SocializeErrorDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865519963D02007A01CF /* SocializeErrorDefinitions.m */; };
-		C7548B3319963D04007A01CF /* SocializeErrorFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865719963D02007A01CF /* SocializeErrorFormatter.m */; };
-		C7548B3419963D04007A01CF /* SocializeEventService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865919963D02007A01CF /* SocializeEventService.m */; };
-		C7548B3519963D04007A01CF /* SocializeFacebookAuthHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865B19963D02007A01CF /* SocializeFacebookAuthHandler.m */; };
-		C7548B3619963D04007A01CF /* SocializeFacebookInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865D19963D02007A01CF /* SocializeFacebookInterface.m */; };
-		C7548B3719963D04007A01CF /* SocializeFullUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C754865F19963D02007A01CF /* SocializeFullUser.m */; };
-		C7548B3919963D04007A01CF /* SocializeGeocoderAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866319963D02007A01CF /* SocializeGeocoderAdapter.m */; };
-		C7548B3A19963D04007A01CF /* SocializeKeyboardListener.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866519963D02007A01CF /* SocializeKeyboardListener.m */; };
-		C7548B3B19963D04007A01CF /* SocializeLike.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866719963D02007A01CF /* SocializeLike.m */; };
-		C7548B3C19963D04007A01CF /* SocializeLikeJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866919963D02007A01CF /* SocializeLikeJSONFormatter.m */; };
-		C7548B3D19963D04007A01CF /* SocializeLikeService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866B19963D02007A01CF /* SocializeLikeService.m */; };
-		C7548B3E19963D04007A01CF /* SocializeListFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866D19963D02007A01CF /* SocializeListFormatter.m */; };
-		C7548B3F19963D04007A01CF /* SocializeLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754866F19963D02007A01CF /* SocializeLoadingView.m */; };
-		C7548B4019963D04007A01CF /* SocializeLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867119963D02007A01CF /* SocializeLocationManager.m */; };
-		C7548B4119963D04007A01CF /* SocializeNotificationToggleBubbleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867319963D02007A01CF /* SocializeNotificationToggleBubbleContentView.m */; };
-		C7548B4219963D04007A01CF /* SocializeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867519963D02007A01CF /* SocializeObject.m */; };
-		C7548B4319963D04007A01CF /* SocializeObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867719963D02007A01CF /* SocializeObjectFactory.m */; };
-		C7548B4419963D04007A01CF /* SocializeObjectFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867919963D02007A01CF /* SocializeObjectFormatter.m */; };
-		C7548B4519963D04007A01CF /* SocializeObjectJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867B19963D02007A01CF /* SocializeObjectJSONFormatter.m */; };
-		C7548B4619963D04007A01CF /* SocializePOOCObjectFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C754867E19963D02007A01CF /* SocializePOOCObjectFactory.m */; };
-		C7548B4719963D04007A01CF /* SocializeProfileEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C754868219963D02007A01CF /* SocializeProfileEditTableViewCell.m */; };
-		C7548B4819963D04007A01CF /* SocializeProfileEditTableViewImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C754868419963D02007A01CF /* SocializeProfileEditTableViewImageCell.m */; };
-		C7548B4A19963D04007A01CF /* SocializeRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = C754868819963D02007A01CF /* SocializeRequest.m */; };
-		C7548B4E19963D04007A01CF /* SocializeShareJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869119963D02007A01CF /* SocializeShareJSONFormatter.m */; };
-		C7548B4F19963D04007A01CF /* SocializeShareService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869319963D02007A01CF /* SocializeShareService.m */; };
-		C7548B5019963D04007A01CF /* SocializeSubscription.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869519963D02007A01CF /* SocializeSubscription.m */; };
-		C7548B5219963D04007A01CF /* SocializeSubscriptionService.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869919963D02007A01CF /* SocializeSubscriptionService.m */; };
-		C7548B5319963D04007A01CF /* SocializeTableBGInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869B19963D02007A01CF /* SocializeTableBGInfoView.m */; };
-		C7548B5419963D04007A01CF /* SocializeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869D19963D02007A01CF /* SocializeTableViewController.m */; };
-		C7548B5519963D04007A01CF /* SocializeThirdParty.m in Sources */ = {isa = PBXBuildFile; fileRef = C754869F19963D02007A01CF /* SocializeThirdParty.m */; };
-		C7548B5619963D04007A01CF /* SocializeThirdPartyFacebook.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486A119963D02007A01CF /* SocializeThirdPartyFacebook.m */; };
-		C7548B5719963D04007A01CF /* SocializeThirdPartyTwitter.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486A319963D02007A01CF /* SocializeThirdPartyTwitter.m */; };
-		C7548B5819963D04007A01CF /* SocializeUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486A519963D02007A01CF /* SocializeUser.m */; };
-		C7548B5919963D04007A01CF /* SocializeUserJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486A719963D02007A01CF /* SocializeUserJSONFormatter.m */; };
-		C7548B5A19963D04007A01CF /* SocializeUserService.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486A919963D02007A01CF /* SocializeUserService.m */; };
 		C7548B5B19963D04007A01CF /* SocializeVersion.h.in in Resources */ = {isa = PBXBuildFile; fileRef = C75486AB19963D02007A01CF /* SocializeVersion.h.in */; };
-		C7548B5C19963D04007A01CF /* SocializeVerticalLayoutContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486AD19963D02007A01CF /* SocializeVerticalLayoutContainerView.m */; };
-		C7548B5E19963D04007A01CF /* SocializeViewJSONFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486B119963D02007A01CF /* SocializeViewJSONFormatter.m */; };
-		C7548B5F19963D04007A01CF /* SocializeViewService.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486B319963D02007A01CF /* SocializeViewService.m */; };
-		C7548B6019963D04007A01CF /* SZActivityOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486B619963D02007A01CF /* SZActivityOptions.m */; };
-		C7548B6219963D04007A01CF /* SZCommentOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486BA19963D02007A01CF /* SZCommentOptions.m */; };
-		C7548B6319963D04007A01CF /* SZEmailShareData.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486BE19963D02007A01CF /* SZEmailShareData.m */; };
-		C7548B6419963D04007A01CF /* SZFacebookLinkOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486C019963D02007A01CF /* SZFacebookLinkOptions.m */; };
-		C7548B6519963D04007A01CF /* SZLikeOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486C219963D02007A01CF /* SZLikeOptions.m */; };
-		C7548B6619963D04007A01CF /* SZLinkDialogView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486C419963D02007A01CF /* SZLinkDialogView.m */; };
-		C7548B6719963D04007A01CF /* SZNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486C619963D02007A01CF /* SZNavigationController.m */; };
-		C7548B6819963D04007A01CF /* SZNavigationControllerIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486C819963D02007A01CF /* SZNavigationControllerIOS6.m */; };
-		C7548B6919963D04007A01CF /* SZNetworkImageProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486CA19963D02007A01CF /* SZNetworkImageProvider.m */; };
-		C7548B6B19963D04007A01CF /* SZSessionTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486CE19963D02007A01CF /* SZSessionTracker.m */; };
-		C7548B6C19963D04007A01CF /* SZShareDialogView.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486D019963D02007A01CF /* SZShareDialogView.m */; };
-		C7548B6E19963D04007A01CF /* SZSMSShareData.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486D419963D02007A01CF /* SZSMSShareData.m */; };
-		C7548B6F19963D04007A01CF /* SZSocialNetworkPostData.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486D619963D02007A01CF /* SZSocialNetworkPostData.m */; };
-		C7548B7019963D04007A01CF /* UIButton+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486D819963D02007A01CF /* UIButton+Socialize.m */; };
-		C7548B7119963D04007A01CF /* UIButton+SocializeIOS6.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486DA19963D02007A01CF /* UIButton+SocializeIOS6.m */; };
-		C7548B7219963D04007A01CF /* UIColor+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486DC19963D02007A01CF /* UIColor+Socialize.m */; };
-		C7548B7319963D04007A01CF /* UIDevice+VersionCheck.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486DE19963D02007A01CF /* UIDevice+VersionCheck.m */; };
-		C7548B7419963D04007A01CF /* UIImage+Network.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486E019963D02007A01CF /* UIImage+Network.m */; };
-		C7548B7519963D04007A01CF /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486E219963D02007A01CF /* UIImage+Resize.m */; };
-		C7548B7619963D04007A01CF /* UILabel+FormatedText.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486E419963D02007A01CF /* UILabel+FormatedText.m */; };
-		C7548B7719963D04007A01CF /* UILabel-Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486E619963D02007A01CF /* UILabel-Additions.m */; };
-		C7548B7819963D04007A01CF /* UINavigationBarBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486E819963D02007A01CF /* UINavigationBarBackground.m */; };
-		C7548B7919963D04007A01CF /* UINavigationController+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486EA19963D02007A01CF /* UINavigationController+Socialize.m */; };
-		C7548B7A19963D04007A01CF /* UIView+Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486EC19963D02007A01CF /* UIView+Layout.m */; };
-		C7548B7B19963D04007A01CF /* UIViewController+Socialize.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486EE19963D02007A01CF /* UIViewController+Socialize.m */; };
-		C7548B7C19963D04007A01CF /* URLDownload.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486F019963D02007A01CF /* URLDownload.m */; };
-		C7548B7D19963D04007A01CF /* URLDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486F219963D02007A01CF /* URLDownloadOperation.m */; };
-		C7548B7E19963D04007A01CF /* NSArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486FB19963D02007A01CF /* NSArray+BlocksKit.m */; };
-		C7548B7F19963D04007A01CF /* NSDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486FD19963D02007A01CF /* NSDictionary+BlocksKit.m */; };
-		C7548B8019963D04007A01CF /* NSIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C75486FF19963D02007A01CF /* NSIndexSet+BlocksKit.m */; };
-		C7548B8119963D04007A01CF /* NSInvocation+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870119963D02007A01CF /* NSInvocation+BlocksKit.m */; };
-		C7548B8219963D04007A01CF /* NSMutableArray+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870319963D02007A01CF /* NSMutableArray+BlocksKit.m */; };
-		C7548B8319963D04007A01CF /* NSMutableDictionary+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870519963D02007A01CF /* NSMutableDictionary+BlocksKit.m */; };
-		C7548B8419963D04007A01CF /* NSMutableIndexSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870719963D02007A01CF /* NSMutableIndexSet+BlocksKit.m */; };
-		C7548B8519963D04007A01CF /* NSMutableOrderedSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870919963D02007A01CF /* NSMutableOrderedSet+BlocksKit.m */; };
-		C7548B8619963D04007A01CF /* NSMutableSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870B19963D02007A01CF /* NSMutableSet+BlocksKit.m */; };
-		C7548B8719963D04007A01CF /* NSObject+BKAssociatedObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870D19963D02007A01CF /* NSObject+BKAssociatedObjects.m */; };
-		C7548B8819963D04007A01CF /* NSObject+BKBlockExecution.m in Sources */ = {isa = PBXBuildFile; fileRef = C754870F19963D02007A01CF /* NSObject+BKBlockExecution.m */; };
-		C7548B8919963D04007A01CF /* NSObject+BKBlockObservation.m in Sources */ = {isa = PBXBuildFile; fileRef = C754871119963D02007A01CF /* NSObject+BKBlockObservation.m */; };
-		C7548B8A19963D04007A01CF /* NSOrderedSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754871319963D02007A01CF /* NSOrderedSet+BlocksKit.m */; };
-		C7548B8B19963D04007A01CF /* NSSet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754871519963D02007A01CF /* NSSet+BlocksKit.m */; };
-		C7548B8C19963D04007A01CF /* NSTimer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754871719963D02007A01CF /* NSTimer+BlocksKit.m */; };
-		C7548B8D19963D04007A01CF /* A2BlockInvocation.m in Sources */ = {isa = PBXBuildFile; fileRef = C754871A19963D02007A01CF /* A2BlockInvocation.m */; };
-		C7548B8E19963D04007A01CF /* A2DynamicDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C754871C19963D02007A01CF /* A2DynamicDelegate.m */; };
-		C7548B8F19963D04007A01CF /* NSCache+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872019963D02007A01CF /* NSCache+BlocksKit.m */; };
-		C7548B9019963D04007A01CF /* NSURLConnection+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872219963D02007A01CF /* NSURLConnection+BlocksKit.m */; };
-		C7548B9119963D04007A01CF /* NSObject+A2BlockDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872419963D02007A01CF /* NSObject+A2BlockDelegate.m */; };
-		C7548B9219963D04007A01CF /* NSObject+A2DynamicDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872619963D02007A01CF /* NSObject+A2DynamicDelegate.m */; };
-		C7548B9319963D04007A01CF /* MFMailComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872919963D02007A01CF /* MFMailComposeViewController+BlocksKit.m */; };
-		C7548B9419963D04007A01CF /* MFMessageComposeViewController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872B19963D02007A01CF /* MFMessageComposeViewController+BlocksKit.m */; };
-		C7548B9519963D04007A01CF /* UIActionSheet+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754872E19963D02007A01CF /* UIActionSheet+BlocksKit.m */; };
-		C7548B9619963D04007A01CF /* UIAlertView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873019963D02007A01CF /* UIAlertView+BlocksKit.m */; };
-		C7548B9719963D04007A01CF /* UIBarButtonItem+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873219963D02007A01CF /* UIBarButtonItem+BlocksKit.m */; };
-		C7548B9819963D04007A01CF /* UIControl+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873419963D02007A01CF /* UIControl+BlocksKit.m */; };
-		C7548B9919963D04007A01CF /* UIGestureRecognizer+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873619963D02007A01CF /* UIGestureRecognizer+BlocksKit.m */; };
-		C7548B9A19963D04007A01CF /* UIPopoverController+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873819963D02007A01CF /* UIPopoverController+BlocksKit.m */; };
-		C7548B9B19963D04007A01CF /* UITextField+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873A19963D02007A01CF /* UITextField+BlocksKit.m */; };
-		C7548B9C19963D04007A01CF /* UIView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873C19963D02007A01CF /* UIView+BlocksKit.m */; };
-		C7548B9D19963D04007A01CF /* UIWebView+BlocksKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754873E19963D02007A01CF /* UIWebView+BlocksKit.m */; };
-		C7548B9E19963D04007A01CF /* ffi.c in Sources */ = {isa = PBXBuildFile; fileRef = C754874719963D02007A01CF /* ffi.c */; };
-		C7548B9F19963D04007A01CF /* sysv.S in Sources */ = {isa = PBXBuildFile; fileRef = C754874819963D02007A01CF /* sysv.S */; };
-		C7548BA019963D04007A01CF /* ffi.c in Sources */ = {isa = PBXBuildFile; fileRef = C754874A19963D02007A01CF /* ffi.c */; };
-		C7548BA119963D04007A01CF /* sysv.S in Sources */ = {isa = PBXBuildFile; fileRef = C754874B19963D02007A01CF /* sysv.S */; };
-		C7548BA219963D04007A01CF /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = C754874C19963D02007A01CF /* debug.c */; };
-		C7548BA319963D04007A01CF /* prep_cif.c in Sources */ = {isa = PBXBuildFile; fileRef = C754874D19963D02007A01CF /* prep_cif.c */; };
-		C7548BA419963D04007A01CF /* types.c in Sources */ = {isa = PBXBuildFile; fileRef = C754874E19963D02007A01CF /* types.c */; };
-		C7548BA519963D04007A01CF /* darwin.S in Sources */ = {isa = PBXBuildFile; fileRef = C754875019963D02007A01CF /* darwin.S */; };
-		C7548BA619963D04007A01CF /* darwin64.S in Sources */ = {isa = PBXBuildFile; fileRef = C754875119963D02007A01CF /* darwin64.S */; };
-		C7548BA719963D04007A01CF /* ffi.c in Sources */ = {isa = PBXBuildFile; fileRef = C754875219963D02007A01CF /* ffi.c */; };
-		C7548BA819963D04007A01CF /* ffi64.c in Sources */ = {isa = PBXBuildFile; fileRef = C754875319963D02007A01CF /* ffi64.c */; };
 		C7548BA919963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C754875419963D02007A01CF /* LICENSE */; };
 		C7548BAA19963D04007A01CF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C754875519963D02007A01CF /* README.md */; };
-		C7548BAB19963D04007A01CF /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = C754875919963D02007A01CF /* JSONKit.m */; };
 		C7548BAC19963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C754875A19963D02007A01CF /* LICENSE */; };
 		C7548BAD19963D04007A01CF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C754875B19963D02007A01CF /* README.md */; };
-		C7548BAE19963D04007A01CF /* Base64Transcoder.c in Sources */ = {isa = PBXBuildFile; fileRef = C754875E19963D02007A01CF /* Base64Transcoder.c */; };
 		C7548BAF19963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C754876019963D02007A01CF /* LICENSE */; };
-		C7548BB019963D04007A01CF /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876219963D02007A01CF /* NSMutableURLRequest+Parameters.m */; };
-		C7548BB119963D04007A01CF /* NSString+URLEncoding.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876419963D02007A01CF /* NSString+URLEncoding.m */; };
-		C7548BB219963D04007A01CF /* NSURL+Base.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876619963D02007A01CF /* NSURL+Base.m */; };
-		C7548BB319963D04007A01CF /* OAAsynchronousDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876819963D02007A01CF /* OAAsynchronousDataFetcher.m */; };
-		C7548BB419963D04007A01CF /* OAConsumer.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876A19963D02007A01CF /* OAConsumer.m */; };
-		C7548BB519963D04007A01CF /* OADataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876C19963D02007A01CF /* OADataFetcher.m */; };
-		C7548BB619963D04007A01CF /* OAHMAC_SHA1SignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C754876E19963D02007A01CF /* OAHMAC_SHA1SignatureProvider.m */; };
-		C7548BB719963D04007A01CF /* OAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = C754877019963D02007A01CF /* OAMutableURLRequest.m */; };
-		C7548BB819963D04007A01CF /* OAPlaintextSignatureProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = C754877219963D02007A01CF /* OAPlaintextSignatureProvider.m */; };
-		C7548BB919963D04007A01CF /* OARequestParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = C754877419963D02007A01CF /* OARequestParameter.m */; };
-		C7548BBA19963D04007A01CF /* OAServiceTicket.m in Sources */ = {isa = PBXBuildFile; fileRef = C754877619963D02007A01CF /* OAServiceTicket.m */; };
-		C7548BBB19963D04007A01CF /* OAToken.m in Sources */ = {isa = PBXBuildFile; fileRef = C754877919963D02007A01CF /* OAToken.m */; };
 		C7548BBC19963D04007A01CF /* ProcessItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754877D19963D02007A01CF /* ProcessItemCell.xib */; };
 		C7548BBD19963D04007A01CF /* ProcessListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754877E19963D02007A01CF /* ProcessListView.xib */; };
 		C7548BBF19963D04007A01CF /* procmanager2.png in Resources */ = {isa = PBXBuildFile; fileRef = C754878019963D03007A01CF /* procmanager2.png */; };
-		C7548C9E19963D04007A01CF /* Socialize.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C754886119963D03007A01CF /* Socialize.framework */; };
 		C7548C9F19963D04007A01CF /* UIDeviceHardware.m in Sources */ = {isa = PBXBuildFile; fileRef = C754886319963D03007A01CF /* UIDeviceHardware.m */; };
 		C7548CC019963ED0007A01CF /* Icon-40.png in Resources */ = {isa = PBXBuildFile; fileRef = C7548CBA19963ED0007A01CF /* Icon-40.png */; };
 		C7548CC119963ED0007A01CF /* Icon-40@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7548CBB19963ED0007A01CF /* Icon-40@2x.png */; };
@@ -1068,7 +719,7 @@
 		C14F5C32145BD54800087F74 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		C14F5C34145BDA9900087F74 /* AsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsyncUdpSocket.h; sourceTree = "<group>"; };
 		C14F5C35145BDA9900087F74 /* AsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsyncUdpSocket.m; sourceTree = "<group>"; };
-		C18B00E414EEF3EC008ED60F /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
+		C18B00E414EEF3EC008ED60F /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataManager.m; path = ../CoreDataManager.m; sourceTree = "<group>"; };
 		C18B00E514EEF3EC008ED60F /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		C18E106D1466591A0028095B /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		C18E107114665E230028095B /* Carat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Carat.xcdatamodel; sourceTree = "<group>"; };
@@ -1312,23 +963,6 @@
 		C7547ED519963CFD007A01CF /* UIButton+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+WebCache.m"; sourceTree = "<group>"; };
 		C7547ED619963CFD007A01CF /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		C7547ED719963CFD007A01CF /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
-		C7547EDD19963CFD007A01CF /* FBConnect.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBConnect.bundle; sourceTree = "<group>"; };
-		C7547EDE19963CFD007A01CF /* FBConnectGlobal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnectGlobal.h; sourceTree = "<group>"; };
-		C7547EDF19963CFD007A01CF /* FBConnectGlobal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBConnectGlobal.m; sourceTree = "<group>"; };
-		C7547EE019963CFD007A01CF /* FBFeedDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBFeedDialog.h; sourceTree = "<group>"; };
-		C7547EE119963CFD007A01CF /* FBFeedDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBFeedDialog.m; sourceTree = "<group>"; };
-		C7547EE219963CFD007A01CF /* FBLoginButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBLoginButton.h; sourceTree = "<group>"; };
-		C7547EE319963CFD007A01CF /* FBLoginButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBLoginButton.m; sourceTree = "<group>"; };
-		C7547EE419963CFD007A01CF /* FBPermissionDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBPermissionDialog.h; sourceTree = "<group>"; };
-		C7547EE519963CFD007A01CF /* FBPermissionDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBPermissionDialog.m; sourceTree = "<group>"; };
-		C7547EE619963CFD007A01CF /* FBSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBSession.h; sourceTree = "<group>"; };
-		C7547EE719963CFD007A01CF /* FBSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBSession.m; sourceTree = "<group>"; };
-		C7547EE819963CFD007A01CF /* FBStreamDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBStreamDialog.h; sourceTree = "<group>"; };
-		C7547EE919963CFD007A01CF /* FBStreamDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBStreamDialog.m; sourceTree = "<group>"; };
-		C7547EEA19963CFD007A01CF /* FBXMLHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBXMLHandler.h; sourceTree = "<group>"; };
-		C7547EEB19963CFD007A01CF /* FBXMLHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBXMLHandler.m; sourceTree = "<group>"; };
-		C7547EEC19963CFD007A01CF /* SHKFBStreamDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFBStreamDialog.h; sourceTree = "<group>"; };
-		C7547EED19963CFD007A01CF /* SHKFBStreamDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFBStreamDialog.m; sourceTree = "<group>"; };
 		C7547EEF19963CFD007A01CF /* SVPullToRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVPullToRefresh.h; sourceTree = "<group>"; };
 		C7547EF019963CFD007A01CF /* SVPullToRefresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVPullToRefresh.m; sourceTree = "<group>"; };
 		C7547EF319963CFD007A01CF /* TBinaryProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBinaryProtocol.h; sourceTree = "<group>"; };
@@ -3704,9 +3338,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C74130C419EDC3F100A1E8CE /* libPods.a in Frameworks */,
+				C74130C319EDC3E500A1E8CE /* Social.framework in Frameworks */,
 				ABAAA9FB161F7A0400504A9E /* MapKit.framework in Frameworks */,
-				C7548C9E19963D04007A01CF /* Socialize.framework in Frameworks */,
-				C75488CE19963D04007A01CF /* FacebookSDK.framework in Frameworks */,
 				ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */,
 				C75488E619963D04007A01CF /* libFlurry_5.0.0.a in Frameworks */,
 				AB9B57F3148EC51C004F92F2 /* libCorePlot-CocoaTouch.a in Frameworks */,
@@ -3719,10 +3353,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */,
 				C14F5C33145BD54800087F74 /* CFNetwork.framework in Frameworks */,
-				AB3B89C916C03A26007C8596 /* Social.framework in Frameworks */,
 				AB8121E316C04F5B005FBE96 /* libsqlite3.0.dylib in Frameworks */,
 				AB8121E116C04EA2005FBE96 /* Accounts.framework in Frameworks */,
-				62101CACD88F4DE095BA58DA /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3734,7 +3366,6 @@
 			children = (
 				C70C03CF194E3F30008C8B01 /* Flurry */,
 				C12F3A8014F07D01007504BA /* SDWebImage */,
-				C18B00E414EEF3EC008ED60F /* CoreDataManager.m */,
 				C18B00E514EEF3EC008ED60F /* CoreDataManager.h */,
 				AB41CE0A144F572D0090CC09 /* iPhone */,
 				AB41CE0C144F574A0090CC09 /* iPad */,
@@ -4120,6 +3751,7 @@
 		C70C03CF194E3F30008C8B01 /* Flurry */ = {
 			isa = PBXGroup;
 			children = (
+				C18B00E414EEF3EC008ED60F /* CoreDataManager.m */,
 				C70C03D0194E3F30008C8B01 /* Flurry.h */,
 			);
 			path = Flurry;
@@ -4288,7 +3920,6 @@
 				C7547EC319963CFD007A01CF /* ReportViewController.h */,
 				C7547EC419963CFD007A01CF /* ReportViewController.m */,
 				C7547EC519963CFD007A01CF /* SDWebImage */,
-				C7547ED819963CFD007A01CF /* ShareKit */,
 				C7547EEE19963CFD007A01CF /* SVPullToRefresh */,
 				C7547EF119963CFD007A01CF /* Thrift */,
 				C7547F1519963CFD007A01CF /* UIDeviceProc.h */,
@@ -4427,62 +4058,6 @@
 				C7547ED719963CFD007A01CF /* UIImageView+WebCache.m */,
 			);
 			path = SDWebImage;
-			sourceTree = "<group>";
-		};
-		C7547ED819963CFD007A01CF /* ShareKit */ = {
-			isa = PBXGroup;
-			children = (
-				C7547ED919963CFD007A01CF /* Sharers */,
-			);
-			path = ShareKit;
-			sourceTree = "<group>";
-		};
-		C7547ED919963CFD007A01CF /* Sharers */ = {
-			isa = PBXGroup;
-			children = (
-				C7547EDA19963CFD007A01CF /* Services */,
-			);
-			path = Sharers;
-			sourceTree = "<group>";
-		};
-		C7547EDA19963CFD007A01CF /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				C7547EDB19963CFD007A01CF /* Facebook */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		C7547EDB19963CFD007A01CF /* Facebook */ = {
-			isa = PBXGroup;
-			children = (
-				C7547EDC19963CFD007A01CF /* FBConnect */,
-				C7547EEC19963CFD007A01CF /* SHKFBStreamDialog.h */,
-				C7547EED19963CFD007A01CF /* SHKFBStreamDialog.m */,
-			);
-			path = Facebook;
-			sourceTree = "<group>";
-		};
-		C7547EDC19963CFD007A01CF /* FBConnect */ = {
-			isa = PBXGroup;
-			children = (
-				C7547EDD19963CFD007A01CF /* FBConnect.bundle */,
-				C7547EDE19963CFD007A01CF /* FBConnectGlobal.h */,
-				C7547EDF19963CFD007A01CF /* FBConnectGlobal.m */,
-				C7547EE019963CFD007A01CF /* FBFeedDialog.h */,
-				C7547EE119963CFD007A01CF /* FBFeedDialog.m */,
-				C7547EE219963CFD007A01CF /* FBLoginButton.h */,
-				C7547EE319963CFD007A01CF /* FBLoginButton.m */,
-				C7547EE419963CFD007A01CF /* FBPermissionDialog.h */,
-				C7547EE519963CFD007A01CF /* FBPermissionDialog.m */,
-				C7547EE619963CFD007A01CF /* FBSession.h */,
-				C7547EE719963CFD007A01CF /* FBSession.m */,
-				C7547EE819963CFD007A01CF /* FBStreamDialog.h */,
-				C7547EE919963CFD007A01CF /* FBStreamDialog.m */,
-				C7547EEA19963CFD007A01CF /* FBXMLHandler.h */,
-				C7547EEB19963CFD007A01CF /* FBXMLHandler.m */,
-			);
-			path = FBConnect;
 			sourceTree = "<group>";
 		};
 		C7547EEE19963CFD007A01CF /* SVPullToRefresh */ = {
@@ -7836,7 +7411,6 @@
 				C75488FF19963D04007A01CF /* LICENSE in Resources */,
 				C75489EC19963D04007A01CF /* socialize-activity-details-ico-chat.png in Resources */,
 				C75489D919963D04007A01CF /* socialize-activity-cell-icon-like-highlighted@2x.png in Resources */,
-				C75488A019963D04007A01CF /* FBConnect.bundle in Resources */,
 				C7548A7719963D04007A01CF /* socialize-selectnetwork-email-icon-ios7.png in Resources */,
 				C7548BA919963D04007A01CF /* LICENSE in Resources */,
 				C7548A8619963D04007A01CF /* socialize-selectnetwork-pinterest-icon-ios7@2x.png in Resources */,
@@ -7884,432 +7458,86 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C75488A719963D04007A01CF /* FBXMLHandler.m in Sources */,
+				C74130D319EDC72D00A1E8CE /* ProcessListViewController.h in Sources */,
+				C74130D419EDC72D00A1E8CE /* ProcessListViewController.m in Sources */,
+				C74130D519EDC72D00A1E8CE /* ProcessItemCell.h in Sources */,
+				C754889419963D04007A01CF /* ProcessItemCell.m in Sources */,
+				C74130C519EDC6EA00A1E8CE /* SDImageCache.h in Sources */,
+				C74130C619EDC6EA00A1E8CE /* SDImageCache.m in Sources */,
+				C74130C719EDC6EA00A1E8CE /* SDImageCacheDelegate.h in Sources */,
+				C74130C819EDC6EA00A1E8CE /* SDWebImageCompat.h in Sources */,
+				C74130C919EDC6EA00A1E8CE /* SDWebImageDecoder.h in Sources */,
+				C74130CA19EDC6EA00A1E8CE /* SDWebImageDecoder.m in Sources */,
+				C74130CB19EDC6EA00A1E8CE /* SDWebImageDownloader.h in Sources */,
+				C754889B19963D04007A01CF /* SDWebImageDownloader.m in Sources */,
+				C74130CC19EDC6EA00A1E8CE /* SDWebImageDownloaderDelegate.h in Sources */,
+				C74130CD19EDC6EA00A1E8CE /* SDWebImageManager.h in Sources */,
+				C754889C19963D04007A01CF /* SDWebImageManager.m in Sources */,
+				C74130CE19EDC6EA00A1E8CE /* SDWebImageManagerDelegate.h in Sources */,
+				C74130CF19EDC6EA00A1E8CE /* SDWebImagePrefetcher.h in Sources */,
+				C754889D19963D04007A01CF /* SDWebImagePrefetcher.m in Sources */,
+				C74130D019EDC6EA00A1E8CE /* UIButton+WebCache.h in Sources */,
+				C74130D119EDC6EA00A1E8CE /* UIButton+WebCache.m in Sources */,
+				C74130D219EDC6EA00A1E8CE /* UIImageView+WebCache.h in Sources */,
+				C754889F19963D04007A01CF /* UIImageView+WebCache.m in Sources */,
 				C754887A19963D03007A01CF /* CaratProtocol.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				C75488B019963D04007A01CF /* THTTPClient.m in Sources */,
-				C7548BBB19963D04007A01CF /* OAToken.m in Sources */,
-				C7548BAB19963D04007A01CF /* JSONKit.m in Sources */,
-				C7548BAE19963D04007A01CF /* Base64Transcoder.c in Sources */,
 				C754887619963D03007A01CF /* BugDetailViewController.m in Sources */,
 				AB41CDF4144E1E520090CC09 /* CaratAppDelegate.m in Sources */,
 				C754887F19963D03007A01CF /* CoreDataAppReport.m in Sources */,
 				28216C970DB411BC00E5133A /* BugReportViewController.m in Sources */,
-				C75488F919963D04007A01CF /* UIAlertView+AFNetworking.m in Sources */,
 				AB41CDF3144E1AF60090CC09 /* UIDeviceProc.m in Sources */,
 				C754889219963D04007A01CF /* MBProgressHUD.m in Sources */,
 				AB41CDFD144E3B990090CC09 /* Reachability.m in Sources */,
-				C7548B8B19963D04007A01CF /* NSSet+BlocksKit.m in Sources */,
 				AB41CE06144F56D40090CC09 /* CaratAppDelegate_iPhone.m in Sources */,
 				AB41CE09144F56E90090CC09 /* CaratAppDelegate_iPad.m in Sources */,
-				C754893019963D04007A01CF /* FBProfilePictureViewBlankProfileSquarePNG.m in Sources */,
-				C754894119963D04007A01CF /* FBSessionSystemLoginStategy.m in Sources */,
-				C754892819963D04007A01CF /* FBLoginViewButtonPressedPNG.m in Sources */,
 				AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */,
-				C7548B9819963D04007A01CF /* UIControl+BlocksKit.m in Sources */,
-				C7548B9319963D04007A01CF /* MFMailComposeViewController+BlocksKit.m in Sources */,
 				AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */,
-				C7548B9E19963D04007A01CF /* ffi.c in Sources */,
 				C14F5C30145BD4D300087F74 /* AsyncSocket.m in Sources */,
-				C75488EF19963D04007A01CF /* AFNetworkReachabilityManager.m in Sources */,
-				C7548B2F19963D04007A01CF /* SocializeEntityJSONFormatter.m in Sources */,
-				C754894719963D04007A01CF /* FBTask.m in Sources */,
-				C754892D19963D04007A01CF /* FBPlacePickerViewGenericPlacePNG.m in Sources */,
-				C7548B7F19963D04007A01CF /* NSDictionary+BlocksKit.m in Sources */,
 				C14F5C36145BDA9900087F74 /* AsyncUdpSocket.m in Sources */,
 				C754889819963D04007A01CF /* ReportViewController.m in Sources */,
-				C7548B9B19963D04007A01CF /* UITextField+BlocksKit.m in Sources */,
-				C75488F019963D04007A01CF /* AFSecurityPolicy.m in Sources */,
-				C754890719963D04007A01CF /* FBAppBridgeTypeToJSONConverter.m in Sources */,
-				C7548B2A19963D04007A01CF /* SocializeDeviceTokenService.m in Sources */,
-				C7548B7519963D04007A01CF /* UIImage+Resize.m in Sources */,
-				C7548BA819963D04007A01CF /* ffi64.c in Sources */,
 				C1D52F2F1465F85A008D6D09 /* TBinaryProtocol.m in Sources */,
 				C1D52F301465F85A008D6D09 /* TProtocolException.m in Sources */,
-				C7548B8619963D04007A01CF /* NSMutableSet+BlocksKit.m in Sources */,
-				C7548B3D19963D04007A01CF /* SocializeLikeService.m in Sources */,
-				C7548B3A19963D04007A01CF /* SocializeKeyboardListener.m in Sources */,
-				C7548AF819963D04007A01CF /* ImagesCache.m in Sources */,
 				C1D52F311465F85A008D6D09 /* TProtocolUtil.m in Sources */,
-				C7548B0919963D04007A01CF /* NSString+MD5Addition.m in Sources */,
-				C754893819963D04007A01CF /* FBSessionAppEventsState.m in Sources */,
-				C754890A19963D04007A01CF /* FBAppLinkData.m in Sources */,
-				C7548AC519963D04007A01CF /* SZLikeButtonIOS6.m in Sources */,
-				C754895A19963D04007A01CF /* STAPIClient.m in Sources */,
-				C7548B1019963D04007A01CF /* SocializeActionView.m in Sources */,
-				C754897219963D04007A01CF /* STTwitterActivity.m in Sources */,
-				C7548B3C19963D04007A01CF /* SocializeLikeJSONFormatter.m in Sources */,
-				C754894219963D04007A01CF /* FBSessionTokenCachingStrategy.m in Sources */,
-				C7548AFF19963D04007A01CF /* NSString+QueryString.m in Sources */,
-				C7548B9419963D04007A01CF /* MFMessageComposeViewController+BlocksKit.m in Sources */,
-				C7548B5619963D04007A01CF /* SocializeThirdPartyFacebook.m in Sources */,
-				C754890319963D04007A01CF /* FBCrypto.m in Sources */,
-				C7548B0D19963D04007A01CF /* NSString+UUID.m in Sources */,
-				C754894B19963D04007A01CF /* FBUserSettingsViewController.m in Sources */,
-				C7548B2E19963D04007A01CF /* SocializeEntity.m in Sources */,
-				C7548AF119963D04007A01CF /* CommentMapView.m in Sources */,
-				C7548B9A19963D04007A01CF /* UIPopoverController+BlocksKit.m in Sources */,
-				C754896B19963D04007A01CF /* STObject.m in Sources */,
-				C754891819963D04007A01CF /* FBFrictionlessRequestSettings.m in Sources */,
-				C754892B19963D04007A01CF /* FBPlacePickerCacheDescriptor.m in Sources */,
 				C754888119963D03007A01CF /* CoreDataMainReport.m in Sources */,
-				C7548ABC19963D04007A01CF /* SZComposeCommentViewController.m in Sources */,
-				C7548BB919963D04007A01CF /* OARequestParameter.m in Sources */,
-				C7548AE619963D04007A01CF /* _SZCommentsListViewController.m in Sources */,
-				C7548AE119963D04007A01CF /* SZViewUtils.m in Sources */,
 				C754889319963D04007A01CF /* PGTableViewWithEmptyView.m in Sources */,
 				C1D52F321465F85A008D6D09 /* TSocketServer.m in Sources */,
-				C754893619963D04007A01CF /* FBRequestMetadata.m in Sources */,
-				C75488EC19963D04007A01CF /* AFHTTPRequestOperation.m in Sources */,
-				C7548AD419963D04007A01CF /* SZShareUtils.m in Sources */,
-				C7548B7B19963D04007A01CF /* UIViewController+Socialize.m in Sources */,
-				C754896A19963D04007A01CF /* STLog.m in Sources */,
-				C7548B3219963D04007A01CF /* SocializeErrorDefinitions.m in Sources */,
-				C7548B0F19963D04007A01CF /* SocializeActionBar.m in Sources */,
-				C754891B19963D04007A01CF /* FBFriendPickerViewDefaultPNG.m in Sources */,
-				C7548ACD19963D04007A01CF /* SZOARequest.m in Sources */,
 				C754888219963D03007A01CF /* CoreDataManager.m in Sources */,
 				C754887319963D03007A01CF /* ActionViewController.m in Sources */,
-				C7548B5219963D04007A01CF /* SocializeSubscriptionService.m in Sources */,
-				C754896819963D04007A01CF /* STItem.m in Sources */,
-				C7548B3719963D04007A01CF /* SocializeFullUser.m in Sources */,
-				C7548B8819963D04007A01CF /* NSObject+BKBlockExecution.m in Sources */,
-				C7548AEA19963D04007A01CF /* _SZSelectNetworkViewController.m in Sources */,
-				C7548AB719963D04007A01CF /* SZActionUtils.m in Sources */,
-				C7548B1F19963D04007A01CF /* SocializeBubbleView.m in Sources */,
-				C754897719963D04007A01CF /* Pods-AFNetworking-dummy.m in Sources */,
-				C7548ACE19963D04007A01CF /* SZOpenURLHandler.m in Sources */,
-				C754894019963D04007A01CF /* FBSessionSafariLoginStategy.m in Sources */,
-				C7548B4519963D04007A01CF /* SocializeObjectJSONFormatter.m in Sources */,
-				C7548ADA19963D04007A01CF /* SZUserProfileViewController.m in Sources */,
-				C7548B8419963D04007A01CF /* NSMutableIndexSet+BlocksKit.m in Sources */,
-				C754893F19963D04007A01CF /* FBSessionManualTokenCachingStrategy.m in Sources */,
-				C7548B4E19963D04007A01CF /* SocializeShareJSONFormatter.m in Sources */,
-				C7548AFD19963D04007A01CF /* NSHTTPCookieStorage+Utilities.m in Sources */,
-				C754890219963D04007A01CF /* FBBase64.m in Sources */,
 				C754889019963D03007A01CF /* InstructionViewController.m in Sources */,
-				C7548B4719963D04007A01CF /* SocializeProfileEditTableViewCell.m in Sources */,
-				C7548B5C19963D04007A01CF /* SocializeVerticalLayoutContainerView.m in Sources */,
-				C754892119963D04007A01CF /* FBImageResourceLoader.m in Sources */,
-				C754891119963D04007A01CF /* FBDialogsData.m in Sources */,
-				C754890D19963D04007A01CF /* FBDataDiskCache.m in Sources */,
-				C754891619963D04007A01CF /* FBFetchedAppSettings.m in Sources */,
 				C754888019963D03007A01CF /* CoreDataDetail.m in Sources */,
-				C7548B0C19963D04007A01CF /* NSString+UrlSerialization.m in Sources */,
-				C75488A519963D04007A01CF /* FBSession.m in Sources */,
 				C1D52F331465F85A008D6D09 /* TApplicationException.m in Sources */,
-				C75488F419963D04007A01CF /* AFURLSessionManager.m in Sources */,
 				C1D52F341465F85A008D6D09 /* TException.m in Sources */,
-				C7548B7819963D04007A01CF /* UINavigationBarBackground.m in Sources */,
-				C7548ACC19963D04007A01CF /* SZOARequest+Twitter.m in Sources */,
 				C754887219963D03007A01CF /* ActionObject.m in Sources */,
-				C7548ADC19963D04007A01CF /* SZUserSettings.m in Sources */,
-				C7548B5019963D04007A01CF /* SocializeSubscription.m in Sources */,
-				C7548B7719963D04007A01CF /* UILabel-Additions.m in Sources */,
-				C7548B5F19963D04007A01CF /* SocializeViewService.m in Sources */,
-				C7548AF219963D04007A01CF /* CommentsTableFooterView.m in Sources */,
-				C7548BA119963D04007A01CF /* sysv.S in Sources */,
 				C754888B19963D03007A01CF /* Globals.m in Sources */,
-				C7548BA219963D04007A01CF /* debug.c in Sources */,
-				C7548B5419963D04007A01CF /* SocializeTableViewController.m in Sources */,
-				C7548B3F19963D04007A01CF /* SocializeLoadingView.m in Sources */,
 				C1D52F361465F85A008D6D09 /* TMemoryBuffer.m in Sources */,
-				C7548B1C19963D04007A01CF /* SocializeAuthInfoTableViewCell.m in Sources */,
-				C7548AD919963D04007A01CF /* SZTwitterUtils.m in Sources */,
-				C7548BB119963D04007A01CF /* NSString+URLEncoding.m in Sources */,
-				C754891219963D04007A01CF /* FBDialogsParams.m in Sources */,
-				C754891519963D04007A01CF /* FBErrorUtility.m in Sources */,
-				C7548AB119963D04007A01CF /* SDKHelpers.m in Sources */,
-				C75488FA19963D04007A01CF /* UIButton+AFNetworking.m in Sources */,
 				C1D52F371465F85A008D6D09 /* TNSFileHandleTransport.m in Sources */,
-				C7548AEC19963D04007A01CF /* _SZTwitterLinkViewController.m in Sources */,
-				C7548B1219963D04007A01CF /* SocializeActivityDetailsView.m in Sources */,
-				C7548B9719963D04007A01CF /* UIBarButtonItem+BlocksKit.m in Sources */,
-				C7548B5E19963D04007A01CF /* SocializeViewJSONFormatter.m in Sources */,
 				C7548C9F19963D04007A01CF /* UIDeviceHardware.m in Sources */,
 				C754888519963D03007A01CF /* CoreDataReport.m in Sources */,
-				C7548B3E19963D04007A01CF /* SocializeListFormatter.m in Sources */,
-				C7548B6C19963D04007A01CF /* SZShareDialogView.m in Sources */,
-				C754893319963D04007A01CF /* FBRequestConnection.m in Sources */,
-				C754893C19963D04007A01CF /* FBSessionFacebookAppWebLoginStategy.m in Sources */,
-				C754894F19963D04007A01CF /* FBWebDialogs.m in Sources */,
-				C7548B8119963D04007A01CF /* NSInvocation+BlocksKit.m in Sources */,
-				C7548ABD19963D04007A01CF /* SZComposeCommentViewControllerIOS6.m in Sources */,
-				C7548B6219963D04007A01CF /* SZCommentOptions.m in Sources */,
-				C754895019963D04007A01CF /* NSError+FBError.m in Sources */,
-				C754890619963D04007A01CF /* FBAppBridge.m in Sources */,
 				C1D52F381465F85A008D6D09 /* TNSStreamTransport.m in Sources */,
 				C754887D19963D03007A01CF /* ConsentViewController.m in Sources */,
-				C754894919963D04007A01CF /* FBTestSession.m in Sources */,
-				C7548B3019963D04007A01CF /* SocializeEntityService.m in Sources */,
 				C75488B819963D04007A01CF /* UIImageDoNotCache.m in Sources */,
-				C754890E19963D04007A01CF /* FBDialog.m in Sources */,
-				C754892E19963D04007A01CF /* FBProfilePictureView.m in Sources */,
 				C1D52F391465F85A008D6D09 /* TSocketClient.m in Sources */,
-				C7548B6B19963D04007A01CF /* SZSessionTracker.m in Sources */,
-				C7548B4819963D04007A01CF /* SocializeProfileEditTableViewImageCell.m in Sources */,
-				C754894E19963D04007A01CF /* FBViewController.m in Sources */,
 				C1D52F3A1465F85A008D6D09 /* TTransportException.m in Sources */,
-				C754892F19963D04007A01CF /* FBProfilePictureViewBlankProfilePortraitPNG.m in Sources */,
-				C7548AF419963D04007A01CF /* CommentsTableViewCell.m in Sources */,
-				C754891E19963D04007A01CF /* FBGraphObjectTableCell.m in Sources */,
-				C7548ADE19963D04007A01CF /* SZUserSettingsViewControllerIOS6.m in Sources */,
-				C7548B8019963D04007A01CF /* NSIndexSet+BlocksKit.m in Sources */,
-				C754892519963D04007A01CF /* FBLoginDialogParams.m in Sources */,
-				C7548B6619963D04007A01CF /* SZLinkDialogView.m in Sources */,
-				C754891319963D04007A01CF /* FBDynamicFrameworkLoader.m in Sources */,
-				C75488F819963D04007A01CF /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				C754887E19963D03007A01CF /* CopyLabel.m in Sources */,
-				C7548B8219963D04007A01CF /* NSMutableArray+BlocksKit.m in Sources */,
 				C754888419963D03007A01CF /* CoreDataRegistration.m in Sources */,
 				C75488A919963D04007A01CF /* SVPullToRefresh.m in Sources */,
-				C754898819963D04007A01CF /* Pods-SZJSONKit-dummy.m in Sources */,
-				C7548BA619963D04007A01CF /* darwin64.S in Sources */,
-				C7548BBA19963D04007A01CF /* OAServiceTicket.m in Sources */,
 				C754889719963D04007A01CF /* ReportItemCell.m in Sources */,
 				C754887119963D03007A01CF /* ActionItemCell.m in Sources */,
-				C7548AC619963D04007A01CF /* SZLikeUtils.m in Sources */,
-				C7548AD019963D04007A01CF /* SZPinterestUtils.m in Sources */,
 				C754888319963D03007A01CF /* CoreDataProcessInfo.m in Sources */,
-				C7548B1419963D04007A01CF /* SocializeActivityDetailsViewIOS6.m in Sources */,
-				C754895C19963D04007A01CF /* STClient.m in Sources */,
-				C7548AEB19963D04007A01CF /* _SZShareDialogViewController.m in Sources */,
 				C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */,
-				C7548B1719963D04007A01CF /* SocializeActivityTableViewCell.m in Sources */,
 				C136F09B14662E5600F0A292 /* CommunicationManager.m in Sources */,
-				C7548B9C19963D04007A01CF /* UIView+BlocksKit.m in Sources */,
-				C7548B9219963D04007A01CF /* NSObject+A2DynamicDelegate.m in Sources */,
-				C7548AB519963D04007A01CF /* SZActionButton.m in Sources */,
-				C7548AE419963D04007A01CF /* UIViewController+Display.m in Sources */,
-				C754896919963D04007A01CF /* STJSONUtils.m in Sources */,
-				C754890419963D04007A01CF /* Facebook.m in Sources */,
-				C7548AFC19963D04007A01CF /* NSData+Base64.m in Sources */,
-				C754890519963D04007A01CF /* FBAccessTokenData.m in Sources */,
-				C754893119963D04007A01CF /* FBRequest.m in Sources */,
-				C7548AD119963D04007A01CF /* SZSelectNetworkViewController.m in Sources */,
-				C7548BA519963D04007A01CF /* darwin.S in Sources */,
-				C7548B2419963D04007A01CF /* SocializeComposeMessageViewController.m in Sources */,
-				C7548AD219963D04007A01CF /* SZShareDialogViewController.m in Sources */,
-				C7548B7019963D04007A01CF /* UIButton+Socialize.m in Sources */,
-				C754890B19963D04007A01CF /* FBCacheDescriptor.m in Sources */,
-				C7548AFE19963D04007A01CF /* NSMutableArray+Socialize.m in Sources */,
-				C75488A819963D04007A01CF /* SHKFBStreamDialog.m in Sources */,
-				C7548B4419963D04007A01CF /* SocializeObjectFormatter.m in Sources */,
-				C7548AB319963D04007A01CF /* SZActionBarIOS6.m in Sources */,
-				C754896619963D04007A01CF /* STIdentifierFactory.m in Sources */,
-				C754889F19963D04007A01CF /* UIImageView+WebCache.m in Sources */,
-				C7548AE819963D04007A01CF /* _SZLinkDialogViewController.m in Sources */,
 				C75488B919963D04007A01CF /* Utilities.m in Sources */,
-				C7548B2219963D04007A01CF /* SocializeCommentJSONFormatter.m in Sources */,
-				C7548B6419963D04007A01CF /* SZFacebookLinkOptions.m in Sources */,
-				C7548AF919963D04007A01CF /* DataHelper.m in Sources */,
-				C754899119963D04007A01CF /* Facebook+Socialize.m in Sources */,
 				C18E107214665E230028095B /* Carat.xcdatamodeld in Sources */,
-				C754896C19963D04007A01CF /* STOpen.m in Sources */,
-				C754894519963D04007A01CF /* FBShareDialogParams.m in Sources */,
-				C7548B0719963D04007A01CF /* NSError+Socialize.m in Sources */,
-				C7548B9519963D04007A01CF /* UIActionSheet+BlocksKit.m in Sources */,
-				C7548B8919963D04007A01CF /* NSObject+BKBlockObservation.m in Sources */,
-				C754894A19963D04007A01CF /* FBURLConnection.m in Sources */,
-				C7548B7219963D04007A01CF /* UIColor+Socialize.m in Sources */,
-				C754887B19963D03007A01CF /* CaratProtocol.pb.m in Sources */,
 				C754888E19963D03007A01CF /* HogDetailViewController.m in Sources */,
-				C7548AE919963D04007A01CF /* _SZLinkDialogViewControllerIOS6.m in Sources */,
-				C754897019963D04007A01CF /* STSharelink.m in Sources */,
 				C19D4207146D2AD6004C842A /* CoreDataSample.m in Sources */,
-				C7548AD319963D04007A01CF /* SZShareDialogViewControllerIOS6.m in Sources */,
-				C754889C19963D04007A01CF /* SDWebImageManager.m in Sources */,
-				C754898519963D04007A01CF /* Pods-SZBlocksKit-dummy.m in Sources */,
-				C754890C19963D04007A01CF /* FBCacheIndex.m in Sources */,
 				ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */,
-				C7548B1819963D04007A01CF /* SocializeActivityViewController.m in Sources */,
-				C7548AC319963D04007A01CF /* SZIdentifierUtils.m in Sources */,
-				C7548AF019963D04007A01CF /* CommentDetailsView.m in Sources */,
-				C7548AEE19963D04007A01CF /* _SZUserProfileViewControllerIOS6.m in Sources */,
-				C754896F19963D04007A01CF /* STShareActivityUI.m in Sources */,
-				C7548B6019963D04007A01CF /* SZActivityOptions.m in Sources */,
-				C754897A19963D04007A01CF /* Pods-dummy.m in Sources */,
-				C7548B0619963D04007A01CF /* NSDateAdditions.m in Sources */,
-				C7548ADD19963D04007A01CF /* SZUserSettingsViewController.m in Sources */,
-				C75488F219963D04007A01CF /* AFURLRequestSerialization.m in Sources */,
-				C754893919963D04007A01CF /* FBSessionAppSwitchingLoginStategy.m in Sources */,
-				C7548AD719963D04007A01CF /* SZSubscriptionUtils.m in Sources */,
-				C7548AB619963D04007A01CF /* SZActionButtonIOS6.m in Sources */,
-				C75488FC19963D04007A01CF /* UIProgressView+AFNetworking.m in Sources */,
-				C7548AD519963D04007A01CF /* SZSmartAlertUtils.m in Sources */,
-				C7548AC819963D04007A01CF /* SZLinkDialogViewControllerIOS6.m in Sources */,
-				C7548B1119963D04007A01CF /* SocializeActivity.m in Sources */,
-				C754896E19963D04007A01CF /* STShare.m in Sources */,
 				C754888919963D03007A01CF /* DatabaseManager.m in Sources */,
-				C7548B6F19963D04007A01CF /* SZSocialNetworkPostData.m in Sources */,
-				C7548B1A19963D04007A01CF /* SocializeApplicationJSONFormatter.m in Sources */,
-				C7548B8E19963D04007A01CF /* A2DynamicDelegate.m in Sources */,
-				C754891719963D04007A01CF /* FBFrictionlessRecipientCache.m in Sources */,
-				C75488A619963D04007A01CF /* FBStreamDialog.m in Sources */,
-				C7548B7419963D04007A01CF /* UIImage+Network.m in Sources */,
-				C7548B1919963D04007A01CF /* SocializeApplication.m in Sources */,
-				C7548B6719963D04007A01CF /* SZNavigationController.m in Sources */,
-				C7548AEF19963D04007A01CF /* _SZUserSettingsViewController.m in Sources */,
-				C754893519963D04007A01CF /* FBRequestHandlerFactory.m in Sources */,
-				C75488F119963D04007A01CF /* AFURLConnectionOperation.m in Sources */,
-				C7548B3B19963D04007A01CF /* SocializeLike.m in Sources */,
-				C75488A319963D04007A01CF /* FBLoginButton.m in Sources */,
-				C7548B7C19963D04007A01CF /* URLDownload.m in Sources */,
-				C7548AE319963D04007A01CF /* SZWindowDisplay.m in Sources */,
-				C7548BA419963D04007A01CF /* types.c in Sources */,
-				C7548BA719963D04007A01CF /* ffi.c in Sources */,
-				C7548B0419963D04007A01CF /* UserHelper.m in Sources */,
-				C7548ABA19963D04007A01CF /* SZCommentsListViewControllerIOS6.m in Sources */,
-				C7548AF619963D04007A01CF /* HtmlPageCreator.m in Sources */,
-				C7548B3619963D04007A01CF /* SocializeFacebookInterface.m in Sources */,
-				C7548AFB19963D04007A01CF /* NSArray+AssociativeArray.m in Sources */,
-				C754896219963D04007A01CF /* STFacebookActivity.m in Sources */,
-				C7548B3119963D04007A01CF /* SocializeError.m in Sources */,
 				C754888A19963D03007A01CF /* DetailViewController.m in Sources */,
-				C754891A19963D04007A01CF /* FBFriendPickerViewController.m in Sources */,
-				C7548AC919963D04007A01CF /* SZLocationUtils.m in Sources */,
-				C7548BB819963D04007A01CF /* OAPlaintextSignatureProvider.m in Sources */,
-				C754889419963D04007A01CF /* ProcessItemCell.m in Sources */,
-				C754899219963D04007A01CF /* NSOperationQueue+Socialize.m in Sources */,
-				C754893A19963D04007A01CF /* FBSessionAuthLogger.m in Sources */,
-				C754889B19963D04007A01CF /* SDWebImageDownloader.m in Sources */,
-				C7548AE019963D04007A01CF /* SZViewControllerWrapper.m in Sources */,
-				C7548B7E19963D04007A01CF /* NSArray+BlocksKit.m in Sources */,
-				C754891C19963D04007A01CF /* FBGraphObject.m in Sources */,
-				C754894319963D04007A01CF /* FBSessionUtility.m in Sources */,
-				C754892719963D04007A01CF /* FBLoginViewButtonPNG.m in Sources */,
-				C7548AC719963D04007A01CF /* SZLinkDialogViewController.m in Sources */,
-				C7548B7D19963D04007A01CF /* URLDownloadOperation.m in Sources */,
-				C754895B19963D04007A01CF /* STApp.m in Sources */,
-				C7548B0119963D04007A01CF /* UIBarButtonItem+Socialize.m in Sources */,
-				C7548B4619963D04007A01CF /* SocializePOOCObjectFactory.m in Sources */,
-				C7548B5919963D04007A01CF /* SocializeUserJSONFormatter.m in Sources */,
-				C7548AC219963D04007A01CF /* SZHorizontalContainerView.m in Sources */,
-				C7548AD619963D04007A01CF /* SZStatusView.m in Sources */,
-				C75488A119963D04007A01CF /* FBConnectGlobal.m in Sources */,
-				C75488FE19963D04007A01CF /* UIWebView+AFNetworking.m in Sources */,
-				C7548B9619963D04007A01CF /* UIAlertView+BlocksKit.m in Sources */,
-				C7548B3319963D04007A01CF /* SocializeErrorFormatter.m in Sources */,
-				C754898B19963D04007A01CF /* Pods-SZOAuthConsumer-dummy.m in Sources */,
-				C7548B7119963D04007A01CF /* UIButton+SocializeIOS6.m in Sources */,
-				C7548B7A19963D04007A01CF /* UIView+Layout.m in Sources */,
-				C7548BB719963D04007A01CF /* OAMutableURLRequest.m in Sources */,
-				C754892C19963D04007A01CF /* FBPlacePickerViewController.m in Sources */,
-				C7548B4A19963D04007A01CF /* SocializeRequest.m in Sources */,
-				C7548B4119963D04007A01CF /* SocializeNotificationToggleBubbleContentView.m in Sources */,
 				C754888719963D03007A01CF /* CoreDataSubReport.m in Sources */,
-				C754897B19963D04007A01CF /* Pods-Facebook-iOS-SDK-dummy.m in Sources */,
-				C7548BB619963D04007A01CF /* OAHMAC_SHA1SignatureProvider.m in Sources */,
-				C754896119963D04007A01CF /* STEvent.m in Sources */,
-				C75488EE19963D04007A01CF /* AFHTTPSessionManager.m in Sources */,
-				C7548AC019963D04007A01CF /* SZEventUtils.m in Sources */,
-				C7548B8C19963D04007A01CF /* NSTimer+BlocksKit.m in Sources */,
-				C754890819963D04007A01CF /* FBAppCall.m in Sources */,
-				C754892219963D04007A01CF /* FBInsights.m in Sources */,
-				C754892019963D04007A01CF /* FBGraphObjectTableSelection.m in Sources */,
-				C7548BB319963D04007A01CF /* OAAsynchronousDataFetcher.m in Sources */,
-				C7548B9019963D04007A01CF /* NSURLConnection+BlocksKit.m in Sources */,
-				C7548AED19963D04007A01CF /* _SZUserProfileViewController.m in Sources */,
-				C754892A19963D04007A01CF /* FBOpenGraphActionShareDialogParams.m in Sources */,
-				C75488A419963D04007A01CF /* FBPermissionDialog.m in Sources */,
-				C7548B5819963D04007A01CF /* SocializeUser.m in Sources */,
-				C7548ABE19963D04007A01CF /* SZDisplayUtils.m in Sources */,
-				C7548B2619963D04007A01CF /* SocializeDataFetcher.m in Sources */,
 				C754888D19963D03007A01CF /* HiddenAppsViewController.m in Sources */,
-				C7548B5719963D04007A01CF /* SocializeThirdPartyTwitter.m in Sources */,
-				C7548B6E19963D04007A01CF /* SZSMSShareData.m in Sources */,
-				C7548BA019963D04007A01CF /* ffi.c in Sources */,
-				C7548BB219963D04007A01CF /* NSURL+Base.m in Sources */,
-				C7548B8F19963D04007A01CF /* NSCache+BlocksKit.m in Sources */,
-				C754893719963D04007A01CF /* FBSession.m in Sources */,
-				C754889D19963D04007A01CF /* SDWebImagePrefetcher.m in Sources */,
-				C754893B19963D04007A01CF /* FBSessionFacebookAppNativeLoginStategy.m in Sources */,
-				C7548B1519963D04007A01CF /* SocializeActivityJSONFormatter.m in Sources */,
-				C754890919963D04007A01CF /* FBAppEvents.m in Sources */,
-				C75488F319963D04007A01CF /* AFURLResponseSerialization.m in Sources */,
-				C7548B5A19963D04007A01CF /* SocializeUserService.m in Sources */,
-				C7548ACA19963D04007A01CF /* SZNotificationHandler.m in Sources */,
-				C7548B8D19963D04007A01CF /* A2BlockInvocation.m in Sources */,
-				C7548BB419963D04007A01CF /* OAConsumer.m in Sources */,
-				C7548AE519963D04007A01CF /* _Socialize.m in Sources */,
-				C754896519963D04007A01CF /* STIdentifier.m in Sources */,
-				C7548B0819963D04007A01CF /* NSNumber+Additions.m in Sources */,
-				C7548AE219963D04007A01CF /* SZWhatsAppUtils.m in Sources */,
-				C75488A219963D04007A01CF /* FBFeedDialog.m in Sources */,
-				C754892419963D04007A01CF /* FBLoginDialog.m in Sources */,
-				C754890F19963D04007A01CF /* FBDialogClosePNG.m in Sources */,
-				C754898219963D04007A01CF /* Pods-Socialize-dummy.m in Sources */,
-				C754897119963D04007A01CF /* STShortlink.m in Sources */,
-				C7548B2119963D04007A01CF /* SocializeCommentDetailsViewController.m in Sources */,
-				C7548B7919963D04007A01CF /* UINavigationController+Socialize.m in Sources */,
-				C75488F719963D04007A01CF /* AFNetworkActivityIndicatorManager.m in Sources */,
-				C7548B5519963D04007A01CF /* SocializeThirdParty.m in Sources */,
-				C75488FD19963D04007A01CF /* UIRefreshControl+AFNetworking.m in Sources */,
-				C7548B9919963D04007A01CF /* UIGestureRecognizer+BlocksKit.m in Sources */,
-				C7548B2C19963D04007A01CF /* SocializeDynamicTest.m in Sources */,
-				C7548B6319963D04007A01CF /* SZEmailShareData.m in Sources */,
-				C7548B1B19963D04007A01CF /* SocializeAuthenticateService.m in Sources */,
-				C75488FB19963D04007A01CF /* UIImageView+AFNetworking.m in Sources */,
-				C7548B4219963D04007A01CF /* SocializeObject.m in Sources */,
-				C7548B4319963D04007A01CF /* SocializeObjectFactory.m in Sources */,
-				AB105EBD14EDCA57000DB145 /* ProcessListViewController.m in Sources */,
-				C754891D19963D04007A01CF /* FBGraphObjectPagingLoader.m in Sources */,
-				C754894D19963D04007A01CF /* FBUtility.m in Sources */,
-				C7548B4F19963D04007A01CF /* SocializeShareService.m in Sources */,
-				C7548B8A19963D04007A01CF /* NSOrderedSet+BlocksKit.m in Sources */,
-				ABEC9B5714F1CA71005CE813 /* SDImageCache.m in Sources */,
-				C7548B2D19963D04007A01CF /* SocializeEditValueTableViewCell.m in Sources */,
-				C7548ACF19963D04007A01CF /* SZPinterestEngine.m in Sources */,
-				C754893D19963D04007A01CF /* FBSessionInlineWebViewLoginStategy.m in Sources */,
-				C7548B3419963D04007A01CF /* SocializeEventService.m in Sources */,
-				C7548B2019963D04007A01CF /* SocializeComment.m in Sources */,
-				C754889E19963D04007A01CF /* UIButton+WebCache.m in Sources */,
-				C7548B9F19963D04007A01CF /* sysv.S in Sources */,
-				C754896319963D04007A01CF /* STGeo.m in Sources */,
-				ABEC9B5814F1CA71005CE813 /* SDWebImageDecoder.m in Sources */,
-				C754893E19963D04007A01CF /* FBSessionLoginStrategyParams.m in Sources */,
-				C7548AB219963D04007A01CF /* SZActionBar.m in Sources */,
-				C7548B6519963D04007A01CF /* SZLikeOptions.m in Sources */,
-				C7548B1319963D04007A01CF /* SocializeActivityDetailsViewController.m in Sources */,
-				C7548B5319963D04007A01CF /* SocializeTableBGInfoView.m in Sources */,
-				C7548BA319963D04007A01CF /* prep_cif.c in Sources */,
-				C7548B2319963D04007A01CF /* SocializeCommentsService.m in Sources */,
-				C7548AFA19963D04007A01CF /* DebugUtil.m in Sources */,
-				C7548B9119963D04007A01CF /* NSObject+A2BlockDelegate.m in Sources */,
-				C7548B3919963D04007A01CF /* SocializeGeocoderAdapter.m in Sources */,
-				C7548B8719963D04007A01CF /* NSObject+BKAssociatedObjects.m in Sources */,
-				C7548B7319963D04007A01CF /* UIDevice+VersionCheck.m in Sources */,
-				C754892919963D04007A01CF /* FBNativeDialogs.m in Sources */,
-				C7548B0319963D04007A01CF /* UITableView+Socialize.m in Sources */,
-				C7548B0B19963D04007A01CF /* NSString+Socialize.m in Sources */,
-				C754893419963D04007A01CF /* FBRequestConnectionRetryManager.m in Sources */,
-				C7548B0A19963D04007A01CF /* NSString+PlaceMark.m in Sources */,
-				C7548B8519963D04007A01CF /* NSMutableOrderedSet+BlocksKit.m in Sources */,
-				C7548B0E19963D04007A01CF /* SampleEntityLoader.m in Sources */,
-				C7548ABF19963D04007A01CF /* SZEntityUtils.m in Sources */,
-				C7548BB519963D04007A01CF /* OADataFetcher.m in Sources */,
-				C7548AC119963D04007A01CF /* SZFacebookUtils.m in Sources */,
-				C7548B9D19963D04007A01CF /* UIWebView+BlocksKit.m in Sources */,
-				C754896419963D04007A01CF /* STHeadlessIdentifier.m in Sources */,
-				C754897E19963D04007A01CF /* Pods-Loopy-dummy.m in Sources */,
 				C754886E19963D03007A01CF /* Carat.xcdatamodeld in Sources */,
-				C7548B0019963D04007A01CF /* StringHelper.m in Sources */,
-				C7548BB019963D04007A01CF /* NSMutableURLRequest+Parameters.m in Sources */,
-				C7548B7619963D04007A01CF /* UILabel+FormatedText.m in Sources */,
-				C7548AD819963D04007A01CF /* SZTwitterLinkViewController.m in Sources */,
-				C7548AC419963D04007A01CF /* SZLikeButton.m in Sources */,
-				C7548ADF19963D04007A01CF /* SZUserUtils.m in Sources */,
-				C7548AF719963D04007A01CF /* ImageLoader.m in Sources */,
-				C754891419963D04007A01CF /* FBError.m in Sources */,
-				C7548B3519963D04007A01CF /* SocializeFacebookAuthHandler.m in Sources */,
-				C7548B6919963D04007A01CF /* SZNetworkImageProvider.m in Sources */,
-				C7548B8319963D04007A01CF /* NSMutableDictionary+BlocksKit.m in Sources */,
-				C754894819963D04007A01CF /* FBTaskCompletionSource.m in Sources */,
-				C7548B2B19963D04007A01CF /* SocializeDummyViewController.m in Sources */,
-				C7548B4019963D04007A01CF /* SocializeLocationManager.m in Sources */,
-				C7548B6819963D04007A01CF /* SZNavigationControllerIOS6.m in Sources */,
-				C75488ED19963D04007A01CF /* AFHTTPRequestOperationManager.m in Sources */,
-				C7548ACB19963D04007A01CF /* SZOARequest+Socialize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -8359,7 +7587,7 @@
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "DEBUG_MODE=1";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Carat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/Flurry\"",
@@ -8401,7 +7629,7 @@
 				GCC_PREFIX_HEADER = Carat_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Carat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/Flurry\"",
@@ -8466,7 +7694,7 @@
 				GCC_PREFIX_HEADER = Carat_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Carat-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes/Flurry\"",
