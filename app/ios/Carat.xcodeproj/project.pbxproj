@@ -7569,8 +7569,8 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7602,7 +7602,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
 			};
 			name = Debug;
@@ -7615,8 +7615,8 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7644,8 +7644,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
+				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
 				VALIDATE_PRODUCT = YES;
@@ -7679,9 +7679,9 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Adam Oliner";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7709,8 +7709,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "";
+				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
+				"PROVISIONING_PROFILE[sdk=*]" = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
