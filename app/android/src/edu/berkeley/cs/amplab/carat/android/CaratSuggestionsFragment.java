@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +55,6 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
     private int emptyIndex = -1;
     private LocalizedWebView webview = null;
 
-    /**
-     *
-     * 
-     * 
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         vf = new ViewFlipper(getActivity());
@@ -104,85 +101,32 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
                 } else if (raw.equals(getString(R.string.questionnaire))) {
                     openQuestionnaire();
                 } else {
-                    initKillView();
-                    ImageView icon = (ImageView) killView.findViewById(R.id.suggestion_app_icon);
-                    TextView txtName = (TextView) killView.findViewById(R.id.actionName);
-                    TextView txtType = (TextView) killView.findViewById(R.id.suggestion_type);
-                    final TextView txtBenefit = (TextView) killView.findViewById(R.id.expectedBenefit);
-                    final Button killButton = (Button) killView.findViewById(R.id.killButton);
-
-                    final String label = CaratApplication.labelForApp(c, raw);
-
-                    icon.setImageDrawable(CaratApplication.iconForApp(c, raw));
-
-                    Type type = fullObject.getType();
-                    if (type == Type.BUG || type == Type.HOG) {
-                        txtName.setText(label);
-                        final PackageInfo pak = SamplingLibrary.getPackageInfo(c, raw);
-                        String ver = "";
-                        if (pak != null)
-                            ver = pak.versionName;
-                        if (ver == null)
-                            ver = "";
-                        final String s = label + " " + ver;
-                        killButton.setText(getString(R.string.kill) + " " + s);
-                        killButton.setEnabled(true);
-                        killButton.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                /* Killbutton clicked. Track click: */
-
-                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                if (p != null) {
-                                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                                    HashMap<String, String> options = new HashMap<String, String>();
-                                    if (pak != null) {
-                                        options.put("app", pak.packageName);
-                                        options.put("version", pak.versionName);
-                                        options.put("versionCode", pak.versionCode + "");
-                                        options.put("label", label);
-                                    }
-                                    options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
-                                    ClickTracking.track(uuId, "killbutton", options, getActivity());
-                                }
-                                /* Change kill button text and make it unclickable until screen is exited */
-                                killButton.setEnabled(false);
-                                killButton.setText(s + " " + getString(R.string.killed));
-                                SamplingLibrary.killApp(c, raw, label);
-                                // onBackPressed();
-                            }
-                        });
-                        
-                        Button AppManagerButton = (Button) killView.findViewById(R.id.appManager);
-                        AppManagerButton.setOnClickListener(new OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                                if (p != null) {
-                                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                                    HashMap<String, String> options = new HashMap<String, String>();
-                                    if (pak != null) {
-                                        options.put("app", pak.packageName);
-                                        options.put("version", pak.versionName);
-                                        options.put("versionCode", pak.versionCode + "");
-                                        options.put("label", label);
-                                    }
-                                    options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
-                                    ClickTracking.track(uuId, "appmanagerbutton", options, getActivity());
-                                }
-                                GoToAppScreen();
-                            }
-                        });
-                    } else { // Other action
-                        txtName.setText(label);
-                        killButton.setText(label);
-                    }
-                    if (fullObject.getType() == Type.OTHER) {
-                        // Already translated
-                        txtType.setText(fullObject.getAppPriority());
-                    } else
-                        txtType.setText(CaratApplication.translatedPriority(fullObject.getAppPriority()));
-
+                	Bundle args = new Bundle();
+                	args.putString("raw", raw);
+                	
+                	Type type = fullObject.getType();
+                	if (type == Type.BUG) {
+                		args.putBoolean("isBug", true);
+                		args.putBoolean("isHog", false);
+                		args.putBoolean("isOther", false);
+                	} else if (type == Type.HOG) {
+                		args.putBoolean("isHog", true);
+                		args.putBoolean("isBug", false);
+                		args.putBoolean("isOther", false);
+                	}
+                	if (type == Type.OTHER) {
+                		args.putString("appPriority", fullObject.getAppPriority());
+                	} else {
+                		args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));                 		
+                	}
+                	
+                	Fragment fragment = new KillAppFragment();
+                	fragment.setArguments(args);
+                	
+                	FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                	FragmentTransaction transaction = fragmentManager.beginTransaction();
+                	transaction.replace(R.id.content_frame, fragment).addToBackStack("killApp").commit();
+                	
                     /*
                      * if (raw.equals("Disable bluetooth")) { double benefitOther = PowerProfileHelper. bluetoothBenefit(c); hours = (int)
                      * (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; } else if (raw.equals("Disable Wifi")) { double
@@ -191,9 +135,8 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
                      * screenBrightnessBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; }
                      */
 
-                    txtBenefit.setText(fullObject.textBenefit());
-
-                    switchView(killView);
+                    args.putString("benefit", fullObject.textBenefit());
+//                    switchView(killView);
                 }
             }
         });
@@ -218,7 +161,7 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
         
         return root;
     }
-
+    
     private void restoreKillView(View previous) {
         initKillView();
         ImageView icon = (ImageView) killView.findViewById(R.id.suggestion_app_icon);
