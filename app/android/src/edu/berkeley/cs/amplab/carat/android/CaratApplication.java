@@ -119,11 +119,11 @@ public class CaratApplication extends Application {
 
     // Activity pointers so that all activity UIs can be updated with a callback
     // to CaratApplication
-    private static CaratMainActivity main = null;
-    private static CaratMyDeviceFragment myDevice = null;
-    private static CaratBugsOrHogsFragment bugsActivity = null;
-    private static CaratBugsOrHogsFragment hogsActivity = null;
-    private static CaratSuggestionsFragment actionList = null;
+    private static MainActivity main = null;
+    private static MyDeviceFragment myDevice = null;
+    private static BugsOrHogsFragment bugsActivity = null;
+    private static BugsOrHogsFragment hogsActivity = null;
+    private static SuggestionsFragment actionList = null;
     // The Sampler samples the battery level when it changes.
     private static Sampler sampler = null;
 
@@ -314,23 +314,23 @@ public class CaratApplication extends Application {
         }
     }
 
-    public static void setMain(CaratMainActivity a) {
+    public static void setMain(MainActivity a) {
         main = a;
     }
 
-    public static void setMyDevice(CaratMyDeviceFragment a) {
+    public static void setMyDevice(MyDeviceFragment a) {
         myDevice = a;
     }
 
-    public static void setBugs(CaratBugsOrHogsFragment a) {
+    public static void setBugs(BugsOrHogsFragment a) {
         bugsActivity = a;
     }
 
-    public static void setHogs(CaratBugsOrHogsFragment a) {
+    public static void setHogs(BugsOrHogsFragment a) {
         hogsActivity = a;
     }
 
-    public static void setActionList(CaratSuggestionsFragment a) {
+    public static void setActionList(SuggestionsFragment a) {
         actionList = a;
     }
 
@@ -346,7 +346,7 @@ public class CaratApplication extends Application {
      * 
      * 4. Communicate with the server to fetch new reports if current ones are
      * outdated, and to send old stored and the new just-recorded sample. See
-     * CaratMainActivity for this task.
+     * MainActivity for this task.
      */
     @Override
     public void onCreate() {

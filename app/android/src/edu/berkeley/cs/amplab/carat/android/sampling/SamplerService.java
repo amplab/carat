@@ -3,7 +3,7 @@ package edu.berkeley.cs.amplab.carat.android.sampling;
 import java.util.Date;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -127,7 +127,7 @@ public class SamplerService extends IntentService {
         if (samples >= Sampler.MAX_SAMPLES){
             Sampler.getInstance().setLastNotify(now);
         PendingIntent launchCarat = PendingIntent.getActivity(context, 0,
-                new Intent(context, CaratMainActivity.class), 0);
+                new Intent(context, MainActivity.class), 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 context)

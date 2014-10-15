@@ -1,6 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
-import edu.berkeley.cs.amplab.carat.android.CaratMainActivity;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -35,8 +35,8 @@ public abstract class BaseVFActivity extends Activity implements VFActivity {
      * @param v The view to switch to.
      */
     public void switchView(View v){
-        vf.setOutAnimation(CaratMainActivity.outtoLeft);
-        vf.setInAnimation(CaratMainActivity.inFromRight);
+        vf.setOutAnimation(MainActivity.outtoLeft);
+        vf.setInAnimation(MainActivity.inFromRight);
         vf.setDisplayedChild(vf.indexOfChild(v));
         viewIndex = vf.indexOfChild(v);
     }
@@ -63,8 +63,8 @@ public abstract class BaseVFActivity extends Activity implements VFActivity {
     @Override
     public void onBackPressed() {
         if (vf.getDisplayedChild() != baseViewIndex) {
-            vf.setOutAnimation(CaratMainActivity.outtoRight);
-            vf.setInAnimation(CaratMainActivity.inFromLeft);
+            vf.setOutAnimation(MainActivity.outtoRight);
+            vf.setInAnimation(MainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);
             viewIndex = baseViewIndex;
         } else

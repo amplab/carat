@@ -83,8 +83,9 @@ public class KillAppFragment extends Fragment {
 					 */
 					killButton.setEnabled(false);
 					killButton.setText(s + " " + getString(R.string.killed));
+					// FIXME: sometimes this method doesn't kill the app, 
+					// check and if needed, fix it
 					SamplingLibrary.killApp(c, raw, label);
-					// onBackPressed();
 				}
 			});
 			Button AppManagerButton = (Button) view.findViewById(R.id.appManager);
@@ -104,7 +105,9 @@ public class KillAppFragment extends Fragment {
 						options.put("benefit", txtBenefit.getText().toString().replace('\u00B1', '+'));
 						ClickTracking.track(uuId, "appmanagerbutton", options, getActivity());
 					}
-					// GoToAppScreen(); // implement the method
+					
+					// FIXME: implement this method (show AppManager in a fragment/screen)
+					// GoToAppScreen();
 				}
 			});
 		} else { // Other action

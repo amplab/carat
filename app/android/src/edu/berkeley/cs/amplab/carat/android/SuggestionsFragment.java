@@ -33,7 +33,7 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-public class CaratSuggestionsFragment extends Fragment implements Serializable{
+public class SuggestionsFragment extends Fragment implements Serializable{
 
     int viewIndex = 0;
     int baseViewIndex = 0;
@@ -146,7 +146,7 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
         if (savedInstanceState != null){
         Object o = savedInstanceState.get("savedInstance");
         if (o != null) {
-            CaratSuggestionsFragment previous = (CaratSuggestionsFragment) o;
+            SuggestionsFragment previous = (SuggestionsFragment) o;
             viewIndex = previous.viewIndex;
             if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)) {
                 restoreKillView(previous.killView);
@@ -337,8 +337,8 @@ public class CaratSuggestionsFragment extends Fragment implements Serializable{
         if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
             SamplingLibrary.resetRunningProcessInfo();
             refresh();
-            vf.setOutAnimation(CaratMainActivity.outtoRight);
-            vf.setInAnimation(CaratMainActivity.inFromLeft);
+            vf.setOutAnimation(MainActivity.outtoRight);
+            vf.setInAnimation(MainActivity.inFromLeft);
             vf.setDisplayedChild(baseViewIndex);
             viewIndex = baseViewIndex;
         } else

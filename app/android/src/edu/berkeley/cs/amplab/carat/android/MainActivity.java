@@ -48,7 +48,7 @@ import android.widget.ListView;
  * @author Eemil Lagerspetz
  * 
  */
-public class CaratMainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity {
 
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -166,26 +166,26 @@ public class CaratMainActivity extends ActionBarActivity {
 		
 		switch (position) {
 		case 0:
-			fragment = new CaratSuggestionsFragment();
+			fragment = new SuggestionsFragment();
 			break;
 		case 1:
-			fragment = new CaratMyDeviceFragment();
+			fragment = new MyDeviceFragment();
 			break;
 		case 2:
 			args.putBoolean("isBugs", true);
-			fragment = new CaratBugsOrHogsFragment();
+			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
 			break;
 		case 3:
 			args.putBoolean("isBugs", false);
-			fragment = new CaratBugsOrHogsFragment();
+			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
 			break;
 		case 4:
-			fragment = new CaratAboutFragment();
+			fragment = new AboutFragment();
 			break;
 		case 5:
-			fragment = new AppRecommendationFragment();
+			fragment = new AppRecomFragment();
 			break;
 		}
 
@@ -267,7 +267,7 @@ public class CaratMainActivity extends ActionBarActivity {
 		String secretKey = null;
 		Properties properties = new Properties();
 		try {
-			InputStream raw = CaratMainActivity.this.getAssets().open(FLURRY_KEYFILE);
+			InputStream raw = MainActivity.this.getAssets().open(FLURRY_KEYFILE);
 			if (raw != null) {
 				properties.load(raw);
 				if (properties.containsKey("secretkey"))
@@ -434,7 +434,7 @@ public class CaratMainActivity extends ActionBarActivity {
 		final MenuItem wifiOnly = menu.add(R.string.wifionly);
 		// wifiOnly.setCheckable(true);
 		// wifiOnly.setChecked(useWifiOnly);
-		final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratMainActivity.this);
+		final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
 		if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
 			wifiOnly.setTitle(R.string.wifionlyused);
 		wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {

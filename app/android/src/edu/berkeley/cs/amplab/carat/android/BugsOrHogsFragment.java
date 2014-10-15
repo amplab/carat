@@ -30,7 +30,7 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-public class CaratBugsOrHogsFragment extends Fragment {
+public class BugsOrHogsFragment extends Fragment {
 
     public static final String IS_BUGS = "IS_BUGS";
     protected boolean isBugs = false;
@@ -67,7 +67,7 @@ public class CaratBugsOrHogsFragment extends Fragment {
 //        if (savedInstanceState != null) {
 //            isBugs = savedInstanceState.getBoolean(IS_BUGS);
 //        } else {
-//        	Log.d("CaratBugsOrHogsFragment", "savedInstanceState=null");
+//        	Log.d("BugsOrHogsFragment", "savedInstanceState=null");
 //        }
     }
 
@@ -111,7 +111,7 @@ public class CaratBugsOrHogsFragment extends Fragment {
         if (savedInstanceState != null) {
             Object o = savedInstanceState.get("savedInstance");
             if (o != null) {
-                CaratBugsOrHogsFragment previous = (CaratBugsOrHogsFragment) o;
+                BugsOrHogsFragment previous = (BugsOrHogsFragment) o;
                 TextView pn = (TextView) previous.detailPage.findViewById(R.id.name);
                 ImageView pi = (ImageView) previous.detailPage.findViewById(R.id.appIcon);
                 TextView pp = (TextView) previous.detailPage.findViewById(R.id.benefit);
@@ -252,7 +252,7 @@ public class CaratBugsOrHogsFragment extends Fragment {
     
     public void refresh() {
     	if (getActivity() == null)
-    		Log.e("CaratBugsOrHogsFragment", "unable to get activity");
+    		Log.e("BugsOrHogsFragment", "unable to get activity");
         CaratApplication app = (CaratApplication) getActivity().getApplication();
         final ListView lv = (ListView) getActivity().findViewById(android.R.id.list);
         if (isBugs)
@@ -299,8 +299,8 @@ public class CaratBugsOrHogsFragment extends Fragment {
      * @Override public void onBackPressed() { if (vf.getDisplayedChild() !=
      * baseViewIndex && vf.getDisplayedChild() != emptyIndex &&
      * vf.getDisplayedChild() != emptyBugsIndex) {
-     * vf.setOutAnimation(CaratMainActivity.outtoRight);
-     * vf.setInAnimation(CaratMainActivity.inFromLeft);
+     * vf.setOutAnimation(MainActivity.outtoRight);
+     * vf.setInAnimation(MainActivity.inFromLeft);
      * vf.setDisplayedChild(baseViewIndex); viewIndex = baseViewIndex; } else
      * finish(); }
      */

@@ -38,7 +38,7 @@ import android.widget.ViewFlipper;
  * @author Eemil Lagerspetz
  * 
  */
-public class CaratMyDeviceFragment extends Fragment {
+public class MyDeviceFragment extends Fragment {
 
     private DrawView osView = null;
     private View osViewPage = null;
@@ -79,7 +79,7 @@ public class CaratMyDeviceFragment extends Fragment {
 //        if (savedInstanceState != null){
 //        Object o = savedInstanceState.get("savedInstance");
 //        if (o != null) {
-//            CaratMyDeviceFragment previous = (CaratMyDeviceFragment) o;
+//            MyDeviceFragment previous = (MyDeviceFragment) o;
 //            if (previous.osViewPage != null
 //                    && previous.osViewPage == previous.vf.getChildAt(viewIndex)) {
 //                DrawView v = previous.osView;
