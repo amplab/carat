@@ -31,6 +31,7 @@ import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.subscreens.KillAppFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
 public class SuggestionsFragment extends Fragment implements Serializable{
@@ -101,58 +102,66 @@ public class SuggestionsFragment extends Fragment implements Serializable{
                 } else if (raw.equals(getString(R.string.questionnaire))) {
                     openQuestionnaire();
                 } else {
-                	Bundle args = new Bundle();
-                	args.putString("raw", raw);
-                	
-                	Type type = fullObject.getType();
-                	if (type == Type.BUG) {
-                		args.putBoolean("isBug", true);
-                		args.putBoolean("isHog", false);
-                		args.putBoolean("isOther", false);
-                	} else if (type == Type.HOG) {
-                		args.putBoolean("isHog", true);
-                		args.putBoolean("isBug", false);
-                		args.putBoolean("isOther", false);
-                	}
-                	if (type == Type.OTHER) {
-                		args.putString("appPriority", fullObject.getAppPriority());
-                	} else {
-                		args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));                 		
-                	}
-                	
-                	Fragment fragment = new KillAppFragment();
-                	fragment.setArguments(args);
-                	
-                	FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                	FragmentTransaction transaction = fragmentManager.beginTransaction();
-                	transaction.replace(R.id.content_frame, fragment).addToBackStack("killApp").commit();
-                	
-                    /*
-                     * if (raw.equals("Disable bluetooth")) { double benefitOther = PowerProfileHelper. bluetoothBenefit(c); hours = (int)
-                     * (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; } else if (raw.equals("Disable Wifi")) { double
-                     * benefitOther = PowerProfileHelper.wifiBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min
-                     * -= hours * 60; } else if (raw.equals("Dim the Screen")) { double benefitOther = PowerProfileHelper.
-                     * screenBrightnessBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; }
-                     */
-
-                    args.putString("benefit", fullObject.textBenefit());
-//                    switchView(killView);
+                	displayKillAppFragment(fullObject, raw);
                 }
             }
+
+            /*
+             * display a fragment (KillAppFragment) for killing the buggy app
+             */
+			private void displayKillAppFragment(SimpleHogBug fullObject, final String raw) {
+				// we need to pass the buggy app info (as a bundle named "args")
+				// to the fragment
+				Bundle args = new Bundle();
+				args.putString("raw", raw);
+				
+				Type type = fullObject.getType();
+				if (type == Type.BUG) {
+					args.putBoolean("isBug", true);
+					args.putBoolean("isHog", false);
+					args.putBoolean("isOther", false);
+				} else if (type == Type.HOG) {
+					args.putBoolean("isHog", true);
+					args.putBoolean("isBug", false);
+					args.putBoolean("isOther", false);
+				}
+				if (type == Type.OTHER) {
+					args.putString("appPriority", fullObject.getAppPriority());
+				} else {
+					args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));                 		
+				}
+				
+				args.putString("benefit", fullObject.textBenefit());
+				
+				Fragment fragment = new KillAppFragment();
+				fragment.setArguments(args);
+				
+				FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+				FragmentTransaction transaction = fragmentManager.beginTransaction();
+				transaction.replace(R.id.content_frame, fragment).addToBackStack("killApp").commit();
+
+				/*
+				 * if (raw.equals("Disable bluetooth")) { double benefitOther = PowerProfileHelper. bluetoothBenefit(c); hours = (int)
+				 * (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; } else if (raw.equals("Disable Wifi")) { double
+				 * benefitOther = PowerProfileHelper.wifiBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min
+				 * -= hours * 60; } else if (raw.equals("Dim the Screen")) { double benefitOther = PowerProfileHelper.
+				 * screenBrightnessBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; }
+				 */
+			}
         });
 
         initUpgradeOsView(root);
 
-        if (savedInstanceState != null){
-        Object o = savedInstanceState.get("savedInstance");
-        if (o != null) {
-            SuggestionsFragment previous = (SuggestionsFragment) o;
-            viewIndex = previous.viewIndex;
-            if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)) {
-                restoreKillView(previous.killView);
-            }
-        }
-        }
+//        if (savedInstanceState != null){
+//        Object o = savedInstanceState.get("savedInstance");
+//        if (o != null) {
+//            SuggestionsFragment previous = (SuggestionsFragment) o;
+//            viewIndex = previous.viewIndex;
+//            if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)) {
+//                restoreKillView(previous.killView);
+//            }
+//        }
+//        }
 
         if (viewIndex == 0)
             vf.setDisplayedChild(baseViewIndex);

@@ -1,24 +1,25 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.subscreens;
 
 import java.util.HashMap;
 
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
 public class KillAppFragment extends Fragment {
 
@@ -123,19 +124,4 @@ public class KillAppFragment extends Fragment {
 		// layout file
 		return view;
 	}
-
-//	@Override
-//	public void onResume() {
-//		super.onResume();
-//	}
-//
-//	@Override
-//	public void onDetach() {
-//		super.onDetach();
-//	}
-//
-//	@Override
-//	public void onSaveInstanceState(Bundle outState) {
-//		super.onSaveInstanceState(outState);
-//	}
 }

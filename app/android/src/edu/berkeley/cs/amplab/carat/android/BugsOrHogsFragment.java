@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -27,6 +29,7 @@ import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.subscreens.BuggyAppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
@@ -76,16 +79,9 @@ public class BugsOrHogsFragment extends Fragment {
     	
 //    	Tab tab = ((ActionBarActivity)getActivity()).getSupportActionBar().getSelectedTab();
 //    	String bugsOrHogs = tab.getTag().toString();
-//    	Boolean bug = getArguments().getBoolean("isBugs");
     	
-//    	if (bugsOrHogs.equals("bugs"))
-//    	if (bug)
-//            isBugs = true;
-//        else
-//        	isBugs = false;
-    	
-    	String isBugsStr = isBugs? "IS_BUGS=true" : "IS_BUGS=false";
-    	Log.d("BugsOrHogs", isBugsStr);
+//    	String isBugsStr = isBugs? "IS_BUGS=true" : "IS_BUGS=false";
+//    	Log.d("BugsOrHogs", isBugsStr);
         
         vf = new ViewFlipper(getActivity());
         View root = inflater.inflate(R.layout.hogs, container, false);
@@ -195,40 +191,13 @@ public class BugsOrHogsFragment extends Fragment {
                 Object o = lv.getItemAtPosition(position);
                 SimpleHogBug fullObject = (SimpleHogBug) o;
                 // View target = findViewById(R.id.hogsGraphView);
-                View target = detailPage;
-                String label = CaratApplication.labelForApp(getActivity(), fullObject.getAppName());
-                Drawable icon = CaratApplication.iconForApp(getActivity(), fullObject.getAppName());
-                PackageInfo pak = SamplingLibrary.getPackageInfo(getActivity(), fullObject.getAppName());
-                String ver = "";
-                if (pak != null) {
-                    ver = pak.versionName;
-                    if (ver == null)
-                        ver = pak.versionCode + "";
-                }
-                final String s = label + " " + ver;
-                ((TextView) detailPage.findViewById(R.id.name)).setText(s);
-                ((ImageView) detailPage.findViewById(R.id.appIcon)).setImageDrawable(icon);
-                ((TextView) detailPage.findViewById(R.id.benefit)).setText(fullObject.textBenefit());
-                w.setHogsBugs(fullObject, s, isBugs, target);
-                // detailPage.postInvalidate();
-
-                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                if (p != null) {
-                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-                    HashMap<String, String> options = new HashMap<String, String>();
-                    options.put("status", getActivity().getTitle().toString());
-                    options.put("type", isBugs ? "Bugs" : "Hogs");
-                    if (pak != null) {
-                        options.put("app", pak.packageName);
-                        options.put("version", pak.versionName);
-                        options.put("versionCode", pak.versionCode + "");
-                        options.put("label", label);
-                    }
-                    options.put("benefit", fullObject.textBenefit().replace('\u00B1', '+'));
-                    ClickTracking.track(uuId, "samplesview", options, getActivity());
-                }
-
-                switchView(target);
+                
+                BuggyAppDetailsFragment fragment = BuggyAppDetailsFragment.newInstance(fullObject, isBugs);
+                
+                // replace the fragment, using a fragment transaction
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+				FragmentTransaction transaction = fragmentManager.beginTransaction();
+				transaction.replace(R.id.content_frame, fragment).addToBackStack("BuggyAppDetailsFragment").commit();
             }
         });
     }
