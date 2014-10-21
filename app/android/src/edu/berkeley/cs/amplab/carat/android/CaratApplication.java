@@ -1,5 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.util.HashMap;
+
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
@@ -17,6 +20,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import android.widget.TextView;
@@ -334,6 +340,24 @@ public class CaratApplication extends Application {
         actionList = a;
     }
 
+    public static void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
+		// replace the fragment, using a fragment transaction
+        FragmentManager fragmentManager = main.getSupportFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
+	}
+    
+    
+    public static void trackUser(String whatIsGettingDone) {
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(main);
+        if (p != null) {
+            String uuId = p.getString(REGISTERED_UUID, "UNKNOWN");
+            HashMap<String, String> options = new HashMap<String, String>();
+            options.put("status", main.getTitle().toString());
+            ClickTracking.track(uuId, whatIsGettingDone, options, main);
+        }
+	}
+    
     // Application overrides
 
     /**

@@ -70,7 +70,6 @@ Carat My Device Screen layout
                     android:layout_gravity="right|center_vertical"
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
-                    android:onClick="viewJscoreInfo"
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
@@ -106,7 +105,6 @@ Carat My Device Screen layout
                     android:layout_gravity="right|center_vertical"
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
-                    android:onClick="showBatteryLifeInfo"
                     android:src="@drawable/arrow" />
             </LinearLayout>
             
@@ -131,12 +129,11 @@ Carat My Device Screen layout
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginRight="8dip"
-                    android:clickable="true"
                     android:gravity="right"
                     android:text="@string/fake_id"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:onClick="copyCaratId"
                     android:textColor="@color/green" />
+                <!-- android:onClick="copyCaratId"  -->
 
             </LinearLayout>
 
@@ -163,8 +160,6 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_os"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:clickable="true"
-                    android:onClick="showOsInfo"
                     android:textColor="@color/green" />
                 
                  <ImageView
@@ -174,7 +169,6 @@ Carat My Device Screen layout
                     android:layout_gravity="right|center_vertical"
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
-                    android:onClick="showOsInfo"
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
@@ -203,8 +197,6 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_dev"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:clickable="true"
-                    android:onClick="showDeviceInfo"
                     android:textColor="@color/green" />
                 
                  <ImageView
@@ -214,7 +206,6 @@ Carat My Device Screen layout
                     android:layout_gravity="right|center_vertical"
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
-                    android:onClick="showDeviceInfo"
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
@@ -267,7 +258,7 @@ Carat My Device Screen layout
                 android:orientation="horizontal" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical" >
@@ -348,7 +339,6 @@ Carat My Device Screen layout
                     android:layout_gravity="right|center_vertical"
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
-                    android:onClick="showMemoryInfo"
                     android:src="@drawable/arrow" />
             </LinearLayout>
 
@@ -369,12 +359,12 @@ Carat My Device Screen layout
 
     </ScrollView>
 
-    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
+    <!--  <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/jscoreView"
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
+    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>  -->
     
     <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -383,11 +373,11 @@ Carat My Device Screen layout
         android:layout_height="match_parent" >
     </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
 
-    <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
+    <!-- <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/batteryLifeView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />  --> 
         
     <ListView
         android:id="@+id/processList"

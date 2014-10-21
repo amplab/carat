@@ -1,20 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.HashMap;
-import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
-import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
-import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
-import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
-import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.Activity;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
@@ -24,14 +12,23 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
+import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
+import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
+import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 /**
  * 
@@ -113,12 +110,50 @@ public class MyDeviceFragment extends Fragment {
         else
             vf.setDisplayedChild(viewIndex);
         
-//        root.findViewById(R.id.jscore_value).setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				viewJscoreInfo(v);
-//			}
-//		});
+        root.findViewById(R.id.jscore_value).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("jscoreinfo");
+			}
+		});
+        root.findViewById(R.id.jscore).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("jscoreinfo");
+			}
+		});
+        
+        root.findViewById(R.id.batterylife_value).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("batterylifeinfo");
+			}
+		});
+        root.findViewById(R.id.batterylife).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("batterylifeinfo");
+			}
+		});
+        
+        root.findViewById(R.id.memoryInfo).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("memoryinfo");
+			}
+		});
+        root.findViewById(R.id.progressBar1).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("memoryinfo");
+			}
+		});
+        root.findViewById(R.id.progressBar2).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showHTMLFile("memoryinfo");
+			}
+		});
         
 //        root.findViewById(R.id.viewProcessButton).setOnClickListener(new OnClickListener(){
 //
@@ -231,20 +266,6 @@ public class MyDeviceFragment extends Fragment {
     }
     
     /**
-     * Called when Carat ID is clicked.
-     * 
-     * @param v
-     *            The source of the click.
-     */
-    public void copyCaratId(View v) {
-        TextView tv = (TextView) getView().findViewById(R.id.carat_id_value);
-        String copied = tv.getText().toString();
-//        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
-//        clipboard.setText(copied);
-        Toast.makeText(getActivity(), getString(R.string.copied) +" "+copied, Toast.LENGTH_LONG).show();
-    }
-
-    /**
      * Called when OS additional info button is clicked.
      * 
      * @param v
@@ -334,109 +355,10 @@ public class MyDeviceFragment extends Fragment {
         switchView(modelViewPage);
     }
 
-    /**
-     * @deprecated This is no longer used.
-     * Called when App list additional info button is clicked.
-     * 
-     * @param v
-     *            The source of the click.
-     */
-    /*public void showAppInfo(View v) {
-        Reports r = CaratApplication.s.getReports();
-        if (r != null) {
-            DetailScreenReport similar = r.getSimilarApps();
-            DetailScreenReport similarWithout = r.getSimilarAppsWithout();
-
-            String label = getString(R.string.similarapps);
-            Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
-            ((TextView) appsViewPage.findViewById(R.id.name)).setText(label);
-            ((ImageView) appsViewPage.findViewById(R.id.appIcon))
-                    .setImageDrawable(icon);
-
-            Log.v("SimilarInfo", "Similar score: " + similar.getScore());
-
-            double ev = similar.getExpectedValue();
-            double error = similar.getError();
-            double evWithout = similarWithout.getExpectedValue();
-            double errorWo = similarWithout.getError();
-            String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
-            if (benefitText == null)
-                benefitText = getString(R.string.jsna);
-            ((TextView) osViewPage.findViewById(R.id.benefit))
-                    .setText(benefitText);
-            
-            appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
-                    similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similarWithout.getSamples(), similar.getError(), similarWithout.getError(), appsViewPage);
-        }
-        switchView(appsViewPage);
-    }*/
-
-    /**
-     * Called when Memory additional info button is clicked.
-     * 
-     * @param v
-     *            The source of the click.
-     */
-    public void showMemoryInfo(View v) {
-        LocalizedWebView webview = (LocalizedWebView) getView().findViewById(R.id.memoryView);
-        
-        webview.loadUrl("file:///android_asset/memoryinfo.html");
-        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(getView().findViewById(R.id.scrollView1))));*/
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getActivity().getTitle().toString());
-            ClickTracking.track(uuId, "memoryinfo", options, getActivity());
-        }
-        switchView(R.id.memoryView);
-    }
-
-    /**
-     * Called when Battery Life additional info button is clicked.
-     * 
-     * @param v
-     *            The source of the click.
-     */
-    public void showBatteryLifeInfo(View v) {
-        LocalizedWebView webview = (LocalizedWebView) getView().findViewById(R.id.batteryLifeView);
-        
-        webview.loadUrl("file:///android_asset/batterylifeinfo.html");
-        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));*/
-        
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getActivity().getTitle().toString());
-            ClickTracking.track(uuId, "batterylifeinfo", options, getActivity());
-        }
-        switchView(R.id.batteryLifeView);
-    }
-    
-    /**
-     * Called when J-Score additional info button is clicked.
-     * 
-     * @param v
-     *            The source of the click.
-     */
-    public void viewJscoreInfo(View v) {
-        LocalizedWebView webview = (LocalizedWebView) getView().findViewById(R.id.jscoreView);
-        
-        webview.loadUrl("file:///android_asset/jscoreinfo.html");
-        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(findViewById(R.id.scrollView1))));*/
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getActivity().getTitle().toString());
-            ClickTracking.track(uuId, "jscoreinfo", options, getActivity());
-        }
-        switchView(R.id.jscoreView);
-    }
+	private void showHTMLFile(String fileName) {
+		WebViewFragment fragment = WebViewFragment.newInstance(fileName);
+    	CaratApplication.replaceFragment(fragment, fileName);
+	}
 
     private void setModelAndVersion(View root) {
         // Device model
@@ -484,9 +406,65 @@ public class MyDeviceFragment extends Fragment {
         });
     }
     
+    // FIXME: use this method in a listener, but first get the ClipboardManager working
+    /**
+     * Called when Carat ID is clicked.
+     * 
+     * @param v
+     *            The source of the click.
+     */
+    public void copyCaratId(View v) {
+        TextView tv = (TextView) getView().findViewById(R.id.carat_id_value);
+        String copied = tv.getText().toString();
+//        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Activity.CLIPBOARD_SERVICE);
+//        clipboard.setText(copied);
+        Toast.makeText(getActivity(), getString(R.string.copied) +" "+copied, Toast.LENGTH_LONG).show();
+    }
+    
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
     
+//    public void showAppInfo(View v) {
+//      Reports r = CaratApplication.s.getReports();
+//      if (r != null) {
+//          DetailScreenReport similar = r.getSimilarApps();
+//          DetailScreenReport similarWithout = r.getSimilarAppsWithout();
+//
+//          String label = getString(R.string.similarapps);
+//          Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
+//          ((TextView) appsViewPage.findViewById(R.id.name)).setText(label);
+//          ((ImageView) appsViewPage.findViewById(R.id.appIcon))
+//                  .setImageDrawable(icon);
+//
+//          Log.v("SimilarInfo", "Similar score: " + similar.getScore());
+//
+//          double ev = similar.getExpectedValue();
+//          double error = similar.getError();
+//          double evWithout = similarWithout.getExpectedValue();
+//          double errorWo = similarWithout.getError();
+//          String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
+//          if (benefitText == null)
+//              benefitText = getString(R.string.jsna);
+//          ((TextView) osViewPage.findViewById(R.id.benefit))
+//                  .setText(benefitText);
+//          
+//          appsView.setParams(Type.SIMILAR, SamplingLibrary.getModel(),
+//                  similar.getExpectedValue(), similarWithout.getExpectedValue(), (int) similar.getSamples(), (int) similarWithout.getSamples(), similar.getError(), similarWithout.getError(), appsViewPage);
+//      }
+//      switchView(appsViewPage);
+//  }
+    
+	//  public void showMemoryInfo() {
+	//	showHTMLFile("memoryinfo");
+	//}
+	
+	//public void showBatteryLifeInfo() {
+	//	showHTMLFile("batterylifeinfo");
+	//}
+	//
+	//public void viewJscoreInfo() {
+	//	showHTMLFile("jscoreinfo");
+	//}
 }

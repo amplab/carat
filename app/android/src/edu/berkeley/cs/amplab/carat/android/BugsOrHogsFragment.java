@@ -1,18 +1,11 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.util.HashMap;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar.Tab;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +20,6 @@ import android.widget.ViewFlipper;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.subscreens.BuggyAppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -193,11 +185,7 @@ public class BugsOrHogsFragment extends Fragment {
                 // View target = findViewById(R.id.hogsGraphView);
                 
                 BuggyAppDetailsFragment fragment = BuggyAppDetailsFragment.newInstance(fullObject, isBugs);
-                
-                // replace the fragment, using a fragment transaction
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-				FragmentTransaction transaction = fragmentManager.beginTransaction();
-				transaction.replace(R.id.content_frame, fragment).addToBackStack("BuggyAppDetailsFragment").commit();
+                CaratApplication.replaceFragment(fragment, "BuggyAppDetailsFragment");
             }
         });
     }
