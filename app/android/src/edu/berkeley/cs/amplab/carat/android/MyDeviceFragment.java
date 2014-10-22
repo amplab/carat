@@ -71,7 +71,7 @@ public class MyDeviceFragment extends Fragment {
         vf = new ViewFlipper(getActivity());
         View root = inflater.inflate(R.layout.mydevice, container, false);
 
-        initProcessListView(root);
+//        initProcessListView(root);
         setModelAndVersion(root);
 
 //        if (savedInstanceState != null){
@@ -182,12 +182,12 @@ public class MyDeviceFragment extends Fragment {
                 .setText(pp.getText());
     }
 
-    private void initProcessListView(View root) {
-        final ListView lv = (ListView) root.findViewById(R.id.processList);
-        lv.setCacheColorHint(0);
-        /*lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(getView().findViewById(R.id.scrollView1))));*/
-    }
+//    private void initProcessListView(View root) {
+//        final ListView lv = (ListView) root.findViewById(R.id.processList);
+//        lv.setCacheColorHint(0);
+//        /*lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
+//                .indexOfChild(getView().findViewById(R.id.scrollView1))));*/
+//    }
 
     private View[] construct() {
         View[] result = new View[2];

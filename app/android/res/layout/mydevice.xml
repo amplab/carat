@@ -330,6 +330,7 @@ Carat My Device Screen layout
                             android:layout_weight="1"
                             android:progress="5" />
                     </LinearLayout>
+                    
                 </LinearLayout>
 
                 <ImageView
@@ -340,6 +341,7 @@ Carat My Device Screen layout
                     android:background="@null"
                     android:contentDescription="@string/moreinfo"
                     android:src="@drawable/arrow" />
+                
             </LinearLayout>
 
             <LinearLayout
@@ -358,13 +360,6 @@ Carat My Device Screen layout
         </LinearLayout>
 
     </ScrollView>
-
-    <!--  <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/webView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>  -->
     
     <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -372,16 +367,5 @@ Carat My Device Screen layout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
-
-    <!-- <edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/batteryLifeView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />  --> 
-        
-    <ListView
-        android:id="@+id/processList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
 
 </edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper>
