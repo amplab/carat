@@ -340,6 +340,13 @@ public class CaratApplication extends Application {
         actionList = a;
     }
 
+    /*
+     * shows the fragment using a fragment transaction 
+     * (replaces the FrameLayout (a placeholder in the main activity's layout file) with this fragment)
+     * @param fragment the fragment that should be shown 
+     * @param fragmentNameInBackStack a name for the fragment 
+     * to be shown in the fragment (task) stack
+     */
     public static void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
 		// replace the fragment, using a fragment transaction
         FragmentManager fragmentManager = main.getSupportFragmentManager();

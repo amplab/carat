@@ -24,6 +24,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
@@ -155,31 +156,17 @@ public class MyDeviceFragment extends Fragment {
 			}
 		});
         
-//        root.findViewById(R.id.viewProcessButton).setOnClickListener(new OnClickListener(){
-//
-//            /**
-//             * Called when View Process List is clicked.
-//             * 
-//             * @param v
-//             *            The source of the click.
-//             */
-//            public void onClick(View v) {
-//                // prepare content:
-//                ListView lv = (ListView) getView().findViewById(R.id.processList);
-//                List<ProcessInfo> searchResults = SamplingLibrary
-//                        .getRunningAppInfo(getActivity());
-//                lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
-//                SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//                if (p != null) {
-//                    String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-//                    HashMap<String, String> options = new HashMap<String, String>();
-//                    options.put("status", getActivity().getTitle().toString());
-//                    ClickTracking.track(uuId, "processlist", options, getActivity());
-//                }
-//                // switch views:
-//                switchView(R.id.processList);
-//            }            
-//        });
+        root.findViewById(R.id.viewProcessButton).setOnClickListener(new View.OnClickListener(){
+            /**
+             * Called when View Process List is clicked.
+             */
+        	@Override
+            public void onClick(View v) {
+            	ProcessListFragment fragment = ProcessListFragment.newInstance(); 
+            	CaratApplication.replaceFragment(fragment, "ProcessList");
+            }            
+        });
+        
         return root;
     }
 
