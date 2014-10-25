@@ -134,15 +134,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     public double getErrorWithout(){ return errorWithout; }
     public void setErrorWithout(double error){this.errorWithout = error;}
     
-    
-    public String textBenefit() {
-        double ev = getExpectedValue();
-        double evWo = getExpectedValueWithout();
-        double error = getError();
-        double errorWo = getErrorWithout();
-        return textBenefit(ev, error, evWo, errorWo);
-    }
-
     public int getSamples() {
         return samples;
     }
@@ -157,6 +148,15 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
 
     public void setSamplesWithout(double samplesWithout) {
         this.samplesWithout = (int) samplesWithout;
+    }
+
+    // overloaded method. note that one of them is static
+    public String textBenefit() {
+        double ev = getExpectedValue();
+        double evWo = getExpectedValueWithout();
+        double error = getError();
+        double errorWo = getErrorWithout();
+        return textBenefit(ev, error, evWo, errorWo);
     }
     
     public static String textBenefit(double ev, double error, double evWo, double errorWo){

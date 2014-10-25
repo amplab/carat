@@ -8,6 +8,7 @@ import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 import android.app.AlarmManager;
 import android.app.Application;
@@ -354,6 +355,10 @@ public class CaratApplication extends Application {
 		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
 	}
     
+    public static void showHTMLFile(String fileName) {
+		WebViewFragment fragment = WebViewFragment.newInstance(fileName);
+    	CaratApplication.replaceFragment(fragment, fileName);
+	}
     
     public static void trackUser(String whatIsGettingDone) {
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(main);

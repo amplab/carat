@@ -24,6 +24,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.subscreens.BuggyAppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -114,56 +115,71 @@ public class MyDeviceFragment extends Fragment {
         root.findViewById(R.id.jscore_value).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("jscoreinfo");
+				CaratApplication.showHTMLFile("jscoreinfo");
 			}
 		});
         root.findViewById(R.id.jscore).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("jscoreinfo");
+				CaratApplication.showHTMLFile("jscoreinfo");
 			}
 		});
         
         root.findViewById(R.id.batterylife_value).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("batterylifeinfo");
+				CaratApplication.showHTMLFile("batterylifeinfo");
 			}
 		});
         root.findViewById(R.id.batterylife).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("batterylifeinfo");
+				CaratApplication.showHTMLFile("batterylifeinfo");
 			}
 		});
         
         root.findViewById(R.id.memoryInfo).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("memoryinfo");
+				CaratApplication.showHTMLFile("memoryinfo");
 			}
 		});
         root.findViewById(R.id.progressBar1).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("memoryinfo");
+				CaratApplication.showHTMLFile("memoryinfo");
 			}
 		});
         root.findViewById(R.id.progressBar2).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showHTMLFile("memoryinfo");
+				CaratApplication.showHTMLFile("memoryinfo");
 			}
 		});
         
+        // shows the list of currently running processes.
+        // called when the "View Process List" button is clicked/tapped.
         root.findViewById(R.id.viewProcessButton).setOnClickListener(new View.OnClickListener(){
-            /**
-             * Called when View Process List is clicked.
-             */
         	@Override
             public void onClick(View v) {
             	ProcessListFragment fragment = ProcessListFragment.newInstance(); 
             	CaratApplication.replaceFragment(fragment, "ProcessList");
+            }            
+        });
+        
+        // called when the "more OS info" arrow (image) is clicked/tapped
+        root.findViewById(R.id.osInfo).setOnClickListener(new View.OnClickListener(){
+        	@Override
+            public void onClick(View v) {
+            	showOsInfo();
+            }            
+        });
+        
+        // called when the OS version is clicked/tapped
+        root.findViewById(R.id.os_ver_value).setOnClickListener(new View.OnClickListener(){
+        	@Override
+            public void onClick(View v) {
+            	showOsInfo();
             }            
         });
         
@@ -182,47 +198,7 @@ public class MyDeviceFragment extends Fragment {
                 .setText(pp.getText());
     }
 
-//    private void initProcessListView(View root) {
-//        final ListView lv = (ListView) root.findViewById(R.id.processList);
-//        lv.setCacheColorHint(0);
-//        /*lv.setOnTouchListener(new FlipperBackListener(this, vf, vf
-//                .indexOfChild(getView().findViewById(R.id.scrollView1))));*/
-//    }
-
-    private View[] construct() {
-        View[] result = new View[2];
-        LayoutInflater inflater = (LayoutInflater) getActivity()
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View detailPage = inflater.inflate(R.layout.graph, null);
-        //  ViewGroup g = (ViewGroup) detailPage;
-        DrawView w = new DrawView(getActivity());
-        //g.addView(w);
-        vf.addView(detailPage);
-
-        /*g.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex,
-                false));*/
-        result[0] = w;
-        result[1] = detailPage;
-
-        final LocalizedWebView webview = new LocalizedWebView(getActivity());
-
-        webview.loadUrl("file:///android_asset/detailinfo.html");
-        /*webview.setOnTouchListener(new FlipperBackListener(this, vf, vf
-                .indexOfChild(detailPage), false));*/
-        vf.addView(webview);
-
-        View moreinfo = detailPage.findViewById(R.id.moreinfo);
-        moreinfo.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                switchView(webview);
-            }
-        });
-
-        return result;
-    }
-    
-    long[] lastPoint = null;
+	long[] lastPoint = null;
 
     /**
      * (non-Javadoc)
@@ -252,56 +228,35 @@ public class MyDeviceFragment extends Fragment {
         super.onDetach();
     }
     
+    private View[] construct() {
+        View[] result = new View[2];
+        LayoutInflater inflater = (LayoutInflater) getActivity()
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View detailPage = inflater.inflate(R.layout.graph, null);
+        //  ViewGroup g = (ViewGroup) detailPage;
+        DrawView w = new DrawView(getActivity());
+        //g.addView(w);
+        
+//        vf.addView(detailPage);
+
+        /*g.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex,
+                false));*/
+        result[0] = w;
+        result[1] = detailPage;
+
+        return result;
+    }
+    
     /**
      * Called when OS additional info button is clicked.
-     * 
-     * @param v
-     *            The source of the click.
      */
-    public void showOsInfo(View v) {
-        View[] viewAndPage = construct();
-        osView = (DrawView) viewAndPage[0];
-        osViewPage = viewAndPage[1];
-        Reports r = CaratApplication.s.getReports();
-        if (r != null) {
-            DetailScreenReport os = r.getOs();
-            DetailScreenReport osWithout = r.getOsWithout();
-
-            String label = getString(R.string.os) +": " + SamplingLibrary.getOsVersion();
-            Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
-            ((TextView) osViewPage.findViewById(R.id.name)).setText(label);
-            ((ImageView) osViewPage.findViewById(R.id.appIcon))
-                    .setImageDrawable(icon);
-            Log.v("OsInfo", "Os score: " + os.getScore());
-            
-            double ev = os.getExpectedValue();
-            double error = os.getError();
-            double evWithout = osWithout.getExpectedValue();
-            double errorWo = osWithout.getError();
-            
-            String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
-            if (benefitText == null)
-                benefitText = getString(R.string.jsna);
-            ((TextView) osViewPage.findViewById(R.id.benefit))
-                    .setText(benefitText);
-            osView.setParams(Type.OS, SamplingLibrary.getOsVersion(),
-                    os.getExpectedValue(), osWithout.getExpectedValue(), (int) os.getSamples(), (int) osWithout.getSamples(), os.getError(), osWithout.getError(), osViewPage);
-        }
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getActivity().getTitle().toString());
-            ClickTracking.track(uuId, "osinfo", options, getActivity());
-        }
-        switchView(osViewPage);
+    public void showOsInfo() {
+    	BuggyAppDetailsFragment fragment = BuggyAppDetailsFragment.newInstance(); 
+    	CaratApplication.replaceFragment(fragment, "OsDetails");
     }
 
     /**
      * Called when Device additional info button is clicked.
-     * 
-     * @param v
-     *            The source of the click.
      */
     public void showDeviceInfo(View v) {
         View[] viewAndPage = construct();
@@ -341,11 +296,6 @@ public class MyDeviceFragment extends Fragment {
         }
         switchView(modelViewPage);
     }
-
-	private void showHTMLFile(String fileName) {
-		WebViewFragment fragment = WebViewFragment.newInstance(fileName);
-    	CaratApplication.replaceFragment(fragment, fileName);
-	}
 
     private void setModelAndVersion(View root) {
         // Device model
