@@ -21,7 +21,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.subscreens.BuggyAppDetailsFragment;
+import edu.berkeley.cs.amplab.carat.android.subscreens.AppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
@@ -184,8 +184,8 @@ public class BugsOrHogsFragment extends Fragment {
                 SimpleHogBug fullObject = (SimpleHogBug) o;
                 // View target = findViewById(R.id.hogsGraphView);
                 
-                BuggyAppDetailsFragment fragment = BuggyAppDetailsFragment.newInstance(fullObject, isBugs);
-                CaratApplication.replaceFragment(fragment, "BuggyAppDetailsFragment");
+                AppDetailsFragment fragment = AppDetailsFragment.newInstance(fullObject, isBugs);
+                CaratApplication.replaceFragment(fragment, "AppDetailsFragment");
             }
         });
     }

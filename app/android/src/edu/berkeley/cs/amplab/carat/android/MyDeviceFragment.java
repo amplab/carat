@@ -24,7 +24,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.subscreens.BuggyAppDetailsFragment;
+import edu.berkeley.cs.amplab.carat.android.subscreens.AppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -183,6 +183,22 @@ public class MyDeviceFragment extends Fragment {
             }            
         });
         
+        // called when the "more device info" arrow (image) is clicked/tapped
+        root.findViewById(R.id.devInfo).setOnClickListener(new View.OnClickListener(){
+        	@Override
+            public void onClick(View v) {
+            	showDeviceInfo();
+            }            
+        });
+        
+        // called when the device model is clicked/tapped
+        root.findViewById(R.id.dev_value).setOnClickListener(new View.OnClickListener(){
+        	@Override
+            public void onClick(View v) {
+            	showDeviceInfo();
+            }            
+        });
+        
         return root;
     }
 
@@ -251,50 +267,16 @@ public class MyDeviceFragment extends Fragment {
      * Called when OS additional info button is clicked.
      */
     public void showOsInfo() {
-    	BuggyAppDetailsFragment fragment = BuggyAppDetailsFragment.newInstance(); 
+    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(false); 
     	CaratApplication.replaceFragment(fragment, "OsDetails");
     }
 
     /**
      * Called when Device additional info button is clicked.
      */
-    public void showDeviceInfo(View v) {
-        View[] viewAndPage = construct();
-        modelView = (DrawView) viewAndPage[0];
-        modelViewPage = viewAndPage[1];
-        Reports r = CaratApplication.s.getReports();
-        if (r != null) {
-            DetailScreenReport model = r.getModel();
-            DetailScreenReport modelWithout = r.getModelWithout();
-
-            String label = getString(R.string.model) +": " + SamplingLibrary.getModel();
-            Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
-            ((TextView) modelViewPage.findViewById(R.id.name)).setText(label);
-            ((ImageView) modelViewPage.findViewById(R.id.appIcon))
-                    .setImageDrawable(icon);
-
-            Log.v("ModelInfo", "Model score: " + model.getScore());
-            double ev = model.getExpectedValue();
-            double error = model.getError();
-            double evWithout = modelWithout.getExpectedValue();
-            double errorWo = modelWithout.getError();
-            String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
-            if (benefitText == null)
-                benefitText = getString(R.string.jsna);
-            ((TextView) modelViewPage.findViewById(R.id.benefit))
-                    .setText(benefitText);
-            modelView.setParams(Type.MODEL, SamplingLibrary.getModel(),
-                    model.getExpectedValue(), modelWithout.getExpectedValue(), (int) model.getSamples(), (int) modelWithout.getSamples(), model.getError(), modelWithout.getError(), modelViewPage);
-        }
-        
-        SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        if (p != null) {
-            String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", getActivity().getTitle().toString());
-            ClickTracking.track(uuId, "deviceinfo", options, getActivity());
-        }
-        switchView(modelViewPage);
+    public void showDeviceInfo() {
+    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(true); 
+    	CaratApplication.replaceFragment(fragment, "DeviceDetails");
     }
 
     private void setModelAndVersion(View root) {
