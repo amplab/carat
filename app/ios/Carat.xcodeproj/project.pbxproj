@@ -1023,7 +1023,6 @@
 		C7547F2C19963CFD007A01CF /* deviceselect.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deviceselect.png; sourceTree = "<group>"; };
 		C7547F2D19963CFD007A01CF /* energyratedist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = energyratedist.png; sourceTree = "<group>"; };
 		C7547F2E19963CFD007A01CF /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
-		C7547F2F19963CFD007A01CF /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		C7547F3019963CFD007A01CF /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
 		C7547F3119963CFD007A01CF /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon120.png; sourceTree = "<group>"; };
 		C7547F3219963CFD007A01CF /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon144.png; sourceTree = "<group>"; };
@@ -3793,7 +3792,6 @@
 				C7547F2C19963CFD007A01CF /* deviceselect.png */,
 				C7547F2D19963CFD007A01CF /* energyratedist.png */,
 				C7547F2E19963CFD007A01CF /* Entitlements.plist */,
-				C7547F2F19963CFD007A01CF /* FacebookSDK.framework */,
 				C7547F3019963CFD007A01CF /* icon114.png */,
 				C7547F3119963CFD007A01CF /* icon120.png */,
 				C7547F3219963CFD007A01CF /* icon144.png */,
@@ -7569,8 +7567,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7615,8 +7612,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7645,7 +7641,6 @@
 				);
 				PRODUCT_NAME = Carat;
 				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				SKIP_INSTALL = NO;
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
 				VALIDATE_PRODUCT = YES;
@@ -7656,8 +7651,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -7665,8 +7659,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=*]" = "";
+				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -7679,9 +7672,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
-				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Eemil Lagerspetz (8RGTR7A4YT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7710,7 +7701,6 @@
 				);
 				PRODUCT_NAME = Carat;
 				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
-				"PROVISIONING_PROFILE[sdk=*]" = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
@@ -7719,8 +7709,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "DEBUG_MODE=1";
 				GCC_THUMB_SUPPORT = NO;
@@ -7729,7 +7718,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -7739,8 +7728,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Adam Oliner (6DTUZ33TN6)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -7748,8 +7736,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "";
-				PROVISIONING_PROFILE = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "22439380-66B1-4CA6-BEF2-A1B5E4BC417E";
+				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
