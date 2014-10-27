@@ -186,8 +186,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
         // correct seconds value will be in benefit
         benefit -= min * 60;
         min -= hours * 60;
-
-        
         
         int errorMins = (int) (maxError / 60);
         

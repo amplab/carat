@@ -267,7 +267,7 @@ public class MyDeviceFragment extends Fragment {
      * Called when OS additional info button is clicked.
      */
     public void showOsInfo() {
-    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(false); 
+    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(Type.OS, null, false); 
     	CaratApplication.replaceFragment(fragment, "OsDetails");
     }
 
@@ -275,7 +275,7 @@ public class MyDeviceFragment extends Fragment {
      * Called when Device additional info button is clicked.
      */
     public void showDeviceInfo() {
-    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(true); 
+    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(Type.MODEL, null, false); 
     	CaratApplication.replaceFragment(fragment, "DeviceDetails");
     }
 
