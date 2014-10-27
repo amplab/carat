@@ -778,7 +778,6 @@
 		C7547E1319963CFD007A01CF /* ActionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActionView.xib; sourceTree = "<group>"; };
 		C7547E1419963CFD007A01CF /* activebatterylife.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = activebatterylife.html; sourceTree = "<group>"; };
 		C7547E1519963CFD007A01CF /* Carat-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Carat-Info.plist"; sourceTree = "<group>"; };
-		C7547E1619963CFD007A01CF /* carat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = carat.png; sourceTree = "<group>"; };
 		C7547E1819963CFD007A01CF /* Carat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Carat.xcdatamodel; sourceTree = "<group>"; };
 		C7547E1919963CFD007A01CF /* Carat.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Carat.xcodeproj; sourceTree = "<group>"; };
 		C7547E1C19963CFD007A01CF /* Carat.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Carat.xcworkspace; sourceTree = "<group>"; };
@@ -806,8 +805,6 @@
 		C7547E3319963CFD007A01CF /* CaratAppDelegate_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratAppDelegate_iPhone.m; sourceTree = "<group>"; };
 		C7547E3419963CFD007A01CF /* CaratProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratProtocol.h; sourceTree = "<group>"; };
 		C7547E3519963CFD007A01CF /* CaratProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratProtocol.m; sourceTree = "<group>"; };
-		C7547E3619963CFD007A01CF /* CaratProtocol.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratProtocol.pb.h; sourceTree = "<group>"; };
-		C7547E3719963CFD007A01CF /* CaratProtocol.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratProtocol.pb.m; sourceTree = "<group>"; };
 		C7547E3819963CFD007A01CF /* CommunicationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommunicationManager.h; sourceTree = "<group>"; };
 		C7547E3919963CFD007A01CF /* CommunicationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommunicationManager.m; sourceTree = "<group>"; };
 		C7547E3A19963CFD007A01CF /* ConsentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsentViewController.h; sourceTree = "<group>"; };
@@ -3766,7 +3763,6 @@
 				C7547E1319963CFD007A01CF /* ActionView.xib */,
 				C7547E1419963CFD007A01CF /* activebatterylife.html */,
 				C7547E1519963CFD007A01CF /* Carat-Info.plist */,
-				C7547E1619963CFD007A01CF /* carat.png */,
 				C7547E1719963CFD007A01CF /* Carat.xcdatamodeld */,
 				C7547E1919963CFD007A01CF /* Carat.xcodeproj */,
 				C7547E1C19963CFD007A01CF /* Carat.xcworkspace */,
@@ -3857,8 +3853,6 @@
 				C7547E3319963CFD007A01CF /* CaratAppDelegate_iPhone.m */,
 				C7547E3419963CFD007A01CF /* CaratProtocol.h */,
 				C7547E3519963CFD007A01CF /* CaratProtocol.m */,
-				C7547E3619963CFD007A01CF /* CaratProtocol.pb.h */,
-				C7547E3719963CFD007A01CF /* CaratProtocol.pb.m */,
 				C7547E3819963CFD007A01CF /* CommunicationManager.h */,
 				C7547E3919963CFD007A01CF /* CommunicationManager.m */,
 				C7547E3A19963CFD007A01CF /* ConsentViewController.h */,
@@ -3917,10 +3911,10 @@
 				C7547EC219963CFD007A01CF /* ReportItemCell.m */,
 				C7547EC319963CFD007A01CF /* ReportViewController.h */,
 				C7547EC419963CFD007A01CF /* ReportViewController.m */,
+				C7547F1519963CFD007A01CF /* UIDeviceProc.h */,
 				C7547EC519963CFD007A01CF /* SDWebImage */,
 				C7547EEE19963CFD007A01CF /* SVPullToRefresh */,
 				C7547EF119963CFD007A01CF /* Thrift */,
-				C7547F1519963CFD007A01CF /* UIDeviceProc.h */,
 				C7547F1619963CFD007A01CF /* UIDeviceProc.m */,
 				C7547F1719963CFD007A01CF /* UIImageDoNotCache.h */,
 				C7547F1819963CFD007A01CF /* UIImageDoNotCache.m */,
