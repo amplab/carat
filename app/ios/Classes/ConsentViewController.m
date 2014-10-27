@@ -96,6 +96,12 @@
             self.view = self.landscapeView;
         }
     }
+    
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 }
 
 - (void)viewDidUnload

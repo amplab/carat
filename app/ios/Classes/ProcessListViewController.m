@@ -98,6 +98,13 @@
     [super viewDidLoad];
     
     [self updateView];
+    
+    // iOS 7+ fix for tabbar overlapping bottom of view
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 }
 
 - (void)viewDidUnload
