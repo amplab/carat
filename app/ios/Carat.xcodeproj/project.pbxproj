@@ -152,9 +152,6 @@
 		C75488D419963D04007A01CF /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3519963CFD007A01CF /* icon72.png */; };
 		C75488D519963D04007A01CF /* icon76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3619963CFD007A01CF /* icon76.png */; };
 		C75488D619963D04007A01CF /* 32-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3819963CFD007A01CF /* 32-iphone.png */; };
-		C75488DE19963D04007A01CF /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4019963CFD007A01CF /* icon114.png */; };
-		C75488DF19963D04007A01CF /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4119963CFD007A01CF /* icon57.png */; };
-		C75488E019963D04007A01CF /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4219963CFD007A01CF /* icon72.png */; };
 		C75488E219963D04007A01CF /* InstructionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4419963CFD007A01CF /* InstructionView.xib */; };
 		C75488E319963D04007A01CF /* jscoreinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4519963CFD007A01CF /* jscoreinfo.html */; };
 		C75488E419963D04007A01CF /* jscoreplot.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4619963CFD007A01CF /* jscoreplot.png */; };
@@ -170,12 +167,6 @@
 		C754895119963D04007A01CF /* Socialize.podspec in Resources */ = {isa = PBXBuildFile; fileRef = C75483B619963CFF007A01CF /* Socialize.podspec */; };
 		C754895219963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C75483B819963CFF007A01CF /* LICENSE */; };
 		C754895319963D04007A01CF /* LoopyApiInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = C75483BB19963CFF007A01CF /* LoopyApiInfo.plist */; };
-		C754895419963D04007A01CF /* FacebookLogoNoBlue43x43.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483BD19963CFF007A01CF /* FacebookLogoNoBlue43x43.png */; };
-		C754895519963D04007A01CF /* FacebookLogoNoBlue60x60.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483BE19963CFF007A01CF /* FacebookLogoNoBlue60x60.png */; };
-		C754895619963D04007A01CF /* FacebookLogoNoBlue76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483BF19963CFF007A01CF /* FacebookLogoNoBlue76x76.png */; };
-		C754895719963D04007A01CF /* TwitterLogo43x43.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483C019963CFF007A01CF /* TwitterLogo43x43.png */; };
-		C754895819963D04007A01CF /* TwitterLogo60x60.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483C119963CFF007A01CF /* TwitterLogo60x60.png */; };
-		C754895919963D04007A01CF /* TwitterLogo76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = C75483C219963CFF007A01CF /* TwitterLogo76x76.png */; };
 		C754897319963D04007A01CF /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C75483F619963CFF007A01CF /* README.md */; };
 		C754897419963D04007A01CF /* Manifest.lock in Resources */ = {isa = PBXBuildFile; fileRef = C75483F719963CFF007A01CF /* Manifest.lock */; };
 		C754897519963D04007A01CF /* Pods-acknowledgements.markdown in Resources */ = {isa = PBXBuildFile; fileRef = C75483F819963CFF007A01CF /* Pods-acknowledgements.markdown */; };
@@ -7026,12 +7017,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C75488CF19963D04007A01CF /* icon114.png in Resources */,
-				C754895419963D04007A01CF /* FacebookLogoNoBlue43x43.png in Resources */,
 				C7548BBD19963D04007A01CF /* ProcessListView.xib in Resources */,
 				C75489AB19963D04007A01CF /* action-bar-icon-comments.png in Resources */,
 				C7548BBF19963D04007A01CF /* procmanager2.png in Resources */,
 				C754895319963D04007A01CF /* LoopyApiInfo.plist in Resources */,
-				C754895619963D04007A01CF /* FacebookLogoNoBlue76x76.png in Resources */,
 				C7548A2019963D04007A01CF /* socialize-comment-background-text-input.png in Resources */,
 				C7548A9D19963D04007A01CF /* SocializeActivityTableViewCellIOS7.xib in Resources */,
 				C75489A519963D04007A01CF /* action-bar-button-red-hover.png in Resources */,
@@ -7212,7 +7201,6 @@
 				C7548A2219963D04007A01CF /* socialize-comment-button-active.png in Resources */,
 				C7548A1619963D04007A01CF /* socialize-cell-image-mask-ios7.png in Resources */,
 				C75489EA19963D04007A01CF /* socialize-activity-details-categ_arrow.png in Resources */,
-				C754895519963D04007A01CF /* FacebookLogoNoBlue60x60.png in Resources */,
 				C754886B19963D03007A01CF /* activebatterylife.html in Resources */,
 				AB9525B014EA1B6F00343418 /* killapp.html in Resources */,
 				C7548A6419963D04007A01CF /* socialize-navbar-button-red@2x.png in Resources */,
@@ -7242,7 +7230,6 @@
 				C75489C819963D04007A01CF /* FacebookLogoNoBlue60x60.png in Resources */,
 				C75489C719963D04007A01CF /* FacebookLogoNoBlue43x43.png in Resources */,
 				AB99EB0414EA6CCD0008E440 /* deviceselect.png in Resources */,
-				C75488E019963D04007A01CF /* icon72.png in Resources */,
 				C75489B019963D04007A01CF /* action-bar-icon-liked@2x.png in Resources */,
 				C7548A0C19963D04007A01CF /* socialize-cell-arrow.png in Resources */,
 				C75488EA19963D04007A01CF /* Podfile in Resources */,
@@ -7266,8 +7253,6 @@
 				C754899619963D04007A01CF /* _SZTwitterLinkViewController.xib in Resources */,
 				C7548A2119963D04007A01CF /* socialize-comment-background-text-input@2x.png in Resources */,
 				C7548CC219963ED0007A01CF /* Icon-Small-50.png in Resources */,
-				C75488DF19963D04007A01CF /* icon57.png in Resources */,
-				C754895719963D04007A01CF /* TwitterLogo43x43.png in Resources */,
 				C7548A4C19963D04007A01CF /* socialize-navbar-bg@2x.png in Resources */,
 				C7548A7B19963D04007A01CF /* socialize-selectnetwork-facebook-dis-icon-ios7.png in Resources */,
 				C7548A5F19963D04007A01CF /* socialize-navbar-button-green.png in Resources */,
@@ -7303,7 +7288,6 @@
 				C7548A2A19963D04007A01CF /* socialize-comment-details-icon-geo-enabled.png in Resources */,
 				C7548A0119963D04007A01CF /* socialize-authorize-twitter-disabled-icon-ios7@2x.png in Resources */,
 				C7548A1C19963D04007A01CF /* socialize-checkmark.png in Resources */,
-				C754895819963D04007A01CF /* TwitterLogo60x60.png in Resources */,
 				C754888C19963D03007A01CF /* HiddenAppsView.xib in Resources */,
 				C7548BAC19963D04007A01CF /* LICENSE in Resources */,
 				C7548A4119963D04007A01CF /* socialize-comment-user-background.png in Resources */,
@@ -7312,7 +7296,6 @@
 				C7548A3919963D04007A01CF /* socialize-comment-notification-disabled@2x.png in Resources */,
 				C7548A5619963D04007A01CF /* socialize-navbar-button-blue-bg-inactive@2x.png in Resources */,
 				C75489CB19963D04007A01CF /* SampleEntityLoader.xib in Resources */,
-				C75488DE19963D04007A01CF /* icon114.png in Resources */,
 				C7548A4F19963D04007A01CF /* socialize-navbar-button-back-pressed.png in Resources */,
 				C7548A9919963D04007A01CF /* socialize_logo.png in Resources */,
 				C7548A0219963D04007A01CF /* socialize-authorize-twitter-disabled-icon.png in Resources */,
@@ -7326,7 +7309,6 @@
 				C75489D619963D04007A01CF /* socialize-activity-cell-icon-facebook.png in Resources */,
 				C7548A7919963D04007A01CF /* socialize-selectnetwork-email-icon.png in Resources */,
 				C7548CC419963ED0007A01CF /* Icon-Small.png in Resources */,
-				C754895919963D04007A01CF /* TwitterLogo76x76.png in Resources */,
 				C7548A6519963D04007A01CF /* socialize-nocomments-icon.png in Resources */,
 				C75488EB19963D04007A01CF /* Podfile.lock in Resources */,
 				C7548A5C19963D04007A01CF /* socialize-navbar-button-dark@2x.png in Resources */,
