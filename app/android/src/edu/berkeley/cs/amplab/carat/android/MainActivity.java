@@ -74,6 +74,8 @@ public class MainActivity extends ActionBarActivity {
 	private MenuItem feedbackItem = null;
 
 	private String fullVersion = null;
+	
+	private Tracker tracker = Tracker.newInstance();
 
 	/**
 	 * 
@@ -143,7 +145,6 @@ public class MainActivity extends ActionBarActivity {
 		setTitleNormal();
 
 		// track user clicks (taps)
-		Tracker tracker = Tracker.newInstance();
 		tracker.trackUser("caratstarted");
 
 		// Uncomment the following to enable listening on local port 8080:
@@ -247,10 +248,14 @@ public class MainActivity extends ActionBarActivity {
 	public void setTitleNormal() {
 		if (CaratApplication.s != null) {
 			long s = CaratApplication.s.getSamplesReported();
-			if (s > 0)
-				this.setTitle(fullVersion + " - " + s + " " + getString(R.string.samplesreported));
-			else
+			Log.d("setTitleNormal", "number of samples reported=" + String.valueOf(s));
+			if (s > 0) {
+//				this.setTitle(fullVersion);
+				this.setTitle("" + s + " " + getString(R.string.samplesreported));
+				Log.d("setTitleNormal", "here");
+			} else {
 				this.setTitle(fullVersion);
+			}
 		} else
 			this.setTitle(fullVersion);
 	}
@@ -376,14 +381,10 @@ public class MainActivity extends ActionBarActivity {
 		/*
 		 * } }.start();
 		 */
+		
 		super.onResume();
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		if (p != null) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-			HashMap<String, String> options = new HashMap<String, String>();
-			options.put("status", getTitle().toString());
-			ClickTracking.track(uuId, "caratresumed", options, getApplicationContext());
-		}
+		tracker.trackUser("caratresumed");
+		
 	}
 
 	/*
@@ -394,13 +395,7 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onPause() {
 		Log.i(TAG, "Paused");
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		if (p != null) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-			HashMap<String, String> options = new HashMap<String, String>();
-			options.put("status", getTitle().toString());
-			ClickTracking.track(uuId, "caratpaused", options, getApplicationContext());
-		}
+		tracker.trackUser("caratpaused");
 		SamplingLibrary.resetRunningProcessInfo();
 		super.onPause();
 	}
@@ -413,13 +408,7 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public void finish() {
 		Log.d(TAG, "Finishing up");
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		if (p != null) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-			HashMap<String, String> options = new HashMap<String, String>();
-			options.put("status", getTitle().toString());
-			ClickTracking.track(uuId, "caratstopped", options, getApplicationContext());
-		}
+		tracker.trackUser("caratstopped");
 		super.finish();
 	}
 
@@ -453,24 +442,12 @@ public class MainActivity extends ActionBarActivity {
 					p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false).commit();
 					// wifiOnly.setChecked(false);
 					wifiOnly.setTitle(R.string.wifionly);
-					SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-					if (p != null) {
-						String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-						HashMap<String, String> options = new HashMap<String, String>();
-						options.put("status", getTitle().toString());
-						ClickTracking.track(uuId, "wifionlyoff", options, getApplicationContext());
-					}
+					tracker.trackUser("WifiOnlyOff");
 				} else {
 					p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, true).commit();
 					// wifiOnly.setChecked(true);
 					wifiOnly.setTitle(R.string.wifionlyused);
-					SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-					if (p != null) {
-						String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-						HashMap<String, String> options = new HashMap<String, String>();
-						options.put("status", getTitle().toString());
-						ClickTracking.track(uuId, "wifionlyon", options, getApplicationContext());
-					}
+					tracker.trackUser("WifiOnlyOn");
 				}
 				return true;
 			}
@@ -487,6 +464,7 @@ public class MainActivity extends ActionBarActivity {
 				sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
 						+ getString(R.string.sharetext2));
 				startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
+				
 				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				if (p != null) {
 					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
