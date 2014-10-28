@@ -10,6 +10,7 @@ import com.flurry.android.FlurryAgent;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -83,6 +84,8 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		CaratApplication.setMain(this);
+		
 		// Activity.getWindow.requestFeature() method should get invoked before setContentView()
 		// otherwise it will cause an app crash
 		// This does not show if it is not updated
@@ -108,22 +111,25 @@ public class MainActivity extends ActionBarActivity {
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-				getSupportActionBar().setTitle(mTitle);
-				// invalidateOptionsMenu();   // creates call to onPrepareOptionsMenu()
-			}
+		mDrawerToggle = 
+				new ActionBarDrawerToggle(this, /* host Activity */
+										  mDrawerLayout, /* DrawerLayout object */
+										  R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+										  R.string.drawer_open, /* "open drawer" description for accessibility */
+										  R.string.drawer_close /* "close drawer" description for accessibility */
+										  ) {
+					public void onDrawerClosed(View view) {
+						getSupportActionBar().setTitle(mTitle);
+						// invalidateOptionsMenu(); // creates call to
+						// onPrepareOptionsMenu()
+					}
 
-			public void onDrawerOpened(View drawerView) {
-				getSupportActionBar().setTitle(mDrawerTitle);
-				// invalidateOptionsMenu();   // creates call to onPrepareOptionsMenu()
-			}
-		};
+					public void onDrawerOpened(View drawerView) {
+						getSupportActionBar().setTitle(mDrawerTitle);
+						// invalidateOptionsMenu(); // creates call to
+						// onPrepareOptionsMenu()
+					}
+				};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		// enable ActionBar app icon to behave as action to toggle nav drawer
@@ -136,13 +142,9 @@ public class MainActivity extends ActionBarActivity {
 
 		setTitleNormal();
 
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		if (p != null) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-			HashMap<String, String> options = new HashMap<String, String>();
-			options.put("status", getTitle().toString());
-			ClickTracking.track(uuId, "caratstarted", options, getApplicationContext());
-		}
+		// track user clicks (taps)
+		Tracker tracker = Tracker.newInstance();
+		tracker.trackUser("caratstarted");
 
 		// Uncomment the following to enable listening on local port 8080:
 		/*
@@ -163,34 +165,40 @@ public class MainActivity extends ActionBarActivity {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
 		Bundle args = new Bundle();
+		String fragmentName = "";
 		
 		switch (position) {
 		case 0:
 			fragment = new SuggestionsFragment();
+			fragmentName = "Suggestions";
 			break;
 		case 1:
 			fragment = new MyDeviceFragment();
+			fragmentName = "MyDevice";
 			break;
 		case 2:
 			args.putBoolean("isBugs", true);
 			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
+			fragmentName = "Bugs";
 			break;
 		case 3:
 			args.putBoolean("isBugs", false);
 			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
+			fragmentName = "Hogs";
 			break;
 		case 4:
 			fragment = new AboutFragment();
+			fragmentName = "AboutCarat";
 			break;
 		case 5:
 			fragment = new AppRecomFragment();
+			fragmentName = "AppRecommendation";
 			break;
 		}
 
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		CaratApplication.replaceFragment(fragment, fragmentName);
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
