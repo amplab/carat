@@ -55,11 +55,12 @@ public class SuggestionsFragment extends Fragment implements Serializable{
     private View collectDataView = null;
     private int emptyIndex = -1;
     private LocalizedWebView webview = null;
+    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         vf = new ViewFlipper(getActivity());
-        View root = inflater.inflate(R.layout.suggestions, container, false);
+        root = inflater.inflate(R.layout.suggestions, container, false);
         final Context c = getActivity();
 
         tv = inflater.inflate(R.layout.emptyactions, null);
@@ -136,10 +137,8 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 				Fragment fragment = new KillAppFragment();
 				fragment.setArguments(args);
 				
-				FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-				FragmentTransaction transaction = fragmentManager.beginTransaction();
-				transaction.replace(R.id.content_frame, fragment).addToBackStack("killApp").commit();
-
+				CaratApplication.replaceFragment(fragment, "killApp");
+				
 				/*
 				 * if (raw.equals("Disable bluetooth")) { double benefitOther = PowerProfileHelper. bluetoothBenefit(c); hours = (int)
 				 * (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; } else if (raw.equals("Disable Wifi")) { double
@@ -314,8 +313,8 @@ public class SuggestionsFragment extends Fragment implements Serializable{
     }
 
     public void refresh() {
-        CaratApplication app = (CaratApplication) getActivity().getApplication();
-        final ListView lv = (ListView) getView().findViewById(android.R.id.list);
+        CaratApplication app = (CaratApplication) CaratApplication.getMainActivity().getApplication();
+        final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setAdapter(new HogBugSuggestionsAdapter(app, CaratApplication.s.getHogReport(), CaratApplication.s.getBugReport()));
         emptyCheck(lv);
     }

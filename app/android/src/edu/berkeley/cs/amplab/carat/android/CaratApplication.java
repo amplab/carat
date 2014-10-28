@@ -446,8 +446,10 @@ public class CaratApplication extends Application {
                 Context co = getApplicationContext();
                 
                 // refreshing the CaratSuggestionFragment should only be done 
-                //if the fragment is in the foreground. It's already done in onResume() in CaratSuggestionFragment 
-//                refreshActions();
+                //if the fragment is in the foreground. It's already done in onResume() in CaratSuggestionFragment
+                
+                refreshActions();
+                
                 final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
                 final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
                 String networkStatus = SamplingLibrary
@@ -485,7 +487,9 @@ public class CaratApplication extends Application {
                 
                 // should be only done if the fragment is attached.
                 // refresh() is already done in the onResume() method of the fragment
-//                CaratApplication.refreshActions();
+                
+                refreshActions();
+                
 //                CaratApplication.refreshBugs();
 //                CaratApplication.refreshHogs();
                 
