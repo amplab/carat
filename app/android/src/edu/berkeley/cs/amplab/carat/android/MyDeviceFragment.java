@@ -39,26 +39,13 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
  */
 public class MyDeviceFragment extends Fragment {
 
-    private DrawView osView = null;
-    private View osViewPage = null;
-    private DrawView modelView = null;
-    private View modelViewPage = null;
-    /*private DrawView appsView = null;
-    private View appsViewPage = null;
-     */
-    
-    
     // TODO: FIXME: These should be gone.
     int viewIndex = 0;
     int baseViewIndex = 0;
     ViewFlipper vf = null;
     
-    private void switchView(View v){}
-    
-    private void switchView(int id){}
-    
     /**
-     * Set up Fragment and subscreens. Transformations from Fragment
+     * Set up fragment and sub-screens. Transformations from Fragment
      * to another should be handled at a higher level.
      */
     
@@ -72,7 +59,6 @@ public class MyDeviceFragment extends Fragment {
         vf = new ViewFlipper(getActivity());
         View root = inflater.inflate(R.layout.mydevice, container, false);
 
-//        initProcessListView(root);
         setModelAndVersion(root);
 
 //        if (savedInstanceState != null){

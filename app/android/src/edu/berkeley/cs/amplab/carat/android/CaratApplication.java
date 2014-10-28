@@ -151,6 +151,10 @@ public class CaratApplication extends Application {
         }
         return s;
     }
+    
+    public static MainActivity getMainActivity() {
+    	return main;
+    }
 
     public static String translatedPriority(String importanceString) {
         if (main != null) {
@@ -360,15 +364,9 @@ public class CaratApplication extends Application {
     	CaratApplication.replaceFragment(fragment, fileName);
 	}
     
-    public static void trackUser(String whatIsGettingDone) {
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(main);
-        if (p != null) {
-            String uuId = p.getString(REGISTERED_UUID, "UNKNOWN");
-            HashMap<String, String> options = new HashMap<String, String>();
-            options.put("status", main.getTitle().toString());
-            ClickTracking.track(uuId, whatIsGettingDone, options, main);
-        }
-	}
+    public static String getRegisteredUuid() {
+    	return REGISTERED_UUID;
+    }
     
     // Application overrides
 

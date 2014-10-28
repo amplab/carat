@@ -116,7 +116,7 @@ public class HogsBugsAdapter extends BaseAdapter {
         
         holder.txtName.setText(label + " " + ver);
         holder.appIcon.setImageDrawable(icon);
-        holder.textBenefit.setText(item.textBenefit());
+        holder.textBenefit.setText(item.getBenefitText());
         // holder.moreInfo...
 
         return convertView;

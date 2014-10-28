@@ -131,7 +131,7 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 					args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));                 		
 				}
 				
-				args.putString("benefit", fullObject.textBenefit());
+				args.putString("benefit", fullObject.getBenefitText());
 				
 				Fragment fragment = new KillAppFragment();
 				fragment.setArguments(args);

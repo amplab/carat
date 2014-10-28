@@ -151,15 +151,15 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     }
 
     // overloaded method. note that one of them is static
-    public String textBenefit() {
+    public String getBenefitText() {
         double ev = getExpectedValue();
         double evWo = getExpectedValueWithout();
         double error = getError();
         double errorWo = getErrorWithout();
-        return textBenefit(ev, error, evWo, errorWo);
+        return getBenefitText(ev, error, evWo, errorWo);
     }
     
-    public static String textBenefit(double ev, double error, double evWo, double errorWo){
+    public static String getBenefitText(double ev, double error, double evWo, double errorWo){
         // Max battery life: What if the we swing entirely to the left end of the 95% error bar?
         double blMax = 100.0/(ev - error);
         double blMaxWo = 100.0/(evWo - errorWo);
@@ -207,7 +207,7 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
         }
     }
     
-    public static String textError(double ev, double error, double evWo, double errorWo){
+    public static String getErrorText(double ev, double error, double evWo, double errorWo){
         // Max battery life: What if the we swing entirely to the left end of the 95% error bar?
         double blMax = 100.0/(ev - error);
         double blMaxWo = 100.0/(evWo - errorWo);

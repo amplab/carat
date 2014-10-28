@@ -317,7 +317,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                         .findViewById(R.id.benefitLegend);
                 bl.setText("");
             }else
-            holder.txtBenefit.setText(item.textBenefit());
+            holder.txtBenefit.setText(item.getBenefitText());
 
             // holder.moreInfo...
             }

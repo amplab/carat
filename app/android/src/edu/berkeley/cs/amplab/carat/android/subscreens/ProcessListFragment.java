@@ -6,6 +6,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,7 +29,9 @@ public class ProcessListFragment extends Fragment {
         List<ProcessInfo> searchResults = SamplingLibrary
                 .getRunningAppInfo(getActivity());
         lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
-        CaratApplication.trackUser("ProcessList");
+        
+        Tracker tracker = Tracker.newInstance();
+		tracker.trackUser("ProcessList");
         
 		return view;
 	}

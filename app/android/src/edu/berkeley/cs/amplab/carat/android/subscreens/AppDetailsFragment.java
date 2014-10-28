@@ -22,6 +22,7 @@ import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
+import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
@@ -70,32 +71,13 @@ public class AppDetailsFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View detailsPage = inflater.inflate(R.layout.graph, container, false);
 
+		DrawView drawView = new DrawView(getActivity());
+		
 		if (isApp) {
-			String label = CaratApplication.labelForApp(getActivity(), fullObject.getAppName());
-			Drawable icon = CaratApplication.iconForApp(getActivity(), fullObject.getAppName());
-			PackageInfo pak = SamplingLibrary.getPackageInfo(getActivity(), fullObject.getAppName());
-
-			String ver = "";
-			if (pak != null) {
-				ver = pak.versionName;
-				if (ver == null)
-					ver = pak.versionCode + "";
-			}
-			final String s = label + " " + ver;
-
-			((TextView) detailsPage.findViewById(R.id.name)).setText(s);
-			((ImageView) detailsPage.findViewById(R.id.appIcon)).setImageDrawable(icon);
-
-			// setDetails(fullObject.getExpectedValue(), fullObject.getError(),
-			// osWithout.getExpectedValue(), osWithout.getError(), (int)
-			// fullObject.getSamples(), (int) fullObject.getSamplesWithout());
-
-			((TextView) detailsPage.findViewById(R.id.benefit)).setText(fullObject.textBenefit());
-			((TextView) detailsPage.findViewById(R.id.killBenefit)).setText(fullObject.textBenefit());
-			((TextView) detailsPage.findViewById(R.id.samples)).setText(String.valueOf(fullObject.getSamples()));
-			((TextView) detailsPage.findViewById(R.id.error)).setText(String.valueOf(fullObject.getError()));
-			((TextView) detailsPage.findViewById(R.id.samplesWo))
-					.setText(String.valueOf(fullObject.getSamplesWithout()));
+//			Drawable icon = CaratApplication.iconForApp(getActivity(), fullObject.getAppName());
+//			((ImageView) detailsPage.findViewById(R.id.appIcon)).setImageDrawable(icon);
+			
+			drawView.setParams(fullObject, detailsPage);
 
 			View moreinfo = detailsPage.findViewById(R.id.moreinfo);
 			moreinfo.setOnClickListener(new View.OnClickListener() {
@@ -104,43 +86,40 @@ public class AppDetailsFragment extends Fragment {
 					CaratApplication.showHTMLFile("detailinfo");
 				}
 			});
-			trackUser(label, pak);
-		} else {
-			DrawView drawView = new DrawView(getActivity());
+		} else {   // isOS or isModel
 			Reports r = CaratApplication.s.getReports();
 			String label;
 
 			if (r != null) {
-				Log.d("ReadReports", "Read reports. Reports are not null.");
 				if (isOs) {
-					// Log.d("isOS", "isOS");
 					DetailScreenReport os = r.getOs();
 					DetailScreenReport osWithout = r.getOsWithout();
 					label = getString(R.string.os) + ": " + SamplingLibrary.getOsVersion();
 					setDetails(os, osWithout);
-					drawView.setParams(Type.OS, SamplingLibrary.getOsVersion(), ev, evWithout, samplesCount,
+					drawView.setParams(Type.OS, label, ev, evWithout, samplesCount,
 							samplesCountWithout, error, errorWo, detailsPage);
-
 					Log.v("OsInfo", "Os score: " + os.getScore());
-					CaratApplication.trackUser("osInfo");
+					
+					Tracker tracker = Tracker.newInstance();
+					tracker.trackUser("osInfo");
 				} else {
-					// Log.d("isModel", "isModel");
 					DetailScreenReport model = r.getModel();
 					DetailScreenReport modelWithout = r.getModelWithout();
 					label = getString(R.string.model) + ": " + SamplingLibrary.getModel();
 					setDetails(model, modelWithout);
-					drawView.setParams(Type.MODEL, SamplingLibrary.getModel(), ev, evWithout, samplesCount,
+					drawView.setParams(Type.MODEL, label, ev, evWithout, samplesCount,
 							samplesCountWithout, error, errorWo, detailsPage);
-
 					Log.v("ModelInfo", "Model score: " + model.getScore());
-					CaratApplication.trackUser("deviceInfo");
+					
+					Tracker tracker = Tracker.newInstance();
+					tracker.trackUser("deviceInfo");
 				}
 
-				Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
-				((TextView) detailsPage.findViewById(R.id.name)).setText(label);
-				((ImageView) detailsPage.findViewById(R.id.appIcon)).setImageDrawable(icon);
+//				Drawable icon = CaratApplication.iconForApp(getActivity(), "Carat");
+//				((TextView) detailsPage.findViewById(R.id.name)).setText(label);
+//				((ImageView) detailsPage.findViewById(R.id.appIcon)).setImageDrawable(icon);
 
-				String benefitText = SimpleHogBug.textBenefit(ev, error, evWithout, errorWo);
+				String benefitText = SimpleHogBug.getBenefitText(ev, error, evWithout, errorWo);
 				if (benefitText == null)
 					benefitText = getString(R.string.jsna);
 
@@ -164,23 +143,7 @@ public class AppDetailsFragment extends Fragment {
 		this.samplesCountWithout = (int) objWithout.getSamples();
 	}
 
-	private void trackUser(String label, PackageInfo pak) {
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		if (p != null) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-			HashMap<String, String> options = new HashMap<String, String>();
-			options.put("status", getActivity().getTitle().toString());
-			options.put("type", isBugs ? "Bugs" : "Hogs");
-			if (pak != null) {
-				options.put("app", pak.packageName);
-				options.put("version", pak.versionName);
-				options.put("versionCode", pak.versionCode + "");
-				options.put("label", label);
-			}
-			options.put("benefit", fullObject.textBenefit().replace('\u00B1', '+'));
-			ClickTracking.track(uuId, "samplesview", options, getActivity());
-		}
-	}
+	
 
 	public void setFullObject(SimpleHogBug fullObject) {
 		this.fullObject = fullObject;

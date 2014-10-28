@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
+import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
 public class WebViewFragment extends Fragment {
 
@@ -24,7 +25,9 @@ public class WebViewFragment extends Fragment {
 		View view = inflater.inflate(R.layout.webview, container, false);
 		LocalizedWebView webview = (LocalizedWebView) view.findViewById(R.id.webView);
         webview.loadUrl("file:///android_asset/" + fileName + ".html");
-        CaratApplication.trackUser(fileName);
+        
+        Tracker tracker = Tracker.newInstance();
+		tracker.trackUser(fileName);
 		// onCreateView() should return the view resulting from inflating the
 		// layout file
 		return view;
