@@ -34,7 +34,7 @@
                 <constraint firstItem="16" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="ZZC-mu-yFg"/>
                 <constraint firstAttribute="trailing" secondItem="16" secondAttribute="trailing" id="wSK-WH-Nff"/>
             </constraints>
-            <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+            <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="345" y="316"/>
         </view>
@@ -58,7 +58,7 @@
                 <constraint firstAttribute="trailing" secondItem="21" secondAttribute="trailing" id="OwT-gi-60S"/>
                 <constraint firstAttribute="bottom" secondItem="21" secondAttribute="bottom" constant="49" id="hKA-LH-81B"/>
             </constraints>
-            <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+            <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
             <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

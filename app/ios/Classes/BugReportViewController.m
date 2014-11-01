@@ -93,6 +93,7 @@
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
         self.extendedLayoutIncludesOpaqueBars = NO;
         self.automaticallyAdjustsScrollViewInsets = NO;
+        self.navigationController.navigationBar.translucent = NO;
     }
 }
 
