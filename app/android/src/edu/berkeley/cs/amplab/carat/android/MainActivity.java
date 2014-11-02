@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private String fullVersion = null;
 	
-	private Tracker tracker = Tracker.newInstance();
+	private Tracker tracker = Tracker.getInstance();
 
 	/**
 	 * 

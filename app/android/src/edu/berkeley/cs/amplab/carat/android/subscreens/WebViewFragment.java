@@ -26,7 +26,7 @@ public class WebViewFragment extends Fragment {
 		LocalizedWebView webview = (LocalizedWebView) view.findViewById(R.id.webView);
         webview.loadUrl("file:///android_asset/" + fileName + ".html");
         
-        Tracker tracker = Tracker.newInstance();
+        Tracker tracker = Tracker.getInstance();
 		tracker.trackUser(fileName);
 		// onCreateView() should return the view resulting from inflating the
 		// layout file

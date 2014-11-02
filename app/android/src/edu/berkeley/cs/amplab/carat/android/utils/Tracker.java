@@ -14,10 +14,19 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 public class Tracker {
 
-	public static Tracker newInstance() {
-		return new Tracker();
+	private static Tracker instance = null;
+	
+	public static Tracker getInstance() {
+		if (instance != null)
+			return instance;
+		else
+			return new Tracker();
 	}
 
+	private Tracker() {
+		Tracker.instance = this;
+	}
+	
 	/*
 	 * IMPORTANT: The fields "type" and "textBenefit" of the fullObject (the
 	 * second parameter) must be initiated before INVOKING this method,

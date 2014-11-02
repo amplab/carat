@@ -37,591 +37,576 @@ import android.widget.TextView;
  */
 public class CaratApplication extends Application {
 
-    // Report Freshness timeout. Default: 15 minutes
-    public static final long FRESHNESS_TIMEOUT = 30*1000;
-//    public static final long FRESHNESS_TIMEOUT = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-    // Blacklist freshness timeout. Default 24h.
-    public static final long FRESHNESS_TIMEOUT_BLACKLIST = 30*1000;
-//    public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24 * 3600 * 1000;
-    // Blacklist freshness timeout. Default 2 days.
-    public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 30*1000;
-//    public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 2* 24 * 3600 * 1000;
-    // If this preference is true, register this as a new device on the Carat
-    // server.
-    public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
-    public static final String REGISTERED_UUID = "carat.registered.uuid";
-    public static final String REGISTERED_OS = "carat.registered.os";
-    public static final String REGISTERED_MODEL = "carat.registered.model";
-    public static final String PREFERENCE_WIFI_ONLY = "carat.use.wifi";
-    public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
-    public static final String PREFERENCE_TIME_BASED_UUID = "carat.uuid.timebased";
+	// Report Freshness timeout. Default: 15 minutes
+	public static final long FRESHNESS_TIMEOUT = 30 * 1000;
+	// public static final long FRESHNESS_TIMEOUT =
+	// AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+	// Blacklist freshness timeout. Default 24h.
+	public static final long FRESHNESS_TIMEOUT_BLACKLIST = 30 * 1000;
+	// public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24 * 3600 * 1000;
+	// Blacklist freshness timeout. Default 2 days.
+	public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 30 * 1000;
+	// public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 2* 24 * 3600 *
+	// 1000;
+	// If this preference is true, register this as a new device on the Carat
+	// server.
+	public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
+	public static final String REGISTERED_UUID = "carat.registered.uuid";
+	public static final String REGISTERED_OS = "carat.registered.os";
+	public static final String REGISTERED_MODEL = "carat.registered.model";
+	public static final String PREFERENCE_WIFI_ONLY = "carat.use.wifi";
+	public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
+	public static final String PREFERENCE_TIME_BASED_UUID = "carat.uuid.timebased";
 
-    // Check for and send new samples at most every 15 minutes, but only when
-    // the user wakes up/starts Carat
-    public static final long COMMS_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-    // When waking up from screen off, wait 5 seconds for wifi etc to come up
-    public static final long COMMS_WIFI_WAIT = 5 * 1000;
-    // Send up to 10 samples at a time
-    public static final int COMMS_MAX_UPLOAD_BATCH = 10;
+	// Check for and send new samples at most every 15 minutes, but only when
+	// the user wakes up/starts Carat
+	public static final long COMMS_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+	// When waking up from screen off, wait 5 seconds for wifi etc to come up
+	public static final long COMMS_WIFI_WAIT = 5 * 1000;
+	// Send up to 10 samples at a time
+	public static final int COMMS_MAX_UPLOAD_BATCH = 10;
 
-    // Alarm event for sampling when battery has not changed for
-    // SAMPLE_INTERVAL_MS. Currently not used.
-    public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
-    // If true, install Sampling events to occur at boot. Currently not used.
-    public static final String PREFERENCE_SAMPLE_FIRST_RUN = "carat.sample.first.run";
-    public static final String PREFERENCE_SEND_INSTALLED_PACKAGES = "carat.sample.send.installed";
+	// Alarm event for sampling when battery has not changed for
+	// SAMPLE_INTERVAL_MS. Currently not used.
+	public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
+	// If true, install Sampling events to occur at boot. Currently not used.
+	public static final String PREFERENCE_SAMPLE_FIRST_RUN = "carat.sample.first.run";
+	public static final String PREFERENCE_SEND_INSTALLED_PACKAGES = "carat.sample.send.installed";
 
-    // default icon and Carat package name:
-    public static String CARAT_PACKAGE = "edu.berkeley.cs.amplab.carat.android";
-    // Used to blacklist old Carat
-    public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
+	// default icon and Carat package name:
+	public static String CARAT_PACKAGE = "edu.berkeley.cs.amplab.carat.android";
+	// Used to blacklist old Carat
+	public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
-    // Used for bugs and hogs, and drawing
-    public enum Type {
-        OS, MODEL, HOG, BUG, SIMILAR, JSCORE, OTHER
-    }
+	// Used for bugs and hogs, and drawing
+	public enum Type {
+		OS, MODEL, HOG, BUG, SIMILAR, JSCORE, OTHER
+	}
 
-    // Used for logging
-    private static final String TAG = "CaratApp";
-    // Used for messages in comms threads
-    private static final String TRY_AGAIN = " will try again in "
-            + (FRESHNESS_TIMEOUT / 1000) + "s.";
+	// Used for logging
+	private static final String TAG = "CaratApp";
+	// Used for messages in comms threads
+	private static final String TRY_AGAIN = " will try again in " + (FRESHNESS_TIMEOUT / 1000) + "s.";
 
-    // Not in Android 2.2, but needed for app importances
-    public static final int IMPORTANCE_PERCEPTIBLE = 130;
-    // Used for non-app suggestions
-    public static final int IMPORTANCE_SUGGESTION = 123456789;
-    
-    public static final String IMPORTANCE_NOT_RUNNING = "Not Running";
-    public static final String IMPORTANCE_UNINSTALLED = "uninstalled";
-    public static final String IMPORTANCE_INSTALLED = "installed";
-    public static final String IMPORTANCE_REPLACED = "replaced";
-    
-    // Used to map importances to human readable strings for sending samples to
-    // the server, and showing them in the process list.
-    private static final SparseArray<String> importanceToString = new SparseArray<String>();
-    public static final int COMMS_MAX_BATCHES = 50;
-    {
-        importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY,
-                "Not running");
-        importanceToString.put(RunningAppProcessInfo.IMPORTANCE_BACKGROUND,
-                "Background process");
-        importanceToString.put(RunningAppProcessInfo.IMPORTANCE_SERVICE,
-                "Service");
-        importanceToString.put(RunningAppProcessInfo.IMPORTANCE_VISIBLE,
-                "Visible task");
-        importanceToString.put(RunningAppProcessInfo.IMPORTANCE_FOREGROUND,
-                "Foreground app");
+	// Not in Android 2.2, but needed for app importances
+	public static final int IMPORTANCE_PERCEPTIBLE = 130;
+	// Used for non-app suggestions
+	public static final int IMPORTANCE_SUGGESTION = 123456789;
 
-        importanceToString.put(IMPORTANCE_PERCEPTIBLE, "Perceptible task");
+	public static final String IMPORTANCE_NOT_RUNNING = "Not Running";
+	public static final String IMPORTANCE_UNINSTALLED = "uninstalled";
+	public static final String IMPORTANCE_INSTALLED = "installed";
+	public static final String IMPORTANCE_REPLACED = "replaced";
 
-        importanceToString.put(IMPORTANCE_SUGGESTION, "Suggestion");
-    }
+	// Used to map importances to human readable strings for sending samples to
+	// the server, and showing them in the process list.
+	private static final SparseArray<String> importanceToString = new SparseArray<String>();
+	public static final int COMMS_MAX_BATCHES = 50;
+	{
+		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY, "Not running");
+		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_BACKGROUND, "Background process");
+		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_SERVICE, "Service");
+		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_VISIBLE, "Visible task");
+		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_FOREGROUND, "Foreground app");
 
-    // NOTE: This needs to be initialized before CommunicationManager.
-    public static CaratDataStorage s = null;
-    // NOTE: The CommunicationManager requires a working instance of
-    // CaratDataStorage.
-    public CommunicationManager c = null;
+		importanceToString.put(IMPORTANCE_PERCEPTIBLE, "Perceptible task");
 
-    // Activity pointers so that all activity UIs can be updated with a callback
-    // to CaratApplication
-    private static MainActivity main = null;
-    private static MyDeviceFragment myDevice = null;
-    private static BugsOrHogsFragment bugsActivity = null;
-    private static BugsOrHogsFragment hogsActivity = null;
-    private static SuggestionsFragment actionList = null;
-    // The Sampler samples the battery level when it changes.
-    private static Sampler sampler = null;
+		importanceToString.put(IMPORTANCE_SUGGESTION, "Suggestion");
+	}
 
-    // Utility methods
+	// NOTE: This needs to be initialized before CommunicationManager.
+	public static CaratDataStorage s = null;
+	// NOTE: The CommunicationManager requires a working instance of
+	// CaratDataStorage.
+	public CommunicationManager c = null;
 
-    /**
-     * Converts <code>importance</code> to a human readable string.
-     * 
-     * @param importance
-     *            the importance from Android process info.
-     * @return a human readable String describing the importance.
-     */
-    public static String importanceString(int importance) {
-        String s = importanceToString.get(importance);
-        if (s == null || s.length() == 0) {
-            Log.e("Importance not found:", "" + importance);
-            s = "Unknown";
-        }
-        return s;
-    }
-    
-    public static MainActivity getMainActivity() {
-    	return main;
-    }
+	// Activity pointers so that all activity UIs can be updated with a callback
+	// to CaratApplication
+	private static MainActivity main = null;
+	private static MyDeviceFragment myDevice = null;
+	private static BugsOrHogsFragment bugsActivity = null;
+	private static BugsOrHogsFragment hogsActivity = null;
+	private static SuggestionsFragment actionList = null;
+	// The Sampler samples the battery level when it changes.
+	private static Sampler sampler = null;
 
-    public static String translatedPriority(String importanceString) {
-        if (main != null) {
-            if (importanceString == null)
-                return main.getString(R.string.priorityDefault);
-            if (importanceString.equals("Not running")) {
-                return main.getString(R.string.prioritynotrunning);
-            } else if (importanceString.equals("Background process")) {
-                return main.getString(R.string.prioritybackground);
-            } else if (importanceString.equals("Service")) {
-                return main.getString(R.string.priorityservice);
-            } else if (importanceString.equals("Visible task")) {
-                return main.getString(R.string.priorityvisible);
-            } else if (importanceString.equals("Foreground app")) {
-                return main.getString(R.string.priorityforeground);
-            } else if (importanceString.equals("Perceptible task")) {
-                return main.getString(R.string.priorityperceptible);
-            } else if (importanceString.equals("Suggestion")) {
-                return main.getString(R.string.prioritysuggestion);
-            } else
-                return main.getString(R.string.priorityDefault);
-        } else
-            return importanceString;
-    }
+	// Utility methods
 
-    /**
-     * Return a Drawable that contains an app icon for the named app. If not
-     * found, return the Drawable for the Carat icon.
-     * 
-     * @param appName
-     *            the application name
-     * @return the Drawable for the application's icon
-     */
-    public static Drawable iconForApp(Context c, String appName) {
-        try {
-            return c.getPackageManager().getApplicationIcon(appName);
-        } catch (NameNotFoundException e) {
-            return c.getResources().getDrawable(R.drawable.ic_launcher);
-        }
-    }
+	/**
+	 * Converts <code>importance</code> to a human readable string.
+	 * 
+	 * @param importance
+	 *            the importance from Android process info.
+	 * @return a human readable String describing the importance.
+	 */
+	public static String importanceString(int importance) {
+		String s = importanceToString.get(importance);
+		if (s == null || s.length() == 0) {
+			Log.e("Importance not found:", "" + importance);
+			s = "Unknown";
+		}
+		return s;
+	}
 
-    /**
-     * Return a human readable application label for the named app. If not
-     * found, return appName.
-     * 
-     * @param appName
-     *            the application name
-     * @return the human readable application label
-     */
-    public static String labelForApp(Context c, String appName) {
-        if (appName == null)
-            return "Unknown";
-        try {
-            ApplicationInfo i = c.getPackageManager().getApplicationInfo(
-                    appName, 0);
-            if (i != null)
-                return c.getPackageManager().getApplicationLabel(i).toString();
-            else
-                return appName;
-        } catch (NameNotFoundException e) {
-            return appName;
-        }
-    }
+	public static MainActivity getMainActivity() {
+		return main;
+	}
 
-    /**
-     * Set a field on the MyDevice tab by viewId.
-     * 
-     * @param viewId
-     * @param text
-     */
-    public static void setMyDeviceText(final int viewId, final String text) {
-        if (myDevice != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
-                    if (t != null)
-                        t.setText(text);
-                    else 
-                    	Log.e("setMyDeviceText", "unable to find the text view in myDevice fragment");
-                }
+	public static String translatedPriority(String importanceString) {
+		if (main != null) {
+			if (importanceString == null)
+				return main.getString(R.string.priorityDefault);
+			if (importanceString.equals("Not running")) {
+				return main.getString(R.string.prioritynotrunning);
+			} else if (importanceString.equals("Background process")) {
+				return main.getString(R.string.prioritybackground);
+			} else if (importanceString.equals("Service")) {
+				return main.getString(R.string.priorityservice);
+			} else if (importanceString.equals("Visible task")) {
+				return main.getString(R.string.priorityvisible);
+			} else if (importanceString.equals("Foreground app")) {
+				return main.getString(R.string.priorityforeground);
+			} else if (importanceString.equals("Perceptible task")) {
+				return main.getString(R.string.priorityperceptible);
+			} else if (importanceString.equals("Suggestion")) {
+				return main.getString(R.string.prioritysuggestion);
+			} else
+				return main.getString(R.string.priorityDefault);
+		} else
+			return importanceString;
+	}
 
-            });
-        }
-    }
+	/**
+	 * Return a Drawable that contains an app icon for the named app. If not
+	 * found, return the Drawable for the Carat icon.
+	 * 
+	 * @param appName
+	 *            the application name
+	 * @return the Drawable for the application's icon
+	 */
+	public static Drawable iconForApp(Context c, String appName) {
+		try {
+			return c.getPackageManager().getApplicationIcon(appName);
+		} catch (NameNotFoundException e) {
+			return c.getResources().getDrawable(R.drawable.ic_launcher);
+		}
+	}
 
-    public static int getJscore() {
-        final Reports r = s.getReports();
-        int jscore = 0;
-        if (r != null) {
-            jscore = ((int) (r.getJScore() * 100));
-        }
-        return jscore;
-    }
+	/**
+	 * Return a human readable application label for the named app. If not
+	 * found, return appName.
+	 * 
+	 * @param appName
+	 *            the application name
+	 * @return the human readable application label
+	 */
+	public static String labelForApp(Context c, String appName) {
+		if (appName == null)
+			return "Unknown";
+		try {
+			ApplicationInfo i = c.getPackageManager().getApplicationInfo(appName, 0);
+			if (i != null)
+				return c.getPackageManager().getApplicationLabel(i).toString();
+			else
+				return appName;
+		} catch (NameNotFoundException e) {
+			return appName;
+		}
+	}
 
-    public static void refreshBugs() {
-        if (bugsActivity != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    bugsActivity.refresh();
-                }
+	/**
+	 * Set a field on the MyDevice tab by viewId.
+	 * 
+	 * @param viewId
+	 * @param text
+	 */
+	public static void setMyDeviceText(final int viewId, final String text) {
+		if (myDevice != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
+					if (t != null)
+						t.setText(text);
+					else
+						Log.e("setMyDeviceText", "unable to find the text view in myDevice fragment");
+				}
 
-            });
-        }
-    }
+			});
+		}
+	}
 
-    public static void refreshHogs() {
-        if (hogsActivity != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    hogsActivity.refresh();
-                }
+	public static int getJscore() {
+		final Reports r = s.getReports();
+		int jscore = 0;
+		if (r != null) {
+			jscore = ((int) (r.getJScore() * 100));
+		}
+		return jscore;
+	}
 
-            });
-        }
-    }
+	public static void refreshBugs() {
+		if (bugsActivity != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					bugsActivity.refresh();
+				}
 
-    public static void setActionInProgress() {
-        if (main != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    // Updating done
-                    main.setTitleUpdating(main
-                            .getString(R.string.tab_my_device));
-                    main.setProgress(0);
-                    main.setProgressBarVisibility(true);
-                    main.setProgressBarIndeterminateVisibility(true);
-                }
-            });
-        }
-    }
+			});
+		}
+	}
 
-    public static void refreshActions() {
-        if (actionList != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    actionList.refresh();
-                }
-            });
-        }
-    }
+	public static void refreshHogs() {
+		if (hogsActivity != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					hogsActivity.refresh();
+				}
 
-    public static void setActionProgress(final int progress, final String what,
-            final boolean fail) {
-        if (main != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    if (fail)
-                        main.setTitleUpdatingFailed(what);
-                    else
-                        main.setTitleUpdating(what);
-                    main.setProgress(progress * 100);
-                }
-            });
-        }
-    }
+			});
+		}
+	}
 
-    public static void setActionFinished() {
-        if (main != null) {
-            main.runOnUiThread(new Runnable() {
-                public void run() {
-                    // Updating done
-                    main.setTitleNormal();
-                    main.setProgress(100);
-                    main.setProgressBarVisibility(false);
-                    main.setProgressBarIndeterminateVisibility(false);
-                }
-            });
-        }
-    }
+	public static void setActionInProgress() {
+		if (main != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					// Updating done
+					main.setTitleUpdating(main.getString(R.string.tab_my_device));
+					main.setProgress(0);
+					main.setProgressBarVisibility(true);
+					main.setProgressBarIndeterminateVisibility(true);
+				}
+			});
+		}
+	}
 
-    public static void setMain(MainActivity a) {
-        main = a;
-    }
+	public static void refreshActions() {
+		if (actionList != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					actionList.refresh();
+				}
+			});
+		}
+	}
 
-    public static void setMyDevice(MyDeviceFragment a) {
-        myDevice = a;
-    }
+	public static void setActionProgress(final int progress, final String what, final boolean fail) {
+		if (main != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					if (fail)
+						main.setTitleUpdatingFailed(what);
+					else
+						main.setTitleUpdating(what);
+					main.setProgress(progress * 100);
+				}
+			});
+		}
+	}
 
-    public static void setBugs(BugsOrHogsFragment a) {
-        bugsActivity = a;
-    }
+	public static void setActionFinished() {
+		if (main != null) {
+			main.runOnUiThread(new Runnable() {
+				public void run() {
+					// Updating done
+					main.setTitleNormal();
+					main.setProgress(100);
+					main.setProgressBarVisibility(false);
+					main.setProgressBarIndeterminateVisibility(false);
+				}
+			});
+		}
+	}
 
-    public static void setHogs(BugsOrHogsFragment a) {
-        hogsActivity = a;
-    }
+	public static void setMain(MainActivity a) {
+		main = a;
+	}
 
-    public static void setActionList(SuggestionsFragment a) {
-        actionList = a;
-    }
+	public static void setMyDevice(MyDeviceFragment a) {
+		myDevice = a;
+	}
 
-    /*
-     * shows the fragment using a fragment transaction 
-     * (replaces the FrameLayout (a placeholder in the main activity's layout file) with this fragment)
-     * @param fragment the fragment that should be shown 
-     * @param fragmentNameInBackStack a name for the fragment 
-     * to be shown in the fragment (task) stack
-     */
-    public static void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
+	public static void setBugs(BugsOrHogsFragment a) {
+		bugsActivity = a;
+	}
+
+	public static void setHogs(BugsOrHogsFragment a) {
+		hogsActivity = a;
+	}
+
+	public static void setActionList(SuggestionsFragment a) {
+		actionList = a;
+	}
+
+	/*
+	 * shows the fragment using a fragment transaction (replaces the FrameLayout
+	 * (a placeholder in the main activity's layout file) with this fragment)
+	 * 
+	 * @param fragment the fragment that should be shown
+	 * 
+	 * @param fragmentNameInBackStack a name for the fragment to be shown in the
+	 * fragment (task) stack
+	 */
+	public static void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
 		// replace the fragment, using a fragment transaction
-        FragmentManager fragmentManager = main.getSupportFragmentManager();
+		FragmentManager fragmentManager = main.getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
 		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
 	}
-    
-    public static void showHTMLFile(String fileName) {
+
+	public static void showHTMLFile(String fileName) {
 		WebViewFragment fragment = WebViewFragment.newInstance(fileName);
-    	CaratApplication.replaceFragment(fragment, fileName);
+		CaratApplication.replaceFragment(fragment, fileName);
 	}
-    
-    public static String getRegisteredUuid() {
-    	return REGISTERED_UUID;
-    }
-    
-    // Application overrides
 
-    /**
-     * 1. Create CaratDataStorage and read reports from disk. Does not seem too
-     * slow.
-     * 
-     * 2. Take a sample in a new thread so that the GUI has fresh data.
-     * 
-     * 3. Create CommunicationManager for communicating with the Carat server.
-     * 
-     * 4. Communicate with the server to fetch new reports if current ones are
-     * outdated, and to send old stored and the new just-recorded sample. See
-     * MainActivity for this task.
-     */
-    @Override
-    public void onCreate() {
-        s = new CaratDataStorage(this);
+	public static String getRegisteredUuid() {
+		return REGISTERED_UUID;
+	}
 
-        new Thread() {
-            private IntentFilter intentFilter;
+	// Application overrides
 
-            public void run() {
-                /*
-                 * Schedule recurring sampling event: (currently not used)
-                 */
-                /*
-                 * SharedPreferences p = PreferenceManager
-                 * .getDefaultSharedPreferences(CaratApplication.this); boolean
-                 * firstRun = p.getBoolean(PREFERENCE_SAMPLE_FIRST_RUN, true);
-                 */
-                // do this always for now for debugging purposes:
-                // if (firstRun) {
-                // What to start when the event fires (this is unused at the
-                // moment)
-                /*
-                 * Intent intent = new Intent(getApplicationContext(),
-                 * Sampler.class); intent.setAction(ACTION_CARAT_SAMPLE); // In
-                 * reality, you would want to have a static variable for the //
-                 * request // code instead of 192837 PendingIntent sender =
-                 * PendingIntent.getBroadcast( CaratApplication.this, 192837,
-                 * intent, PendingIntent.FLAG_UPDATE_CURRENT); // Cancel if this
-                 * has been set up. Do not use timer at all any // more.
-                 * sender.cancel();
-                 */
+	/**
+	 * 1. Create CaratDataStorage and read reports from disk. Does not seem too
+	 * slow.
+	 * 
+	 * 2. Take a sample in a new thread so that the GUI has fresh data.
+	 * 
+	 * 3. Create CommunicationManager for communicating with the Carat server.
+	 * 
+	 * 4. Communicate with the server to fetch new reports if current ones are
+	 * outdated, and to send old stored and the new just-recorded sample. See
+	 * MainActivity for this task.
+	 */
+	@Override
+	public void onCreate() {
+		s = new CaratDataStorage(this);
 
-                // Let sampling happen on battery change
-                intentFilter = new IntentFilter();
-                intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-                /*intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-                intentFilter.addDataScheme("package"); // add addDataScheme*/
-                sampler = Sampler.getInstance();
-                // Unregister, since Carat may have been started multiple times
-                // since reboot
-                try {
-                    unregisterReceiver(sampler);
-                } catch (IllegalArgumentException e) {
-                    // No-op
-                }
-                registerReceiver(sampler, intentFilter);
-            }
-        }.start();
+		new Thread() {
+			private IntentFilter intentFilter;
 
-        new Thread() {
-            public void run() {
-                c = new CommunicationManager(CaratApplication.this);
-            }
-        }.start();
+			public void run() {
+				/*
+				 * Schedule recurring sampling event: (currently not used)
+				 */
+				/*
+				 * SharedPreferences p = PreferenceManager
+				 * .getDefaultSharedPreferences(CaratApplication.this); boolean
+				 * firstRun = p.getBoolean(PREFERENCE_SAMPLE_FIRST_RUN, true);
+				 */
+				// do this always for now for debugging purposes:
+				// if (firstRun) {
+				// What to start when the event fires (this is unused at the
+				// moment)
+				/*
+				 * Intent intent = new Intent(getApplicationContext(),
+				 * Sampler.class); intent.setAction(ACTION_CARAT_SAMPLE); // In
+				 * reality, you would want to have a static variable for the //
+				 * request // code instead of 192837 PendingIntent sender =
+				 * PendingIntent.getBroadcast( CaratApplication.this, 192837,
+				 * intent, PendingIntent.FLAG_UPDATE_CURRENT); // Cancel if this
+				 * has been set up. Do not use timer at all any // more.
+				 * sender.cancel();
+				 */
 
-        super.onCreate();
-    }
+				// Let sampling happen on battery change
+				intentFilter = new IntentFilter();
+				intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+				/*
+				 * intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+				 * intentFilter.addDataScheme("package"); // add addDataScheme
+				 */
+				sampler = Sampler.getInstance();
+				// Unregister, since Carat may have been started multiple times
+				// since reboot
+				try {
+					unregisterReceiver(sampler);
+				} catch (IllegalArgumentException e) {
+					// No-op
+				}
+				registerReceiver(sampler, intentFilter);
+			}
+		}.start();
 
-    public void refreshUi() {
-        new Thread() {
-            public void run() {
-                boolean connecting = false;
-                Context co = getApplicationContext();
-                
-                // refreshing the CaratSuggestionFragment should only be done 
-                //if the fragment is in the foreground. It's already done in onResume() in CaratSuggestionFragment
-                
-                refreshActions();
-                
-                final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
-                final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
-                String networkStatus = SamplingLibrary
-                        .getNetworkStatus(getApplicationContext());
-                String networkType = SamplingLibrary.getNetworkType(co);
-                
-                boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
-                        || networkType.equals("WIFI");
-                
-                if (connected && c != null) {
-                    // Show we are updating...
-                    CaratApplication.setActionInProgress();
-                    try {
-                        c.refreshAllReports();
-                        // Log.d(TAG, "Reports refreshed.");
-                    } catch (Throwable th) {
-                        // Any sort of malformed response, too short string,
-                        // etc...
-                        Log.w(TAG, "Failed to refresh reports: " + th
-                                + TRY_AGAIN);
-                        th.printStackTrace();
-                    }
-                    connecting = false;
+		new Thread() {
+			public void run() {
+				c = new CommunicationManager(CaratApplication.this);
+			}
+		}.start();
 
-                } else if (networkStatus
-                        .equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
-                    Log.w(TAG, "Network status: " + networkStatus
-                            + ", trying again in 10s.");
-                    connecting = true;
-                }
+		super.onCreate();
+	}
 
-                // do this regardless
-                setReportData();
-                // Update UI elements
-                
-                // should be only done if the fragment is attached.
-                // refresh() is already done in the onResume() method of the fragment
-                
-                refreshActions();
-                
-//                CaratApplication.refreshBugs();
-//                CaratApplication.refreshHogs();
-                
-                CaratApplication.setActionProgress(90,
-                        getString(R.string.finishing), false);
+	public void refreshUi() {
+		new Thread() {
+			public void run() {
+				boolean connecting = false;
+				Context co = getApplicationContext();
 
-                if (!connecting)
-                    CaratApplication.setActionFinished();
+				// refreshing the CaratSuggestionFragment should only be done
+				// if the fragment is in the foreground. It's already done in
+				// onResume() in CaratSuggestionFragment
+				// refreshActions();
 
-                if (connecting) {
-                    // wait for wifi to come up
-                    try {
-                        Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
-                    } catch (InterruptedException e1) {
-                        // ignore
-                    }
-                    connecting = false;
+				final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
+				final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
+				String networkStatus = SamplingLibrary.getNetworkStatus(getApplicationContext());
+				String networkType = SamplingLibrary.getNetworkType(co);
 
-                    // Show we are updating...
-                    CaratApplication.setActionInProgress();
-                    try {
-                        c.refreshAllReports();
-                        // Log.d(TAG, "Reports refreshed.");
-                    } catch (Throwable th) {
-                        // Any sort of malformed response, too short string,
-                        // etc...
-                        Log.w(TAG, "Failed to refresh reports: " + th
-                                + TRY_AGAIN);
-                        th.printStackTrace();
-                    }
-                    connecting = false;
+				boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
+						|| networkType.equals("WIFI");
 
-                    // do this regardless
-                    setReportData();
-                    // Update UI elements
-//                    refreshActions();
-//                    refreshBugs();
-//                    refreshHogs();
-                    setActionProgress(90, getString(R.string.finishing), false);
-                }
-                CaratApplication.setActionFinished();
-                SampleSender.sendSamples(CaratApplication.this);
-                CaratApplication.setActionFinished();
-            }
-        }.start();
-    }
+				if (connected && c != null) {
+					// Show we are updating...
+					CaratApplication.setActionInProgress();
+					try {
+						c.refreshAllReports();
+						// Log.d(TAG, "Reports refreshed.");
+					} catch (Throwable th) {
+						// Any sort of malformed response, too short string,
+						// etc...
+						Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
+						th.printStackTrace();
+					}
+					connecting = false;
 
-    public static void setReportData() {
-        final Reports r = s.getReports();
-        Log.d(TAG, "Got reports.");
-        long freshness = CaratApplication.s.getFreshness();
-        long l = System.currentTimeMillis() - freshness;
-        final long h = l / 3600000;
-        final long min = (l - h * 3600000) / 60000;
-        double bl = 0;
-        double error = 0;
-        int jscore = -1;
-        
-        if (r != null) {
-            // Try exact battery life
-            if (r.jScoreWith != null) {
-                double exp = r.jScoreWith.expectedValue;
-                if (exp > 0.0){
-                    bl = 100 / exp;
-                    error =  100/(exp+r.jScoreWith.error);
-                }
-                else if (r.getModel() != null) {
-                    exp = r.getModel().expectedValue;
-                    Log.d(TAG, "Model expected value: " + exp);
-                    if (exp > 0.0){
-                        bl = 100 / exp;
-                        error = 100 / (exp + r.getModel().error);
-                    }
-                }
-                // If not possible, try model battery life
-            }
-            jscore = ((int) (r.getJScore() * 100));
-            setMyDeviceText(R.id.jscore_value, jscore + "");
-        }
+				} else if (networkStatus.equals(SamplingLibrary.NETWORKSTATUS_CONNECTING)) {
+					Log.w(TAG, "Network status: " + networkStatus + ", trying again in 10s.");
+					connecting = true;
+				}
 
-        if (jscore == -1 || jscore == 0)
-            setMyDeviceText(R.id.jscore_value, "N/A");
-        
-        // Only take the error part
-        error = bl - error;
-                
-        int blh = (int) (bl / 3600);
-        bl -= blh * 3600;
-        int blmin = (int) (bl / 60);
-        
-        int errorH = 0;
-        int errorMin = 0; 
-        if (error > 7200){
-            errorH = (int) (error/3600);
-            error-= errorH*3600;
-        }
-        
-        errorMin = (int) (error/60);
-        
-        final String blS = blh + "h " + blmin + "m \u00B1 "+ (errorH > 0 ? errorH+"h ":"") + errorMin +" m";
+				// do this regardless
+				setReportData();
+				// Update UI elements
 
-        // Log.v(TAG, "Freshness: " + freshness);
-        if (main != null) {
-            if (freshness <= 0)
-                setMyDeviceText(R.id.updated,
-                        main.getString(R.string.neverupdated));
-            else if (min == 0)
-                setMyDeviceText(R.id.updated,
-                        main.getString(R.string.updatedjustnow));
-            else
-                setMyDeviceText(R.id.updated,
-                        main.getString(R.string.updated) + " " + h + "h " + min
-                                + "m " + main.getString(R.string.ago));
-        }
-        
+				// should be only done if the fragment is attached.
+				// refresh() is already done in the onResume() method of the
+				// fragment
+				// refreshActions();
+				// CaratApplication.refreshBugs();
+				// CaratApplication.refreshHogs();
+
+				CaratApplication.setActionProgress(90, getString(R.string.finishing), false);
+
+				if (!connecting)
+					CaratApplication.setActionFinished();
+
+				if (connecting) {
+					// wait for wifi to come up
+					try {
+						Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
+					} catch (InterruptedException e1) {
+						// ignore
+					}
+					connecting = false;
+
+					// Show we are updating...
+					CaratApplication.setActionInProgress();
+					try {
+						c.refreshAllReports();
+						// Log.d(TAG, "Reports refreshed.");
+					} catch (Throwable th) {
+						// Any sort of malformed response, too short string,
+						// etc...
+						Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
+						th.printStackTrace();
+					}
+					connecting = false;
+
+					// do this regardless
+					setReportData();
+					// Update UI elements
+					// refreshActions();
+					// refreshBugs();
+					// refreshHogs();
+					setActionProgress(90, getString(R.string.finishing), false);
+				}
+				CaratApplication.setActionFinished();
+				SampleSender.sendSamples(CaratApplication.this);
+				CaratApplication.setActionFinished();
+			}
+		}.start();
+	}
+
+	public static void setReportData() {
+		final Reports r = s.getReports();
+		Log.d(TAG, "Got reports.");
+		long freshness = CaratApplication.s.getFreshness();
+		long l = System.currentTimeMillis() - freshness;
+		final long h = l / 3600000;
+		final long min = (l - h * 3600000) / 60000;
+		double bl = 0;
+		double error = 0;
+		int jscore = -1;
+
+		if (r != null) {
+			// Try exact battery life
+			if (r.jScoreWith != null) {
+				double exp = r.jScoreWith.expectedValue;
+				if (exp > 0.0) {
+					bl = 100 / exp;
+					error = 100 / (exp + r.jScoreWith.error);
+				} else if (r.getModel() != null) {
+					exp = r.getModel().expectedValue;
+					Log.d(TAG, "Model expected value: " + exp);
+					if (exp > 0.0) {
+						bl = 100 / exp;
+						error = 100 / (exp + r.getModel().error);
+					}
+				}
+				// If not possible, try model battery life
+			}
+			jscore = ((int) (r.getJScore() * 100));
+			setMyDeviceText(R.id.jscore_value, jscore + "");
+		}
+
+		if (jscore == -1 || jscore == 0)
+			setMyDeviceText(R.id.jscore_value, "N/A");
+
+		// Only take the error part
+		error = bl - error;
+
+		int blh = (int) (bl / 3600);
+		bl -= blh * 3600;
+		int blmin = (int) (bl / 60);
+
+		int errorH = 0;
+		int errorMin = 0;
+		if (error > 7200) {
+			errorH = (int) (error / 3600);
+			error -= errorH * 3600;
+		}
+
+		errorMin = (int) (error / 60);
+
+		final String blS = blh + "h " + blmin + "m \u00B1 " + (errorH > 0 ? errorH + "h " : "") + errorMin + " m";
+
+		// Log.v(TAG, "Freshness: " + freshness);
+		if (main != null) {
+			if (freshness <= 0)
+				setMyDeviceText(R.id.updated, main.getString(R.string.neverupdated));
+			else if (min == 0)
+				setMyDeviceText(R.id.updated, main.getString(R.string.updatedjustnow));
+			else
+				setMyDeviceText(R.id.updated,
+						main.getString(R.string.updated) + " " + h + "h " + min + "m " + main.getString(R.string.ago));
+		}
+
 		if (myDevice != null) {
 			SharedPreferences p = PreferenceManager
-					.getDefaultSharedPreferences(CaratApplication.myDevice
-							.getActivity());
+					.getDefaultSharedPreferences(CaratApplication.myDevice.getActivity());
 			String cid = p.getString(REGISTERED_UUID, "0");
 			setMyDeviceText(R.id.carat_id_value, cid);
 			setMyDeviceText(R.id.batterylife_value, blS);
 		}
-    }
+	}
 
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-    }
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+	}
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+	}
 }

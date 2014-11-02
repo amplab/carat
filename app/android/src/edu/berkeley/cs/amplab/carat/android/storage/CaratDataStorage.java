@@ -348,9 +348,11 @@ public class CaratDataStorage {
         writeText(samples_reported+ "", SAMPLES_REPORTED);
     }
     
+ 
     public long readSamplesReported() {
         String s = readText(SAMPLES_REPORTED);
         Log.d("CaratDataStorage", "Read samples reported: " + s);
+        // here is the bug. s is null!
         if (s != null)
             return Long.parseLong(s);
         else

@@ -53,8 +53,10 @@ public class CaratSampleDB {
     private static Object dbLock = new Object();
 
     public static CaratSampleDB getInstance(Context c) {
-        if (instance == null)
+        if (instance == null) {
             instance = new CaratSampleDB(c);
+            Log.d("CaratSampleDB", "new instance created and returned");
+        }
         return instance;
     }
 
@@ -121,7 +123,7 @@ public class CaratSampleDB {
 
         Cursor cursor = builder.query(db, columns, selection, selectionArgs,
                 groupBy, having, sortOrder);
-
+        
         if (cursor == null) {
             return null;
         } else if (!cursor.moveToFirst()) {
@@ -184,9 +186,11 @@ public class CaratSampleDB {
                         COLUMN_TIMESTAMP + " ASC LIMIT " + howmany);
 
                 if (cursor == null) {
+                	Log.d("CaratSampleDB", "query returned null");
                     // There are no results
                     return results;
                 } else {
+                	Log.d("CaratSampleDB", "query is successfull!");
                     cursor.moveToFirst();
                     while (!cursor.isAfterLast()) {
                         Sample s = fillSample(cursor);

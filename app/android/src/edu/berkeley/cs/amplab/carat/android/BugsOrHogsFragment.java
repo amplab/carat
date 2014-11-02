@@ -185,7 +185,7 @@ public class BugsOrHogsFragment extends Fragment {
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				// View target = findViewById(R.id.hogsGraphView);
 
-				AppDetailsFragment fragment = AppDetailsFragment.newInstance(Type.OTHER, fullObject, isBugs);
+				AppDetailsFragment fragment = AppDetailsFragment.getInstance(Type.BUG, fullObject, isBugs);
 				CaratApplication.replaceFragment(fragment, "AppDetailsFragment");
 			}
 		});

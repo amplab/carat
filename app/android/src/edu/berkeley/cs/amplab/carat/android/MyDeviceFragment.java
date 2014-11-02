@@ -1,36 +1,22 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.subscreens.AppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;
-import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
-import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
-import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
-import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 /**
  * 
@@ -39,6 +25,8 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
  */
 public class MyDeviceFragment extends Fragment {
 
+	AppDetailsFragment detailsFragment;
+	
     // TODO: FIXME: These should be gone.
     int viewIndex = 0;
     int baseViewIndex = 0;
@@ -253,16 +241,16 @@ public class MyDeviceFragment extends Fragment {
      * Called when OS additional info button is clicked.
      */
     public void showOsInfo() {
-    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(Type.OS, null, false); 
-    	CaratApplication.replaceFragment(fragment, "OsDetails");
+    	detailsFragment = AppDetailsFragment.getInstance(Type.OS, null, false); 
+    	CaratApplication.replaceFragment(detailsFragment, "OsDetails");
     }
 
     /**
      * Called when Device additional info button is clicked.
      */
     public void showDeviceInfo() {
-    	AppDetailsFragment fragment = AppDetailsFragment.newInstance(Type.MODEL, null, false); 
-    	CaratApplication.replaceFragment(fragment, "DeviceDetails");
+    	detailsFragment = AppDetailsFragment.getInstance(Type.MODEL, null, false); 
+    	CaratApplication.replaceFragment(detailsFragment, "DeviceDetails");
     }
 
     private void setModelAndVersion(View root) {

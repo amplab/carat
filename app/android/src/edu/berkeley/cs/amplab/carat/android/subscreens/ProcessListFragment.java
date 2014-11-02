@@ -30,7 +30,7 @@ public class ProcessListFragment extends Fragment {
                 .getRunningAppInfo(getActivity());
         lv.setAdapter(new ProcessInfoAdapter(getActivity(), searchResults));
         
-        Tracker tracker = Tracker.newInstance();
+        Tracker tracker = Tracker.getInstance();
 		tracker.trackUser("ProcessList");
         
 		return view;
