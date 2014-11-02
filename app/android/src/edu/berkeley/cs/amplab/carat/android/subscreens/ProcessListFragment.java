@@ -17,9 +17,12 @@ import android.widget.ListView;
 
 public class ProcessListFragment extends Fragment {
 
-	public static ProcessListFragment newInstance() {
-		ProcessListFragment fragment = new ProcessListFragment();
-		return fragment;
+	private static ProcessListFragment instance = null;
+	
+	public static ProcessListFragment getInstance() {
+		if (instance == null)
+			instance = new ProcessListFragment();
+		return instance;
 	}
 	
 	@Override

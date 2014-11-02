@@ -136,7 +136,7 @@ public class MyDeviceFragment extends Fragment {
         root.findViewById(R.id.viewProcessButton).setOnClickListener(new View.OnClickListener(){
         	@Override
             public void onClick(View v) {
-            	ProcessListFragment fragment = ProcessListFragment.newInstance(); 
+            	ProcessListFragment fragment = ProcessListFragment.getInstance(); 
             	CaratApplication.replaceFragment(fragment, "ProcessList");
             }            
         });

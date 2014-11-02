@@ -62,10 +62,6 @@ public class AppDetailsFragment extends Fragment {
 		}
 	}
 
-	private AppDetailsFragment() {
-		AppDetailsFragment.instance = this;
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View detailsPage = inflater.inflate(R.layout.graph, container, false);

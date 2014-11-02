@@ -14,31 +14,21 @@ import android.os.Bundle;
 public class Sampler extends WakefulBroadcastReceiver implements
         LocationListener {
 
-    //private static final String TAG = "Sampler";
-
     public static final int MAX_SAMPLES = 250;
 
     private static Sampler instance = null;
-
-    public static Sampler getInstance() {
-        if (instance != null)
-            return instance;
-        else
-            return new Sampler();
-    }
-
     private Context context = null;
-
     private double lastBatteryLevel = 0;
     private Location lastKnownLocation = null;
     private double distance = 0.0;
-
     private long lastNotify;
 
-    public Sampler() {
-        Sampler.instance = this;
+    public static Sampler getInstance() {
+    	if (instance == null)
+    		Sampler.instance = new Sampler();
+    	return instance;
     }
-
+    
     private void requestLocationUpdates() {
         LocationManager lm = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);

@@ -355,7 +355,7 @@ public class CaratApplication extends Application {
 	}
 
 	public static void showHTMLFile(String fileName) {
-		WebViewFragment fragment = WebViewFragment.newInstance(fileName);
+		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
 		CaratApplication.replaceFragment(fragment, fileName);
 	}
 
