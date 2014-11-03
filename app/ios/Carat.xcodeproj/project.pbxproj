@@ -1028,7 +1028,6 @@
 		C7547F3219963CFD007A01CF /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon144.png; sourceTree = "<group>"; };
 		C7547F3319963CFD007A01CF /* icon152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon152.png; sourceTree = "<group>"; };
 		C7547F3419963CFD007A01CF /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
-		C7547F3519963CFD007A01CF /* icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon72.png; sourceTree = "<group>"; };
 		C7547F3619963CFD007A01CF /* icon76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon76.png; sourceTree = "<group>"; };
 		C7547F3819963CFD007A01CF /* 32-iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "32-iphone.png"; sourceTree = "<group>"; };
 		C7547F3919963CFD007A01CF /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
@@ -3815,7 +3814,6 @@
 				C7547F3219963CFD007A01CF /* icon144.png */,
 				C7547F3319963CFD007A01CF /* icon152.png */,
 				C7547F3419963CFD007A01CF /* icon57.png */,
-				C7547F3519963CFD007A01CF /* icon72.png */,
 				C7547F3619963CFD007A01CF /* icon76.png */,
 				C7547F3719963CFD007A01CF /* img */,
 				C7547F4419963CFD007A01CF /* InstructionView.xib */,
@@ -3897,7 +3895,6 @@
 				C7547E4B19963CFD007A01CF /* CoreDataReport.m */,
 				C7547E4C19963CFD007A01CF /* CoreDataSample.h */,
 				C7547E4D19963CFD007A01CF /* CoreDataSample.m */,
-				C7547E4E19963CFD007A01CF /* CoreDataSubReport.h */,
 				C7547E4F19963CFD007A01CF /* CoreDataSubReport.m */,
 				C7547E5019963CFD007A01CF /* CorePlotHeaders */,
 				C7547EA019963CFD007A01CF /* CurrentViewController.h */,
@@ -3916,6 +3913,7 @@
 				C7547EAF19963CFD007A01CF /* HogDetailViewController.h */,
 				C7547EB019963CFD007A01CF /* HogDetailViewController.m */,
 				C7547EB119963CFD007A01CF /* HogReportViewController.h */,
+				C7547E4E19963CFD007A01CF /* CoreDataSubReport.h */,
 				C7547EB219963CFD007A01CF /* HogReportViewController.m */,
 				C7547EB319963CFD007A01CF /* InstructionViewController.h */,
 				C7547EB419963CFD007A01CF /* InstructionViewController.m */,
