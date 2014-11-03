@@ -29,7 +29,6 @@
 		AB7999121455C1C5000AE9FE /* HogReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999111455C1C5000AE9FE /* HogReportViewController.m */; };
 		AB7999151455C23E000AE9FE /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB7999141455C23E000AE9FE /* CurrentViewController.m */; };
 		AB7A112D14E06520004D155C /* ActionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB7A112C14E06520004D155C /* ActionView.xib */; };
-		AB7A113714E1FE4B004D155C /* bug.png in Resources */ = {isa = PBXBuildFile; fileRef = AB7A113614E1FE4B004D155C /* bug.png */; };
 		AB8121E116C04EA2005FBE96 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8121E016C04EA2005FBE96 /* Accounts.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		AB8121E316C04F5B005FBE96 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8121E216C04F5B005FBE96 /* libsqlite3.0.dylib */; };
 		AB9525B014EA1B6F00343418 /* killapp.html in Resources */ = {isa = PBXBuildFile; fileRef = AB9525AF14EA1B6F00343418 /* killapp.html */; };
@@ -71,14 +70,7 @@
 		C1D52F391465F85A008D6D09 /* TSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F291465F85A008D6D09 /* TSocketClient.m */; };
 		C1D52F3A1465F85A008D6D09 /* TTransportException.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2C1465F85A008D6D09 /* TTransportException.m */; };
 		C1D52F3B1465F85A008D6D09 /* TSharedProcessorFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = C1D52F2E1465F85A008D6D09 /* TSharedProcessorFactory.m */; };
-		C704AE581A03B90200E4F13C /* 32-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE4D1A03B90200E4F13C /* 32-iphone.png */; };
-		C704AE591A03B90200E4F13C /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE4E1A03B90200E4F13C /* 37x-Checkmark.png */; };
-		C704AE5A1A03B90200E4F13C /* 37x-X.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE4F1A03B90200E4F13C /* 37x-X.png */; };
-		C704AE5B1A03B90200E4F13C /* 53-house.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE501A03B90200E4F13C /* 53-house.png */; };
-		C704AE5C1A03B90200E4F13C /* about.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE511A03B90200E4F13C /* about.png */; };
-		C704AE5D1A03B90200E4F13C /* amplab_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE521A03B90200E4F13C /* amplab_logo.png */; };
 		C704AE5E1A03B90200E4F13C /* bug.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE531A03B90200E4F13C /* bug.png */; };
-		C704AE5F1A03B90200E4F13C /* hog.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE541A03B90200E4F13C /* hog.png */; };
 		C704AE601A03B90200E4F13C /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE551A03B90200E4F13C /* icon57.png */; };
 		C704AE611A03B90200E4F13C /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE561A03B90200E4F13C /* icon72.png */; };
 		C704AE621A03B90200E4F13C /* twologo.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE571A03B90200E4F13C /* twologo.png */; };
@@ -160,7 +152,6 @@
 		C75488CF19963D04007A01CF /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3019963CFD007A01CF /* icon114.png */; };
 		C75488D019963D04007A01CF /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3119963CFD007A01CF /* icon120.png */; };
 		C75488D119963D04007A01CF /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3219963CFD007A01CF /* icon144.png */; };
-		C75488D419963D04007A01CF /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3519963CFD007A01CF /* icon72.png */; };
 		C75488D519963D04007A01CF /* icon76.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3619963CFD007A01CF /* icon76.png */; };
 		C75488D619963D04007A01CF /* 32-iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3819963CFD007A01CF /* 32-iphone.png */; };
 		C75488E219963D04007A01CF /* InstructionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4419963CFD007A01CF /* InstructionView.xib */; };
@@ -487,7 +478,6 @@
 		C7548CC319963ED0007A01CF /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7548CBD19963ED0007A01CF /* Icon-Small-50@2x.png */; };
 		C7548CC419963ED0007A01CF /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = C7548CBE19963ED0007A01CF /* Icon-Small.png */; };
 		C7548CC519963ED0007A01CF /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7548CBF19963ED0007A01CF /* Icon-Small@2x.png */; };
-		C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */ = {isa = PBXBuildFile; fileRef = C7A5C0601945A10F0007EDC9 /* twologo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -7083,7 +7073,6 @@
 				C7548CC019963ED0007A01CF /* Icon-40.png in Resources */,
 				C75488E419963D04007A01CF /* jscoreplot.png in Resources */,
 				C7548A7F19963D04007A01CF /* socialize-selectnetwork-facebook-icon-ios7.png in Resources */,
-				C75488D419963D04007A01CF /* icon72.png in Resources */,
 				C7548A4619963D04007A01CF /* socialize-iphone-notification-button-normal.png in Resources */,
 				C754897419963D04007A01CF /* Manifest.lock in Resources */,
 				C7548A6D19963D04007A01CF /* socialize-profileimage-large-default-ios7.png in Resources */,
@@ -7163,7 +7152,6 @@
 				C7548AA819963D04007A01CF /* SocializeProfileEditTableViewImageCell.xib in Resources */,
 				C75489A719963D04007A01CF /* action-bar-button-red-ios7.png in Resources */,
 				AB7A112D14E06520004D155C /* ActionView.xib in Resources */,
-				C704AE5F1A03B90200E4F13C /* hog.png in Resources */,
 				C75489CA19963D04007A01CF /* LoopyApiInfo.plist in Resources */,
 				C7548A5119963D04007A01CF /* socialize-navbar-button-back.png in Resources */,
 				C754899019963D04007A01CF /* README in Resources */,
@@ -7179,13 +7167,11 @@
 				C7548A7E19963D04007A01CF /* socialize-selectnetwork-facebook-dis-icon@2x.png in Resources */,
 				C75489FA19963D04007A01CF /* socialize-authorize-facebook-enabled-icon-ios7.png in Resources */,
 				C7548A3619963D04007A01CF /* socialize-comment-location-enabled.png in Resources */,
-				AB7A113714E1FE4B004D155C /* bug.png in Resources */,
 				C75488BC19963D04007A01CF /* ConsentView.xib in Resources */,
 				C7548AA619963D04007A01CF /* SocializeNotificationToggleBubbleContentView.xib in Resources */,
 				C754899319963D04007A01CF /* _SZCommentsListViewController.xib in Resources */,
 				C7548A2D19963D04007A01CF /* socialize-comment-facebook-disabled@2x.png in Resources */,
 				C7548A6F19963D04007A01CF /* socialize-profileimage-large-default.png in Resources */,
-				C704AE5B1A03B90200E4F13C /* 53-house.png in Resources */,
 				C754886F19963D03007A01CF /* Carat.xcworkspace in Resources */,
 				C75489AC19963D04007A01CF /* action-bar-icon-comments@2x.png in Resources */,
 				C754899F19963D04007A01CF /* action-bar-button-black-ios7.png in Resources */,
@@ -7200,7 +7186,6 @@
 				C75489F119963D04007A01CF /* socialize-activity-details-profile-pic-small@2x.png in Resources */,
 				C75488E919963D04007A01CF /* memoryinfo.html in Resources */,
 				C7548A3D19963D04007A01CF /* socialize-comment-twitter-disabled.png in Resources */,
-				C704AE5D1A03B90200E4F13C /* amplab_logo.png in Resources */,
 				C754899B19963D04007A01CF /* action-bar-button-black-hover-ios7.png in Resources */,
 				C7548BAD19963D04007A01CF /* README.md in Resources */,
 				C75489BD19963D04007A01CF /* comment-header-icon.png in Resources */,
@@ -7217,7 +7202,6 @@
 				C75489A019963D04007A01CF /* action-bar-button-black-ios7@2x.png in Resources */,
 				C7548A8D19963D04007A01CF /* socialize-selectnetwork-table-back.png in Resources */,
 				C7548A7219963D04007A01CF /* socialize-sectionheader-bg-ios7@2x.png in Resources */,
-				C704AE581A03B90200E4F13C /* 32-iphone.png in Resources */,
 				C7548A8E19963D04007A01CF /* socialize-selectnetwork-table-back@2x.png in Resources */,
 				C7548AB019963D04007A01CF /* TwitterLogo76x76.png in Resources */,
 				C7548BBC19963D04007A01CF /* ProcessItemCell.xib in Resources */,
@@ -7271,7 +7255,6 @@
 				C7548A1519963D04007A01CF /* socialize-cell-image-default@2x.png in Resources */,
 				C7548AAA19963D04007A01CF /* SocializeRichPushNotificationViewController.xib in Resources */,
 				C75489D019963D04007A01CF /* socialize-activity-cell-icon-comment-highlighted.png in Resources */,
-				C704AE5C1A03B90200E4F13C /* about.png in Resources */,
 				C754886619963D03007A01CF /* .gitignore in Resources */,
 				C7548A6319963D04007A01CF /* socialize-navbar-button-red.png in Resources */,
 				C75489F819963D04007A01CF /* socialize-authorize-facebook-disabled-icon.png in Resources */,
@@ -7299,7 +7282,6 @@
 				C75489F419963D04007A01CF /* socialize-authorize-authenticate-badge-icon.png in Resources */,
 				C7548A4B19963D04007A01CF /* socialize-navbar-bg.png in Resources */,
 				C7548A0019963D04007A01CF /* socialize-authorize-twitter-disabled-icon-ios7.png in Resources */,
-				C704AE5A1A03B90200E4F13C /* 37x-X.png in Resources */,
 				C754899619963D04007A01CF /* _SZTwitterLinkViewController.xib in Resources */,
 				C7548A2119963D04007A01CF /* socialize-comment-background-text-input@2x.png in Resources */,
 				C7548CC219963ED0007A01CF /* Icon-Small-50.png in Resources */,
@@ -7403,14 +7385,12 @@
 				C7548A8019963D04007A01CF /* socialize-selectnetwork-facebook-icon-ios7@2x.png in Resources */,
 				C7548A8519963D04007A01CF /* socialize-selectnetwork-pinterest-icon-ios7.png in Resources */,
 				C75489BE19963D04007A01CF /* comment-header-icon@2x.png in Resources */,
-				C7A5C0611945A10F0007EDC9 /* twologo.png in Resources */,
 				C75489CE19963D04007A01CF /* socialize-activity-call-out-arrow.png in Resources */,
 				C75489A319963D04007A01CF /* action-bar-button-red-hover-ios7.png in Resources */,
 				C7548A9219963D04007A01CF /* socialize-selectnetwork-twitter-dis-icon@2x.png in Resources */,
 				C75489C619963D04007A01CF /* CommentsTableViewCellIOS7.xib in Resources */,
 				C7548A5219963D04007A01CF /* socialize-navbar-button-back@2x.png in Resources */,
 				C7548A0419963D04007A01CF /* socialize-authorize-twitter-enabled-icon-ios7.png in Resources */,
-				C704AE591A03B90200E4F13C /* 37x-Checkmark.png in Resources */,
 				C7548A1719963D04007A01CF /* socialize-cell-image-mask-ios7@2x.png in Resources */,
 				C75489DF19963D04007A01CF /* socialize-activity-cell-icon-share@2x.png in Resources */,
 				C75489F219963D04007A01CF /* socialize-activity-details-top-back.png in Resources */,
