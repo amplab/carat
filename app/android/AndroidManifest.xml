@@ -46,5 +46,53 @@
             </intent-filter>
         </activity>
         
+        <receiver
+            android:name=".sampling.BootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Start Carat on boot" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>                
+        </receiver>
+        <receiver
+            android:name=".sampling.Sampler"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Carat Sampler" >
+            <intent-filter>
+
+                <!--
+                It is not possible to schedule TIME_TICK outside of the program.
+                Also, using AlarmManager with setRepeatingInexact saves battery if the interval
+                is 15 mins or more.
+                -->
+<!--                  <action android:name="android.intent.action.TIME_TICK" /> -->
+
+
+                <!-- This event cannot be registered to from the manifest either. -->
+<!--                 <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" /> 
+                <!-- BATTERY_CHANGED seems to activate in all these conditions: -->
+                <!-- <action android:name="android.intent.action.BATTERY_LOW" />
+                <action android:name="android.intent.action.BATTERY_OKAY" />-->
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <!-- Sample on timer if nothing else happens for 15 mins -->
+                <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
+            </intent-filter>
+        </receiver>
+        <service android:label="SamplingService" android:name=".sampling.SamplerService"></service>
+        <receiver android:name=".sampling.InstallReceiver" android:label="Installation Intent Receiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <data android:scheme="package" /> 
+            </intent-filter>
+        </receiver>
+        
     </application>
 </manifest>

@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 public class SamplerService extends IntentService {
     
@@ -93,7 +94,7 @@ public class SamplerService extends IntentService {
             if (bl > 0) {
 
                 Sample lastSample = ds.getLastSample(context);
-
+                
                 if ((lastSample == null && lastBatteryLevel != bl)
                         || (lastSample != null && lastSample.getBatteryLevel() != bl)) {
                     // Log.i(TAG,
@@ -106,7 +107,10 @@ public class SamplerService extends IntentService {
                     
                     notify(context);
                 }
+                
+                Log.d(TAG, "last sample is not null, thus doesn't take new samples");
             }
+//            Log.d(TAG, "battery level <= 0");
         }
         
         wl.release();
@@ -165,7 +169,7 @@ public class SamplerService extends IntentService {
         // But only after first real numbers
         if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
             long id = ds.putSample(s);
-            //Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
+            Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
             //FlurryAgent.logEvent(intent.getAction());
         }
         return s;
