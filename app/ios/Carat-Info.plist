@@ -94,9 +94,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>140808</string>
+	<string>1.13.20141110</string>
 	<key>FacebookURLTypeIndex</key>
 	<integer>0</integer>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchImages~ipad</key>
@@ -122,8 +124,6 @@
 			<string>{768, 1024}</string>
 		</dict>
 	</array>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
