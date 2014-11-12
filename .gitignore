@@ -25,5 +25,5 @@ proguard/
 # Log Files
 *.log
 
-# compiled binary files (of the Support library)
-support-appcompat/bin/*
+# compiled (binary) files (of the Support library). Gets created everytime you build the project.
+support-appcompat/bin/android-support-v7-appcompat.jar
