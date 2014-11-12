@@ -1,0 +1,11 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <h3>What do these numbers mean?</h3>
+        <p>Carat compares battery use under different conditions, such as when you are running a particular app versus not running that app or a particular operating system version compared to others. Specifically, our analysis builds conditional probability distributions of expected energy use. Consider this cartoon representation of two such distributions:</p>
+        <center><img src="energyratedist.png"></center>
+        <p>The vertical dashed lines represents the expected rates of battery drain under each of the two conditions. Each of those dashed lines is surrounded by two dotted lines of the same color, which represent our <i>uncertainty</i> about that value. The value X is the expected impact (e.g., the benefit of killing a Hog). The value Y, on the other hand, is a conservative estimate that takes into account our uncertainty; the difference between X and Y is called the <i>error</i> and is written along with the impact following the plus-or-minus sign (&plusmn;). As we collect more samples, this error tends to decrease. The <i>confidence</i> number means that we are 95% certain that the true impact lies somewhere in the specified range.</p>
+        <p> <b>Example:</b> A Hog compares one distribution for the set of measurements when the app was running with another for when it was not running. Say that Carat estimates the impact as 1h &plusmn; 10m with 95% confidence. This means that there is a 95% chance that killing this Hog will improve battery life by between 50m and 1h 10m. The underlying reason why Carat calls an app a Hog is that running it correlates with atypically high energy use. Note that this is not simply saying that the app uses energy, which is obvious. The distribution for "not running" also includes measurements for when other apps are running. (All of them, in fact.) So a Hog doesn't just use energy, it uses so much energy that it stands out from the crowd.</p>
+    </body>
+</html>

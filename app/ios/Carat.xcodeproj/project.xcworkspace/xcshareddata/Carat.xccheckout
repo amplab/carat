@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F3967375-1D44-45DA-9A04-7BEAE47A7499</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Carat</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>DB5EE5C2-CA58-4930-9114-47AD04A120E8</key>
+		<string>ssh://github.com/amplab/carat.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>app/ios/Carat.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>DB5EE5C2-CA58-4930-9114-47AD04A120E8</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/amplab/carat.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>DB5EE5C2-CA58-4930-9114-47AD04A120E8</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>DB5EE5C2-CA58-4930-9114-47AD04A120E8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>carat</string>
+		</dict>
+	</array>
+</dict>
+</plist>
