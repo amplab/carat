@@ -66,7 +66,7 @@ public class MainActivity extends ActionBarActivity {
 	public static final String ACTION_HOGS = "hogs";
 
 	// 250 ms
-	public static final long ANIMATION_DURATION = 250;
+//	public static final long ANIMATION_DURATION = 250;
 
 	// Key File
 	private static final String FLURRY_KEYFILE = "flurry.properties";
@@ -88,18 +88,19 @@ public class MainActivity extends ActionBarActivity {
 
 		CaratApplication.setMain(this);
 		
-		// Activity.getWindow.requestFeature() method should get invoked before setContentView()
-		// otherwise it will cause an app crash
-		// This does not show if it is not updated
+		// Activity.getWindow.requestFeature() should get invoked only before
+		// setContentView(), otherwise it will cause an app crash
+		// The progress bar doesn't get displayed when there is no update in progress
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
 		
-		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 		setTitleNormal();
 		
+		// before using the field "fullVersion", first invoke setTitleNormal()
+		// or setFullVersion() to set this field
 		mTitle = mDrawerTitle = fullVersion;
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -166,40 +167,40 @@ public class MainActivity extends ActionBarActivity {
 		// update the main content by replacing fragments
 		Fragment fragment = null;
 		Bundle args = new Bundle();
-		String fragmentName = "";
+		String fragmentLabel = "";
 		
 		switch (position) {
 		case 0:
 			fragment = new SuggestionsFragment();
-			fragmentName = "Suggestions";
+			fragmentLabel = getString(R.string.tab_actions);
 			break;
 		case 1:
 			fragment = new MyDeviceFragment();
-			fragmentName = "MyDevice";
+			fragmentLabel = getString(R.string.tab_my_device);
 			break;
 		case 2:
 			args.putBoolean("isBugs", true);
 			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
-			fragmentName = "Bugs";
+			fragmentLabel = getString(R.string.tab_bugs);
 			break;
 		case 3:
 			args.putBoolean("isBugs", false);
 			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
-			fragmentName = "Hogs";
+			fragmentLabel = getString(R.string.tab_hogs);
 			break;
 		case 4:
 			fragment = new AboutFragment();
-			fragmentName = "AboutCarat";
+			fragmentLabel = getString(R.string.tab_about);
 			break;
-		case 5:
-			fragment = new AppRecomFragment();
-			fragmentName = "AppRecommendation";
-			break;
+//		case 5:
+//			fragment = new AppRecomFragment();
+//			fragmentLabel = getString(R.string.tab_app_recommendation);
+//			break;
 		}
 
-		CaratApplication.replaceFragment(fragment, fragmentName);
+		CaratApplication.replaceFragment(fragment, fragmentLabel);
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
@@ -246,18 +247,21 @@ public class MainActivity extends ActionBarActivity {
 
 
 	public void setTitleNormal() {
+		setFullVersion();
 		if (CaratApplication.s != null) {
 			long s = CaratApplication.s.getSamplesReported();
 			Log.d("setTitleNormal", "number of samples reported=" + String.valueOf(s));
 			if (s > 0) {
-//				this.setTitle(fullVersion);
-				this.setTitle("" + s + " " + getString(R.string.samplesreported));
-				Log.d("setTitleNormal", "here");
+				this.setTitle("Carat - " + s + " " + getString(R.string.samplesreported));
 			} else {
 				this.setTitle(fullVersion);
 			}
 		} else
 			this.setTitle(fullVersion);
+	}
+
+	private void setFullVersion() {
+		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 	}
 
 	public void setTitleUpdating(String what) {
@@ -307,54 +311,8 @@ public class MainActivity extends ActionBarActivity {
 		FlurryAgent.onEndSession(getApplicationContext());
 	}
 
-	/**
-	 * Animation for sliding a screen in from the right.
-	 * 
-	 * @return
-	 */
-	public static Animation inFromRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, +1.0f,
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-	{
-		inFromRight.setDuration(ANIMATION_DURATION);
-		inFromRight.setInterpolator(new AccelerateInterpolator());
-	}
+	
 
-	/**
-	 * Animation for sliding a screen out to the left.
-	 * 
-	 * @return
-	 */
-	public static Animation outtoLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
-			Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-	{
-		outtoLeft.setDuration(ANIMATION_DURATION);
-		outtoLeft.setInterpolator(new AccelerateInterpolator());
-	}
-
-	/**
-	 * Animation for sliding a screen in from the left.
-	 * 
-	 * @return
-	 */
-	public static Animation inFromLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1.0f,
-			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-	{
-		inFromLeft.setDuration(ANIMATION_DURATION);
-		inFromLeft.setInterpolator(new AccelerateInterpolator());
-	}
-
-	/**
-	 * Animation for sliding a screen out to the right.
-	 * 
-	 * @return
-	 */
-
-	public static Animation outtoRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
-			Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-	{
-		outtoRight.setDuration(ANIMATION_DURATION);
-		outtoRight.setInterpolator(new AccelerateInterpolator());
-	}
 
 	/**
 	 * 
@@ -411,7 +369,7 @@ public class MainActivity extends ActionBarActivity {
 		tracker.trackUser("caratstopped");
 		super.finish();
 	}
-
+		
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -533,4 +491,53 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 	}
+	
+//	/**
+//	 * Animation for sliding a screen in from the right.
+//	 * 
+//	 * @return
+//	 */
+//	public static Animation inFromRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, +1.0f,
+//			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+//	{
+//		inFromRight.setDuration(ANIMATION_DURATION);
+//		inFromRight.setInterpolator(new AccelerateInterpolator());
+//	}
+//
+//	/**
+//	 * Animation for sliding a screen out to the left.
+//	 * 
+//	 * @return
+//	 */
+//	public static Animation outtoLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
+//			Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+//	{
+//		outtoLeft.setDuration(ANIMATION_DURATION);
+//		outtoLeft.setInterpolator(new AccelerateInterpolator());
+//	}
+//
+//	/**
+//	 * Animation for sliding a screen in from the left.
+//	 * 
+//	 * @return
+//	 */
+//	public static Animation inFromLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1.0f,
+//			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+//	{
+//		inFromLeft.setDuration(ANIMATION_DURATION);
+//		inFromLeft.setInterpolator(new AccelerateInterpolator());
+//	}
+//
+//	/**
+//	 * Animation for sliding a screen out to the right.
+//	 * 
+//	 * @return
+//	 */
+//
+//	public static Animation outtoRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
+//			Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
+//	{
+//		outtoRight.setDuration(ANIMATION_DURATION);
+//		outtoRight.setInterpolator(new AccelerateInterpolator());
+//	}
 }

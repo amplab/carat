@@ -1,18 +1,8 @@
 package edu.berkeley.cs.amplab.carat.android;
 
-import java.util.HashMap;
-
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
-import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
-import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
-import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
-import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
-import edu.berkeley.cs.amplab.carat.thrift.Reports;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AlarmManager;
 import android.app.Application;
-import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,6 +17,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import android.widget.TextView;
+import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
+import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
+import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
+import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
+import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 /**
  * Application class for Carat Android App. Place App-global static constants

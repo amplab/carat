@@ -162,19 +162,22 @@ delete these from your file.
     <string name="significance">Significance:</string>
     <string name="best">Already best</string>
     
-    <string name="action_websearch">Search</string>
+    <string name="app_recommendation">App Recommendation</string>
+    
     <string-array name="drawer_items">
         <item>Actions</item>
         <item>My Device</item>
         <item>Bugs</item>
         <item>Hogs</item>
         <item>About</item>
-        <item>App Recommendation</item>
     </string-array>
+    
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
-    
-    <string name="app_recommendation">App Recommendation</string>
 
 </resources>
+
+
+<!--  <item>App Recommendation</item>  
+	  <string name="action_websearch">Search</string> -->

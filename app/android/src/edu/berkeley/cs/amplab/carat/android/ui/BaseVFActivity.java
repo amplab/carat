@@ -25,21 +25,21 @@ public abstract class BaseVFActivity extends Activity implements VFActivity {
      * Switch to the given view by id and animate the change.
      * @param viewId The view to switch to, for findViewById().
      */
-    public void switchView(int viewId){
-        View target = findViewById(viewId);
-        switchView(target);
-    }
+//    public void switchView(int viewId){
+//        View target = findViewById(viewId);
+//        switchView(target);
+//    }
     
     /**
      * Switch to the given view by object and animate the change.
      * @param v The view to switch to.
      */
-    public void switchView(View v){
-        vf.setOutAnimation(MainActivity.outtoLeft);
-        vf.setInAnimation(MainActivity.inFromRight);
-        vf.setDisplayedChild(vf.indexOfChild(v));
-        viewIndex = vf.indexOfChild(v);
-    }
+//    public void switchView(View v){
+//        vf.setOutAnimation(MainActivity.outtoLeft);
+//        vf.setInAnimation(MainActivity.inFromRight);
+//        vf.setDisplayedChild(vf.indexOfChild(v));
+//        viewIndex = vf.indexOfChild(v);
+//    }
 
     /* (non-Javadoc)
      * @see android.app.Activity#onRetainNonConfigurationInstance()
@@ -60,14 +60,14 @@ public abstract class BaseVFActivity extends Activity implements VFActivity {
         super.onCreate(savedInstanceState);
     }
     
-    @Override
-    public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex) {
-            vf.setOutAnimation(MainActivity.outtoRight);
-            vf.setInAnimation(MainActivity.inFromLeft);
-            vf.setDisplayedChild(baseViewIndex);
-            viewIndex = baseViewIndex;
-        } else
-            finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        if (vf.getDisplayedChild() != baseViewIndex) {
+//            vf.setOutAnimation(MainActivity.outtoRight);
+//            vf.setInAnimation(MainActivity.inFromLeft);
+//            vf.setDisplayedChild(baseViewIndex);
+//            viewIndex = baseViewIndex;
+//        } else
+//            finish();
+//    }
 }
