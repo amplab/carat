@@ -1,1 +1,0 @@
-../../Socialize/Socialize/SZLikeButtonIOS6.h
