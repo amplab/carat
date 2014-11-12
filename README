@@ -1,1 +1,12 @@
+For building the Android app, first import the companion "Support" library into your IDE (we will use this project as a library project). If you use Eclipse, follow these stpes:
+
+1. Select File > Import.
+2. From the Android category, select "Existing Android Code Into Workspace" and click Next.
+3. Browse to the root directory of Carat project, select the directory "support-appcompat", click OK, and then click finish to complete the import process. Now you should see the support library project in your project navigatation pane, in the left side.
+
+Then, import the main Carat Android project. After that, you should add the above library project to the Carat project:
+Right click on the main project (Carat) > properties > Android > in the library section (in the bottom), click Add > select the support library project > click OK.
+
+
+
 For details, visit http://carat.cs.berkeley.edu/
