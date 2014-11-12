@@ -210,6 +210,13 @@
 
     //Setup the navigation
     self.navigationItem.title = self.tableTitle;
+    
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        [self setEdgesForExtendedLayout:UIRectEdgeNone];
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        self.navigationController.navigationBar.translucent = NO;
+    }
 }
 
 // overridden by subclasses

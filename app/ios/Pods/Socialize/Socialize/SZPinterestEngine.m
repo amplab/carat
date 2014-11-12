@@ -47,11 +47,11 @@ static SZPinterestEngine *sharedInstance;
 
 - (void) setApplicationId: (NSString*) appID
 {
-    Class PinterestClass = NSClassFromString(@"Pinterest");
+    /*Class PinterestClass = NSClassFromString(@"Pinterest");
     if (PinterestClass) {
         self.pinterest = [[PinterestClass alloc] performSelector:@selector(initWithClientId:) withObject:appID];
     }
-    else
+    else*/
         self.pinterest = nil;
 }
 

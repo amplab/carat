@@ -1,1 +1,0 @@
-../../Loopy/Loopy/STConstants.h

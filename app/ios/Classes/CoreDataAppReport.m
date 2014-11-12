@@ -19,5 +19,10 @@
 @dynamic lastUpdated;
 @dynamic reportType;
 @dynamic appDetails;
+@dynamic samplesWithout;
+@dynamic samples;
+@dynamic error;
+@dynamic errorWithout;
+
 
 @end

@@ -68,7 +68,11 @@ void onUncaughtException(NSException *exception)
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
+        [application setStatusBarStyle:UIStatusBarStyleLightContent];
+        self.window.clipsToBounds =YES;
+        self.window.frame =  CGRectMake(0,20,self.window.frame.size.width,self.window.frame.size.height-20);
+    }
     // test for consent
     if ([[Globals instance] hasUserConsented]) return [self proceedWithConsent];
     else return [self acquireConsentWithCallbackTarget:self
