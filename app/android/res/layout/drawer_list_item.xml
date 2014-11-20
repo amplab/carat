@@ -5,9 +5,13 @@
     android:gravity="center_vertical"
     android:minHeight="56dip"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:textColor="#fff"
-    android:textSize="19sp" />
+    android:paddingRight="16dp"    
+    android:textSize="19sp"
+    android:textColor="#2E3235" 
+     />
+
+<!-- android:theme="@style/LightBackground"  -->
+<!-- android:textColor="#fff" -->
 
 <!--
     The following attributes of a TextView require Android API 11 and 14 

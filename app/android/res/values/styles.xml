@@ -16,5 +16,16 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="LightBackground" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        
+        <item name="android:textColor">#2E3235</item>
+        <item name="android:background">@color/lightsilver</item>
+        
+        <!-- <item name="android:textColor">#00FF00</item> 
+        <item name="android:typeface">monospace</item> 
+        -->
+    </style>
 
 </resources>
