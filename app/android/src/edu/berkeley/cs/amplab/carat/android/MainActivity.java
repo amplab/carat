@@ -194,6 +194,10 @@ public class MainActivity extends ActionBarActivity {
 			fragment = new AboutFragment();
 			fragmentLabel = getString(R.string.tab_about);
 			break;
+		case 5:
+			fragment = new SummaryFragment();
+			fragmentLabel = getString(R.string.tab_summary);
+			break;
 //		case 5:
 //			fragment = new AppRecomFragment();
 //			fragmentLabel = getString(R.string.tab_app_recommendation);

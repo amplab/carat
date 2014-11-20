@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.echo.holographlibrary.PieGraph
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/default_margin"
+        android:id="@+id/piegraph"
+        app:pieInnerCircleRatio="128"
+        app:pieSlicePadding="0dip"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Inner Circle Ratio"
+            android:layout_weight="1"/>
+
+        <SeekBar
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:progress="128"
+            android:max="240"
+            android:id="@+id/seekBarRatio"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Padding"
+            android:layout_weight="1"/>
+
+        <SeekBar
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:progress="0"
+        android:max="10"
+        android:id="@+id/seekBarPadding"
+        android:layout_weight="1"/>
+
+
+    </LinearLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Animate to random values"
+        android:id="@+id/animatePieButton"
+        android:layout_weight="0"/>
+
+</LinearLayout>
