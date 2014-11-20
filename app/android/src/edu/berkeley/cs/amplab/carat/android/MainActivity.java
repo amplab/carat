@@ -171,33 +171,33 @@ public class MainActivity extends ActionBarActivity {
 		
 		switch (position) {
 		case 0:
+			fragment = new SummaryFragment();
+			fragmentLabel = getString(R.string.tab_summary);
+			break;
+		case 1:
 			fragment = new SuggestionsFragment();
 			fragmentLabel = getString(R.string.tab_actions);
 			break;
-		case 1:
+		case 2:
 			fragment = new MyDeviceFragment();
 			fragmentLabel = getString(R.string.tab_my_device);
 			break;
-		case 2:
+		case 3:
 			args.putBoolean("isBugs", true);
 			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
 			fragmentLabel = getString(R.string.tab_bugs);
 			break;
-		case 3:
+		case 4:
 			args.putBoolean("isBugs", false);
 			fragment = new BugsOrHogsFragment();
 			fragment.setArguments(args);
 			fragmentLabel = getString(R.string.tab_hogs);
 			break;
-		case 4:
+		case 5:
 			fragment = new AboutFragment();
 			fragmentLabel = getString(R.string.tab_about);
-			break;
-		case 5:
-			fragment = new SummaryFragment();
-			fragmentLabel = getString(R.string.tab_summary);
-			break;
+			break;		
 //		case 5:
 //			fragment = new AppRecomFragment();
 //			fragmentLabel = getString(R.string.tab_app_recommendation);

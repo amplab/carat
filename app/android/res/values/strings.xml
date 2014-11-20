@@ -166,12 +166,12 @@ delete these from your file.
     <string name="app_recommendation">App Recommendation</string>
     
     <string-array name="drawer_items">
+        <item>Summary</item>
         <item>Actions</item>
         <item>My Device</item>
         <item>Bugs</item>
         <item>Hogs</item>
         <item>About</item>
-        <item>Summary</item>
     </string-array>
     
     <string name="drawer_open">Open navigation drawer</string>
