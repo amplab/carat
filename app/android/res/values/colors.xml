@@ -9,5 +9,6 @@
     <color name="transparent_orange">#80FFBB33</color>
     <color name="purple">#FFAA66CC</color>    
     <color name="lightsilver">#E3E3E3</color>
+    <color name="silver">#DDDDDD</color>
     <color name="darkgrey">#2E3235</color>        
 </resources>
