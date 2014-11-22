@@ -177,6 +177,8 @@ delete these from your file.
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    
+    <string name="title_activity_splash_screen">Carat</string>
 
 </resources>
 

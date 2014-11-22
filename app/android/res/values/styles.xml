@@ -27,5 +27,9 @@
         <item name="android:typeface">monospace</item> 
         -->
     </style>
+    
+    <style name="notitle" parent="Theme.AppCompat.Light">
+    	<item name="android:windowNoTitle">true</item>
+	</style>
 
 </resources>

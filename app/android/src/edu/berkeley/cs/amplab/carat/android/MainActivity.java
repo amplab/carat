@@ -77,6 +77,10 @@ public class MainActivity extends ActionBarActivity {
 	
 	private Tracker tracker = Tracker.getInstance();
 
+	int totalWellbehavedAppsCount;
+    int totalHogsCount;
+    int totalBugsCount;
+	
 	/**
 	 * 
 	 * @param savedInstanceState
@@ -86,6 +90,11 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Intent intent = getIntent();
+        totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
+        totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
+        totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
+		
 		CaratApplication.setMain(this);
 		
 		// Activity.getWindow.requestFeature() should get invoked only before
@@ -172,6 +181,10 @@ public class MainActivity extends ActionBarActivity {
 		switch (position) {
 		case 0:
 			fragment = new SummaryFragment();
+			args.putInt("wellbehaved", totalWellbehavedAppsCount);
+			args.putInt("hogs", totalHogsCount);
+			args.putInt("bugs", totalBugsCount);
+			fragment.setArguments(args);
 			fragmentLabel = getString(R.string.tab_summary);
 			break;
 		case 1:

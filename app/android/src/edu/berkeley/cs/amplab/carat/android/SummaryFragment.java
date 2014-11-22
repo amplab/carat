@@ -26,24 +26,32 @@ public class SummaryFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+		int wellbehavedAppsCount = getArguments().getInt("wellbehaved");
+		int hogsCount = getArguments().getInt("hogs");
+		int bugsCount = getArguments().getInt("bugs");
+		
         final View v = inflater.inflate(R.layout.fragment_piegraph, container, false);
         final Resources resources = getResources();
         final PieGraph pg = (PieGraph) v.findViewById(R.id.piegraph);
         final Button animateButton = (Button) v.findViewById(R.id.animatePieButton);
+        
         PieSlice slice = new PieSlice();
         slice.setColor(resources.getColor(R.color.green_light));
         slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
-        slice.setValue(2);
+        slice.setValue(wellbehavedAppsCount);
         slice.setTitle("first");
         pg.addSlice(slice);
+        
         slice = new PieSlice();
         slice.setColor(resources.getColor(R.color.orange));
-        slice.setValue(3);
+        slice.setValue(hogsCount);
         pg.addSlice(slice);
+        
         slice = new PieSlice();
         slice.setColor(resources.getColor(R.color.purple));
-        slice.setValue(8);
+        slice.setValue(bugsCount);
         pg.addSlice(slice);
+        
         pg.setOnSliceClickedListener(new OnSliceClickedListener() {
 
             @Override
