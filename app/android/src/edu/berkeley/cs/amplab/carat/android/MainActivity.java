@@ -71,15 +71,19 @@ public class MainActivity extends ActionBarActivity {
 	private MenuItem feedbackItem = null;
 
 	private String fullVersion = null;
-	
+
 	private Tracker tracker = Tracker.getInstance();
 
-	// The values for the following variables are read (from a URL) in the SplashScreen 
-	// and then passed to this activity.
-	int totalWellbehavedAppsCount,
-    	totalHogsCount,
-    	totalBugsCount;
-	
+	/* 
+	 * Values of the following variables are read (from a URL) in the
+	 * SplashScreen, and then passed to this activity.
+	 * These values (statistics) will be sent to the summary
+	 * fragment, to be shown in the chart.
+	 */
+	private int totalWellbehavedAppsCount,
+				totalHogsCount,
+				totalBugsCount;
+
 	/**
 	 * 
 	 * @param savedInstanceState
@@ -89,30 +93,35 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		/* Reading the parameters passed to the current activity from the SplashScreen.
-		   These values have been read from a URL (), behind the scene, in the SplashScreen. 
-		   These values (statistics) will be sent to the summary fragment, to be shown in the chart.
-		   */
+		/*
+		 * Reading the parameters passed to the current activity from the
+		 * SplashScreen. These values have been read from the Carat stats URL behind the
+		 * scene in the SplashScreen.
+		 */
 		Intent intent = getIntent();
-        totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
-        totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
-        totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
-		
+		totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
+		totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
+		totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
+
 		CaratApplication.setMain(this);
-		
-		/* Activity.getWindow.requestFeature() should get invoked only before
-		   setContentView(), otherwise it will cause an app crash
-		   The progress bar doesn't get displayed when there is no update in progress */
+
+		/*
+		 * Activity.getWindow.requestFeature() should get invoked only before
+		 * setContentView(), otherwise it will cause an app crash The progress
+		 * bar doesn't get displayed when there is no update in progress
+		 */
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
-		
+
 		setTitleNormal();
-		
-		// before using the field "fullVersion", first invoke setTitleNormal()
-		// or setFullVersion() to set this field
+
+		/*
+		 * Before using the field "fullVersion", first invoke setTitleNormal()
+		 * or setFullVersion() to set this field
+		 */
 		mTitle = mDrawerTitle = fullVersion;
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -123,34 +132,28 @@ public class MainActivity extends ActionBarActivity {
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
-
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = 
-				new ActionBarDrawerToggle(this, /* host Activity */
-										  mDrawerLayout, /* DrawerLayout object */
-										  R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-										  R.string.drawer_open, /* "open drawer" description for accessibility */
-										  R.string.drawer_close /* "close drawer" description for accessibility */
-										  ) {
-					public void onDrawerClosed(View view) {
-						getSupportActionBar().setTitle(mTitle);
-						// invalidateOptionsMenu(); // creates call to
-						// onPrepareOptionsMenu()
-					}
+		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+		mDrawerLayout, /* DrawerLayout object */
+		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+		R.string.drawer_open, /* "open drawer" description for accessibility */
+		R.string.drawer_close /* "close drawer" description for accessibility */
+		) {
+			public void onDrawerClosed(View view) {
+				getSupportActionBar().setTitle(mTitle);
+			}
 
-					public void onDrawerOpened(View drawerView) {
-						getSupportActionBar().setTitle(mDrawerTitle);
-						// invalidateOptionsMenu(); // creates call to
-						// onPrepareOptionsMenu()
-					}
-				};
+			public void onDrawerOpened(View drawerView) {
+				getSupportActionBar().setTitle(mDrawerTitle);
+			}
+		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		// enable ActionBar app icon to behave as action to toggle nav drawer
+		// Enable ActionBar app icon to behave as action to toggle navigation drawer
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
-		
+
 		if (savedInstanceState == null) {
 			selectItem(0);
 		}
@@ -180,7 +183,7 @@ public class MainActivity extends ActionBarActivity {
 		Fragment fragment = null;
 		Bundle args = new Bundle();
 		String fragmentLabel = "";
-		
+
 		switch (position) {
 		case 0:
 			fragment = new SummaryFragment();
@@ -213,11 +216,7 @@ public class MainActivity extends ActionBarActivity {
 		case 5:
 			fragment = new AboutFragment();
 			fragmentLabel = getString(R.string.tab_about);
-			break;		
-//		case 5:
-//			fragment = new AppRecomFragment();
-//			fragmentLabel = getString(R.string.tab_app_recommendation);
-//			break;
+			break;
 		}
 
 		CaratApplication.replaceFragment(fragment, fragmentLabel);
@@ -238,7 +237,6 @@ public class MainActivity extends ActionBarActivity {
 	 * When using the ActionBarDrawerToggle, you must call it during
 	 * onPostCreate() and onConfigurationChanged()...
 	 */
-
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -252,19 +250,18 @@ public class MainActivity extends ActionBarActivity {
 		// Pass any configuration change to the drawer toggle
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
-	
+
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Pass the event to ActionBarDrawerToggle, if it returns
-        // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-          return true;
-        }
-        // Handle your other action bar items...
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Pass the event to ActionBarDrawerToggle, if it returns
+		// true, then it has handled the app icon touch event
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// Handle your other action bar items...
 
-        return super.onOptionsItemSelected(item);
-    }
-
+		return super.onOptionsItemSelected(item);
+	}
 
 	public void setTitleNormal() {
 		setFullVersion();
@@ -331,9 +328,6 @@ public class MainActivity extends ActionBarActivity {
 		FlurryAgent.onEndSession(getApplicationContext());
 	}
 
-	
-
-
 	/**
 	 * 
 	 * Starts a Thread that communicates with the server to send stored samples.
@@ -359,10 +353,10 @@ public class MainActivity extends ActionBarActivity {
 		/*
 		 * } }.start();
 		 */
-		
+
 		super.onResume();
 		tracker.trackUser("caratresumed");
-		
+
 	}
 
 	/*
@@ -389,7 +383,7 @@ public class MainActivity extends ActionBarActivity {
 		tracker.trackUser("caratstopped");
 		super.finish();
 	}
-		
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -442,7 +436,7 @@ public class MainActivity extends ActionBarActivity {
 				sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
 						+ getString(R.string.sharetext2));
 				startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
-				
+
 				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 				if (p != null) {
 					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
@@ -511,53 +505,4 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 	}
-	
-//	/**
-//	 * Animation for sliding a screen in from the right.
-//	 * 
-//	 * @return
-//	 */
-//	public static Animation inFromRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, +1.0f,
-//			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-//	{
-//		inFromRight.setDuration(ANIMATION_DURATION);
-//		inFromRight.setInterpolator(new AccelerateInterpolator());
-//	}
-//
-//	/**
-//	 * Animation for sliding a screen out to the left.
-//	 * 
-//	 * @return
-//	 */
-//	public static Animation outtoLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
-//			Animation.RELATIVE_TO_PARENT, -1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-//	{
-//		outtoLeft.setDuration(ANIMATION_DURATION);
-//		outtoLeft.setInterpolator(new AccelerateInterpolator());
-//	}
-//
-//	/**
-//	 * Animation for sliding a screen in from the left.
-//	 * 
-//	 * @return
-//	 */
-//	public static Animation inFromLeft = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, -1.0f,
-//			Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-//	{
-//		inFromLeft.setDuration(ANIMATION_DURATION);
-//		inFromLeft.setInterpolator(new AccelerateInterpolator());
-//	}
-//
-//	/**
-//	 * Animation for sliding a screen out to the right.
-//	 * 
-//	 * @return
-//	 */
-//
-//	public static Animation outtoRight = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f,
-//			Animation.RELATIVE_TO_PARENT, +1.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f);
-//	{
-//		outtoRight.setDuration(ANIMATION_DURATION);
-//		outtoRight.setInterpolator(new AccelerateInterpolator());
-//	}
 }
