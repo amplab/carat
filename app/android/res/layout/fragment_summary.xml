@@ -60,11 +60,4 @@
 
 
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Animate to random values"
-        android:id="@+id/animatePieButton"
-        android:layout_weight="0"/>
-
 </LinearLayout>
