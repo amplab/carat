@@ -55,18 +55,15 @@ public class MainActivity extends ActionBarActivity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private CharSequence mDrawerTitle;
-	private CharSequence mTitle;
+	private CharSequence mDrawerTitle,
+						 mTitle;
 	private String[] mDrawerItems;
 
 	// Log tag
 	private static final String TAG = "CaratMain";
 
-	public static final String ACTION_BUGS = "bugs";
-	public static final String ACTION_HOGS = "hogs";
-
-	// 250 ms
-//	public static final long ANIMATION_DURATION = 250;
+	public static final String ACTION_BUGS = "bugs",
+							   ACTION_HOGS = "hogs";
 
 	// Key File
 	private static final String FLURRY_KEYFILE = "flurry.properties";
@@ -77,9 +74,11 @@ public class MainActivity extends ActionBarActivity {
 	
 	private Tracker tracker = Tracker.getInstance();
 
-	int totalWellbehavedAppsCount;
-    int totalHogsCount;
-    int totalBugsCount;
+	// The values for the following variables are read (from a URL) in the SplashScreen 
+	// and then passed to this activity.
+	int totalWellbehavedAppsCount,
+    	totalHogsCount,
+    	totalBugsCount;
 	
 	/**
 	 * 
@@ -90,6 +89,10 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		/* Reading the parameters passed to the current activity from the SplashScreen.
+		   These values have been read from a URL (), behind the scene, in the SplashScreen. 
+		   These values (statistics) will be sent to the summary fragment, to be shown in the chart.
+		   */
 		Intent intent = getIntent();
         totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
         totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
@@ -97,9 +100,9 @@ public class MainActivity extends ActionBarActivity {
 		
 		CaratApplication.setMain(this);
 		
-		// Activity.getWindow.requestFeature() should get invoked only before
-		// setContentView(), otherwise it will cause an app crash
-		// The progress bar doesn't get displayed when there is no update in progress
+		/* Activity.getWindow.requestFeature() should get invoked only before
+		   setContentView(), otherwise it will cause an app crash
+		   The progress bar doesn't get displayed when there is no update in progress */
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.activity_main);

@@ -13,9 +13,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * This fragment reads the statistics of Android apps from the Carat stats URL,
+ * behind the scene, while displaying a splash screen to show case the carat logo
+ * 
+ * @author Javad Sadeqzadeh
+ *
+ */
 public class SplashScreen extends ActionBarActivity {
 	
-    String now_playing, earned;
     String wellbehaved, hogs, bugs;
 
 	@Override
@@ -31,14 +37,12 @@ public class SplashScreen extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            // before making http calls        
- 
         }
  
         @Override
         protected Void doInBackground(Void... arg0) {
             /*
-             * Will make http call here This call will download required data
+             * Will make http call here. This call will download required data
              * before launching the app
              * example:
              * 1. Downloading and storing in SQLite
@@ -69,10 +73,8 @@ public class SplashScreen extends ActionBarActivity {
                     Log.e("JSON", "> " + "wellbehaved: " + wellbehaved + ", hogs: " + hogs + ", bugs: " + bugs);
  
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                	Log.e("SplashScreen", e.getStackTrace().toString());
                 }
- 
             }
  
             return null;
@@ -82,14 +84,14 @@ public class SplashScreen extends ActionBarActivity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             // After completing http call
-            // will close this activity and lauch main activity
+            // will close this activity and launch the main activity
             Intent i = new Intent(SplashScreen.this, MainActivity.class);
             i.putExtra("wellbehaved", wellbehaved);
             i.putExtra("hogs", hogs);
             i.putExtra("bugs", bugs);
             startActivity(i);
  
-            // close this activity
+            // close this AsyncTask
             finish();
         }
 	}
