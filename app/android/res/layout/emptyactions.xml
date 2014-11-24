@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:text="@string/checkback"
-                android:textColor="@color/green" />
+                android:textColor="@color/turquoise" />
         </LinearLayout>
     </LinearLayout>
 
@@ -60,7 +60,7 @@
         android:paddingBottom="10dip"
         android:text="@string/checkback3"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/green" />
+        android:textColor="@color/turquoise" />
 
     <TextView
         android:id="@+id/explanation"
@@ -68,6 +68,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:text="@string/checkback2"
-        android:textColor="@color/green" />
+        android:textColor="@color/turquoise" />
 
 </LinearLayout>

@@ -43,14 +43,14 @@ Carat My Device Screen layout
                         android:text="@string/jscore"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textSize="32sp"
-                        android:textColor="@color/brown" />
+                        android:textColor="@color/gray" />
 
                     <TextView
                         android:id="@+id/updated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/updated0"
-                        android:textColor="@color/brown" />
+                        android:textColor="@color/gray" />
                 </LinearLayout>
 
                 <TextView
@@ -61,7 +61,7 @@ Carat My Device Screen layout
                     android:text="@string/jsna"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="48sp"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/turquoise" />
                 
                 <ImageView
                     android:id="@+id/moreinfo"
@@ -87,7 +87,7 @@ Carat My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/batterylife"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown" />
+                    android:textColor="@color/gray" />
 
                 <TextView
                     android:id="@+id/batterylife_value"
@@ -97,7 +97,7 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/zeroh"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/gray" />
 				<ImageView
                     android:id="@+id/batteryLifeInfo"
                     android:layout_width="24dip"
@@ -121,7 +121,7 @@ Carat My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/caratid"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown" />
+                    android:textColor="@color/gray" />
 
                 <TextView
                     android:id="@+id/carat_id_value"
@@ -132,7 +132,7 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_id"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/gray" />
                 <!-- android:onClick="copyCaratId"  -->
 
             </LinearLayout>
@@ -150,7 +150,7 @@ Carat My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/osver"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown" />
+                    android:textColor="@color/gray" />
 
                 <TextView
                     android:id="@+id/os_ver_value"
@@ -160,7 +160,7 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_os"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/gray" />
                 
                  <ImageView
                     android:id="@+id/osInfo"
@@ -186,7 +186,7 @@ Carat My Device Screen layout
                     android:layout_weight="1"
                     android:text="@string/dev"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown" />
+                    android:textColor="@color/gray" />
 
                 <TextView
                     android:id="@+id/dev_value"
@@ -197,7 +197,7 @@ Carat My Device Screen layout
                     android:gravity="right"
                     android:text="@string/fake_dev"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/gray" />
                 
                  <ImageView
                     android:id="@+id/devInfo"
@@ -222,7 +222,7 @@ Carat My Device Screen layout
                     android:layout_gravity="center_vertical"
                     android:text="@string/apps"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/brown" />
+                    android:textColor="@color/gray" />
 
                 <Button
                     android:id="@+id/viewProcessButton"
@@ -233,7 +233,7 @@ Carat My Device Screen layout
                     android:layout_marginRight="-3dip"
                     android:layout_marginLeft="-3dip"
                     android:text="@string/viewprocess"
-                    android:textColor="@color/green" />
+                    android:textColor="@color/gray" />
 				<!-- Spacer: -->
                 <View
                     android:layout_width="24dip"
@@ -275,7 +275,7 @@ Carat My Device Screen layout
                              android:layout_height="wrap_content"
                             android:text="@string/memused"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/brown" />
+                            android:textColor="@color/gray" />
 
                         <ProgressBar
                             android:id="@+id/progressBar1"
@@ -297,7 +297,7 @@ Carat My Device Screen layout
                             android:layout_height="wrap_content"
                             android:text="@string/memactive"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/brown" />
+                            android:textColor="@color/gray" />
 
                         <ProgressBar
                             android:id="@+id/progressBar2"
@@ -320,7 +320,7 @@ Carat My Device Screen layout
                             android:layout_height="wrap_content"
                             android:text="@string/cpu"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/brown" />
+                            android:textColor="@color/gray" />
 
                         <ProgressBar
                             android:id="@+id/cpubar"

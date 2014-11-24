@@ -12,7 +12,7 @@
         android:layout_weight="1"
         android:layout_margin="@dimen/default_margin"
         android:id="@+id/piegraph"
-        app:pieInnerCircleRatio="128"
+        app:pieInnerCircleRatio="100"
         app:pieSlicePadding="0dip"/>
 
     <LinearLayout

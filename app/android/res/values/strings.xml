@@ -14,8 +14,6 @@ delete these from your file.
     <string name="fake_dev">Samsung Galaxy Nexus</string>
 
     <color name="brown">#744618</color>
-    <color name="orange">#ff8331</color>
-    <color name="green">#127112</color>
     <color name="black">#000000</color>
     <color name="with">#f3b14d</color>
     <color name="without">#007777</color>
