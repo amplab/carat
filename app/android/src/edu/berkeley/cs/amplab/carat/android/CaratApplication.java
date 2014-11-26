@@ -71,7 +71,7 @@ public class CaratApplication extends Application {
 	public static final String PREFERENCE_SEND_INSTALLED_PACKAGES = "carat.sample.send.installed";
 
 	// default icon and Carat package name:
-	public static String CARAT_PACKAGE = "edu.berkeley.cs.amplab.carat.android";
+	public static String CARAT_PACKAGE_NAME = "edu.berkeley.cs.amplab.carat.android";
 	// Used to blacklist old Carat
 	public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
 
@@ -112,10 +112,10 @@ public class CaratApplication extends Application {
 	}
 
 	// NOTE: This needs to be initialized before CommunicationManager.
-	public static CaratDataStorage s = null;
+	public static CaratDataStorage storage = null;
 	// NOTE: The CommunicationManager requires a working instance of
 	// CaratDataStorage.
-	public CommunicationManager c = null;
+	public CommunicationManager commManager = null;
 
 	// Activity pointers so that all activity UIs can be updated with a callback
 	// to CaratApplication
@@ -181,11 +181,11 @@ public class CaratApplication extends Application {
 	 *            the application name
 	 * @return the Drawable for the application's icon
 	 */
-	public static Drawable iconForApp(Context c, String appName) {
+	public static Drawable iconForApp(Context context, String appName) {
 		try {
-			return c.getPackageManager().getApplicationIcon(appName);
+			return context.getPackageManager().getApplicationIcon(appName);
 		} catch (NameNotFoundException e) {
-			return c.getResources().getDrawable(R.drawable.ic_launcher);
+			return context.getResources().getDrawable(R.drawable.ic_launcher);
 		}
 	}
 
@@ -197,13 +197,13 @@ public class CaratApplication extends Application {
 	 *            the application name
 	 * @return the human readable application label
 	 */
-	public static String labelForApp(Context c, String appName) {
+	public static String labelForApp(Context context, String appName) {
 		if (appName == null)
 			return "Unknown";
 		try {
-			ApplicationInfo i = c.getPackageManager().getApplicationInfo(appName, 0);
+			ApplicationInfo i = context.getPackageManager().getApplicationInfo(appName, 0);
 			if (i != null)
-				return c.getPackageManager().getApplicationLabel(i).toString();
+				return context.getPackageManager().getApplicationLabel(i).toString();
 			else
 				return appName;
 		} catch (NameNotFoundException e) {
@@ -233,10 +233,10 @@ public class CaratApplication extends Application {
 	}
 
 	public static int getJscore() {
-		final Reports r = s.getReports();
+		final Reports reports = storage.getReports();
 		int jscore = 0;
-		if (r != null) {
-			jscore = ((int) (r.getJScore() * 100));
+		if (reports != null) {
+			jscore = ((int) (reports.getJScore() * 100));
 		}
 		return jscore;
 	}
@@ -315,24 +315,24 @@ public class CaratApplication extends Application {
 		}
 	}
 
-	public static void setMain(MainActivity a) {
-		main = a;
+	public static void setMain(MainActivity mainActivity) {
+		main = mainActivity;
 	}
 
-	public static void setMyDevice(MyDeviceFragment a) {
-		myDevice = a;
+	public static void setMyDevice(MyDeviceFragment myDeviceFragment) {
+		myDevice = myDeviceFragment;
 	}
 
-	public static void setBugs(BugsOrHogsFragment a) {
-		bugsActivity = a;
+	public static void setBugs(BugsOrHogsFragment bugsOrHogsFragment) {
+		bugsActivity = bugsOrHogsFragment;
 	}
 
-	public static void setHogs(BugsOrHogsFragment a) {
-		hogsActivity = a;
+	public static void setHogs(BugsOrHogsFragment bugsOrHogsFragment) {
+		hogsActivity = bugsOrHogsFragment;
 	}
 
-	public static void setActionList(SuggestionsFragment a) {
-		actionList = a;
+	public static void setActionList(SuggestionsFragment suggestionsFragment) {
+		actionList = suggestionsFragment;
 	}
 
 	/*
@@ -376,7 +376,7 @@ public class CaratApplication extends Application {
 	 */
 	@Override
 	public void onCreate() {
-		s = new CaratDataStorage(this);
+		storage = new CaratDataStorage(this);
 
 		new Thread() {
 			private IntentFilter intentFilter;
@@ -426,7 +426,7 @@ public class CaratApplication extends Application {
 
 		new Thread() {
 			public void run() {
-				c = new CommunicationManager(CaratApplication.this);
+				commManager = new CommunicationManager(CaratApplication.this);
 			}
 		}.start();
 
@@ -452,11 +452,11 @@ public class CaratApplication extends Application {
 				boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
 						|| networkType.equals("WIFI");
 
-				if (connected && c != null) {
+				if (connected && commManager != null) {
 					// Show we are updating...
 					CaratApplication.setActionInProgress();
 					try {
-						c.refreshAllReports();
+						commManager.refreshAllReports();
 						// Log.d(TAG, "Reports refreshed.");
 					} catch (Throwable th) {
 						// Any sort of malformed response, too short string,
@@ -499,7 +499,7 @@ public class CaratApplication extends Application {
 					// Show we are updating...
 					CaratApplication.setActionInProgress();
 					try {
-						c.refreshAllReports();
+						commManager.refreshAllReports();
 						// Log.d(TAG, "Reports refreshed.");
 					} catch (Throwable th) {
 						// Any sort of malformed response, too short string,
@@ -525,9 +525,9 @@ public class CaratApplication extends Application {
 	}
 
 	public static void setReportData() {
-		final Reports r = s.getReports();
+		final Reports r = storage.getReports();
 		Log.d(TAG, "Got reports.");
-		long freshness = CaratApplication.s.getFreshness();
+		long freshness = CaratApplication.storage.getFreshness();
 		long l = System.currentTimeMillis() - freshness;
 		final long h = l / 3600000;
 		final long min = (l - h * 3600000) / 60000;

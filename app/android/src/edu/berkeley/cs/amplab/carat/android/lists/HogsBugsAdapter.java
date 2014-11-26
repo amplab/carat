@@ -6,10 +6,10 @@ import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +23,22 @@ public class HogsBugsAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private CaratApplication a = null;
 
-    public HogsBugsAdapter(CaratApplication a, SimpleHogBug[] results) {
-        this.a = a;
+    public HogsBugsAdapter(CaratApplication caratApplication, SimpleHogBug[] results) {
+        this.a = caratApplication;
 
-        Context c = a.getApplicationContext();
-        // Skip system apps.
+        Context appContext = caratApplication.getApplicationContext();
+        // Skip system apps
         int items = 0;
         if (results != null)
-            for (SimpleHogBug b : results) {
-                String appName = b.getAppName();
+            for (SimpleHogBug app : results) {
+                String appName = app.getAppName();
                 if (appName == null)
-                    appName = a.getString(R.string.unknown);
-                if (appName.equals(CaratApplication.CARAT_PACKAGE)
-                        || appName.equals(CaratApplication.CARAT_OLD))
-                    continue;
-                if (!SamplingLibrary.isHidden(c, appName))
+                    appName = caratApplication.getString(R.string.unknown);
+                // don't show special apps: Carat or system apps
+                if (SpecialAppCases.isSpecialApp(appName))
+    				continue;
+                // the "dialer" app still shows up. no idea why!
+                if (!SamplingLibrary.isHidden(appContext, appName))
                     items++;
             }
         allBugsOrHogs = new SimpleHogBug[items];
@@ -47,19 +48,19 @@ public class HogsBugsAdapter extends BaseAdapter {
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
-                    appName = a.getString(R.string.unknown);
-                if (appName.equals(CaratApplication.CARAT_PACKAGE)
+                    appName = caratApplication.getString(R.string.unknown);
+                if (appName.equals(CaratApplication.CARAT_PACKAGE_NAME)
                         || appName.equals(CaratApplication.CARAT_OLD))
                     continue;
                 // Apparently the number of items changes from "items" above?
-                if (!SamplingLibrary.isHidden(c, appName)
+                if (!SamplingLibrary.isHidden(appContext, appName)
                         && i < allBugsOrHogs.length) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }
             }
         Arrays.sort(allBugsOrHogs);
-        mInflater = LayoutInflater.from(c);
+        mInflater = LayoutInflater.from(appContext);
     }
 
     public int getCount() {

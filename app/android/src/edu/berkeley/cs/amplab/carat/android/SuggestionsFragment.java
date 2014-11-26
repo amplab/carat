@@ -40,30 +40,22 @@ public class SuggestionsFragment extends Fragment implements Serializable{
     int baseViewIndex = 0;
     ViewFlipper vf = null;
     
-    private void switchView(View v){}
-    
-    private void switchView(int id){}
-
-    
     /**
      * 
      */
     private static final long serialVersionUID = -6034269327947014085L;
     private static final String TAG = "CaratSuggestions";
-    private View tv = null;
+//    private View tv = null;
     private View killView = null;
-    private View collectDataView = null;
     private int emptyIndex = -1;
-    private LocalizedWebView webview = null;
     private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         vf = new ViewFlipper(getActivity());
         root = inflater.inflate(R.layout.suggestions, container, false);
-        final Context c = getActivity();
-
-        tv = inflater.inflate(R.layout.emptyactions, null);
+//        final Context c = getActivity();
+//        tv = inflater.inflate(R.layout.emptyactions, null);
         
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
@@ -71,12 +63,17 @@ public class SuggestionsFragment extends Fragment implements Serializable{
         lv.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+            	// TODO: make sure each case below is working if it happens
+            	// we don't use viewFlipper (vf) anymore
+            	// so make sure to rewrite all methods which use vf.addView() to change view 
+            	// (change the view using a fragment transaction. For showing a URL use our 
+            	// CaratApplication.showHTMLFile("fileName"))
                 Object o = lv.getItemAtPosition(position);
                 SimpleHogBug fullObject = (SimpleHogBug) o;
                 final String raw = fullObject.getAppName();
                 Log.v(TAG, "Showing kill view for " + raw);
                 if (raw.equals("OsUpgrade"))
-                    switchView(R.id.upgradeOsView);
+                    CaratApplication.showHTMLFile("upgradeos");
                 else if (raw.equals(getString(R.string.dimscreen)))
                     GoToDisplayScreen();
                 else if (raw.equals(getString(R.string.disablewifi)))
@@ -98,8 +95,7 @@ public class SuggestionsFragment extends Fragment implements Serializable{
                 else if (raw.equals(getString(R.string.disableautomaticsync)))
                     GoToSyncScreen();
                 else if (raw.equals(getString(R.string.helpcarat))) {
-                    initCollectDataView();
-                    switchView(collectDataView);
+                    CaratApplication.showHTMLFile("collectdata");
                 } else if (raw.equals(getString(R.string.questionnaire))) {
                     openQuestionnaire();
                 } else {
@@ -162,11 +158,6 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 //        }
 //        }
 
-        if (viewIndex == 0)
-            vf.setDisplayedChild(baseViewIndex);
-        else
-            vf.setDisplayedChild(viewIndex);
-        
         return root;
     }
     
@@ -201,17 +192,6 @@ public class SuggestionsFragment extends Fragment implements Serializable{
             webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list)), false));*/
             killView = killPage;
             vf.addView(killView);
-        }
-    }
-
-    private void initCollectDataView() {
-        if (webview == null) {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View collectPage = inflater.inflate(R.layout.collectdata, null);
-            webview = (LocalizedWebView) collectPage.findViewById(R.id.collectDataView);
-            webview.loadUrl("file:///android_asset/collectdata.html");
-            //webview.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex));
-            vf.addView(webview);
         }
     }
 
@@ -292,7 +272,7 @@ public class SuggestionsFragment extends Fragment implements Serializable{
         String caratId = Uri.encode(p.getString(CaratApplication.REGISTERED_UUID, ""));
         String os = Uri.encode(SamplingLibrary.getOsVersion());
         String model = Uri.encode(SamplingLibrary.getModel());
-        String url = CaratApplication.s.getQuestionnaireUrl();
+        String url = CaratApplication.storage.getQuestionnaireUrl();
         if (url != null && url.length() > 7 && url.startsWith("http")) { // http://
             url = url.replace("caratid", caratId).replace("caratos", os).replace("caratmodel", model);
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -313,9 +293,9 @@ public class SuggestionsFragment extends Fragment implements Serializable{
     }
 
     public void refresh() {
-        CaratApplication app = (CaratApplication) CaratApplication.getMainActivity().getApplication();
+        CaratApplication appContext = (CaratApplication) CaratApplication.getMainActivity().getApplication();
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
-        lv.setAdapter(new HogBugSuggestionsAdapter(app, CaratApplication.s.getHogReport(), CaratApplication.s.getBugReport()));
+        lv.setAdapter(new HogBugSuggestionsAdapter(appContext, CaratApplication.storage.getHogReport(), CaratApplication.storage.getBugReport()));
         emptyCheck(lv);
     }
 

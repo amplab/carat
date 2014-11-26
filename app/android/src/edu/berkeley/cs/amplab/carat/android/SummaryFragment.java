@@ -15,6 +15,11 @@ import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
 
+/**
+ * 
+ * @author Javad Sadeqzadeh
+ *
+ */
 public class SummaryFragment extends Fragment {
 	
 	@Override
@@ -24,12 +29,12 @@ public class SummaryFragment extends Fragment {
 		int hogsCount = getArguments().getInt("hogs");
 		int bugsCount = getArguments().getInt("bugs");
 		
-        final View v = inflater.inflate(R.layout.fragment_summary, container, false);
+        final View inflatedView = inflater.inflate(R.layout.fragment_summary, container, false);
         final Resources resources = getResources();
-        final PieGraph pg = (PieGraph) v.findViewById(R.id.piegraph);
+        final PieGraph pg = (PieGraph) inflatedView.findViewById(R.id.piegraph);
         
         PieSlice slice = new PieSlice();
-        slice.setColor(resources.getColor(R.color.green_light));
+        slice.setColor(resources.getColor(R.color.green));
         slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
         slice.setValue(wellbehavedAppsCount);
         slice.setTitle("first");
@@ -59,42 +64,7 @@ public class SummaryFragment extends Fragment {
         Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
         pg.setBackgroundBitmap(b);
 
-        SeekBar seekBar = (SeekBar) v.findViewById(R.id.seekBarRatio);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pg.setInnerCircleRatio(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        seekBar = (SeekBar) v.findViewById(R.id.seekBarPadding);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                pg.setPadding(progress);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        return v;
+        // onCreateView() method should always return the inflated view
+        return inflatedView;
     }
 }

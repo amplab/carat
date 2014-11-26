@@ -132,8 +132,8 @@ public class DrawView extends View {
 
 	private void setFields(View parent, boolean isApp) {
 		TextView samples = (TextView) parent.findViewById(R.id.samples);
-		TextView killBenefit = (TextView) parent.findViewById(R.id.killBenefit);
-		TextView benefitTopTextView = (TextView) parent.findViewById(R.id.benefit);
+//		TextView killBenefit = (TextView) parent.findViewById(R.id.killBenefit);
+//		TextView benefitTopTextView = (TextView) parent.findViewById(R.id.benefit);
 		TextView samplesWoT = (TextView) parent.findViewById(R.id.samplesWo);
 		TextView errorText = (TextView) parent.findViewById(R.id.error);
 		TextView appName = (TextView) parent.findViewById(R.id.name);
@@ -154,16 +154,16 @@ public class DrawView extends View {
 			errorText.setText(SimpleHogBug.getErrorText(ev, error, evWithout, errorWo));
 		}
 
-		if (textBenefit != null) {
-			killBenefit.setText(textBenefit);
-			benefitTopTextView.setText(textBenefit);
-		} else {
-			double benefit = 100.0 / evWithout - 100.0 / ev;
-			if (benefit < 0) {
-				killBenefit.setText(c.getString(R.string.best));
-			} else {
-				killBenefit.setText(SimpleHogBug.getBenefitText(ev, error, evWithout, errorWo));
-			}
-		}
+//		if (textBenefit != null) {
+//			killBenefit.setText(textBenefit);
+//			benefitTopTextView.setText(textBenefit);
+//		} else {
+//			double benefit = 100.0 / evWithout - 100.0 / ev;
+//			if (benefit < 0) {
+//				killBenefit.setText(c.getString(R.string.best));
+//			} else {
+//				killBenefit.setText(SimpleHogBug.getBenefitText(ev, error, evWithout, errorWo));
+//			}
+//		}
 	}
 }

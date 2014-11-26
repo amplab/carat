@@ -4,14 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 
 /**
  * This fragment reads the statistics of Android apps from the Carat stats URL,

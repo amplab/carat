@@ -36,7 +36,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		ArrayList<SimpleHogBug> temp = new ArrayList<SimpleHogBug>();
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
-		// Disabled for stability until we know what to do on pre-ICS phones for this.
+		// TODO: Disabled for stability until we know what to do on pre-ICS phones for this.
 		addFeatureActions(temp);
 
 		if (addFakeItem){
@@ -66,10 +66,12 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			String appName = item.getAppName();
 			if (appName == null) appName = a.getString(R.string.unknown);
 			
+			// don't show (skip) special apps: Carat or system apps
+			if (SpecialAppCases.isSpecialApp(appName))
+				continue;
 			if (SamplingLibrary.isHidden(a.getApplicationContext(), appName))
 			    continue;
-			if (appName.equals(CaratApplication.CARAT_PACKAGE) || appName.equals(CaratApplication.CARAT_OLD))
-			    continue;
+			
 			if (addFakeItem && appName.equals(FAKE_ITEM))
 			    result.add(item);
 			// Filter out if benefit is too small
@@ -78,6 +80,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			}
 		}
 	}
+	
 	
     private void addFeatureActions(ArrayList<SimpleHogBug> results) {
         // Disable all for now, benefits are not calculated correctly yet.
@@ -95,7 +98,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
         // acceptDisableAutoSync(results);
         if (results.isEmpty())
             helpCaratCollectMoreData(results);
-        String url = CaratApplication.s.getQuestionnaireUrl(); 
+        String url = CaratApplication.storage.getQuestionnaireUrl(); 
         boolean questionnaireEnabled = url != null && url.length() > 7; // http://
         if (questionnaireEnabled)
             questionnaire(results);

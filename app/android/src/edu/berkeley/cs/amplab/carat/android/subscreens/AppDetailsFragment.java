@@ -70,7 +70,7 @@ public class AppDetailsFragment extends Fragment {
 		if (isApp) {
 			drawView.setParams(fullObject, detailsPage);
 		} else { // isOS or isModel
-			Reports reports = CaratApplication.s.getReports();
+			Reports reports = CaratApplication.storage.getReports();
 			if (reports != null) {
 				Tracker tracker = Tracker.getInstance();
 				if (isOs) {

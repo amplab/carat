@@ -30,12 +30,3 @@
         android:background="@color/silver"         
 		/>    
 </android.support.v4.widget.DrawerLayout>
-
-<!-- 
-android:background="@color/lightsilver"
-android:theme="@style/LightBackground"
-
-
-android:background="#111"
-/> 
--->

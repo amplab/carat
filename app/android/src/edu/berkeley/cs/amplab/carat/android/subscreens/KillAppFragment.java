@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,6 +58,7 @@ public class KillAppFragment extends Fragment {
 				ver = pak.versionName;
 			if (ver == null)
 				ver = "";
+			// Log.d("killApp", pak.packageName);
 			final String s = label + " " + ver;
 			killButton.setText(getString(R.string.kill) + " " + s);
 			killButton.setEnabled(true);

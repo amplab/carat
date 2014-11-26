@@ -214,15 +214,15 @@ public class BugsOrHogsFragment extends Fragment {
 		CaratApplication app = (CaratApplication) getActivity().getApplication();
 		final ListView lv = (ListView) getActivity().findViewById(android.R.id.list);
 		if (isBugs)
-			lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.s.getBugReport()));
+			lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.storage.getBugReport()));
 		else
-			lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.s.getHogReport()));
+			lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.storage.getHogReport()));
 		emptyCheck(lv);
 	}
 
 	private void emptyCheck(ListView lv) {
-		if (lv.getAdapter().isEmpty() && isBugs && CaratApplication.s.getHogReport() != null
-				&& CaratApplication.s.getHogReport().length > 0) {
+		if (lv.getAdapter().isEmpty() && isBugs && CaratApplication.storage.getHogReport() != null
+				&& CaratApplication.storage.getHogReport().length > 0) {
 			if (vf.getDisplayedChild() == baseViewIndex || vf.getDisplayedChild() == emptyIndex)
 				vf.setDisplayedChild(emptyBugsIndex);
 		} else if (lv.getAdapter().isEmpty()) {

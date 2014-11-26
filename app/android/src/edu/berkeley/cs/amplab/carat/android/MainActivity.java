@@ -265,8 +265,8 @@ public class MainActivity extends ActionBarActivity {
 
 	public void setTitleNormal() {
 		setFullVersion();
-		if (CaratApplication.s != null) {
-			long s = CaratApplication.s.getSamplesReported();
+		if (CaratApplication.storage != null) {
+			long s = CaratApplication.storage.getSamplesReported();
 			Log.d("setTitleNormal", "number of samples reported=" + String.valueOf(s));
 			if (s > 0) {
 				this.setTitle("Carat - " + s + " " + getString(R.string.samplesreported));
@@ -487,12 +487,12 @@ public class MainActivity extends ActionBarActivity {
 				HashMap<String, String> options = new HashMap<String, String>();
 				options.put("os", os);
 				options.put("model", model);
-				SimpleHogBug[] b = CaratApplication.s.getBugReport();
+				SimpleHogBug[] b = CaratApplication.storage.getBugReport();
 				int len = 0;
 				if (b != null)
 					len = b.length;
 				options.put("bugs", len + "");
-				b = CaratApplication.s.getHogReport();
+				b = CaratApplication.storage.getHogReport();
 				len = 0;
 				if (b != null)
 					len = b.length;

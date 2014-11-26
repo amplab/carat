@@ -10,9 +10,6 @@
     android:textColor="#2E3235" 
      />
 
-<!-- android:theme="@style/LightBackground"  -->
-<!-- android:textColor="#fff" -->
-
 <!--
     The following attributes of a TextView require Android API 11 and 14 
     (even with the Support library (AppCompat)). 

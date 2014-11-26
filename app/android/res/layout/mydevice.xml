@@ -61,7 +61,7 @@ Carat My Device Screen layout
                     android:text="@string/jsna"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textSize="48sp"
-                    android:textColor="@color/turquoise" />
+                    android:textColor="@color/cyan" />
                 
                 <ImageView
                     android:id="@+id/moreinfo"
@@ -230,18 +230,18 @@ Carat My Device Screen layout
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_weight="1"
-                    android:layout_marginRight="-3dip"
-                    android:layout_marginLeft="-3dip"
                     android:text="@string/viewprocess"
-                    android:textColor="@color/gray" />
-				<!-- Spacer: -->
-                <View
-                    android:layout_width="24dip"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="right|center_vertical"
-                    android:background="@null"
-                    />
-                <!-- <ImageView
+                    android:background="@drawable/button" />
+                <!-- The above background for this element is a custom defined background ("shape").
+                It is defined in our custom files drawable/button.xml, button_enabled.xml, 
+                button_pressed.xml, button_focused.xml, and button_disabled.xml
+				(all in the "drawable" folder). We also created a custom style for our custom buttons
+				in values/styles.xml, and then set this custom style as the default button style
+				in our application theme (in values/themes.xml under our in-use style element) -->
+                
+                <!-- android:textSize="16sp"
+                android:textColor="@color/white"  
+                	<ImageView
                     android:id="@+id/appInfo"
                     android:layout_width="24dip"
                     android:layout_height="match_parent"
@@ -369,3 +369,16 @@ Carat My Device Screen layout
     </edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView>
 
 </edu.berkeley.cs.amplab.carat.android.ui.FixedViewFlipper>
+
+<!-- 
+<Button
+                    android:id="@+id/viewProcessButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_weight="1"
+                    android:layout_marginRight="-3dip"
+                    android:layout_marginLeft="-3dip"
+                    android:text="@string/viewprocess"
+                    android:textColor="@color/gray" />
+ -->

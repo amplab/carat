@@ -72,18 +72,18 @@ public class SampleSender {
                         int progress = (int) (successSum * 1.0 / samples * 100.0);
                         CaratApplication.setActionProgress(progress, successSum + "/"
                                 + samples +" "+ app.getString(R.string.samplesreported), false);
-                        if (app.c != null) {
+                        if (app.commManager != null) {
                             int tries = 0;
                             while (tries < 2) {
                                 try {
-                                    int success = app.c.uploadSamples(map.values());
+                                    int success = app.commManager.uploadSamples(map.values());
     
                                     tries = 2;
                                     // FlurryAgent.logEvent("UploadSamples");
                                     Log.d(TAG, "Uploaded " + success
                                             + " samples out of " + map.size());
                                     if (success > 0)
-                                        CaratApplication.s.samplesReported(success);
+                                        CaratApplication.storage.samplesReported(success);
                                     Sample last = map.get(map.lastKey());
                                     Log.d(TAG,
                                             "Deleting " + success

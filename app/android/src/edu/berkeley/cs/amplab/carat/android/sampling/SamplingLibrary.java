@@ -628,13 +628,13 @@ public final class SamplingLibrary {
          * Blacklist: Key chain, google partner set up, package installer,
          * package access helper
          */
-        if (CaratApplication.s != null) {
-            List<String> blacklist = CaratApplication.s.getBlacklist();
+        if (CaratApplication.storage != null) {
+            List<String> blacklist = CaratApplication.storage.getBlacklist();
             if (blacklist != null && blacklist.size() > 0 && processName != null && blacklist.contains(processName)) {
                 return true;
             }
 
-            blacklist = CaratApplication.s.getGloblist();
+            blacklist = CaratApplication.storage.getGloblist();
             if (blacklist != null && blacklist.size() > 0 && processName != null) {
                 for (String glob : blacklist) {
                     if (glob == null)

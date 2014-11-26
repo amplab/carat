@@ -57,7 +57,7 @@
                         android:layout_gravity="left"
                         android:layout_weight="1"
                         android:text="@string/expected"
-                        android:textColor="@color/turquoise" />
+                        android:textColor="@color/cyan" />
 
                     <TextView
                         android:id="@+id/benefit"
@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:text="@string/benefitdefault"
-                        android:textColor="@color/turquoise" />
+                        android:textColor="@color/cyan" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -80,7 +80,8 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <TextView
+        <!-- duplicate info --> 
+        <!-- <TextView
             android:id="@+id/killBenefitLegend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -96,13 +97,13 @@
             android:layout_marginTop="10dip"
             android:text="@string/zeroh"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/gray" />
-
+            android:textColor="@color/gray" /> -->
+		
         <TextView
             android:id="@+id/samplesLegend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
+            android:layout_marginTop="25dp"
             android:text="@string/samples"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/gray" />

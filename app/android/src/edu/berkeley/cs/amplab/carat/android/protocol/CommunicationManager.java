@@ -216,7 +216,7 @@ public class CommunicationManager {
         // Do not refresh if not connected
         if (!SamplingLibrary.networkAvailable(a.getApplicationContext()))
             return;
-        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+        if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return;
         // Establish connection
         if (register) {
@@ -276,7 +276,7 @@ public class CommunicationManager {
 
         boolean bl = true;
         if (System.currentTimeMillis()
-                - CaratApplication.s.getBlacklistFreshness() < CaratApplication.FRESHNESS_TIMEOUT_BLACKLIST)
+                - CaratApplication.storage.getBlacklistFreshness() < CaratApplication.FRESHNESS_TIMEOUT_BLACKLIST)
             bl = false;
 
         if (success) {
@@ -293,7 +293,7 @@ public class CommunicationManager {
         }
         
         // NOTE: Check for having a J-Score, and in case there is none, send the new message
-        Reports r = CaratApplication.s.getReports();
+        Reports r = CaratApplication.storage.getReports();
         if (r == null || r.jScoreWith == null || r.jScoreWith.expectedValue <= 0){
             success = getQuickHogsAndMaybeRegister(uuId, OS, model);
             if (success)
@@ -307,12 +307,12 @@ public class CommunicationManager {
             refreshQuestionnaireLink();
         }
 
-        CaratApplication.s.writeFreshness();
+        CaratApplication.storage.writeFreshness();
         Log.d(TAG, "Wrote freshness");
     }
 
     private boolean refreshMainReports(String uuid, String os, String model) {
-        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+        if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return false;
         CaratService.Client instance = null;
         try {
@@ -322,7 +322,7 @@ public class CommunicationManager {
             // Assume multiple invocations, do not close
             // ProtocolClient.close();
             if (r != null)
-                CaratApplication.s.writeReports(r);
+                CaratApplication.storage.writeReports(r);
             // Assume freshness written by caller.
             // s.writeFreshness();
             safeClose(instance);
@@ -335,7 +335,7 @@ public class CommunicationManager {
     }
 
     private boolean refreshBugReports(String uuid, String model) {
-        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+        if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return false;
         CaratService.Client instance = null;
         try {
@@ -345,7 +345,7 @@ public class CommunicationManager {
             // Assume multiple invocations, do not close
             // ProtocolClient.close();
             if (r != null)
-                CaratApplication.s.writeBugReport(r);
+                CaratApplication.storage.writeBugReport(r);
             safeClose(instance);
             return true;
         } catch (Throwable th) {
@@ -356,7 +356,7 @@ public class CommunicationManager {
     }
 
     private boolean refreshHogReports(String uuid, String model) {
-        if (System.currentTimeMillis() - CaratApplication.s.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+        if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
             return false;
         CaratService.Client instance = null;
         try {
@@ -367,7 +367,7 @@ public class CommunicationManager {
             // Assume multiple invocations, do not close
             // ProtocolClient.close();
             if (r != null)
-                CaratApplication.s.writeHogReport(r);
+                CaratApplication.storage.writeHogReport(r);
             // Assume freshness written by caller.
             // s.writeFreshness();
             safeClose(instance);
@@ -406,17 +406,17 @@ public class CommunicationManager {
                         rd.close();
                         Log.v(TAG, "Downloaded blacklist: " + blacklist);
                         Log.v(TAG, "Downloaded globlist: " + globlist);
-                        CaratApplication.s.writeBlacklist(blacklist);
+                        CaratApplication.storage.writeBlacklist(blacklist);
                         // List of *something or something* expressions:
                         if (globlist.size() > 0)
-                            CaratApplication.s.writeGloblist(globlist);
+                            CaratApplication.storage.writeGloblist(globlist);
 
                     }
                 } catch (Throwable th) {
                     Log.e(TAG, "Could not retrieve blacklist!", th);
                 }
                 // So we don't try again too often.
-                CaratApplication.s.writeBlacklistFreshness();
+                CaratApplication.storage.writeBlacklistFreshness();
             }
         }.start();
     }
@@ -436,9 +436,9 @@ public class CommunicationManager {
                         s = rd.readLine();
                         rd.close();
                         if (s != null && s.length() > 7 && s.startsWith("http"))
-                            CaratApplication.s.writeQuestionnaireUrl(s);
+                            CaratApplication.storage.writeQuestionnaireUrl(s);
                         else
-                            CaratApplication.s.writeQuestionnaireUrl(" ");
+                            CaratApplication.storage.writeQuestionnaireUrl(" ");
                     }
                 } catch (Throwable th) {
                     Log.e(TAG, "Could not retrieve blacklist!", th);
@@ -448,7 +448,7 @@ public class CommunicationManager {
     }
     
     private boolean getQuickHogsAndMaybeRegister(String uuid, String os, String model) {
-        if (System.currentTimeMillis() - CaratApplication.s.getQuickHogsFreshness() < CaratApplication.FRESHNESS_TIMEOUT_QUICKHOGS)
+        if (System.currentTimeMillis() - CaratApplication.storage.getQuickHogsFreshness() < CaratApplication.FRESHNESS_TIMEOUT_QUICKHOGS)
             return false;
         CaratService.Client instance = null;
         try {
@@ -466,8 +466,8 @@ public class CommunicationManager {
             // Assume multiple invocations, do not close
             // ProtocolClient.close();
             if (r != null){
-                CaratApplication.s.writeHogReport(r);
-                CaratApplication.s.writeQuickHogsFreshness();
+                CaratApplication.storage.writeHogReport(r);
+                CaratApplication.storage.writeQuickHogsFreshness();
             }
             // Assume freshness written by caller.
             // s.writeFreshness();

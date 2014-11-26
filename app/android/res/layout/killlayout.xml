@@ -60,7 +60,7 @@
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 android:text="@string/expected"
-                android:textColor="@color/turquoise" />
+                android:textColor="@color/cyan" />
 
             <TextView
                 android:id="@+id/expectedBenefit"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/benefitdefault"
-                android:textColor="@color/turquoise" />
+                android:textColor="@color/cyan" />
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>
@@ -88,14 +88,16 @@
         android:paddingRight="8dip">
     <Button
         android:id="@+id/killButton"
-        android:layout_width="0dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:paddingRight="3dp"
+    	android:paddingLeft="3dp"
         android:text="Kill App X" android:layout_weight="1"/>
     
     <Button
         android:id="@+id/appManager"
-        android:layout_width="0dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="@string/appmanager" android:layout_weight="1"/>
