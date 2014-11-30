@@ -16,7 +16,7 @@ import org.apache.thrift.EncodingUtils;
 import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
 import org.apache.thrift.server.AbstractNonblockingServer.*;
-
+import android.annotation.SuppressLint;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,13 +29,9 @@ import java.util.Collections;
 import java.util.BitSet;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
-
 import javax.annotation.Generated;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import android.annotation.SuppressLint;
 
 @SuppressLint("NewApi")
 @SuppressWarnings({"cast", "rawtypes", "serial", "unchecked"})
@@ -67,6 +63,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final org.apache.thrift.protocol.TField UNKNOWN_SOURCES_FIELD_DESC = new org.apache.thrift.protocol.TField("unknownSources", org.apache.thrift.protocol.TType.I32, (short)22);
   private static final org.apache.thrift.protocol.TField DEVELOPER_MODE_FIELD_DESC = new org.apache.thrift.protocol.TField("developerMode", org.apache.thrift.protocol.TType.I32, (short)23);
   private static final org.apache.thrift.protocol.TField EXTRA_FIELD_DESC = new org.apache.thrift.protocol.TField("extra", org.apache.thrift.protocol.TType.LIST, (short)24);
+  private static final org.apache.thrift.protocol.TField TRAFFIC_RECORD_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("trafficRecordList", org.apache.thrift.protocol.TType.LIST, (short)25);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -98,6 +95,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   public int unknownSources; // optional
   public int developerMode; // optional
   public List<Feature> extra; // optional
+  public List<TrafficRecord> trafficRecordList; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -124,7 +122,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     TIME_ZONE((short)21, "timeZone"),
     UNKNOWN_SOURCES((short)22, "unknownSources"),
     DEVELOPER_MODE((short)23, "developerMode"),
-    EXTRA((short)24, "extra");
+    EXTRA((short)24, "extra"),
+    TRAFFIC_RECORD_LIST((short)25, "trafficRecordList");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -187,6 +186,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           return DEVELOPER_MODE;
         case 24: // EXTRA
           return EXTRA;
+        case 25: // TRAFFIC_RECORD_LIST
+          return TRAFFIC_RECORD_LIST;
         default:
           return null;
       }
@@ -240,7 +241,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
   private static final int __UNKNOWNSOURCES_ISSET_ID = 10;
   private static final int __DEVELOPERMODE_ISSET_ID = 11;
   private short __isset_bitfield = 0;
-  private static final _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED,_Fields.SCREEN_BRIGHTNESS,_Fields.NETWORK_DETAILS,_Fields.BATTERY_DETAILS,_Fields.CPU_STATUS,_Fields.LOCATION_PROVIDERS,_Fields.CALL_INFO,_Fields.SCREEN_ON,_Fields.TIME_ZONE,_Fields.UNKNOWN_SOURCES,_Fields.DEVELOPER_MODE,_Fields.EXTRA};
+  private static final _Fields optionals[] = {_Fields.TIMESTAMP,_Fields.PI_LIST,_Fields.BATTERY_STATE,_Fields.BATTERY_LEVEL,_Fields.MEMORY_WIRED,_Fields.MEMORY_ACTIVE,_Fields.MEMORY_INACTIVE,_Fields.MEMORY_FREE,_Fields.MEMORY_USER,_Fields.TRIGGERED_BY,_Fields.NETWORK_STATUS,_Fields.DISTANCE_TRAVELED,_Fields.SCREEN_BRIGHTNESS,_Fields.NETWORK_DETAILS,_Fields.BATTERY_DETAILS,_Fields.CPU_STATUS,_Fields.LOCATION_PROVIDERS,_Fields.CALL_INFO,_Fields.SCREEN_ON,_Fields.TIME_ZONE,_Fields.UNKNOWN_SOURCES,_Fields.DEVELOPER_MODE,_Fields.EXTRA,_Fields.TRAFFIC_RECORD_LIST};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -294,6 +295,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     tmpMap.put(_Fields.EXTRA, new org.apache.thrift.meta_data.FieldMetaData("extra", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Feature.class))));
+    tmpMap.put(_Fields.TRAFFIC_RECORD_LIST, new org.apache.thrift.meta_data.FieldMetaData("trafficRecordList", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.LIST        , "TrafficRecorList")));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(Sample.class, metaDataMap);
   }
@@ -366,6 +369,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       this.extra = __this__extra;
     }
+    if (other.isSetTrafficRecordList()) {
+      this.trafficRecordList = other.trafficRecordList;
+    }
   }
 
   public Sample deepCopy() {
@@ -410,6 +416,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     setDeveloperModeIsSet(false);
     this.developerMode = 0;
     this.extra = null;
+    this.trafficRecordList = null;
   }
 
   public String getUuId() {
@@ -1021,6 +1028,45 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     }
   }
 
+  public int getTrafficRecordListSize() {
+    return (this.trafficRecordList == null) ? 0 : this.trafficRecordList.size();
+  }
+
+  public java.util.Iterator<TrafficRecord> getTrafficRecordListIterator() {
+    return (this.trafficRecordList == null) ? null : this.trafficRecordList.iterator();
+  }
+
+  public void addToTrafficRecordList(TrafficRecord elem) {
+    if (this.trafficRecordList == null) {
+      this.trafficRecordList = new ArrayList<TrafficRecord>();
+    }
+    this.trafficRecordList.add(elem);
+  }
+
+  public List<TrafficRecord> getTrafficRecordList() {
+    return this.trafficRecordList;
+  }
+
+  public Sample setTrafficRecordList(List<TrafficRecord> trafficRecordList) {
+    this.trafficRecordList = trafficRecordList;
+    return this;
+  }
+
+  public void unsetTrafficRecordList() {
+    this.trafficRecordList = null;
+  }
+
+  /** Returns true if field trafficRecordList is set (has been assigned a value) and false otherwise */
+  public boolean isSetTrafficRecordList() {
+    return this.trafficRecordList != null;
+  }
+
+  public void setTrafficRecordListIsSet(boolean value) {
+    if (!value) {
+      this.trafficRecordList = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case UU_ID:
@@ -1215,6 +1261,14 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       break;
 
+    case TRAFFIC_RECORD_LIST:
+      if (value == null) {
+        unsetTrafficRecordList();
+      } else {
+        setTrafficRecordList((List<TrafficRecord>)value);
+      }
+      break;
+
     }
   }
 
@@ -1292,6 +1346,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     case EXTRA:
       return getExtra();
 
+    case TRAFFIC_RECORD_LIST:
+      return getTrafficRecordList();
+
     }
     throw new IllegalStateException();
   }
@@ -1351,6 +1408,8 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       return isSetDeveloperMode();
     case EXTRA:
       return isSetExtra();
+    case TRAFFIC_RECORD_LIST:
+      return isSetTrafficRecordList();
     }
     throw new IllegalStateException();
   }
@@ -1584,6 +1643,15 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         return false;
     }
 
+    boolean this_present_trafficRecordList = true && this.isSetTrafficRecordList();
+    boolean that_present_trafficRecordList = true && that.isSetTrafficRecordList();
+    if (this_present_trafficRecordList || that_present_trafficRecordList) {
+      if (!(this_present_trafficRecordList && that_present_trafficRecordList))
+        return false;
+      if (!this.trafficRecordList.equals(that.trafficRecordList))
+        return false;
+    }
+
     return true;
   }
 
@@ -1710,6 +1778,11 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     list.add(present_extra);
     if (present_extra)
       list.add(extra);
+
+    boolean present_trafficRecordList = true && (isSetTrafficRecordList());
+    list.add(present_trafficRecordList);
+    if (present_trafficRecordList)
+      list.add(trafficRecordList);
 
     return list.hashCode();
   }
@@ -1962,6 +2035,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetTrafficRecordList()).compareTo(other.isSetTrafficRecordList());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetTrafficRecordList()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.trafficRecordList, other.trafficRecordList);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -2171,6 +2254,16 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       first = false;
     }
+    if (isSetTrafficRecordList()) {
+      if (!first) sb.append(", ");
+      sb.append("trafficRecordList:");
+      if (this.trafficRecordList == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.trafficRecordList);
+      }
+      first = false;
+    }
     sb.append(")");
     return sb.toString();
   }
@@ -2195,7 +2288,7 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
     }
   }
 
-  private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
     try {
       write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
     } catch (org.apache.thrift.TException te) {
@@ -2459,6 +2552,25 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 25: // TRAFFIC_RECORD_LIST
+            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+              {
+                org.apache.thrift.protocol.TList _list17 = iprot.readListBegin();
+                struct.trafficRecordList = new ArrayList<TrafficRecord>(_list17.size);
+                TrafficRecord _elem18;
+                for (int _i19 = 0; _i19 < _list17.size; ++_i19)
+                {
+                  _elem18 = new TrafficRecord();
+                  _elem18.read(iprot);
+                  struct.trafficRecordList.add(_elem18);
+                }
+                iprot.readListEnd();
+              }
+              struct.setTrafficRecordListIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -2489,9 +2601,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           oprot.writeFieldBegin(PI_LIST_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.piList.size()));
-            for (ProcessInfo _iter17 : struct.piList)
+            for (ProcessInfo _iter20 : struct.piList)
             {
-              _iter17.write(oprot);
+              _iter20.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -2585,9 +2697,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           oprot.writeFieldBegin(LOCATION_PROVIDERS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.locationProviders.size()));
-            for (String _iter18 : struct.locationProviders)
+            for (String _iter21 : struct.locationProviders)
             {
-              oprot.writeString(_iter18);
+              oprot.writeString(_iter21);
             }
             oprot.writeListEnd();
           }
@@ -2628,9 +2740,23 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
           oprot.writeFieldBegin(EXTRA_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.extra.size()));
-            for (Feature _iter19 : struct.extra)
+            for (Feature _iter22 : struct.extra)
             {
-              _iter19.write(oprot);
+              _iter22.write(oprot);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+      }
+      if (struct.trafficRecordList != null) {
+        if (struct.isSetTrafficRecordList()) {
+          oprot.writeFieldBegin(TRAFFIC_RECORD_LIST_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.trafficRecordList.size()));
+            for (TrafficRecord _iter23 : struct.trafficRecordList)
+            {
+              _iter23.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -2725,16 +2851,19 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetExtra()) {
         optionals.set(22);
       }
-      oprot.writeBitSet(optionals, 23);
+      if (struct.isSetTrafficRecordList()) {
+        optionals.set(23);
+      }
+      oprot.writeBitSet(optionals, 24);
       if (struct.isSetTimestamp()) {
         oprot.writeDouble(struct.timestamp);
       }
       if (struct.isSetPiList()) {
         {
           oprot.writeI32(struct.piList.size());
-          for (ProcessInfo _iter20 : struct.piList)
+          for (ProcessInfo _iter24 : struct.piList)
           {
-            _iter20.write(oprot);
+            _iter24.write(oprot);
           }
         }
       }
@@ -2783,9 +2912,9 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetLocationProviders()) {
         {
           oprot.writeI32(struct.locationProviders.size());
-          for (String _iter21 : struct.locationProviders)
+          for (String _iter25 : struct.locationProviders)
           {
-            oprot.writeString(_iter21);
+            oprot.writeString(_iter25);
           }
         }
       }
@@ -2807,9 +2936,18 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       if (struct.isSetExtra()) {
         {
           oprot.writeI32(struct.extra.size());
-          for (Feature _iter22 : struct.extra)
+          for (Feature _iter26 : struct.extra)
           {
-            _iter22.write(oprot);
+            _iter26.write(oprot);
+          }
+        }
+      }
+      if (struct.isSetTrafficRecordList()) {
+        {
+          oprot.writeI32(struct.trafficRecordList.size());
+          for (TrafficRecord _iter27 : struct.trafficRecordList)
+          {
+            _iter27.write(oprot);
           }
         }
       }
@@ -2820,21 +2958,21 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       TTupleProtocol iprot = (TTupleProtocol) prot;
       struct.uuId = iprot.readString();
       struct.setUuIdIsSet(true);
-      BitSet incoming = iprot.readBitSet(23);
+      BitSet incoming = iprot.readBitSet(24);
       if (incoming.get(0)) {
         struct.timestamp = iprot.readDouble();
         struct.setTimestampIsSet(true);
       }
       if (incoming.get(1)) {
         {
-          org.apache.thrift.protocol.TList _list23 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.piList = new ArrayList<ProcessInfo>(_list23.size);
-          ProcessInfo _elem24;
-          for (int _i25 = 0; _i25 < _list23.size; ++_i25)
+          org.apache.thrift.protocol.TList _list28 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.piList = new ArrayList<ProcessInfo>(_list28.size);
+          ProcessInfo _elem29;
+          for (int _i30 = 0; _i30 < _list28.size; ++_i30)
           {
-            _elem24 = new ProcessInfo();
-            _elem24.read(iprot);
-            struct.piList.add(_elem24);
+            _elem29 = new ProcessInfo();
+            _elem29.read(iprot);
+            struct.piList.add(_elem29);
           }
         }
         struct.setPiListIsSet(true);
@@ -2900,13 +3038,13 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       if (incoming.get(16)) {
         {
-          org.apache.thrift.protocol.TList _list26 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-          struct.locationProviders = new ArrayList<String>(_list26.size);
-          String _elem27;
-          for (int _i28 = 0; _i28 < _list26.size; ++_i28)
+          org.apache.thrift.protocol.TList _list31 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+          struct.locationProviders = new ArrayList<String>(_list31.size);
+          String _elem32;
+          for (int _i33 = 0; _i33 < _list31.size; ++_i33)
           {
-            _elem27 = iprot.readString();
-            struct.locationProviders.add(_elem27);
+            _elem32 = iprot.readString();
+            struct.locationProviders.add(_elem32);
           }
         }
         struct.setLocationProvidersIsSet(true);
@@ -2934,17 +3072,31 @@ public class Sample implements org.apache.thrift.TBase<Sample, Sample._Fields>, 
       }
       if (incoming.get(22)) {
         {
-          org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.extra = new ArrayList<Feature>(_list29.size);
-          Feature _elem30;
-          for (int _i31 = 0; _i31 < _list29.size; ++_i31)
+          org.apache.thrift.protocol.TList _list34 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.extra = new ArrayList<Feature>(_list34.size);
+          Feature _elem35;
+          for (int _i36 = 0; _i36 < _list34.size; ++_i36)
           {
-            _elem30 = new Feature();
-            _elem30.read(iprot);
-            struct.extra.add(_elem30);
+            _elem35 = new Feature();
+            _elem35.read(iprot);
+            struct.extra.add(_elem35);
           }
         }
         struct.setExtraIsSet(true);
+      }
+      if (incoming.get(23)) {
+        {
+          org.apache.thrift.protocol.TList _list37 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.trafficRecordList = new ArrayList<TrafficRecord>(_list37.size);
+          TrafficRecord _elem38;
+          for (int _i39 = 0; _i39 < _list37.size; ++_i39)
+          {
+            _elem38 = new TrafficRecord();
+            _elem38.read(iprot);
+            struct.trafficRecordList.add(_elem38);
+          }
+        }
+        struct.setTrafficRecordListIsSet(true);
       }
     }
   }

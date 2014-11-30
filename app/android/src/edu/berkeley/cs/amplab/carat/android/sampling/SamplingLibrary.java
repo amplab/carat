@@ -42,6 +42,7 @@ import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
 import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
+import edu.berkeley.cs.amplab.carat.thrift.TrafficRecord;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -71,6 +72,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.TrafficStats;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
@@ -1791,6 +1793,9 @@ public final class SamplingLibrary {
 
         List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
         mySample.setPiList(processes);
+        
+        List<TrafficRecord> trafficRecordList = takeTrafficSnapshot(context);
+        mySample.setTrafficRecordList(trafficRecordList);
 
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
@@ -1997,6 +2002,42 @@ public final class SamplingLibrary {
 
         return mySample;
     }
+
+	private static List<TrafficRecord> takeTrafficSnapshot(Context context) {
+		HashMap<Integer, TrafficRecord> trafficRecordPerApp=
+        		new HashMap<Integer, TrafficRecord>();
+        
+        HashMap<Integer, String> appNames = 
+        		new HashMap<Integer, String>();
+        
+        for (ApplicationInfo app :
+			context.getPackageManager().getInstalledApplications(0)) {
+        	appNames.put(app.uid, app.packageName);
+        }
+
+        for (Integer uid : appNames.keySet()) {
+        	String appTag = appNames.get(uid);
+        	TrafficRecord trafficRecord = getAppTraffic(appTag, uid);
+        	trafficRecordPerApp.put(uid, trafficRecord);
+        }
+        
+        List<TrafficRecord> trafficRecordList = new ArrayList<TrafficRecord>();
+        
+        for (Integer uid: trafficRecordPerApp.keySet()) {
+        	TrafficRecord record = trafficRecordPerApp.get(uid);
+        	trafficRecordList.add(record);
+        }
+        
+        return trafficRecordList;
+	}
+
+	private static TrafficRecord getAppTraffic(String tag, Integer uid) {
+		TrafficRecord trafficRecord = new TrafficRecord();
+		trafficRecord.setTx(TrafficStats.getUidTxBytes(uid));
+		trafficRecord.setRx(TrafficStats.getUidRxBytes(uid));
+		trafficRecord.setTag(tag);
+		return trafficRecord;
+	}
     
     public static List<String> getSignatures(PackageInfo pak) {
         List<String> sigList = new LinkedList<String>();
