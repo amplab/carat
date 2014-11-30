@@ -655,8 +655,8 @@ public class DetailScreenReport implements org.apache.thrift.TBase<DetailScreenR
 
   @Override
   public int compareTo(DetailScreenReport other) {
-    if (!getClass().equals(other.getClass())) {
-      return getClass().getName().compareTo(other.getClass().getName());
+    if (!((Object) this).getClass().equals(((Object) other).getClass())) {
+      return ((Object) this).getClass().getName().compareTo(((Object) other).getClass().getName());
     }
 
     int lastComparison = 0;

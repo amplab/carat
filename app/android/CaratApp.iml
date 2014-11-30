@@ -75,6 +75,10 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="HoloGraphLibrary" />
-    <orderEntry type="module" module-name="support-appcompat" />
+    <orderEntry type="module" module-name="support-appcompat" />    
   </component>
 </module>
+
+
+<!-- <orderEntry type="library" name="libthrift-0.9.2" level="project" />
+    <orderEntry type="library" name="slf4j-api-1.5.8" level="project" /> -->

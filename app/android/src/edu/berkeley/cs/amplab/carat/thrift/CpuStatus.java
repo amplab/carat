@@ -283,8 +283,8 @@ public class CpuStatus implements org.apache.thrift.TBase<CpuStatus, CpuStatus._
 
   @Override
   public int compareTo(CpuStatus other) {
-    if (!getClass().equals(other.getClass())) {
-      return getClass().getName().compareTo(other.getClass().getName());
+    if (!((Object) this).getClass().equals(((Object) other).getClass())) {
+      return ((Object) this).getClass().getName().compareTo(((Object) other).getClass().getName());
     }
 
     int lastComparison = 0;

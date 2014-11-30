@@ -510,8 +510,8 @@ public class BatteryDetails implements org.apache.thrift.TBase<BatteryDetails, B
 
   @Override
   public int compareTo(BatteryDetails other) {
-    if (!getClass().equals(other.getClass())) {
-      return getClass().getName().compareTo(other.getClass().getName());
+    if (!((Object) this).getClass().equals(((Object) other).getClass())) {
+      return ((Object) this).getClass().getName().compareTo(((Object) other).getClass().getName());
     }
 
     int lastComparison = 0;
