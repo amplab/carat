@@ -24,9 +24,6 @@
     NSArray *memActive;
     
     MBProgressHUD *HUD;
-    
-    IBOutlet UIView *portraitView;
-	IBOutlet UIView *landscapeView;
 }
 
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *jscore;
@@ -36,15 +33,11 @@
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *deviceModel;
 @property (retain, nonatomic) IBOutletCollection(CopyLabel) NSArray *uuid;
 
-@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *memUsed;
-@property (retain, nonatomic) IBOutletCollection(UIProgressView) NSArray *memActive;
-
-@property (nonatomic, retain) IBOutlet UIView *portraitView;
-@property (nonatomic, retain) IBOutlet UIView *landscapeView;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *memUsed;
+@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *memActive;
 
 - (void)loadDataWithHUD:(id)obj;
 - (void)updateView;
-- (void)orientationChanged:(id)object;
 
 - (IBAction)getSameOSDetail:(id)sender;
 - (IBAction)getSameModelDetail:(id)sender;
