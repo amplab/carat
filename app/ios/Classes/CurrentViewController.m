@@ -28,7 +28,6 @@
 @synthesize memUsed = _memUsed;
 @synthesize memActive = _memActive;
 @synthesize uuid = _uuid;
-@synthesize portraitView, landscapeView;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
 - (id) initWithNibName: (NSString *) nibNameOrNil 
@@ -197,10 +196,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+   
 	// Do any additional setup after loading the view, typically from a nib.
     DLog(@"My UUID: %@", [[Globals instance] getUUID]);
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
@@ -217,10 +216,6 @@
     [self setLastUpdated:nil];
     [expectedLife release];
     [self setExpectedLife:nil];
-    [portraitView release];
-    [self setPortraitView:nil];
-    [landscapeView release];
-    [self setLandscapeView:nil];
     [memUsed release];
     [self setMemUsed:nil];
     [memActive release];
@@ -238,7 +233,6 @@
     [super viewWillAppear:animated];
 
     [self updateView];
-    [self orientationChanged:nil];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
@@ -310,11 +304,11 @@
         float frac_used = ((float)(used) / (float)(used+free));
         float frac_active = ((float)(active) / (float)(used));
         DLog(@"Active memory: %f, Used memory: %f", frac_active, frac_used);
-        for (UIProgressView *memUsedProg in self.memUsed) {
-            memUsedProg.progress = frac_used;
+        for (UILabel *memUsedProg in self.memUsed) {
+            memUsedProg.text = [NSString stringWithFormat:@"%.02f%%",frac_used*100];
         }
-        for (UIProgressView *memActiveProg in self.memActive) {
-            memActiveProg.progress = frac_active;
+        for (UILabel *memActiveProg in self.memActive) {
+            memActiveProg.text = [NSString stringWithFormat:@"%.02f%%",frac_active*100];
         }
     }
 
@@ -332,21 +326,6 @@
     [self.view setNeedsDisplay];
 }
 
-- (void) orientationChanged:(id)object
-{  
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.view = self.portraitView;
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
-        {
-            self.view = self.portraitView;
-        } else {
-            self.view = self.landscapeView;
-        }
-    }
-}
-
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return YES;
 }
@@ -355,8 +334,6 @@
     [jscore release];
     [lastUpdated release];
     [expectedLife release];
-    [portraitView release];
-    [landscapeView release];
     [memUsed release];
     [memActive release];
     [super dealloc];
