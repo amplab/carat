@@ -21,9 +21,6 @@
     
     NSArray *samplesWith;
     NSArray *samplesWithout;
-
-    IBOutlet UIView *portraitView;
-	IBOutlet UIView *landscapeView;
 }
 
 @property (assign, nonatomic) NSString *navTitle;
@@ -34,9 +31,6 @@
 
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *samplesWith;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *samplesWithout;
-
-@property (nonatomic, retain) IBOutlet UIView *portraitView;
-@property (nonatomic, retain) IBOutlet UIView *landscapeView;
 
 - (IBAction)getDetailViewInfo:(id)sender;
 
