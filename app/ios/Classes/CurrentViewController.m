@@ -199,13 +199,6 @@
    
 	// Do any additional setup after loading the view, typically from a nib.
     DLog(@"My UUID: %@", [[Globals instance] getUUID]);
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
 }
 
 - (void)viewDidUnload

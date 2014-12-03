@@ -209,14 +209,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
 
     //Setup the navigation
-    self.navigationItem.title = self.tableTitle;
-    
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.navigationController.navigationBar.translucent = NO;
-    }
+    self.navigationItem.title = self.tableTitle;;
 }
 
 // overridden by subclasses
