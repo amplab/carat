@@ -19,7 +19,6 @@
 @synthesize appImpact;
 @synthesize appIcon;
 @synthesize samplesWith, samplesWithout;
-@synthesize portraitView, landscapeView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,26 +55,11 @@
     // Do any additional setup after loading the view from its nib.
     
     self.navigationItem.title = self.navTitle;
+}
 
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:UIDeviceOrientationDidChangeNotification object:nil];
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
-        {
-            self.view = self.portraitView;
-        } else {
-            self.view = self.landscapeView;
-        }
-    }
-    
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
+- (UIRectEdge)edgesForExtendedLayout
+{
+    return [super edgesForExtendedLayout] ^ UIRectEdgeBottom;
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
@@ -94,10 +78,6 @@
     [self setSamplesWith:nil];
     [samplesWithout release];
     [self setSamplesWithout:nil];
-    [portraitView release];
-    [self setPortraitView:nil];
-    [landscapeView release];
-    [self setLandscapeView:nil];
     
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -108,37 +88,12 @@
 {
     [super viewWillAppear:animated];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
-        {
-            self.view = self.portraitView;
-        } else {
-            self.view = self.landscapeView;
-        }
-    }
-    
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-}
-
-- (void) orientationChanged:(id)object
-{  
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        self.view = self.portraitView;
-    } else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortrait ||
-            [[UIApplication sharedApplication] statusBarOrientation] == UIInterfaceOrientationPortraitUpsideDown)
-        {
-            self.view = self.portraitView;
-        } else {
-            self.view = self.landscapeView;
-        }
-    }
 }
 
 - (void)dealloc {
@@ -148,8 +103,6 @@
     [appIcon release];
     [samplesWith release];
     [samplesWithout release];
-    [portraitView release];
-    [landscapeView release];
     
     [super dealloc];
 }

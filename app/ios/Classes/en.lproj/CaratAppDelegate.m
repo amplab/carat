@@ -114,6 +114,7 @@ void onUncaughtException(NSException *exception)
     navController3.navigationBarHidden = YES;
     viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
+   self.tabBarController.tabBar.translucent = NO;
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
