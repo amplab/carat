@@ -757,8 +757,14 @@ public final class SamplingLibrary {
                 PackageInfo pak = pentry.getValue();
                 if (pak != null) {
                     int vc = pak.versionCode;
-                    ApplicationInfo info = pak.applicationInfo;
-                    String label = pm.getApplicationLabel(info).toString();
+                    ApplicationInfo appInfo = pak.applicationInfo;
+                    String label = pm.getApplicationLabel(appInfo).toString();
+                    // we need application UID to be able to use Android's TrafficStat API
+                    // in order to get the traffic info of a particular app:
+                    int appUid = appInfo.uid;
+                    // get the amount of transmitted and received bytes by an app
+                    TrafficRecord trafficRecord = getAppTraffic(appUid);
+                    
                     int flags = pak.applicationInfo.flags;
                     // Check if it is a system app
                     boolean isSystemApp = (flags & ApplicationInfo.FLAG_SYSTEM) > 0;
@@ -777,6 +783,7 @@ public final class SamplingLibrary {
                         pi.setImportance(CaratApplication.IMPORTANCE_NOT_RUNNING);
                         pi.setInstallationPkg(pm.getInstallerPackageName(pkg));
                         pi.setVersionName(pak.versionName);
+                        pi.setTrafficRecord(trafficRecord);
                         result.put(pkg, pi);
                     }
                 }
@@ -1791,12 +1798,19 @@ public final class SamplingLibrary {
         // Record first data point for CPU usage
         long[] idleAndCpu1 = readUsagePoint();
 
-        List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
-        mySample.setPiList(processes);
+        // If the sampler is running because of the SCREEN_ON or SCREEN_OFF event/action, 
+        // we want to get the info of all installed apps/packages, not only those running.
+        // This is because we need the traffic info of all apps, some might not be running when 
+        // those events (screen on / screen off) occur
+        if (action.equals(Intent.ACTION_SCREEN_ON) || action.equals(Intent.ACTION_SCREEN_OFF)) {
+        	Map<String, ProcessInfo> installedPackages = getInstalledPackages(context, false);
+        	List<ProcessInfo> processes = new ArrayList<ProcessInfo>();
+        	processes.addAll(installedPackages.values());        
+        } else {
+        	List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
+            mySample.setPiList(processes);
+        }
         
-        List<TrafficRecord> trafficRecordList = takeTrafficSnapshot(context);
-        mySample.setTrafficRecordList(trafficRecordList);
-
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
         boolean autoScreenBrightness = SamplingLibrary.isAutoBrightness(context);
@@ -1992,7 +2006,6 @@ public final class SamplingLibrary {
         cs.setCpuUsage(getUsage(idleAndCpu1, idleAndCpu2));
         cs.setUptime(getUptime());
         mySample.setCpuStatus(cs);
-
         
         mySample.setDeveloperMode(isDeveloperModeOn(context));
         mySample.setUnknownSources(allowUnknownSources(context));
@@ -2003,39 +2016,10 @@ public final class SamplingLibrary {
         return mySample;
     }
 
-	private static List<TrafficRecord> takeTrafficSnapshot(Context context) {
-		HashMap<Integer, TrafficRecord> trafficRecordPerApp=
-        		new HashMap<Integer, TrafficRecord>();
-        
-        HashMap<Integer, String> appNames = 
-        		new HashMap<Integer, String>();
-        
-        for (ApplicationInfo app :
-			context.getPackageManager().getInstalledApplications(0)) {
-        	appNames.put(app.uid, app.packageName);
-        }
-
-        for (Integer uid : appNames.keySet()) {
-        	String appTag = appNames.get(uid);
-        	TrafficRecord trafficRecord = getAppTraffic(appTag, uid);
-        	trafficRecordPerApp.put(uid, trafficRecord);
-        }
-        
-        List<TrafficRecord> trafficRecordList = new ArrayList<TrafficRecord>();
-        
-        for (Integer uid: trafficRecordPerApp.keySet()) {
-        	TrafficRecord record = trafficRecordPerApp.get(uid);
-        	trafficRecordList.add(record);
-        }
-        
-        return trafficRecordList;
-	}
-
-	private static TrafficRecord getAppTraffic(String tag, Integer uid) {
+	private static TrafficRecord getAppTraffic(Integer uid) {
 		TrafficRecord trafficRecord = new TrafficRecord();
 		trafficRecord.setTx(TrafficStats.getUidTxBytes(uid));
 		trafficRecord.setRx(TrafficStats.getUidRxBytes(uid));
-		trafficRecord.setTag(tag);
 		return trafficRecord;
 	}
     

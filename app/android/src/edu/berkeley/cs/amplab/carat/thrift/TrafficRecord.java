@@ -40,7 +40,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
 
   private static final org.apache.thrift.protocol.TField RX_FIELD_DESC = new org.apache.thrift.protocol.TField("rx", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField TX_FIELD_DESC = new org.apache.thrift.protocol.TField("tx", org.apache.thrift.protocol.TType.I64, (short)2);
-  private static final org.apache.thrift.protocol.TField TAG_FIELD_DESC = new org.apache.thrift.protocol.TField("tag", org.apache.thrift.protocol.TType.STRING, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -50,13 +49,11 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
 
   public long rx; // optional
   public long tx; // optional
-  public String tag; // optional
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     RX((short)1, "rx"),
-    TX((short)2, "tx"),
-    TAG((short)3, "tag");
+    TX((short)2, "tx");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -75,8 +72,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
           return RX;
         case 2: // TX
           return TX;
-        case 3: // TAG
-          return TAG;
         default:
           return null;
       }
@@ -120,7 +115,7 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
   private static final int __RX_ISSET_ID = 0;
   private static final int __TX_ISSET_ID = 1;
   private byte __isset_bitfield = 0;
-  private static final _Fields optionals[] = {_Fields.RX,_Fields.TX,_Fields.TAG};
+  private static final _Fields optionals[] = {_Fields.RX,_Fields.TX};
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
@@ -128,8 +123,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.TX, new org.apache.thrift.meta_data.FieldMetaData("tx", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
-    tmpMap.put(_Fields.TAG, new org.apache.thrift.meta_data.FieldMetaData("tag", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(TrafficRecord.class, metaDataMap);
   }
@@ -144,9 +137,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
     __isset_bitfield = other.__isset_bitfield;
     this.rx = other.rx;
     this.tx = other.tx;
-    if (other.isSetTag()) {
-      this.tag = other.tag;
-    }
   }
 
   public TrafficRecord deepCopy() {
@@ -159,7 +149,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
     this.rx = 0;
     setTxIsSet(false);
     this.tx = 0;
-    this.tag = null;
   }
 
   public long getRx() {
@@ -208,30 +197,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TX_ISSET_ID, value);
   }
 
-  public String getTag() {
-    return this.tag;
-  }
-
-  public TrafficRecord setTag(String tag) {
-    this.tag = tag;
-    return this;
-  }
-
-  public void unsetTag() {
-    this.tag = null;
-  }
-
-  /** Returns true if field tag is set (has been assigned a value) and false otherwise */
-  public boolean isSetTag() {
-    return this.tag != null;
-  }
-
-  public void setTagIsSet(boolean value) {
-    if (!value) {
-      this.tag = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case RX:
@@ -250,14 +215,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
       }
       break;
 
-    case TAG:
-      if (value == null) {
-        unsetTag();
-      } else {
-        setTag((String)value);
-      }
-      break;
-
     }
   }
 
@@ -268,9 +225,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
 
     case TX:
       return Long.valueOf(getTx());
-
-    case TAG:
-      return getTag();
 
     }
     throw new IllegalStateException();
@@ -287,8 +241,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
       return isSetRx();
     case TX:
       return isSetTx();
-    case TAG:
-      return isSetTag();
     }
     throw new IllegalStateException();
   }
@@ -324,15 +276,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
         return false;
     }
 
-    boolean this_present_tag = true && this.isSetTag();
-    boolean that_present_tag = true && that.isSetTag();
-    if (this_present_tag || that_present_tag) {
-      if (!(this_present_tag && that_present_tag))
-        return false;
-      if (!this.tag.equals(that.tag))
-        return false;
-    }
-
     return true;
   }
 
@@ -349,11 +292,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
     list.add(present_tx);
     if (present_tx)
       list.add(tx);
-
-    boolean present_tag = true && (isSetTag());
-    list.add(present_tag);
-    if (present_tag)
-      list.add(tag);
 
     return list.hashCode();
   }
@@ -382,16 +320,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
     }
     if (isSetTx()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.tx, other.tx);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetTag()).compareTo(other.isSetTag());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetTag()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.tag, other.tag);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -425,16 +353,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
       if (!first) sb.append(", ");
       sb.append("tx:");
       sb.append(this.tx);
-      first = false;
-    }
-    if (isSetTag()) {
-      if (!first) sb.append(", ");
-      sb.append("tag:");
-      if (this.tag == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.tag);
-      }
       first = false;
     }
     sb.append(")");
@@ -498,14 +416,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 3: // TAG
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.tag = iprot.readString();
-              struct.setTagIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -531,13 +441,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
         oprot.writeI64(struct.tx);
         oprot.writeFieldEnd();
       }
-      if (struct.tag != null) {
-        if (struct.isSetTag()) {
-          oprot.writeFieldBegin(TAG_FIELD_DESC);
-          oprot.writeString(struct.tag);
-          oprot.writeFieldEnd();
-        }
-      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -562,25 +465,19 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
       if (struct.isSetTx()) {
         optionals.set(1);
       }
-      if (struct.isSetTag()) {
-        optionals.set(2);
-      }
-      oprot.writeBitSet(optionals, 3);
+      oprot.writeBitSet(optionals, 2);
       if (struct.isSetRx()) {
         oprot.writeI64(struct.rx);
       }
       if (struct.isSetTx()) {
         oprot.writeI64(struct.tx);
       }
-      if (struct.isSetTag()) {
-        oprot.writeString(struct.tag);
-      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, TrafficRecord struct) throws org.apache.thrift.TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(3);
+      BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
         struct.rx = iprot.readI64();
         struct.setRxIsSet(true);
@@ -588,10 +485,6 @@ public class TrafficRecord implements org.apache.thrift.TBase<TrafficRecord, Tra
       if (incoming.get(1)) {
         struct.tx = iprot.readI64();
         struct.setTxIsSet(true);
-      }
-      if (incoming.get(2)) {
-        struct.tag = iprot.readString();
-        struct.setTagIsSet(true);
       }
     }
   }

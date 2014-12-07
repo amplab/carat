@@ -2249,14 +2249,14 @@ public class CaratService {
             case 2: // FEATURES
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list96 = iprot.readListBegin();
-                  struct.features = new ArrayList<Feature>(_list96.size);
-                  Feature _elem97;
-                  for (int _i98 = 0; _i98 < _list96.size; ++_i98)
+                  org.apache.thrift.protocol.TList _list88 = iprot.readListBegin();
+                  struct.features = new ArrayList<Feature>(_list88.size);
+                  Feature _elem89;
+                  for (int _i90 = 0; _i90 < _list88.size; ++_i90)
                   {
-                    _elem97 = new Feature();
-                    _elem97.read(iprot);
-                    struct.features.add(_elem97);
+                    _elem89 = new Feature();
+                    _elem89.read(iprot);
+                    struct.features.add(_elem89);
                   }
                   iprot.readListEnd();
                 }
@@ -2289,9 +2289,9 @@ public class CaratService {
           oprot.writeFieldBegin(FEATURES_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.features.size()));
-            for (Feature _iter99 : struct.features)
+            for (Feature _iter91 : struct.features)
             {
-              _iter99.write(oprot);
+              _iter91.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -2328,9 +2328,9 @@ public class CaratService {
         if (struct.isSetFeatures()) {
           {
             oprot.writeI32(struct.features.size());
-            for (Feature _iter100 : struct.features)
+            for (Feature _iter92 : struct.features)
             {
-              _iter100.write(oprot);
+              _iter92.write(oprot);
             }
           }
         }
@@ -2346,14 +2346,14 @@ public class CaratService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list101 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.features = new ArrayList<Feature>(_list101.size);
-            Feature _elem102;
-            for (int _i103 = 0; _i103 < _list101.size; ++_i103)
+            org.apache.thrift.protocol.TList _list93 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.features = new ArrayList<Feature>(_list93.size);
+            Feature _elem94;
+            for (int _i95 = 0; _i95 < _list93.size; ++_i95)
             {
-              _elem102 = new Feature();
-              _elem102.read(iprot);
-              struct.features.add(_elem102);
+              _elem94 = new Feature();
+              _elem94.read(iprot);
+              struct.features.add(_elem94);
             }
           }
           struct.setFeaturesIsSet(true);
@@ -3130,14 +3130,14 @@ public class CaratService {
             case 2: // FEATURES
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list104 = iprot.readListBegin();
-                  struct.features = new ArrayList<Feature>(_list104.size);
-                  Feature _elem105;
-                  for (int _i106 = 0; _i106 < _list104.size; ++_i106)
+                  org.apache.thrift.protocol.TList _list96 = iprot.readListBegin();
+                  struct.features = new ArrayList<Feature>(_list96.size);
+                  Feature _elem97;
+                  for (int _i98 = 0; _i98 < _list96.size; ++_i98)
                   {
-                    _elem105 = new Feature();
-                    _elem105.read(iprot);
-                    struct.features.add(_elem105);
+                    _elem97 = new Feature();
+                    _elem97.read(iprot);
+                    struct.features.add(_elem97);
                   }
                   iprot.readListEnd();
                 }
@@ -3170,9 +3170,9 @@ public class CaratService {
           oprot.writeFieldBegin(FEATURES_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.features.size()));
-            for (Feature _iter107 : struct.features)
+            for (Feature _iter99 : struct.features)
             {
-              _iter107.write(oprot);
+              _iter99.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -3209,9 +3209,9 @@ public class CaratService {
         if (struct.isSetFeatures()) {
           {
             oprot.writeI32(struct.features.size());
-            for (Feature _iter108 : struct.features)
+            for (Feature _iter100 : struct.features)
             {
-              _iter108.write(oprot);
+              _iter100.write(oprot);
             }
           }
         }
@@ -3227,14 +3227,14 @@ public class CaratService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list109 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.features = new ArrayList<Feature>(_list109.size);
-            Feature _elem110;
-            for (int _i111 = 0; _i111 < _list109.size; ++_i111)
+            org.apache.thrift.protocol.TList _list101 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.features = new ArrayList<Feature>(_list101.size);
+            Feature _elem102;
+            for (int _i103 = 0; _i103 < _list101.size; ++_i103)
             {
-              _elem110 = new Feature();
-              _elem110.read(iprot);
-              struct.features.add(_elem110);
+              _elem102 = new Feature();
+              _elem102.read(iprot);
+              struct.features.add(_elem102);
             }
           }
           struct.setFeaturesIsSet(true);
@@ -4017,13 +4017,13 @@ public class CaratService {
             case 2: // PROCESS_LIST
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list112 = iprot.readListBegin();
-                  struct.processList = new ArrayList<String>(_list112.size);
-                  String _elem113;
-                  for (int _i114 = 0; _i114 < _list112.size; ++_i114)
+                  org.apache.thrift.protocol.TList _list104 = iprot.readListBegin();
+                  struct.processList = new ArrayList<String>(_list104.size);
+                  String _elem105;
+                  for (int _i106 = 0; _i106 < _list104.size; ++_i106)
                   {
-                    _elem113 = iprot.readString();
-                    struct.processList.add(_elem113);
+                    _elem105 = iprot.readString();
+                    struct.processList.add(_elem105);
                   }
                   iprot.readListEnd();
                 }
@@ -4056,9 +4056,9 @@ public class CaratService {
           oprot.writeFieldBegin(PROCESS_LIST_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.processList.size()));
-            for (String _iter115 : struct.processList)
+            for (String _iter107 : struct.processList)
             {
-              oprot.writeString(_iter115);
+              oprot.writeString(_iter107);
             }
             oprot.writeListEnd();
           }
@@ -4095,9 +4095,9 @@ public class CaratService {
         if (struct.isSetProcessList()) {
           {
             oprot.writeI32(struct.processList.size());
-            for (String _iter116 : struct.processList)
+            for (String _iter108 : struct.processList)
             {
-              oprot.writeString(_iter116);
+              oprot.writeString(_iter108);
             }
           }
         }
@@ -4114,13 +4114,13 @@ public class CaratService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list117 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.processList = new ArrayList<String>(_list117.size);
-            String _elem118;
-            for (int _i119 = 0; _i119 < _list117.size; ++_i119)
+            org.apache.thrift.protocol.TList _list109 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.processList = new ArrayList<String>(_list109.size);
+            String _elem110;
+            for (int _i111 = 0; _i111 < _list109.size; ++_i111)
             {
-              _elem118 = iprot.readString();
-              struct.processList.add(_elem118);
+              _elem110 = iprot.readString();
+              struct.processList.add(_elem110);
             }
           }
           struct.setProcessListIsSet(true);

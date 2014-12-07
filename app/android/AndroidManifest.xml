@@ -89,6 +89,9 @@
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
                 <!-- Sample on timer if nothing else happens for 15 mins -->
                 <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
+                
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
         <service android:label="SamplingService" android:name=".sampling.SamplerService"></service>
