@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import android.support.v4.content.WakefulBroadcastReceiver;
+import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -56,7 +57,7 @@ public class Sampler extends WakefulBroadcastReceiver implements
             lastKnownLocation = SamplingLibrary.getLastKnownLocation(context);
 
         
-        //Log.i(TAG, "Carat received Intent: "+intent.getAction());
+        Log.i("Sampler.onReceive()", "Carat received Intent: "+intent.getAction());
         
         Intent service = new Intent(context, SamplerService.class);
         service.putExtra("OriginalAction", intent.getAction());

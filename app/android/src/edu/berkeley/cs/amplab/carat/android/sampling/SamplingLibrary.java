@@ -76,6 +76,7 @@ import android.net.TrafficStats;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
+import android.os.Bundle;
 import android.os.SystemClock;
 
 /**
@@ -1675,13 +1676,14 @@ public final class SamplingLibrary {
     private static Location lastKnownLocation = null;
 
     public static double getBatteryLevel(Context context, Intent intent) {
-        double level = intent.getIntExtra("level", -1);
-        double scale = intent.getIntExtra("scale", 100);
+//        double level = intent.getIntExtra("level", -1);
+        double level = intent.getDoubleExtra("lastBatteryLevel", -1.00);
+        int scale = intent.getIntExtra("scale", 100);
 
         // use last known value
         double batteryLevel = 0.0;
         // if we have real data, change old value
-        if (level > 0 && scale > 0) {
+        if (level > 0.0 && scale > 0) {
             batteryLevel = (level / scale);
         }
         return batteryLevel;
@@ -1783,8 +1785,13 @@ public final class SamplingLibrary {
     }
 
     public static Sample getSample(Context context, Intent intent, Sample lastSample) {
+    	final String TAG = "SamplingLibrary.getSample";
+    	Log.d(TAG, "getSample() was invoked.");
+    	
         String action = intent.getAction();
 
+        Log.d(TAG, "action = " + action);
+        
         // Construct sample and return it in the end
         Sample mySample = new Sample();
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1803,10 +1810,12 @@ public final class SamplingLibrary {
         // This is because we need the traffic info of all apps, some might not be running when 
         // those events (screen on / screen off) occur
         if (action.equals(Intent.ACTION_SCREEN_ON) || action.equals(Intent.ACTION_SCREEN_OFF)) {
+        	Log.d(TAG, "the action has been Intent.ACTION_SCREEN_ON or SCREEN_OFF. Taking sample of ALL INSTALLED packages (rather than running processes)");
         	Map<String, ProcessInfo> installedPackages = getInstalledPackages(context, false);
         	List<ProcessInfo> processes = new ArrayList<ProcessInfo>();
         	processes.addAll(installedPackages.values());        
         } else {
+        	Log.d(TAG, "the action has NOT been Intent.ACTION_SCREEN_ON or SCREEN_OFF. Taking sample of running processes.");
         	List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
             mySample.setPiList(processes);
         }
@@ -1885,12 +1894,14 @@ public final class SamplingLibrary {
          * mySample.setCallInfo(ci);
          */
 
-        double level = intent.getIntExtra("level", -1);
+//        Bundle b = intent.getExtras();
+        
+        double level = intent.getDoubleExtra("level", -1.00);
         int health = intent.getIntExtra("health", 0);
-        double scale = intent.getIntExtra("scale", 100);
+        int scale = intent.getIntExtra("scale", 100);
         int status = intent.getIntExtra("status", 0);
         // This is really an int.
-        double voltage = intent.getIntExtra("voltage", 0) / 1000.0;
+        double voltage = intent.getDoubleExtra("voltage", 0.00) / 1000.0;
         // current battery voltage in volts
         // FIXED: Not used yet, Sample needs more fields
         int temperature = intent.getIntExtra("temperature", 0) / 10;

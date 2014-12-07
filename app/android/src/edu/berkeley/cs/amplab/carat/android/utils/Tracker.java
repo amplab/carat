@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
@@ -47,6 +48,7 @@ public class Tracker {
 	}
 
 	public void trackUser(String whatIsGettingDone) {
+		Log.d("Tracker.trackUser", whatIsGettingDone);
 		MainActivity main = CaratApplication.getMainActivity();
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(main);
 		if (p != null) {

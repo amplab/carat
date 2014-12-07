@@ -218,10 +218,12 @@ public class CaratApplication extends Application {
 	 * @param text
 	 */
 	public static void setMyDeviceText(final int viewId, final String text) {
+		Log.d("setMyDeviceText", "about to update a field in myDeviceFragment");
 		if (myDevice != null) {
 			main.runOnUiThread(new Runnable() {
 				public void run() {
-					TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
+					TextView t = (TextView) myDevice.getView().findViewById(viewId);
+//					TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
 					if (t != null)
 						t.setText(text);
 					else
@@ -421,6 +423,12 @@ public class CaratApplication extends Application {
 					// No-op
 				}
 				registerReceiver(sampler, intentFilter);
+				
+				// register for screen_on and screen-off as well 
+				intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+				registerReceiver(sampler, intentFilter);
+				intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+				registerReceiver(sampler, intentFilter);
 			}
 		}.start();
 
@@ -536,8 +544,10 @@ public class CaratApplication extends Application {
 		int jscore = -1;
 
 		if (r != null) {
+			Log.d(TAG, "r (reports) not null.");
 			// Try exact battery life
 			if (r.jScoreWith != null) {
+				Log.d(TAG, "jscoreWith not null.");
 				double exp = r.jScoreWith.expectedValue;
 				if (exp > 0.0) {
 					bl = 100 / exp;
@@ -553,6 +563,7 @@ public class CaratApplication extends Application {
 				// If not possible, try model battery life
 			}
 			jscore = ((int) (r.getJScore() * 100));
+			Log.d(TAG, "jscore: " + jscore);
 			setMyDeviceText(R.id.jscore_value, jscore + "");
 		}
 

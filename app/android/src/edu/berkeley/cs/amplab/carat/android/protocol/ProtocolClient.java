@@ -73,6 +73,7 @@ public class ProtocolClient {
     }
     
     public static CaratService.Client open(Context c) throws NumberFormatException, TTransportException {
+    	Log.d("ProtocolClient", "trying to get an instance of CaratProtocol.");
         return getInstance(c);
     }
     

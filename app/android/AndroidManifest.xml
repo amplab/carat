@@ -79,6 +79,16 @@
 
                 <!-- This event cannot be registered to from the manifest either. -->
 <!--                 <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
+				
+				<!-- Also these. -->
+				<!-- There are certain events that Android does not want to start up new processes for, 
+				so the device does not get too slow from all sorts of stuff all having to run at once. 
+				ACTION_SCREEN_ON is one of those. -->
+				
+				<!-- <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />  -->
+               
+                
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <data android:scheme="package" /> 
@@ -90,8 +100,6 @@
                 <!-- Sample on timer if nothing else happens for 15 mins -->
                 <action android:name="edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE" />
                 
-                <action android:name="android.intent.action.SCREEN_OFF" />
-                <action android:name="android.intent.action.SCREEN_ON" />
             </intent-filter>
         </receiver>
         <service android:label="SamplingService" android:name=".sampling.SamplerService"></service>

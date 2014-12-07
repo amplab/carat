@@ -29,88 +29,107 @@ public class SamplerService extends IntentService {
     
     @Override
     protected void onHandleIntent(Intent intent) {
-        // At this point SimpleWakefulReceiver is still holding a wake lock
-        // for us.  We can do whatever we need to here and then tell it that
-        // it can release the wakelock.  This sample just does some slow work,
-        // but more complicated implementations could take their own wake
-        // lock here before releasing the receiver's.
-        //
-        // Note that when using this approach you should be aware that if your
-        // service gets killed and restarted while in the middle of such work
-        // (so the Intent gets re-delivered to perform the work again), it will
-        // at that point no longer be holding a wake lock since we are depending
-        // on SimpleWakefulReceiver to that for us.  If this is a concern, you can
-        // acquire a separate wake lock here.
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
-        wl.acquire();
-        
-        Context context = getApplicationContext();
-       
-        String action = null;
-        if (intent != null)
-          action = intent.getStringExtra("OriginalAction");
-        //Log.i(TAG, "Original intent: " +action);
-        if (action != null){
-        double lastBatteryLevel = intent.getDoubleExtra("lastBatteryLevel", 0.0);
-        double distance = intent.getDoubleExtra("distance", 0.0);
 
-        if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
-            // NOTE: This is disabled to simplify how Carat behaves.
-            SharedPreferences p = context.getSharedPreferences("SystemBootTime",
-                    Context.MODE_PRIVATE);
-            Editor editor = p.edit();
-            editor.putLong("bootTime", new Date().getTime());
-            editor.commit();
-            // onBoot(context);
-        }
+		String action1 = intent.getAction();
+		Log.d(TAG, "action = " + action1);
 
-        if (action.equals(CaratApplication.ACTION_CARAT_SAMPLE)){
-            // set up sampling.
-            // Let sampling happen on battery change
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-            /*intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-            intentFilter.addDataScheme("package"); // add addDataScheme*/
-            Sampler sampler = Sampler.getInstance();
-            // Unregister, since Carat may have been started multiple times
-            // since reboot
-            try {
-                unregisterReceiver(sampler);
-            } catch (IllegalArgumentException e) {
-                // No-op
-            }
-            registerReceiver(sampler, intentFilter);
-        }
+		// At this point SimpleWakefulReceiver is still holding a wake lock
+		// for us. We can do whatever we need to here and then tell it that
+		// it can release the wakelock. This sample just does some slow work,
+		// but more complicated implementations could take their own wake
+		// lock here before releasing the receiver's.
+		//
+		// Note that when using this approach you should be aware that if your
+		// service gets killed and restarted while in the middle of such work
+		// (so the Intent gets re-delivered to perform the work again), it will
+		// at that point no longer be holding a wake lock since we are depending
+		// on SimpleWakefulReceiver to that for us. If this is a concern, you
+		// can
+		// acquire a separate wake lock here.
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+		wl.acquire();
+
+		Context context = getApplicationContext();
+
+		String action = null;
+		if (intent != null)
+			action = intent.getStringExtra("OriginalAction");
+		Log.i(TAG, "Original intent: " + action);
+		if (action != null) {
+			double lastBatteryLevel = intent.getDoubleExtra("lastBatteryLevel", 0.0);
+			double distance = intent.getDoubleExtra("distance", 0.0);
+
+			if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
+				// NOTE: This is disabled to simplify how Carat behaves.
+				SharedPreferences p = context.getSharedPreferences("SystemBootTime", Context.MODE_PRIVATE);
+				Editor editor = p.edit();
+				editor.putLong("bootTime", new Date().getTime());
+				editor.commit();
+				// onBoot(context);
+			}
+
+			if (action.equals(CaratApplication.ACTION_CARAT_SAMPLE)) {
+				// set up sampling.
+				// Let sampling happen on battery change
+				IntentFilter intentFilter = new IntentFilter();
+				intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+				/*
+				 * intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+				 * intentFilter.addDataScheme("package"); // add addDataScheme
+				 */
+				Sampler sampler = Sampler.getInstance();
+				// Unregister, since Carat may have been started multiple times
+				// since reboot
+				try {
+					unregisterReceiver(sampler);
+				} catch (IllegalArgumentException e) {
+					// No-op
+				}
+				registerReceiver(sampler, intentFilter);
+			}
         
-        CaratSampleDB ds = CaratSampleDB.getInstance(context);
+			CaratSampleDB ds = null;
+			try {
+				ds = CaratSampleDB.getInstance(context);
+			} catch (Exception e) {
+				Log.e(TAG, "unable to get DB instance");
+				e.printStackTrace();
+			}
         
         /*
          * Some phones receive the batteryChanged very very often. We are
          * interested only in changes of the battery level.
          */
 
-        double bl = SamplingLibrary.getBatteryLevel(context, intent);
-            if (bl > 0) {
+			double bl = SamplingLibrary.getBatteryLevel(context, intent);
 
-                Sample lastSample = ds.getLastSample(context);
-                
-                if ((lastSample == null && lastBatteryLevel != bl)
-                        || (lastSample != null && lastSample.getBatteryLevel() != bl)) {
-                    // Log.i(TAG,
-                    // "Sampling for intent="+i.getAction()+" lastSample=" +
-                    // (lastSample != null ? lastSample.getBatteryLevel()+"":
-                    // "null") + " current battery="+bl);
-                    // Take a sample.
-                    getSample(ds, context, intent, lastSample, distance);
-                    lastBatteryLevel = bl;
-                    
-                    notify(context);
-                }
-                
-                Log.d(TAG, "last sample is not null, thus doesn't take new samples");
-            }
-//            Log.d(TAG, "battery level <= 0");
+			Sample lastSample = ds.getLastSample(context);
+
+			if (lastSample == null)
+				Log.d(TAG, "last sample is null");
+        
+//			if (bl > 0) {
+//				if ((lastSample == null && lastBatteryLevel != bl)
+//						|| (lastSample != null && lastSample.getBatteryLevel() != bl)) {
+				if (lastSample == null) {	
+					Log.i(TAG, "about to invoke getSample()");
+					// Log.i(TAG,
+					// "Sampling for intent="+i.getAction()+" lastSample=" +
+					// (lastSample != null ? lastSample.getBatteryLevel()+"":
+					// "null") + " current battery="+bl);
+					// Take a sample.
+					getSample(ds, context, intent, lastSample, distance);
+					lastBatteryLevel = bl;
+
+					notify(context);
+				} else {
+					Log.d(TAG, "last sample is not null, thus doesn't take new samples");
+				}
+				
+//			} else {
+//				Log.d(TAG, "battery level <= 0. 'bl'=" + bl);
+//			}
         }
         
         wl.release();
@@ -155,7 +174,13 @@ public class SamplerService extends IntentService {
      * @return the newly recorded Sample
      */
     private Sample getSample(CaratSampleDB ds, Context context, Intent intent, Sample lastSample, double distance) {
-        Sample s = SamplingLibrary.getSample(context, intent,
+    	
+    	Log.i("SamplerService.getSample()", "here");
+    	
+    	String action = intent.getStringExtra("OriginalAction");
+    	Log.i("SamplerService.getSample()", "Original intent: " +action);
+    	
+    	Sample s = SamplingLibrary.getSample(context, intent,
                 lastSample);
         // Set distance to current distance value
         if (s != null){
