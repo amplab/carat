@@ -222,8 +222,8 @@ public class CaratApplication extends Application {
 		if (myDevice != null) {
 			main.runOnUiThread(new Runnable() {
 				public void run() {
-					TextView t = (TextView) myDevice.getView().findViewById(viewId);
-//					TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
+//					TextView t = (TextView) myDevice.getView().findViewById(viewId);
+					TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
 					if (t != null)
 						t.setText(text);
 					else
