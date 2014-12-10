@@ -117,11 +117,16 @@ public class SamplerService extends IntentService {
 		
 		boolean batteryLevelsNotZero = currentBatteryLevel > 0 && lastBatteryLevel > 0;
 		boolean batteryPercentageIsChange = lastBatteryLevel != currentBatteryLevel;
+		CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
+		Sample lastSample = sampleDB.getLastSample(context);
 		
-		if (batteryLevelsNotZero && batteryPercentageIsChange) {
+		// if this is the first time Carat is running, ignore the battery level check 
+		// because we cannot get the last battery level from the last sample
+		if (lastSample == null || (batteryLevelsNotZero && batteryPercentageIsChange)) { 
 			Log.i(TAG, "about to invoke SamplerService.getSample() "
 					+ "(distinguishable from SamplingLibrary.getSample())");
-			this.getSample(context, intent);
+			// take a sample and store it in the database
+			this.getSample(context, intent, lastSample, sampleDB);
 			notify(context);
 		} else {
 			Log.d(TAG, "battery level <= 0. 'currentBatteryLevel'=" + currentBatteryLevel);
@@ -163,11 +168,9 @@ public class SamplerService extends IntentService {
      * @param intent from onReceive
      * @return the newly recorded Sample
      */
-    private Sample getSample(Context context, Intent intent) {
+    private Sample getSample(Context context, Intent intent, Sample lastSample, CaratSampleDB sampleDB) {
 //    	String action = intent.getStringExtra("OriginalAction");
 //    	Log.i("SamplerService.getSample()", "Original intent: " +action);
-    	CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
-		Sample lastSample = sampleDB.getLastSample(context);
     	String lastBatteryState = lastSample != null ? lastSample.getBatteryState() : "Unknown";
     	Sample s = SamplingLibrary.getSample(context, intent, lastBatteryState);
         // Set distance to current distance value
