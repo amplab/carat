@@ -22,6 +22,7 @@ import android.util.Log;
 public class SamplerService extends IntentService {
     
     private static final String TAG = "SamplerService";
+    double distance;
     
     public SamplerService() {
         super(TAG);
@@ -56,9 +57,9 @@ public class SamplerService extends IntentService {
 		if (intent != null)
 			action = intent.getStringExtra("OriginalAction");
 		Log.i(TAG, "Original intent: " + action);
+		
 		if (action != null) {
-			double lastBatteryLevel = intent.getDoubleExtra("lastBatteryLevel", 0.0);
-			double distance = intent.getDoubleExtra("distance", 0.0);
+			
 
 			if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
 				// NOTE: This is disabled to simplify how Carat behaves.
@@ -89,57 +90,44 @@ public class SamplerService extends IntentService {
 				registerReceiver(sampler, intentFilter);
 			}
         
-			CaratSampleDB ds = null;
-			try {
-				ds = CaratSampleDB.getInstance(context);
-			} catch (Exception e) {
-				Log.e(TAG, "unable to get DB instance");
-				e.printStackTrace();
-			}
-        
-        /*
-         * Some phones receive the batteryChanged very very often. We are
-         * interested only in changes of the battery level.
-         */
-
-			double bl = SamplingLibrary.getBatteryLevel(context, intent);
-
-			Sample lastSample = ds.getLastSample(context);
-
-			if (lastSample == null)
-				Log.d(TAG, "last sample is null");
-        
-			if (bl > 0) {
-				if ((lastSample == null && lastBatteryLevel != bl)
-						|| (lastSample != null && lastSample.getBatteryLevel() != bl)) {
-					if (lastSample == null) {
-						Log.i(TAG, "about to invoke getSample()");
-						// Log.i(TAG,
-						// "Sampling for intent="+i.getAction()+" lastSample=" +
-						// (lastSample != null ?
-						// lastSample.getBatteryLevel()+"":
-						// "null") + " current battery="+bl);
-						// Take a sample.
-						getSample(ds, context, intent, lastSample, distance);
-						lastBatteryLevel = bl;
-
-						notify(context);
-					} else {
-						Log.d(TAG, "last sample is not null, thus doesn't take new samples");
-					}
-
-				} else {
-					Log.d(TAG, "battery level <= 0. 'bl'=" + bl);
-				}
-			}
+			takeSampleIfBatteryLevelChanged(intent, context);
         }
         
         wl.release();
         Sampler.completeWakefulIntent(intent);
     }
-    
-    
-    
+
+    /**
+     * Some phones receive the batteryChanged very very often. We are interested 
+     * only in changes of the battery level
+     * @param intent  The parent intent (the one passed from the Sampler)
+	 *				  (with one extra field set, called 'distance')
+	 *				  This intent should be the intent which is passed by the Android system to your 
+	 *                broadcast receiver which is registered with the BATTERY_CHANGED action.
+	 *                When this event occurs, Android calls the onReceive() method of your broadcast receiver
+	 *                and passes this intent into that method, so you have access to this intent in there
+	 *                (and can pass it to other methods) 
+	 *                In our case, this broadcast receiver is 'Sampler'.                 
+     * @param context
+     */
+	private void takeSampleIfBatteryLevelChanged(Intent intent, Context context) {
+		double lastBatteryLevel = SamplingLibrary.getLastBatteryLevel(context);
+		double currentBatteryLevel = SamplingLibrary.getCurrentBatteryLevel(intent);
+		distance = intent.getDoubleExtra("distance", 0.0);
+		
+		boolean batteryLevelsNotZero = currentBatteryLevel > 0 && lastBatteryLevel > 0;
+		boolean batteryPercentageIsChange = lastBatteryLevel != currentBatteryLevel;
+		
+		if (batteryLevelsNotZero && batteryPercentageIsChange) {
+			Log.i(TAG, "about to invoke SamplerService.getSample() "
+					+ "(distinguishable from SamplingLibrary.getSample())");
+			this.getSample(context, intent);
+			notify(context);
+		} else {
+			Log.d(TAG, "battery level <= 0. 'currentBatteryLevel'=" + currentBatteryLevel);
+		}
+	}
+        
     private void notify(Context context){
         long now = System.currentTimeMillis();
         long lastNotify = Sampler.getInstance().getLastNotify();
@@ -170,21 +158,20 @@ public class SamplerService extends IntentService {
     }
 
     /**
-     * Get a Sample and store it in the database. Do not store the first ever samples on a device that have no battery info.
+     * Takes a Sample and stores it in the database. Does not store the first ever samples on a device that have no battery info.
      * @param context from onReceive
      * @param intent from onReceive
      * @return the newly recorded Sample
      */
-    private Sample getSample(CaratSampleDB ds, Context context, Intent intent, Sample lastSample, double distance) {
-    	
-    	String action = intent.getStringExtra("OriginalAction");
-    	Log.i("SamplerService.getSample()", "Original intent: " +action);
-    	
-    	Sample s = SamplingLibrary.getSample(context, intent,
-                lastSample);
+    private Sample getSample(Context context, Intent intent) {
+//    	String action = intent.getStringExtra("OriginalAction");
+//    	Log.i("SamplerService.getSample()", "Original intent: " +action);
+    	CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
+		Sample lastSample = sampleDB.getLastSample(context);
+    	String lastBatteryState = lastSample != null ? lastSample.getBatteryState() : "Unknown";
+    	Sample s = SamplingLibrary.getSample(context, intent, lastBatteryState);
         // Set distance to current distance value
         if (s != null){
-            //Log.v(TAG, "distanceTravelled=" + distance);
             s.setDistanceTraveled(distance);
             // FIX: Do not use same distance again.
             distance = 0;
@@ -193,7 +180,8 @@ public class SamplerService extends IntentService {
         // Write to database
         // But only after first real numbers
         if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
-            long id = ds.putSample(s);
+        	// store the sample into the database
+            long id = sampleDB.putSample(s);
             Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
             //FlurryAgent.logEvent(intent.getAction());
         }

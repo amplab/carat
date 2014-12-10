@@ -424,11 +424,13 @@ public class CaratApplication extends Application {
 				}
 				registerReceiver(sampler, intentFilter);
 				
-				// register for screen_on and screen-off as well 
-				intentFilter.addAction(Intent.ACTION_SCREEN_ON);
-				registerReceiver(sampler, intentFilter);
-				intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-				registerReceiver(sampler, intentFilter);
+				// register for screen_on and screen-off as well
+				
+				// for the debugging purpose, let's comment out these actions
+//				intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+//				registerReceiver(sampler, intentFilter);
+//				intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+//				registerReceiver(sampler, intentFilter);
 			}
 		}.start();
 

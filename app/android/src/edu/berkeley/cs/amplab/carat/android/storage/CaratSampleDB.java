@@ -317,6 +317,11 @@ public class CaratSampleDB {
         return lastSample;
     }
 
+    /**
+     * Store the sample into the database
+     * @param s the sample to be saved
+     * @return positive int if the operation is successful, otherwise zero
+     */
     public long putSample(Sample s) {
         long id = 0;
         try {

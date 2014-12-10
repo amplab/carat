@@ -35,6 +35,7 @@ import java.util.TimeZone;
 import com.flurry.android.FlurryAgent;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
@@ -191,6 +192,23 @@ public final class SamplingLibrary {
         return getTimeBasedUuid(c, true);
     }
 
+    public static double getLastBatteryLevel(Context context) {
+    	double lastBatteryLevel = 0;
+    	CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
+		Sample lastSample = sampleDB.getLastSample(context);
+		
+		try {
+			lastBatteryLevel = lastSample.getBatteryLevel();
+		} catch (NullPointerException e) {
+			Log.e("SampleingLibrary.getLastBatteryLevel", "last sample is null (no sample is taken yet, or couldn't get a sampleDB instance),"
+					+ " so can't get the last battery level. "
+					+ "Last battery level was set to zero.");
+			e.printStackTrace();
+		}
+		return lastBatteryLevel;
+    }
+    
+    
     /**
      * Generate a time-based, random identifier.
      * 
@@ -1675,19 +1693,18 @@ public final class SamplingLibrary {
 
     private static Location lastKnownLocation = null;
 
-    public static double getBatteryLevel(Context context, Intent intent) {
-//        double level = intent.getIntExtra("level", -1);
-        double level = intent.getDoubleExtra("lastBatteryLevel", -1.00);
-        int scale = intent.getIntExtra("scale", 100);
-
-        // use last known value
-        double batteryLevel = 0.0;
-        // if we have real data, change old value
-        if (level > 0.0 && scale > 0) {
-            batteryLevel = (level / scale);
-        }
-        return batteryLevel;
-    }
+//    public static double getBatteryLevel(Context context, Intent intent) {
+//        double level = intent.getDoubleExtra("lastBatteryLevel", -1.00);
+//        int scale = intent.getIntExtra("scale", 100);
+//
+//        // use last known value
+//        double batteryLevel = 0.0;
+//        // if we have real data, change old value
+//        if (level > 0.0 && scale > 0) {
+//            batteryLevel = (level / scale);
+//        }
+//        return batteryLevel;
+//    }
     
     /**
      * Get whether the screen is on or off.
@@ -1784,7 +1801,7 @@ public final class SamplingLibrary {
         return buf.toString();
     }
 
-    public static Sample getSample(Context context, Intent intent, Sample lastSample) {
+    public static Sample getSample(Context context, Intent intent, String lastBatteryState) {
     	final String TAG = "SamplingLibrary.getSample";
     	Log.d(TAG, "getSample() was invoked.");
     	
@@ -1805,20 +1822,25 @@ public final class SamplingLibrary {
         // Record first data point for CPU usage
         long[] idleAndCpu1 = readUsagePoint();
 
+        
+        
         // If the sampler is running because of the SCREEN_ON or SCREEN_OFF event/action, 
         // we want to get the info of all installed apps/packages, not only those running.
         // This is because we need the traffic info of all apps, some might not be running when 
         // those events (screen on / screen off) occur
-        if (action.equals(Intent.ACTION_SCREEN_ON) || action.equals(Intent.ACTION_SCREEN_OFF)) {
-        	Log.d(TAG, "the action has been Intent.ACTION_SCREEN_ON or SCREEN_OFF. Taking sample of ALL INSTALLED packages (rather than running processes)");
-        	Map<String, ProcessInfo> installedPackages = getInstalledPackages(context, false);
-        	List<ProcessInfo> processes = new ArrayList<ProcessInfo>();
-        	processes.addAll(installedPackages.values());        
-        } else {
-        	Log.d(TAG, "the action has NOT been Intent.ACTION_SCREEN_ON or SCREEN_OFF. Taking sample of running processes.");
+        
+        // TODO: let's comment out these lines for debugging purpose
+        
+//        if (action.equals(Intent.ACTION_SCREEN_ON) || action.equals(Intent.ACTION_SCREEN_OFF)) {
+//        	Log.d(TAG, "the action has been Intent.ACTION_SCREEN_ON or SCREEN_OFF. Taking sample of ALL INSTALLED packages (rather than running processes)");
+//        	Map<String, ProcessInfo> installedPackages = getInstalledPackages(context, false);
+//        	List<ProcessInfo> processes = new ArrayList<ProcessInfo>();
+//        	processes.addAll(installedPackages.values());        
+//        } else {
+//        	Log.d(TAG, "the action has NOT been Intent.ACTION_SCREEN_ON or SCREEN_OFF. Taking sample of running processes.");
         	List<ProcessInfo> processes = getRunningProcessInfoForSample(context);
             mySample.setPiList(processes);
-        }
+//        }
         
         int screenBrightness = SamplingLibrary.getScreenBrightness(context);
         mySample.setScreenBrightness(screenBrightness);
@@ -1896,28 +1918,13 @@ public final class SamplingLibrary {
 
 //        Bundle b = intent.getExtras();
         
-        double level = intent.getDoubleExtra("level", -1.00);
-        int health = intent.getIntExtra("health", 0);
-        int scale = intent.getIntExtra("scale", 100);
-        int status = intent.getIntExtra("status", 0);
-        // This is really an int.
-        double voltage = intent.getDoubleExtra("voltage", 0.00) / 1000.0;
-        // current battery voltage in volts
+        int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH,0);
+        int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS,0);
+        // This is really an int.        
         // FIXED: Not used yet, Sample needs more fields
-        int temperature = intent.getIntExtra("temperature", 0) / 10;
-        // current battery temperature in a degree Centigrade
-        int plugged = intent.getIntExtra("plugged", 0);
-        String batteryTechnology = intent.getStringExtra("batteryTechnology");
-
-        // use last known value
-        double batteryLevel = 0.0;
-        if (lastSample != null)
-            batteryLevel = lastSample.getBatteryLevel();
-        // if we have real data, change old value
-        if (level > 0 && scale > 0) {
-            batteryLevel = (level / scale);
-            //Log.d(STAG, "BatteryLevel: " + batteryLevel);
-        }
+        
+        int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED,0);
+        String batteryTechnology = intent.getExtras().getString(BatteryManager.EXTRA_TECHNOLOGY);
 
         // FIXED: Not used yet, Sample needs more fields
         String batteryHealth = "Unknown";
@@ -1963,9 +1970,7 @@ public final class SamplingLibrary {
             batteryStatus = "Unknown";
             break;
         default:
-            // use last known value
-            if (lastSample != null)
-                batteryStatus = lastSample.getBatteryState();
+        	batteryStatus = lastBatteryState != null ? lastBatteryState : "Unknown";
         }
 
         // FIXED: Not used yet, Sample needs more fields
@@ -1982,9 +1987,20 @@ public final class SamplingLibrary {
 
         BatteryDetails bd = new BatteryDetails();
         // otherInfo.setCPUIdleTime(totalIdleTime);
+        
+        // IMPORTANT: All of the battery details fields were never set (=always zero), like the last battery level. 
+        // Now all must have been fixed.
+        
+        // current battery temperature in degrees Centigrade (the unit of the temperature value
+        // (returned by BatteryManager) is not Centigrade, it should be divided by 10)
+        int temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE,0) / 10;
         bd.setBatteryTemperature(temperature);
         // otherInfo.setBatteryTemperature(temperature);
+        
+        // current battery voltage in VOLTS (the unit of the returned value by BatteryManager is millivolts)
+        double  voltage= intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE,0)/1000;
         bd.setBatteryVoltage(voltage);
+        
         // otherInfo.setBatteryVoltage(voltage);
         bd.setBatteryTechnology(batteryTechnology);
 
@@ -1993,7 +2009,7 @@ public final class SamplingLibrary {
 
         mySample.setBatteryDetails(bd);
 
-        mySample.setBatteryLevel(batteryLevel);
+        mySample.setBatteryLevel(getBatteryLevel(context, intent));
         mySample.setBatteryState(batteryStatus);
 
         int[] usedFreeActiveInactive = SamplingLibrary.readMeminfo();
@@ -2026,6 +2042,40 @@ public final class SamplingLibrary {
 
         return mySample;
     }
+
+    /**
+     * If current battery level can be obtained, returns that value, 
+     * otherwise returns the battery level from the last sample (last battery level)
+     *  
+     * @param context
+     * @param intent
+     * @return last known battery level to be stored in the sample
+     */
+	private static double getBatteryLevel(Context context, Intent intent) {
+		double lastBatteryLevel = getLastBatteryLevel(context);
+        double currentBatteryLevel = intent.getDoubleExtra("currentBatteryLevel", 0.0);
+        
+        double batteryLevel = currentBatteryLevel != 0 ? currentBatteryLevel : lastBatteryLevel;
+		return batteryLevel;
+	}
+	
+	/**
+	 * 
+	 * @param intent The parent intent (received by onReceive() method of your broadcast receiver, 
+	 * the Sampler in our case).
+	 * With our current code, this intent is also passed to the getSample() method (of the SamplingLibrary)
+	 *  through the SamplerService.
+	 * @return
+	 */
+	public static double getCurrentBatteryLevel(Intent intent) {
+		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        double level= 0.0;
+        if (currentLevel >= 0 && scale > 0) {
+         level = ((double) currentLevel / (double) scale) * 100.0;
+        }
+        return level;
+	}
 
 	private static TrafficRecord getAppTraffic(Integer uid) {
 		TrafficRecord trafficRecord = new TrafficRecord();

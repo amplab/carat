@@ -4,7 +4,6 @@ import java.util.List;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -19,7 +18,6 @@ public class Sampler extends WakefulBroadcastReceiver implements
 
     private static Sampler instance = null;
     private Context context = null;
-    private double lastBatteryLevel = 0;
     private Location lastKnownLocation = null;
     private double distance = 0.0;
     private long lastNotify;
@@ -47,6 +45,7 @@ public class Sampler extends WakefulBroadcastReceiver implements
 
     @Override
     public void onReceive(Context context, Intent intent) {
+    	
         if (this.context == null) {
             this.context = context;
             requestLocationUpdates();
@@ -56,13 +55,11 @@ public class Sampler extends WakefulBroadcastReceiver implements
         if (lastKnownLocation == null)
             lastKnownLocation = SamplingLibrary.getLastKnownLocation(context);
 
-        
 //        Log.i("Sampler.onReceive()", "Carat received Intent: "+intent.getAction());
         
         Intent service = new Intent(context, SamplerService.class);
         service.putExtra("OriginalAction", intent.getAction());
         service.fillIn(intent, 0);
-        service.putExtra("lastBatteryLevel", lastBatteryLevel);
         service.putExtra("distance", distance);
         startWakefulService(context, service);
     }
