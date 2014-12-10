@@ -57,7 +57,7 @@ public class Sampler extends WakefulBroadcastReceiver implements
             lastKnownLocation = SamplingLibrary.getLastKnownLocation(context);
 
         
-        Log.i("Sampler.onReceive()", "Carat received Intent: "+intent.getAction());
+//        Log.i("Sampler.onReceive()", "Carat received Intent: "+intent.getAction());
         
         Intent service = new Intent(context, SamplerService.class);
         service.putExtra("OriginalAction", intent.getAction());

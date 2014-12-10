@@ -54,10 +54,28 @@ public class SummaryFragment extends Fragment {
 
             @Override
             public void onClick(int index) {
-                Toast.makeText(getActivity(),
-                        "Slice " + index + " clicked",
-                        Toast.LENGTH_SHORT)
-                        .show();
+            	
+            	switch (index) {
+            	case 0:
+            		Toast.makeText(getActivity(),
+                            R.string.userswithoutany,
+                            Toast.LENGTH_SHORT)
+                            .show();
+            		break;
+            	case 1:
+            		Toast.makeText(getActivity(),
+                            R.string.userswithhogs,
+                            Toast.LENGTH_SHORT)
+                            .show();
+            		break;
+            	case 2:
+            		Toast.makeText(getActivity(),
+                            R.string.userswithbugs,
+                            Toast.LENGTH_SHORT)
+                            .show();
+            		break;
+            	}
+                
             }
         });
 

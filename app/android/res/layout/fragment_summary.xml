@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/summaryscreentitle"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/gray" />
+            
     <com.echo.holographlibrary.PieGraph
         android:layout_width="match_parent"
         android:layout_height="0dip"

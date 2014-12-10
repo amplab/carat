@@ -69,6 +69,11 @@ delete these from your file.
     <string name="sharetext2">!\nWhat\'s yours?\nFind out here: \nhttp://carat.cs.berkeley.edu/</string>
     <string name="myjscoreis">My J-Score is</string>
     <string name="appmanager">App Manager</string>
+    
+    <string name="summaryscreentitle">Carat Android Users Statistics</string>
+    <string name="userswithoutany">Users without any anomalies</string>
+    <string name="userswithhogs">Users with hogs</string>
+    <string name="userswithbugs">Users with bugs</string>
 
     <!-- Tabs. Also used elsewhere. -->
     

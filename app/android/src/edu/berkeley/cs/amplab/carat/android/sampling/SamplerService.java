@@ -109,27 +109,29 @@ public class SamplerService extends IntentService {
 			if (lastSample == null)
 				Log.d(TAG, "last sample is null");
         
-//			if (bl > 0) {
-//				if ((lastSample == null && lastBatteryLevel != bl)
-//						|| (lastSample != null && lastSample.getBatteryLevel() != bl)) {
-				if (lastSample == null) {	
-					Log.i(TAG, "about to invoke getSample()");
-					// Log.i(TAG,
-					// "Sampling for intent="+i.getAction()+" lastSample=" +
-					// (lastSample != null ? lastSample.getBatteryLevel()+"":
-					// "null") + " current battery="+bl);
-					// Take a sample.
-					getSample(ds, context, intent, lastSample, distance);
-					lastBatteryLevel = bl;
+			if (bl > 0) {
+				if ((lastSample == null && lastBatteryLevel != bl)
+						|| (lastSample != null && lastSample.getBatteryLevel() != bl)) {
+					if (lastSample == null) {
+						Log.i(TAG, "about to invoke getSample()");
+						// Log.i(TAG,
+						// "Sampling for intent="+i.getAction()+" lastSample=" +
+						// (lastSample != null ?
+						// lastSample.getBatteryLevel()+"":
+						// "null") + " current battery="+bl);
+						// Take a sample.
+						getSample(ds, context, intent, lastSample, distance);
+						lastBatteryLevel = bl;
 
-					notify(context);
+						notify(context);
+					} else {
+						Log.d(TAG, "last sample is not null, thus doesn't take new samples");
+					}
+
 				} else {
-					Log.d(TAG, "last sample is not null, thus doesn't take new samples");
+					Log.d(TAG, "battery level <= 0. 'bl'=" + bl);
 				}
-				
-//			} else {
-//				Log.d(TAG, "battery level <= 0. 'bl'=" + bl);
-//			}
+			}
         }
         
         wl.release();
@@ -174,8 +176,6 @@ public class SamplerService extends IntentService {
      * @return the newly recorded Sample
      */
     private Sample getSample(CaratSampleDB ds, Context context, Intent intent, Sample lastSample, double distance) {
-    	
-    	Log.i("SamplerService.getSample()", "here");
     	
     	String action = intent.getStringExtra("OriginalAction");
     	Log.i("SamplerService.getSample()", "Original intent: " +action);
