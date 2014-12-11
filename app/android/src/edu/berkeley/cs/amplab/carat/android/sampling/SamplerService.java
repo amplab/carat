@@ -22,7 +22,8 @@ import android.util.Log;
 public class SamplerService extends IntentService {
     
     private static final String TAG = "SamplerService";
-    double distance;
+    private double lastBatteryLevel = 0.0;
+    private double distance;
     
     public SamplerService() {
         super(TAG);
@@ -114,40 +115,48 @@ public class SamplerService extends IntentService {
 		CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
 		Sample lastSample = sampleDB.getLastSample(context);
 		
-		double lastBatteryLevel = lastSample != null ? SamplingLibrary.getLastBatteryLevel(context) : 0;
+		if (lastBatteryLevel == 0.0)
+			lastBatteryLevel = lastSample != null ? SamplingLibrary.getLastBatteryLevel(context) : 0.0;
 		double currentBatteryLevel = SamplingLibrary.getCurrentBatteryLevel(intent);
 		
 		distance = intent.getDoubleExtra("distance", 0.0);
 		
-		
 		boolean batteryLevelsNotZero = lastBatteryLevel > 0 && currentBatteryLevel > 0;
 		boolean batteryPercentageIsChange = lastBatteryLevel != currentBatteryLevel;
 		
-		if (batteryLevelsNotZero && batteryPercentageIsChange) { 
+		if (lastBatteryLevel == 0.0) {
+			/* Ignore the battery level check, if the lastBatteryLevel is zero,
+			 * that means the lastSample is null
+			 * that implies the local database is empty (because this is first
+			 * run of the app,or all samples have been successfully uploaded
+			 * to the server and are deleted from the DB)
+			 */
+
+			// take a sample and store it in the database
+			this.getSample(context, intent, lastSample, sampleDB);
+			notify(context);
+		} else if (batteryLevelsNotZero && batteryPercentageIsChange) {
+			/* among all occurrence of the event BATTERY_CHANGED, only take a sample 
+			 * whenever a battery PERCENTAGE CHANGE happens 
+			 * (BATTERY_CHANGED happens whenever the battery temperature or voltage of other parameters change)
+			 */
 			Log.i(TAG, "about to invoke SamplerService.getSample() "
 					+ "(distinguishable from SamplingLibrary.getSample())");
 			// take a sample and store it in the database
 			this.getSample(context, intent, lastSample, sampleDB);
 			notify(context);
-			/* every time all samples in the local DB get uploaded and deleted from the DB,
-			 * the lastSample becomes null, and so does lastBatteryLevel (because it is taken from
-			 * the lastSample (check SamplingLibrary.getLastBatteryLevel() implementation).
-			 * so obviously, after each successful update, the last battery level should not be reset to zero 
-			 * We manually set it here:
-			 */
-			lastBatteryLevel = currentBatteryLevel;
-		} else if (lastBatteryLevel == 0) {
-			// Ignore the battery level check, if the lastBatteryLevel is zero, that means the lastSample is null
-			// that implies the local database is empty (because this is first run of the app, 
-			// or all samples have been successfully uploaded to the server and have got deleted from the DB)
-			
-			// take a sample and store it in the database
-			this.getSample(context, intent, lastSample, sampleDB);
-			notify(context);
-			lastBatteryLevel = currentBatteryLevel;
 		} else {
 			Log.d(TAG, "no battery percentage change. 'currentBatteryLevel'=" + currentBatteryLevel);
 		}
+		
+		/*
+		 * Every time all samples in the local DB get uploaded and deleted from the DB,
+		 * the lastSample becomes null, and so does the lastBatteryLevel 
+		 * (because it is taken from the lastSample (check SamplingLibrary.getLastBatteryLevel()).
+		 * Obviously, after each successful update, the last battery level should not be reset to zero.
+		 *  We manually set the last battery level here.
+		 */
+		lastBatteryLevel = currentBatteryLevel;
 	}
         
     private void notify(Context context){
