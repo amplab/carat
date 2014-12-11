@@ -167,8 +167,13 @@ public final class SamplingLibrary {
     // private static final String TAG="FeaturesPowerConsumption";
 
     public static final int UUID_LENGTH = 16;
+    
+    private static double lastBatteryLevel;
+    private static double currentBatteryLevel;
 
-    /** Library class, prevent instantiation */
+	
+
+	/** Library class, prevent instantiation */
     private SamplingLibrary() {
     }
 
@@ -191,24 +196,39 @@ public final class SamplingLibrary {
     public static String getTimeBasedUuid(Context c) {
         return getTimeBasedUuid(c, true);
     }
+    
+    public static double readLastBatteryLevel() {
+		return lastBatteryLevel;
+	}
+
+	public static void setLastBatteryLevel(double lastBatteryLevel) {
+		SamplingLibrary.lastBatteryLevel = lastBatteryLevel;
+	}
 
     public static double getLastBatteryLevel(Context context) {
-    	double lastBatteryLevel = 0;
     	CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
 		Sample lastSample = sampleDB.getLastSample(context);
 		
-		try {
+//		double lastBatteryLevel = lastSample !=null? lastSample.getBatteryLevel() : SamplingLibrary.readLastBatteryLevel();
+		
+		if (lastSample != null) {
 			lastBatteryLevel = lastSample.getBatteryLevel();
-		} catch (NullPointerException e) {
-			Log.e("SampleingLibrary.getLastBatteryLevel", "last sample is null (no sample is taken yet, or couldn't get a sampleDB instance),"
-					+ " so can't get the last battery level. "
-					+ "Last battery level was set to zero.");
-			e.printStackTrace();
+			SamplingLibrary.setLastBatteryLevel(lastBatteryLevel);
+		} else {
+			lastBatteryLevel = SamplingLibrary.readLastBatteryLevel();
+			Log.e("SampleingLibrary.getLastBatteryLevel", "last sample is null.");
 		}
+		
 		return lastBatteryLevel;
     }
     
-    
+    public static double readCurrentBatteryLevel() {
+		return currentBatteryLevel;
+	}
+
+	public static void setCurrentBatteryLevel(double currentBatteryLevel) {
+		SamplingLibrary.currentBatteryLevel = currentBatteryLevel;
+	}
     /**
      * Generate a time-based, random identifier.
      * 
@@ -2052,10 +2072,16 @@ public final class SamplingLibrary {
      * @return last known battery level to be stored in the sample
      */
 	private static double getBatteryLevel(Context context, Intent intent) {
-		double lastBatteryLevel = getLastBatteryLevel(context);
-        double currentBatteryLevel = intent.getDoubleExtra("currentBatteryLevel", 0.0);
+		
+        double currentBatteryLevel = getCurrentBatteryLevel(intent);
+        
+        double lastBatteryLevel = getLastBatteryLevel(context);
         
         double batteryLevel = currentBatteryLevel != 0 ? currentBatteryLevel : lastBatteryLevel;
+        
+        if (currentBatteryLevel == 0 && lastBatteryLevel == 0)
+        	Log.e("SamplingLibrar.getBatteryLevel", "neither current nor last battery level is available. Zero was returned as the battery level.");
+        
 		return batteryLevel;
 	}
 	
@@ -2068,11 +2094,17 @@ public final class SamplingLibrary {
 	 * @return
 	 */
 	public static double getCurrentBatteryLevel(Intent intent) {
-		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        double level= 0.0;
+		
+		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
+        double level = 0;
         if (currentLevel >= 0 && scale > 0) {
-         level = ((double) currentLevel / (double) scale) * 100.0;
+        	level = (currentLevel / scale) * 100;
+        	setCurrentBatteryLevel(level);
+        	Log.d("SamplingLibrary.getCurrentBatteryLevel", "level=" + level);
+        } else {
+			level = readCurrentBatteryLevel();
+			Log.d("SamplingLibrary.getCurrentBatteryLevel", "just read the value of the FIELD currentBatteryLevel. level=" + level);
         }
         return level;
 	}
