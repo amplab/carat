@@ -57,11 +57,6 @@
     self.navigationItem.title = self.navTitle;
 }
 
-- (UIRectEdge)edgesForExtendedLayout
-{
-    return [super edgesForExtendedLayout] ^ UIRectEdgeBottom;
-}
-
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return YES;
 }

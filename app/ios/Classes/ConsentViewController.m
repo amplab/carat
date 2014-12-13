@@ -82,12 +82,6 @@
     for (UIWebView *wv in self.consentWebView) {
         [wv loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"consent" ofType:@"html"] isDirectory:NO]]];
     }
-    
-    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-        self.extendedLayoutIncludesOpaqueBars = NO;
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
 }
 
 - (void)viewDidUnload
