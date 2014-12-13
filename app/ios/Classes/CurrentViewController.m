@@ -20,6 +20,9 @@
 
 @implementation CurrentViewController
 
+#define IS_IPHONE_4_OR_4S ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )480 ) < DBL_EPSILON )
+
+
 @synthesize jscore = _jscore;
 @synthesize expectedLife = _expectedLife;
 @synthesize lastUpdated = _lastUpdated;
@@ -197,8 +200,31 @@
 {
     [super viewDidLoad];
    
-	// Do any additional setup after loading the view, typically from a nib.
+// Do any additional setup after loading the view, typically from a nib.
     DLog(@"My UUID: %@", [[Globals instance] getUUID]);
+}
+
+-(void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    CGSize scrollSize = [UIScreen mainScreen].bounds.size;
+    
+    if (IS_IPHONE_4_OR_4S)
+        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 60;
+    else
+        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 20;
+    
+    if(([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft ||
+        [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight)
+       && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 60;
+    
+    self.scrollView.contentSize = scrollSize;
+    CGSize contentsize = self.scrollView.contentSize;
+    CGRect frame = self.uhAmpLogo.frame;
+    frame.origin.y = contentsize.height - frame.size.height - 20;
+    self.uhAmpLogo.frame = frame;
 }
 
 - (void)viewDidUnload
