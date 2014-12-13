@@ -142,6 +142,7 @@
         
         [self.navigationController pushViewController:dvController animated:YES];
         
+        [dvController loadView];
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
         [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
         UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
@@ -177,7 +178,8 @@
         NSInteger error = (int) (benefit_max-benefit);
         
         [self.navigationController pushViewController:dvController animated:YES];
-        
+        [dvController loadView];
+
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
         [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
         UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
