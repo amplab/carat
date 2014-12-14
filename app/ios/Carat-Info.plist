@@ -67,7 +67,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.13</string>
+	<string>1.14</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -94,7 +94,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.13.20141110</string>
+	<string>1.14.20141206</string>
 	<key>FacebookURLTypeIndex</key>
 	<integer>0</integer>
 	<key>LSApplicationCategoryType</key>
