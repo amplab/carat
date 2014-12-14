@@ -32,18 +32,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.TimeZone;
 
-import com.flurry.android.FlurryAgent;
-
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
-import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
-import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
-import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
-import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
-import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
-import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
-import edu.berkeley.cs.amplab.carat.thrift.Sample;
-import edu.berkeley.cs.amplab.carat.thrift.TrafficRecord;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -58,15 +46,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.database.Cursor;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.provider.Settings.Secure;
-import android.provider.Settings.SettingNotFoundException;
-import android.telephony.CellLocation;
-import android.telephony.TelephonyManager;
-import android.telephony.cdma.CdmaCellLocation;
-import android.telephony.gsm.GsmCellLocation;
-import android.util.Log;
 import android.location.Criteria;
 import android.location.GpsStatus;
 import android.location.Location;
@@ -77,8 +56,29 @@ import android.net.TrafficStats;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
-import android.os.Bundle;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.provider.Settings.Secure;
+import android.provider.Settings.SettingNotFoundException;
+import android.telephony.CellLocation;
+import android.telephony.TelephonyManager;
+import android.telephony.cdma.CdmaCellLocation;
+import android.telephony.gsm.GsmCellLocation;
+import android.util.Log;
+
+import com.flurry.android.FlurryAgent;
+
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
+import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
+import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
+import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
+import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
+import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
+import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
+import edu.berkeley.cs.amplab.carat.thrift.Sample;
+import edu.berkeley.cs.amplab.carat.thrift.TrafficRecord;
 
 /**
  * Library class for methods that obtain information about the phone that is
@@ -209,11 +209,9 @@ public final class SamplingLibrary {
     	CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
 		Sample lastSample = sampleDB.getLastSample(context);
 		
-//		double lastBatteryLevel = lastSample !=null? lastSample.getBatteryLevel() : SamplingLibrary.readLastBatteryLevel();
-		
 		if (lastSample != null) {
 			lastBatteryLevel = lastSample.getBatteryLevel();
-			SamplingLibrary.setLastBatteryLevel(lastBatteryLevel);
+			SamplingLibrary.setLastBatteryLevel(lastBatteryLevel); // very important, don't omit
 		} else {
 			lastBatteryLevel = SamplingLibrary.readLastBatteryLevel();
 			Log.e("SampleingLibrary.getLastBatteryLevel", "last sample is null.");
@@ -2100,7 +2098,7 @@ public final class SamplingLibrary {
         double level = 0;
         if (currentLevel >= 0 && scale > 0) {
         	level = (currentLevel / scale) * 100;
-        	setCurrentBatteryLevel(level);
+        	setCurrentBatteryLevel(level); // very important, don't omit
         	Log.d("SamplingLibrary.getCurrentBatteryLevel", "level=" + level);
         } else {
 			level = readCurrentBatteryLevel();
