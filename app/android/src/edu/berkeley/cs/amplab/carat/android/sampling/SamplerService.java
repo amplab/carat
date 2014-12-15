@@ -24,7 +24,6 @@ public class SamplerService extends IntentService {
     
     private static final String TAG = "SamplerService";
     private double distance;
-    double level;
     
     public SamplerService() {
         super(TAG);
@@ -58,10 +57,9 @@ public class SamplerService extends IntentService {
 		String action = null;
 		if (intent != null)
 			action = intent.getStringExtra("OriginalAction");
-		Log.i(TAG, "Original intent: " + action);
+		// Log.d(TAG, "Original intent: " + action);
 		
 		if (action != null) {
-
 			if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
 				// NOTE: This is disabled to simplify how Carat behaves.
 				SharedPreferences p = context.getSharedPreferences("SystemBootTime", Context.MODE_PRIVATE);
@@ -86,15 +84,10 @@ public class SamplerService extends IntentService {
 				try {
 					unregisterReceiver(sampler);
 				} catch (IllegalArgumentException e) {
-					// No-op
 				}
 				registerReceiver(sampler, intentFilter);
 			}
         
-			level = SamplingLibrary.getCurrentBatteryLevel();
-	        
-	        Log.d(TAG, "before calling takeSampleIfBatteryLevelChanged(), level (current)=" + level);
-	        
 			takeSampleIfBatteryLevelChanged(intent, context);
         }
         
@@ -108,75 +101,57 @@ public class SamplerService extends IntentService {
      * @param intent  The parent intent (the one passed from the Sampler)
 	 *				  (with one extra field set, called 'distance')
 	 *				  This intent should be the intent which is passed by the Android system to your 
-	 *                broadcast receiver which is registered with the BATTERY_CHANGED action.
-	 *                When this event occurs, Android calls the onReceive() method of your broadcast receiver
-	 *                and passes this intent into that method, so you have access to this intent in there
-	 *                (and can pass it to other methods) 
+	 *                broadcast receiver (which is registered with the BATTERY_CHANGED action).
 	 *                In our case, this broadcast receiver is 'Sampler'.                 
      * @param context
      */
 	private void takeSampleIfBatteryLevelChanged(Intent intent, Context context) {
-		CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
-		Sample lastSample = sampleDB.getLastSample(context);
-		
-		SamplingLibrary.setCurrentBatteryLevel(intent);
-		double currentBatteryLevel = SamplingLibrary.getCurrentBatteryLevel();
-		
-		double lastBatteryLevel = SamplingLibrary.getLastBatteryLevel(context);
-		
-//		if (lastBatteryLevel == 0) {
-//			double lastLevel = lastSample != null ? lastSample.getBatteryLevel() : 0;
-//			SamplingLibrary.setLastBatteryLevel(lastLevel);
-//		}
-		
-		Log.d(TAG, "last battery level (BEFORE): " + String.valueOf(lastBatteryLevel));
-		Log.d(TAG, "current battery level (BEFORE): " + String.valueOf(currentBatteryLevel));
-		
 		distance = intent.getDoubleExtra("distance", 0);
 		
-//		boolean batteryLevelsNotZero = lastBatteryLevel > 0 && currentBatteryLevel > 0;
-//		boolean batteryPercentageIsChange = lastBatteryLevel != currentBatteryLevel;
-		
-		if (lastBatteryLevel == 0) {
-			/* Ignore the battery level check, if the lastBatteryLevel is zero,
-			 * that means the lastSample is null
-			 * that implies the local database is empty (because this is first
-			 * run of the app,or all samples have been successfully uploaded
-			 * to the server and are deleted from the DB)
+		// Make sure our new sample doesn't have a zero value as its current battery level
+		if (SamplingLibrary.getCurrentBatteryLevel() > 0) {
+			CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
+			Sample lastSample = sampleDB.getLastSample(context);	
+			
+			if (lastSample != null) {
+				SamplingLibrary.setLastBatteryLevel(lastSample.getBatteryLevel());
+			} else if (SamplingLibrary.getLastBatteryLevel(context) == 0) {
+				Log.i(TAG,
+						"The last sample is null (all samples have been uploaded and deleted "
+								+ "from the local DB) , and the last battery level is not set yet "
+								+ "(the first ever sample). About to take a new sample. "
+								+ "currentBatteryLevel=" + SamplingLibrary.getCurrentBatteryLevel());
+				// before taking the first sample in a batch, first record the battery level
+				SamplingLibrary.setLastBatteryLevel(SamplingLibrary.getCurrentBatteryLevel());
+				// take a sample and store it in the database
+				this.getSample(context, intent, lastSample, sampleDB);
+				notify(context);
+			}
+			
+			/*
+			 * Read the battery levels again, they are now changed. We just
+			 * changed the last battery level (in the previous block of code).
+			 * The current battery level might also have been changed while the
+			 * device has been taking a sample.
 			 */
-			Log.d(TAG, "lastBatteryLevel=0 (first sample in the new batch?), "
-					+ "about to call this.getSample()");
-			// take a sample and store it in the database
-			this.getSample(context, intent, lastSample, sampleDB);
-			notify(context);
-		} else if (lastBatteryLevel != currentBatteryLevel) {
-			/* among all occurrence of the event BATTERY_CHANGED, only take a sample 
-			 * whenever a battery PERCENTAGE CHANGE happens 
-			 * (BATTERY_CHANGED happens whenever the battery temperature or voltage of other parameters change)
-			 */
-			Log.i(TAG, "about to invoke SamplerService.getSample() "
-					+ "(distinguishable from SamplingLibrary.getSample())");
-			// take a sample and store it in the database
-			this.getSample(context, intent, lastSample, sampleDB);
-			notify(context);
+			boolean batteryLevelChanged = SamplingLibrary.getLastBatteryLevel(context) != SamplingLibrary.getCurrentBatteryLevel();
+			
+			if (batteryLevelChanged) {
+				/* among all occurrence of the event BATTERY_CHANGED, only take a sample 
+				 * whenever a battery PERCENTAGE CHANGE happens 
+				 * (BATTERY_CHANGED happens whenever the battery temperature or voltage of other parameters change)
+				 */
+				Log.i(TAG, "The battery percentage changed. About to take a new sample "
+						+ "(currentBatteryLevel=" + SamplingLibrary.getCurrentBatteryLevel() + ", lastBatteryLevel=" + SamplingLibrary.getLastBatteryLevel(context)+ ")");
+				// take a sample and store it in the database
+				this.getSample(context, intent, lastSample, sampleDB);
+				notify(context);
+			} else {
+				Log.d(TAG, "NO battery percentage change. currentBatteryLevel=" + SamplingLibrary.getCurrentBatteryLevel());
+			}
 		} else {
-			Log.d(TAG, "no battery percentage change. currentBatteryLevel'=" + currentBatteryLevel);
-		}
-		
-		/*
-		 * Every time all samples in the local DB get uploaded and deleted from the DB,
-		 * the lastSample becomes null, and so does the lastBatteryLevel 
-		 * (because it is taken from the lastSample (check SamplingLibrary.getLastBatteryLevel()).
-		 * Obviously, after each successful update, the last battery level should not be reset to zero.
-		 *  We manually set the last battery level here.
-		 */		
-		if (currentBatteryLevel != 0)
-			SamplingLibrary.setLastBatteryLevel(currentBatteryLevel);
-		else 
 			Log.d(TAG, "current battery level = 0");
-		
-		Log.d(TAG, "last battery level (AFTER): " + String.valueOf(SamplingLibrary.getLastBatteryLevel(context)));
-		
+		}
 	}
 
     /**
@@ -187,8 +162,8 @@ public class SamplerService extends IntentService {
      * @return the newly recorded Sample
      */
     private void getSample(Context context, Intent intent, Sample lastSample, CaratSampleDB sampleDB) {
-//    	String action = intent.getStringExtra("OriginalAction");
-//    	Log.i("SamplerService.getSample()", "Original intent: " +action);
+    	// String action = intent.getStringExtra("OriginalAction");
+    	// Log.i("SamplerService.getSample()", "Original intent: " +action);
     	String lastBatteryState = lastSample != null ? lastSample.getBatteryState() : "Unknown";
     	Sample s = SamplingLibrary.getSample(context, intent, lastBatteryState);
         // Set distance to current distance value
@@ -205,9 +180,9 @@ public class SamplerService extends IntentService {
             long id = sampleDB.putSample(s);
             Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
             //FlurryAgent.logEvent(intent.getAction());
-            Log.d(TAG, "current battery level (just before quiting getSample() ): " + level);
+            //  Log.d(TAG, "current battery level (just before quitting getSample() ): " + SamplingLibrary.getCurrentBatteryLevel());
         }
-//        return s;
+        // return s;
     }
     
     private void notify(Context context){
