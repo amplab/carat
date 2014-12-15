@@ -224,7 +224,7 @@ public final class SamplingLibrary {
 		return currentBatteryLevel;
 	}
 
-	public static void setCurrentBatteryLevel(double currentBatteryLevel) {
+	public static void setCurrentBatteryLevelField(double currentBatteryLevel) {
 		SamplingLibrary.currentBatteryLevel = currentBatteryLevel;
 	}
     /**
@@ -2071,7 +2071,7 @@ public final class SamplingLibrary {
      */
 	private static double getBatteryLevel(Context context, Intent intent) {
 		
-        double currentBatteryLevel = getCurrentBatteryLevel(intent);
+        double currentBatteryLevel = readCurrentBatteryLevel();
         
         double lastBatteryLevel = getLastBatteryLevel(context);
         
@@ -2091,22 +2091,32 @@ public final class SamplingLibrary {
 	 *  through the SamplerService.
 	 * @return
 	 */
-	public static double getCurrentBatteryLevel(Intent intent) {
-		
+//	public static double getCurrentBatteryLevel(Intent intent) {
+//		
+//		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+//        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
+//        double level = 0;
+//        if (currentLevel >= 0 && scale > 0) {
+//        	level = (currentLevel / scale) * 100;
+//        	setCurrentBatteryLevelField(level); // very important, don't omit
+//        	Log.d("SamplingLibrary.getCurrentBatteryLevel", "level=" + level);
+//        } else {
+//			level = readCurrentBatteryLevel();
+//			Log.d("SamplingLibrary.getCurrentBatteryLevel", "just read the value of the FIELD currentBatteryLevel. level=" + level);
+//        }
+//        return level;
+//	}
+
+	public static void readAndSetCurrentBatteryLevel(Intent intent) {
 		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
         int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
-        double level = 0;
         if (currentLevel >= 0 && scale > 0) {
-        	level = (currentLevel / scale) * 100;
-        	setCurrentBatteryLevel(level); // very important, don't omit
-        	Log.d("SamplingLibrary.getCurrentBatteryLevel", "level=" + level);
-        } else {
-			level = readCurrentBatteryLevel();
-			Log.d("SamplingLibrary.getCurrentBatteryLevel", "just read the value of the FIELD currentBatteryLevel. level=" + level);
+        	double level = (currentLevel / scale) * 100;
+        	setCurrentBatteryLevelField(level);
+        	Log.d("SamplingLibrary.setCurrentBatteryL", "level=" + level);
         }
-        return level;
 	}
-
+	
 	private static TrafficRecord getAppTraffic(Integer uid) {
 		TrafficRecord trafficRecord = new TrafficRecord();
 		trafficRecord.setTx(TrafficStats.getUidTxBytes(uid));
