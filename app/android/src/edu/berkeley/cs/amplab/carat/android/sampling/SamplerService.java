@@ -91,7 +91,7 @@ public class SamplerService extends IntentService {
 				registerReceiver(sampler, intentFilter);
 			}
         
-			level = SamplingLibrary.readCurrentBatteryLevel();
+			level = SamplingLibrary.getCurrentBatteryLevel();
 	        
 	        Log.d(TAG, "before calling takeSampleIfBatteryLevelChanged(), level (current)=" + level);
 	        
@@ -119,8 +119,8 @@ public class SamplerService extends IntentService {
 		CaratSampleDB sampleDB = CaratSampleDB.getInstance(context);
 		Sample lastSample = sampleDB.getLastSample(context);
 		
-		SamplingLibrary.readAndSetCurrentBatteryLevel(intent);
-		double currentBatteryLevel = SamplingLibrary.readCurrentBatteryLevel();
+		SamplingLibrary.setCurrentBatteryLevel(intent);
+		double currentBatteryLevel = SamplingLibrary.getCurrentBatteryLevel();
 		
 		double lastBatteryLevel = SamplingLibrary.getLastBatteryLevel(context);
 		

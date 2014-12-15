@@ -220,13 +220,27 @@ public final class SamplingLibrary {
 		return lastBatteryLevel;
     }
     
-    public static double readCurrentBatteryLevel() {
+    public static double getCurrentBatteryLevel() {
 		return currentBatteryLevel;
 	}
 
-	public static void setCurrentBatteryLevelField(double currentBatteryLevel) {
-		SamplingLibrary.currentBatteryLevel = currentBatteryLevel;
+    /**
+	 * @param intent The parent intent (received by onReceive() method of your broadcast receiver, 
+	 * the Sampler in our case).
+	 * With our current code, this intent is also passed to the getSample() method (of the SamplingLibrary)
+	 *  through the SamplerService.
+	 * @return
+	 */
+    public static void setCurrentBatteryLevel(Intent intent) {
+		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
+        if (currentLevel >= 0 && scale > 0) {
+        	double level = (currentLevel / scale) * 100;
+        	currentBatteryLevel = level;
+        	Log.d("SamplingLibrary.setCurrentBatteryLevel", "level=" + level);
+        }
 	}
+    
     /**
      * Generate a time-based, random identifier.
      * 
@@ -2071,7 +2085,7 @@ public final class SamplingLibrary {
      */
 	private static double getBatteryLevel(Context context, Intent intent) {
 		
-        double currentBatteryLevel = readCurrentBatteryLevel();
+        double currentBatteryLevel = getCurrentBatteryLevel();
         
         double lastBatteryLevel = getLastBatteryLevel(context);
         
@@ -2081,40 +2095,6 @@ public final class SamplingLibrary {
         	Log.e("SamplingLibrar.getBatteryLevel", "neither current nor last battery level is available. Zero was returned as the battery level.");
         
 		return batteryLevel;
-	}
-	
-	/**
-	 * 
-	 * @param intent The parent intent (received by onReceive() method of your broadcast receiver, 
-	 * the Sampler in our case).
-	 * With our current code, this intent is also passed to the getSample() method (of the SamplingLibrary)
-	 *  through the SamplerService.
-	 * @return
-	 */
-//	public static double getCurrentBatteryLevel(Intent intent) {
-//		
-//		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-//        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
-//        double level = 0;
-//        if (currentLevel >= 0 && scale > 0) {
-//        	level = (currentLevel / scale) * 100;
-//        	setCurrentBatteryLevelField(level); // very important, don't omit
-//        	Log.d("SamplingLibrary.getCurrentBatteryLevel", "level=" + level);
-//        } else {
-//			level = readCurrentBatteryLevel();
-//			Log.d("SamplingLibrary.getCurrentBatteryLevel", "just read the value of the FIELD currentBatteryLevel. level=" + level);
-//        }
-//        return level;
-//	}
-
-	public static void readAndSetCurrentBatteryLevel(Intent intent) {
-		int currentLevel = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 0);
-        if (currentLevel >= 0 && scale > 0) {
-        	double level = (currentLevel / scale) * 100;
-        	setCurrentBatteryLevelField(level);
-        	Log.d("SamplingLibrary.setCurrentBatteryL", "level=" + level);
-        }
 	}
 	
 	private static TrafficRecord getAppTraffic(Integer uid) {
