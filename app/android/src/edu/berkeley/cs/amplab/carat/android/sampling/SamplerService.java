@@ -2,11 +2,6 @@ package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.Date;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.MainActivity;
-import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
-import edu.berkeley.cs.amplab.carat.thrift.Sample;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,10 +10,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.BatteryManager;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
+import edu.berkeley.cs.amplab.carat.thrift.Sample;
 
 public class SamplerService extends IntentService {
     

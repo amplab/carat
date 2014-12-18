@@ -60,58 +60,60 @@ public class SuggestionsFragment extends Fragment implements Serializable{
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
 
-        lv.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-            	// TODO: make sure each case below is working if it happens
-            	// we don't use viewFlipper (vf) anymore
-            	// so make sure to rewrite all methods which use vf.addView() to change view 
-            	// (change the view using a fragment transaction. For showing a URL use our 
-            	// CaratApplication.showHTMLFile("fileName"))
-                Object o = lv.getItemAtPosition(position);
-                SimpleHogBug fullObject = (SimpleHogBug) o;
-                final String raw = fullObject.getAppName();
-                Log.v(TAG, "Showing kill view for " + raw);
-                if (raw.equals("OsUpgrade"))
-                    CaratApplication.showHTMLFile("upgradeos");
-                else if (raw.equals(getString(R.string.dimscreen)))
-                    GoToDisplayScreen();
-                else if (raw.equals(getString(R.string.disablewifi)))
-                    GoToWifiScreen();
-                else if (raw.equals(getString(R.string.disablegps)))
-                    GoToLocSevScreen();
-                else if (raw.equals(getString(R.string.disablebluetooth)))
-                    GoToBluetoothScreen();
-                else if (raw.equals(getString(R.string.disablehapticfeedback)))
-                    GoToSoundScreen();
-                else if (raw.equals(getString(R.string.automaticbrightness)))
-                    GoToDisplayScreen();
-                else if (raw.equals(getString(R.string.disablenetwork)))
-                    GoToMobileNetworkScreen();
-                else if (raw.equals(getString(R.string.disablevibration)))
-                    GoToSoundScreen();
-                else if (raw.equals(getString(R.string.shortenscreentimeout)))
-                    GoToDisplayScreen();
-                else if (raw.equals(getString(R.string.disableautomaticsync)))
-                    GoToSyncScreen();
-                else if (raw.equals(getString(R.string.helpcarat))) {
-                    CaratApplication.showHTMLFile("collectdata");
-                } else if (raw.equals(getString(R.string.questionnaire))) {
-                    openQuestionnaire();
-                } else {
-                	displayKillAppFragment(fullObject, raw);
-                }
-            }
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+				// TODO: make sure each case below is working if it happens
+				// we don't use viewFlipper (vf) anymore
+				// so make sure to rewrite all methods which use vf.addView() to
+				// change view
+				// (change the view using a fragment transaction. For showing a
+				// URL use our
+				// CaratApplication.showHTMLFile("fileName"))
+				Object o = lv.getItemAtPosition(position);
+				SimpleHogBug fullObject = (SimpleHogBug) o;
+				final String raw = fullObject.getAppName();
+				Log.v(TAG, "Showing kill view for " + raw);
+				if (raw.equals("OsUpgrade"))
+					CaratApplication.showHTMLFile("upgradeos");
+				else if (raw.equals(getString(R.string.dimscreen)))
+					GoToDisplayScreen();
+				else if (raw.equals(getString(R.string.disablewifi)))
+					GoToWifiScreen();
+				else if (raw.equals(getString(R.string.disablegps)))
+					GoToLocSevScreen();
+				else if (raw.equals(getString(R.string.disablebluetooth)))
+					GoToBluetoothScreen();
+				else if (raw.equals(getString(R.string.disablehapticfeedback)))
+					GoToSoundScreen();
+				else if (raw.equals(getString(R.string.automaticbrightness)))
+					GoToDisplayScreen();
+				else if (raw.equals(getString(R.string.disablenetwork)))
+					GoToMobileNetworkScreen();
+				else if (raw.equals(getString(R.string.disablevibration)))
+					GoToSoundScreen();
+				else if (raw.equals(getString(R.string.shortenscreentimeout)))
+					GoToDisplayScreen();
+				else if (raw.equals(getString(R.string.disableautomaticsync)))
+					GoToSyncScreen();
+				else if (raw.equals(getString(R.string.helpcarat))) {
+					CaratApplication.showHTMLFile("collectdata");
+				} else if (raw.equals(getString(R.string.questionnaire))) {
+					openQuestionnaire();
+				} else {
+					displayKillAppFragment(fullObject, raw);
+				}
+			}
 
-            /*
-             * display a fragment (KillAppFragment) for killing the buggy app
-             */
+			/*
+			 * display a fragment (KillAppFragment) for killing the buggy app
+			 */
 			private void displayKillAppFragment(SimpleHogBug fullObject, final String raw) {
 				// we need to pass the buggy app info (as a bundle named "args")
 				// to the fragment
 				Bundle args = new Bundle();
 				args.putString("raw", raw);
-				
+
 				Type type = fullObject.getType();
 				if (type == Type.BUG) {
 					args.putBoolean("isBug", true);
@@ -125,25 +127,30 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 				if (type == Type.OTHER) {
 					args.putString("appPriority", fullObject.getAppPriority());
 				} else {
-					args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));                 		
+					args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));
 				}
-				
+
 				args.putString("benefit", fullObject.getBenefitText());
-				
+
 				Fragment fragment = new KillAppFragment();
 				fragment.setArguments(args);
-				
+
 				CaratApplication.replaceFragment(fragment, "killApp");
-				
+
 				/*
-				 * if (raw.equals("Disable bluetooth")) { double benefitOther = PowerProfileHelper. bluetoothBenefit(c); hours = (int)
-				 * (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; } else if (raw.equals("Disable Wifi")) { double
-				 * benefitOther = PowerProfileHelper.wifiBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min
-				 * -= hours * 60; } else if (raw.equals("Dim the Screen")) { double benefitOther = PowerProfileHelper.
-				 * screenBrightnessBenefit(c); hours = (int) (benefitOther); min = (int) (benefitOther * 60); min -= hours * 60; }
+				 * if (raw.equals("Disable bluetooth")) { double benefitOther =
+				 * PowerProfileHelper. bluetoothBenefit(c); hours = (int)
+				 * (benefitOther); min = (int) (benefitOther * 60); min -= hours
+				 * * 60; } else if (raw.equals("Disable Wifi")) { double
+				 * benefitOther = PowerProfileHelper.wifiBenefit(c); hours =
+				 * (int) (benefitOther); min = (int) (benefitOther * 60); min -=
+				 * hours * 60; } else if (raw.equals("Dim the Screen")) { double
+				 * benefitOther = PowerProfileHelper.
+				 * screenBrightnessBenefit(c); hours = (int) (benefitOther); min
+				 * = (int) (benefitOther * 60); min -= hours * 60; }
 				 */
 			}
-        });
+		});
 
         initUpgradeOsView(root);
 
@@ -158,6 +165,12 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 //        }
 //        }
 
+        // restored from a previous deletion, for debugging purpose
+        if (viewIndex == 0)
+        	vf.setDisplayedChild(baseViewIndex);
+        else
+        	vf.setDisplayedChild(viewIndex);
+        
         return root;
     }
     
@@ -293,9 +306,9 @@ public class SuggestionsFragment extends Fragment implements Serializable{
     }
 
     public void refresh() {
-        CaratApplication appContext = (CaratApplication) CaratApplication.getMainActivity().getApplication();
+        CaratApplication caratAppllication = (CaratApplication) CaratApplication.getMainActivity().getApplication();
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
-        lv.setAdapter(new HogBugSuggestionsAdapter(appContext, CaratApplication.storage.getHogReport(), CaratApplication.storage.getBugReport()));
+        lv.setAdapter(new HogBugSuggestionsAdapter(caratAppllication, CaratApplication.storage.getHogReport(), CaratApplication.storage.getBugReport()));
         emptyCheck(lv);
     }
 

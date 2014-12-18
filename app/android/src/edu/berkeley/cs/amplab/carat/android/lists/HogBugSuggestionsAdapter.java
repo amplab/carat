@@ -67,7 +67,9 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			if (appName == null) appName = a.getString(R.string.unknown);
 			
 			// don't show (skip) special apps: Carat or system apps
-			if (SpecialAppCases.isSpecialApp(appName))
+			// (DISABLED FOR DEBUGGING. TODO: ENABLE IT AFTER DEBUGGING, and check whether this has any problem)
+//			if (SpecialAppCases.isSpecialApp(appName))
+			if (appName.equals(CaratApplication.CARAT_PACKAGE_NAME) || appName.equals(CaratApplication.CARAT_OLD))
 				continue;
 			if (SamplingLibrary.isHidden(a.getApplicationContext(), appName))
 			    continue;

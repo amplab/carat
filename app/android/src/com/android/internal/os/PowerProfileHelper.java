@@ -2,6 +2,7 @@ package com.android.internal.os;
 
 import android.content.Context;
 import android.util.Log;
+import edu.berkeley.cs.amplab.carat.android.sampling.PowerProfile;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 
 public class PowerProfileHelper {
