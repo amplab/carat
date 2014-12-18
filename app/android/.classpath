@@ -5,7 +5,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/FlurryAgent.jar"/>
 	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
 	<classpathentry kind="lib" path="libs/android-support-v7-appcompat.jar"/>
-	<classpathentry kind="lib" path="libs/libthrift-0.9.2.jar"/>
 	<classpathentry kind="lib" path="libs/javax.annotation.jar"/>
 	<classpathentry kind="lib" path="libs/servlet-api-2.5.jar"/>
 	<classpathentry kind="lib" path="libs/junit-4.4.jar"/>

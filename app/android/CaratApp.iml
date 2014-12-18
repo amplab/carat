@@ -4,6 +4,8 @@
     <libelement value="jar://$MODULE_DIR$/libs/FlurryAgent.jar!/" />
     <libelement value="jar://$MODULE_DIR$/libs/android-support-v4.jar!/" />
     <libelement value="jar://$MODULE_DIR$/libs/android-support-v7-appcompat.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jackson-core-asl-1.9.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/libs/jackson-mapper-asl-1.9.11.jar!/" />
     <conelement value="com.android.ide.eclipse.adt.DEPENDENCIES" />
     <src_description expected_position="4">
       <src_folder value="com.android.ide.eclipse.adt.LIBRARIES" expected_position="0" />
@@ -47,6 +49,24 @@
       <library name="android-support-v7-appcompat.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/android-support-v7-appcompat.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-core-asl-1.9.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jackson-core-asl-1.9.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jackson-mapper-asl-1.9.11.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/jackson-mapper-asl-1.9.11.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
