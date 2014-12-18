@@ -40,6 +40,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Carat Android App Main Activity. Is loaded right after CaratApplication.
@@ -95,10 +96,11 @@ public class MainActivity extends ActionBarActivity {
 
 		/*
 		 * Reading the parameters passed to the current activity from the
-		 * SplashScreen. These values have been read from the Carat stats URL behind the
-		 * scene in the SplashScreen.
+		 * SplashScreen. These values have been read from the Carat stats URL
+		 * behind the scene in the SplashScreen.
 		 */
 		Intent intent = getIntent();
+
 		totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
 		totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
 		totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
@@ -126,7 +128,8 @@ public class MainActivity extends ActionBarActivity {
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		// set a custom shadow that overlays the main content when the drawer opens
+		// set a custom shadow that overlays the main content when the drawer
+		// opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		// set up the drawer's list view with items and click listener
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
@@ -150,7 +153,8 @@ public class MainActivity extends ActionBarActivity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		// Enable ActionBar app icon to behave as action to toggle navigation drawer
+		// Enable ActionBar app icon to behave as action to toggle navigation
+		// drawer
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 

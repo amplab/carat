@@ -166,6 +166,9 @@ delete these from your file.
     <string name="significance">Significance:</string>
     <string name="best">Already best</string>
     
+    <!-- error messages -->
+    <string name="statserror">Unable to read stats, close and re-run Carat.</string>
+    
     <string name="app_recommendation">App Recommendation</string>
     
     <string-array name="drawer_items">

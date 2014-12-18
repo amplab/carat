@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.widget.Toast;
 import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 
 /**
@@ -81,16 +82,28 @@ public class SplashScreen extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            // After completing http call
-            // will close this activity and launch the main activity
-            Intent i = new Intent(SplashScreen.this, MainActivity.class);
-            i.putExtra("wellbehaved", wellbehaved);
-            i.putExtra("hogs", hogs);
-            i.putExtra("bugs", bugs);
-            startActivity(i);
- 
+            
+            if (wellbehaved != null && hogs != null && bugs != null) {
+				// After completing http call
+				// will close this activity and launch the main activity
+				Intent intentMainActvity = new Intent(SplashScreen.this, MainActivity.class);
+				intentMainActvity.putExtra("wellbehaved", wellbehaved);
+				intentMainActvity.putExtra("hogs", hogs);
+				intentMainActvity.putExtra("bugs", bugs);
+				startActivity(intentMainActvity);
+            } else {
+            	String errorText =  CaratApplication.getMainActivity().getResources().getString(R.string.statserror);
+    			Toast.makeText(CaratApplication.getMainActivity(), errorText, Toast.LENGTH_SHORT).show();
+    			// wait 4 seconds, to let the user read the message before closing 
+    			try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e1) {
+                    // ignore
+                }
+            }
+            
             // close this AsyncTask
-            finish();
+			finish();
         }
 	}
  

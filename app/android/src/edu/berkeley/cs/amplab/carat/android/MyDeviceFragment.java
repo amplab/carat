@@ -201,7 +201,10 @@ public class MyDeviceFragment extends Fragment {
     	Log.i("mydeviceFragment", "resumed");
     	
         CaratApplication.setMyDevice(this);
-        CaratApplication.setReportData();
+        
+        ((CaratApplication) getActivity().getApplication()).refreshUi();
+//        CaratApplication.setReportData();
+        
         /*UiRefreshThread.setReportData();
         new Thread() {
             public void run() {

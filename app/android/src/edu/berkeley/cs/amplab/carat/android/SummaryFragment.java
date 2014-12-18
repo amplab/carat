@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,5 +85,14 @@ public class SummaryFragment extends Fragment {
 
         // onCreateView() method should always return the inflated view
         return inflatedView;
+    }
+	
+	@Override
+    public void onResume() {
+    	Log.i("SummaryFragment", "resumed");
+    	
+        ((CaratApplication) getActivity().getApplication()).refreshUi();
+        
+        super.onResume();
     }
 }
