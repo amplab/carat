@@ -77,7 +77,6 @@ import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
 import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
-import edu.berkeley.cs.amplab.carat.thrift.TrafficRecord;
 
 /**
  * Library class for methods that obtain information about the phone that is
@@ -818,7 +817,8 @@ public final class SamplingLibrary {
 					int appUid = appInfo.uid;
 					// get the amount of transmitted and received bytes by an
 					// app
-					TrafficRecord trafficRecord = getAppTraffic(appUid);
+					// TODO: disabled for debugging
+//					TrafficRecord trafficRecord = getAppTraffic(appUid);
 
 					int flags = pak.applicationInfo.flags;
 					// Check if it is a system app
@@ -838,7 +838,8 @@ public final class SamplingLibrary {
 						pi.setImportance(CaratApplication.IMPORTANCE_NOT_RUNNING);
 						pi.setInstallationPkg(pm.getInstallerPackageName(pkg));
 						pi.setVersionName(pak.versionName);
-						pi.setTrafficRecord(trafficRecord);
+						//TODO: disbaled for debugging
+//						pi.setTrafficRecord(trafficRecord);
 						result.put(pkg, pi);
 					}
 				}
@@ -2082,12 +2083,13 @@ public final class SamplingLibrary {
 		return mySample;
 	}
 
-	private static TrafficRecord getAppTraffic(Integer uid) {
-		TrafficRecord trafficRecord = new TrafficRecord();
-		trafficRecord.setTx(TrafficStats.getUidTxBytes(uid));
-		trafficRecord.setRx(TrafficStats.getUidRxBytes(uid));
-		return trafficRecord;
-	}
+	//TODO: disabled for debugging
+//	private static TrafficRecord getAppTraffic(Integer uid) {
+//		TrafficRecord trafficRecord = new TrafficRecord();
+//		trafficRecord.setTx(TrafficStats.getUidTxBytes(uid));
+//		trafficRecord.setRx(TrafficStats.getUidRxBytes(uid));
+//		return trafficRecord;
+//	}
 
 	public static List<String> getSignatures(PackageInfo pak) {
 		List<String> sigList = new LinkedList<String>();
