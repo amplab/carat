@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.protocol;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -85,10 +87,23 @@ public class SampleSender {
                                     if (success > 0)
                                         CaratApplication.storage.samplesReported(success);
                                     Sample last = map.get(map.lastKey());
+                                    
+									/*
+									 * converting (to human readable date-time format) 
+									 * the "timestamp" of the last sample (which is
+									 * uploaded now, and should be deleted along the other 
+									 * uploaded samples). The "timestamp" is computed this way:
+									 * CurrentTimeMillis / 1000 
+									 * (see getSample() in SamplingLibrary)
+									 */ 
+                                    long lastSampleTime = (long) last.getTimestamp() * 1000; // in currentTimeMillis
+                                    SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+                                    Date resultdate = new Date(lastSampleTime);
+                                    
                                     Log.d(TAG,
                                             "Deleting " + success
                                                     + " samples older than "
-                                                    + last.getTimestamp());
+                                                    + sdf.format(resultdate));
                                     /*
                                      * Log.i(TAG, "Sent samples:"); for (Sample k:
                                      * map.values()){ Log.i(TAG, k.getTimestamp() +
