@@ -6,7 +6,7 @@
     <string name="batterylife">Aktiivinen akunkesto:</string>
     <string name="osver">KJ-versio:</string>
     <string name="dev">Laitemalli:</string>
-    <string name="apps">Käynnissä:</string>
+    <string name="running_apps">Käynnissä:</string>
     <string name="memused">Muistinkäyttö:</string>
     <string name="memactive">Aktiivisena:</string>
     <string name="cpu">CPU-käyttö:</string>

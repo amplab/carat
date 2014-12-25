@@ -156,7 +156,7 @@ public class BugsOrHogsFragment extends Fragment {
 			}
 		};
 
-		View moreinfo = detailPage.findViewById(R.id.moreinfo);
+		View moreinfo = detailPage.findViewById(R.id.jscore_info);
 		moreinfo.setOnClickListener(detailViewer);
 
 		View item = detailPage.findViewById(R.id.benefit);

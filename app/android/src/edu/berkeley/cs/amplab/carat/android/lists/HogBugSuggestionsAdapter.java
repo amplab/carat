@@ -260,7 +260,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			holder.txtBenefit = (TextView) convertView
 					.findViewById(R.id.expectedBenefit);
 			holder.moreInfo = (ImageView) convertView
-					.findViewById(R.id.moreinfo);
+					.findViewById(R.id.jscore_info);
 
 			convertView.setTag(holder);
 		} else {

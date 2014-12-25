@@ -21,7 +21,8 @@ import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
  */
 public class SplashScreen extends ActionBarActivity {
 	
-    String wellbehaved, hogs, bugs;
+    private String wellbehaved, hogs, bugs;
+    private final String TAG = "SplashScreen";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,7 @@ public class SplashScreen extends ActionBarActivity {
             String json = jsonParser
                     .getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
  
-            Log.e("Response: ", "> " + json);
+            // Log.i("Response: ", "> " + json);
  
             if (json != null) {
                 try {
@@ -69,10 +70,10 @@ public class SplashScreen extends ActionBarActivity {
                     jsonObject = jsonArray.getJSONObject(2);
                     bugs = jsonObject.getString("value");
  
-                    Log.e("JSON", "> " + "wellbehaved: " + wellbehaved + ", hogs: " + hogs + ", bugs: " + bugs);
+                    Log.i(TAG, "received JSON: " + "wellbehaved: " + wellbehaved + ", hogs: " + hogs + ", bugs: " + bugs);
  
                 } catch (JSONException e) {
-                	Log.e("SplashScreen", e.getStackTrace().toString());
+                	Log.e(TAG, e.getStackTrace().toString());
                 }
             }
  
@@ -101,10 +102,8 @@ public class SplashScreen extends ActionBarActivity {
                     // ignore
                 }
             }
-            
             // close this AsyncTask
 			finish();
         }
 	}
- 
 }

@@ -118,10 +118,7 @@ public class SampleSender {
                                     }
                                     int deleted = CaratSampleDB.getInstance(c)
                                             .deleteSamples(uploaded);
-                                    /*
-                                     * .deleteOldestSamples( last.getTimestamp());
-                                     */
-                                    Log.d(TAG, "Deleted " + deleted + " samples.");
+                                    // Log.d(TAG, "Deleted " + deleted + " samples.");
                                     successSum += success;
                                 } catch (Throwable th) {
                                     // Any sort of malformed response, too short

@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
 	private String[] mDrawerItems;
 
 	// Log tag
-	private static final String TAG = "CaratMain";
+	private static final String TAG = "Activity (MainActivity)";
 
 	public static final String ACTION_BUGS = "bugs",
 							   ACTION_HOGS = "hogs";
@@ -348,7 +348,7 @@ public class MainActivity extends ActionBarActivity {
 		 * resume. Also sends samples and updates blacklist/questionnaire url.
 		 */
 
-		Log.d(TAG, "Refreshing UI");
+		Log.i(TAG, "Refreshing UI");
 		// This spawns a thread, so it does not need to be in a thread.
 		/*
 		 * new Thread() { public void run() {

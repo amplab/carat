@@ -31,9 +31,6 @@ public class SamplerService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-		String action1 = intent.getAction();
-		Log.d(TAG, "action = " + action1);
-
 		// At this point SimpleWakefulReceiver is still holding a wake lock
 		// for us. We can do whatever we need to here and then tell it that
 		// it can release the wakelock. This sample just does some slow work,
@@ -177,7 +174,7 @@ public class SamplerService extends IntentService {
         if (!s.getBatteryState().equals("Unknown") && s.getBatteryLevel() >= 0) {
         	// store the sample into the database
             long id = sampleDB.putSample(s);
-            Log.d(TAG, "Took sample " + id + " for " + intent.getAction());
+            Log.i(TAG, "Took sample " + id + " for " + intent.getAction());
             //FlurryAgent.logEvent(intent.getAction());
             //  Log.d(TAG, "current battery level (just before quitting getSample() ): " + SamplingLibrary.getCurrentBatteryLevel());
         }

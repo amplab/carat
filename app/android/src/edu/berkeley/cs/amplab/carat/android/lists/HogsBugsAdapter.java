@@ -87,7 +87,7 @@ public class HogsBugsAdapter extends BaseAdapter {
             holder.textBenefit = (TextView) convertView
                     .findViewById(R.id.benefit);
             holder.moreInfo = (ImageView) convertView
-                    .findViewById(R.id.moreinfo);
+                    .findViewById(R.id.jscore_info);
 
             convertView.setTag(holder);
         } else {

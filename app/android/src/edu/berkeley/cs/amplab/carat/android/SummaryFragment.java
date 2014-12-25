@@ -23,6 +23,8 @@ import com.echo.holographlibrary.PieSlice;
  */
 public class SummaryFragment extends Fragment {
 	
+	private final String TAG = "SummaryFragment";
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,10 +91,7 @@ public class SummaryFragment extends Fragment {
 	
 	@Override
     public void onResume() {
-    	Log.i("SummaryFragment", "resumed");
-    	
-        ((CaratApplication) getActivity().getApplication()).refreshUi();
-        
+    	// Log.i(TAG, "resumed");
         super.onResume();
     }
 }

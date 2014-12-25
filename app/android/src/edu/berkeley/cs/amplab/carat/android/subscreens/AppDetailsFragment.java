@@ -127,7 +127,7 @@ public class AppDetailsFragment extends Fragment {
 	 * value (at top), the description screen shows up
 	 */
 	private void setDescriptionWidgets(View detailsPage) {
-		View moreinfo = detailsPage.findViewById(R.id.moreinfo);
+		View moreinfo = detailsPage.findViewById(R.id.jscore_info);
 		View benefit = detailsPage.findViewById(R.id.benefit);
 		moreinfo.setOnClickListener(new View.OnClickListener() {
 			@Override

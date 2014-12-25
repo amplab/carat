@@ -126,9 +126,11 @@ public class CaratApplication extends Application {
 	private static SuggestionsFragment actionList = null;
 	// The Sampler samples the battery level when it changes.
 	private static Sampler sampler = null;
+	
+	public static MyDeviceData myDeviceData = new MyDeviceData();
 
 	// Utility methods
-
+	
 	/**
 	 * Converts <code>importance</code> to a human readable string.
 	 * 
@@ -211,28 +213,6 @@ public class CaratApplication extends Application {
 		}
 	}
 
-	/**
-	 * Set a field on the MyDevice tab by viewId.
-	 * 
-	 * @param viewId
-	 * @param text
-	 */
-	public static void setMyDeviceText(final int viewId, final String text) {
-		Log.d("setMyDeviceText", "about to update a field in myDeviceFragment");
-		if (myDevice != null) {
-			main.runOnUiThread(new Runnable() {
-				public void run() {
-//					TextView t = (TextView) myDevice.getView().findViewById(viewId);
-					TextView t = (TextView) myDevice.getActivity().findViewById(viewId);
-					if (t != null)
-						t.setText(text);
-					else
-						Log.e("setMyDeviceText", "unable to find the text view in myDevice fragment");
-				}
-
-			});
-		}
-	}
 
 	public static int getJscore() {
 		final Reports reports = storage.getReports();
@@ -543,13 +523,12 @@ public class CaratApplication extends Application {
 		final long min = (l - h * 3600000) / 60000;
 		double bl = 0;
 		double error = 0;
-		int jscore = -1;
 
 		if (r != null) {
 			Log.d(TAG, "r (reports) not null.");
 			// Try exact battery life
 			if (r.jScoreWith != null) {
-				Log.d(TAG, "jscoreWith not null.");
+				// Log.d(TAG, "jscoreWith not null.");
 				double exp = r.jScoreWith.expectedValue;
 				if (exp > 0.0) {
 					bl = 100 / exp;
@@ -564,13 +543,8 @@ public class CaratApplication extends Application {
 				}
 				// If not possible, try model battery life
 			}
-			jscore = ((int) (r.getJScore() * 100));
-			Log.d(TAG, "jscore: " + jscore);
-			setMyDeviceText(R.id.jscore_value, jscore + "");
 		}
 
-		if (jscore == -1 || jscore == 0)
-			setMyDeviceText(R.id.jscore_value, "N/A");
 
 		// Only take the error part
 		error = bl - error;
@@ -590,24 +564,23 @@ public class CaratApplication extends Application {
 
 		final String blS = blh + "h " + blmin + "m \u00B1 " + (errorH > 0 ? errorH + "h " : "") + errorMin + " m";
 
-		// Log.v(TAG, "Freshness: " + freshness);
-		if (main != null) {
-			if (freshness <= 0)
-				setMyDeviceText(R.id.updated, main.getString(R.string.neverupdated));
-			else if (min == 0)
-				setMyDeviceText(R.id.updated, main.getString(R.string.updatedjustnow));
-			else
-				setMyDeviceText(R.id.updated,
-						main.getString(R.string.updated) + " " + h + "h " + min + "m " + main.getString(R.string.ago));
-		}
-
-		if (myDevice != null) {
-			SharedPreferences p = PreferenceManager
-					.getDefaultSharedPreferences(CaratApplication.myDevice.getActivity());
-			String cid = p.getString(REGISTERED_UUID, "0");
-			setMyDeviceText(R.id.carat_id_value, cid);
-			setMyDeviceText(R.id.batterylife_value, blS);
-		}
+		/*
+		 * we removed direct manipulation of MyDevice fragment,
+		 * and moved the data pertaining to this fragment to a class field, called myDeviceData.
+		 * In the onResume() method of MyDeviceFragment, we fetch this data and show (see setViewData())
+		 * The reason for this movement is that we migrated from tabs to fragments.
+		 * We cannot change a fragment's view while it's not in the foreground
+		 * (fragments get replaced by a fragment transaction:
+		 * the parent activity which hosts a frame-layout
+		 * (a placeholder for fragment's layout), replaces the frame-layout with
+		 * the new fragment's layout)
+		 */ 
+		
+		SharedPreferences p = PreferenceManager
+				.getDefaultSharedPreferences(getMainActivity());
+		String caratId = p.getString(REGISTERED_UUID, "0");
+		
+		myDeviceData.setAllFields(freshness, h, min, caratId, blS);
 	}
 
 	@Override
