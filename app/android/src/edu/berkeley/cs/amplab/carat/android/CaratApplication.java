@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
-import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
@@ -120,7 +119,6 @@ public class CaratApplication extends Application {
 	// Activity pointers so that all activity UIs can be updated with a callback
 	// to CaratApplication
 	private static MainActivity main = null;
-	private static MyDeviceFragment myDevice = null;
 	private static BugsOrHogsFragment bugsActivity = null;
 	private static BugsOrHogsFragment hogsActivity = null;
 	private static SuggestionsFragment actionList = null;
@@ -299,10 +297,6 @@ public class CaratApplication extends Application {
 
 	public static void setMain(MainActivity mainActivity) {
 		main = mainActivity;
-	}
-
-	public static void setMyDevice(MyDeviceFragment myDeviceFragment) {
-		myDevice = myDeviceFragment;
 	}
 
 	public static void setBugs(BugsOrHogsFragment bugsOrHogsFragment) {

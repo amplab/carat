@@ -48,16 +48,9 @@ public class MyDeviceFragment extends Fragment {
 	    
     @Override
     public void onResume() {
-        CaratApplication.setMyDevice(this);
         setTextViews();
         setMemoryBars();
         super.onResume();
-    }
-    
-    @Override
-    public void onDetach() {
-    	CaratApplication.setMyDevice(null);
-        super.onDetach();
     }
     
     /**

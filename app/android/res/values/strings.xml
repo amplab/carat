@@ -75,8 +75,8 @@ delete these from your file.
     <string name="userswithhogs">Users with hogs</string>
     <string name="userswithbugs">Users with bugs</string>
 
-    <!-- Tabs. Also used elsewhere. -->
-    
+    <!-- Tabs. Also used ELSEWHERE. 
+    (must be deleted (duplicate with the string array, down below), but with extra care) -->    
     <string name="tab_actions">Actions</string>
     <string name="tab_my_device">Device</string>
     <string name="tab_bugs">Bugs</string>
@@ -85,6 +85,16 @@ delete these from your file.
     <string name="tab_summary">Summary</string>
     <string name="tab_app_recommendation">Recommendation</string>
 
+    <!-- Navigation drawer items (tabs) -->
+    <string-array name="drawer_items">
+        <item>Summary</item>
+        <item>Actions</item>
+        <item>My Device</item>
+        <item>Bugs</item>
+        <item>Hogs</item>
+        <item>About</item>
+    </string-array>
+    
     <!-- Updating etc -->
 
     <string name="samplesreported">Samples reported</string>
@@ -169,22 +179,14 @@ delete these from your file.
     <!-- error messages -->
     <string name="statserror">Unable to read stats, close and re-run Carat.</string>
     
-    <string name="app_recommendation">App Recommendation</string>
-    
-    <string-array name="drawer_items">
-        <item>Summary</item>
-        <item>Actions</item>
-        <item>My Device</item>
-        <item>Bugs</item>
-        <item>Hogs</item>
-        <item>About</item>
-    </string-array>
-    
+    <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="app_not_available">Sorry, there\'s no web browser available</string>
     
+    <!-- Name of the app, in the splash screen -->
     <string name="title_activity_splash_screen">Carat</string>
+
+    <string name="app_recommendation">App Recommendation</string>
 
 </resources>
 
