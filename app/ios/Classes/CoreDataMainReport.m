@@ -16,5 +16,6 @@
 @dynamic lastUpdated;
 @dynamic changesSinceLastWeek;
 @dynamic subreports;
+@dynamic samplesSent;
 
 @end

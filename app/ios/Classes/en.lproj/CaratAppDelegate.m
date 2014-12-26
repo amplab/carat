@@ -19,8 +19,14 @@
 #import "BugReportViewController.h"
 #import "ConsentViewController.h"
 #import "AboutViewController.h"
-
+#import "ContainerViewController.h"
 #import <Socialize/Socialize.h>
+
+@interface CaratAppDelegate()
+
+@property (nonatomic, retain) ContainerViewController* containerView;
+
+@end
 
 @implementation CaratAppDelegate
 
@@ -99,6 +105,7 @@ void onUncaughtException(NSException *exception)
     DLog(@"Proceeding with consent");
     if (self.window == nil) self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UIViewController *viewController0, *viewController1, *viewController2, *viewController3, *viewController4;
+
     UINavigationController *navController0, *navController1, *navController2, *navController3;
     viewController0 = [[ActionViewController alloc] initWithNibName:@"ActionView" bundle:nil];
     navController0 = [[UINavigationController alloc] initWithRootViewController:viewController0];
@@ -120,12 +127,16 @@ void onUncaughtException(NSException *exception)
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
    self.tabBarController.tabBar.translucent = NO;
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
-    self.window.rootViewController = self.tabBarController;
+	self.containerView = [[[ContainerViewController alloc] initWithNibName: @"ContainerViewController" bundle: nil] autorelease];
+
+	[self addContainerChildViewController: self.tabBarController toContainerView: self.containerView.view];
+    self.window.rootViewController = self.containerView;
     [self.window makeKeyAndVisible];
     DLog(@"Set root view controller; is nil? %@",
          self.tabBarController==nil ? @"yes" : @"no");
-    
-    // views have been added to hierarchy, so they can be released
+	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , 20 ,20)];
+
+	 // views have been added to hierarchy, so they can be released
     [viewController0 release];
     [viewController1 release];
     [viewController2 release];
@@ -178,6 +189,14 @@ void onUncaughtException(NSException *exception)
     return YES;
 }
 
+- (void)addContainerChildViewController:(UIViewController *)childViewController toContainerView:(UIView *)view
+{
+	childViewController.view.frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
+	[self.containerView addChildViewController:childViewController];
+	[view addSubview:childViewController.view];
+	[childViewController didMoveToParentViewController:self.containerView];
+	//[view bringSubviewToFront:childViewController.view];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     if ([[Globals instance] hasUserConsented]) {

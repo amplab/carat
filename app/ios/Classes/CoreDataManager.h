@@ -63,12 +63,14 @@
 - (void) sampleNow : (NSString *) triggeredBy;
 - (void) checkConnectivityAndSendStoredDataToServer;
 - (void) updateLocalReportsFromServer;
+- (void) updateSamplesSentCount;
 - (NSURL *) applicationDocumentsDirectory;
 - (NSDate *) getLastReportUpdateTimestamp; 
 - (double) secondsSinceLastUpdate;
 - (HogBugReport *) getHogs : (BOOL) filterNonRunning withoutHidden : (BOOL) filterHidden;
 - (HogBugReport *) getBugs : (BOOL) filterNonRunning withoutHidden : (BOOL) filterHidden;
 - (double) getJScore;
+- (NSInteger) getSampleSent;
 - (DetailScreenReport *) getJScoreInfo : (BOOL) with;
 - (DetailScreenReport *) getOSInfo : (BOOL) with;
 - (DetailScreenReport *) getModelInfo : (BOOL) with;

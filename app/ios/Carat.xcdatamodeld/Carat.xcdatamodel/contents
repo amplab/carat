@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="11G63" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="13F34" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CoreDataAppReport" representedClassName="CoreDataAppReport" syncable="YES">
         <attribute name="appName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="appScore" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
@@ -25,6 +25,7 @@
         <attribute name="changesSinceLastWeek" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="jScore" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lastUpdated" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="samplesSent" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="subreports" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CoreDataSubReport" inverseName="mainreport" inverseEntity="CoreDataSubReport" syncable="YES"/>
     </entity>
     <entity name="CoreDataProcessInfo" representedClassName="CoreDataProcessInfo" syncable="YES">
@@ -69,7 +70,7 @@
     <elements>
         <element name="CoreDataAppReport" positionX="-101" positionY="405" width="128" height="210"/>
         <element name="CoreDataDetail" positionX="-288" positionY="369" width="128" height="135"/>
-        <element name="CoreDataMainReport" positionX="-45" positionY="36" width="128" height="105"/>
+        <element name="CoreDataMainReport" positionX="-45" positionY="36" width="128" height="120"/>
         <element name="CoreDataProcessInfo" positionX="223" positionY="-117" width="128" height="90"/>
         <element name="CoreDataRegistration" positionX="-27" positionY="189" width="128" height="90"/>
         <element name="CoreDataSample" positionX="-63" positionY="-270" width="144" height="225"/>
