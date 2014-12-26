@@ -127,6 +127,100 @@ public class CaratApplication extends Application {
 	
 	public static MyDeviceData myDeviceData = new MyDeviceData();
 
+	// Application overrides
+	
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+	}
+
+	@Override
+	public void onTerminate() {
+		super.onTerminate();
+	}	
+	
+	/**
+	 * 1. Create CaratDataStorage and read reports from disk. Does not seem too
+	 * slow.
+	 * 
+	 * 2. Take a sample in a new thread so that the GUI has fresh data.
+	 * 
+	 * 3. Create CommunicationManager for communicating with the Carat server.
+	 * 
+	 * 4. Communicate with the server to fetch new reports if current ones are
+	 * outdated, and to send old stored and the new just-recorded sample. See
+	 * MainActivity for this task.
+	 */
+	@Override
+	public void onCreate() {
+		storage = new CaratDataStorage(this);
+
+		new Thread() {
+			private IntentFilter intentFilter;
+
+			public void run() {
+				/*
+				 * Schedule recurring sampling event: (currently not used)
+				 */
+				/*
+				 * SharedPreferences p = PreferenceManager
+				 * 			.getDefaultSharedPreferences(CaratApplication.this); 
+				 * boolean firstRun = p.getBoolean(PREFERENCE_SAMPLE_FIRST_RUN, true);
+				 */
+				// do this always for now for debugging purposes:
+				// if (firstRun) {
+				// What to start when the event fires (this is unused at the
+				// moment)
+				/*
+				 * Intent intent = new Intent(getApplicationContext(), Sampler.class); 
+				 * intent.setAction(ACTION_CARAT_SAMPLE); 
+				 * // In reality, you would want to have a static variable for the 
+				 * // request code instead of 192837 
+				 * PendingIntent sender =
+				 * 			PendingIntent.getBroadcast( CaratApplication.this, 192837,
+				 * 							intent, PendingIntent.FLAG_UPDATE_CURRENT); 
+				 * // Cancel if this has been set up. 
+				 * // Do not use timer at all any more.
+				 *  sender.cancel();
+				 */
+
+				// Let sampling happen on battery change
+				intentFilter = new IntentFilter();
+				intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+				/*
+				 * intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+				 * intentFilter.addDataScheme("package"); // add addDataScheme
+				 */
+				sampler = Sampler.getInstance();
+				// Unregister, since Carat may have been started multiple times
+				// since reboot
+				try {
+					unregisterReceiver(sampler);
+				} catch (IllegalArgumentException e) {
+					// No-op
+				}
+				registerReceiver(sampler, intentFilter);
+
+				// register for screen_on and screen-off as well
+
+				// for the debugging purpose, let's comment out these actions
+				// TODO: re-enable
+				// intentFilter.addAction(Intent.ACTION_SCREEN_ON);
+				// registerReceiver(sampler, intentFilter);
+				// intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
+				// registerReceiver(sampler, intentFilter);
+			}
+		}.start();
+
+		new Thread() {
+			public void run() {
+				commManager = new CommunicationManager(CaratApplication.this);
+			}
+		}.start();
+
+		super.onCreate();
+	}
+	
 	// Utility methods
 	
 	/**
@@ -336,86 +430,7 @@ public class CaratApplication extends Application {
 		return REGISTERED_UUID;
 	}
 
-	// Application overrides
-
-	/**
-	 * 1. Create CaratDataStorage and read reports from disk. Does not seem too
-	 * slow.
-	 * 
-	 * 2. Take a sample in a new thread so that the GUI has fresh data.
-	 * 
-	 * 3. Create CommunicationManager for communicating with the Carat server.
-	 * 
-	 * 4. Communicate with the server to fetch new reports if current ones are
-	 * outdated, and to send old stored and the new just-recorded sample. See
-	 * MainActivity for this task.
-	 */
-	@Override
-	public void onCreate() {
-		storage = new CaratDataStorage(this);
-
-		new Thread() {
-			private IntentFilter intentFilter;
-
-			public void run() {
-				/*
-				 * Schedule recurring sampling event: (currently not used)
-				 */
-				/*
-				 * SharedPreferences p = PreferenceManager
-				 * .getDefaultSharedPreferences(CaratApplication.this); boolean
-				 * firstRun = p.getBoolean(PREFERENCE_SAMPLE_FIRST_RUN, true);
-				 */
-				// do this always for now for debugging purposes:
-				// if (firstRun) {
-				// What to start when the event fires (this is unused at the
-				// moment)
-				/*
-				 * Intent intent = new Intent(getApplicationContext(),
-				 * Sampler.class); intent.setAction(ACTION_CARAT_SAMPLE); // In
-				 * reality, you would want to have a static variable for the //
-				 * request // code instead of 192837 PendingIntent sender =
-				 * PendingIntent.getBroadcast( CaratApplication.this, 192837,
-				 * intent, PendingIntent.FLAG_UPDATE_CURRENT); // Cancel if this
-				 * has been set up. Do not use timer at all any // more.
-				 * sender.cancel();
-				 */
-
-				// Let sampling happen on battery change
-				intentFilter = new IntentFilter();
-				intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
-				/*
-				 * intentFilter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-				 * intentFilter.addDataScheme("package"); // add addDataScheme
-				 */
-				sampler = Sampler.getInstance();
-				// Unregister, since Carat may have been started multiple times
-				// since reboot
-				try {
-					unregisterReceiver(sampler);
-				} catch (IllegalArgumentException e) {
-					// No-op
-				}
-				registerReceiver(sampler, intentFilter);
-				
-				// register for screen_on and screen-off as well
-				
-				// for the debugging purpose, let's comment out these actions
-//				intentFilter.addAction(Intent.ACTION_SCREEN_ON);
-//				registerReceiver(sampler, intentFilter);
-//				intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
-//				registerReceiver(sampler, intentFilter);
-			}
-		}.start();
-
-		new Thread() {
-			public void run() {
-				commManager = new CommunicationManager(CaratApplication.this);
-			}
-		}.start();
-
-		super.onCreate();
-	}
+	
 
 	public void refreshUi() {
 		new Thread() {
@@ -575,15 +590,64 @@ public class CaratApplication extends Application {
 		String caratId = p.getString(REGISTERED_UUID, "0");
 		
 		myDeviceData.setAllFields(freshness, h, min, caratId, blS);
+	}		
+}
+
+class MyDeviceData {
+	private long lastReportsTimeMillis;
+	private long freshnessHours;
+	private long freshnessMinutes;
+	private String caratId;
+	private String batteryLife;
+
+	public MyDeviceData() {
 	}
 
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
+	public void setAllFields(long lastReportsTimeMillis, long freshnessHours, long freshnessMinutes, String caratId, String batteryLife) {
+		this.lastReportsTimeMillis = lastReportsTimeMillis;
+		this.freshnessHours = freshnessHours;
+		this.freshnessMinutes = freshnessMinutes;
+		this.caratId = caratId;
+		this.batteryLife = batteryLife;
+	}
+	
+	public long getLastReportsTimeMillis() {
+		return lastReportsTimeMillis;
 	}
 
-	@Override
-	public void onTerminate() {
-		super.onTerminate();
+	public void setLastReportsTimeMillis(long lastReportsTimeMillis) {
+		this.lastReportsTimeMillis = lastReportsTimeMillis;
+	}
+
+	public long getFreshnessHours() {
+		return freshnessHours;
+	}
+
+	public void setFreshnessHours(long freshnessHours) {
+		this.freshnessHours = freshnessHours;
+	}
+
+	public long getFreshnessMinutes() {
+		return freshnessMinutes;
+	}
+
+	public void setFreshnessMinutes(long freshnessMinutes) {
+		this.freshnessMinutes = freshnessMinutes;
+	}
+
+	public String getCaratId() {
+		return caratId;
+	}
+
+	public void setCaratId(String caratId) {
+		this.caratId = caratId;
+	}
+
+	public String getBatteryLife() {
+		return batteryLife;
+	}
+
+	public void setBatteryLife(String batteryLife) {
+		this.batteryLife = batteryLife;
 	}
 }

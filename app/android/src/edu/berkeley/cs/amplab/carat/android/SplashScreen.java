@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.lang.reflect.Field;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.Toast;
+import edu.berkeley.cs.amplab.carat.android.SplashScreen.PrefetchData;
 import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 
 /**
@@ -21,9 +24,6 @@ import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
  */
 public class SplashScreen extends ActionBarActivity {
 	
-    private String wellbehaved, hogs, bugs;
-    private final String TAG = "SplashScreen";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,8 +32,15 @@ public class SplashScreen extends ActionBarActivity {
 		new PrefetchData().execute();
 	}
 
-	private class PrefetchData extends AsyncTask<Void, Void, Void> {
-		 
+	public class PrefetchData extends AsyncTask<Void, Void, Void> {
+		String serverResponseJson = null;
+		private final String TAG = "SplashScreen";
+		
+		private String wellbehaved = null,
+					   hogs = null,
+					   bugs = null;
+		
+		
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -52,25 +59,26 @@ public class SplashScreen extends ActionBarActivity {
              * 5. etc.,
              */
             JsonParser jsonParser = new JsonParser();
-            String json = jsonParser
-                    .getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
+            serverResponseJson = jsonParser
+			    .getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
  
-            // Log.i("Response: ", "> " + json);
- 
-            if (json != null) {
+            if (serverResponseJson != null && serverResponseJson != "") {
                 try {
-                    JSONArray jsonArray = new JSONObject(json).getJSONArray("android-apps");
-                    JSONObject jsonObject;
-                    jsonObject = jsonArray.getJSONObject(0);
-                    wellbehaved = jsonObject.getString("value");
+                    JSONArray jsonArray = new JSONObject(serverResponseJson).getJSONArray("android-apps");
                     
-                    jsonObject = jsonArray.getJSONObject(1);
-                    hogs = jsonObject.getString("value");
-                    
-                    jsonObject = jsonArray.getJSONObject(2);
-                    bugs = jsonObject.getString("value");
- 
-                    Log.i(TAG, "received JSON: " + "wellbehaved: " + wellbehaved + ", hogs: " + hogs + ", bugs: " + bugs);
+                    // Using Java reflections to set fields by passing their name to a method
+                    try {
+						setFieldsFromJson(jsonArray, 0, "wellbehaved");
+						setFieldsFromJson(jsonArray, 1, "hogs");
+						setFieldsFromJson(jsonArray, 2, "bugs");
+						
+						Log.i(TAG, "received JSON: " + "wellbehaved: " + wellbehaved 
+								+ ", hogs: " + hogs + ", bugs: " + bugs);
+					} catch (IllegalArgumentException e) {
+						Log.e(TAG, "IllegalArgumentException in setFieldsFromJson()");
+					} catch (IllegalAccessException e) {
+						Log.e(TAG, "IllegalAccessException in setFieldsFromJson()");
+					}
  
                 } catch (JSONException e) {
                 	Log.e(TAG, e.getStackTrace().toString());
@@ -79,6 +87,38 @@ public class SplashScreen extends ActionBarActivity {
  
             return null;
         }
+
+        /**
+         * Using Java reflections to set fields by passing their name to a method
+         * @param jsonArray the json array from which we want to extract different json objects
+         * @param objIdx the index of the object in the json array
+         * @param fieldName the name of the field in the current NESTED class (PrefetchData)
+         */
+		private void setFieldsFromJson(JSONArray jsonArray, int objIdx, String fieldName) 
+				throws JSONException, IllegalArgumentException, IllegalAccessException {
+			Class<? extends PrefetchData> currentClass = this.getClass();
+			Field field = null;
+			
+			try {
+				// important: getField() can only get PUBLIC fields. 
+				// For private fields, use getDeclaredField()
+				field = currentClass.getDeclaredField(fieldName);
+			} catch(NoSuchFieldException e) {
+				Log.e(TAG, "NoSuchFieldException when trying to get a reference to the field: " + fieldName);
+			}
+			
+			if (field != null) {
+				JSONObject jsonObject;
+				if (jsonArray != null ) {
+					jsonObject = jsonArray.getJSONObject(objIdx);
+					if (jsonObject != null && jsonObject.getString("value") != null && jsonObject.getString("value") != "")
+						field.set(this, jsonObject.getString("value"));
+					else 
+						Log.e(TAG, "json object (server response) is null: jsonArray(" + objIdx + ")=null (or ='')");
+				}
+			}
+			
+		}
  
         @Override
         protected void onPostExecute(Void result) {
@@ -93,17 +133,21 @@ public class SplashScreen extends ActionBarActivity {
 				intentMainActvity.putExtra("bugs", bugs);
 				startActivity(intentMainActvity);
             } else {
-            	String errorText =  CaratApplication.getMainActivity().getResources().getString(R.string.statserror);
-    			Toast.makeText(CaratApplication.getMainActivity(), errorText, Toast.LENGTH_SHORT).show();
-    			// wait 4 seconds, to let the user read the message before closing 
-    			try {
-                    Thread.sleep(4000);
-                } catch (InterruptedException e1) {
-                    // ignore
-                }
+            	Log.e(TAG, "unable to set fields: wellbehaved, hogs, and bugs (needed to be sent to the MainActivity)");
+            	displayConnectionError();
             }
+            
             // close this AsyncTask
 			finish();
         }
+
+		private void displayConnectionError() {
+			String errorText =  getResources().getString(R.string.statserror);
+			// to make the duration of the toast longer than Toast.LENGTH_LONG, 
+			// looping is an easy hack
+			for (int i=0; i < 2; i++) {
+				Toast.makeText(getApplicationContext(), errorText, Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -39,18 +40,21 @@ public class JsonParser {
 
             // Read content & Log
             inputStream = httpEntity.getContent();
+        } catch (UnknownHostException e0) {
+        	Log.d("JsonParser", "Unable to connect to the statstics server (no Internet on the device! is Wifi or mobile data on?), " + e0.toString());
+        	return "";
         } catch (UnsupportedEncodingException e1) {
             Log.e("UnsupportedEncodingException", e1.toString());
-            e1.printStackTrace();
+            return "";
         } catch (ClientProtocolException e2) {
             Log.e("ClientProtocolException", e2.toString());
-            e2.printStackTrace();
+            return "";
         } catch (IllegalStateException e3) {
             Log.e("IllegalStateException", e3.toString());
-            e3.printStackTrace();
+            return "";
         } catch (IOException e4) {
             Log.e("IOException", e4.toString());
-            e4.printStackTrace();
+            return "";
         }
         // Convert response to string using String Builder
         try {
