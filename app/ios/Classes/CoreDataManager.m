@@ -17,6 +17,7 @@
 
 static NSArray * SubReports = nil;
 static double JScore;
+static NSUInteger samplesSent;
 static NSString * reportUpdateStatus = nil;
 static dispatch_semaphore_t sendStoredDataToServerSemaphore;
 static NSMutableDictionary * daemonsList = nil;
@@ -48,7 +49,8 @@ static NSMutableDictionary * daemonsList = nil;
                                                                       insertNewObjectForEntityForName:@"CoreDataMainReport" 
                                                                       inManagedObjectContext:managedObjectContext];
         cdataMainReport.jScore = [NSNumber numberWithDouble:0.0];
-        
+		cdataMainReport.samplesSent = [NSNumber numberWithUnsignedInteger:0];
+
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         cdataMainReport.lastUpdated = [dateFormatter dateFromString:@"1970-01-01"];
@@ -136,6 +138,7 @@ static NSMutableDictionary * daemonsList = nil;
                 break;
             
             JScore = [[mainReport valueForKey:@"jScore"] doubleValue];
+			samplesSent = [[mainReport valueForKey:@"samplesSent"] integerValue];
             self.LastUpdatedDate = (NSDate *) [mainReport valueForKey:@"lastUpdated"];
             self.ChangesSinceLastWeek = (NSArray *) [mainReport valueForKey:@"changesSinceLastWeek"];
             
@@ -467,20 +470,97 @@ static NSMutableDictionary * daemonsList = nil;
 }
 
 /**
+ * Increment the sample count everytime the sample is sent
+ */
+-(void) updateSamplesSent{
+	NSError *error = nil;
+
+	DLog(@"%s Initilializing report syncing...", __PRETTY_FUNCTION__);
+	NSManagedObjectContext* managedObjectContext = [self getManagedObjectContext];
+
+	if (managedObjectContext != nil)
+	{
+		NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataMainReport"
+												  inManagedObjectContext:managedObjectContext];
+		[fetchRequest setEntity:entity];
+
+		NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		if (fetchedObjects == nil) {
+			DLog(@"%s Could not fetch CoreDataMainReport, error %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+			return;
+		}
+
+		DLog(@"%s Number of main reports in reports core data store: %u", __PRETTY_FUNCTION__, [fetchedObjects count]);
+
+		// Check for sanity.
+		if ([fetchedObjects count] == 0)
+		{
+			DLog(@"%s Reports core data store not initialized. Initing...", __PRETTY_FUNCTION__);
+			[self initLocalReportStore : managedObjectContext];
+			fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		}
+		else if ([fetchedObjects count] > 1)    // This should not happen!!!!
+		{
+			DLog(@"%s Found more than 1 item in main reports core data store!", __PRETTY_FUNCTION__);
+			for (CoreDataMainReport *mainReport in fetchedObjects)
+			{
+				[managedObjectContext deleteObject:mainReport];
+				[managedObjectContext save:nil];
+			}
+			[self initLocalReportStore : managedObjectContext];
+			fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		}
+		CoreDataMainReport *cdataMainReport = [fetchedObjects objectAtIndex:0];
+		if (cdataMainReport == nil) return;
+
+		[cdataMainReport setLastUpdated:[NSDate date]];
+		NSInteger previousSamplesCount = [[cdataMainReport valueForKey:@"samplesSent"] integerValue];
+		previousSamplesCount += 1;
+		cdataMainReport.samplesSent = [NSNumber numberWithInteger:previousSamplesCount];
+
+		// Save progress
+		@try {
+			if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error])
+			{
+				DLog(@"%s Could not save coredata, error: %@, %@.", __PRETTY_FUNCTION__, error, [error userInfo]);
+				return;
+			}
+		}
+		@catch (NSException *exception) {
+			DLog(@"%s Exception while trying to save coredata, %@, %@", __PRETTY_FUNCTION__, [exception name], [exception reason]);
+		}
+
+		// Reload data in memory.
+		[self loadLocalReportsToMemory : managedObjectContext];
+	}
+
+}
+
+/**
+ * Create instance of NSManagedObjectContext.
+ */
+-(NSManagedObjectContext*) getManagedObjectContext{
+	NSManagedObjectContext *managedObjectContext = nil;
+
+	managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
+	[managedObjectContext setUndoManager:nil];
+	[managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+	return managedObjectContext;
+}
+
+/**
  * Refresh all the local reports from server. 
  */
 - (void) updateReportsFromServer
 {
     NSError *error = nil;
     NSString *entityType = nil;
-    
-    NSManagedObjectContext *managedObjectContext = [[[NSManagedObjectContext alloc] init] autorelease];
-    [managedObjectContext setUndoManager:nil];
-    [managedObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-    
+
     DLog(@"%s Initilializing report syncing...", __PRETTY_FUNCTION__);
-    
-    if (managedObjectContext != nil) 
+	NSManagedObjectContext* managedObjectContext = [self getManagedObjectContext];
+
+    if (managedObjectContext != nil)
     {
         NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"CoreDataMainReport" 
@@ -1295,6 +1375,10 @@ static id instance = nil;
  //}
  }*/
 
+-(void) updateSamplesSentCount
+{
+	[self updateSamplesSent];
+}
 /**
  *  Update reports from Carat Server.
  */
@@ -1567,6 +1651,11 @@ static id instance = nil;
 {
     //DLog(@"%s %f", __PRETTY_FUNCTION__, JScore);
     return JScore;
+}
+
+-(NSInteger) getSampleSent
+{
+	return samplesSent;
 }
 
 - (DetailScreenReport *) getJScoreInfo : (BOOL) with

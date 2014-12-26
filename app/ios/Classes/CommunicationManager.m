@@ -12,6 +12,8 @@
 #import "Reachability.h"
 #import "Utilities.h"
 #import "UIDeviceHardware.h"
+#import "CoreDataManager.h"
+#import "CaratConstants.h"
 
 @interface CommunicationManager() 
 @property (retain) TSocketClient *transport;
@@ -154,6 +156,14 @@ static NSString * networkStatusString;
         @try {
             [service uploadSample:sample];
             ret = YES;
+			[[CoreDataManager instance] updateSamplesSentCount];
+
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSDictionary* userInfo = @{kSamplesSent:[NSNumber numberWithInteger:[[CoreDataManager instance] getSampleSent]]};
+				[[NSNotificationCenter defaultCenter] postNotificationName:kSamplesSentCountUpdateNotification object:nil userInfo:userInfo];
+			});
+
+
             DLog(@"%s Success!", __PRETTY_FUNCTION__);
         }
         @catch (NSException *exception) {
