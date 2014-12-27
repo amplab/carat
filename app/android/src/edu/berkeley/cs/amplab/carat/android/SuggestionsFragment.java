@@ -300,7 +300,9 @@ public class SuggestionsFragment extends Fragment implements Serializable{
      */
     @Override
     public void onResume() {
-        CaratApplication.setActionList(this);
+    	// TODO: The following method call (setActionList) and the original method should be removed.
+    	// we no longer manipulate fragments directly.
+        CaratApplication.setActionList(this); 
         refresh();
         super.onResume();
     }
