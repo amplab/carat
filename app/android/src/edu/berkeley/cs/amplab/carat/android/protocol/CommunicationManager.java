@@ -242,14 +242,27 @@ public class CommunicationManager {
 			Log.d(TAG, "Failed getting main report");
 		}
 		success = refreshBugReports(uuId, model);
+		
 		if (success) {
-			progress += 40;
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
+			progress += 20;
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_settings), false);
 			Log.d(TAG, "Successfully got bug report");
 		} else {
 			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), true);
 			Log.d(TAG, "Failed getting bug report");
 		}
+		
+		success = refreshSettingsReports(uuId, model);
+		
+		if (success) {
+			progress += 20;
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
+			Log.d(TAG, "Successfully got settings report");
+		} else {
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_settings), true);
+			Log.d(TAG, "Failed getting settings report");
+		}
+		
 		success = refreshHogReports(uuId, model);
 
 		boolean bl = true;
@@ -265,7 +278,7 @@ public class CommunicationManager {
 			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), true);
 			Log.d(TAG, "Failed getting hog report");
 		}
-
+		
 		// NOTE: Check for having a J-Score, and in case there is none, send the
 		// new message
 		Reports r = CaratApplication.storage.getReports();
@@ -370,6 +383,33 @@ public class CommunicationManager {
 		return false;
 	}
 
+	private boolean refreshSettingsReports(String uuid, String model) {
+		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+			return false;
+		CaratService.Client instance = null;
+		try {
+			instance = ProtocolClient.open(a.getApplicationContext());
+			HogBugReport r = instance.getHogOrBugReport(uuid, getFeatures("ReportType", "Settings", "Model", model));
+
+			if (r != null) {
+				CaratApplication.storage.writeSettingsReport(r);
+				Log.d("CommunicationManager.refreshSettingsReports()", 
+						"got the settings list: " + r.getHbList().toString());
+			} else {
+				Log.d("CommunicationManager.refreshSettingsReports()", 
+						"the fetched settings report is null");
+			}
+			// Assume freshness written by caller.
+			// s.writeFreshness();
+			safeClose(instance);
+			return true;
+		} catch (Throwable th) {
+			Log.e(TAG, "Error refreshing settings reports.", th);
+			safeClose(instance);
+		}
+		return false;
+	}
+	
 	private void refreshBlacklist() {
 		// I/O, let's do it on the background.
 		new Thread() {

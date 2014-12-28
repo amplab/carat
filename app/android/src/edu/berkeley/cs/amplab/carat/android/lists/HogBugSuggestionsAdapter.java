@@ -62,11 +62,10 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 					/ item.getExpectedValue();
 			// TODO other filter conditions?
 			// Limit max number of items?
-			// Skip system apps
 			String appName = item.getAppName();
 			if (appName == null) appName = a.getString(R.string.unknown);
 			
-			// don't show (skip) special apps: Carat or system apps
+			// don't show (skip) special/system apps
 			// (DISABLED FOR DEBUGGING. TODO: ENABLE IT AFTER DEBUGGING, and check whether this has any problem)
 //			if (SpecialAppCases.isSpecialApp(appName))
 			if (appName.equals(CaratApplication.CARAT_PACKAGE_NAME) || appName.equals(CaratApplication.CARAT_OLD))

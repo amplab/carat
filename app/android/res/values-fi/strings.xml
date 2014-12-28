@@ -48,9 +48,10 @@
     <string name="tab_bugs">Bugit</string>
     <string name="tab_hogs">Hogit</string>
     <string name="tab_about">Tietoja</string>
-    <!-- TODO: these two strings need translation -->
+    <!-- TODO: these strings need translation -->
     <string name="tab_summary">Summary</string>
-    <string name="tab_app_recommendation">Recommendation</string>
+    <string name="tab_settings">System Settings</string>
+    <!-- <string name="tab_app_recommendation">Recommendation</string> -->
     
     <!-- Navigation drawer items (tabs) -->
     <string-array name="drawer_items">
@@ -60,6 +61,8 @@
         <item>Bugit</item>
         <item>Hogit</item>
         <item>Tietoja</item>
+        <!-- TODO: this string needs translation -->
+        <item>System Settings</item>
     </string-array>
     
     <!-- Updating etc -->

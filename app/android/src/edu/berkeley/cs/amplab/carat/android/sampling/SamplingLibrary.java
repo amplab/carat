@@ -640,6 +640,11 @@ public final class SamplingLibrary {
 		return false;
 	}
 
+	public static boolean isSettingsSuggestion(Context context, String appName) {
+		// TODO: fill in (if everything is a suggestion, and no need for checking at the client side, then remove this method)
+		return true;
+	}
+	
 	public static void resetRunningProcessInfo() {
 		runningAppInfo = null;
 	}

@@ -76,7 +76,7 @@ public class CaratApplication extends Application {
 
 	// Used for bugs and hogs, and drawing
 	public enum Type {
-		OS, MODEL, HOG, BUG, SIMILAR, JSCORE, OTHER
+		OS, MODEL, HOG, BUG, SIMILAR, JSCORE, OTHER, BRIGHTNESS, WIFI, MOBILEDATA
 	}
 
 	// Used for logging

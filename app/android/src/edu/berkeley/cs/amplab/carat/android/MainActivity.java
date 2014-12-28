@@ -221,6 +221,10 @@ public class MainActivity extends ActionBarActivity {
 			fragment = new AboutFragment();
 			fragmentLabel = getString(R.string.tab_about);
 			break;
+		case 6:
+			fragment = new SettingsSuggestionsFragment();
+			fragmentLabel = getString(R.string.tab_settings);
+			break;
 		}
 
 		CaratApplication.replaceFragment(fragment, fragmentLabel);

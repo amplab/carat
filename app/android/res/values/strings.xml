@@ -81,6 +81,7 @@ delete these from your file.
     <string name="tab_my_device">Device</string>
     <string name="tab_bugs">Bugs</string>
     <string name="tab_hogs">Hogs</string>
+    <string name="tab_settings">System Settings</string>
     <string name="tab_about">About</string>
     <string name="tab_summary">Summary</string>
     <string name="tab_app_recommendation">Recommendation</string>
@@ -93,6 +94,7 @@ delete these from your file.
         <item>Bugs</item>
         <item>Hogs</item>
         <item>About</item>
+        <item>System Settings</item>
     </string-array>
     
     <!-- Updating etc -->

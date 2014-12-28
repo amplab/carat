@@ -29,6 +29,7 @@ public class CaratDataStorage {
     public static final String GLOBLIST_FILE = "carat-globlist.dat";
     public static final String BUGFILE = "carat-bugs.dat";
     public static final String HOGFILE = "carat-hogs.dat";
+    public static final String SETTINGSFILE = "carat-settings.dat";
 
     public static final String SAMPLES_REPORTED = "carat-samples-reported.dat";
     
@@ -43,6 +44,7 @@ public class CaratDataStorage {
     private WeakReference<Reports> caratData = null;
     private WeakReference<SimpleHogBug[]> bugData = null;
     private WeakReference<SimpleHogBug[]> hogData = null;
+    private WeakReference<SimpleHogBug[]> settingsData = null;
     private WeakReference<List<String>> blacklistedApps = null;
     private WeakReference<List<String>> blacklistedGlobs = null;
 
@@ -399,6 +401,15 @@ public class CaratDataStorage {
             return null;
         return hogData.get();
     }
+    
+    public SimpleHogBug[] getSettingsReport() {
+        if (settingsData == null || settingsData.get() == null) {
+            readSettingsReport();
+        }
+        if (settingsData == null || settingsData.get() == null)
+            return null;
+        return settingsData.get();
+    }
 
     public void writeBugReport(HogBugReport r) {
         if (r != null) {
@@ -416,6 +427,16 @@ public class CaratDataStorage {
             if (list != null){
                 hogData = new WeakReference<SimpleHogBug[]>(list);
                 writeObject(list, HOGFILE);
+            }
+        }
+    }
+    
+    public void writeSettingsReport(HogBugReport r) {
+        if (r != null) {
+            SimpleHogBug[] list = convert(r.getHbList(), false);
+            if (list != null){
+                settingsData = new WeakReference<SimpleHogBug[]>(list);
+                writeObject(list, SETTINGSFILE);
             }
         }
     }
@@ -492,6 +513,15 @@ public class CaratDataStorage {
             return null;
         SimpleHogBug[] r = (SimpleHogBug[]) o;
         hogData = new WeakReference<SimpleHogBug[]>(r);
+        return r;
+    }
+    
+    public SimpleHogBug[] readSettingsReport() {
+        Object o = readObject(SETTINGSFILE);
+        if (o == null || !(o instanceof SimpleHogBug[]))
+            return null;
+        SimpleHogBug[] r = (SimpleHogBug[]) o;
+        settingsData = new WeakReference<SimpleHogBug[]>(r);
         return r;
     }
 }
