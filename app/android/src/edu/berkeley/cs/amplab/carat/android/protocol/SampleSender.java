@@ -46,8 +46,8 @@ public class SampleSender {
     
             final SharedPreferences p = PreferenceManager
                     .getDefaultSharedPreferences(c);
-            final boolean useWifiOnly = p.getBoolean(
-                    CaratApplication.PREFERENCE_WIFI_ONLY, false);
+            final boolean useWifiOnly = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
+            Log.i("wifi-preference-SampleSender", String.valueOf(useWifiOnly));
     
             boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
                     || networkType.equals("WIFI");
@@ -57,7 +57,7 @@ public class SampleSender {
                 int samples = db.countSamples();
                 
                 /* Click Tracking: Track sample sending. */
-                String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+                String uuId = p.getString(CaratApplication.getRegisteredUuid(), "UNKNOWN");
                 HashMap<String, String> options = new HashMap<String, String>();
                 options.put("count", samples+"");
                 ClickTracking.track(uuId, "sendingsamples", options, c);

@@ -47,10 +47,16 @@ public class CaratApplication extends Application {
 	// If this preference is true, register this as a new device on the Carat
 	// server.
 	public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
-	public static final String REGISTERED_UUID = "carat.registered.uuid";
+	private static final String REGISTERED_UUID = "carat.registered.uuid";
 	public static final String REGISTERED_OS = "carat.registered.os";
 	public static final String REGISTERED_MODEL = "carat.registered.model";
-	public static final String PREFERENCE_WIFI_ONLY = "carat.use.wifi";
+	// if you change the preference key of any of our preference widgets (in res/xml/preferences.xml), 
+	// update the following constants as well 
+	public static final String WIFI_ONLY_PREFERENCE_KEY = "wifiOnlyPreferenceKey";
+	public static final String SHARE_PREFERENCE_KEY = "sharePreferenceKey";
+	public static final String FEEDBACK_PREFERENCE_KEY = "feedbackPreferenceKey";
+	
+	
 	public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
 	public static final String PREFERENCE_TIME_BASED_UUID = "carat.uuid.timebased";
 
@@ -444,7 +450,7 @@ public class CaratApplication extends Application {
 				// refreshActions();
 
 				final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
-				final boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
+				final boolean useWifiOnly = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
 				String networkStatus = SamplingLibrary.getNetworkStatus(getApplicationContext());
 				String networkType = SamplingLibrary.getNetworkType(co);
 

@@ -1848,7 +1848,7 @@ public final class SamplingLibrary {
 		// Construct sample and return it in the end
 		Sample mySample = new Sample();
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
-		String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+		String uuId = p.getString(CaratApplication.getRegisteredUuid(), null);
 		mySample.setUuId(uuId);
 		mySample.setTriggeredBy(action);
 		// required always

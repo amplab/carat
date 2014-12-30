@@ -30,7 +30,7 @@
     <string name="helpcarat">Auta Caratia keräämään dataa</string>
     <string name="questionnaire">Auta meitä parantamaan Caratia</string>
     <string name="questionnaire2">Vastaa kyselyyn (5&#8211;10 min)</string>
-    <string name="feedback">Anna palautetta</string>
+    <string name="feedback">Anna palautetta (email)</string>
     <string name="share">Jaa …</string>
     <string name="sharewith">Jaa käyttäen:</string>
     <string name="chooseemail">Valitse email-sovellus</string>
@@ -168,5 +168,13 @@
     <string name="title_activity_splash_screen">Carat</string>
 
     <string name="app_recommendation">App Recommendation</string>
+    
+    <!-- TODO: these need translation -->
+    <!-- Carat settings screen -->
+    <!-- switch backport strings -->
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="summary_off">Wifi + Mobile Data</string>
+    <string name="summary_on">Wifi Only</string>
     
 </resources>

@@ -58,7 +58,7 @@ public class CommunicationManager {
 		newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID, false);
 		registered = !p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
 		register = !registered;
-		String storedUuid = p.getString(CaratApplication.REGISTERED_UUID, null);
+		String storedUuid = p.getString(CaratApplication.getRegisteredUuid(), null);
 		if (!register) {
 			if (storedUuid == null)
 				register = true;
@@ -130,7 +130,7 @@ public class CommunicationManager {
 
 	private void registerLocal() {
 		if (register) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+			String uuId = p.getString(CaratApplication.getRegisteredUuid(), null);
 			if (uuId == null) {
 				if (registered && (!newuuid && !timeBasedUuid)) {
 					uuId = SamplingLibrary.getAndroidId(a);
@@ -144,7 +144,7 @@ public class CommunicationManager {
 					// This needs to be saved now, so that if server
 					// communication
 					// fails we have a stable UUID.
-					p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
+					p.edit().putString(CaratApplication.getRegisteredUuid(), uuId).commit();
 					p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true).commit();
 					timeBasedUuid = true;
 				}
@@ -154,7 +154,7 @@ public class CommunicationManager {
 
 	private void registerOnFirstRun(CaratService.Client instance) {
 		if (register) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+			String uuId = p.getString(CaratApplication.getRegisteredUuid(), null);
 			// Only use new uuid if reg'd after this version for the first time.
 			if (registered && (!newuuid && !timeBasedUuid)) {
 				uuId = SamplingLibrary.getAndroidId(a);
@@ -168,7 +168,7 @@ public class CommunicationManager {
 				Log.d("CommunicationManager", "Generated a new time-based UUID: " + uuId);
 				// This needs to be saved now, so that if server communication
 				// fails we have a stable UUID.
-				p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
+				p.edit().putString(CaratApplication.getRegisteredUuid(), uuId).commit();
 				p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true).commit();
 				timeBasedUuid = true;
 			}
@@ -180,7 +180,7 @@ public class CommunicationManager {
 				p.edit().putBoolean(CaratApplication.PREFERENCE_FIRST_RUN, false).commit();
 				register = false;
 				registered = true;
-				p.edit().putString(CaratApplication.REGISTERED_UUID, uuId).commit();
+				p.edit().putString(CaratApplication.getRegisteredUuid(), uuId).commit();
 				p.edit().putString(CaratApplication.REGISTERED_OS, os).commit();
 				p.edit().putString(CaratApplication.REGISTERED_MODEL, model).commit();
 			} catch (TException e) {
@@ -215,7 +215,7 @@ public class CommunicationManager {
 			}
 		}
 
-		String uuId = p.getString(CaratApplication.REGISTERED_UUID, null);
+		String uuId = p.getString(CaratApplication.getRegisteredUuid(), null);
 		String model = SamplingLibrary.getModel();
 		String OS = SamplingLibrary.getOsVersion();
 

@@ -143,7 +143,7 @@ public class BugsOrHogsFragment extends Fragment {
 			public void onClick(View arg0) {
 				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
 				if (p != null) {
-					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+					String uuId = p.getString(CaratApplication.getRegisteredUuid(), "UNKNOWN");
 					HashMap<String, String> options = new HashMap<String, String>();
 					options.put("status", getActivity().getTitle().toString());
 					options.put("type", isBugs ? "Bugs" : "Hogs");

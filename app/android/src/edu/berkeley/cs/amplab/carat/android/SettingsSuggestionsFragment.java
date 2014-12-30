@@ -154,7 +154,7 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
      */
     public void openQuestionnaire() {
         SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String caratId = Uri.encode(p.getString(CaratApplication.REGISTERED_UUID, ""));
+        String caratId = Uri.encode(p.getString(CaratApplication.getRegisteredUuid(), ""));
         String os = Uri.encode(SamplingLibrary.getOsVersion());
         String model = Uri.encode(SamplingLibrary.getModel());
         String url = CaratApplication.storage.getQuestionnaireUrl();

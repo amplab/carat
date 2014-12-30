@@ -2,45 +2,31 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Properties;
 
-import com.flurry.android.FlurryAgent;
-
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar.Tab;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+
+import com.flurry.android.FlurryAgent;
+
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.subscreens.CaratSettingsFragment;
+import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
 /**
  * Carat Android App Main Activity. Is loaded right after CaratApplication.
@@ -69,11 +55,9 @@ public class MainActivity extends ActionBarActivity {
 	// Key File
 	private static final String FLURRY_KEYFILE = "flurry.properties";
 
-	private MenuItem feedbackItem = null;
-
 	private String fullVersion = null;
 
-	private Tracker tracker = Tracker.getInstance();
+	private Tracker tracker = null;
 
 	/* 
 	 * Values of the following variables are read (from a URL) in the
@@ -106,6 +90,8 @@ public class MainActivity extends ActionBarActivity {
 		totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
 
 		CaratApplication.setMain(this);
+		
+		tracker = Tracker.getInstance();
 
 		/*
 		 * Activity.getWindow.requestFeature() should get invoked only before
@@ -119,6 +105,9 @@ public class MainActivity extends ActionBarActivity {
 		ActionBar actionBar = getSupportActionBar();
 
 		setTitleNormal();
+		
+		// read and load the preferences specified in our xml preference file
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
 		/*
 		 * Before using the field "fullVersion", first invoke setTitleNormal()
@@ -218,12 +207,16 @@ public class MainActivity extends ActionBarActivity {
 			fragmentLabel = getString(R.string.tab_hogs);
 			break;
 		case 5:
-			fragment = new AboutFragment();
-			fragmentLabel = getString(R.string.tab_about);
-			break;
-		case 6:
 			fragment = new SettingsSuggestionsFragment();
 			fragmentLabel = getString(R.string.tab_settings);
+			break;
+		case 6:
+			fragment = new CaratSettingsFragment();
+			fragmentLabel = getString(R.string.tab_carat_settings);
+			break;
+		case 7:
+			fragment = new AboutFragment();
+			fragmentLabel = getString(R.string.tab_about);
 			break;
 		}
 
@@ -288,6 +281,10 @@ public class MainActivity extends ActionBarActivity {
 	private void setFullVersion() {
 		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 	}
+	
+	public String getFulVersion()  {
+		return fullVersion;
+	}
 
 	public void setTitleUpdating(String what) {
 		this.setTitle(fullVersion + " - " + getString(R.string.updating) + " " + what);
@@ -323,6 +320,10 @@ public class MainActivity extends ActionBarActivity {
 		if (secretKey != null) {
 			FlurryAgent.onStartSession(getApplicationContext(), secretKey);
 		}
+		
+		// if we need to do something when our default shared preferences change, we can do it in this listener
+		// when you uncomment this, remember to uncomment the unregistering code in the onStop() listener of this activity
+		// PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 	}
 
 	/*
@@ -334,6 +335,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(getApplicationContext());
+		// PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 	}
 
 	/**
@@ -405,112 +407,26 @@ public class MainActivity extends ActionBarActivity {
 	/**
 	 * Show share, feedback, wifi only menu here.
 	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		final MenuItem wifiOnly = menu.add(R.string.wifionly);
-		// wifiOnly.setCheckable(true);
-		// wifiOnly.setChecked(useWifiOnly);
-		final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-		if (p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false))
-			wifiOnly.setTitle(R.string.wifionlyused);
-		wifiOnly.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				boolean useWifiOnly = p.getBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false);
-				if (useWifiOnly) {
-					p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, false).commit();
-					// wifiOnly.setChecked(false);
-					wifiOnly.setTitle(R.string.wifionly);
-					tracker.trackUser("WifiOnlyOff");
-				} else {
-					p.edit().putBoolean(CaratApplication.PREFERENCE_WIFI_ONLY, true).commit();
-					// wifiOnly.setChecked(true);
-					wifiOnly.setTitle(R.string.wifionlyused);
-					tracker.trackUser("WifiOnlyOn");
-				}
-				return true;
-			}
-		});
-
-		MenuItem shareItem = menu.add(R.string.share);
-		shareItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem arg0) {
-				int jscore = CaratApplication.getJscore();
-				Intent sendIntent = new Intent(Intent.ACTION_SEND);
-				sendIntent.setType("text/plain");
-				sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.myjscoreis) + " " + jscore);
-				sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.sharetext1) + " " + jscore
-						+ getString(R.string.sharetext2));
-				startActivity(Intent.createChooser(sendIntent, getString(R.string.sharewith)));
-
-				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				if (p != null) {
-					String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-					HashMap<String, String> options = new HashMap<String, String>();
-					options.put("status", getTitle().toString());
-					options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
-					ClickTracking.track(uuId, "caratshared", options, getApplicationContext());
-				}
-				return true;
-			}
-		});
-
-		feedbackItem = menu.add(R.string.feedback);
-		feedbackItem.setOnMenuItemClickListener(new MenuListener());
-		return true;
-	}
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
+//
+//		final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+//		
+//		boolean wifi = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
+//		Log.i("wifi-preference", String.valueOf(wifi));
+//		
+//		return true;
+//	}
 
 	/**
-	 * Class to handle feedback form.
-	 * 
-	 * @author Eemil Lagerspetz
-	 * 
+	 * A listener that is triggered when a value changes in our defualtSharedPreferences.
+	 * Can be used to do an immediate action whenever one of our items in that hashtable (defualtSharedPreferences) changes.
+	 * Should be registered (in our main activity's onStart()) and unregistered (in onStop())  
 	 */
-	private class MenuListener implements OnMenuItemClickListener {
-
-		@Override
-		public boolean onMenuItemClick(MenuItem arg0) {
-			int jscore = CaratApplication.getJscore();
-			Intent sendIntent = new Intent(Intent.ACTION_SEND);
-			Context a = getApplicationContext();
-			SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(a);
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
-			String os = SamplingLibrary.getOsVersion();
-			String model = SamplingLibrary.getModel();
-
-			// Emulator does not support message/rfc822
-			if (model.equals("sdk"))
-				sendIntent.setType("text/plain");
-			else
-				sendIntent.setType("message/rfc822");
-			sendIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@eecs.berkeley.edu" });
-			sendIntent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] " + getString(R.string.feedbackfrom) + " "
-					+ model);
-			sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
-					+ getString(R.string.model) + ": " + model + "\nCarat ID: " + uuId + "\nJ-Score: " + jscore + "\n"
-					+ fullVersion + "\n");
-			if (p != null) {
-				HashMap<String, String> options = new HashMap<String, String>();
-				options.put("os", os);
-				options.put("model", model);
-				SimpleHogBug[] b = CaratApplication.storage.getBugReport();
-				int len = 0;
-				if (b != null)
-					len = b.length;
-				options.put("bugs", len + "");
-				b = CaratApplication.storage.getHogReport();
-				len = 0;
-				if (b != null)
-					len = b.length;
-				options.put("hogs", len + "");
-				options.put("status", getTitle().toString());
-				options.put("sharetext", getString(R.string.myjscoreis) + " " + jscore);
-				ClickTracking.track(uuId, "feedbackbutton", options, getApplicationContext());
-			}
-			startActivity(Intent.createChooser(sendIntent, getString(R.string.chooseemail)));
-			return true;
-		}
-	}
+//	private OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
+//        @Override
+//        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+//            Toast.makeText(CaratApplication.getMainActivity(), String.valueOf(sharedPreferences.getBoolean(key, false)), Toast.LENGTH_SHORT).show();
+//        }
+//    };
 }
