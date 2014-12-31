@@ -172,8 +172,8 @@
     <!-- TODO: these need translation -->
     <!-- Carat settings screen -->
     <!-- switch backport strings -->
-    <string name="off">Off</string>
-    <string name="on">On</string>
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
     <string name="summary_off">Wifi + Mobile Data</string>
     <string name="summary_on">Wifi Only</string>
     
