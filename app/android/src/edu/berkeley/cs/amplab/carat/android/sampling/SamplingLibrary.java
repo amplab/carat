@@ -219,11 +219,13 @@ public final class SamplingLibrary {
 	
 	public static void setCurrentBatteryLevel(int currentLevel, int scale) {
 		/*
-		 * it's very important to CAST int variables to DOUBLE before diving an
-		 * int to another int otherwise the result will be zero, and you won't
-		 * even think that this division operation might be the root of evil!
+		 * it's important to CAST int variables to DOUBLE, BEFORE diving an
+		 * int to another int, otherwise the result will be zero.
 		 */
-		double level = ((double) currentLevel / (double) scale) * 100.0;
+		/* we should multiply the result of the division below by 100.0 to get the battery level 
+		 * in the scale of 0-100, but since the previous samples in our server's dataset are in the scale of 0.00-1.00, 
+		 * we omit the multiplication. */
+		double level = (double) currentLevel / (double) scale;
 		/*
 		 * whenever we get these two arguments (extras from the intent:
 		 * EXTRA_LEVEL & EXTRA_SCALE), it doens't necessarily mean that a battery

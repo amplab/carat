@@ -349,6 +349,8 @@ public class CaratSampleDB {
      * @return rowId or -1 if failed
      */
     private long addSample(Sample s) {
+    	Log.d("CaratSampleDB.addSample()", "The sample's battery level=" + s.getBatteryLevel());
+    	
         ContentValues initialValues = new ContentValues();
         initialValues.put(COLUMN_TIMESTAMP, s.timestamp);
         // Write the sample hashmap as a blob
