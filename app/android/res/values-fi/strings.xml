@@ -157,7 +157,7 @@
     
     <!-- error messages -->
     <string name="statserror">Is your Wifi or mobile data on? 
-        Please close Carat COMPLETELY (swipe from running apps), enable Internet, and re-open Carat. 
+        Enable Internet and try again! 
         Unable to read statistics from server.</string>
     
     <!-- Navigation Drawer -->
