@@ -7,6 +7,7 @@ import java.util.Properties;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -166,8 +167,16 @@ public class MainActivity extends ActionBarActivity {
 	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			selectItem(position);
+		public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+			// first close the drawer, then wait for the the fragment to be replaced completely, then show it 
+			// (removes the lag in closing the drawer)
+			mDrawerLayout.closeDrawer(mDrawerList);
+	        new Handler().postDelayed(new Runnable() {
+	            @Override
+	            public void run() {
+	            	selectItem(position);
+	            }
+	        }, 300);
 		}
 	}
 

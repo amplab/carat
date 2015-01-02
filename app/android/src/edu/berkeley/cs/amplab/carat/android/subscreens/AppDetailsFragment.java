@@ -20,7 +20,6 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
 public class AppDetailsFragment extends Fragment {
 
 	private SimpleHogBug fullObject;
-	private boolean isBugs = false;
 	private boolean isApp = false;
 	private boolean isOs = false;
 	private double ev, error, evWithout, errorWo;
@@ -47,7 +46,6 @@ public class AppDetailsFragment extends Fragment {
 			instance.isApp = true;
 			instance.isOs = false;
 			instance.setFullObject(fullObject);
-			instance.isBugs = isBugs;
 			break;
 		case OS:
 			instance.isApp = false;
