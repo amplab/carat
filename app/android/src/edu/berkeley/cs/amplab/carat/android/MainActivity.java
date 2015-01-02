@@ -63,16 +63,6 @@ public class MainActivity extends ActionBarActivity {
 
 	private Tracker tracker = null;
 
-	/* 
-	 * Values of the following variables are read (from a URL) in the
-	 * SplashScreen, and then passed to this activity.
-	 * These values (statistics) will be sent to the summary
-	 * fragment, to be shown in the chart.
-	 */
-	private int totalWellbehavedAppsCount,
-				totalHogsCount,
-				totalBugsCount;
-	
 	private Fragment mSummaryFragment;
 	private Bundle mArgs;
 	private String mSummaryFragmentLabel;
@@ -98,26 +88,14 @@ public class MainActivity extends ActionBarActivity {
 	private Fragment mAboutFragment;
 	private String mAboutFragmentLabel;
 
-	/**
-	 * 
-	 * @param savedInstanceState
-	 */
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		CaratApplication.setMain(this);
 		tracker = Tracker.getInstance();
-
-		/*
-		 * Reading the parameters passed to the current activity from the
-		 * SplashScreen. These values have been read from the Carat stats URL
-		 * behind the scene in the SplashScreen.
-		 */
-		Intent intent = getIntent();
-		totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
-		totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
-		totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));		
+		// track user clicks (taps)
+		tracker.trackUser("caratstarted");
 
 		/*
 		 * Activity.getWindow.requestFeature() should get invoked only before
@@ -134,43 +112,7 @@ public class MainActivity extends ActionBarActivity {
 		// read and load the preferences specified in our xml preference file
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		
-		// TODO: to be refactored (extract method), if we decide to keep pre-initialization of fragments
-		// (doesn't make much difference in terms of smoothness/performance, but keeping all fragments in memory,
-		// increases RAM usage of Carat)
-		mSummaryFragment = new SummaryFragment();
-		mArgs = new Bundle();
-		mArgs.putInt("wellbehaved", totalWellbehavedAppsCount);
-		mArgs.putInt("hogs", totalHogsCount);
-		mArgs.putInt("bugs", totalBugsCount);
-		mSummaryFragment.setArguments(mArgs);
-		mSummaryFragmentLabel = getString(R.string.tab_summary);
-		
-		mSuggestionFragment = new SuggestionsFragment();
-		mSuggestionFragmentLabel = getString(R.string.tab_actions);
-		
-		mMyDeviceFragment = new MyDeviceFragment();
-		mMyDeviceFragmentLabel = getString(R.string.tab_my_device);
-		
-		mBugsFragment = new BugsOrHogsFragment();
-		mArgs = new Bundle();
-		mArgs.putBoolean("isBugs", true);
-		mBugsFragment.setArguments(mArgs);
-		mBugsFragmentLabel = getString(R.string.tab_bugs);
-		
-		mHogsFragment = new BugsOrHogsFragment();
-		mArgs = new Bundle();
-		mArgs.putBoolean("isBugs", false);
-		mHogsFragment.setArguments(mArgs);
-		mHogsFragmentLabel = getString(R.string.tab_hogs);
-		
-		mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
-		mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
-		
-		mCaratSettingsFragment = new CaratSettingsFragment();
-		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
-		
-		mAboutFragment = new AboutFragment();
-		mAboutFragmentLabel = getString(R.string.tab_about);
+		preInittializeFragments();
 
 		/*
 		 * Before using the field "fullVersion", first invoke setTitleNormal()
@@ -189,20 +131,21 @@ public class MainActivity extends ActionBarActivity {
 
 		// ActionBarDrawerToggle ties together the the proper interactions
 		// between the sliding drawer and the action bar app icon
-		mDrawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		mDrawerLayout, /* DrawerLayout object */
-		R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
-		R.string.drawer_open, /* "open drawer" description for accessibility */
-		R.string.drawer_close /* "close drawer" description for accessibility */
-		) {
-			public void onDrawerClosed(View view) {
-				getSupportActionBar().setTitle(mTitle);
-			}
+		mDrawerToggle = new ActionBarDrawerToggle(
+				this, /* host Activity */
+				mDrawerLayout, /* DrawerLayout object */
+				R.drawable.ic_drawer, /* nav drawer image to replace 'Up' caret */
+				R.string.drawer_open, /* "open drawer" description for accessibility */
+				R.string.drawer_close /* "close drawer" description for accessibility */
+				) {
+					public void onDrawerClosed(View view) {
+						getSupportActionBar().setTitle(mTitle);
+					}
 
-			public void onDrawerOpened(View drawerView) {
-				getSupportActionBar().setTitle(mDrawerTitle);
-			}
-		};
+					public void onDrawerOpened(View drawerView) {
+						getSupportActionBar().setTitle(mDrawerTitle);
+					}
+				};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
 		// Enable ActionBar app icon to behave as action to toggle navigation drawer
@@ -215,9 +158,6 @@ public class MainActivity extends ActionBarActivity {
 
 		setTitleNormal();
 
-		// track user clicks (taps)
-		tracker.trackUser("caratstarted");
-
 		// Uncomment the following to enable listening on local port 8080:
 		/*
 		 * try {
@@ -228,6 +168,8 @@ public class MainActivity extends ActionBarActivity {
 		 */
 	}
 
+	
+	
 	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
@@ -246,71 +188,40 @@ public class MainActivity extends ActionBarActivity {
 	            public void run() {
 	            	selectItem(position);
 	            }
-	        }, 300);
+	        }, 300); // wait 300ms before calling selectItem()
 		}
 	}
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-//		Fragment fragment = null;
-//		String fragmentLabel = null;
-//		Bundle args = new Bundle();
-		
-		// TODO: remove commented out code (if we decide to keep pre-initialization of fragments)
 		switch (position) {
 		case 0:
 			replaceFragment(mSummaryFragment, mSummaryFragmentLabel);
-//			fragment = new SummaryFragment();
-//			args.putInt("wellbehaved", totalWellbehavedAppsCount);
-//			args.putInt("hogs", totalHogsCount);
-//			args.putInt("bugs", totalBugsCount);
-//			fragment.setArguments(args);			
-//			fragmentLabel = getString(R.string.tab_summary);
 			break;
 		case 1:
 			replaceFragment(mSuggestionFragment, mSuggestionFragmentLabel);
-//			fragment = new SuggestionsFragment();
-//			fragmentLabel = getString(R.string.tab_actions);
 			break;
 		case 2:
 			replaceFragment(mMyDeviceFragment, mMyDeviceFragmentLabel);
-//			fragment = new MyDeviceFragment();
-//			fragmentLabel = getString(R.string.tab_my_device);
 			break;
 		case 3:
 			replaceFragment(mBugsFragment, mBugsFragmentLabel);
-//			args.putBoolean("isBugs", true);
-//			fragment = new BugsOrHogsFragment();
-//			fragment.setArguments(args);
-//			fragmentLabel = getString(R.string.tab_bugs);
 			break;
 		case 4:
 			replaceFragment(mHogsFragment, mHogsFragmentLabel);
-//			args.putBoolean("isBugs", false);
-//			fragment = new BugsOrHogsFragment();
-//			fragment.setArguments(args);
-//			fragmentLabel = getString(R.string.tab_hogs);
 			break;
 		case 5:
 			replaceFragment(mSettingsSuggestionFragment, mSettingsSuggestionFragmentLabel);
-//			fragment = new SettingsSuggestionsFragment();
-//			fragmentLabel = getString(R.string.tab_settings);
 			break;
 		case 6:
 			replaceFragment(mCaratSettingsFragment, mCaratSettingsFragmentLabel);
-//			fragment = new CaratSettingsFragment();
-//			fragmentLabel = getString(R.string.tab_carat_settings);
 			break;
 		case 7:
 			replaceFragment(mAboutFragment, mAboutFragmentLabel);
-//			fragment = new AboutFragment();
-//			fragmentLabel = getString(R.string.tab_about);
 			break;
 		}
 
-//		replaceFragment(mFragment, mFragmentLabel);
-
-		// update selected item and title, then close the drawer
+		// update selected item and title
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mDrawerItems[position]);
 	}
@@ -374,18 +285,14 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void setTitleUpdating(String what) {
-		this.setTitle(fullVersion + " - " + getString(R.string.updating) + " " + what);
+		this.setTitle(getString(R.string.updating) + " " + what);
+//		this.setTitle(fullVersion + " - " + getString(R.string.updating) + " " + what);
 	}
 
 	public void setTitleUpdatingFailed(String what) {
-		this.setTitle(fullVersion + " - " + getString(R.string.didntget) + " " + what);
+		this.setTitle(getString(R.string.didntget) + " " + what);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onStart()
-	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -408,16 +315,12 @@ public class MainActivity extends ActionBarActivity {
 			FlurryAgent.onStartSession(getApplicationContext(), secretKey);
 		}
 		
-		// if we need to do something when our default shared preferences change, we can do it in this listener
-		// when you uncomment this, remember to uncomment the unregistering code in the onStop() listener of this activity
+		/* To perform an action when our defaultSharedPreferences changes, we can do it in this listener
+		 * when you uncomment this, remember to uncomment the unregistering code in the onStop() method of this activity (right below)
+		 */
 		// PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.ActivityGroup#onStop()
-	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
@@ -425,41 +328,29 @@ public class MainActivity extends ActionBarActivity {
 		// PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 	}
 
-	/**
-	 * 
-	 * Starts a Thread that communicates with the server to send stored samples.
-	 * 
-	 * @see android.app.Activity#onResume()
-	 */
 	@Override
 	protected void onResume() {
-		Log.i(TAG, "Resumed");		
+		Log.i(TAG, "Resumed. Refreshing UI");
+		tracker.trackUser("caratresumed");
 
 		/*
 		 * Thread for refreshing the UI with new reports every 5 mins and on
 		 * resume. Also sends samples and updates blacklist/questionnaire url.
 		 */
-
-		Log.i(TAG, "Refreshing UI");
 		// This spawns a thread, so it does not need to be in a thread.
 		/*
 		 * new Thread() { public void run() {
 		 */
+		
 		((CaratApplication) getApplication()).refreshUi();
+		
 		/*
 		 * } }.start();
 		 */
 
 		super.onResume();
-		tracker.trackUser("caratresumed");
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.ActivityGroup#onPause()
-	 */
 	@Override
 	protected void onPause() {
 		Log.i(TAG, "Paused");
@@ -468,11 +359,6 @@ public class MainActivity extends ActionBarActivity {
 		super.onPause();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#finish()
-	 */
 	@Override
 	public void finish() {
 		Log.d(TAG, "Finishing up");
@@ -480,6 +366,78 @@ public class MainActivity extends ActionBarActivity {
 		super.finish();
 	}
 
+	/**
+	 * must be called in onCreate() method of the activity, before calling selectItem() method
+	 * [before attaching the navigation drawer listener]
+	 * pre-initialize all fragments before committing a replace fragment transaction
+	 * may help for better smoothness when user selects a navigation drawer item
+	 */
+	private void preInittializeFragments() {
+		initSummaryFragment();
+		initSuggestionsFragment();
+		initMyDeviceFragment();
+		initBugsOrHogsFragment(true);
+		initBugsOrHogsFragment(false);
+		initSettingsSuggestionFragment();
+		initCaratSettingsFragment();
+		initAboutFragment();
+	}
+
+	private void initSummaryFragment() {
+		mSummaryFragment = new SummaryFragment();
+		mArgs = new Bundle();
+		
+		/*
+		 * Reading the arguments passed to the current activity from the in the SplashScreen
+		 * These values have been fetched from the Carat statistics URL in the SplashScreen.
+		 * These values should be read in onCreate() of the main activity
+		 */
+		Intent intent = getIntent();
+		int totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
+		int totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
+		int totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
+		
+		mArgs.putInt("wellbehaved", totalWellbehavedAppsCount);
+		mArgs.putInt("hogs", totalHogsCount);
+		mArgs.putInt("bugs", totalBugsCount);
+		mSummaryFragment.setArguments(mArgs);
+		mSummaryFragmentLabel = getString(R.string.tab_summary);
+	}
+	
+	private void initSuggestionsFragment() {
+		mSuggestionFragment = new SuggestionsFragment();
+		mSuggestionFragmentLabel = getString(R.string.tab_actions);
+	}
+	
+	private void initAboutFragment() {
+		mAboutFragment = new AboutFragment();
+		mAboutFragmentLabel = getString(R.string.tab_about);
+	}
+
+	private void initMyDeviceFragment() {
+		mMyDeviceFragment = new MyDeviceFragment();
+		mMyDeviceFragmentLabel = getString(R.string.tab_my_device);
+	}
+	
+	private void initBugsOrHogsFragment(boolean bugsFragment) {
+		mBugsFragment = new BugsOrHogsFragment();
+		mArgs = new Bundle();
+		mArgs.putBoolean("isBugs", bugsFragment);
+		mBugsFragment.setArguments(mArgs);
+		mBugsFragmentLabel = getString(R.string.tab_bugs);
+		mHogsFragmentLabel = getString(R.string.tab_hogs);
+	}
+	
+	private void initSettingsSuggestionFragment() {
+		mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
+		mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
+	}
+	
+	private void initCaratSettingsFragment() {
+		mCaratSettingsFragment = new CaratSettingsFragment();
+		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
+	}
+	
 	/*
 	 * shows the fragment using a fragment transaction (replaces the FrameLayout
 	 * (a placeholder in the main activity's layout file) with the passed-in fragment)
@@ -496,6 +454,10 @@ public class MainActivity extends ActionBarActivity {
 		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
 	}
 
+	/**
+	 * used by other classes
+	 * @param fileName
+	 */
 	public void showHTMLFile(String fileName) {
 		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
 		replaceFragment(fragment, fileName);
@@ -506,10 +468,10 @@ public class MainActivity extends ActionBarActivity {
 	 * Can be used to do an immediate action whenever one of our items in that hashtable (defualtSharedPreferences) changes.
 	 * Should be registered (in our main activity's onStart()) and unregistered (in onStop())  
 	 */
-//	private OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
-//        @Override
-//        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-//            Toast.makeText(CaratApplication.getMainActivity(), String.valueOf(sharedPreferences.getBoolean(key, false)), Toast.LENGTH_SHORT).show();
-//        }
-//    };
+	// private OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
+    //      @Override
+    //      public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+    //          Toast.makeText(CaratApplication.getMainActivity(), String.valueOf(sharedPreferences.getBoolean(key, false)), Toast.LENGTH_SHORT).show();
+    //      }
+    //  };
 }
