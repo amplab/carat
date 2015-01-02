@@ -28,6 +28,7 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
     private static final long serialVersionUID = -6034269327947014085L; 
     private static final String TAG = "SettingsSuggestions";
     private View rootView;
+    private final MainActivity mMainActivity = CaratApplication.getMainActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 				Log.v(TAG, "Showing view for " + actionName);
 				
 				if (actionName.equals("OsUpgrade"))
-					CaratApplication.showHTMLFile("upgradeos");
+					mMainActivity.showHTMLFile("upgradeos");
 				else if (actionName.equals(getString(R.string.dimscreen)))
 					GoToDisplayScreen();
 				else if (actionName.equals(getString(R.string.disablewifi)))
@@ -70,7 +71,7 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 				else if (actionName.equals(getString(R.string.disableautomaticsync)))
 					GoToSyncScreen();
 				else if (actionName.equals(getString(R.string.helpcarat)))
-					CaratApplication.showHTMLFile("collectdata");
+					mMainActivity.showHTMLFile("collectdata");
 				else if (actionName.equals(getString(R.string.questionnaire)))
 					openQuestionnaire();
 			}

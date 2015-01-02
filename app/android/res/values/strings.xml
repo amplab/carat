@@ -86,8 +86,6 @@ delete these from your file.
     <string name="tab_summary">Summary</string>
     <string name="tab_carat_settings">Carat Settings</string>
     
-    <string name="tab_app_recommendation">Recommendation</string>
-
     <!-- Navigation drawer items (tabs) -->
     <string-array name="drawer_items">
         <item>Summary</item>

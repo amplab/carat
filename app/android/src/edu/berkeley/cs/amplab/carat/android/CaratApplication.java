@@ -11,9 +11,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.util.SparseArray;
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
@@ -21,7 +18,6 @@ import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratDataStorage;
-import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
 /**
@@ -124,7 +120,7 @@ public class CaratApplication extends Application {
 
 	// Activity pointers so that all activity UIs can be updated with a callback
 	// to CaratApplication
-	private static MainActivity main = null;
+	static MainActivity main = null;
 	private static BugsOrHogsFragment bugsActivity = null;
 	private static BugsOrHogsFragment hogsActivity = null;
 	private static SuggestionsFragment actionList = null;
@@ -135,6 +131,8 @@ public class CaratApplication extends Application {
 
 	// Application overrides
 	
+	
+
 	@Override
 	public void onLowMemory() {
 		super.onLowMemory();
@@ -409,27 +407,6 @@ public class CaratApplication extends Application {
 
 	public static void setActionList(SuggestionsFragment suggestionsFragment) {
 		actionList = suggestionsFragment;
-	}
-
-	/*
-	 * shows the fragment using a fragment transaction (replaces the FrameLayout
-	 * (a placeholder in the main activity's layout file) with this fragment)
-	 * 
-	 * @param fragment the fragment that should be shown
-	 * 
-	 * @param fragmentNameInBackStack a name for the fragment to be shown in the
-	 * fragment (task) stack
-	 */
-	public static void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
-		// replace the fragment, using a fragment transaction
-		FragmentManager fragmentManager = main.getSupportFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
-	}
-
-	public static void showHTMLFile(String fileName) {
-		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
-		CaratApplication.replaceFragment(fragment, fileName);
 	}
 
 	public static String getRegisteredUuid() {

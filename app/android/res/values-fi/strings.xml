@@ -167,8 +167,6 @@
     <!-- Name of the app, in the splash screen -->
     <string name="title_activity_splash_screen">Carat</string>
 
-    <string name="app_recommendation">App Recommendation</string>
-    
     <!-- TODO: these need translation -->
     <!-- Carat settings screen -->
     <!-- switch backport strings -->

@@ -37,16 +37,6 @@ public class BugsOrHogsFragment extends Fragment {
 	private View bv = null;
 	private int emptyBugsIndex = -1;
 
-	int viewIndex = 0;
-	int baseViewIndex = 0;
-	ViewFlipper vf = null;
-
-	private void switchView(View v) {
-	}
-
-	private void switchView(int id) {
-	}
-
 	/**
 	 * When creating Hogs or Bugs, set which one this is here:
 	 */
@@ -76,20 +66,11 @@ public class BugsOrHogsFragment extends Fragment {
 		// String isBugsStr = isBugs? "IS_BUGS=true" : "IS_BUGS=false";
 		// Log.d("BugsOrHogs", isBugsStr);
 
-		vf = new ViewFlipper(getActivity());
 		View root = inflater.inflate(R.layout.hogs, container, false);
 		tv = inflater.inflate(R.layout.emptyactions, null);
-		if (tv != null) {
-			vf.addView(tv);
-			emptyIndex = vf.indexOfChild(tv);
-		}
 
 		if (isBugs) {
 			bv = inflater.inflate(R.layout.emptybugsonly, null);
-			if (bv != null) {
-				vf.addView(bv);
-				emptyBugsIndex = vf.indexOfChild(bv);
-			}
 		}
 
 		// initBugsView();
@@ -118,10 +99,7 @@ public class BugsOrHogsFragment extends Fragment {
 				// w.postInvalidate();
 			}
 		}
-		if (viewIndex == 0)
-			vf.setDisplayedChild(baseViewIndex);
-		else
-			vf.setDisplayedChild(viewIndex);
+
 		return root;
 	}
 
@@ -135,8 +113,6 @@ public class BugsOrHogsFragment extends Fragment {
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		detailPage = inflater.inflate(R.layout.graph, null);
 		w = new DrawView(getActivity());
-		// g.addView(w);
-		vf.addView(detailPage);
 
 		OnClickListener detailViewer = new OnClickListener() {
 			@Override
@@ -152,7 +128,6 @@ public class BugsOrHogsFragment extends Fragment {
 							.replace('\u00B1', '+'));
 					ClickTracking.track(uuId, "whatnumbers", options, getActivity());
 				}
-				switchView(R.id.detailView);
 			}
 		};
 
@@ -186,7 +161,7 @@ public class BugsOrHogsFragment extends Fragment {
 				// View target = findViewById(R.id.hogsGraphView);
 
 				AppDetailsFragment fragment = AppDetailsFragment.getInstance(Type.BUG, fullObject, isBugs);
-				CaratApplication.replaceFragment(fragment, "AppDetailsFragment");
+				CaratApplication.getMainActivity().replaceFragment(fragment, "AppDetailsFragment");
 			}
 		});
 	}
@@ -217,22 +192,6 @@ public class BugsOrHogsFragment extends Fragment {
 			lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.storage.getBugReport()));
 		else
 			lv.setAdapter(new HogsBugsAdapter(app, CaratApplication.storage.getHogReport()));
-		emptyCheck(lv);
-	}
-
-	private void emptyCheck(ListView lv) {
-		if (lv.getAdapter().isEmpty() && isBugs && CaratApplication.storage.getHogReport() != null
-				&& CaratApplication.storage.getHogReport().length > 0) {
-			if (vf.getDisplayedChild() == baseViewIndex || vf.getDisplayedChild() == emptyIndex)
-				vf.setDisplayedChild(emptyBugsIndex);
-		} else if (lv.getAdapter().isEmpty()) {
-			if (vf.getDisplayedChild() == baseViewIndex)
-				vf.setDisplayedChild(emptyIndex);
-		} else {
-			if (vf.getDisplayedChild() == emptyIndex) {
-				vf.setDisplayedChild(baseViewIndex);
-			}
-		}
 	}
 
 	/**

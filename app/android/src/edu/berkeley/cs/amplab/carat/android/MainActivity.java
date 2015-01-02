@@ -9,9 +9,13 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+//import edu.berkeley.cs.amplab.carat.android.utils.ActionBarDrawerToggle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+//import edu.berkeley.cs.amplab.carat.android.utils.DrawerLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -27,6 +31,7 @@ import com.flurry.android.FlurryAgent;
 
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.subscreens.CaratSettingsFragment;
+import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
 /**
@@ -69,6 +74,34 @@ public class MainActivity extends ActionBarActivity {
 	private int totalWellbehavedAppsCount,
 				totalHogsCount,
 				totalBugsCount;
+	
+//	private Fragment mFragment = null;
+//	private String mFragmentLabel = null;
+	
+	private Fragment mSummaryFragment;
+	private Bundle mArgs;
+	private String mSummaryFragmentLabel;
+	
+	private Fragment mSuggestionFragment;
+	private String mSuggestionFragmentLabel;
+	
+	private Fragment mMyDeviceFragment;
+	private String mMyDeviceFragmentLabel;
+	
+	private Fragment mBugsFragment;
+	private String mBugsFragmentLabel;
+	
+	private Fragment mHogsFragment;
+	private String mHogsFragmentLabel;
+	
+	private Fragment mSettingsSuggestionFragment;
+	private String mSettingsSuggestionFragmentLabel;
+	
+	private Fragment mCaratSettingsFragment;
+	private String mCaratSettingsFragmentLabel;
+	
+	private Fragment mAboutFragment;
+	private String mAboutFragmentLabel;
 
 	/**
 	 * 
@@ -78,6 +111,8 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		CaratApplication.setMain(this);
+		tracker = Tracker.getInstance();
 
 		/*
 		 * Reading the parameters passed to the current activity from the
@@ -85,14 +120,9 @@ public class MainActivity extends ActionBarActivity {
 		 * behind the scene in the SplashScreen.
 		 */
 		Intent intent = getIntent();
-
 		totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
 		totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
-		totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
-
-		CaratApplication.setMain(this);
-		
-		tracker = Tracker.getInstance();
+		totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));		
 
 		/*
 		 * Activity.getWindow.requestFeature() should get invoked only before
@@ -104,11 +134,48 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
-
 		setTitleNormal();
 		
 		// read and load the preferences specified in our xml preference file
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+		
+		// TODO: to be refactored (extract method), if we decide to keep pre-initialization of fragments
+		// (doesn't make much difference in terms of smoothness/performance, but keeping all fragments in memory,
+		// increases RAM usage of Carat)
+		mSummaryFragment = new SummaryFragment();
+		mArgs = new Bundle();
+		mArgs.putInt("wellbehaved", totalWellbehavedAppsCount);
+		mArgs.putInt("hogs", totalHogsCount);
+		mArgs.putInt("bugs", totalBugsCount);
+		mSummaryFragment.setArguments(mArgs);
+		mSummaryFragmentLabel = getString(R.string.tab_summary);
+		
+		mSuggestionFragment = new SuggestionsFragment();
+		mSuggestionFragmentLabel = getString(R.string.tab_actions);
+		
+		mMyDeviceFragment = new MyDeviceFragment();
+		mMyDeviceFragmentLabel = getString(R.string.tab_my_device);
+		
+		mBugsFragment = new BugsOrHogsFragment();
+		mArgs = new Bundle();
+		mArgs.putBoolean("isBugs", true);
+		mBugsFragment.setArguments(mArgs);
+		mBugsFragmentLabel = getString(R.string.tab_bugs);
+		
+		mHogsFragment = new BugsOrHogsFragment();
+		mArgs = new Bundle();
+		mArgs.putBoolean("isBugs", false);
+		mHogsFragment.setArguments(mArgs);
+		mHogsFragmentLabel = getString(R.string.tab_hogs);
+		
+		mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
+		mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
+		
+		mCaratSettingsFragment = new CaratSettingsFragment();
+		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
+		
+		mAboutFragment = new AboutFragment();
+		mAboutFragmentLabel = getString(R.string.tab_about);
 
 		/*
 		 * Before using the field "fullVersion", first invoke setTitleNormal()
@@ -143,8 +210,7 @@ public class MainActivity extends ActionBarActivity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		// Enable ActionBar app icon to behave as action to toggle navigation
-		// drawer
+		// Enable ActionBar app icon to behave as action to toggle navigation drawer
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
 
@@ -159,8 +225,11 @@ public class MainActivity extends ActionBarActivity {
 
 		// Uncomment the following to enable listening on local port 8080:
 		/*
-		 * try { HelloServer h = new HelloServer(); } catch (IOException e) { //
-		 * TODO Auto-generated catch block e.printStackTrace(); }
+		 * try {
+		 *  HelloServer h = new HelloServer();
+		 * } catch (IOException e) {
+		 *  e.printStackTrace(); 
+		 * }
 		 */
 	}
 
@@ -168,8 +237,14 @@ public class MainActivity extends ActionBarActivity {
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-			// first close the drawer, then wait for the the fragment to be replaced completely, then show it 
-			// (removes the lag in closing the drawer)
+			// To remove the lag in closing the drawer, don't do a fragment transaction
+			// while the drawer is getting closed. 
+			// First close the drawer (takes about 300ms (transition/animation time)),  
+			// wait for it to get closed completely, then start replacing the fragment .
+			
+			// How to modify the navigation drawer closing transition time: 
+			// http://stackoverflow.com/questions/19460683/speed-up-navigation-drawer-animation-speed-on-closing
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 	        new Handler().postDelayed(new Runnable() {
 	            @Override
@@ -182,59 +257,67 @@ public class MainActivity extends ActionBarActivity {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-		Fragment fragment = null;
-		Bundle args = new Bundle();
-		String fragmentLabel = "";
-
+//		Fragment fragment = null;
+//		String fragmentLabel = null;
+//		Bundle args = new Bundle();
+		
+		// TODO: remove commented out code (if we decide to keep pre-initialization of fragments)
 		switch (position) {
 		case 0:
-			fragment = new SummaryFragment();
-			args.putInt("wellbehaved", totalWellbehavedAppsCount);
-			args.putInt("hogs", totalHogsCount);
-			args.putInt("bugs", totalBugsCount);
-			fragment.setArguments(args);
-			fragmentLabel = getString(R.string.tab_summary);
+			replaceFragment(mSummaryFragment, mSummaryFragmentLabel);
+//			fragment = new SummaryFragment();
+//			args.putInt("wellbehaved", totalWellbehavedAppsCount);
+//			args.putInt("hogs", totalHogsCount);
+//			args.putInt("bugs", totalBugsCount);
+//			fragment.setArguments(args);			
+//			fragmentLabel = getString(R.string.tab_summary);
 			break;
 		case 1:
-			fragment = new SuggestionsFragment();
-			fragmentLabel = getString(R.string.tab_actions);
+			replaceFragment(mSuggestionFragment, mSuggestionFragmentLabel);
+//			fragment = new SuggestionsFragment();
+//			fragmentLabel = getString(R.string.tab_actions);
 			break;
 		case 2:
-			fragment = new MyDeviceFragment();
-			fragmentLabel = getString(R.string.tab_my_device);
+			replaceFragment(mMyDeviceFragment, mMyDeviceFragmentLabel);
+//			fragment = new MyDeviceFragment();
+//			fragmentLabel = getString(R.string.tab_my_device);
 			break;
 		case 3:
-			args.putBoolean("isBugs", true);
-			fragment = new BugsOrHogsFragment();
-			fragment.setArguments(args);
-			fragmentLabel = getString(R.string.tab_bugs);
+			replaceFragment(mBugsFragment, mBugsFragmentLabel);
+//			args.putBoolean("isBugs", true);
+//			fragment = new BugsOrHogsFragment();
+//			fragment.setArguments(args);
+//			fragmentLabel = getString(R.string.tab_bugs);
 			break;
 		case 4:
-			args.putBoolean("isBugs", false);
-			fragment = new BugsOrHogsFragment();
-			fragment.setArguments(args);
-			fragmentLabel = getString(R.string.tab_hogs);
+			replaceFragment(mHogsFragment, mHogsFragmentLabel);
+//			args.putBoolean("isBugs", false);
+//			fragment = new BugsOrHogsFragment();
+//			fragment.setArguments(args);
+//			fragmentLabel = getString(R.string.tab_hogs);
 			break;
 		case 5:
-			fragment = new SettingsSuggestionsFragment();
-			fragmentLabel = getString(R.string.tab_settings);
+			replaceFragment(mSettingsSuggestionFragment, mSettingsSuggestionFragmentLabel);
+//			fragment = new SettingsSuggestionsFragment();
+//			fragmentLabel = getString(R.string.tab_settings);
 			break;
 		case 6:
-			fragment = new CaratSettingsFragment();
-			fragmentLabel = getString(R.string.tab_carat_settings);
+			replaceFragment(mCaratSettingsFragment, mCaratSettingsFragmentLabel);
+//			fragment = new CaratSettingsFragment();
+//			fragmentLabel = getString(R.string.tab_carat_settings);
 			break;
 		case 7:
-			fragment = new AboutFragment();
-			fragmentLabel = getString(R.string.tab_about);
+			replaceFragment(mAboutFragment, mAboutFragmentLabel);
+//			fragment = new AboutFragment();
+//			fragmentLabel = getString(R.string.tab_about);
 			break;
 		}
 
-		CaratApplication.replaceFragment(fragment, fragmentLabel);
+//		replaceFragment(mFragment, mFragmentLabel);
 
 		// update selected item and title, then close the drawer
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mDrawerItems[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
 	@Override
@@ -355,8 +438,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	@Override
 	protected void onResume() {
-		Log.i(TAG, "Resumed");
-		CaratApplication.setMain(this);
+		Log.i(TAG, "Resumed");		
 
 		/*
 		 * Thread for refreshing the UI with new reports every 5 mins and on
@@ -404,28 +486,25 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	/*
-	 * (non-Javadoc)
+	 * shows the fragment using a fragment transaction (replaces the FrameLayout
+	 * (a placeholder in the main activity's layout file) with the passed-in fragment)
 	 * 
-	 * @see android.app.ActivityGroup#onDestroy()
+	 * @param fragment the fragment that should be shown
+	 * 
+	 * @param fragmentNameInBackStack a name for the fragment to be shown in the
+	 * fragment (task) stack
 	 */
-	// @Override
-	// protected void onDestroy() {
-	// super.onDestroy();
-	// }
+	public void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
+		// replace the fragment, using a fragment transaction
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
+	}
 
-	/**
-	 * Show share, feedback, wifi only menu here.
-	 */
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-//
-//		final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-//		
-//		boolean wifi = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
-//		Log.i("wifi-preference", String.valueOf(wifi));
-//		
-//		return true;
-//	}
+	public void showHTMLFile(String fileName) {
+		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
+		replaceFragment(fragment, fileName);
+	}
 
 	/**
 	 * A listener that is triggered when a value changes in our defualtSharedPreferences.

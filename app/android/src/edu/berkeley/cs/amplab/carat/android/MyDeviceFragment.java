@@ -23,6 +23,7 @@ import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;
  */
 public class MyDeviceFragment extends Fragment {
 
+	private final MainActivity mMainActivity = CaratApplication.getMainActivity();
 	long[] lastPoint = null;  // related to the CPU usage bar
 	AppDetailsFragment detailsFragment;
 	private final String TAG = "mydeviceFragment"; // for logging (debugging)
@@ -97,7 +98,7 @@ public class MyDeviceFragment extends Fragment {
         	@Override
             public void onClick(View v) {
             	ProcessListFragment fragment = ProcessListFragment.getInstance(); 
-            	CaratApplication.replaceFragment(fragment, "ProcessList");
+            	CaratApplication.getMainActivity().replaceFragment(fragment, "ProcessList");
             }            
         });
 	}
@@ -152,19 +153,19 @@ public class MyDeviceFragment extends Fragment {
 		root.findViewById(R.id.memory_info).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("memoryinfo");
+				mMainActivity.showHTMLFile("memoryinfo");
 			}
 		});
         root.findViewById(R.id.memory_used_bar).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("memoryinfo");
+				mMainActivity.showHTMLFile("memoryinfo");
 			}
 		});
         root.findViewById(R.id.memory_active_bar).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("memoryinfo");
+				mMainActivity.showHTMLFile("memoryinfo");
 			}
 		});
 	}
@@ -177,19 +178,19 @@ public class MyDeviceFragment extends Fragment {
 		root.findViewById(R.id.battery_life_legend).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("batterylifeinfo");
+				mMainActivity.showHTMLFile("batterylifeinfo");
 			}
 		});
         root.findViewById(R.id.battery_life).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("batterylifeinfo");
+				mMainActivity.showHTMLFile("batterylifeinfo");
 			}
 		});
         root.findViewById(R.id.battery_life_info).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("batterylifeinfo");
+				mMainActivity.showHTMLFile("batterylifeinfo");
 			}
 		});
 	}
@@ -202,19 +203,19 @@ public class MyDeviceFragment extends Fragment {
 		root.findViewById(R.id.jscore_info).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("jscoreinfo");
+				mMainActivity.showHTMLFile("jscoreinfo");
 			}
 		});
         root.findViewById(R.id.jscore).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("jscoreinfo");
+				mMainActivity.showHTMLFile("jscoreinfo");
 			}
 		});
         root.findViewById(R.id.jscore_legend).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CaratApplication.showHTMLFile("jscoreinfo");
+				mMainActivity.showHTMLFile("jscoreinfo");
 			}
 		});
 	}
@@ -263,7 +264,7 @@ public class MyDeviceFragment extends Fragment {
      */
     public void showOsInfo() {
     	detailsFragment = AppDetailsFragment.getInstance(Type.OS, null, false); 
-    	CaratApplication.replaceFragment(detailsFragment, "OsDetails");
+    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "OsDetails");
     }
 
     /**
@@ -271,7 +272,7 @@ public class MyDeviceFragment extends Fragment {
      */
     public void showDeviceInfo() {
     	detailsFragment = AppDetailsFragment.getInstance(Type.MODEL, null, false); 
-    	CaratApplication.replaceFragment(detailsFragment, "DeviceDetails");
+    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "DeviceDetails");
     }
 
     /**

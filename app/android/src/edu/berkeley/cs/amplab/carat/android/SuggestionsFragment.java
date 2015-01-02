@@ -35,27 +35,14 @@ import edu.berkeley.cs.amplab.carat.android.subscreens.KillAppFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
 public class SuggestionsFragment extends Fragment implements Serializable{
-
-    int viewIndex = 0;
-    int baseViewIndex = 0;
-    ViewFlipper vf = null;
-    
-    /**
-     * 
-     */
     private static final long serialVersionUID = -6034269327947014085L;
+    final MainActivity mMainActivity = CaratApplication.getMainActivity();
     private static final String TAG = "CaratSuggestions";
-//    private View tv = null;
-    private View killView = null;
-    private int emptyIndex = -1;
     private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        vf = new ViewFlipper(getActivity());
         root = inflater.inflate(R.layout.suggestions, container, false);
-//        final Context c = getActivity();
-//        tv = inflater.inflate(R.layout.emptyactions, null);
         
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
@@ -63,19 +50,12 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-				// TODO: make sure each case below is working if it happens
-				// we don't use viewFlipper (vf) anymore
-				// so make sure to rewrite all methods which use vf.addView() to
-				// change view
-				// (change the view using a fragment transaction. For showing a
-				// URL use our
-				// CaratApplication.showHTMLFile("fileName"))
 				Object o = lv.getItemAtPosition(position);
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				final String raw = fullObject.getAppName();
 				Log.v(TAG, "Showing kill view for " + raw);
 				if (raw.equals("OsUpgrade"))
-					CaratApplication.showHTMLFile("upgradeos");
+					mMainActivity.showHTMLFile("upgradeos");
 				else if (raw.equals(getString(R.string.dimscreen)))
 					GoToDisplayScreen();
 				else if (raw.equals(getString(R.string.disablewifi)))
@@ -97,7 +77,7 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 				else if (raw.equals(getString(R.string.disableautomaticsync)))
 					GoToSyncScreen();
 				else if (raw.equals(getString(R.string.helpcarat))) {
-					CaratApplication.showHTMLFile("collectdata");
+					mMainActivity.showHTMLFile("collectdata");
 				} else if (raw.equals(getString(R.string.questionnaire))) {
 					openQuestionnaire();
 				} else {
@@ -135,7 +115,7 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 				Fragment fragment = new KillAppFragment();
 				fragment.setArguments(args);
 
-				CaratApplication.replaceFragment(fragment, "killApp");
+				CaratApplication.getMainActivity().replaceFragment(fragment, "killApp");
 
 				/*
 				 * if (raw.equals("Disable bluetooth")) { double benefitOther =
@@ -164,50 +144,10 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 //            }
 //        }
 //        }
-
-        // restored from a previous deletion, for debugging purpose
-        if (viewIndex == 0)
-        	vf.setDisplayedChild(baseViewIndex);
-        else
-        	vf.setDisplayedChild(viewIndex);
         
         return root;
     }
     
-    private void restoreKillView(View previous) {
-        initKillView();
-        ImageView icon = (ImageView) killView.findViewById(R.id.suggestion_app_icon);
-
-        icon.setImageDrawable(((ImageView) previous.findViewById(R.id.suggestion_app_icon)).getDrawable());
-        TextView txtName = (TextView) killView.findViewById(R.id.actionName);
-        txtName.setText(((TextView) previous.findViewById(R.id.actionName)).getText());
-        TextView txtType = (TextView) killView.findViewById(R.id.suggestion_type);
-        txtType.setText(((TextView) previous.findViewById(R.id.suggestion_type)).getText());
-        TextView txtBenefit = (TextView) killView.findViewById(R.id.expectedBenefit);
-        txtBenefit.setText(((TextView) previous.findViewById(R.id.expectedBenefit)).getText());
-        Button killButton = (Button) killView.findViewById(R.id.killButton);
-        killButton.setText(((Button) previous.findViewById(R.id.killButton)).getText());
-    }
-
-    private void initKillView() {
-        if (killView == null) {
-            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View killPage = inflater.inflate(R.layout.killlayout, null);
-            LocalizedWebView webview = (LocalizedWebView) killPage.findViewById(R.id.killView);
-            String osVer = SamplingLibrary.getOsVersion();
-            // FIXME: KLUDGE. Should be smarter with the version number.
-            if (osVer.startsWith("2."))
-                webview.loadUrl("file:///android_asset/killapp-2.2.html");
-            else
-                webview.loadUrl("file:///android_asset/killapp.html");
-            // FIXME: This does not work with the embedded WebView (randomly goes back); no idea why
-            /*killPage.setOnTouchListener(new FlipperBackListener(this, vf, baseViewIndex, true));
-            webview.setOnTouchListener(new FlipperBackListener(this, vf, vf.indexOfChild(findViewById(android.R.id.list)), false));*/
-            killView = killPage;
-            vf.addView(killView);
-        }
-    }
-
     private void initUpgradeOsView(View root) {
         LocalizedWebView webview = (LocalizedWebView) root.findViewById(R.id.upgradeOsView);
         webview.loadUrl("file:///android_asset/upgradeos.html");
@@ -311,20 +251,8 @@ public class SuggestionsFragment extends Fragment implements Serializable{
         CaratApplication caratAppllication = (CaratApplication) CaratApplication.getMainActivity().getApplication();
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setAdapter(new HogBugSuggestionsAdapter(caratAppllication, CaratApplication.storage.getHogReport(), CaratApplication.storage.getBugReport()));
-        emptyCheck(lv);
     }
 
-    private void emptyCheck(ListView lv) {
-        if (lv.getAdapter().isEmpty()) {
-            if (vf.getDisplayedChild() == baseViewIndex)
-                vf.setDisplayedChild(emptyIndex);
-        } else {
-            if (vf.getDisplayedChild() == emptyIndex) {
-                vf.setDisplayedChild(baseViewIndex);
-            }
-        }
-    }
-    
     @Override
     public void onSaveInstanceState(Bundle outState) {
 //        outState.putSerializable("savedInstance", this);

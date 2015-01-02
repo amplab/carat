@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -25,6 +26,7 @@ public class AppDetailsFragment extends Fragment {
 	private double ev, error, evWithout, errorWo;
 	private int samplesCount, samplesCountWithout;
 	private static AppDetailsFragment instance = null;
+	private final MainActivity mMainActivity = CaratApplication.getMainActivity();
 
 	/*
 	 * @Param type the type of the details we would like to display. Supported
@@ -130,13 +132,13 @@ public class AppDetailsFragment extends Fragment {
 		moreinfo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				CaratApplication.showHTMLFile("detailinfo");
+				mMainActivity.showHTMLFile("detailinfo");
 			}
 		});
 		benefit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				CaratApplication.showHTMLFile("detailinfo");
+				mMainActivity.showHTMLFile("detailinfo");
 			}
 		});
 	}
