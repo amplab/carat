@@ -9,13 +9,11 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-//import edu.berkeley.cs.amplab.carat.android.utils.ActionBarDrawerToggle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-//import edu.berkeley.cs.amplab.carat.android.utils.DrawerLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -74,9 +72,6 @@ public class MainActivity extends ActionBarActivity {
 	private int totalWellbehavedAppsCount,
 				totalHogsCount,
 				totalBugsCount;
-	
-//	private Fragment mFragment = null;
-//	private String mFragmentLabel = null;
 	
 	private Fragment mSummaryFragment;
 	private Bundle mArgs;
