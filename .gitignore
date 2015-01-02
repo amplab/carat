@@ -1,6 +1,6 @@
 # Flurry secret key file
 app/android/assets/flurry.properties
-# compiled files (of the Support library)
+# Support library binary (compiled) files
 support-appcompat/bin
 # Built application files
 *.apk
@@ -21,15 +21,5 @@ local.properties
 proguard/
 # Log Files
 *.log
-# Mac OS X .DS_store files (local configs for directory showing)
+# Mac OS X .DS_store files (local directory view mode files)
 .DS_Store
-app/.DS_Store
-app/android/.DS_Store
-app/android/src/.DS_Store
-app/android/src/edu/.DS_Store
-app/android/src/edu/berkeley/.DS_Store
-app/android/src/edu/berkeley/cs/.DS_Store
-app/android/src/edu/berkeley/cs/amplab/.DS_Store
-app/android/src/edu/berkeley/cs/amplab/carat/.DS_Store
-app/android/src/edu/berkeley/cs/amplab/carat/android/.DS_Store
-app/android/src/edu/berkeley/cs/amplab/carat/android/utils/.DS_Store
