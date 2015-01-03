@@ -12,7 +12,7 @@
 @class CoreDataSubReport;
 
 @interface CoreDataMainReport : NSManagedObject
-
+@property (nonatomic, retain) NSNumber * samplesSent;
 @property (nonatomic, retain) NSNumber * jScore;
 @property (nonatomic, retain) NSDate * lastUpdated;
 @property (nonatomic, retain) id changesSinceLastWeek;
