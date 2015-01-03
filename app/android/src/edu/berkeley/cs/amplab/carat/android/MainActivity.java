@@ -420,12 +420,17 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	private void initBugsOrHogsFragment(boolean bugsFragment) {
-		mBugsFragment = new BugsOrHogsFragment();
 		mArgs = new Bundle();
 		mArgs.putBoolean("isBugs", bugsFragment);
-		mBugsFragment.setArguments(mArgs);
-		mBugsFragmentLabel = getString(R.string.tab_bugs);
-		mHogsFragmentLabel = getString(R.string.tab_hogs);
+		if (bugsFragment) {
+			mBugsFragment = new BugsOrHogsFragment();
+			mBugsFragment.setArguments(mArgs);
+			mBugsFragmentLabel = getString(R.string.tab_bugs);
+		} else {
+			mHogsFragment = new BugsOrHogsFragment();
+			mHogsFragment.setArguments(mArgs);
+			mHogsFragmentLabel = getString(R.string.tab_hogs);
+		}
 	}
 	
 	private void initSettingsSuggestionFragment() {
