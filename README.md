@@ -24,5 +24,7 @@ If you use Eclipse, follow these stpes to import a library project:
 2. From the *Android* category, select *Existing Android Code Into Workspace* and click Next.
 3. Select the library project's directory, click OK, and then click finish to complete the import process. Now you should see the imported library project in your project navigatation pane, in the left side.
 
+Eclipse may complain about not being able to find the dependecies for Carat project, this is a bug in Eclipse (not fixed even in Eclipse Mars). The solution is to go to the project properties dialog of Carat project, go to the *Android* section, remove all of the library project dependencies, and re-add them.
+
 
 For more details, visit http://carat.cs.berkeley.edu/
