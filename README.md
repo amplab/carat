@@ -1,6 +1,9 @@
 #### For building the Android app, (in adition to the main project) import the following library projects into your IDE:
 
-1. **Support library**: official library by Google for providing new Android features (such as action bar, navigation drawer, etc) to older APIs (API > 7)
+1. **Support library**: official library by Google for providing new Android features (such as action bar, navigation drawer, etc) to older APIs (API > 7).
+
+> The Android Support Library package is a set of code libraries that provide backward-compatible versions of Android framework APIs as well as features that are only available through the library APIs.
+
   * Directory path: app/support-appcompat
  
 
@@ -8,7 +11,7 @@
   * Directory path: app/libs/HoloGraphLibrary
 
  
-3. **FragmentPreference**: a backport of FragmentPreference class. Provides the fragment preference for Android < 3.0 (A FragmentPreference is the recommended way for implementing a fragment for adjusting settings or user preferences. See the comments in CaratSettingsFragment.java)
+3. **Android-Support-PreferenceFragment**: a backport of the PreferenceFragment class. Provides the preference fragment feature for API < 11 (Android < 3.0). A FragmentPreference is the recommended way for implementing a fragment for adjusting settings or user preferences. See the comments in CaratSettingsFragment.java.
   * Directory path: app/libs/android-support-v4-preferencefragment
 
  
