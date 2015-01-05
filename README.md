@@ -1,10 +1,10 @@
 #### For building the Android app, (in adition to the main project) import the following library projects into your IDE:
 
 * **Support library**: official library by Google for providing new Android features (such as action bar, navigation drawer, etc) to older APIs (API > 7).
-  * Directory path: app/support-appcompat
 
-> The Android Support Library package is a set of code libraries that provide backward-compatible versions of Android framework APIs as well as features that are only available through the library APIs.
+    > The Android Support Library package is a set of code libraries that provide backward-compatible versions of Android framework APIs as well as features that are only available through the library APIs.
  
+   * Directory path: app/support-appcompat
 
 * **Holograph**: a seamless native library for creating charts and graphs
   * Directory path: app/libs/HoloGraphLibrary
