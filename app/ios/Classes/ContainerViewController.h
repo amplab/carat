@@ -12,4 +12,6 @@
 
 @property (nonatomic, retain) IBOutlet UIView* topBar;
 @property (nonatomic, retain) IBOutlet UILabel* samplesSentLabel;
+@property (nonatomic, retain) IBOutlet UILabel* pageTitle;
+@property (nonatomic, retain) IBOutlet UILabel* updatedXAgo;
 @end

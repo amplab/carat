@@ -74,6 +74,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+
+
 	// Do any additional setup after loading the view, typically from a nib.
     [self setReport:[[CoreDataManager instance] getHogs:NO withoutHidden:YES]];
     
@@ -93,7 +96,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     //[self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
@@ -106,6 +109,13 @@
     
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     [self.dataTable reloadData];
+
+	NSDictionary* userInfo = @{kPageTitle:self.tableTitle};
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:kPageTitleUpdateNotification object:self userInfo:userInfo];
+
+	NSDictionary *updatedXinfo = @{kUpdatedXAgo:[self getUpdateTimeStamp]};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdatedXAgoUpdateNotification object:self userInfo:updatedXinfo];
 }
 
 @end
