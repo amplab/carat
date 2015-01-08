@@ -19,14 +19,7 @@
 #import "BugReportViewController.h"
 #import "ConsentViewController.h"
 #import "AboutViewController.h"
-#import "ContainerViewController.h"
 #import <Socialize/Socialize.h>
-
-@interface CaratAppDelegate()
-
-@property (nonatomic, retain) ContainerViewController* containerView;
-
-@end
 
 @implementation CaratAppDelegate
 
@@ -127,10 +120,10 @@ void onUncaughtException(NSException *exception)
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
    self.tabBarController.tabBar.translucent = NO;
     self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
-	self.containerView = [[[ContainerViewController alloc] initWithNibName: @"ContainerViewController" bundle: nil] autorelease];
 
-	[self addContainerChildViewController: self.tabBarController toContainerView: self.containerView.view];
-    self.window.rootViewController = self.containerView;
+
+
+    self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     DLog(@"Set root view controller; is nil? %@",
          self.tabBarController==nil ? @"yes" : @"no");
@@ -187,15 +180,6 @@ void onUncaughtException(NSException *exception)
     NSSetUncaughtExceptionHandler(&onUncaughtException);
     
     return YES;
-}
-
-- (void)addContainerChildViewController:(UIViewController *)childViewController toContainerView:(UIView *)view
-{
-	childViewController.view.frame = CGRectMake(0, 0, view.bounds.size.width, view.bounds.size.height);
-	[self.containerView addChildViewController:childViewController];
-	[view addSubview:childViewController.view];
-	[childViewController didMoveToParentViewController:self.containerView];
-	//[view bringSubviewToFront:childViewController.view];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
