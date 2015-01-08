@@ -17,6 +17,7 @@
 #import "Reachability.h"
 #import "SVPullToRefresh.h"
 #import <Socialize/Socialize.h>
+#import "CaratConstants.h"
 
 @implementation ActionViewController
 
@@ -300,7 +301,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
@@ -319,8 +320,13 @@
         DLog(@"Starting without reachability; setting notification.");
         [self setupReachabilityNotifications];
     }
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
 }
 
+-(void)sampleCountUpdated:(NSNotification*)notification{
+	[[CoreDataManager instance] getSampleSent];
+	[self.actionTable reloadData];
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -485,6 +491,7 @@
     [actionList release];
     [actionTable release];
     [internetReachable release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 @end

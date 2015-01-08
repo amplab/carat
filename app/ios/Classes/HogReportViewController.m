@@ -10,6 +10,7 @@
 #import "HogDetailViewController.h"
 #import "DetailViewController.h"
 #import "SVPullToRefresh.h"
+#import "CaratConstants.h"
 
 @implementation HogReportViewController
 
@@ -106,6 +107,13 @@
     
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     [self.dataTable reloadData];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
+}
+
+-(void)sampleCountUpdated:(NSNotification*)notification{
+
+	if(self.dataTable)
+		[self.dataTable reloadData];
 }
 
 @end

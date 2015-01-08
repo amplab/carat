@@ -13,8 +13,6 @@
 		28216C970DB411BC00E5133A /* BugReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28216C960DB411BC00E5133A /* BugReportViewController.m */; };
 		2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2840D7CD1179279E00D7F93C /* ReportView.xib */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
-		666724CC1A4CBE400001117E /* ContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 666724CA1A4CBE400001117E /* ContainerViewController.m */; };
-		666724CD1A4CBE400001117E /* ContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 666724CB1A4CBE400001117E /* ContainerViewController.xib */; };
 		6676D13C1A4DDCDB0002FC1F /* CaratConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6676D13B1A4DDCDB0002FC1F /* CaratConstants.m */; };
 		66EC15071A2A6A8E00153746 /* infoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66EC15051A2A6A8E00153746 /* infoButton@2x.png */; };
 		66EC15081A2A6A8E00153746 /* infoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 66EC15061A2A6A8E00153746 /* infoButton.png */; };
@@ -567,9 +565,6 @@
 		28A0AB4B0D9B1048005BE974 /* Carat_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Carat_Prefix.pch; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5232799E42F24276948A951D /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		666724C91A4CBE400001117E /* ContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContainerViewController.h; sourceTree = "<group>"; };
-		666724CA1A4CBE400001117E /* ContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContainerViewController.m; sourceTree = "<group>"; };
-		666724CB1A4CBE400001117E /* ContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContainerViewController.xib; sourceTree = "<group>"; };
 		6676D13A1A4DDCDB0002FC1F /* CaratConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratConstants.h; sourceTree = "<group>"; };
 		6676D13B1A4DDCDB0002FC1F /* CaratConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratConstants.m; sourceTree = "<group>"; };
 		66EC15051A2A6A8E00153746 /* infoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoButton@2x.png"; sourceTree = "<group>"; };
@@ -3861,9 +3856,6 @@
 		C7547E1E19963CFD007A01CF /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				666724C91A4CBE400001117E /* ContainerViewController.h */,
-				666724CA1A4CBE400001117E /* ContainerViewController.m */,
-				666724CB1A4CBE400001117E /* ContainerViewController.xib */,
 				C7547E1F19963CFD007A01CF /* AboutViewController.h */,
 				C7547E2019963CFD007A01CF /* AboutViewController.m */,
 				6676D13A1A4DDCDB0002FC1F /* CaratConstants.h */,
@@ -7219,7 +7211,6 @@
 				C7548A7219963D04007A01CF /* socialize-sectionheader-bg-ios7@2x.png in Resources */,
 				C7548A8E19963D04007A01CF /* socialize-selectnetwork-table-back@2x.png in Resources */,
 				C7548AB019963D04007A01CF /* TwitterLogo76x76.png in Resources */,
-				666724CD1A4CBE400001117E /* ContainerViewController.xib in Resources */,
 				C7548BBC19963D04007A01CF /* ProcessItemCell.xib in Resources */,
 				C75489B619963D04007A01CF /* background_plain@2x.png in Resources */,
 				C75488C119963D04007A01CF /* Default-Landscape@2x~ipad.png in Resources */,
@@ -7553,7 +7544,6 @@
 				C18E107214665E230028095B /* Carat.xcdatamodeld in Sources */,
 				C754888E19963D03007A01CF /* HogDetailViewController.m in Sources */,
 				C19D4207146D2AD6004C842A /* CoreDataSample.m in Sources */,
-				666724CC1A4CBE400001117E /* ContainerViewController.m in Sources */,
 				ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */,
 				C754888919963D03007A01CF /* DatabaseManager.m in Sources */,
 				C754888A19963D03007A01CF /* DetailViewController.m in Sources */,

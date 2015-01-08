@@ -11,6 +11,7 @@
 #import "ReportItemCell.h"
 #import "CoreDataManager.h"
 #import "SVPullToRefresh.h"
+#import "CaratConstants.h"
 
 @implementation BugReportViewController
 
@@ -108,6 +109,13 @@
     
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     [self.dataTable reloadData];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
+}
+
+-(void)samplesCountUpdated:(NSNotification*)notification{
+
+	if(self.dataTable)
+		[self.dataTable reloadData];
 }
 
 @end
