@@ -22,8 +22,22 @@
     [super viewDidLoad];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(samplesSentCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
 
-	self.samplesSentLabel.text = [NSString stringWithFormat:@"Samples Sent: %i", [[CoreDataManager instance] getSampleSent]];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pageTitleUpdated:) name:kPageTitleUpdateNotification object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedXAgo:) name:kUpdatedXAgoUpdateNotification object:nil];
+
+	self.samplesSentLabel.text = [NSString stringWithFormat:@"Samples Sent: %li", (long)[[CoreDataManager instance] getSampleSent]];
     // Do any additional setup after loading the view from its nib.
+}
+
+-(void) pageTitleUpdated:(NSNotification*) notification{
+	NSDictionary* userInfo = notification.userInfo;
+	self.pageTitle.text = userInfo[kPageTitle];
+}
+
+-(void) updatedXAgo:(NSNotification*) notification{
+	NSDictionary* userInfo = notification.userInfo;
+	self.updatedXAgo.text = userInfo[kUpdatedXAgo];
 }
 
 -(void) samplesSentCountUpdated:(NSNotification*) notification{

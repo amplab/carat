@@ -10,6 +10,7 @@
 #import "CoreDataManager.h"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
+#import "CaratConstants.h"
 
 @class DetailViewController;
 
@@ -38,6 +39,7 @@
 - (DetailViewController *)getDetailView;
 - (void)updateView;
 - (void)reloadReport;
+-(NSString*) getUpdateTimeStamp;
 
 - (IBAction)showHiddenAppsPressed:(id)sender;
 - (IBAction)hideAppsPressed:(id)sender;
