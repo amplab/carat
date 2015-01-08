@@ -17,6 +17,7 @@
 #import "UIImageDoNotCache.h"
 #import "InstructionViewController.h"
 #import "ProcessListViewController.h"
+#import "CaratConstants.h"
 
 @implementation CurrentViewController
 
@@ -213,14 +214,14 @@
     CGSize scrollSize = [UIScreen mainScreen].bounds.size;
     
     if (IS_IPHONE_4_OR_4S)
-        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 60;
+        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 80;
     else
-        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 20;
+        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 40;
     
     if(([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft ||
         [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight)
        && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 60;
+        scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 220;
     
     self.scrollView.contentSize = scrollSize;
     CGSize contentsize = self.scrollView.contentSize;
@@ -256,6 +257,11 @@
     [self updateView];
     
     [self.navigationController setNavigationBarHidden:YES animated:YES];
+	NSDictionary* userInfo = @{kPageTitle:@"My Device"};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kPageTitleUpdateNotification object:self userInfo:userInfo];
+
+	NSDictionary *updatedXinfo = @{kUpdatedXAgo:@""};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdatedXAgoUpdateNotification object:self userInfo:updatedXinfo];
 }
 
 - (void)viewDidAppear:(BOOL)animated

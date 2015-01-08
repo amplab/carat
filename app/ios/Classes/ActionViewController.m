@@ -17,6 +17,7 @@
 #import "Reachability.h"
 #import "SVPullToRefresh.h"
 #import <Socialize/Socialize.h>
+#import "CaratConstants.h"
 
 @implementation ActionViewController
 
@@ -137,12 +138,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
-    if (tmpStatus == nil) {
-        return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
-    } else {
-        return tmpStatus;
-    }
+    return @" ";
 }
 
 // loads the selected detail view
@@ -319,6 +315,20 @@
         DLog(@"Starting without reachability; setting notification.");
         [self setupReachabilityNotifications];
     }
+	NSDictionary* userInfo = @{kPageTitle:self.title};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kPageTitleUpdateNotification object:self userInfo:userInfo];
+
+	NSDictionary *updatedXinfo = @{kUpdatedXAgo:[self _getUpdateTimeStamp]};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdatedXAgoUpdateNotification object:self userInfo:updatedXinfo];
+}
+
+-(NSString*) _getUpdateTimeStamp {
+	NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
+	if (tmpStatus == nil) {
+		return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
+	} else {
+		return tmpStatus;
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated

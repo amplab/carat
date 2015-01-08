@@ -9,6 +9,7 @@
 #import "AboutViewController.h"
 #import "CoreDataManager.h"
 #import "Utilities.h"
+#import "CaratConstants.h"
 
 @implementation AboutViewController
 
@@ -78,7 +79,12 @@
     [super viewWillAppear:animated];
     
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
-}
+
+	NSDictionary* userInfo = @{kPageTitle:@"About"};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kPageTitleUpdateNotification object:self userInfo:userInfo];
+
+	NSDictionary *updatedXinfo = @{kUpdatedXAgo:@""};
+	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdatedXAgoUpdateNotification object:self userInfo:updatedXinfo];}
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
     return YES;
