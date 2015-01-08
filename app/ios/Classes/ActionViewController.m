@@ -138,7 +138,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return @" ";
+    NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
+    if (tmpStatus == nil) {
+        return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
+    } else {
+        return tmpStatus;
+    }
 }
 
 // loads the selected detail view
@@ -296,7 +301,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
@@ -315,22 +320,13 @@
         DLog(@"Starting without reachability; setting notification.");
         [self setupReachabilityNotifications];
     }
-	NSDictionary* userInfo = @{kPageTitle:self.title};
-	[[NSNotificationCenter defaultCenter] postNotificationName:kPageTitleUpdateNotification object:self userInfo:userInfo];
-
-	NSDictionary *updatedXinfo = @{kUpdatedXAgo:[self _getUpdateTimeStamp]};
-	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdatedXAgoUpdateNotification object:self userInfo:updatedXinfo];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
 }
 
--(NSString*) _getUpdateTimeStamp {
-	NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
-	if (tmpStatus == nil) {
-		return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
-	} else {
-		return tmpStatus;
-	}
+-(void)sampleCountUpdated:(NSNotification*)notification{
+	[[CoreDataManager instance] getSampleSent];
+	[self.actionTable reloadData];
 }
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -495,6 +491,7 @@
     [actionList release];
     [actionTable release];
     [internetReachable release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
 @end

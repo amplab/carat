@@ -7,16 +7,30 @@
 //
 
 #import "Utilities.h"
+#import "CoreDataManager.h"
 
 @implementation Utilities
 
 + (NSString *)formatNSTimeIntervalAsUpdatedNSString:(NSTimeInterval)timeInterval {
     // some custom strings for character
-    if (timeInterval < 0) { return @"(Updated in the future. How did you do that?)"; }
-    else if (timeInterval < 5) { return @"(Updated just now.)"; }
-    else if (timeInterval > 31536000) { return @"(Updated never.)"; }
+	NSString* result = @"";
+	;
+    if (timeInterval < 0) {
+		result = [NSString stringWithFormat:@"(Updated in the future. How did you do that?)    Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		return result;
+	}
+    else if (timeInterval < 5) {
+		result = [NSString stringWithFormat:@"(Updated just now.)    Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		return result;
+	}
+    else if (timeInterval > 31536000) {
+		result = [NSString stringWithFormat:@"(Updated never.)   Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		return result;
+	}
     else { 
-        return [@"(Updated " stringByAppendingString:[[Utilities formatNSTimeIntervalAsNSString:timeInterval] stringByAppendingString:@"ago)"]];
+		result =  [@"(Updated " stringByAppendingString:[[Utilities formatNSTimeIntervalAsNSString:timeInterval] stringByAppendingString:@"ago)"]];
+		result = [result stringByAppendingFormat:@"   Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		return result;
     }
 }
 

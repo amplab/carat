@@ -11,6 +11,7 @@
 #import "ReportItemCell.h"
 #import "CoreDataManager.h"
 #import "SVPullToRefresh.h"
+#import "CaratConstants.h"
 
 @implementation BugReportViewController
 
@@ -75,7 +76,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
 	// Do any additional setup after loading the view, typically from a nib.
     [self setReport:[[CoreDataManager instance] getBugs:NO withoutHidden:YES]];
     
@@ -96,7 +96,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
+    //[self.navigationController setNavigationBarHidden:YES animated:YES];
+    
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
         [self.dataTable.pullToRefreshView stopAnimating];
     } else {
@@ -107,12 +109,13 @@
     
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
     [self.dataTable reloadData];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
+}
 
-	NSDictionary* userInfo = @{kPageTitle:self.tableTitle};
-	[[NSNotificationCenter defaultCenter] postNotificationName:kPageTitleUpdateNotification object:self userInfo:userInfo];
+-(void)samplesCountUpdated:(NSNotification*)notification{
 
-	NSDictionary *updatedXinfo = @{kUpdatedXAgo:[self getUpdateTimeStamp]};
-	[[NSNotificationCenter defaultCenter] postNotificationName:kUpdatedXAgoUpdateNotification object:self userInfo:updatedXinfo];
+	if(self.dataTable)
+		[self.dataTable reloadData];
 }
 
 @end
