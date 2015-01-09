@@ -63,14 +63,6 @@
 	HUD = nil;
 }
 
--(NSString*) getUpdateTimeStamp {
-	NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
-	if (tmpStatus == nil) {
-		return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
-	} else {
-		return tmpStatus;
-	}
-}
 
 #pragma mark - button actions
 
@@ -93,7 +85,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @" ";
+    return self.tableTitle;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -133,7 +125,12 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-	return @" ";
+    NSString *tmpStatus = [[CoreDataManager instance] getReportUpdateStatus];
+    if (tmpStatus == nil) {
+        return [Utilities formatNSTimeIntervalAsUpdatedNSString:[[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]]];
+    } else {
+        return tmpStatus;
+    }
 }
 
 // loads the selected detail view
@@ -191,14 +188,6 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     return UITableViewCellEditingStyleDelete;
 }
-
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-	return 0;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-	return 5;
-}
-
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     // If row is deleted, remove it from the list.

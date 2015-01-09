@@ -9,8 +9,4 @@
 #import <Foundation/Foundation.h>
 
 extern NSString* const kSamplesSentCountUpdateNotification;
-extern NSString* const kPageTitleUpdateNotification;
-extern NSString* const kUpdatedXAgoUpdateNotification;
 extern NSString* const kSamplesSent;
-extern NSString* const kPageTitle;
-extern NSString* const kUpdatedXAgo;

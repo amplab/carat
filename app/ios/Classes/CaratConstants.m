@@ -9,8 +9,5 @@
 #import "CaratConstants.h"
 
 NSString* const kSamplesSentCountUpdateNotification = @"SampleSentCountUpdateNotification";
-NSString* const kPageTitleUpdateNotification = @"PageTitleUpdateNotification";
-NSString* const kUpdatedXAgoUpdateNotification= @"UpdatedXAgoUpdateNotification";
 NSString* const kSamplesSent = @"SamplesSent";
-NSString* const kPageTitle = @"PageTitle";
-NSString* const kUpdatedXAgo = @"UpdatedXAgo";
+
