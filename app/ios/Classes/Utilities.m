@@ -16,20 +16,20 @@
 	NSString* result = @"";
 	;
     if (timeInterval < 0) {
-		result = [NSString stringWithFormat:@"(Updated in the future. How did you do that?)    Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		result = [NSString stringWithFormat:@"Updated in the future. How did you do that?    %i:Samples sent", [[CoreDataManager instance] getSampleSent]];
 		return result;
 	}
     else if (timeInterval < 5) {
-		result = [NSString stringWithFormat:@"(Updated just now.)    Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		result = [NSString stringWithFormat:@"Just Updated    %i:Samples sent", [[CoreDataManager instance] getSampleSent]];
 		return result;
 	}
     else if (timeInterval > 31536000) {
-		result = [NSString stringWithFormat:@"(Updated never.)   Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		result = [NSString stringWithFormat:@"Updated never   %i:Samples sent", [[CoreDataManager instance] getSampleSent]];
 		return result;
 	}
     else { 
-		result =  [@"(Updated " stringByAppendingString:[[Utilities formatNSTimeIntervalAsNSString:timeInterval] stringByAppendingString:@"ago)"]];
-		result = [result stringByAppendingFormat:@"   Samples sent: %i", [[CoreDataManager instance] getSampleSent]];
+		result =  [@"Updated " stringByAppendingString:[[Utilities formatNSTimeIntervalAsNSString:timeInterval] stringByAppendingString:@"ago"]];
+		result = [result stringByAppendingFormat:@"   %i:Samples sent", [[CoreDataManager instance] getSampleSent]];
 		return result;
     }
 }

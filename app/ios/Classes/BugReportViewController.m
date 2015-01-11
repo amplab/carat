@@ -71,6 +71,11 @@
     [self.view setNeedsDisplay];
 }
 
+- (void)viewWillLayoutSubviews{
+	self.navigationController.navigationBar.hidden = YES;
+	[super viewWillLayoutSubviews];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -112,7 +117,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
 }
 
--(void)samplesCountUpdated:(NSNotification*)notification{
+-(void)sampleCountUpdated:(NSNotification*)notification{
 
 	if(self.dataTable)
 		[self.dataTable reloadData];

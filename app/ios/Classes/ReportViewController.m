@@ -212,14 +212,18 @@
     self.navigationItem.title = self.tableTitle;;
 }
 
+- (void)viewWillLayoutSubviews{
+	self.navigationController.navigationBar.hidden = YES;
+	CGRect tableViewFrame = self.dataTable.frame;
+	self.dataTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
+	[super viewWillLayoutSubviews];
+}
+
 // overridden by subclasses
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated

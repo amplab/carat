@@ -71,6 +71,14 @@
     }
 }
 
+- (void)viewWillLayoutSubviews{
+
+	self.navigationController.navigationBar.hidden = YES;
+	CGRect tableViewFrame = self.actionTable.frame;
+	self.actionTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
+	[super viewWillLayoutSubviews];
+}
+
 - (void)loadData
 {    
     [self updateView];
@@ -282,8 +290,6 @@
     }];
     
     [self updateView];
-    
-   
 }
 
 - (void)viewDidUnload
@@ -302,8 +308,6 @@
 {
     [super viewWillAppear:animated];
 
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
         [self.actionTable.pullToRefreshView stopAnimating];
     } else {
@@ -327,6 +331,7 @@
 	[[CoreDataManager instance] getSampleSent];
 	[self.actionTable reloadData];
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];

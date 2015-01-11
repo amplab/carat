@@ -53,6 +53,10 @@
 }
 
 #pragma mark - View lifecycle
+-(void)viewWillLayoutSubviews{
+	self.navigationController.navigationBarHidden = YES;
+	[super viewWillLayoutSubviews];
+}
 
 - (void)viewDidLoad
 {

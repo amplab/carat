@@ -17,6 +17,7 @@
 #import "UIImageDoNotCache.h"
 #import "InstructionViewController.h"
 #import "ProcessListViewController.h"
+#import "CaratConstants.h"
 
 @implementation CurrentViewController
 
@@ -208,11 +209,10 @@
 
 -(void)viewWillLayoutSubviews
 {
-    [super viewWillLayoutSubviews];
+	self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+	CGSize scrollSize = [UIScreen mainScreen].bounds.size;
     
-    CGSize scrollSize = [UIScreen mainScreen].bounds.size;
-    
-    if (IS_IPHONE_4_OR_4S)
+    if (IS_IPHONE_4_OR_4S && [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait )
         scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 60;
     else
         scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 20;
@@ -220,13 +220,15 @@
     if(([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft ||
         [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight)
        && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 60;
+        scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 200;
     
     self.scrollView.contentSize = scrollSize;
     CGSize contentsize = self.scrollView.contentSize;
     CGRect frame = self.uhAmpLogo.frame;
-    frame.origin.y = contentsize.height - frame.size.height - 20;
+    frame.origin.y = contentsize.height - frame.size.height;
     self.uhAmpLogo.frame = frame;
+	self.navigationController.navigationBar.hidden = YES;
+	[super viewWillLayoutSubviews];
 }
 
 - (void)viewDidUnload
@@ -252,10 +254,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
     [self updateView];
-    
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
+}
+
+-(void)sampleCountUpdated:(NSNotification*)notification{
+	// Last Updated
+	NSTimeInterval howLong = [[NSDate date] timeIntervalSinceDate:[[CoreDataManager instance] getLastReportUpdateTimestamp]];
+	for (UILabel *lastUp in self.lastUpdated) {
+		lastUp.text = [Utilities formatNSTimeIntervalAsUpdatedNSString:howLong];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated
