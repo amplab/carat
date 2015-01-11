@@ -57,4 +57,18 @@
     return ([osVersion rangeOfString:@"6."].location == NSNotFound);
 }
 
++(CGSize) orientationIndependentScreenSize{
+	CGSize screenSize = [UIScreen mainScreen].bounds.size;
+	return CGSizeMake(MIN(screenSize.width, screenSize.height), MAX(screenSize.width, screenSize.height));
+}
+
++(BOOL) isOlderHeightDevice{
+
+	CGSize screenSize = [self orientationIndependentScreenSize];
+
+	if (screenSize.height == 480)
+		return YES;
+
+	return NO;
+}
 @end

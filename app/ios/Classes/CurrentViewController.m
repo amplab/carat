@@ -21,7 +21,6 @@
 
 @implementation CurrentViewController
 
-#define IS_IPHONE_4_OR_4S ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )480 ) < DBL_EPSILON )
 
 
 @synthesize jscore = _jscore;
@@ -210,25 +209,39 @@
 -(void)viewWillLayoutSubviews
 {
 	self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-	CGSize scrollSize = [UIScreen mainScreen].bounds.size;
-    
-    if (IS_IPHONE_4_OR_4S && [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait)
-        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 20;
-	else if (IS_IPHONE_4_OR_4S && ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft ||
-			 [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight))
-		 scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 60;
-    else
-        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 20;
-    
-    if(UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) &&
-	   UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 180;
-    
-    self.scrollView.contentSize = scrollSize;
-    CGSize contentsize = self.scrollView.contentSize;
-    CGRect frame = self.uhAmpLogo.frame;
-    frame.origin.y = contentsize.height - frame.size.height;
-    self.uhAmpLogo.frame = frame;
+
+	CGSize scrollSize = [Utilities orientationIndependentScreenSize];
+	BOOL isOlderDevice = [Utilities isOlderHeightDevice];
+
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+	{
+		if (isOlderDevice)
+			scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 20;
+		else if(!isOlderDevice && UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+			scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 60;
+		else
+			scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 20;
+
+		self.scrollView.contentSize = scrollSize;
+		CGSize contentsize = self.scrollView.contentSize;
+		CGRect frame = self.uhAmpLogo.frame;
+		frame.origin.y = contentsize.height - frame.size.height;
+		self.uhAmpLogo.frame = frame;
+	}
+	else if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+
+		if (UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+			scrollSize.height = scrollSize.width  - self.tabBarController.tabBar.frame.size.height - 20;
+		else
+			scrollSize.height = scrollSize.height  - self.tabBarController.tabBar.frame.size.height - 20;
+
+		self.scrollView.contentSize = scrollSize;
+		CGSize contentsize = self.scrollView.contentSize;
+		CGRect frame = self.uhAmpLogo.frame;
+		frame.origin.y = contentsize.height - frame.size.height;
+		self.uhAmpLogo.frame = frame;
+	}
+
 	self.navigationController.navigationBar.hidden = YES;
 	[super viewWillLayoutSubviews];
 }
