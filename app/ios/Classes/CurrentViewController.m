@@ -212,15 +212,17 @@
 	self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 	CGSize scrollSize = [UIScreen mainScreen].bounds.size;
     
-    if (IS_IPHONE_4_OR_4S && [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait )
-        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 60;
+    if (IS_IPHONE_4_OR_4S && [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait)
+        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 20;
+	else if (IS_IPHONE_4_OR_4S && ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft ||
+			 [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight))
+		 scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 60;
     else
         scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height - 20;
     
-    if(([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft ||
-        [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight)
-       && UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        scrollSize.height = scrollSize.width - self.tabBarController.tabBar.frame.size.height + 200;
+    if(UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) &&
+	   UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        scrollSize.height = scrollSize.height - self.tabBarController.tabBar.frame.size.height + 180;
     
     self.scrollView.contentSize = scrollSize;
     CGSize contentsize = self.scrollView.contentSize;

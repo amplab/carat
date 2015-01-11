@@ -163,7 +163,7 @@
                                     <color key="textColor" red="0.40000000000000002" green="0.20000000000000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="( Updated: Never )  0:Samples Sent" lineBreakMode="tailTruncation" minimumFontSize="10" id="49">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Updated: Never  0 Samples Sent" lineBreakMode="tailTruncation" minimumFontSize="10" id="49">
                                     <rect key="frame" x="10" y="45" width="304" height="20"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
