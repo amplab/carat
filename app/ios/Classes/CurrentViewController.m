@@ -144,7 +144,7 @@
         
         [dvController loadView];
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Operating System"];
-        [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
+        [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[NSString stringWithFormat:@"%@ ± %@", [Utilities doubleAsTimeNSString:benefit], [Utilities doubleAsTimeNSString:error]]];
         UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
@@ -181,7 +181,7 @@
         [dvController loadView];
 
         [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:@"Same Device Model"];
-        [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
+        [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[NSString stringWithFormat:@"%@ ± %@", [Utilities doubleAsTimeNSString:benefit], [Utilities doubleAsTimeNSString:error]]];
         UIImage *img = [UIImage newImageNotCached:@"icon57.png"];
         [[dvController appIcon] makeObjectsPerformSelector:@selector(setImage:) withObject:img];
         [img release];
@@ -322,7 +322,7 @@
     if (jev > 0) eb = MIN(MAX_LIFE,100/jev);
     else eb = MAX_LIFE;
     for (UILabel *el in self.expectedLife) {
-        el.text = [[Utilities formatNSTimeIntervalAsNSString:eb] stringByTrimmingCharactersInSet:
+        el.text = [[Utilities doubleAsTimeNSString:eb] stringByTrimmingCharactersInSet:
                    [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     }
     

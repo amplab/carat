@@ -45,7 +45,7 @@ void onUncaughtException(NSException *exception)
     UILocalNotification *localNotif = [[UILocalNotification alloc] init];
     if (localNotif == nil)
         return;
-    localNotif.fireDate = [[NSDate date] addTimeInterval:interval];
+    localNotif.fireDate = [[NSDate date] dateByAddingTimeInterval:interval];
     localNotif.timeZone = [NSTimeZone defaultTimeZone];
     
     localNotif.alertBody = @"Carat may have discovered new battery-saving actions for you. Why don't you take a look?";
@@ -127,7 +127,8 @@ void onUncaughtException(NSException *exception)
     [self.window makeKeyAndVisible];
     DLog(@"Set root view controller; is nil? %@",
          self.tabBarController==nil ? @"yes" : @"no");
-	UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , 20 ,20)];
+    // Fixme: What is this? Not used.
+	//UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0 , 20 ,20)];
 
 	 // views have been added to hierarchy, so they can be released
     [viewController0 release];
@@ -161,11 +162,11 @@ void onUncaughtException(NSException *exception)
     
     // Analytics
     [Flurry startSession:@"4XITISYNWHTBTL4E533E"];
-    [Flurry logAllPageViews:self.tabBarController];
-    [Flurry logAllPageViews:navController0];
-    [Flurry logAllPageViews:navController1];
-    [Flurry logAllPageViews:navController2];
-    [Flurry logAllPageViews:navController3];
+    [Flurry logAllPageViewsForTarget:self.tabBarController];
+    [Flurry logAllPageViewsForTarget:navController0];
+    [Flurry logAllPageViewsForTarget:navController1];
+    [Flurry logAllPageViewsForTarget:navController2];
+    [Flurry logAllPageViewsForTarget:navController3];
     [Flurry setUserID:[[Globals instance] getUUID]];
     
     // set the socialize api key and secret, app registered here: http://www.getsocialize.com/apps/

@@ -28,13 +28,13 @@
 		return result;
 	}
     else { 
-		result =  [@"Updated " stringByAppendingString:[[Utilities formatNSTimeIntervalAsNSString:timeInterval] stringByAppendingString:@"ago"]];
+		result =  [@"Updated " stringByAppendingString:[[Utilities doubleAsTimeNSString:timeInterval] stringByAppendingString:@"ago"]];
 		result = [result stringByAppendingFormat:@"   %i Samples sent", [[CoreDataManager instance] getSampleSent]];
 		return result;
     }
 }
 
-+ (NSString *)formatNSTimeIntervalAsNSString:(NSTimeInterval)timeInterval {
++ (NSString *)doubleAsTimeNSString:(double)timeInterval {
     // some custom strings for character
     if (timeInterval < 1) { return @"None"; }
     else {

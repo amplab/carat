@@ -115,11 +115,12 @@
     [cell.appIcon setImageWithURL:[NSURL URLWithString:imageURL]
                  placeholderImage:[UIImage imageNamed:@"icon57.png"]];
     
-    NSInteger benefit = (int) (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
-    NSInteger benefit_max = (int) (100/([hb expectedValueWithout]-[hb errorWithout]) - 100/([hb expectedValue]+[hb error]));
-    NSInteger error = (int) (benefit_max-benefit);
+    double benefit = (100/[hb expectedValueWithout] - 100/[hb expectedValue]);
+    double benefit_max = (100/([hb expectedValueWithout]-[hb errorWithout]) - 100/([hb expectedValue]+[hb error]));
+    double error = benefit_max-benefit;
     
-    cell.appImpact.text = [[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]];
+    cell.appImpact.text =
+    [NSString stringWithFormat:@"%@ ± %@", [Utilities doubleAsTimeNSString:benefit], [Utilities doubleAsTimeNSString:error]];
     return cell;
 }
 
@@ -150,7 +151,8 @@
     [dvController loadView];
     
     [[dvController appName] makeObjectsPerformSelector:@selector(setText:) withObject:selectedCell.appName.text];
-    [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:benefit] doubleValue]] stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:error] doubleValue]]]]];
+    [[dvController appImpact] makeObjectsPerformSelector:@selector(setText:) withObject:[NSString stringWithFormat:@"%@ ± %@", [Utilities doubleAsTimeNSString:benefit], [Utilities doubleAsTimeNSString:error]]];
+
     NSString *imageURL = [[@"https://s3.amazonaws.com/carat.icons/"
                            stringByAppendingString:selectedCell.appName.text]
                           stringByAppendingString:@".jpg"];

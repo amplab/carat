@@ -17,7 +17,7 @@
 @interface Utilities : NSObject
 
 + (NSString *)formatNSTimeIntervalAsUpdatedNSString:(NSTimeInterval)timeInterval;
-+ (NSString *)formatNSTimeIntervalAsNSString:(NSTimeInterval)timeInterval;
++ (NSString *)doubleAsTimeNSString:(NSTimeInterval)timeInterval;
 + (BOOL) canUpgradeOS;
 + (CGSize) orientationIndependentScreenSize;
 +(BOOL) isOlderHeightDevice;

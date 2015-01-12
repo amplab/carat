@@ -136,8 +136,7 @@
         cell.actionValue.text = @"better Carat results!";
         cell.actionType = ActionTypeCollectData;
     } else {
-        cell.actionValue.text = [[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionBenefit] doubleValue]]
-                                 stringByAppendingString:[@" ± " stringByAppendingString:[Utilities formatNSTimeIntervalAsNSString:[[NSNumber numberWithInt:act.actionError] doubleValue]]]];
+        cell.actionValue.text = [NSString stringWithFormat:@"%@ ± %@", [Utilities doubleAsTimeNSString:act.actionBenefit], [Utilities doubleAsTimeNSString:act.actionError]];
         cell.actionType = act.actionType;
     }
     
