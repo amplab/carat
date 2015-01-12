@@ -19,9 +19,6 @@ import android.widget.Toast;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.R.id;
-import edu.berkeley.cs.amplab.carat.android.R.layout;
-import edu.berkeley.cs.amplab.carat.android.R.string;
 import edu.berkeley.cs.amplab.carat.android.lists.SettingsSuggestionAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -61,7 +58,7 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 				else if (actionName.equals(getString(R.string.disablegps)))
 					GoToLocSevScreen();
 				else if (actionName.equals(getString(R.string.disablelocation)))
-					GoToLocSevScreen(); // TODO: do we need to go to the same Android settings screen (Location Services)?
+					GoToLocSevScreen();
 				else if (actionName.equals(getString(R.string.disablebluetooth)))
 					GoToBluetoothScreen();
 				else if (actionName.equals(getString(R.string.disablehapticfeedback)))
@@ -86,6 +83,8 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 
         initUpgradeOsView(rootView);
 
+        getActivity().setTitle(getResources().getString(R.string.tab_settings));
+        
         return rootView;
     }
     

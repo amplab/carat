@@ -17,12 +17,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
-import edu.berkeley.cs.amplab.carat.android.R.id;
-import edu.berkeley.cs.amplab.carat.android.R.layout;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -37,10 +34,6 @@ public class BugsOrHogsFragment extends Fragment {
 
 	private DrawView w = null;
 	private View detailPage = null;
-	private View tv = null;
-	private int emptyIndex = -1;
-	private View bv = null;
-	private int emptyBugsIndex = -1;
 
 	/**
 	 * When creating Hogs or Bugs, set which one this is here:
@@ -72,14 +65,7 @@ public class BugsOrHogsFragment extends Fragment {
 		// Log.d("BugsOrHogs", isBugsStr);
 
 		View root = inflater.inflate(R.layout.hogs, container, false);
-		tv = inflater.inflate(R.layout.emptyactions, null);
 
-		if (isBugs) {
-			bv = inflater.inflate(R.layout.emptybugsonly, null);
-		}
-
-		// initBugsView();
-		// initGraphView();
 		initGraphChart(root);
 		initDetailView(root);
 
@@ -105,6 +91,9 @@ public class BugsOrHogsFragment extends Fragment {
 			}
 		}
 
+		int resourceID = isBugs ? R.string.tab_bugs : R.string.tab_hogs;
+		getActivity().setTitle(getResources().getString(resourceID));
+		
 		return root;
 	}
 

@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.Toast;
-import edu.berkeley.cs.amplab.carat.android.SplashActivity.PrefetchData;
 import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 
 /**

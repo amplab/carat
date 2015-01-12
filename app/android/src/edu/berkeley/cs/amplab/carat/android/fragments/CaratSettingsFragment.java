@@ -8,6 +8,9 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 //important: the following import command imports the class from a library project, not from android.preference.PreferenceFragment
 import android.support.v4.preference.PreferenceFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
@@ -58,6 +61,14 @@ public class CaratSettingsFragment extends PreferenceFragment {
 		setSharePreferenceIntent();
 		setFeedbackPreferenceIntent();
 	}
+	
+	@Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	
+        getActivity().setTitle(getResources().getString(R.string.tab_carat_settings));
+        
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
 
 	/**
 	 * Set an intent for our "share" preference widget

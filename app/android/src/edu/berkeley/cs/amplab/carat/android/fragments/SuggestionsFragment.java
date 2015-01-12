@@ -1,40 +1,26 @@
 package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
-import edu.berkeley.cs.amplab.carat.android.R.id;
-import edu.berkeley.cs.amplab.carat.android.R.layout;
-import edu.berkeley.cs.amplab.carat.android.R.string;
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
-import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.subscreens.KillAppFragment;
@@ -150,6 +136,8 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 //            }
 //        }
 //        }
+        
+        getActivity().setTitle(getResources().getString(R.string.tab_actions));
         
         return root;
     }

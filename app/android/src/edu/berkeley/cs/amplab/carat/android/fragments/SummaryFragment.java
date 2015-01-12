@@ -5,11 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.echo.holographlibrary.PieGraph;
@@ -17,11 +15,6 @@ import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
 
 import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.R.color;
-import edu.berkeley.cs.amplab.carat.android.R.drawable;
-import edu.berkeley.cs.amplab.carat.android.R.id;
-import edu.berkeley.cs.amplab.carat.android.R.layout;
-import edu.berkeley.cs.amplab.carat.android.R.string;
 
 /**
  * 
@@ -30,28 +23,29 @@ import edu.berkeley.cs.amplab.carat.android.R.string;
  */
 public class SummaryFragment extends Fragment {
 	
-	private final String TAG = "SummaryFragment";
+	// private final String TAG = "SummaryFragment";
 	private int wellbehavedAppCount,
 				hogCount,
 				bugCount;
-	Resources resources;
 	
 	 @Override
 	 public void onCreate(Bundle savedInstanceState) {
-		 wellbehavedAppCount = getArguments().getInt("wellbehaved");
-		 hogCount = getArguments().getInt("hogs");
-		 bugCount = getArguments().getInt("bugs");
-		 
-		 resources = getResources();
+//		 wellbehavedAppCount = getArguments().getInt("wellbehaved");
+//		 hogCount = getArguments().getInt("hogs");
+//		 bugCount = getArguments().getInt("bugs");
 		 
 		 super.onCreate(savedInstanceState);
 	 }
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		wellbehavedAppCount = getArguments().getInt("wellbehaved");
+		hogCount = getArguments().getInt("hogs");
+		bugCount = getArguments().getInt("bugs");
+		
         View inflatedView = inflater.inflate(R.layout.summary, container, false);
-        
         PieGraph pg = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+        Resources resources = getResources();
         
         PieSlice slice = new PieSlice();
         slice.setColor(resources.getColor(R.color.green));
@@ -99,8 +93,10 @@ public class SummaryFragment extends Fragment {
             }
         });
 
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        Bitmap b = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher);
         pg.setBackgroundBitmap(b);
+        
+        getActivity().setTitle(resources.getString(R.string.tab_summary));
         
         // onCreateView() method should always return the inflated view
         return inflatedView;
