@@ -1,6 +1,7 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import java.util.HashMap;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,7 +18,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.R.id;
+import edu.berkeley.cs.amplab.carat.android.R.layout;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;

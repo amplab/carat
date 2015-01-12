@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -11,7 +11,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.R.id;
+import edu.berkeley.cs.amplab.carat.android.R.layout;
+import edu.berkeley.cs.amplab.carat.android.R.string;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.subscreens.AppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;

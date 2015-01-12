@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -23,12 +24,19 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.flurry.android.FlurryAgent;
 
+import edu.berkeley.cs.amplab.carat.android.fragments.AboutFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.BugsOrHogsFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.CaratSettingsFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.MyDeviceFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.SettingsSuggestionsFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.SuggestionsFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.SummaryFragment;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.subscreens.CaratSettingsFragment;
 import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
 import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
@@ -87,7 +95,6 @@ public class MainActivity extends ActionBarActivity {
 	
 	private Fragment mAboutFragment;
 	private String mAboutFragmentLabel;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +176,6 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	
-	
 	/* The click listener for ListView in the navigation drawer */
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
@@ -226,6 +232,26 @@ public class MainActivity extends ActionBarActivity {
 		setTitle(mDrawerItems[position]);
 	}
 
+	/**
+	 * Avoid displaying a white screen when the back button is pressed in the summary fragment.
+	 * When we are in the summary fragment, since there is only one fragment in the backstack,
+	 * the fragment manager will fail to pop another fragment from the backstack,
+	 * so only the framelayout (the parent/host widget for fragments (in our activity's layout)) is shown.
+	 * We need to check the number of fragments present in the backstack, and act accordingly
+	 */
+	@Override
+	public void onBackPressed() {
+		FragmentManager manager = getSupportFragmentManager();
+		if (manager.getBackStackEntryCount() > 1 ) {
+	        // If there are back-stack entries, leave the FragmentActivity
+	        // implementation take care of them.
+	        manager.popBackStack();
+	    } else {
+	    	// if there is only one entry in the backstack, show the home screen
+	    	moveTaskToBack(true);
+	    }
+	}
+	
 	@Override
 	public void setTitle(CharSequence title) {
 		mTitle = title;
@@ -456,7 +482,9 @@ public class MainActivity extends ActionBarActivity {
 		// replace the fragment, using a fragment transaction
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(R.id.content_frame, fragment).addToBackStack(fragmentNameInBackStack).commit();
+		transaction.replace(R.id.content_frame, fragment)
+					.addToBackStack(fragmentNameInBackStack)
+					.commit();
 	}
 
 	/**

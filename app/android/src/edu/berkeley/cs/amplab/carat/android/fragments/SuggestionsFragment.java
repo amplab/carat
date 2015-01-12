@@ -1,40 +1,56 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
-import edu.berkeley.cs.amplab.carat.android.lists.SettingsSuggestionAdapter;
+import android.widget.ViewFlipper;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.R.id;
+import edu.berkeley.cs.amplab.carat.android.R.layout;
+import edu.berkeley.cs.amplab.carat.android.R.string;
+import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
+import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
+import edu.berkeley.cs.amplab.carat.android.subscreens.KillAppFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-public class SettingsSuggestionsFragment extends Fragment implements Serializable{
-    
-	// TODO: serialVersionUID is used for serialization. see onSaveInstanceState(). 
-	// should be the same as what expected at de-serialization time
-    private static final long serialVersionUID = -6034269327947014085L; 
-    private static final String TAG = "SettingsSuggestions";
-    private View rootView;
-    private final MainActivity mMainActivity = CaratApplication.getMainActivity();
+public class SuggestionsFragment extends Fragment implements Serializable{
+    private static final long serialVersionUID = -6034269327947014085L;
+    final MainActivity mMainActivity = CaratApplication.getMainActivity();
+    private static final String TAG = "CaratSuggestions";
+    private View root;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.suggestions, container, false);
+        root = inflater.inflate(R.layout.suggestions, container, false);
         
-        final ListView lv = (ListView) rootView.findViewById(android.R.id.list);
+        final ListView lv = (ListView) root.findViewById(android.R.id.list);
         lv.setCacheColorHint(0);
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -42,45 +58,100 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 			public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 				Object o = lv.getItemAtPosition(position);
 				SimpleHogBug fullObject = (SimpleHogBug) o;
-				final String actionName = fullObject.getAppName();
-				
-				Log.v(TAG, "Showing view for " + actionName);
-				
-				if (actionName.equals("OsUpgrade"))
+				final String raw = fullObject.getAppName();
+				Log.v(TAG, "Showing kill view for " + raw);
+				if (raw.equals("OsUpgrade"))
 					mMainActivity.showHTMLFile("upgradeos");
-				else if (actionName.equals(getString(R.string.dimscreen)))
+				else if (raw.equals(getString(R.string.dimscreen)))
 					GoToDisplayScreen();
-				else if (actionName.equals(getString(R.string.disablewifi)))
+				else if (raw.equals(getString(R.string.disablewifi)))
 					GoToWifiScreen();
-				else if (actionName.equals(getString(R.string.disablegps)))
+				else if (raw.equals(getString(R.string.disablegps)))
 					GoToLocSevScreen();
-				else if (actionName.equals(getString(R.string.disablelocation)))
-					GoToLocSevScreen(); // TODO: do we need to go to the same Android settings screen (Location Services)?
-				else if (actionName.equals(getString(R.string.disablebluetooth)))
+				else if (raw.equals(getString(R.string.disablebluetooth)))
 					GoToBluetoothScreen();
-				else if (actionName.equals(getString(R.string.disablehapticfeedback)))
+				else if (raw.equals(getString(R.string.disablehapticfeedback)))
 					GoToSoundScreen();
-				else if (actionName.equals(getString(R.string.automaticbrightness)))
+				else if (raw.equals(getString(R.string.automaticbrightness)))
 					GoToDisplayScreen();
-				else if (actionName.equals(getString(R.string.disablenetwork)))
+				else if (raw.equals(getString(R.string.disablenetwork)))
 					GoToMobileNetworkScreen();
-				else if (actionName.equals(getString(R.string.disablevibration)))
+				else if (raw.equals(getString(R.string.disablevibration)))
 					GoToSoundScreen();
-				else if (actionName.equals(getString(R.string.shortenscreentimeout)))
+				else if (raw.equals(getString(R.string.shortenscreentimeout)))
 					GoToDisplayScreen();
-				else if (actionName.equals(getString(R.string.disableautomaticsync)))
+				else if (raw.equals(getString(R.string.disableautomaticsync)))
 					GoToSyncScreen();
-				else if (actionName.equals(getString(R.string.helpcarat)))
+				else if (raw.equals(getString(R.string.helpcarat))) {
 					mMainActivity.showHTMLFile("collectdata");
-				else if (actionName.equals(getString(R.string.questionnaire)))
+				} else if (raw.equals(getString(R.string.questionnaire))) {
 					openQuestionnaire();
+				} else {
+					displayKillAppFragment(fullObject, raw);
+				}
 			}
 
+			/*
+			 * display a fragment (KillAppFragment) for killing the buggy app
+			 */
+			private void displayKillAppFragment(SimpleHogBug fullObject, final String raw) {
+				// we need to pass the buggy app info (as a bundle named "args")
+				// to the fragment
+				Bundle args = new Bundle();
+				args.putString("raw", raw);
+
+				Type type = fullObject.getType();
+				if (type == Type.BUG) {
+					args.putBoolean("isBug", true);
+					args.putBoolean("isHog", false);
+					args.putBoolean("isOther", false);
+				} else if (type == Type.HOG) {
+					args.putBoolean("isHog", true);
+					args.putBoolean("isBug", false);
+					args.putBoolean("isOther", false);
+				}
+				if (type == Type.OTHER) {
+					args.putString("appPriority", fullObject.getAppPriority());
+				} else {
+					args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));
+				}
+
+				args.putString("benefit", fullObject.getBenefitText());
+
+				Fragment fragment = new KillAppFragment();
+				fragment.setArguments(args);
+
+				CaratApplication.getMainActivity().replaceFragment(fragment, "killApp");
+
+				/*
+				 * if (raw.equals("Disable bluetooth")) { double benefitOther =
+				 * PowerProfileHelper. bluetoothBenefit(c); hours = (int)
+				 * (benefitOther); min = (int) (benefitOther * 60); min -= hours
+				 * * 60; } else if (raw.equals("Disable Wifi")) { double
+				 * benefitOther = PowerProfileHelper.wifiBenefit(c); hours =
+				 * (int) (benefitOther); min = (int) (benefitOther * 60); min -=
+				 * hours * 60; } else if (raw.equals("Dim the Screen")) { double
+				 * benefitOther = PowerProfileHelper.
+				 * screenBrightnessBenefit(c); hours = (int) (benefitOther); min
+				 * = (int) (benefitOther * 60); min -= hours * 60; }
+				 */
+			}
 		});
 
-        initUpgradeOsView(rootView);
+        initUpgradeOsView(root);
 
-        return rootView;
+//        if (savedInstanceState != null){
+//        Object o = savedInstanceState.get("savedInstance");
+//        if (o != null) {
+//            SuggestionsFragment previous = (SuggestionsFragment) o;
+//            viewIndex = previous.viewIndex;
+//            if (previous.killView != null && previous.killView == previous.vf.getChildAt(viewIndex)) {
+//                restoreKillView(previous.killView);
+//            }
+//        }
+//        }
+        
+        return root;
     }
     
     private void initUpgradeOsView(View root) {
@@ -177,22 +248,20 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
     public void onResume() {
     	// TODO: The following method call (setActionList) and the original method should be removed.
     	// we no longer manipulate fragments directly.
-        //  CaratApplication.setActionList(this); 
+        CaratApplication.setActionList(this); 
         refresh();
         super.onResume();
     }
 
     public void refresh() {
         CaratApplication caratAppllication = (CaratApplication) CaratApplication.getMainActivity().getApplication();
-        final ListView lv = (ListView) rootView.findViewById(android.R.id.list);
-        lv.setAdapter(new SettingsSuggestionAdapter(caratAppllication, CaratApplication.storage.getSettingsReport()));
-        // emptyCheck(lv);
+        final ListView lv = (ListView) root.findViewById(android.R.id.list);
+        lv.setAdapter(new HogBugSuggestionsAdapter(caratAppllication, CaratApplication.storage.getHogReport(), CaratApplication.storage.getBugReport()));
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-    	// FIXME: disabled until fixing serialization (appropriate serialVersionUID)
-        //  outState.putSerializable("savedInstance", this);
+//        outState.putSerializable("savedInstance", this);
         super.onSaveInstanceState(outState);
     }
 

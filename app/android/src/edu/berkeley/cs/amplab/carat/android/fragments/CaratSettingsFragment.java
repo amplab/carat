@@ -1,4 +1,4 @@
-package edu.berkeley.cs.amplab.carat.android.subscreens;
+package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import android.content.Context;
 import android.content.Intent;

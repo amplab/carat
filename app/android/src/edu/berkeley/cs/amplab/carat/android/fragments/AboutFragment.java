@@ -1,5 +1,8 @@
-package edu.berkeley.cs.amplab.carat.android;
+package edu.berkeley.cs.amplab.carat.android.fragments;
 
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.R.id;
+import edu.berkeley.cs.amplab.carat.android.R.layout;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

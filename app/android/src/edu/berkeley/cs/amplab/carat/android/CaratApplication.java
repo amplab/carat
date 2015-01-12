@@ -13,6 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
+import edu.berkeley.cs.amplab.carat.android.fragments.BugsOrHogsFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.SuggestionsFragment;
+import edu.berkeley.cs.amplab.carat.android.model_objects.MyDeviceData;
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
@@ -201,7 +204,6 @@ public class CaratApplication extends Application {
 				try {
 					unregisterReceiver(sampler);
 				} catch (IllegalArgumentException e) {
-					// No-op
 				}
 				registerReceiver(sampler, intentFilter);
 
@@ -413,18 +415,12 @@ public class CaratApplication extends Application {
 		return REGISTERED_UUID;
 	}
 
-	
 
 	public void refreshUi() {
 		new Thread() {
 			public void run() {
 				boolean connecting = false;
 				Context co = getApplicationContext();
-
-				// refreshing the CaratSuggestionFragment should only be done
-				// if the fragment is in the foreground. It's already done in
-				// onResume() in CaratSuggestionFragment
-				// refreshActions();
 
 				final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
 				final boolean useWifiOnly = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
@@ -455,14 +451,6 @@ public class CaratApplication extends Application {
 
 				// do this regardless
 				setReportData();
-				// Update UI elements
-
-				// should be only done if the fragment is attached.
-				// refresh() is already done in the onResume() method of the
-				// fragment
-				// refreshActions();
-				// CaratApplication.refreshBugs();
-				// CaratApplication.refreshHogs();
 
 				CaratApplication.setActionProgress(90, getString(R.string.finishing), false);
 
@@ -470,7 +458,7 @@ public class CaratApplication extends Application {
 					CaratApplication.setActionFinished();
 
 				if (connecting) {
-					// wait for wifi to come up
+					// wait for WiFi to come up
 					try {
 						Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
 					} catch (InterruptedException e1) {
@@ -493,10 +481,7 @@ public class CaratApplication extends Application {
 
 					// do this regardless
 					setReportData();
-					// Update UI elements
-					// refreshActions();
-					// refreshBugs();
-					// refreshHogs();
+					
 					setActionProgress(90, getString(R.string.finishing), false);
 				}
 				CaratApplication.setActionFinished();
@@ -574,63 +559,4 @@ public class CaratApplication extends Application {
 		
 		myDeviceData.setAllFields(freshness, h, min, caratId, blS);
 	}		
-}
-
-class MyDeviceData {
-	private long lastReportsTimeMillis;
-	private long freshnessHours;
-	private long freshnessMinutes;
-	private String caratId;
-	private String batteryLife;
-
-	public MyDeviceData() {
-	}
-
-	public void setAllFields(long lastReportsTimeMillis, long freshnessHours, long freshnessMinutes, String caratId, String batteryLife) {
-		this.lastReportsTimeMillis = lastReportsTimeMillis;
-		this.freshnessHours = freshnessHours;
-		this.freshnessMinutes = freshnessMinutes;
-		this.caratId = caratId;
-		this.batteryLife = batteryLife;
-	}
-	
-	public long getLastReportsTimeMillis() {
-		return lastReportsTimeMillis;
-	}
-
-	public void setLastReportsTimeMillis(long lastReportsTimeMillis) {
-		this.lastReportsTimeMillis = lastReportsTimeMillis;
-	}
-
-	public long getFreshnessHours() {
-		return freshnessHours;
-	}
-
-	public void setFreshnessHours(long freshnessHours) {
-		this.freshnessHours = freshnessHours;
-	}
-
-	public long getFreshnessMinutes() {
-		return freshnessMinutes;
-	}
-
-	public void setFreshnessMinutes(long freshnessMinutes) {
-		this.freshnessMinutes = freshnessMinutes;
-	}
-
-	public String getCaratId() {
-		return caratId;
-	}
-
-	public void setCaratId(String caratId) {
-		this.caratId = caratId;
-	}
-
-	public String getBatteryLife() {
-		return batteryLife;
-	}
-
-	public void setBatteryLife(String batteryLife) {
-		this.batteryLife = batteryLife;
-	}
 }

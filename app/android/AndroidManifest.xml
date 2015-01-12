@@ -46,7 +46,7 @@
         </activity>
         
         <activity
-            android:name=".SplashScreen"
+            android:name=".SplashActivity"
             android:label="@string/title_activity_splash_screen" 
             android:screenOrientation="portrait"
             android:theme="@style/notitle" >

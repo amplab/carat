@@ -12,7 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.Toast;
-import edu.berkeley.cs.amplab.carat.android.SplashScreen.PrefetchData;
+import edu.berkeley.cs.amplab.carat.android.SplashActivity.PrefetchData;
 import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 
 /**
@@ -22,14 +22,20 @@ import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
  * @author Javad Sadeqzadeh
  *
  */
-public class SplashScreen extends ActionBarActivity {
+public class SplashActivity extends ActionBarActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash_screen);
 		
+		// download the pie chart info (user statistics) in the background, while displaying the splash screen. 
+		// when ready, pass the fetched info to the next activity (MainActivity) for displaying
 		new PrefetchData().execute();
+	}
+	
+	@Override
+	public void onBackPressed() {
 	}
 
 	public class PrefetchData extends AsyncTask<Void, Void, Void> {
@@ -127,7 +133,7 @@ public class SplashScreen extends ActionBarActivity {
             if (wellbehaved != null && hogs != null && bugs != null) {
 				// After completing http call
 				// will close this activity and launch the main activity
-				Intent intentMainActvity = new Intent(SplashScreen.this, MainActivity.class);
+				Intent intentMainActvity = new Intent(SplashActivity.this, MainActivity.class);
 				intentMainActvity.putExtra("wellbehaved", wellbehaved);
 				intentMainActvity.putExtra("hogs", hogs);
 				intentMainActvity.putExtra("bugs", bugs);
