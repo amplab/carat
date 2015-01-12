@@ -337,7 +337,8 @@ static NSMutableDictionary * daemonsList = nil;
 
 - (void) initDaemonCache
 {
-    NSError *error = nil;
+    // This looks like a copypaste error.
+    //NSError *error = nil;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 
                                                          NSUserDomainMask, 
                                                          YES);
@@ -1778,9 +1779,10 @@ static id instance = nil;
 }
 
 
-//
+//  NOTE: This is commented out since it has not been used for a long time.
 //  Get information about the memory.
 //
+/*
 - (void) printMemoryInfo
 {
     int pagesize = [[UIDevice currentDevice] pageSize];
@@ -1818,7 +1820,7 @@ static id instance = nil;
     
     DLog(@"Physical memory = %8d bytes", [[UIDevice currentDevice] totalMemory]);
     DLog(@"User memory =     %8d bytes", [[UIDevice currentDevice] userMemory]);
-}
+}*/
 
 #pragma mark - Core Data stack
 
