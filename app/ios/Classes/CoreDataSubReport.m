@@ -21,5 +21,9 @@
 @dynamic distributionXWith;
 @dynamic distributionYWithout;
 @dynamic mainreport;
+@dynamic error;
+@dynamic errorWithout;
+@dynamic samples;
+@dynamic samplesWithout;
 
 @end
