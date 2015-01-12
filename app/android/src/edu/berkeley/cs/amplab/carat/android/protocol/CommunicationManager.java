@@ -18,8 +18,8 @@ import com.flurry.android.FlurryAgent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.CaratService;
@@ -54,17 +54,17 @@ public class CommunicationManager {
 		 * os are different -> register 4. registered, all fields equal to
 		 * stored -> do not register
 		 */
-		timeBasedUuid = p.getBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, false);
-		newuuid = p.getBoolean(CaratApplication.PREFERENCE_NEW_UUID, false);
-		registered = !p.getBoolean(CaratApplication.PREFERENCE_FIRST_RUN, true);
+		timeBasedUuid = p.getBoolean(Constants.PREFERENCE_TIME_BASED_UUID, false);
+		newuuid = p.getBoolean(Constants.PREFERENCE_NEW_UUID, false);
+		registered = !p.getBoolean(Constants.PREFERENCE_FIRST_RUN, true);
 		register = !registered;
 		String storedUuid = p.getString(CaratApplication.getRegisteredUuid(), null);
 		if (!register) {
 			if (storedUuid == null)
 				register = true;
 			else {
-				String storedOs = p.getString(CaratApplication.REGISTERED_OS, null);
-				String storedModel = p.getString(CaratApplication.REGISTERED_MODEL, null);
+				String storedOs = p.getString(Constants.REGISTERED_OS, null);
+				String storedModel = p.getString(Constants.REGISTERED_MODEL, null);
 
 				String uuid = storedUuid;
 
@@ -145,7 +145,7 @@ public class CommunicationManager {
 					// communication
 					// fails we have a stable UUID.
 					p.edit().putString(CaratApplication.getRegisteredUuid(), uuId).commit();
-					p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true).commit();
+					p.edit().putBoolean(Constants.PREFERENCE_TIME_BASED_UUID, true).commit();
 					timeBasedUuid = true;
 				}
 			}
@@ -169,7 +169,7 @@ public class CommunicationManager {
 				// This needs to be saved now, so that if server communication
 				// fails we have a stable UUID.
 				p.edit().putString(CaratApplication.getRegisteredUuid(), uuId).commit();
-				p.edit().putBoolean(CaratApplication.PREFERENCE_TIME_BASED_UUID, true).commit();
+				p.edit().putBoolean(Constants.PREFERENCE_TIME_BASED_UUID, true).commit();
 				timeBasedUuid = true;
 			}
 			String os = SamplingLibrary.getOsVersion();
@@ -177,12 +177,12 @@ public class CommunicationManager {
 			Log.d("CommunicationManager", "First run, registering this device: " + uuId + ", " + os + ", " + model);
 			try {
 				registerMe(instance, uuId, os, model);
-				p.edit().putBoolean(CaratApplication.PREFERENCE_FIRST_RUN, false).commit();
+				p.edit().putBoolean(Constants.PREFERENCE_FIRST_RUN, false).commit();
 				register = false;
 				registered = true;
 				p.edit().putString(CaratApplication.getRegisteredUuid(), uuId).commit();
-				p.edit().putString(CaratApplication.REGISTERED_OS, os).commit();
-				p.edit().putString(CaratApplication.REGISTERED_MODEL, model).commit();
+				p.edit().putString(Constants.REGISTERED_OS, os).commit();
+				p.edit().putString(Constants.REGISTERED_MODEL, model).commit();
 			} catch (TException e) {
 				Log.e("CommunicationManager", "Registration failed, will try again next time: " + e);
 				e.printStackTrace();
@@ -200,7 +200,7 @@ public class CommunicationManager {
 		// Do not refresh if not connected
 		if (!SamplingLibrary.networkAvailable(a.getApplicationContext()))
 			return;
-		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
 			return;
 		// Establish connection
 		if (register) {
@@ -266,7 +266,7 @@ public class CommunicationManager {
 		success = refreshHogReports(uuId, model);
 
 		boolean bl = true;
-		if (System.currentTimeMillis() - CaratApplication.storage.getBlacklistFreshness() < CaratApplication.FRESHNESS_TIMEOUT_BLACKLIST)
+		if (System.currentTimeMillis() - CaratApplication.storage.getBlacklistFreshness() < Constants.FRESHNESS_TIMEOUT_BLACKLIST)
 			bl = false;
 
 		if (success) {
@@ -300,7 +300,7 @@ public class CommunicationManager {
 	}
 
 	private boolean refreshMainReports(String uuid, String os, String model) {
-		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
 			return false;
 		CaratService.Client instance = null;
 		try {
@@ -329,7 +329,7 @@ public class CommunicationManager {
 	}
 
 	private boolean refreshBugReports(String uuid, String model) {
-		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
 			return false;
 		CaratService.Client instance = null;
 		try {
@@ -355,7 +355,7 @@ public class CommunicationManager {
 	}
 
 	private boolean refreshHogReports(String uuid, String model) {
-		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
 			return false;
 		CaratService.Client instance = null;
 		try {
@@ -384,7 +384,7 @@ public class CommunicationManager {
 	}
 
 	private boolean refreshSettingsReports(String uuid, String model) {
-		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < CaratApplication.FRESHNESS_TIMEOUT)
+		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
 			return false;
 		CaratService.Client instance = null;
 		try {
@@ -477,7 +477,7 @@ public class CommunicationManager {
 	}
 
 	private boolean getQuickHogsAndMaybeRegister(String uuid, String os, String model) {
-		if (System.currentTimeMillis() - CaratApplication.storage.getQuickHogsFreshness() < CaratApplication.FRESHNESS_TIMEOUT_QUICKHOGS)
+		if (System.currentTimeMillis() - CaratApplication.storage.getQuickHogsFreshness() < Constants.FRESHNESS_TIMEOUT_QUICKHOGS)
 			return false;
 		CaratService.Client instance = null;
 		try {

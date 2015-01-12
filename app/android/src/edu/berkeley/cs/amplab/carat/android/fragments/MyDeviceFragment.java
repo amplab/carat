@@ -12,7 +12,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -269,7 +270,7 @@ public class MyDeviceFragment extends Fragment {
      * show battery consumptions statistics of the current OS (and OS version) (average battery consumption [expected value])
      */
     public void showOsInfo() {
-    	detailsFragment = AppDetailsFragment.getInstance(Type.OS, null, false); 
+    	detailsFragment = AppDetailsFragment.getInstance(Constants.Type.OS, null, false); 
     	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "OsDetails");
     }
 
@@ -277,7 +278,7 @@ public class MyDeviceFragment extends Fragment {
      * show battery consumptions statistics of the current device (average battery consumption [expected value])
      */
     public void showDeviceInfo() {
-    	detailsFragment = AppDetailsFragment.getInstance(Type.MODEL, null, false); 
+    	detailsFragment = AppDetailsFragment.getInstance(Constants.Type.MODEL, null, false); 
     	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "DeviceDetails");
     }
 

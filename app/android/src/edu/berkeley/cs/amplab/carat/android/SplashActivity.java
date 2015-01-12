@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.lang.reflect.Field;
+import java.net.InetAddress;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +23,14 @@ import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
  *
  */
 public class SplashActivity extends ActionBarActivity {
+	private final String TAG = "SplashScreen";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Log.d(TAG, "about to set the content view");
+		
 		setContentView(R.layout.activity_splash_screen);
 		
 		// download the pie chart info (user statistics) in the background, while displaying the splash screen. 
@@ -39,7 +44,7 @@ public class SplashActivity extends ActionBarActivity {
 
 	public class PrefetchData extends AsyncTask<Void, Void, Void> {
 		String serverResponseJson = null;
-		private final String TAG = "SplashScreen";
+		
 		
 		private String wellbehaved = null,
 					   hogs = null,
@@ -64,10 +69,20 @@ public class SplashActivity extends ActionBarActivity {
              * 5. etc.,
              */
             JsonParser jsonParser = new JsonParser();
-            serverResponseJson = jsonParser
-			    .getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
- 
+            
+            try {
+            	if (isInternetAvailable()) {
+            		Log.d(TAG, "internet available");
+            		serverResponseJson = jsonParser
+            				.getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
+            	}
+            } catch (Exception e) {
+            	Log.d(TAG, "exception occured here");
+            	Log.d("SplashActivity", e.getStackTrace().toString());
+            }
+            
             if (serverResponseJson != null && serverResponseJson != "") {
+            	Log.d(TAG, "json not null");
                 try {
                     JSONArray jsonArray = new JSONObject(serverResponseJson).getJSONArray("android-apps");
                     
@@ -89,10 +104,41 @@ public class SplashActivity extends ActionBarActivity {
                 	Log.e(TAG, e.getStackTrace().toString());
                 }
             }
- 
+            
+            Log.d(TAG, "json null, returning null");
             return null;
         }
 
+        @Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			// After completing http call
+			// will close this activity and launch the main activity
+			Intent intentMainActvity = new Intent(SplashActivity.this, MainActivity.class);
+			Log.d(TAG, "created the intent");
+			boolean gotDataSuccessfully = 
+					wellbehaved != null && wellbehaved != "" 
+					&& hogs != null && hogs != "" 
+					&& bugs != null && bugs != "";
+			if (gotDataSuccessfully) {
+				Log.d(TAG, "about to set the arguments of the newly created intent");
+				intentMainActvity.putExtra("wellbehaved", wellbehaved);
+				intentMainActvity.putExtra("hogs", hogs);
+				intentMainActvity.putExtra("bugs", bugs);
+			} else {
+				intentMainActvity.putExtra("wellbehaved", Constants.DATA_NOT_AVAIABLE);
+				intentMainActvity.putExtra("hogs", Constants.DATA_NOT_AVAIABLE);
+				intentMainActvity.putExtra("bugs", Constants.DATA_NOT_AVAIABLE);
+			}
+			
+			Log.d(TAG, "about to start the main activity");
+			startActivity(intentMainActvity);
+			
+			Log.d(TAG, "about to close this async task");
+			// close this AsyncTask
+			finish();
+		}
+        
         /**
          * Using Java reflections to set fields by passing their name to a method
          * @param jsonArray the json array from which we want to extract different json objects
@@ -124,35 +170,20 @@ public class SplashActivity extends ActionBarActivity {
 			}
 			
 		}
- 
-        @Override
-        protected void onPostExecute(Void result) {
-            super.onPostExecute(result);
-            
-            if (wellbehaved != null && hogs != null && bugs != null) {
-				// After completing http call
-				// will close this activity and launch the main activity
-				Intent intentMainActvity = new Intent(SplashActivity.this, MainActivity.class);
-				intentMainActvity.putExtra("wellbehaved", wellbehaved);
-				intentMainActvity.putExtra("hogs", hogs);
-				intentMainActvity.putExtra("bugs", bugs);
-				startActivity(intentMainActvity);
-            } else {
-            	Log.e(TAG, "unable to set fields: wellbehaved, hogs, and bugs (needed to be sent to the MainActivity)");
-            	displayConnectionError();
-            }
-            
-            // close this AsyncTask
-			finish();
-        }
-
-		private void displayConnectionError() {
-			String errorText =  getResources().getString(R.string.statserror);
-			// to make the duration of the toast longer than Toast.LENGTH_LONG, 
-			// looping is an easy hack
-			for (int i=0; i < 2; i++) {
-				Toast.makeText(getApplicationContext(), errorText, Toast.LENGTH_LONG).show();
-			}
-		}
 	}
+	
+	private boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com"); //You can replace it with your name
+            if (ipAddr.equals("")) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }

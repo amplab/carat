@@ -24,6 +24,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
@@ -109,6 +110,8 @@ public class MainActivity extends ActionBarActivity {
 		 */
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
+		
+		Log.d(TAG, "about to set the layout");
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
@@ -117,8 +120,9 @@ public class MainActivity extends ActionBarActivity {
 		// read and load the preferences specified in our xml preference file
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		
+		Log.d(TAG, "about to initialize fragments");
 		preInittializeFragments();
-
+		Log.d(TAG, "done with fragment initialization");
 		/*
 		 * Before using the field "fullVersion", first invoke setTitleNormal()
 		 * or setFullVersion() to set this field
@@ -316,6 +320,26 @@ public class MainActivity extends ActionBarActivity {
 	public void setTitleUpdatingFailed(String what) {
 		this.setTitle(getString(R.string.didntget) + " " + what);
 	}
+	
+	/**
+	 * Used in the system settings fragment and the summary fragment
+	 * @param intentString
+	 * @param thing
+	 */
+	public void safeStart(String intentString, String thing) {
+        Intent intent = null;
+        try {
+            intent = new Intent(intentString);
+            startActivity(intent);
+        } catch (Throwable th) {
+            Log.e(TAG, "Could not start activity: " + intent, th);
+            if (thing != null) {
+                Toast t = Toast.makeText(this, getString(R.string.opening) + thing + getString(R.string.notsupported),
+                        Toast.LENGTH_SHORT);
+                t.show();
+            }
+        }
+    }
 
 	@Override
 	protected void onStart() {
@@ -397,7 +421,9 @@ public class MainActivity extends ActionBarActivity {
 	 * may help for better smoothness when user selects a navigation drawer item
 	 */
 	private void preInittializeFragments() {
+		Log.d(TAG, "about to initialize SummaryFragment");
 		initSummaryFragment();
+		Log.d(TAG, "done initializing SummaryFragment");
 		initSuggestionsFragment();
 		initMyDeviceFragment();
 		initBugsOrHogsFragment(true);
@@ -408,18 +434,36 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void initSummaryFragment() {
-		mSummaryFragment = new SummaryFragment();
-		mArgs = new Bundle();
+		int totalWellbehavedAppsCount = 0,
+			totalHogsCount = 0,
+			totalBugsCount = 0;
 		
 		/*
-		 * Reading the arguments passed to the current activity from the in the SplashScreen
-		 * These values have been fetched from the Carat statistics URL in the SplashScreen.
-		 * These values should be read in onCreate() of the main activity
+		 * Read the arguments passed to the current activity from the SplashScreen
+		 * These values have been fetched from the Carat statistics URL in the SplashScreen,
+		 * and should be read in onCreate() of the main activity
 		 */
 		Intent intent = getIntent();
-		int totalWellbehavedAppsCount = Integer.parseInt(intent.getStringExtra("wellbehaved"));
-		int totalHogsCount = Integer.parseInt(intent.getStringExtra("hogs"));
-		int totalBugsCount = Integer.parseInt(intent.getStringExtra("bugs"));
+		String wellbehaved = intent.getStringExtra("wellbehaved"),
+			   hogs = intent.getStringExtra("hogs"),
+			   bugs = intent.getStringExtra("bugs");
+		
+		Log.d(TAG, "fetched the strings. wellbehaved=" + wellbehaved + ", hogs=" + hogs + ", bugs=" + bugs);
+		
+		boolean isDataAvaiable = ! wellbehaved.equals(Constants.DATA_NOT_AVAIABLE) 
+							&& ! hogs.equals(Constants.DATA_NOT_AVAIABLE) 
+							&& ! bugs.equals(Constants.DATA_NOT_AVAIABLE);
+		
+		if (isDataAvaiable) {
+			Log.d(TAG, "strings are not available. wellbehaved=" + wellbehaved 
+					+ ", hogs=" + hogs + ", bugs=" + bugs);
+			totalWellbehavedAppsCount = Integer.parseInt(wellbehaved);
+			totalHogsCount = Integer.parseInt(hogs);
+			totalBugsCount = Integer.parseInt(bugs);
+		}
+		
+		mSummaryFragment = new SummaryFragment();
+		mArgs = new Bundle();
 		
 		mArgs.putInt("wellbehaved", totalWellbehavedAppsCount);
 		mArgs.putInt("hogs", totalHogsCount);

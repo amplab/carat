@@ -96,66 +96,51 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 
     /* Show the bluetooth setting */
     public void GoToBluetoothScreen() {
-        safeStart(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS, getString(R.string.bluetoothsettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS, getString(R.string.bluetoothsettings));
     }
 
     /* Show the wifi setting */
     public void GoToWifiScreen() {
-        safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
     }
 
     /*
      * Show the display setting including screen brightness setting, sleep mode
      */
     public void GoToDisplayScreen() {
-        safeStart(android.provider.Settings.ACTION_DISPLAY_SETTINGS, getString(R.string.screensettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_DISPLAY_SETTINGS, getString(R.string.screensettings));
     }
 
     /*
      * Show the sound setting including phone ringer mode, vibration mode, haptic feedback setting and other sound options
      */
     public void GoToSoundScreen() {
-        safeStart(android.provider.Settings.ACTION_SOUND_SETTINGS, getString(R.string.soundsettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_SOUND_SETTINGS, getString(R.string.soundsettings));
     }
 
     /*
      * Show the location service setting including configuring gps provider, network provider
      */
     public void GoToLocSevScreen() {
-        safeStart(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS, getString(R.string.locationsettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS, getString(R.string.locationsettings));
     }
 
     /* Show the synchronization setting */
     public void GoToSyncScreen() {
-        safeStart(android.provider.Settings.ACTION_SYNC_SETTINGS, getString(R.string.syncsettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_SYNC_SETTINGS, getString(R.string.syncsettings));
     }
 
     /*
      * Show the mobile network setting including configuring 3G/2G, network operators
      */
     public void GoToMobileNetworkScreen() {
-        safeStart(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS, getString(R.string.mobilenetworksettings));
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS, getString(R.string.mobilenetworksettings));
     }
 
     /* Show the application setting */
     public void GoToAppScreen() {
-        safeStart(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS, getString(R.string.appsettings));
-    }
-
-    private void safeStart(String intentString, String thing) {
-        Intent intent = null;
-        try {
-            intent = new Intent(intentString);
-            startActivity(intent);
-        } catch (Throwable th) {
-            Log.e(TAG, "Could not start activity: " + intent, th);
-            if (thing != null) {
-                Toast t = Toast.makeText(getActivity(), getString(R.string.opening) + thing + getString(R.string.notsupported),
-                        Toast.LENGTH_SHORT);
-                t.show();
-            }
-        }
-    }
+    	mMainActivity.safeStart(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS, getString(R.string.appsettings));
+    }    
 
     /**
      * Open a Carat-related questionnaire.

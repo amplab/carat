@@ -156,9 +156,7 @@
     <!-- TODO: these need translation -->
     
     <!-- error messages -->
-    <string name="statserror">Is your Wifi or mobile data on? 
-        Enable Internet and try again! 
-        Unable to read statistics from server.</string>
+    <string name="connection_error">Offline. Click o turn on Wifi.</string>
     
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>

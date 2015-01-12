@@ -17,7 +17,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.lists.HogBugSuggestionsAdapter;
@@ -86,17 +87,17 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 				Bundle args = new Bundle();
 				args.putString("raw", raw);
 
-				Type type = fullObject.getType();
-				if (type == Type.BUG) {
+				Constants.Type type = fullObject.getType();
+				if (type == Constants.Type.BUG) {
 					args.putBoolean("isBug", true);
 					args.putBoolean("isHog", false);
 					args.putBoolean("isOther", false);
-				} else if (type == Type.HOG) {
+				} else if (type == Constants.Type.HOG) {
 					args.putBoolean("isHog", true);
 					args.putBoolean("isBug", false);
 					args.putBoolean("isOther", false);
 				}
-				if (type == Type.OTHER) {
+				if (type == Constants.Type.OTHER) {
 					args.putString("appPriority", fullObject.getAppPriority());
 				} else {
 					args.putString("appPriority", CaratApplication.translatedPriority(fullObject.getAppPriority()));

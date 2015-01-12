@@ -7,21 +7,22 @@
     android:orientation="vertical">
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/summaryscreentitle"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/gray" />
-            
+        android:id="@+id/summary_screen_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/summary_screen_title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/gray" />
+
     <com.echo.holographlibrary.PieGraph
+        android:id="@+id/piegraph"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"
         android:layout_margin="@dimen/default_margin"
-        android:id="@+id/piegraph"
+        android:layout_weight="1"
         app:pieInnerCircleRatio="100"
-        app:pieSlicePadding="0dip"/>
+        app:pieSlicePadding="0dip" />
 
 </LinearLayout>

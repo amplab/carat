@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
@@ -46,7 +47,7 @@ public class SampleSender {
     
             final SharedPreferences p = PreferenceManager
                     .getDefaultSharedPreferences(c);
-            final boolean useWifiOnly = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
+            final boolean useWifiOnly = p.getBoolean(Constants.WIFI_ONLY_PREFERENCE_KEY, false);
             Log.i("wifi-preference-SampleSender", String.valueOf(useWifiOnly));
     
             boolean connected = (!useWifiOnly && networkStatus == SamplingLibrary.NETWORKSTATUS_CONNECTED)
@@ -64,12 +65,12 @@ public class SampleSender {
                 /* End Click Tracking: Track sample sending. */
                 
                 int successSum = 0;
-                for (int batches = 0; batches < CaratApplication.COMMS_MAX_BATCHES
+                for (int batches = 0; batches < Constants.COMMS_MAX_BATCHES
                         && batches < samples
-                                / CaratApplication.COMMS_MAX_UPLOAD_BATCH + 1; batches++) {
+                                / Constants.COMMS_MAX_UPLOAD_BATCH + 1; batches++) {
                     SortedMap<Long, Sample> map = CaratSampleDB.getInstance(c)
                             .queryOldestSamples(
-                                    CaratApplication.COMMS_MAX_UPLOAD_BATCH);
+                                    Constants.COMMS_MAX_UPLOAD_BATCH);
                     if (map.size() > 0) {
                         int progress = (int) (successSum * 1.0 / samples * 100.0);
                         CaratApplication.setActionProgress(progress, successSum + "/"

@@ -13,7 +13,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.storage.CaratSampleDB;
@@ -65,7 +65,7 @@ public class SamplerService extends IntentService {
 				// onBoot(context);
 			}
 
-			if (action.equals(CaratApplication.ACTION_CARAT_SAMPLE)) {
+			if (action.equals(Constants.ACTION_CARAT_SAMPLE)) {
 				// set up sampling.
 				// Let sampling happen on battery change
 				IntentFilter intentFilter = new IntentFilter();
@@ -186,7 +186,7 @@ public class SamplerService extends IntentService {
         long lastNotify = Sampler.getInstance().getLastNotify();
         
         // Do not notify if it is less than 2 days from last notification
-        if (lastNotify + CaratApplication.FRESHNESS_TIMEOUT_QUICKHOGS > now)
+        if (lastNotify + Constants.FRESHNESS_TIMEOUT_QUICKHOGS > now)
             return;
         
         int samples = CaratSampleDB.getInstance(context).countSamples();

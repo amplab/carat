@@ -1,7 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import android.app.ActivityManager.RunningAppProcessInfo;
-import android.app.AlarmManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +14,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import edu.berkeley.cs.amplab.carat.android.fragments.BugsOrHogsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.SuggestionsFragment;
-import edu.berkeley.cs.amplab.carat.android.model_objects.MyDeviceData;
+import edu.berkeley.cs.amplab.carat.android.model_classes.MyDeviceData;
 import edu.berkeley.cs.amplab.carat.android.protocol.CommunicationManager;
 import edu.berkeley.cs.amplab.carat.android.protocol.SampleSender;
 import edu.berkeley.cs.amplab.carat.android.sampling.Sampler;
@@ -32,77 +31,13 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
  */
 public class CaratApplication extends Application {
 
-	// Report Freshness timeout. Default: 15 minutes
-//	public static final long FRESHNESS_TIMEOUT = 30 * 1000;
-	 public static final long FRESHNESS_TIMEOUT =
-	 AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-	// Blacklist freshness timeout. Default 24h.
-//	public static final long FRESHNESS_TIMEOUT_BLACKLIST = 30 * 1000;
-	 public static final long FRESHNESS_TIMEOUT_BLACKLIST = 24 * 3600 * 1000;
-	// Blacklist freshness timeout. Default 2 days.
-//	public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 30 * 1000;
-	 public static final long FRESHNESS_TIMEOUT_QUICKHOGS = 2* 24 * 3600 *
-	 1000;
-	// If this preference is true, register this as a new device on the Carat
-	// server.
-	public static final String PREFERENCE_FIRST_RUN = "carat.first.run";
-	private static final String REGISTERED_UUID = "carat.registered.uuid";
-	public static final String REGISTERED_OS = "carat.registered.os";
-	public static final String REGISTERED_MODEL = "carat.registered.model";
-	// if you change the preference key of any of our preference widgets (in res/xml/preferences.xml), 
-	// update the following constants as well 
-	public static final String WIFI_ONLY_PREFERENCE_KEY = "wifiOnlyPreferenceKey";
-	public static final String SHARE_PREFERENCE_KEY = "sharePreferenceKey";
-	public static final String FEEDBACK_PREFERENCE_KEY = "feedbackPreferenceKey";
-	
-	
-	public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
-	public static final String PREFERENCE_TIME_BASED_UUID = "carat.uuid.timebased";
-
-	// Check for and send new samples at most every 15 minutes, but only when
-	// the user wakes up/starts Carat
-	public static final long COMMS_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-	// When waking up from screen off, wait 5 seconds for wifi etc to come up
-	public static final long COMMS_WIFI_WAIT = 5 * 1000;
-	// Send up to 10 samples at a time
-	public static final int COMMS_MAX_UPLOAD_BATCH = 10;
-
-	// Alarm event for sampling when battery has not changed for
-	// SAMPLE_INTERVAL_MS. Currently not used.
-	public static final String ACTION_CARAT_SAMPLE = "edu.berkeley.cs.amplab.carat.android.ACTION_SAMPLE";
-	// If true, install Sampling events to occur at boot. Currently not used.
-	public static final String PREFERENCE_SAMPLE_FIRST_RUN = "carat.sample.first.run";
-	public static final String PREFERENCE_SEND_INSTALLED_PACKAGES = "carat.sample.send.installed";
-
-	// default icon and Carat package name:
-	public static String CARAT_PACKAGE_NAME = "edu.berkeley.cs.amplab.carat.android";
-	// Used to blacklist old Carat
-	public static final String CARAT_OLD = "edu.berkeley.cs.amplab.carat";
-
-	// Used for bugs and hogs, and drawing
-	public enum Type {
-		OS, MODEL, HOG, BUG, SIMILAR, JSCORE, OTHER, BRIGHTNESS, WIFI, MOBILEDATA
-	}
-
 	// Used for logging
 	private static final String TAG = "CaratApp";
-	// Used for messages in comms threads
-	private static final String TRY_AGAIN = " will try again in " + (FRESHNESS_TIMEOUT / 1000) + "s.";
-
-	// Not in Android 2.2, but needed for app importances
-	public static final int IMPORTANCE_PERCEPTIBLE = 130;
-	// Used for non-app suggestions
-	public static final int IMPORTANCE_SUGGESTION = 123456789;
-
-	public static final String IMPORTANCE_NOT_RUNNING = "Not Running";
-	public static final String IMPORTANCE_UNINSTALLED = "uninstalled";
-	public static final String IMPORTANCE_INSTALLED = "installed";
-	public static final String IMPORTANCE_REPLACED = "replaced";
-
+	
 	// Used to map importances to human readable strings for sending samples to
 	// the server, and showing them in the process list.
 	private static final SparseArray<String> importanceToString = new SparseArray<String>();
-	public static final int COMMS_MAX_BATCHES = 50;
+	
 	{
 		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_EMPTY, "Not running");
 		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_BACKGROUND, "Background process");
@@ -110,9 +45,8 @@ public class CaratApplication extends Application {
 		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_VISIBLE, "Visible task");
 		importanceToString.put(RunningAppProcessInfo.IMPORTANCE_FOREGROUND, "Foreground app");
 
-		importanceToString.put(IMPORTANCE_PERCEPTIBLE, "Perceptible task");
-
-		importanceToString.put(IMPORTANCE_SUGGESTION, "Suggestion");
+		importanceToString.put(Constants.IMPORTANCE_PERCEPTIBLE, "Perceptible task");
+		importanceToString.put(Constants.IMPORTANCE_SUGGESTION, "Suggestion");
 	}
 
 	// NOTE: This needs to be initialized before CommunicationManager.
@@ -132,10 +66,8 @@ public class CaratApplication extends Application {
 	
 	public static MyDeviceData myDeviceData = new MyDeviceData();
 
-	// Application overrides
+	// Application overrides:
 	
-	
-
 	@Override
 	public void onLowMemory() {
 		super.onLowMemory();
@@ -412,7 +344,7 @@ public class CaratApplication extends Application {
 	}
 
 	public static String getRegisteredUuid() {
-		return REGISTERED_UUID;
+		return Constants.REGISTERED_UUID;
 	}
 
 
@@ -423,7 +355,7 @@ public class CaratApplication extends Application {
 				Context co = getApplicationContext();
 
 				final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
-				final boolean useWifiOnly = p.getBoolean(CaratApplication.WIFI_ONLY_PREFERENCE_KEY, false);
+				final boolean useWifiOnly = p.getBoolean(Constants.WIFI_ONLY_PREFERENCE_KEY, false);
 				String networkStatus = SamplingLibrary.getNetworkStatus(getApplicationContext());
 				String networkType = SamplingLibrary.getNetworkType(co);
 
@@ -439,7 +371,7 @@ public class CaratApplication extends Application {
 					} catch (Throwable th) {
 						// Any sort of malformed response, too short string,
 						// etc...
-						Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
+						Log.w(TAG, "Failed to refresh reports: " + th + Constants.MSG_TRY_AGAIN);
 						th.printStackTrace();
 					}
 					connecting = false;
@@ -460,7 +392,7 @@ public class CaratApplication extends Application {
 				if (connecting) {
 					// wait for WiFi to come up
 					try {
-						Thread.sleep(CaratApplication.COMMS_WIFI_WAIT);
+						Thread.sleep(Constants.COMMS_WIFI_WAIT);
 					} catch (InterruptedException e1) {
 						// ignore
 					}
@@ -474,7 +406,7 @@ public class CaratApplication extends Application {
 					} catch (Throwable th) {
 						// Any sort of malformed response, too short string,
 						// etc...
-						Log.w(TAG, "Failed to refresh reports: " + th + TRY_AGAIN);
+						Log.w(TAG, "Failed to refresh reports: " + th + Constants.MSG_TRY_AGAIN);
 						th.printStackTrace();
 					}
 					connecting = false;
@@ -555,7 +487,7 @@ public class CaratApplication extends Application {
 		
 		SharedPreferences p = PreferenceManager
 				.getDefaultSharedPreferences(getMainActivity());
-		String caratId = p.getString(REGISTERED_UUID, "0");
+		String caratId = p.getString(Constants.REGISTERED_UUID, "0");
 		
 		myDeviceData.setAllFields(freshness, h, min, caratId, blS);
 	}		

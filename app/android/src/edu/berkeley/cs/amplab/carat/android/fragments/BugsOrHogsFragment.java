@@ -18,7 +18,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.lists.HogsBugsAdapter;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
@@ -66,7 +67,7 @@ public class BugsOrHogsFragment extends Fragment {
 
 		View root = inflater.inflate(R.layout.hogs, container, false);
 
-		initGraphChart(root);
+		initEnergyDetails(root);
 		initDetailView(root);
 
 		if (savedInstanceState != null) {
@@ -85,7 +86,7 @@ public class BugsOrHogsFragment extends Fragment {
 
 				String appName = w.getAppName();
 
-				w.setParams(isBugs ? Type.BUG : Type.HOG, appName, w.getEv(), w.getEvWithout(), w.getSampleCount(),
+				w.setParams(isBugs ? Constants.Type.BUG : Constants.Type.HOG, appName, w.getEv(), w.getEvWithout(), w.getSampleCount(),
 						w.getSampleCountWithout(), w.getError(), w.getErrorWithout(), (ViewGroup) detailPage);
 				// w.postInvalidate();
 			}
@@ -103,7 +104,7 @@ public class BugsOrHogsFragment extends Fragment {
 		super.onSaveInstanceState(outState);
 	}
 
-	private void initGraphChart(View root) {
+	private void initEnergyDetails(View root) {
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		detailPage = inflater.inflate(R.layout.graph, null);
 		w = new DrawView(getActivity());
@@ -154,7 +155,7 @@ public class BugsOrHogsFragment extends Fragment {
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				// View target = findViewById(R.id.hogsGraphView);
 
-				AppDetailsFragment fragment = AppDetailsFragment.getInstance(Type.BUG, fullObject, isBugs);
+				AppDetailsFragment fragment = AppDetailsFragment.getInstance(Constants.Type.BUG, fullObject, isBugs);
 				CaratApplication.getMainActivity().replaceFragment(fragment, "AppDetailsFragment");
 			}
 		});

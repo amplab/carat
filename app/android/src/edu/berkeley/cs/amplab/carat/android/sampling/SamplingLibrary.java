@@ -70,6 +70,7 @@ import android.util.Log;
 import com.flurry.android.FlurryAgent;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
@@ -842,7 +843,7 @@ public final class SamplingLibrary {
 						pi.setPId(-1);
 						pi.setIsSystemApp(isSystemApp);
 						pi.setAppSignatures(sigList);
-						pi.setImportance(CaratApplication.IMPORTANCE_NOT_RUNNING);
+						pi.setImportance(Constants.IMPORTANCE_NOT_RUNNING);
 						pi.setInstallationPkg(pm.getInstallerPackageName(pkg));
 						pi.setVersionName(pak.versionName);
 						//TODO: disbaled for debugging
@@ -896,7 +897,7 @@ public final class SamplingLibrary {
 			pi.setPId(-1);
 			pi.setIsSystemApp(isSystemApp);
 			pi.setAppSignatures(sigList);
-			pi.setImportance(CaratApplication.IMPORTANCE_NOT_RUNNING);
+			pi.setImportance(Constants.IMPORTANCE_NOT_RUNNING);
 			pi.setInstallationPkg(pm.getInstallerPackageName(pkg));
 			pi.setVersionName(pak.versionName);
 		}
@@ -923,7 +924,7 @@ public final class SamplingLibrary {
 
 		Set<String> procs = new HashSet<String>();
 
-		boolean inst = p.getBoolean(CaratApplication.PREFERENCE_SEND_INSTALLED_PACKAGES, true);
+		boolean inst = p.getBoolean(Constants.PREFERENCE_SEND_INSTALLED_PACKAGES, true);
 
 		Map<String, ProcessInfo> ipkg = null;
 		if (inst)
@@ -994,7 +995,7 @@ public final class SamplingLibrary {
 		// Send installed packages if we were to do so.
 		if (ipkg != null && ipkg.size() > 0) {
 			result.addAll(ipkg.values());
-			p.edit().putBoolean(CaratApplication.PREFERENCE_SEND_INSTALLED_PACKAGES, false).commit();
+			p.edit().putBoolean(Constants.PREFERENCE_SEND_INSTALLED_PACKAGES, false).commit();
 		}
 
 		// Go through the preferences and look for UNINSTALL, INSTALL and
@@ -1010,7 +1011,7 @@ public final class SamplingLibrary {
 					Log.i(STAG, "Installed:" + pname);
 					ProcessInfo i = getInstalledPackage(context, pname);
 					if (i != null) {
-						i.setImportance(CaratApplication.IMPORTANCE_INSTALLED);
+						i.setImportance(Constants.IMPORTANCE_INSTALLED);
 						result.add(i);
 						e.remove(pref);
 						edited = true;
@@ -1023,7 +1024,7 @@ public final class SamplingLibrary {
 					Log.i(STAG, "Replaced:" + pname);
 					ProcessInfo i = getInstalledPackage(context, pname);
 					if (i != null) {
-						i.setImportance(CaratApplication.IMPORTANCE_REPLACED);
+						i.setImportance(Constants.IMPORTANCE_REPLACED);
 						result.add(i);
 						e.remove(pref);
 						edited = true;
@@ -1063,7 +1064,7 @@ public final class SamplingLibrary {
 		sigs.add("uninstalled");
 		item.setAppSignatures(sigs);
 		item.setPId(-1);
-		item.setImportance(CaratApplication.IMPORTANCE_UNINSTALLED);
+		item.setImportance(Constants.IMPORTANCE_UNINSTALLED);
 		// Remember to remove it so we do not send
 		// multiple uninstall events
 		e.remove(pref);

@@ -5,9 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import android.bluetooth.BluetoothAdapter;
@@ -101,20 +102,20 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
                 label = a.getString(R.string.unknown);
             
             holder.icon.setImageDrawable(icon);
-            Type type = item.getType();
+            Constants.Type type = item.getType();
             
             // TODO: add strings for other types
             
-            if (type == Type.BRIGHTNESS)
+            if (type == Constants.Type.BRIGHTNESS)
             	action = "dim screen brightness";
-            else if (type == Type.WIFI)
+            else if (type == Constants.Type.WIFI)
             	action = "turn off wifi";
-            else if (type == Type.MOBILEDATA)
+            else if (type == Constants.Type.MOBILEDATA)
             	action = "turn off mobile data";
             
             holder.txtName.setText(action + " " + label);
             
-            if (type == Type.OTHER)
+            if (type == Constants.Type.OTHER)
                 holder.txtType.setText(item.getAppPriority());
             else
             holder.txtType.setText(CaratApplication.translatedPriority(item.getAppPriority()));
@@ -235,14 +236,14 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	    // set the screen threshold to be 50
 	    if(!SamplingLibrary.isAutoBrightness(a.getApplicationContext()) && SamplingLibrary.getScreenBrightness(a.getApplicationContext())>50){
 	 	        
-	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.dimscreen), Type.OS);
+	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.dimscreen), Constants.Type.OS);
 	        result.add(item);
 	    }   
 	}
 	
 	private void acceptDisableWifi(ArrayList<SimpleHogBug> result) {
         if(SamplingLibrary.getWifiEnabled(a.getApplicationContext())){
-            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablewifi), Type.OS);
+            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablewifi), Constants.Type.OS);
             result.add(item);
         }   
     }
@@ -251,7 +252,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	    List<String> providers = SamplingLibrary.getEnabledLocationProviders(a.getApplicationContext());
 	    if (providers != null && providers.size() > 1){
 	        // Always has 1 provider
-	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablelocation), Type.OS);
+	        SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablelocation), Constants.Type.OS);
 	        result.add(item);
 	    }
 	        
@@ -259,7 +260,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	
 	private void acceptDisableGps(ArrayList<SimpleHogBug> result) {
         if(SamplingLibrary.getGpsEnabled(a.getApplicationContext())==true){
-            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablegps), Type.OS);
+            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablegps), Constants.Type.OS);
             result.add(item);
         }   
     }
@@ -267,7 +268,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	private void acceptDisableBluetooth(ArrayList<SimpleHogBug> result) {
 	    BluetoothAdapter myBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
         if (myBluetoothAdapter.isEnabled()==true) {               
-            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablebluetooth), Type.OS);
+            SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablebluetooth), Constants.Type.OS);
             result.add(item);
         }   
     }
@@ -277,7 +278,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
             if(Settings.System.getInt(
                     a.getApplicationContext().getContentResolver(),
                     Settings.System.HAPTIC_FEEDBACK_ENABLED)== 1){               
-                SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablehapticfeedback), Type.OS);
+                SimpleHogBug item=new SimpleHogBug(a.getString(R.string.disablehapticfeedback), Constants.Type.OS);
                 // TODO Get expected benefit
                 result.add(item);
             }
@@ -289,7 +290,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	
 	private void acceptDisableNetwork(ArrayList<SimpleHogBug> result) {
 		if (SamplingLibrary.networkAvailable(a.getApplicationContext()) == true) {
-			SimpleHogBug item = new SimpleHogBug(a.getString(R.string.disablenetwork), Type.OS);
+			SimpleHogBug item = new SimpleHogBug(a.getString(R.string.disablenetwork), Constants.Type.OS);
 			// TODO Get expected benefit
 			result.add(item);
 		}
@@ -298,7 +299,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	private void acceptDisableVibration(ArrayList<SimpleHogBug> result) {
 		AudioManager myAudioManager = (AudioManager) a.getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
 		if (myAudioManager.getVibrateSetting(1) == 1 || myAudioManager.getVibrateSetting(0) == 1) {
-			SimpleHogBug item = new SimpleHogBug(a.getString(R.string.disablevibration), Type.OS);
+			SimpleHogBug item = new SimpleHogBug(a.getString(R.string.disablevibration), Constants.Type.OS);
 			// TODO Get expected benefit
 			result.add(item);
 		}
@@ -309,7 +310,7 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 		try {
 			if (Settings.System.getInt(a.getApplicationContext().getContentResolver(),
 					Settings.System.SCREEN_OFF_TIMEOUT) > 30000) {
-				SimpleHogBug item = new SimpleHogBug(a.getString(R.string.shortenscreentimeout), Type.OS);
+				SimpleHogBug item = new SimpleHogBug(a.getString(R.string.shortenscreentimeout), Constants.Type.OS);
 				// TODO Get expected benefit
 				result.add(item);
 			}
@@ -322,19 +323,19 @@ public class SettingsSuggestionAdapter extends BaseAdapter {
 	private void acceptDisableAutoSync(ArrayList<SimpleHogBug> result) {
 
 		if (ContentResolver.getMasterSyncAutomatically() == true) {
-			SimpleHogBug item = new SimpleHogBug(a.getString(R.string.disableautomaticsync), Type.OS);
+			SimpleHogBug item = new SimpleHogBug(a.getString(R.string.disableautomaticsync), Constants.Type.OS);
 			// TODO Get expected benefit
 			result.add(item);
 		}
 	}
 
 	private void helpCaratCollectMoreData(ArrayList<SimpleHogBug> result) {
-		SimpleHogBug item = new SimpleHogBug(a.getString(R.string.helpcarat), Type.OS);
+		SimpleHogBug item = new SimpleHogBug(a.getString(R.string.helpcarat), Constants.Type.OS);
 		result.add(item);
 	}
 
 	private void questionnaire(ArrayList<SimpleHogBug> result) {
-		SimpleHogBug item = new SimpleHogBug(a.getString(R.string.questionnaire), Type.OTHER,
+		SimpleHogBug item = new SimpleHogBug(a.getString(R.string.questionnaire), Constants.Type.OTHER,
 				a.getString(R.string.questionnaire2));
 		result.add(item);
 	}

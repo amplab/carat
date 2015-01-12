@@ -70,7 +70,7 @@ delete these from your file.
     <string name="myjscoreis">My J-Score is</string>
     <string name="appmanager">App Manager</string>
     
-    <string name="summaryscreentitle">Carat Android Users Statistics</string>
+    <string name="summary_screen_title">Carat Android Users Statistics</string>
     <string name="userswithoutany">Users without any anomalies</string>
     <string name="userswithhogs">Users with hogs</string>
     <string name="userswithbugs">Users with bugs</string>
@@ -180,9 +180,7 @@ delete these from your file.
     <string name="best">Already best</string>
     
     <!-- error messages -->
-    <string name="statserror">Is your Wifi or mobile data on? 
-        Enable Internet and try again! 
-        Unable to read statistics from server.</string>
+    <string name="connection_error">Offline. Click o turn on Wifi.</string>
     
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>

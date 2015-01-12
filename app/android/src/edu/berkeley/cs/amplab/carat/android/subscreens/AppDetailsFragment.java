@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -35,14 +36,14 @@ public class AppDetailsFragment extends Fragment {
 	 * the first argument. Pass TYPE.OS for OS details and TYPE.MODEL for device
 	 * details.
 	 */
-	public static AppDetailsFragment getInstance(Type type, SimpleHogBug fullObject, boolean isBugs) {
+	public static AppDetailsFragment getInstance(Constants.Type type, SimpleHogBug fullObject, boolean isBugs) {
 		if (instance == null)
 			instance = new AppDetailsFragment();
 		setInstanceFields(type, fullObject, isBugs);
 		return instance;
 	}
 
-	private static void setInstanceFields(Type type, SimpleHogBug fullObject, boolean isBugs) {
+	private static void setInstanceFields(Constants.Type type, SimpleHogBug fullObject, boolean isBugs) {
 		switch (type) {
 		case BUG:
 			instance.isApp = true;
@@ -96,7 +97,7 @@ public class AppDetailsFragment extends Fragment {
 		DetailScreenReport osWithout = reports.getOsWithout();
 		String label = getString(R.string.os) + ": " + SamplingLibrary.getOsVersion();
 		setDetails(os, osWithout);
-		drawView.setParams(Type.OS, label, ev, evWithout, samplesCount, samplesCountWithout, error, errorWo,
+		drawView.setParams(Constants.Type.OS, label, ev, evWithout, samplesCount, samplesCountWithout, error, errorWo,
 				detailsPage);
 
 		Log.v("OsInfo", "Os score: " + os.getScore());
@@ -108,7 +109,7 @@ public class AppDetailsFragment extends Fragment {
 		DetailScreenReport modelWithout = reports.getModelWithout();
 		String label = getString(R.string.model) + ": " + SamplingLibrary.getModel();
 		setDetails(model, modelWithout);
-		drawView.setParams(Type.MODEL, label, ev, evWithout, samplesCount, samplesCountWithout, error, errorWo,
+		drawView.setParams(Constants.Type.MODEL, label, ev, evWithout, samplesCount, samplesCountWithout, error, errorWo,
 				detailsPage);
 
 		Log.v("ModelInfo", "Model score: " + model.getScore());

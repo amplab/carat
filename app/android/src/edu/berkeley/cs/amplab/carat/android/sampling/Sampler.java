@@ -2,7 +2,7 @@ package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import android.support.v4.content.WakefulBroadcastReceiver;
 import android.util.Log;
 import android.content.Context;
@@ -39,7 +39,7 @@ public class Sampler extends WakefulBroadcastReceiver implements
         if (providers != null) {
             for (String provider : providers) {
                 lm.requestLocationUpdates(provider,
-                        CaratApplication.FRESHNESS_TIMEOUT, 0, this);
+                        Constants.FRESHNESS_TIMEOUT, 0, this);
                 // Log.v(TAG, "Location updates requested for " + provider);
             }
         }

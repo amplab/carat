@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android.lists;
 
 import java.util.Arrays;
 
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -37,7 +38,7 @@ public class HogsBugsAdapter extends BaseAdapter {
                 // don't show special apps: Carat or system apps
     			// (DISABLED FOR DEBUGGING. TODO: ENABLE IT AFTER DEBUGGING, and check whether this has any problem)                
 //                if (SpecialAppCases.isSpecialApp(appName)) 
-                if (appName.equals(CaratApplication.CARAT_PACKAGE_NAME) || appName.equals(CaratApplication.CARAT_OLD))
+                if (appName.equals(Constants.CARAT_PACKAGE_NAME) || appName.equals(Constants.CARAT_OLD))
     				continue;
                 // the "dialer" app still shows up. no idea why!
                 if (!SamplingLibrary.isHidden(appContext, appName))
@@ -51,8 +52,8 @@ public class HogsBugsAdapter extends BaseAdapter {
                 String appName = b.getAppName();
                 if (appName == null)
                     appName = caratApplication.getString(R.string.unknown);
-                if (appName.equals(CaratApplication.CARAT_PACKAGE_NAME)
-                        || appName.equals(CaratApplication.CARAT_OLD))
+                if (appName.equals(Constants.CARAT_PACKAGE_NAME)
+                        || appName.equals(Constants.CARAT_OLD))
                     continue;
                 // Apparently the number of items changes from "items" above?
                 if (!SamplingLibrary.isHidden(appContext, appName)

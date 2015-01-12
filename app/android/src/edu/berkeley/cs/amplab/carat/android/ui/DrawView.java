@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -23,7 +24,7 @@ public class DrawView extends View {
 
 	private Context c = null;
 
-	private Type type = null;
+	private Constants.Type type = null;
 
 	private double ev = 0.0;
 	private double evWithout = 0.0;
@@ -44,7 +45,7 @@ public class DrawView extends View {
 		this.c = context;
 	}
 
-	public Type getType() {
+	public Constants.Type getType() {
 		return this.type;
 	}
 
@@ -80,12 +81,12 @@ public class DrawView extends View {
 		this.errorWo = bugOrHog.getErrorWithout();
 		this.sampleCount = (int) bugOrHog.getSamples();
 		this.sampleCountWo = (int) bugOrHog.getSamplesWithout();
-		this.type = isBug ? Type.BUG : Type.HOG;
+		this.type = isBug ? Constants.Type.BUG : Constants.Type.HOG;
 		this.appName = appName;
 		setFields(parent, true);
 	}
 
-	public void setParams(Type type, String appName, double ev, double evWithout, int sampleCount, int sampleCountWo,
+	public void setParams(Constants.Type type, String appName, double ev, double evWithout, int sampleCount, int sampleCountWo,
 			double error, double errorWo, View parent) {
 		this.ev = ev;
 		this.evWithout = evWithout;

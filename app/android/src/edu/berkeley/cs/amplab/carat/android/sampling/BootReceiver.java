@@ -1,6 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android.sampling;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -22,7 +22,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent intent2 = new Intent(context, Sampler.class);
-        intent2.setAction(CaratApplication.ACTION_CARAT_SAMPLE);
+        intent2.setAction(Constants.ACTION_CARAT_SAMPLE);
         PendingIntent pi = PendingIntent.getBroadcast(context, 192837, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
         
         AlarmManager am = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE); // 1 min first

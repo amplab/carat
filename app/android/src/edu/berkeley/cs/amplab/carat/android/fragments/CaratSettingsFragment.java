@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -78,7 +79,7 @@ public class CaratSettingsFragment extends PreferenceFragment {
 		// (we have several preference widget objects in our res/xml/preferences.xml), 
 		// the name of the preference object we are trying to grab here is specified in CaratApplication.SHARE_PREFERENCE_KEY. 
 		// each preference widget in our xml file (preferences.xml) corresponds to an item/entry in our preference fragment's view		
-		Preference preference = findPreference(CaratApplication.SHARE_PREFERENCE_KEY);
+		Preference preference = findPreference(Constants.SHARE_PREFERENCE_KEY);
 		
 		// create an intent that we want to perform whenever this item is clicked (in this case, a send intent)
 		Intent intent = new Intent(Intent.ACTION_SEND);
@@ -99,7 +100,7 @@ public class CaratSettingsFragment extends PreferenceFragment {
 	 * Set an intent for our "share" preference widget
 	 */
 	private void setFeedbackPreferenceIntent() {
-		Preference preference = findPreference(CaratApplication.FEEDBACK_PREFERENCE_KEY);
+		Preference preference = findPreference(Constants.FEEDBACK_PREFERENCE_KEY);
 		
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		
