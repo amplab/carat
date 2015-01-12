@@ -22,26 +22,13 @@ import edu.berkeley.cs.amplab.carat.android.R;
  *
  */
 public class SummaryFragment extends Fragment {
-	
 	// private final String TAG = "SummaryFragment";
-	private int wellbehavedAppCount,
-				hogCount,
-				bugCount;
-	
-	 @Override
-	 public void onCreate(Bundle savedInstanceState) {
-//		 wellbehavedAppCount = getArguments().getInt("wellbehaved");
-//		 hogCount = getArguments().getInt("hogs");
-//		 bugCount = getArguments().getInt("bugs");
-		 
-		 super.onCreate(savedInstanceState);
-	 }
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		wellbehavedAppCount = getArguments().getInt("wellbehaved");
-		hogCount = getArguments().getInt("hogs");
-		bugCount = getArguments().getInt("bugs");
+		int wellbehavedAppCount = getArguments().getInt("wellbehaved");
+		int hogCount = getArguments().getInt("hogs");
+		int bugCount = getArguments().getInt("bugs");
 		
         View inflatedView = inflater.inflate(R.layout.summary, container, false);
         PieGraph pg = (PieGraph) inflatedView.findViewById(R.id.piegraph);

@@ -78,7 +78,7 @@ delete these from your file.
     <!-- Tabs. Also used ELSEWHERE. 
     (must be deleted (duplicate with the string array, down below), but with extra care) -->    
     <string name="tab_actions">Actions</string>
-    <string name="tab_my_device">Device</string>
+    <string name="tab_my_device">My Device</string>
     <string name="tab_bugs">Bugs</string>
     <string name="tab_hogs">Hogs</string>
     <string name="tab_settings">System Settings</string>
