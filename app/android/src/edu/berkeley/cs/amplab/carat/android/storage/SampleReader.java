@@ -193,10 +193,10 @@ public class SampleReader {
                             s.setNetworkDetails(n);
                         } else if (md.fieldName.equals(Sample._Fields.BATTERY_DETAILS.getFieldName())) {
                             fillBatteryDetails(m.get(k), bd);
-                            s.setNetworkDetails(n);
+                            s.setBatteryDetails(bd);
                         } else if (md.fieldName.equals(Sample._Fields.CPU_STATUS.getFieldName())) {
                             fillCpuStatusDetails(m.get(k), cs);
-                            s.setNetworkDetails(n);
+                            s.setCpuStatus(cs);
                         }/*
                           * else if (md.fieldName.equals("CallInfo")){ }
                           */
