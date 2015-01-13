@@ -74,9 +74,6 @@
 - (void)viewWillLayoutSubviews{
 
 	[super viewWillLayoutSubviews];
-
-	CGRect tableViewFrame = self.actionTable.frame;
-	self.actionTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
 }
 
 - (void)loadData
@@ -306,6 +303,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	CGRect tableViewFrame = self.actionTable.frame;
+	self.actionTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
+
 	[super viewWillAppear:animated];
 
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {

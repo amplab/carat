@@ -49,7 +49,9 @@
 
 // overridden by subclasses
 - (void)loadDataWithHUD:(id)obj { }
-- (void)updateView { }
+- (void)updateView {
+	NSLog(@"");
+}
 - (void)reloadReport { }
 
 
@@ -214,16 +216,12 @@
     self.navigationItem.title = self.tableTitle;;
 }
 
-- (void)viewWillLayoutSubviews{
-	CGRect tableViewFrame = self.dataTable.frame;
-	self.dataTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
-	[super viewWillLayoutSubviews];
-}
-
 // overridden by subclasses
 - (void)viewWillAppear:(BOOL)animated
 {
 	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	CGRect tableViewFrame = self.dataTable.frame;
+	self.dataTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
     [super viewWillAppear:animated];
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }

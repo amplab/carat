@@ -359,6 +359,10 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
             case SVPullToRefreshStateTriggered:
                 titleLabel.text = NSLocalizedString(@"Release to refresh...",);
                 [self rotateArrow:M_PI hide:NO];
+				UIEdgeInsets newInsets = self.originalScrollViewContentInset;
+				newInsets.top = 20;
+				newInsets.bottom = self.scrollView.contentInset.bottom;
+				self.originalScrollViewContentInset = newInsets;
                 break;
                 
             case SVPullToRefreshStateLoading:

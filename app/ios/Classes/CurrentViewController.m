@@ -208,8 +208,6 @@
 
 -(void)viewWillLayoutSubviews
 {
-	self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-
 	CGSize scrollSize = [Utilities orientationIndependentScreenSize];
 	BOOL isOlderDevice = [Utilities isOlderHeightDevice];
 
@@ -267,6 +265,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	self.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [super viewWillAppear:animated];
     [self updateView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
