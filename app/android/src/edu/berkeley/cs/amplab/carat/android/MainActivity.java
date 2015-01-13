@@ -454,12 +454,16 @@ public class MainActivity extends ActionBarActivity {
 							&& ! hogs.equals(Constants.DATA_NOT_AVAIABLE) 
 							&& ! bugs.equals(Constants.DATA_NOT_AVAIABLE);
 		
+//		Log.d(TAG, "isDataAvaiable=" + Boolean.toString(isDataAvaiable));
+		
 		if (isDataAvaiable) {
-			Log.d(TAG, "strings are not available. wellbehaved=" + wellbehaved 
+			Log.d(TAG, "strings are available. wellbehaved=" + wellbehaved 
 					+ ", hogs=" + hogs + ", bugs=" + bugs);
 			totalWellbehavedAppsCount = Integer.parseInt(wellbehaved);
 			totalHogsCount = Integer.parseInt(hogs);
 			totalBugsCount = Integer.parseInt(bugs);
+		} else {
+			Log.d(TAG, "strings (extra) are not available. Passing the default value (0).");
 		}
 		
 		mSummaryFragment = new SummaryFragment();
@@ -468,7 +472,13 @@ public class MainActivity extends ActionBarActivity {
 		mArgs.putInt("wellbehaved", totalWellbehavedAppsCount);
 		mArgs.putInt("hogs", totalHogsCount);
 		mArgs.putInt("bugs", totalBugsCount);
+		
+		Log.d(TAG, "put the arguments into the bundle. totalWellbehavedAppsCount=" + totalWellbehavedAppsCount);
+		
 		mSummaryFragment.setArguments(mArgs);
+		Log.d(TAG, "set the arguments of the summary fragment");
+		
+		
 		mSummaryFragmentLabel = getString(R.string.tab_summary);
 	}
 	

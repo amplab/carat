@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,8 @@ import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.MainActivity;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.PrefetchData;
 import edu.berkeley.cs.amplab.carat.android.R;
 
 /**
@@ -30,22 +32,26 @@ import edu.berkeley.cs.amplab.carat.android.R;
  */
 public class SummaryFragment extends Fragment {
 	private final String TAG = "SummaryFragment";
-	// keys for retrieving values from the shared preference
-	final String wellbehavedKey = "wellbehavedAppCount";
-	final String hogCountKey = "hogCount";
-	final String bugCountKey = "bugCount";
-		
+	
+	int wellbehavedAppCount = 0, lastWellbehavedAppCount = 0,
+		hogCount = 0, lastHogCount = 0,
+		bugCount = 0, lastBugCount = 0;
+	
+	SharedPreferences mSharedPref;
+	Resources mResources;
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d(TAG, "here");
-		View inflatedView = inflater.inflate(R.layout.summary, container, false);
-        PieGraph pg = (PieGraph) inflatedView.findViewById(R.id.piegraph);
-        Resources resources = getResources();
-        
-		int wellbehavedAppCount = 0, lastWellbehavedAppCount = 0,
-			hogCount = 0, lastHogCount = 0,
-			bugCount = 0, lastBugCount = 0;
+		Log.d(TAG, "onCreateView() started");
+//		mSharedPref = PreferenceManager.getDefaultSharedPreferences(
+//				CaratApplication.getContext());
+		mSharedPref = getActivity().getSharedPreferences(
+				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
+		mResources = getResources();
+		Log.d(TAG, "initialized the shared preferences");
 		
+		View inflatedView = inflater.inflate(R.layout.summary, container, false);
+        
 		Log.d(TAG, "about to read the arguments");
 		Bundle arguments = getArguments();
 		if (arguments != null) {
@@ -54,65 +60,74 @@ public class SummaryFragment extends Fragment {
 			bugCount = arguments.getInt("bugs");
 		}
 		
-		SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-		
-		boolean gotDataFromMainActivity = wellbehavedAppCount != 0 && hogCount != 0 && bugCount != 0;
-		
-		if (gotDataFromMainActivity) {
-			SharedPreferences.Editor editor = sharedPref.edit();
-			editor.putInt(wellbehavedKey, wellbehavedAppCount);
-			editor.putInt(hogCountKey, hogCount);
-			editor.putInt(bugCountKey, bugCount);
-			editor.commit();
+		if (gotDataFromMainActivity()) {
+			saveStatsToSharedPref();
 		} else {
 			try {
-			lastWellbehavedAppCount = sharedPref.getInt(wellbehavedKey, 0); 
-			lastHogCount = sharedPref.getInt(hogCountKey, 0);
-			lastBugCount = sharedPref.getInt(bugCountKey, 0);
+			// load older data (stored in the shared preferences structure)
+			// into the fields starting with the prefix "last"
+			loadPrefsToFields();
 			} catch (Exception e) {
 				Log.d(TAG, "unable to read the info from the shared preference. No such a key.");
 			}
 		}
 		
-        boolean hasOldData = lastWellbehavedAppCount != 0 && lastHogCount != 0 && lastBugCount != 0;
+		handlePieGraphDrawing(inflatedView, mResources);
+		
+        getActivity().setTitle(mResources.getString(R.string.tab_summary));
         
-		if (gotDataFromMainActivity || hasOldData) {
-			PieSlice slice = new PieSlice();
-			slice.setColor(resources.getColor(R.color.green));
-			slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
-			slice.setValue(wellbehavedAppCount);
-			slice.setTitle("first");
-			pg.addSlice(slice);
+        // onCreateView() method should always return the inflated view
+        return inflatedView;
+    }
 
-			slice = new PieSlice();
-			slice.setColor(resources.getColor(R.color.orange));
-			slice.setValue(hogCount);
-			pg.addSlice(slice);
+	private void saveStatsToSharedPref() {
+		SharedPreferences.Editor editor = mSharedPref.edit();
+		editor.putInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, wellbehavedAppCount);
+		editor.putInt(Constants.HOGS_COUNT_PREF_KEY, hogCount);
+		editor.putInt(Constants.BUGS_COUNT_PREF_KEY, bugCount);
+		editor.commit();
+	}
 
-			slice = new PieSlice();
-			slice.setColor(resources.getColor(R.color.purple));
-			slice.setValue(bugCount);
-			pg.addSlice(slice);
+	@Override
+	public void onResume() {
+		Log.d(TAG, "summary fragment resumed.");
+		// try to fetch data again, since the user might have enabled wifi or mobile data 
+		// (after being disconnected while in the splash screen (when opening the app))
+		// Data will be put in the shared preferences of the MainActivity.
+		new PrefetchData(getActivity()).execute();
+		
+		// load the data just fetched into the fields of the current class
+		loadPrefsToFields();
+		
+		// if connected to Internet, draw the graph (read data from fields), 
+		// if not connected, ask user to enable WiFi
+		handlePieGraphDrawing(this.getView(), mResources);
+		
+		super.onResume();
+	}
+	
+	/**
+	 * @param sharedPref
+	 */
+	private void loadPrefsToFields() {
+		SharedPreferences sharedPref = getActivity().getSharedPreferences(
+				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
+		lastWellbehavedAppCount = wellbehavedAppCount = sharedPref.getInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, 0); 
+		lastHogCount = hogCount = sharedPref.getInt(Constants.HOGS_COUNT_PREF_KEY, 0);
+		lastBugCount = bugCount = sharedPref.getInt(Constants.BUGS_COUNT_PREF_KEY, 0);
+	}
 
-			pg.setOnSliceClickedListener(new OnSliceClickedListener() {
-				@Override
-				public void onClick(int index) {
-					switch (index) {
-					case 0:
-						Toast.makeText(getActivity(), R.string.userswithoutany, Toast.LENGTH_SHORT).show();
-						break;
-					case 1:
-						Toast.makeText(getActivity(), R.string.userswithhogs, Toast.LENGTH_SHORT).show();
-						break;
-					case 2:
-						Toast.makeText(getActivity(), R.string.userswithbugs, Toast.LENGTH_SHORT).show();
-						break;
-					}
-				}
-			});
-
-			Bitmap b = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher);
-			pg.setBackgroundBitmap(b);
+	/**
+	 * @param inflatedView
+	 * @param resources
+	 */
+	private void handlePieGraphDrawing(View inflatedView, Resources resources) {
+		if (gotDataFromMainActivity()) {
+			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+			drawPieGraph(pireGraph, resources, wellbehavedAppCount, hogCount, bugCount);
+		} else if (hasOldData()) {
+			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+			drawPieGraph(pireGraph, resources, lastWellbehavedAppCount, lastHogCount, lastBugCount);
 		} else {
 			TextView tv = (TextView) inflatedView.findViewById(R.id.summary_screen_title);
 			tv.setText(R.string.connection_error);
@@ -123,11 +138,60 @@ public class SummaryFragment extends Fragment {
 				}
 			});
 		}
-		
-        getActivity().setTitle(resources.getString(R.string.tab_summary));
-        
-        // onCreateView() method should always return the inflated view
-        return inflatedView;
-    }
+	}
+	
+	private boolean gotDataFromMainActivity() {
+		return wellbehavedAppCount != 0 && hogCount != 0 && bugCount != 0;
+	}
+	
+	private boolean hasOldData() {
+		return lastWellbehavedAppCount != 0 && lastHogCount != 0 && lastBugCount != 0;
+	}
+	
+	/**
+	 * @param pg
+	 * @param resources
+	 * @param wellbehavedAppCount
+	 * @param hogCount
+	 * @param bugCount
+	 */
+	private void drawPieGraph(PieGraph pg, Resources resources, int wellbehavedAppCount, int hogCount, int bugCount) {
+		PieSlice slice = new PieSlice();
+		slice.setColor(resources.getColor(R.color.green));
+		slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
+		slice.setValue(wellbehavedAppCount);
+		slice.setTitle("first");
+		pg.addSlice(slice);
+
+		slice = new PieSlice();
+		slice.setColor(resources.getColor(R.color.orange));
+		slice.setValue(hogCount);
+		pg.addSlice(slice);
+
+		slice = new PieSlice();
+		slice.setColor(resources.getColor(R.color.purple));
+		slice.setValue(bugCount);
+		pg.addSlice(slice);
+
+		pg.setOnSliceClickedListener(new OnSliceClickedListener() {
+			@Override
+			public void onClick(int index) {
+				switch (index) {
+				case 0:
+					Toast.makeText(getActivity(), R.string.userswithoutany, Toast.LENGTH_SHORT).show();
+					break;
+				case 1:
+					Toast.makeText(getActivity(), R.string.userswithhogs, Toast.LENGTH_SHORT).show();
+					break;
+				case 2:
+					Toast.makeText(getActivity(), R.string.userswithbugs, Toast.LENGTH_SHORT).show();
+					break;
+				}
+			}
+		});
+
+		Bitmap b = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher);
+		pg.setBackgroundBitmap(b);
+	}
 	
 }

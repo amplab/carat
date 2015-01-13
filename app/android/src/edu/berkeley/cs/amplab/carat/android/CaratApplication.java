@@ -31,6 +31,7 @@ import edu.berkeley.cs.amplab.carat.thrift.Reports;
  */
 public class CaratApplication extends Application {
 
+	private static CaratApplication mInstance;
 	// Used for logging
 	private static final String TAG = "CaratApp";
 	
@@ -47,8 +48,14 @@ public class CaratApplication extends Application {
 
 		importanceToString.put(Constants.IMPORTANCE_PERCEPTIBLE, "Perceptible task");
 		importanceToString.put(Constants.IMPORTANCE_SUGGESTION, "Suggestion");
+		
+		mInstance = this;
 	}
 
+	public static Context getContext() {
+    	return mInstance;
+    }
+	
 	// NOTE: This needs to be initialized before CommunicationManager.
 	public static CaratDataStorage storage = null;
 	// NOTE: The CommunicationManager requires a working instance of
