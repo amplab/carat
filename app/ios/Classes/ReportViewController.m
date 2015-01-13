@@ -215,7 +215,6 @@
 }
 
 - (void)viewWillLayoutSubviews{
-	self.navigationController.navigationBar.hidden = YES;
 	CGRect tableViewFrame = self.dataTable.frame;
 	self.dataTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
 	[super viewWillLayoutSubviews];
@@ -224,6 +223,7 @@
 // overridden by subclasses
 - (void)viewWillAppear:(BOOL)animated
 {
+	[self.navigationController setNavigationBarHidden:YES animated:YES];
     [super viewWillAppear:animated];
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }
@@ -243,7 +243,6 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"CCDMReportUpdateStatusNotification" object:nil];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

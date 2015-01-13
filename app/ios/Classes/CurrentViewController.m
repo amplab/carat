@@ -241,8 +241,6 @@
 		frame.origin.y = contentsize.height - frame.size.height;
 		self.uhAmpLogo.frame = frame;
 	}
-
-	self.navigationController.navigationBar.hidden = YES;
 	[super viewWillLayoutSubviews];
 }
 
@@ -268,6 +266,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[self.navigationController setNavigationBarHidden:YES animated:YES];
     [super viewWillAppear:animated];
     [self updateView];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sampleCountUpdated:) name:kSamplesSentCountUpdateNotification object:nil];
@@ -297,7 +296,6 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:@"CCDMReportUpdateStatusNotification" object:nil];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

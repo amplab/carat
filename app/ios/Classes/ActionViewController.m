@@ -73,10 +73,10 @@
 
 - (void)viewWillLayoutSubviews{
 
-	self.navigationController.navigationBar.hidden = YES;
+	[super viewWillLayoutSubviews];
+
 	CGRect tableViewFrame = self.actionTable.frame;
 	self.actionTable.frame = CGRectMake(0, 0, tableViewFrame.size.width, tableViewFrame.size.height);
-	[super viewWillLayoutSubviews];
 }
 
 - (void)loadData
@@ -305,7 +305,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+	[self.navigationController setNavigationBarHidden:YES animated:YES];
+	[super viewWillAppear:animated];
 
     if ([[CoreDataManager instance] getReportUpdateStatus] == nil) {
         [self.actionTable.pullToRefreshView stopAnimating];
@@ -351,11 +352,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                             name:@"CCDMReportUpdateStatusNotification" object:nil];
     [self teardownReachabilityNotifications];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

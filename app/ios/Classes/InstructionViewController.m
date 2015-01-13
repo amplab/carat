@@ -144,9 +144,15 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
     [super viewWillAppear:animated];
-    
+//
     [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
+}
+
+-(void) viewWillDisappear:(BOOL)animated{
+	[super viewWillDisappear:animated];
+	//[self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
