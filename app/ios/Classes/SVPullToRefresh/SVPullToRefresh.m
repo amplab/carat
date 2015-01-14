@@ -338,7 +338,8 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
         return;
     
     state = newState;
-    
+
+	UIEdgeInsets newInsets;
     if(pullToRefreshActionHandler) {
         switch (newState) {
             case SVPullToRefreshStateHidden:
@@ -352,6 +353,10 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
                 titleLabel.text = NSLocalizedString(@"Pull to refresh...",);
                 arrow.alpha = 1;
                 [self.activityIndicatorView stopAnimating];
+				newInsets = self.originalScrollViewContentInset;
+				newInsets.top = 20;
+				newInsets.bottom = self.scrollView.contentInset.bottom;
+				self.originalScrollViewContentInset = newInsets;
                 [self setScrollViewContentInset:self.originalScrollViewContentInset];
                 [self rotateArrow:0 hide:NO];
                 break;
@@ -359,7 +364,7 @@ static CGFloat const SVPullToRefreshViewHeight = 60;
             case SVPullToRefreshStateTriggered:
                 titleLabel.text = NSLocalizedString(@"Release to refresh...",);
                 [self rotateArrow:M_PI hide:NO];
-				UIEdgeInsets newInsets = self.originalScrollViewContentInset;
+				newInsets = self.originalScrollViewContentInset;
 				newInsets.top = 20;
 				newInsets.bottom = self.scrollView.contentInset.bottom;
 				self.originalScrollViewContentInset = newInsets;
