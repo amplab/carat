@@ -3094,12 +3094,6 @@
 		C754878019963D03007A01CF /* procmanager2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = procmanager2.png; sourceTree = "<group>"; };
 		C754878119963D03007A01CF /* ReportItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportItemCell.xib; sourceTree = "<group>"; };
 		C754878219963D03007A01CF /* ReportView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportView.xib; sourceTree = "<group>"; };
-		C754878519963D03007A01CF /* _SZCommentsListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _SZCommentsListViewController.xib; sourceTree = "<group>"; };
-		C754878619963D03007A01CF /* _SZComposeCommentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _SZComposeCommentViewController.xib; sourceTree = "<group>"; };
-		C754878719963D03007A01CF /* _SZLinkDialogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _SZLinkDialogViewController.xib; sourceTree = "<group>"; };
-		C754878819963D03007A01CF /* _SZTwitterLinkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _SZTwitterLinkViewController.xib; sourceTree = "<group>"; };
-		C754878919963D03007A01CF /* _SZUserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _SZUserProfileViewController.xib; sourceTree = "<group>"; };
-		C754878A19963D03007A01CF /* _SZUserSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _SZUserSettingsViewController.xib; sourceTree = "<group>"; };
 		C754878B19963D03007A01CF /* action-bar-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-bar-bg.png"; sourceTree = "<group>"; };
 		C754878C19963D03007A01CF /* action-bar-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-bar-bg@2x.png"; sourceTree = "<group>"; };
 		C754878D19963D03007A01CF /* action-bar-button-black-hover.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "action-bar-button-black-hover.png"; sourceTree = "<group>"; };
@@ -3130,9 +3124,6 @@
 		C75487A619963D03007A01CF /* comment_template_clear.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = comment_template_clear.htm; sourceTree = "<group>"; };
 		C75487A719963D03007A01CF /* comments-cell-bg-borders.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comments-cell-bg-borders.png"; sourceTree = "<group>"; };
 		C75487A819963D03007A01CF /* comments-cell-bg-borders@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "comments-cell-bg-borders@2x.png"; sourceTree = "<group>"; };
-		C75487A919963D03007A01CF /* commentsNavBarLeftItemView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = commentsNavBarLeftItemView.xib; sourceTree = "<group>"; };
-		C75487AA19963D03007A01CF /* CommentsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentsTableViewCell.xib; sourceTree = "<group>"; };
-		C75487AB19963D03007A01CF /* SampleEntityLoader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SampleEntityLoader.xib; sourceTree = "<group>"; };
 		C75487AC19963D03007A01CF /* socialize-activity-bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "socialize-activity-bg.png"; sourceTree = "<group>"; };
 		C75487AD19963D03007A01CF /* socialize-activity-bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "socialize-activity-bg@2x.png"; sourceTree = "<group>"; };
 		C75487AE19963D03007A01CF /* socialize-activity-call-out-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "socialize-activity-call-out-arrow.png"; sourceTree = "<group>"; };
@@ -3296,24 +3287,7 @@
 		C754884C19963D03007A01CF /* socialize-selectnetwork-twitter-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "socialize-selectnetwork-twitter-icon@2x.png"; sourceTree = "<group>"; };
 		C754884D19963D03007A01CF /* socialize_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = socialize_logo.png; sourceTree = "<group>"; };
 		C754884E19963D03007A01CF /* socialize_twitter_load.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = socialize_twitter_load.png; sourceTree = "<group>"; };
-		C754884F19963D03007A01CF /* SocializeActivityDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeActivityDetailsViewController.xib; sourceTree = "<group>"; };
-		C754885019963D03007A01CF /* SocializeActivityTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeActivityTableViewCell.xib; sourceTree = "<group>"; };
-		C754885119963D03007A01CF /* SocializeActivityViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeActivityViewController.xib; sourceTree = "<group>"; };
-		C754885219963D03007A01CF /* SocializeAuthInfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeAuthInfoTableViewCell.xib; sourceTree = "<group>"; };
-		C754885319963D03007A01CF /* SocializeAuthTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeAuthTableViewCell.xib; sourceTree = "<group>"; };
-		C754885419963D03007A01CF /* SocializeCommentDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeCommentDetailsViewController.xib; sourceTree = "<group>"; };
-		C754885519963D03007A01CF /* SocializeComposeMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeComposeMessageViewController.xib; sourceTree = "<group>"; };
 		C754885619963D03007A01CF /* SocializeConfigurationInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SocializeConfigurationInfo.plist; sourceTree = "<group>"; };
-		C754885719963D03007A01CF /* SocializeDummyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeDummyViewController.xib; sourceTree = "<group>"; };
-		C754885819963D03007A01CF /* SocializeEditValueTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeEditValueTableViewCell.xib; sourceTree = "<group>"; };
-		C754885919963D03007A01CF /* SocializeNotificationToggleBubbleContentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeNotificationToggleBubbleContentView.xib; sourceTree = "<group>"; };
-		C754885A19963D03007A01CF /* SocializeProfileEditTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeProfileEditTableViewCell.xib; sourceTree = "<group>"; };
-		C754885B19963D03007A01CF /* SocializeProfileEditTableViewImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeProfileEditTableViewImageCell.xib; sourceTree = "<group>"; };
-		C754885C19963D03007A01CF /* SocializeProfileEditValueViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeProfileEditValueViewController.xib; sourceTree = "<group>"; };
-		C754885D19963D03007A01CF /* SocializeRichPushNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeRichPushNotificationViewController.xib; sourceTree = "<group>"; };
-		C754885E19963D03007A01CF /* SocializeTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SocializeTableViewController.xib; sourceTree = "<group>"; };
-		C754885F19963D03007A01CF /* SZBaseShareViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SZBaseShareViewController.xib; sourceTree = "<group>"; };
-		C754886019963D03007A01CF /* SZStatusImageLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SZStatusImageLabelView.xib; sourceTree = "<group>"; };
 		C754886119963D03007A01CF /* Socialize.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Socialize.framework; sourceTree = "<group>"; };
 		C754886219963D03007A01CF /* UIDeviceHardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIDeviceHardware.h; sourceTree = "<group>"; };
 		C754886319963D03007A01CF /* UIDeviceHardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIDeviceHardware.m; sourceTree = "<group>"; };
@@ -6665,12 +6639,6 @@
 		C754878419963D03007A01CF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C754878519963D03007A01CF /* _SZCommentsListViewController.xib */,
-				C754878619963D03007A01CF /* _SZComposeCommentViewController.xib */,
-				C754878719963D03007A01CF /* _SZLinkDialogViewController.xib */,
-				C754878819963D03007A01CF /* _SZTwitterLinkViewController.xib */,
-				C754878919963D03007A01CF /* _SZUserProfileViewController.xib */,
-				C754878A19963D03007A01CF /* _SZUserSettingsViewController.xib */,
 				C754878B19963D03007A01CF /* action-bar-bg.png */,
 				C754878C19963D03007A01CF /* action-bar-bg@2x.png */,
 				C754878D19963D03007A01CF /* action-bar-button-black-hover.png */,
@@ -6701,9 +6669,6 @@
 				C75487A619963D03007A01CF /* comment_template_clear.htm */,
 				C75487A719963D03007A01CF /* comments-cell-bg-borders.png */,
 				C75487A819963D03007A01CF /* comments-cell-bg-borders@2x.png */,
-				C75487A919963D03007A01CF /* commentsNavBarLeftItemView.xib */,
-				C75487AA19963D03007A01CF /* CommentsTableViewCell.xib */,
-				C75487AB19963D03007A01CF /* SampleEntityLoader.xib */,
 				C75487AC19963D03007A01CF /* socialize-activity-bg.png */,
 				C75487AD19963D03007A01CF /* socialize-activity-bg@2x.png */,
 				C75487AE19963D03007A01CF /* socialize-activity-call-out-arrow.png */,
@@ -6867,24 +6832,7 @@
 				C754884C19963D03007A01CF /* socialize-selectnetwork-twitter-icon@2x.png */,
 				C754884D19963D03007A01CF /* socialize_logo.png */,
 				C754884E19963D03007A01CF /* socialize_twitter_load.png */,
-				C754884F19963D03007A01CF /* SocializeActivityDetailsViewController.xib */,
-				C754885019963D03007A01CF /* SocializeActivityTableViewCell.xib */,
-				C754885119963D03007A01CF /* SocializeActivityViewController.xib */,
-				C754885219963D03007A01CF /* SocializeAuthInfoTableViewCell.xib */,
-				C754885319963D03007A01CF /* SocializeAuthTableViewCell.xib */,
-				C754885419963D03007A01CF /* SocializeCommentDetailsViewController.xib */,
-				C754885519963D03007A01CF /* SocializeComposeMessageViewController.xib */,
 				C754885619963D03007A01CF /* SocializeConfigurationInfo.plist */,
-				C754885719963D03007A01CF /* SocializeDummyViewController.xib */,
-				C754885819963D03007A01CF /* SocializeEditValueTableViewCell.xib */,
-				C754885919963D03007A01CF /* SocializeNotificationToggleBubbleContentView.xib */,
-				C754885A19963D03007A01CF /* SocializeProfileEditTableViewCell.xib */,
-				C754885B19963D03007A01CF /* SocializeProfileEditTableViewImageCell.xib */,
-				C754885C19963D03007A01CF /* SocializeProfileEditValueViewController.xib */,
-				C754885D19963D03007A01CF /* SocializeRichPushNotificationViewController.xib */,
-				C754885E19963D03007A01CF /* SocializeTableViewController.xib */,
-				C754885F19963D03007A01CF /* SZBaseShareViewController.xib */,
-				C754886019963D03007A01CF /* SZStatusImageLabelView.xib */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
