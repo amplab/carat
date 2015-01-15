@@ -129,7 +129,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self updateView];
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
+	[self updateView];
 }
 
 - (void)viewDidUnload
