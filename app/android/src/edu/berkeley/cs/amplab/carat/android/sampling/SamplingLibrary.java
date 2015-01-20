@@ -74,6 +74,7 @@ import edu.berkeley.cs.amplab.carat.thrift.BatteryDetails;
 import edu.berkeley.cs.amplab.carat.thrift.CallMonth;
 import edu.berkeley.cs.amplab.carat.thrift.CellInfo;
 import edu.berkeley.cs.amplab.carat.thrift.CpuStatus;
+import edu.berkeley.cs.amplab.carat.thrift.Feature;
 import edu.berkeley.cs.amplab.carat.thrift.NetworkDetails;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import edu.berkeley.cs.amplab.carat.thrift.Sample;
@@ -217,15 +218,18 @@ public final class SamplingLibrary {
 		SamplingLibrary.currentBatteryLevel = level;
 	}
 	
-	public static void setCurrentBatteryLevel(int currentLevel, int scale) {
-		/*
-		 * it's important to CAST int variables to DOUBLE, BEFORE diving an
-		 * int to another int, otherwise the result will be zero.
-		 */
+	/**
+	 * 
+	 * Take in currentLevel and scale as doubles to avoid loss of precision issues.
+	 * Note that Carat stores battery level as a value between 0 and 1, e.g. 0.45 for 45%.
+	 * @param currentLevel Current battery level, usually in percent.
+	 * @param scale Battery scale, usually 100.0.
+	 */
+	public static void setCurrentBatteryLevel(double currentLevel, double scale) {
 		/* we should multiply the result of the division below by 100.0 to get the battery level 
 		 * in the scale of 0-100, but since the previous samples in our server's dataset are in the scale of 0.00-1.00, 
 		 * we omit the multiplication. */
-		double level = (double) currentLevel / (double) scale;
+		double level = currentLevel / scale;
 		/*
 		 * whenever we get these two arguments (extras from the intent:
 		 * EXTRA_LEVEL & EXTRA_SCALE), it doens't necessarily mean that a battery
@@ -606,6 +610,11 @@ public final class SamplingLibrary {
 		return l;
 	}
 
+	/**
+	 * Populate running process info into the runningAppInfo WeakReference list, and return its value.
+	 * @param context the Context
+	 * @return the value of the runningAppInfo WeakReference list after setting it.
+	 */
 	private static List<RunningAppProcessInfo> getRunningProcessInfo(Context context) {
 		if (runningAppInfo == null || runningAppInfo.get() == null) {
 			ActivityManager pActivityManager = (ActivityManager) context.getSystemService(Activity.ACTIVITY_SERVICE);
@@ -628,11 +637,22 @@ public final class SamplingLibrary {
 		return runningAppInfo.get();
 	}
 
+	/**
+	 * Returns a list of currently running Services.
+	 * @param c the Context.
+	 * @return Returns a list of currently running Services.
+	 */
 	public static List<RunningServiceInfo> getRunningServiceInfo(Context c) {
 		ActivityManager pActivityManager = (ActivityManager) c.getSystemService(Activity.ACTIVITY_SERVICE);
 		return pActivityManager.getRunningServices(0);
 	}
 
+	/**
+	 * Helper to query whether an application is currently running and its code has not been evicted from memory. 
+	 * @param context the Context
+	 * @param appName the package name or process name of the application.
+	 * @return true if the application is running, false otherwise.
+	 */
 	public static boolean isRunning(Context context, String appName) {
 		List<RunningAppProcessInfo> runningProcs = getRunningProcessInfo(context);
 		for (RunningAppProcessInfo i : runningProcs) {
@@ -647,12 +667,24 @@ public final class SamplingLibrary {
 		return true;
 	}
 	
+	/**
+	 * Used to clear the runningAppInfo WeakReference list when Carat is paused, so that it is refreshed when the process list view is shown.
+	 */
 	public static void resetRunningProcessInfo() {
 		runningAppInfo = null;
 	}
 
+	/**
+	 * package name to packageInfo map for quick querying.
+	 */
 	static WeakReference<Map<String, PackageInfo>> packages = null;
 
+	/**
+	 * Returns true if an application should be hidden in the UI. Uses the blacklist downloaded from Carat servers.
+	 * @param c the Context
+	 * @param processName the process name
+	 * @return true if the process should be hidden from the user, usually because it is an unkillable application that belongs to the system.
+	 */
 	public static boolean isHidden(Context c, String processName) {
 		boolean isSystem = isSystem(c, processName);
 		boolean blocked = (isSystem && !isWhiteListed(c, processName));
@@ -660,22 +692,22 @@ public final class SamplingLibrary {
 	}
 
 	/**
-	 * For debugging always returns true.
+	 * We currently do not employ a whitelist, so this returns true iff isBlacklisted(c, processName) returns false and vice versa.
 	 * 
-	 * @param c
-	 * @param processName
-	 * @return
+	 * @param c the Context.
+	 * @param processName the process name.
+	 * @return true iff isBlacklisted(c, processName) returns false and vice versa.
 	 */
 	private static boolean isWhiteListed(Context c, String processName) {
 		return !isBlacklisted(c, processName);
 	}
 
 	/**
-	 * For debugging always returns true.
+	 * Returns true if the processName matches an intem on the blacklist downloaded from Carat servers. 
 	 * 
-	 * @param c
-	 * @param processName
-	 * @return
+	 * @param c the Context.
+	 * @param processName the process name.
+	 * @return true if the processName matches an intem on the blacklist downloaded from Carat servers.
 	 */
 	private static boolean isBlacklisted(Context c, String processName) {
 		/*
@@ -715,6 +747,14 @@ public final class SamplingLibrary {
 		return false;
 	}
 
+	/**
+	 * Returns true if the application is preinstalled on the device.
+	 * This usually means it is a system application, e.g. Key chain, google partner set up, package installer, package access helper.
+	 * We currently do not filter these out, because some of them are killable by the user, and not part of the core system, even if they are preinstalled on the device. 
+	 * @param context the Context.
+	 * @param processName the process name.
+	 * @return true if the application is preinstalled on the device.
+	 */
 	private static boolean isSystem(Context context, String processName) {
 		PackageInfo pak = getPackageInfo(context, processName);
 		if (pak != null) {
@@ -904,10 +944,10 @@ public final class SamplingLibrary {
 	}
 
 	/**
-	 * Returns a List of ProcessInfo objects for a Sample object.
+	 * Returns a List of ProcessInfo objects, helper for getSample.
 	 * 
-	 * @param context
-	 * @return
+	 * @param context the Context.
+	 * @return a List of ProcessInfo objects, helper for getSample.
 	 */
 	private static List<ProcessInfo> getRunningProcessInfoForSample(Context context) {
 		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1056,6 +1096,13 @@ public final class SamplingLibrary {
 		return result;
 	}
 
+	/**
+	 * Helper to set application to the uninstalled state in the Carat sample.
+	 * @param pname the package that was uninstalled.
+	 * @param pref The preference that stored the uninstallation directive. This preference will be deleted to ensure uninstallations are not sent multiple times.
+	 * @param e the Editor (passed and not created here for efficiency)
+	 * @return a new ProcessInfo entry describing the uninstalled item.
+	 */
 	private static ProcessInfo uninstalledItem(String pname, String pref, SharedPreferences.Editor e) {
 		ProcessInfo item = new ProcessInfo();
 		item.setPName(pname);
@@ -1165,6 +1212,11 @@ public final class SamplingLibrary {
 		return uptime / 1000.0;
 	}
 
+	/**
+	 * Get the network status, one of connected, disconnected, connecting, or disconnecting.
+	 * @param context the Context.
+	 * @return the network status, one of connected, disconnected, connecting, or disconnecting.
+	 */
 	public static String getNetworkStatus(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (cm == null)
@@ -1185,6 +1237,13 @@ public final class SamplingLibrary {
 			return NETWORKSTATUS_DISCONNECTED;
 	}
 
+	
+	/**
+	 * Get the network type, for example Wifi, mobile, wimax, or none.
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static String getNetworkType(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (cm == null)
@@ -1195,6 +1254,11 @@ public final class SamplingLibrary {
 		return i.getTypeName();
 	}
 
+	/**
+	 * Returns true if the Internet is reachable.
+	 * @param c the Context
+	 * @return true if the Internet is reachable.
+	 */
 	public static boolean networkAvailable(Context c) {
 		String network = getNetworkStatus(c);
 		return network.equals(NETWORKSTATUS_CONNECTED);
@@ -2087,7 +2151,23 @@ public final class SamplingLibrary {
 		mySample.setTimeZone(getTimeZone(context));
 		// printAverageFeaturePower(context);
 
+		// If there are extra fields, include them into the sample.
+		List<Feature> extras = getExtras(context);
+		if (extras != null && extras.size() > 0)
+			mySample.setExtra(extras);
+		
 		return mySample;
+	}
+
+	/**
+	 * Helper method to collect all the extra information we wish to add to the sample into the Extra Feature list.
+	 * @param context the Context
+	 * @return a List<Feature> populated with extra items to collect outside of the protocol spec.
+	 */
+	private static List<Feature> getExtras(Context context) {
+		LinkedList<Feature> res = new LinkedList<Feature>();
+		res.add(getVmVersion(context));
+		return res;
 	}
 
 	//TODO: disabled for debugging
@@ -2097,6 +2177,21 @@ public final class SamplingLibrary {
 //		trafficRecord.setRx(TrafficStats.getUidRxBytes(uid));
 //		return trafficRecord;
 //	}
+
+	/**
+	 * Get the java.vm.version system property as a Feature("vm", version).
+	 * @param context the Context.
+	 * @return a Feature instance with the key "vm" and value of the "java.vm.version" system property. 
+	 */
+	private static Feature getVmVersion(Context context) {
+		String vm = System.getProperty("java.vm.version");
+		if (vm == null)
+			vm = "";
+		Feature vmVersion = new Feature();
+		vmVersion.setKey("vm");
+		vmVersion.setValue(vm);
+		return vmVersion;
+	}
 
 	public static List<String> getSignatures(PackageInfo pak) {
 		List<String> sigList = new LinkedList<String>();

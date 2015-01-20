@@ -62,7 +62,11 @@ public class Sampler extends WakefulBroadcastReceiver implements
 		 * check that too, to avoid overwriting our variables unnecessarily
 		 * (extra memory operation). Check SamplingLibrary.setCurrentBatteryLevel().
 		 */
-        if (currentLevel > 0 && scale > 0) {
+        
+        /* On some phones, scale is always 0. */
+        if (scale == 0)
+        	scale = 100;
+        if (currentLevel > 0) {
         	SamplingLibrary.setCurrentBatteryLevel(currentLevel, scale);
         	
         	if (this.context == null) {
