@@ -1,16 +1,18 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.lang.reflect.Field;
-import java.net.InetAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
@@ -34,7 +36,7 @@ public class PrefetchData extends AsyncTask<Void, Void, Void> {
 		if (sourceActivity.getClass() == SplashActivity.class) {
 			Log.d(TAG, "PrefetchData was instantiated and called from the SplashActivity");
 			mSplashActivity = (SplashActivity) sourceActivity;
-		} else if (sourceActivity.getClass() == MainActivity.class) {
+		} else /* if (sourceActivity.getClass() == MainActivity.class) */ {
 			Log.d(TAG, "PrefetchData was instantiated and called from the MainActivity "
 					+ "(called from the summary fragment's onResume() and passed MainActivity as the host)");
 			mMainActivity = (MainActivity) sourceActivity;
@@ -42,10 +44,10 @@ public class PrefetchData extends AsyncTask<Void, Void, Void> {
 	}
 	
 	
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
+//    @Override
+//    protected void onPreExecute() {
+//        super.onPreExecute();
+//    }
 
     @Override
     protected Void doInBackground(Void... arg0) {
@@ -62,7 +64,7 @@ public class PrefetchData extends AsyncTask<Void, Void, Void> {
         JsonParser jsonParser = new JsonParser();
         
         try {
-        	if (isInternetAvailable()) {
+        	if (CaratApplication.isInternetAvailable()) {
         		serverResponseJson = jsonParser
         				.getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
         	}
@@ -87,19 +89,18 @@ public class PrefetchData extends AsyncTask<Void, Void, Void> {
 				} catch (IllegalAccessException e) {
 					Log.e(TAG, "IllegalAccessException in setFieldsFromJson()");
 				}
-
             } catch (JSONException e) {
             	Log.e(TAG, e.getStackTrace().toString());
             }
+        } else {
+        	Log.d(TAG, "server respone JSON is null.");
         }
-        
-        Log.d(TAG, "json null, returning null");
         return null;
     }
 
     @Override
 	protected void onPostExecute(Void result) {
-		super.onPostExecute(result);
+    	super.onPostExecute(result);
 		
 		if (mSplashActivity != null) {
 			// After completing http call
@@ -128,17 +129,57 @@ public class PrefetchData extends AsyncTask<Void, Void, Void> {
 		} 
 		
 		if (mMainActivity != null) {
-			SharedPreferences sharedPref = mMainActivity.getSharedPreferences(
-					Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+	        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+			
+			Log.d(TAG, "gotDataSuccessfully()=" + gotDataSuccessfully() + "time: " + sdf.format(new Date()));
+			
 			if (gotDataSuccessfully()) {
-				SharedPreferences.Editor editor = sharedPref.edit();
-				editor.putInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, Integer.parseInt(wellbehaved));
-				editor.putInt(Constants.HOGS_COUNT_PREF_KEY, Integer.parseInt(hogs));
-				editor.putInt(Constants.HOGS_COUNT_PREF_KEY, Integer.parseInt(bugs));
-				editor.commit();
+				mMainActivity.mWellbehaved = Integer.parseInt(wellbehaved);
+				mMainActivity.mHogs = Integer.parseInt(hogs);
+				mMainActivity.mBugs = Integer.parseInt(bugs);
 			}
+//				
+//						
+//				SummaryFragment summaryFragment = new SummaryFragment();
+//				Bundle args = new Bundle();
+//				
+//				args.putInt("wellbehaved", Integer.parseInt(wellbehaved));
+//				args.putInt("hogs", Integer.parseInt(hogs));
+//				args.putInt("bugs", Integer.parseInt(bugs));
+//				
+//				Log.d(TAG, "put the arguments into the bundle. totalWellbehavedAppsCount=" + wellbehaved);
+//				
+//				summaryFragment.setArguments(args);
+//				Log.d(TAG, "set the arguments of the summary fragment");
+//				
+//				String summaryFragmentLabel = mMainActivity.getString(R.string.tab_summary);
+//				
+//				mMainActivity.replaceFragment(summaryFragment, summaryFragmentLabel);
+				
+			
+			
+//			SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(
+//					CaratApplication.getContext());
+////			SharedPreferences sharedPref = mMainActivity.getSharedPreferences(
+////					Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
+//			
+//			Log.d(TAG, "gotDataSuccessfully()=" + gotDataSuccessfully());
+//			
+//			if (gotDataSuccessfully()) {
+//				SharedPreferences.Editor editor = sharedPref.edit();
+//				editor.putInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, Integer.parseInt(wellbehaved));
+//				editor.putInt(Constants.HOGS_COUNT_PREF_KEY, Integer.parseInt(hogs));
+//				editor.putInt(Constants.HOGS_COUNT_PREF_KEY, Integer.parseInt(bugs));
+//				editor.commit();
+//				
+//				int wellBehaved = sharedPref.getInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, 0);
+//				Log.d(TAG, "successfully stored the fetched value of wellBehaved:" + wellBehaved);
+//			}
 			
 		}
+		
+		
 	}
     
     /**
@@ -172,20 +213,6 @@ public class PrefetchData extends AsyncTask<Void, Void, Void> {
 		}
 		
 	}
-	
-	boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com"); //You can replace it with your name
-            if (ipAddr.equals("")) {
-                return false;
-            } else {
-                return true;
-            }
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
 	
 	private boolean gotDataSuccessfully() {
 		return wellbehaved != null && wellbehaved != "" && hogs != null && hogs != ""

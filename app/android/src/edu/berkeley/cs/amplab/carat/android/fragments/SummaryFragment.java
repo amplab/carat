@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -43,10 +44,10 @@ public class SummaryFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView() started");
-//		mSharedPref = PreferenceManager.getDefaultSharedPreferences(
-//				CaratApplication.getContext());
-		mSharedPref = getActivity().getSharedPreferences(
-				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
+		mSharedPref = PreferenceManager.getDefaultSharedPreferences(
+				CaratApplication.getContext());
+//		mSharedPref = getActivity().getSharedPreferences(
+//				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
 		mResources = getResources();
 		Log.d(TAG, "initialized the shared preferences");
 		
@@ -73,62 +74,97 @@ public class SummaryFragment extends Fragment {
 		}
 		
 		handlePieGraphDrawing(inflatedView, mResources);
-		
-        getActivity().setTitle(mResources.getString(R.string.tab_summary));
         
         // onCreateView() method should always return the inflated view
         return inflatedView;
     }
 
+//	@Override
+//	public void onResume() {
+//		CaratApplication.getMainActivity().reAttachSummaryFragment = true;
+//		
+//		getActivity().setTitle(mResources.getString(R.string.tab_summary));
+////		Log.d(TAG, "summary fragment resumed.");
+//		Log.d(TAG, "I'm here");
+//		// if the pie graph is not drawn (because of being disconnected),
+//		// check again if the user has enabled the Internet meanwhile, if so, 
+//		// fetch the graph data and draw the graph.
+//		PieGraph pireGraph = (PieGraph) getView().findViewById(R.id.piegraph);
+//		
+//		Log.d(TAG, "CaratApplication.isInternetAvailable()=" + CaratApplication.isInternetAvailable());
+//		Log.d(TAG, "pireGraph.getSlices().size()=" + pireGraph.getSlices().size());
+//		boolean debugging = gotDataFromMainActivity();
+//		
+//		// Don't redraw (refresh) the graph if it is already drawn (if we already have the data)
+//		if (!gotDataFromMainActivity()) {
+//			Log.d(TAG, "about to draw the graph");
+//			// data will be put in MainActivity's shared preferences. TAKES TIME (network operation is slow)
+//			new PrefetchData(getActivity()).execute();
+//			
+////			new Handler().postDelayed(new Runnable() {
+////	            @Override
+////	            public void run() {
+//	            	// load the data just fetched into the fields of the current class
+//	            	loadPrefsToFields();
+//	            	// read the data from fields and draw the graph
+//	    			handlePieGraphDrawing(null, mResources);
+////	            }
+////	        }, 5000); // wait AT LEAST 2 seconds for the data to be fetched over (slow) network before trying to read the fields and draw
+//			// some users might have slower Internet speed (256 Kb/s mobile data, for example)
+//			
+//			
+//		}
+//		
+//		super.onResume();
+//	}
+	
 	private void saveStatsToSharedPref() {
 		SharedPreferences.Editor editor = mSharedPref.edit();
 		editor.putInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, wellbehavedAppCount);
 		editor.putInt(Constants.HOGS_COUNT_PREF_KEY, hogCount);
 		editor.putInt(Constants.BUGS_COUNT_PREF_KEY, bugCount);
 		editor.commit();
-	}
-
-	@Override
-	public void onResume() {
-		Log.d(TAG, "summary fragment resumed.");
-		// try to fetch data again, since the user might have enabled wifi or mobile data 
-		// (after being disconnected while in the splash screen (when opening the app))
-		// Data will be put in the shared preferences of the MainActivity.
-		new PrefetchData(getActivity()).execute();
 		
-		// load the data just fetched into the fields of the current class
-		loadPrefsToFields();
-		
-		// if connected to Internet, draw the graph (read data from fields), 
-		// if not connected, ask user to enable WiFi
-		handlePieGraphDrawing(this.getView(), mResources);
-		
-		super.onResume();
+		Log.d(TAG, "saveStatsToSharedPref() was called. Saved wellbehavedAppsCount=" + wellbehavedAppCount);
 	}
 	
 	/**
 	 * @param sharedPref
 	 */
 	private void loadPrefsToFields() {
-		SharedPreferences sharedPref = getActivity().getSharedPreferences(
-				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
-		lastWellbehavedAppCount = wellbehavedAppCount = sharedPref.getInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, 0); 
-		lastHogCount = hogCount = sharedPref.getInt(Constants.HOGS_COUNT_PREF_KEY, 0);
-		lastBugCount = bugCount = sharedPref.getInt(Constants.BUGS_COUNT_PREF_KEY, 0);
+		lastWellbehavedAppCount = wellbehavedAppCount = mSharedPref.getInt(Constants.WELL_BEHAVED_APPS_COUNT_PREF_KEY, 0); 
+		lastHogCount = hogCount = mSharedPref.getInt(Constants.HOGS_COUNT_PREF_KEY, 0);
+		lastBugCount = bugCount = mSharedPref.getInt(Constants.BUGS_COUNT_PREF_KEY, 0);
+		
+		Log.d(TAG, "loadPrefsToFields() invoked. Read data from the pref: "
+				+ "lastWellbehavedAppCount=wellbehavedAppCount=" + lastWellbehavedAppCount);
 	}
 
 	/**
+	 * If connected to Internet, draw the graph (read data from fields),
+	 * if not connected, ask the user to enable WiFi.
 	 * @param inflatedView
 	 * @param resources
 	 */
-	private void handlePieGraphDrawing(View inflatedView, Resources resources) {
+	private void handlePieGraphDrawing(View inflatedV, Resources resources) {
+		View inflatedView;
+		
+		if (inflatedV == null) {
+			inflatedView = this.getView();
+		} else {
+			inflatedView = inflatedV;
+		}
+		
 		if (gotDataFromMainActivity()) {
 			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+			Log.d(TAG, "about to draw the graph. wellbehavedAppCount=" + wellbehavedAppCount);
 			drawPieGraph(pireGraph, resources, wellbehavedAppCount, hogCount, bugCount);
 		} else if (hasOldData()) {
 			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+			Log.d(TAG, "about to draw the graph from old data. lastWellbehavedAppCount=" + lastWellbehavedAppCount);
 			drawPieGraph(pireGraph, resources, lastWellbehavedAppCount, lastHogCount, lastBugCount);
 		} else {
+			Log.d(TAG, "data unavailable.");
 			TextView tv = (TextView) inflatedView.findViewById(R.id.summary_screen_title);
 			tv.setText(R.string.connection_error);
 			tv.setOnClickListener(new OnClickListener() {
@@ -141,7 +177,9 @@ public class SummaryFragment extends Fragment {
 	}
 	
 	private boolean gotDataFromMainActivity() {
-		return wellbehavedAppCount != 0 && hogCount != 0 && bugCount != 0;
+		boolean result = wellbehavedAppCount != 0 && hogCount != 0 && bugCount != 0;
+		Log.d(TAG, "gotDataFromMainActivity() returns" + result + ". wellbehavedAppCount=" + wellbehavedAppCount);
+		return result;
 	}
 	
 	private boolean hasOldData() {
@@ -149,31 +187,31 @@ public class SummaryFragment extends Fragment {
 	}
 	
 	/**
-	 * @param pg
+	 * @param pieGraph
 	 * @param resources
 	 * @param wellbehavedAppCount
 	 * @param hogCount
 	 * @param bugCount
 	 */
-	private void drawPieGraph(PieGraph pg, Resources resources, int wellbehavedAppCount, int hogCount, int bugCount) {
+	private void drawPieGraph(PieGraph pieGraph, Resources resources, int wellbehavedAppCount, int hogCount, int bugCount) {
 		PieSlice slice = new PieSlice();
 		slice.setColor(resources.getColor(R.color.green));
 		slice.setSelectedColor(resources.getColor(R.color.transparent_orange));
 		slice.setValue(wellbehavedAppCount);
 		slice.setTitle("first");
-		pg.addSlice(slice);
-
+		pieGraph.addSlice(slice);
+		
 		slice = new PieSlice();
 		slice.setColor(resources.getColor(R.color.orange));
 		slice.setValue(hogCount);
-		pg.addSlice(slice);
+		pieGraph.addSlice(slice);
 
 		slice = new PieSlice();
 		slice.setColor(resources.getColor(R.color.purple));
 		slice.setValue(bugCount);
-		pg.addSlice(slice);
+		pieGraph.addSlice(slice);
 
-		pg.setOnSliceClickedListener(new OnSliceClickedListener() {
+		pieGraph.setOnSliceClickedListener(new OnSliceClickedListener() {
 			@Override
 			public void onClick(int index) {
 				switch (index) {
@@ -191,7 +229,7 @@ public class SummaryFragment extends Fragment {
 		});
 
 		Bitmap b = BitmapFactory.decodeResource(resources, R.drawable.ic_launcher);
-		pg.setBackgroundBitmap(b);
+		pieGraph.setBackgroundBitmap(b);
 	}
 	
 }

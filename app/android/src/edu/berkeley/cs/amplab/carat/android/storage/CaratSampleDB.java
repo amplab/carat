@@ -329,10 +329,48 @@ public class CaratSampleDB {
                 if (db == null || !db.isOpen()) {
                     db = helper.getWritableDatabase();
                 }
+                
+                Log.d(TAG, "CaratSampleDB.putSample(). About to save a sample to the DB. "
+                		+ "uuid=" + s.uuId
+                		+ ", timestamp=" + s.timestamp
+                		+ ", timezone=" + s.timeZone
+                		+ ", batteryLevel=" + s.batteryLevel
+                		+ ", batteryState=" + s.batteryState
+                		+ ", developerMode=" + s.developerMode
+                		+ ", distanceTraveled=" + s.distanceTraveled
+                		+ ", memoryActive=" + s.memoryActive
+                		+ ", memoryFree=" + s.memoryFree
+                		+ ", memoryInactive=" + s.memoryInactive
+                		+ ", memoryWired=" + s.memoryWired
+                		+ ", screenBrightness=" + s.screenBrightness
+                		+ ", networkStatus=" + s.networkStatus
+                		+ ", screenOn=" + s.screenOn
+                		+ ", unknownSources=" + s.unknownSources
+                		+ ", batteryCapacity=" + s.batteryDetails.batteryCapacity
+                		+ ", batteryCharger=" + s.batteryDetails.batteryCharger
+                		+ ", batteryHealth=" + s.batteryDetails.batteryHealth
+                		+ ", batteryTechnology=" + s.batteryDetails.batteryTechnology
+                		+ ", batteryVoltage=" + s.batteryDetails.batteryVoltage
+//                		+ ", callStatus=" + s.callInfo.callStatus
+//                		+ ", incomingCallTime=" + s.callInfo.incomingCallTime
+//                		+ ", nonCallTime=" + s.callInfo.nonCallTime
+//                		+ ", outgoingCallTime=" + s.callInfo.outgoingCallTime
+                		+ ", cpuStatus=" + s.cpuStatus
+                		+ ", mobileDataActivity=" + s.getNetworkDetails().mobileDataActivity
+                		+ ", mobileDataStatus=" + s.getNetworkDetails().mobileDataStatus
+                		+ ", mobileNetworkType=" + s.getNetworkDetails().mobileNetworkType
+                		+ ", networkType=" + s.getNetworkDetails().networkType
+                		+ ", wifiLinkSpeed=" + s.getNetworkDetails().wifiLinkSpeed
+                		+ ", wifiSignalStrength=" + s.getNetworkDetails().wifiSignalStrength
+                		+ ", wifiStatus=" + s.getNetworkDetails().wifiStatus
+                		+ ", PiListSize=" + s.getPiListSize()
+                		);
+                
                 // force init
                 id = addSample(s);
-                if (id >= 0)
+                if (id >= 0) {
                     lastSample = SampleReader.readSample(s);
+                }
                 if (db != null && db.isOpen()) {
                     db.close();
                 }

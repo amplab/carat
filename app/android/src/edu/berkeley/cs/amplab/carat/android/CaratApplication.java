@@ -1,5 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
+import java.net.InetAddress;
+
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
 import android.content.Context;
@@ -428,6 +430,20 @@ public class CaratApplication extends Application {
 				CaratApplication.setActionFinished();
 			}
 		}.start();
+	}
+
+	public static boolean isInternetAvailable() {
+	    try {
+	        InetAddress ipAddr = InetAddress.getByName("google.com"); //You can replace it with your name
+	        if (ipAddr.equals("")) {
+	            return false;
+	        } else {
+	            return true;
+	        }
+	
+	    } catch (Exception e) {
+	        return false;
+	    }
 	}
 
 	public static void setReportData() {

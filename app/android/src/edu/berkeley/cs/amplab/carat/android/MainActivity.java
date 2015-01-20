@@ -2,6 +2,7 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
 
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -95,6 +97,11 @@ public class MainActivity extends ActionBarActivity {
 	private Fragment mAboutFragment;
 	private String mAboutFragmentLabel;
 
+	// public boolean updateSummaryFragment;
+	
+	// counts (general Carat stats shown in the summary fragment)
+	public int mWellbehaved=0, mHogs=0, mBugs=0;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -390,6 +397,46 @@ public class MainActivity extends ActionBarActivity {
 		 * new Thread() { public void run() {
 		 */
 		
+//		SummaryFragment summaryFragment = (SummaryFragment) getFragmentManager().findFragmentByTag(mSummaryFragmentLabel);
+		
+		Fragment fragment = getVisibleFragment();
+		if (fragment instanceof SummaryFragment) {
+			Intent intentSplashActvity = new Intent(this, SplashActivity.class);
+			Log.d(TAG, "about to start the splash activity");
+			startActivity(intentSplashActvity);
+			// close current activity
+			finish();
+			super.onResume();
+			return;
+		}	
+//			Toast.makeText(getApplicationContext(), "current visible fragment is an instance of the SummaryFragment",
+//					   Toast.LENGTH_LONG).show();
+////			TextView title = (TextView) findViewById(R.id.summary_screen_title);
+////			title.setText("Retrieving data. Please wait...");
+//
+//			FragmentManager fragmentManager = getSupportFragmentManager();
+//			FragmentTransaction transaction = fragmentManager.beginTransaction();
+//			
+//			if (fragment.isAdded()) {
+//				transaction.detach(fragment);
+//				new Thread() {
+//					public void run() {
+//						new PrefetchData(CaratApplication.getMainActivity()).execute();
+//					}
+//				}.start();
+//				initSummaryFragment();
+//				transaction.replace(R.id.content_frame, fragment, mSummaryFragmentLabel)
+//							.addToBackStack(mSummaryFragmentLabel)
+//							.commit();
+//			}
+			
+//			transaction.attach(fragment);
+			
+//			initSummaryFragment();
+//			transaction.attach(fragment);
+//			replaceFragment(mSummaryFragment, mSummaryFragmentLabel);
+		
+		
 		((CaratApplication) getApplication()).refreshUi();
 		
 		/*
@@ -399,6 +446,16 @@ public class MainActivity extends ActionBarActivity {
 		super.onResume();
 	}
 
+	public Fragment getVisibleFragment(){
+	    FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+	    List<Fragment> fragments = fragmentManager.getFragments();
+	    for(Fragment fragment : fragments){
+	        if(fragment != null && fragment.isVisible())
+	            return fragment;
+	    }
+	    return null;
+	}
+	
 	@Override
 	protected void onPause() {
 		Log.i(TAG, "Paused");
@@ -434,50 +491,47 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void initSummaryFragment() {
-		int totalWellbehavedAppsCount = 0,
-			totalHogsCount = 0,
-			totalBugsCount = 0;
 		
-		/*
-		 * Read the arguments passed to the current activity from the SplashScreen
-		 * These values have been fetched from the Carat statistics URL in the SplashScreen,
-		 * and should be read in onCreate() of the main activity
-		 */
-		Intent intent = getIntent();
-		String wellbehaved = intent.getStringExtra("wellbehaved"),
-			   hogs = intent.getStringExtra("hogs"),
-			   bugs = intent.getStringExtra("bugs");
-		
-		Log.d(TAG, "fetched the strings. wellbehaved=" + wellbehaved + ", hogs=" + hogs + ", bugs=" + bugs);
-		
-		boolean isDataAvaiable = ! wellbehaved.equals(Constants.DATA_NOT_AVAIABLE) 
-							&& ! hogs.equals(Constants.DATA_NOT_AVAIABLE) 
-							&& ! bugs.equals(Constants.DATA_NOT_AVAIABLE);
-		
-//		Log.d(TAG, "isDataAvaiable=" + Boolean.toString(isDataAvaiable));
-		
-		if (isDataAvaiable) {
-			Log.d(TAG, "strings are available. wellbehaved=" + wellbehaved 
-					+ ", hogs=" + hogs + ", bugs=" + bugs);
-			totalWellbehavedAppsCount = Integer.parseInt(wellbehaved);
-			totalHogsCount = Integer.parseInt(hogs);
-			totalBugsCount = Integer.parseInt(bugs);
-		} else {
-			Log.d(TAG, "strings (extra) are not available. Passing the default value (0).");
+		if (mWellbehaved == 0 && mHogs == 0 && mBugs == 0) {
+
+			/*
+			 * Read the arguments passed to the current activity from the
+			 * SplashScreen These values have been fetched from the Carat
+			 * statistics URL in the SplashScreen, and should be read in
+			 * onCreate() of the main activity
+			 */
+			Intent intent = getIntent();
+			String wellbehaved = intent.getStringExtra("wellbehaved"), hogs = intent.getStringExtra("hogs"), bugs = intent
+					.getStringExtra("bugs");
+
+			Log.d(TAG, "fetched the strings. wellbehaved=" + wellbehaved + ", hogs=" + hogs + ", bugs=" + bugs);
+
+			boolean isDataAvaiable = !wellbehaved.equals(Constants.DATA_NOT_AVAIABLE)
+					&& !hogs.equals(Constants.DATA_NOT_AVAIABLE) && !bugs.equals(Constants.DATA_NOT_AVAIABLE);
+
+			// Log.d(TAG, "isDataAvaiable=" + Boolean.toString(isDataAvaiable));
+
+			if (isDataAvaiable) {
+				Log.d(TAG, "strings are available. wellbehaved=" + wellbehaved + ", hogs=" + hogs + ", bugs=" + bugs);
+				mWellbehaved = Integer.parseInt(wellbehaved);
+				mHogs = Integer.parseInt(hogs);
+				mBugs = Integer.parseInt(bugs);
+			} else {
+				Log.d(TAG, "strings (extra) are not available. Passing the default value (0).");
+			}
 		}
 		
 		mSummaryFragment = new SummaryFragment();
 		mArgs = new Bundle();
 		
-		mArgs.putInt("wellbehaved", totalWellbehavedAppsCount);
-		mArgs.putInt("hogs", totalHogsCount);
-		mArgs.putInt("bugs", totalBugsCount);
+		mArgs.putInt("wellbehaved", mWellbehaved);
+		mArgs.putInt("hogs", mHogs);
+		mArgs.putInt("bugs", mBugs);
 		
-		Log.d(TAG, "put the arguments into the bundle. totalWellbehavedAppsCount=" + totalWellbehavedAppsCount);
+		Log.d(TAG, "put the arguments into the bundle. totalWellbehavedAppsCount=" + mWellbehaved);
 		
 		mSummaryFragment.setArguments(mArgs);
 		Log.d(TAG, "set the arguments of the summary fragment");
-		
 		
 		mSummaryFragmentLabel = getString(R.string.tab_summary);
 	}
@@ -534,7 +588,18 @@ public class MainActivity extends ActionBarActivity {
 		// replace the fragment, using a fragment transaction
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(R.id.content_frame, fragment)
+		// use a fragment tag, so that later on we can find the currently displayed fragment
+		final String FRAGMENT_TAG = fragmentNameInBackStack;
+		
+//		String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+//		if (tag == mSummaryFragmentLabel) {		
+		// update summary fragment's view (after enabling Internet)
+//		if (FRAGMENT_TAG == mSummaryFragmentLabel) {
+//			transaction.detach(fragment);
+//			transaction.attach(fragment);
+//		}
+		
+		transaction.replace(R.id.content_frame, fragment, FRAGMENT_TAG)
 					.addToBackStack(fragmentNameInBackStack)
 					.commit();
 	}
