@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- These will be different -->
+    <!-- These will be different -->
 	
     <string name="jscore">J-Scoresi:</string>
     <string name="batterylife">Aktiivinen akunkesto:</string>
@@ -60,9 +60,9 @@
         <item>Laite</item>
         <item>Bugit</item>
         <item>Hogit</item>
+        <item>Järj.asetukset</item>
+        <item>Caratin asetukset</item>
         <item>Tietoja</item>
-        <!-- TODO: this string needs translation -->
-        <item>System Settings</item>
     </string-array>
     
     <!-- Updating etc -->
@@ -80,7 +80,6 @@
 
     <string name="expected">Arvioitu parannus:</string>
     <string name="killappname">Tapa Sovellus</string>
-
     <string name="appname">Sovelluksen nimi</string>
     <string name="priority">Prioriteetti:</string>
     <string name="priorityDefault">Ei käynnissä</string>
@@ -102,7 +101,7 @@
     <string name="syncsettings">Päivitysasetukset</string>
     <string name="mobilenetworksettings">Puhelinverkon asetukset</string>
     <string name="appsettings">Sovellusasetukset</string>
-    <string name="opening"></string>
+    <string name="opening">Avaa </string>
     <string name="notsupported">eivät ole saatavilla tällä laitteella.</string>
 
     <!-- Actions -->
@@ -161,21 +160,24 @@
     <string name="userswithbugs">Users with bugs</string>
     
     <!-- error messages -->
-    <string name="connection_error">Offline. Click o turn on Wifi.</string>
+    <string name="statserror">Internet-yhteys on pois päältä.
+Tietoja ei saatu luettua palvelimelta.</string>
     
     <!-- Navigation Drawer -->
-    <string name="drawer_open">Open navigation drawer</string>
-    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">Näytä valikkopalkki</string>
+    <string name="drawer_close">Sulje valikkopalkki</string>
     
     <!-- Name of the app, in the splash screen -->
     <string name="title_activity_splash_screen">Carat</string>
 
-    <!-- TODO: these need translation -->
     <!-- Carat settings screen -->
     <!-- switch backport strings -->
     <string name="off">OFF</string>
     <string name="on">ON</string>
-    <string name="summary_off">Wifi + Mobile Data</string>
-    <string name="summary_on">Wifi Only</string>
-    
+    <string name="summary_off">Wifi + Mobiilidata</string>
+    <string name="summary_on">Vain Wifi</string>
 </resources>
+
+
+<!--  <item>Sovellussuositus</item>  
+	  <string name="action_websearch">Hae</string> -->
