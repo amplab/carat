@@ -118,7 +118,7 @@ public class CaratSettingsFragment extends PreferenceFragment {
 			intent.setType("text/plain");
 		else
 			intent.setType("message/rfc822");
-		intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@eecs.berkeley.edu" });
+		intent.putExtra(Intent.EXTRA_EMAIL, new String[] { "carat@cs.helsinki.fi" });
 		intent.putExtra(Intent.EXTRA_SUBJECT, "[carat] [Android] " + getString(R.string.feedbackfrom) + " "
 				+ model);
 		intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
