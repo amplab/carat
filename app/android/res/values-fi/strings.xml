@@ -41,21 +41,9 @@
     
     <string name="appmanager">Sovellushallinta</string>
     
-    <!-- Tabs. Also used ELSEWHERE. 
-    (must be deleted (duplicate with the string array, down below), but with extra care) -->
-    <string name="tab_actions">Ehdotukset</string>
-    <string name="tab_my_device">Laite</string>
-    <string name="tab_bugs">Bugit</string>
-    <string name="tab_hogs">Hogit</string>
-    <string name="tab_about">Tietoja</string>
-    <!-- TODO: these strings need translation -->
-    <string name="tab_summary">Summary</string>
-    <string name="tab_settings">System Settings</string>
-    <!-- <string name="tab_app_recommendation">Recommendation</string> -->
-    
     <!-- Navigation drawer items (tabs) -->
     <string-array name="drawer_items">
-        <item>Summary</item>
+        <item>Yhteenveto</item>
         <item>Ehdotukset</item>
         <item>Laite</item>
         <item>Bugit</item>
