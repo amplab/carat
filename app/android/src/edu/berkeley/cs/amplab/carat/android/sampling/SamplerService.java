@@ -197,7 +197,7 @@ public class SamplerService extends IntentService {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
                 context)
-                .setSmallIcon(R.drawable.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notify)
                 .setContentTitle("Please open Carat")
                 .setContentText("Please open Carat. Samples to send:")
                 .setNumber(samples);
