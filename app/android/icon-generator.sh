@@ -17,6 +17,11 @@ fi
 icon=$( basename "$1" )
 
 sizes=(48 72 96 144 192)
+if [ -n "$2" -a "$2"=="notify" ]
+then
+  sizes=(24 36 48 72 96)
+fi
+
 names=(m h xh xxh xxxh)
 suff="dpi"
 pre="res/drawable"
