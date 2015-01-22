@@ -68,7 +68,7 @@ public class Constants {
 		OS, MODEL, HOG, BUG, SIMILAR, JSCORE, OTHER, BRIGHTNESS, WIFI, MOBILEDATA
 	}
 
-	// used in the SplashActivity and MainActivity
+	// used in the PrefetchData class and MainActivity
 	// (to check whether the users statistics are fetched from the server)
 	public static final String DATA_NOT_AVAIABLE = "not_available";
 	

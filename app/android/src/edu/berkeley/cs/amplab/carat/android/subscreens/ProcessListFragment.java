@@ -2,18 +2,17 @@ package edu.berkeley.cs.amplab.carat.android.subscreens;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
-import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
+import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 
 public class ProcessListFragment extends Fragment {
 

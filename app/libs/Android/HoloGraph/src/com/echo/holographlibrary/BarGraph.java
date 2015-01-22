@@ -23,8 +23,9 @@
 
 package com.echo.holographlibrary;
 
+import java.util.ArrayList;
+
 import android.animation.Animator;
-import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -46,9 +47,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 public class BarGraph extends View implements HoloGraphAnimate {
 

@@ -2,11 +2,21 @@ package edu.berkeley.cs.amplab.carat.android;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -25,7 +35,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -39,6 +48,7 @@ import edu.berkeley.cs.amplab.carat.android.fragments.SuggestionsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.SummaryFragment;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.subscreens.WebViewFragment;
+import edu.berkeley.cs.amplab.carat.android.utils.JsonParser;
 import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
 /**
@@ -174,6 +184,10 @@ public class MainActivity extends ActionBarActivity {
 
 		setTitleNormal();
 
+		// first get summary data from the server, then initialize the summary fragment 
+//		new PrefetchData(this).execute();
+//		initSummaryFragment();
+		
 		// Uncomment the following to enable listening on local port 8080:
 		/*
 		 * try {
@@ -383,6 +397,8 @@ public class MainActivity extends ActionBarActivity {
 		// PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 	}
 
+	
+	
 	@Override
 	protected void onResume() {
 		Log.i(TAG, "Resumed. Refreshing UI");
@@ -399,16 +415,16 @@ public class MainActivity extends ActionBarActivity {
 		
 //		SummaryFragment summaryFragment = (SummaryFragment) getFragmentManager().findFragmentByTag(mSummaryFragmentLabel);
 		
-		Fragment fragment = getVisibleFragment();
-		if (fragment instanceof SummaryFragment) {
-			Intent intentSplashActvity = new Intent(this, SplashActivity.class);
-			Log.d(TAG, "about to start the splash activity");
-			startActivity(intentSplashActvity);
-			// close current activity
-			finish();
-			super.onResume();
-			return;
-		}	
+//		Fragment fragment = getVisibleFragment();
+//		if (fragment instanceof SummaryFragment) {
+//			Intent intentSplashActvity = new Intent(this, SplashActivity.class);
+//			Log.d(TAG, "about to start the splash activity");
+//			startActivity(intentSplashActvity);
+//			// close current activity
+//			finish();
+//			super.onResume();
+//			return;
+//		}	
 //			Toast.makeText(getApplicationContext(), "current visible fragment is an instance of the SummaryFragment",
 //					   Toast.LENGTH_LONG).show();
 ////			TextView title = (TextView) findViewById(R.id.summary_screen_title);
@@ -471,16 +487,35 @@ public class MainActivity extends ActionBarActivity {
 		super.finish();
 	}
 
+	
 	/**
 	 * must be called in onCreate() method of the activity, before calling selectItem() method
 	 * [before attaching the navigation drawer listener]
 	 * pre-initialize all fragments before committing a replace fragment transaction
 	 * may help for better smoothness when user selects a navigation drawer item
 	 */
+	@SuppressLint("NewApi")
 	private void preInittializeFragments() {
-		Log.d(TAG, "about to initialize SummaryFragment");
+//		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+//	    final List<RecentTaskInfo> recentTasks = activityManager.getRecentTasks(20, ActivityManager.RECENT_WITH_EXCLUDED);
+//	    for (int i = 0; i < recentTasks.size(); i++) {
+//	        Intent baseIntent = recentTasks.get(i).baseIntent;
+//	        if(baseIntent != null) {
+//	            Log.d("Text", "The Application executed: " + i + ": baseIntent: " + baseIntent.getComponent().getPackageName() + baseIntent.getComponent().getClassName());
+//	        }
+//	    }
+        
+		// before initializing the summary fragment, we need to fetch the the data it needs from our server, in an asyncTask 
+		PrefetchData prefetchData = new PrefetchData();
+		// run this asyncTask in a new thread [from the thread pool] (run in parallel to other asyncTasks)
+		// (do not wait for them to finish, it takes a long time)
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
+			prefetchData.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		 else
+			 prefetchData.execute();
+
+		// after fetching the data needed by the summary fragment, initialize it
 		initSummaryFragment();
-		Log.d(TAG, "done initializing SummaryFragment");
 		initSuggestionsFragment();
 		initMyDeviceFragment();
 		initBugsOrHogsFragment(true);
@@ -491,49 +526,25 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void initSummaryFragment() {
-		
-		if (mWellbehaved == 0 && mHogs == 0 && mBugs == 0) {
-
-			/*
-			 * Read the arguments passed to the current activity from the
-			 * SplashScreen These values have been fetched from the Carat
-			 * statistics URL in the SplashScreen, and should be read in
-			 * onCreate() of the main activity
-			 */
-			Intent intent = getIntent();
-			String wellbehaved = intent.getStringExtra("wellbehaved"), hogs = intent.getStringExtra("hogs"), bugs = intent
-					.getStringExtra("bugs");
-
-			Log.d(TAG, "fetched the strings. wellbehaved=" + wellbehaved + ", hogs=" + hogs + ", bugs=" + bugs);
-
-			boolean isDataAvaiable = !wellbehaved.equals(Constants.DATA_NOT_AVAIABLE)
-					&& !hogs.equals(Constants.DATA_NOT_AVAIABLE) && !bugs.equals(Constants.DATA_NOT_AVAIABLE);
-
-			// Log.d(TAG, "isDataAvaiable=" + Boolean.toString(isDataAvaiable));
-
-			if (isDataAvaiable) {
-				Log.d(TAG, "strings are available. wellbehaved=" + wellbehaved + ", hogs=" + hogs + ", bugs=" + bugs);
-				mWellbehaved = Integer.parseInt(wellbehaved);
-				mHogs = Integer.parseInt(hogs);
-				mBugs = Integer.parseInt(bugs);
-			} else {
-				Log.d(TAG, "strings (extra) are not available. Passing the default value (0).");
+//			Log.d(TAG, "initSummaryFragment() was called. About to initialize the summary fragment.");
+			Log.d("MainActivity, initSummaryFragment()", "isStatsDataAvailable()=" + Boolean.toString(isStatsDataAvailable()));
+			
+//			if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
+//				Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
+//				FragmentManager manager = getSupportFragmentManager();
+//				mSummaryFragment = getSupportFragmentManager().findFragmentByTag("Summary");
+//				FragmentTransaction fragTransaction = manager.beginTransaction();
+//			    fragTransaction.detach(mSummaryFragment);
+//			    fragTransaction.attach(mSummaryFragment);
+//			    fragTransaction.commit();
+//			} else {
+			if (! isStatsDataAvailable()) {
+				Log.d(TAG, "data for summary fragment is not available.");
+				mSummaryFragment = new SummaryFragment();
 			}
-		}
+			
+			mSummaryFragmentLabel = "Summary";   // getString(R.string.tab_summary)
 		
-		mSummaryFragment = new SummaryFragment();
-		mArgs = new Bundle();
-		
-		mArgs.putInt("wellbehaved", mWellbehaved);
-		mArgs.putInt("hogs", mHogs);
-		mArgs.putInt("bugs", mBugs);
-		
-		Log.d(TAG, "put the arguments into the bundle. totalWellbehavedAppsCount=" + mWellbehaved);
-		
-		mSummaryFragment.setArguments(mArgs);
-		Log.d(TAG, "set the arguments of the summary fragment");
-		
-		mSummaryFragmentLabel = getString(R.string.tab_summary);
 	}
 	
 	private void initSuggestionsFragment() {
@@ -573,6 +584,10 @@ public class MainActivity extends ActionBarActivity {
 	private void initCaratSettingsFragment() {
 		mCaratSettingsFragment = new CaratSettingsFragment();
 		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
+	}
+	
+	private boolean isStatsDataAvailable() {
+		return mWellbehaved != 0 && mHogs != 0 && mBugs != 0;
 	}
 	
 	/*
@@ -624,4 +639,124 @@ public class MainActivity extends ActionBarActivity {
     //          Toast.makeText(CaratApplication.getMainActivity(), String.valueOf(sharedPreferences.getBoolean(key, false)), Toast.LENGTH_SHORT).show();
     //      }
     //  };
+	
+	public class PrefetchData extends AsyncTask<Void, Void, Void> {
+
+		String serverResponseJson = null;
+		private final String TAG = "PrefetchData";
+		
+	    @Override
+	    protected Void doInBackground(Void... arg0) {
+	    	Log.d(TAG, "started doInBackground() method of the asyncTask");
+	    	
+	        JsonParser jsonParser = new JsonParser();
+	        
+	        // Log.d(TAG, "about to get the stats json");
+	        
+	        try {
+	        	if (CaratApplication.isInternetAvailable()) {
+	        		serverResponseJson = jsonParser
+	        				.getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
+	        		// Log.d(TAG, "trying to fetch json");
+	        	}
+	        } catch (Exception e) {
+	        	// Log.d("PrefetchData", e.getStackTrace().toString());
+	        }
+	        
+	        if (serverResponseJson != null && serverResponseJson != "") {
+	        	// Log.d(TAG, "server response not null");
+	            try {
+	                JSONArray jsonArray = new JSONObject(serverResponseJson).getJSONArray("android-apps");
+	                // Log.d(TAG, "got json array out of the json object");
+	                // Using Java reflections to set fields by passing their name to a method
+	                try {
+						setIntFieldsFromJson(jsonArray, 0, "mWellbehaved");
+						setIntFieldsFromJson(jsonArray, 1, "mHogs");
+						setIntFieldsFromJson(jsonArray, 2, "mBugs");
+						
+						// Log.i(TAG, "received JSON: " + "mBugs: " + mWellbehaved 
+						//		+ ", mHogs: " + mHogs + ", mBugs: " + mBugs);
+					} catch (IllegalArgumentException e) {
+						Log.e(TAG, "IllegalArgumentException in setFieldsFromJson()");
+					} catch (IllegalAccessException e) {
+						Log.e(TAG, "IllegalAccessException in setFieldsFromJson()");
+					}
+	            } catch (JSONException e) {
+	            	Log.e(TAG, e.getStackTrace().toString());
+	            }
+	        } else {
+	        	// Log.d(TAG, "server respone JSON is null.");
+	        }
+	        return null;
+	    }
+
+		@Override
+		protected void onPostExecute(Void result) {
+			// Log.d(TAG, "started the onPostExecute() of the asyncTask");
+			super.onPostExecute(result);
+			// SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+			// sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+			// Log.d(TAG, "asyncTask.onPstExecute(). mWellbehaved=" + mWellbehaved);
+
+			refreshSummaryFragment();
+		}
+	    
+	    /**
+	     * Using Java reflections to set fields by passing their name to a method
+	     * @param jsonArray the json array from which we want to extract different json objects
+	     * @param objIdx the index of the object in the json array
+	     * @param fieldName the name of the field in the current NESTED class (PrefetchData)
+	     */
+		private void setIntFieldsFromJson(JSONArray jsonArray, int objIdx, String fieldName) 
+				throws JSONException, IllegalArgumentException, IllegalAccessException {
+//			Class<? extends PrefetchData> currentClass = this.getClass();
+			Field field = null;
+			
+			try {
+				// important: getField() can only get PUBLIC fields. 
+				// For private fields, use another method: getDeclaredField(fieldName)
+				field = /*currentClass.*/ CaratApplication.getMainActivity().getClass().getField(fieldName);
+			} catch(NoSuchFieldException e) {
+				Log.e(TAG, "NoSuchFieldException when trying to get a reference to the field: " + fieldName);
+			}
+			
+			if (field != null) {
+				JSONObject jsonObject = null;
+				if (jsonArray != null ) {
+					jsonObject = jsonArray.getJSONObject(objIdx);
+					if (jsonObject != null && jsonObject.getString("value") != null && jsonObject.getString("value") != "")
+						field.set(CaratApplication.getMainActivity()/*this*/, Integer.parseInt(jsonObject.getString("value")));
+					else 
+						Log.e(TAG, "json object (server response) is null: jsonArray(" + objIdx + ")=null (or ='')");
+				}
+			}
+			
+		}
+		
+		public void refreshSummaryFragment() {
+			if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
+				Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
+				FragmentManager manager = getSupportFragmentManager();
+				
+				// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
+				// selects an item from the nav-drawer, we replace pre-init fragments including this one.
+				mSummaryFragment = getSupportFragmentManager().findFragmentByTag("Summary"); 
+				
+				FragmentTransaction fragTransaction = manager.beginTransaction();
+				// refresh the summary fragment:
+			    fragTransaction.detach(mSummaryFragment);
+			    fragTransaction.attach(mSummaryFragment);
+			    fragTransaction.commit();
+			} else {
+				Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
+			}
+		    // initSummaryFragment();
+		}
+		
+		private boolean gotDataSuccessfully() {
+			return mWellbehaved != 0 && mHogs != 0 && mBugs != 0;
+		}
+		
+	}
+	
 }

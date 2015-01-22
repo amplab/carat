@@ -1,12 +1,10 @@
 package edu.berkeley.cs.amplab.carat.android.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -23,7 +21,7 @@ import com.echo.holographlibrary.PieSlice;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.Constants;
-import edu.berkeley.cs.amplab.carat.android.PrefetchData;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 
 /**
@@ -38,43 +36,49 @@ public class SummaryFragment extends Fragment {
 		hogCount = 0, lastHogCount = 0,
 		bugCount = 0, lastBugCount = 0;
 	
+	MainActivity mMainActivity = CaratApplication.getMainActivity();
+	
 	SharedPreferences mSharedPref;
 	Resources mResources;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView() started");
-		mSharedPref = PreferenceManager.getDefaultSharedPreferences(
-				CaratApplication.getContext());
+//		mSharedPref = PreferenceManager.getDefaultSharedPreferences(
+//				CaratApplication.getContext());
 //		mSharedPref = getActivity().getSharedPreferences(
 //				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
 		mResources = getResources();
-		Log.d(TAG, "initialized the shared preferences");
+//		Log.d(TAG, "initialized the shared preferences");
 		
-		View inflatedView = inflater.inflate(R.layout.summary, container, false);
+		View inflatedView;
         
-		Log.d(TAG, "about to read the arguments");
-		Bundle arguments = getArguments();
-		if (arguments != null) {
-			wellbehavedAppCount = arguments.getInt("wellbehaved");
-			hogCount = arguments.getInt("hogs");
-			bugCount = arguments.getInt("bugs");
-		}
 		
-		if (gotDataFromMainActivity()) {
-			saveStatsToSharedPref();
+		
+//		Log.d(TAG, "about to read the arguments");
+//		Bundle arguments = getArguments();
+//		if (arguments != null) {
+//			wellbehavedAppCount = arguments.getInt("wellbehaved");
+//			hogCount = arguments.getInt("hogs");
+//			bugCount = arguments.getInt("bugs");
+//		}
+		
+		if (! isStatsDataFetched()) {
+			inflatedView = inflater.inflate(R.layout.summary_unavailable, container, false);
+			// saveStatsToSharedPref();
 		} else {
-			try {
-			// load older data (stored in the shared preferences structure)
-			// into the fields starting with the prefix "last"
-			loadPrefsToFields();
-			} catch (Exception e) {
-				Log.d(TAG, "unable to read the info from the shared preference. No such a key.");
-			}
+			inflatedView = inflater.inflate(R.layout.summary, container, false);
+			handlePieGraphDrawing(inflatedView, mResources);
 		}
 		
-		handlePieGraphDrawing(inflatedView, mResources);
-        
+//			try {
+//			// load older data (stored in the shared preferences structure)
+//			// into the fields starting with the prefix "last"
+//			loadPrefsToFields();
+//			} catch (Exception e) {
+//				Log.d(TAG, "unable to read the info from the shared preference. No such a key.");
+//			}
+		
         // onCreateView() method should always return the inflated view
         return inflatedView;
     }
@@ -155,25 +159,29 @@ public class SummaryFragment extends Fragment {
 			inflatedView = inflatedV;
 		}
 		
-		if (gotDataFromMainActivity()) {
+//		if (gotDataFromMainActivity()) {
 			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
-			Log.d(TAG, "about to draw the graph. wellbehavedAppCount=" + wellbehavedAppCount);
-			drawPieGraph(pireGraph, resources, wellbehavedAppCount, hogCount, bugCount);
-		} else if (hasOldData()) {
-			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
-			Log.d(TAG, "about to draw the graph from old data. lastWellbehavedAppCount=" + lastWellbehavedAppCount);
-			drawPieGraph(pireGraph, resources, lastWellbehavedAppCount, lastHogCount, lastBugCount);
-		} else {
-			Log.d(TAG, "data unavailable.");
-			TextView tv = (TextView) inflatedView.findViewById(R.id.summary_screen_title);
-			tv.setText(R.string.connection_error);
-			tv.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					CaratApplication.getMainActivity().safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
-				}
-			});
-		}
+			Log.d(TAG, "about to draw the graph. wellbehavedAppCount=" + mMainActivity.mWellbehaved);
+			drawPieGraph(pireGraph, resources, mMainActivity.mWellbehaved, mMainActivity.mHogs, mMainActivity.mBugs);
+//		} else if (hasOldData()) {
+//			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+//			Log.d(TAG, "about to draw the graph from old data. lastWellbehavedAppCount=" + lastWellbehavedAppCount);
+//			drawPieGraph(pireGraph, resources, lastWellbehavedAppCount, lastHogCount, lastBugCount);
+//		} else {
+//			Log.d(TAG, "data unavailable.");
+//			TextView tv = (TextView) inflatedView.findViewById(R.id.summary_screen_title);
+//			tv.setText(R.string.connection_error);
+//			tv.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					CaratApplication.getMainActivity().safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
+//				}
+//			});
+//		}
+	}
+	
+	private boolean isStatsDataFetched() {
+		return mMainActivity.mWellbehaved != 0 && mMainActivity.mHogs != 0 && mMainActivity.mBugs != 0;
 	}
 	
 	private boolean gotDataFromMainActivity() {

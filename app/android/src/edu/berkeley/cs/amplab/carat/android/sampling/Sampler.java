@@ -2,9 +2,6 @@ package edu.berkeley.cs.amplab.carat.android.sampling;
 
 import java.util.List;
 
-import edu.berkeley.cs.amplab.carat.android.Constants;
-import android.support.v4.content.WakefulBroadcastReceiver;
-import android.util.Log;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -12,6 +9,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.support.v4.content.WakefulBroadcastReceiver;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 
 public class Sampler extends WakefulBroadcastReceiver implements
         LocationListener {

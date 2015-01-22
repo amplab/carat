@@ -9,6 +9,10 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
 
+    <!-- For reading the 10 recently used apps (to show the number of bugs/hogs among them (in the summary screen)). -->
+    <!-- not working as expected. leave it out for now. -->
+    <!-- <uses-permission android:name="android.permission.GET_TASKS" /> -->
+    
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- For sending and receiving Samples and reports. -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -43,19 +47,11 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-        </activity>
-        
-        <activity
-            android:name=".SplashActivity"
-            android:label="@string/title_activity_splash_screen" 
-            android:screenOrientation="portrait"
-            android:theme="@style/notitle" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <receiver
             android:name=".sampling.BootReceiver"
             android:enabled="true"

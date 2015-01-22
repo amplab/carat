@@ -84,6 +84,7 @@ delete these from your file.
     <string name="tab_settings">System Settings</string>
     <string name="tab_about">About</string>
     <string name="tab_summary">Summary</string>
+    <!-- <string name="tab_summary_unavailable">Summary Unavailable</string> -->
     <string name="tab_carat_settings">Carat Settings</string>
     
     <!-- Navigation drawer items (tabs) -->
@@ -186,8 +187,8 @@ delete these from your file.
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     
-    <!-- Name of the app, in the splash screen -->
-    <string name="title_activity_splash_screen">Carat</string>
+    <string name="summary_unavailable_title">Nothing to show yet</string>
+    <string name="summary_unavailable_text">This screen will be updated as soon as the data is received from server.</string>
 
     <string name="app_recommendation">App Recommendation</string>
     

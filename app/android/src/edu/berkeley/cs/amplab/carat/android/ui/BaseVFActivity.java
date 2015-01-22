@@ -1,9 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android.ui;
 
-import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ViewFlipper;
 
 public abstract class BaseVFActivity extends Activity implements VFActivity {

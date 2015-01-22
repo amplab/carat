@@ -15,7 +15,6 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.Constants;
-import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;

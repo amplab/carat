@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.Constants;
-import edu.berkeley.cs.amplab.carat.android.Constants.Type;
 
 /**
  * Simple container class for Hog/Bug data to save memory.
