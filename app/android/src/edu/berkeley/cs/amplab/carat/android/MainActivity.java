@@ -251,13 +251,15 @@ public class MainActivity extends ActionBarActivity {
 		case 4:
 			replaceFragment(mHogsFragment, mHogsFragmentLabel);
 			break;
+		// Before enabling the following lines, first add an item (in the correct order) to the String-array
+		// in res/values/Strings.xml (and other translation string files)
+		// case 5:
+		//	replaceFragment(mSettingsSuggestionFragment, mSettingsSuggestionFragmentLabel);
+		//	break;
 		case 5:
-			replaceFragment(mSettingsSuggestionFragment, mSettingsSuggestionFragmentLabel);
-			break;
-		case 6:
 			replaceFragment(mCaratSettingsFragment, mCaratSettingsFragmentLabel);
 			break;
-		case 7:
+		case 6:
 			replaceFragment(mAboutFragment, mAboutFragmentLabel);
 			break;
 		}
@@ -278,8 +280,7 @@ public class MainActivity extends ActionBarActivity {
 	public void onBackPressed() {
 		FragmentManager manager = getSupportFragmentManager();
 		if (manager.getBackStackEntryCount() > 1 ) {
-	        // If there are back-stack entries, leave the FragmentActivity
-	        // implementation take care of them.
+	        // If there are back-stack entries, replace the fragment (go to the fragment)
 	        manager.popBackStack();
 	    } else {
 	    	// if there is only one entry in the backstack, show the home screen
@@ -421,14 +422,6 @@ public class MainActivity extends ActionBarActivity {
 			refreshSummaryFragment();
 		}
 		
-		/*
-		 * Thread for refreshing the UI with new reports every 5 mins and on
-		 * resume. Also sends samples and updates blacklist/questionnaire url.
-		 */
-		// This spawns a thread, so it does not need to be in a thread.
-		/*
-		 * new Thread() { public void run() {
-		 */
 		
 //		SummaryFragment summaryFragment = (SummaryFragment) getFragmentManager().findFragmentByTag(mSummaryFragmentLabel);
 		
@@ -472,10 +465,6 @@ public class MainActivity extends ActionBarActivity {
 		
 		((CaratApplication) getApplication()).refreshUi();
 		
-		/*
-		 * } }.start();
-		 */
-
 		super.onResume();
 	}
 
@@ -529,7 +518,8 @@ public class MainActivity extends ActionBarActivity {
 		initMyDeviceFragment();
 		initBugsOrHogsFragment(true);
 		initBugsOrHogsFragment(false);
-		initSettingsSuggestionFragment();
+		// TODO: enable later (after figuring out an approach for calculating the expected benefit number)
+		// initSettingsSuggestionFragment();
 		initCaratSettingsFragment();
 		initAboutFragment();
 	}
