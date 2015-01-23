@@ -37,6 +37,9 @@ public class CaratApplication extends Application {
 	// Used for logging
 	private static final String TAG = "CaratApp";
 	
+	public static Context mAppContext = null;
+	public static SharedPreferences mPrefs = null;
+	
 	// Used to map importances to human readable strings for sending samples to
 	// the server, and showing them in the process list.
 	private static final SparseArray<String> importanceToString = new SparseArray<String>();
@@ -101,6 +104,14 @@ public class CaratApplication extends Application {
 	 */
 	@Override
 	public void onCreate() {
+		// use a private preference file (created and used only by CaratApp). 
+		// don't use PreferenceManager.getDefaultSharedPreferences (it might cause problem in different OS versions).
+		new Thread() {
+			public void run() {
+				mPrefs = CaratApplication.this.getSharedPreferences(Constants.PREFERENCE_FILE_NAME, Context.MODE_PRIVATE);
+			}
+		}.start();
+		
 		storage = new CaratDataStorage(this);
 
 		new Thread() {
@@ -362,7 +373,7 @@ public class CaratApplication extends Application {
 			public void run() {
 				boolean connecting = false;
 				Context co = getApplicationContext();
-
+				// TODO: using a shared preferences object might cause problem in different OS versions. replace with a private one. see MainActivity.AsyncTask.doInBackground().
 				final SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(co);
 				final boolean useWifiOnly = p.getBoolean(Constants.WIFI_ONLY_PREFERENCE_KEY, false);
 				String networkStatus = SamplingLibrary.getNetworkStatus(getApplicationContext());

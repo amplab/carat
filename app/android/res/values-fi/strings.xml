@@ -155,6 +155,11 @@
     
     <!-- TODO: these need translation -->
     
+    <string name="summary_screen_title">Carat Users Statistics</string>
+    <string name="userswithoutany">Users without any anomalies</string>
+    <string name="userswithhogs">Users with hogs</string>
+    <string name="userswithbugs">Users with bugs</string>
+    
     <!-- error messages -->
     <string name="connection_error">Offline. Click o turn on Wifi.</string>
     

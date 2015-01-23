@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import android.app.AlarmManager;
+import android.graphics.Color;
 
 public class Constants {
 
@@ -24,9 +25,15 @@ public class Constants {
 	// if you change the preference key of any of our preference widgets (in
 	// res/xml/preferences.xml),
 	// update the following constants as well
-	public static final String WIFI_ONLY_PREFERENCE_KEY = "wifiOnlyPreferenceKey";
-	public static final String SHARE_PREFERENCE_KEY = "sharePreferenceKey";
-	public static final String FEEDBACK_PREFERENCE_KEY = "feedbackPreferenceKey";
+	public static final String WIFI_ONLY_PREFERENCE_KEY = "wifiOnlyPrefKey";
+	public static final String SHARE_PREFERENCE_KEY = "sharePrefKey";
+	public static final String FEEDBACK_PREFERENCE_KEY = "feedbackPrefKey";
+	
+	// for caching summary statistics fetched from server
+	public static final String PREFERENCE_FILE_NAME = "caratPrefs";
+	public static final String STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY = "wellbehavedPrefKey";
+	public static final String STATS_HOGS_COUNT_PREFERENCE_KEY = "hogsPrefKey";
+	public static final String STATS_BUGS_COUNT_PREFERENCE_KEY = "bugsPrefKey";
 
 	public static final String PREFERENCE_NEW_UUID = "carat.new.uuid";
 	public static final String PREFERENCE_TIME_BASED_UUID = "carat.uuid.timebased";
@@ -81,5 +88,16 @@ public class Constants {
 
 	// Used for messages in comms threads
 	static final String MSG_TRY_AGAIN = " will try again in " + (FRESHNESS_TIMEOUT / 1000) + "s.";
+	
+	public static int VALUE_NOT_AVAILABLE = -1;
+	
+	public static final int[] CARAT_COLORS = {
+		Color.rgb(55, 145, 120) /*Beautiful Green*/,
+    	Color.rgb(240, 71, 31) /*Beautiful Orange*/, 
+    	Color.rgb(250, 150, 38) /*Yellow*/,
+    	Color.rgb(193, 216, 216) /*Gray*/,
+    	Color.rgb(220, 84, 26) /*Orange*/,
+    	Color.rgb(90, 115, 40)/*Green*/
+    };
 
 }

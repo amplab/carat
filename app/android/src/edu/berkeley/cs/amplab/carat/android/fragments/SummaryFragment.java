@@ -1,23 +1,31 @@
 package edu.berkeley.cs.amplab.carat.android.fragments;
 
+import java.util.ArrayList;
+
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.echo.holographlibrary.PieGraph;
 import com.echo.holographlibrary.PieGraph.OnSliceClickedListener;
 import com.echo.holographlibrary.PieSlice;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.Legend;
+import com.github.mikephil.charting.utils.Legend.LegendPosition;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.Constants;
@@ -41,34 +49,32 @@ public class SummaryFragment extends Fragment {
 	SharedPreferences mSharedPref;
 	Resources mResources;
 	
+	private PieChart mChart;
+	
+	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d(TAG, "onCreateView() started");
-//		mSharedPref = PreferenceManager.getDefaultSharedPreferences(
-//				CaratApplication.getContext());
 //		mSharedPref = getActivity().getSharedPreferences(
 //				Constants.MAIN_ACTIVITY_PREFERENCE_KEY, Context.MODE_PRIVATE);
 		mResources = getResources();
 //		Log.d(TAG, "initialized the shared preferences");
 		
-		View inflatedView;
+		final View inflatedView;
         
-		
-		
-//		Log.d(TAG, "about to read the arguments");
-//		Bundle arguments = getArguments();
-//		if (arguments != null) {
-//			wellbehavedAppCount = arguments.getInt("wellbehaved");
-//			hogCount = arguments.getInt("hogs");
-//			bugCount = arguments.getInt("bugs");
-//		}
-		
-		if (! isStatsDataFetched()) {
+		if (mMainActivity.isStatsDataAvailable()) {
+			inflatedView = inflater.inflate(R.layout.summary, container, false);
+			drawPieChart(inflatedView);
+			// wait a short while to read the statistics data from the shared preferences
+//			new Handler().postDelayed(new Runnable(){
+//			    public void run() {
+//					drawPieChart(inflatedView);  // for some reason, this method doesn't work inside a handler
+			    	//// handlePieGraphDrawing(inflatedView, mResources);  // this method works fine inside handler
+//			    }
+//			}, 600);
+		} else {
 			inflatedView = inflater.inflate(R.layout.summary_unavailable, container, false);
 			// saveStatsToSharedPref();
-		} else {
-			inflatedView = inflater.inflate(R.layout.summary, container, false);
-			handlePieGraphDrawing(inflatedView, mResources);
 		}
 		
 //			try {
@@ -83,6 +89,56 @@ public class SummaryFragment extends Fragment {
         return inflatedView;
     }
 
+	private void drawPieChart(final View inflatedView) {
+		mChart = (PieChart) inflatedView.findViewById(R.id.chart1);
+		mChart.setDescription("");
+		
+		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
+		
+		mChart.setValueTypeface(tf);
+		mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+		mChart.setUsePercentValues(true);
+		mChart.setCenterText("Android\nApps");
+		mChart.setCenterTextSize(22f);
+		 
+		// radius of the center hole in percent of maximum radius
+		mChart.setHoleRadius(40f); 
+		mChart.setTransparentCircleRadius(50f);
+		
+		// enable / disable drawing of x- and y-values
+//	        mChart.setDrawYValues(false);
+//	        mChart.setDrawXValues(false);
+		
+		mChart.setData(generatePieData());
+		
+		Legend l = mChart.getLegend();
+		l.setPosition(LegendPosition.RIGHT_OF_CHART);
+	}
+
+	protected PieData generatePieData() {
+        ArrayList<Entry> entries = new ArrayList<Entry>();
+        ArrayList<String> xVals = new ArrayList<String>();
+        
+        xVals.add("Wellbahved");
+        xVals.add("Hogs");
+        xVals.add("Bugs");
+        
+        int wellbehaved = mMainActivity.mWellbehaved;
+		int hogs = mMainActivity.mHogs;
+		int bugs = mMainActivity.mBugs;
+        
+		entries.add(new Entry((float) (wellbehaved), 1));
+		entries.add(new Entry((float) (hogs), 2));
+		entries.add(new Entry((float) (bugs), 3));
+		
+        PieDataSet ds1 = new PieDataSet(entries, "Users Statistics");
+        ds1.setColors(Constants.CARAT_COLORS);
+        ds1.setSliceSpace(2f);
+        
+        PieData d = new PieData(xVals, ds1);
+        return d;
+    }
+	
 //	@Override
 //	public void onResume() {
 //		CaratApplication.getMainActivity().reAttachSummaryFragment = true;
@@ -150,7 +206,7 @@ public class SummaryFragment extends Fragment {
 	 * @param inflatedView
 	 * @param resources
 	 */
-	private void handlePieGraphDrawing(View inflatedV, Resources resources) {
+	/*private void handlePieGraphDrawing(View inflatedV, Resources resources) {
 		View inflatedView;
 		
 		if (inflatedV == null) {
@@ -159,40 +215,43 @@ public class SummaryFragment extends Fragment {
 			inflatedView = inflatedV;
 		}
 		
-//		if (gotDataFromMainActivity()) {
-			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
-			Log.d(TAG, "about to draw the graph. wellbehavedAppCount=" + mMainActivity.mWellbehaved);
-			drawPieGraph(pireGraph, resources, mMainActivity.mWellbehaved, mMainActivity.mHogs, mMainActivity.mBugs);
-//		} else if (hasOldData()) {
-//			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
-//			Log.d(TAG, "about to draw the graph from old data. lastWellbehavedAppCount=" + lastWellbehavedAppCount);
-//			drawPieGraph(pireGraph, resources, lastWellbehavedAppCount, lastHogCount, lastBugCount);
-//		} else {
-//			Log.d(TAG, "data unavailable.");
-//			TextView tv = (TextView) inflatedView.findViewById(R.id.summary_screen_title);
-//			tv.setText(R.string.connection_error);
-//			tv.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					CaratApplication.getMainActivity().safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
-//				}
-//			});
-//		}
-	}
+////		if (gotDataFromMainActivity()) {
+		
+		// main code: from here
+//			PieGraph pieGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+//			int wellbehaved = mMainActivity.mWellbehaved;
+//			int hogs = mMainActivity.mHogs;
+//			int bugs = mMainActivity.mBugs;
+//			Log.d(TAG, "about to draw the graph. wellbehavedAppCount=" + wellbehaved);
+//			drawPieGraph(pieGraph, resources, wellbehaved, hogs, bugs);
+		// main code: to here
+			
+////		} else if (hasOldData()) {
+////			PieGraph pireGraph = (PieGraph) inflatedView.findViewById(R.id.piegraph);
+////			Log.d(TAG, "about to draw the graph from old data. lastWellbehavedAppCount=" + lastWellbehavedAppCount);
+////			drawPieGraph(pireGraph, resources, lastWellbehavedAppCount, lastHogCount, lastBugCount);
+////		} else {
+////			Log.d(TAG, "data unavailable.");
+////			TextView tv = (TextView) inflatedView.findViewById(R.id.summary_screen_title);
+////			tv.setText(R.string.connection_error);
+////			tv.setOnClickListener(new OnClickListener() {
+////				@Override
+////				public void onClick(View v) {
+////					CaratApplication.getMainActivity().safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
+////				}
+////			});
+////		}
+	}*/
 	
-	private boolean isStatsDataFetched() {
-		return mMainActivity.mWellbehaved != 0 && mMainActivity.mHogs != 0 && mMainActivity.mBugs != 0;
-	}
-	
-	private boolean gotDataFromMainActivity() {
-		boolean result = wellbehavedAppCount != 0 && hogCount != 0 && bugCount != 0;
-		Log.d(TAG, "gotDataFromMainActivity() returns" + result + ". wellbehavedAppCount=" + wellbehavedAppCount);
-		return result;
-	}
-	
-	private boolean hasOldData() {
-		return lastWellbehavedAppCount != 0 && lastHogCount != 0 && lastBugCount != 0;
-	}
+//	private boolean gotDataFromMainActivity() {
+//		boolean result = wellbehavedAppCount != 0 && hogCount != 0 && bugCount != 0;
+//		Log.d(TAG, "gotDataFromMainActivity() returns" + result + ". wellbehavedAppCount=" + wellbehavedAppCount);
+//		return result;
+//	}
+//	
+//	private boolean hasOldData() {
+//		return lastWellbehavedAppCount != 0 && lastHogCount != 0 && lastBugCount != 0;
+//	}
 	
 	/**
 	 * @param pieGraph

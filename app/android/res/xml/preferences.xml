@@ -12,12 +12,12 @@
     
     <Preference 
         android:enabled="true"
-        android:key="sharePreferenceKey"
+        android:key="sharePrefKey"
         android:title="@string/share" />
     
     <Preference 
         android:enabled="true"
-        android:key="feedbackPreferenceKey"
+        android:key="feedbackPrefKey"
         android:title="@string/feedback" />	
 
 </PreferenceScreen>

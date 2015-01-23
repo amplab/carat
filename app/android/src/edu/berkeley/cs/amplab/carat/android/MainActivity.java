@@ -13,7 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -110,7 +112,9 @@ public class MainActivity extends ActionBarActivity {
 	// public boolean updateSummaryFragment;
 	
 	// counts (general Carat stats shown in the summary fragment)
-	public int mWellbehaved=0, mHogs=0, mBugs=0;
+	public int mWellbehaved = Constants.VALUE_NOT_AVAILABLE,
+			mHogs = Constants.VALUE_NOT_AVAILABLE,
+			mBugs = Constants.VALUE_NOT_AVAILABLE ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +123,9 @@ public class MainActivity extends ActionBarActivity {
 		tracker = Tracker.getInstance();
 		// track user clicks (taps)
 		tracker.trackUser("caratstarted");
+		
+		
+		
 
 		/*
 		 * Activity.getWindow.requestFeature() should get invoked only before
@@ -526,25 +533,8 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	private void initSummaryFragment() {
-//			Log.d(TAG, "initSummaryFragment() was called. About to initialize the summary fragment.");
-			Log.d("MainActivity, initSummaryFragment()", "isStatsDataAvailable()=" + Boolean.toString(isStatsDataAvailable()));
-			
-//			if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
-//				Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
-//				FragmentManager manager = getSupportFragmentManager();
-//				mSummaryFragment = getSupportFragmentManager().findFragmentByTag("Summary");
-//				FragmentTransaction fragTransaction = manager.beginTransaction();
-//			    fragTransaction.detach(mSummaryFragment);
-//			    fragTransaction.attach(mSummaryFragment);
-//			    fragTransaction.commit();
-//			} else {
-			if (! isStatsDataAvailable()) {
-				Log.d(TAG, "data for summary fragment is not available.");
-				mSummaryFragment = new SummaryFragment();
-			}
-			
-			mSummaryFragmentLabel = "Summary";   // getString(R.string.tab_summary)
-		
+		mSummaryFragment = new SummaryFragment();
+		mSummaryFragmentLabel = "Summary"; // getString(R.string.tab_summary)
 	}
 	
 	private void initSuggestionsFragment() {
@@ -586,9 +576,7 @@ public class MainActivity extends ActionBarActivity {
 		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
 	}
 	
-	private boolean isStatsDataAvailable() {
-		return mWellbehaved != 0 && mHogs != 0 && mBugs != 0;
-	}
+	
 	
 	/*
 	 * shows the fragment using a fragment transaction (replaces the FrameLayout
@@ -628,6 +616,26 @@ public class MainActivity extends ActionBarActivity {
 		replaceFragment(fragment, fileName);
 	}
 
+	public boolean isStatsDataAvailable() {
+		// don't check for zero, check for something unlikely, e.g. -1 (use a constant for that value, use it consistently)
+		if (mWellbehaved != Constants.VALUE_NOT_AVAILABLE && mHogs != Constants.VALUE_NOT_AVAILABLE  && mBugs != Constants.VALUE_NOT_AVAILABLE) {
+			return true;
+		} else {
+			// TODO: consider a data freshness timeout (e.g. two weeks)
+			int wellbehaved = CaratApplication.mPrefs.getInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
+			int hogs = CaratApplication.mPrefs.getInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
+			int bugs = CaratApplication.mPrefs.getInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
+			if (wellbehaved != Constants.VALUE_NOT_AVAILABLE && hogs != Constants.VALUE_NOT_AVAILABLE  && bugs != Constants.VALUE_NOT_AVAILABLE) {
+				mWellbehaved = wellbehaved;
+				mHogs = hogs;
+				mBugs = bugs;
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	
 	/**
 	 * A listener that is triggered when a value changes in our defualtSharedPreferences.
 	 * Can be used to do an immediate action whenever one of our items in that hashtable (defualtSharedPreferences) changes.
@@ -645,14 +653,12 @@ public class MainActivity extends ActionBarActivity {
 		String serverResponseJson = null;
 		private final String TAG = "PrefetchData";
 		
-	    @Override
+	    @SuppressLint("NewApi")
+		@Override
 	    protected Void doInBackground(Void... arg0) {
 	    	Log.d(TAG, "started doInBackground() method of the asyncTask");
-	    	
 	        JsonParser jsonParser = new JsonParser();
-	        
 	        // Log.d(TAG, "about to get the stats json");
-	        
 	        try {
 	        	if (CaratApplication.isInternetAvailable()) {
 	        		serverResponseJson = jsonParser
@@ -673,6 +679,27 @@ public class MainActivity extends ActionBarActivity {
 						setIntFieldsFromJson(jsonArray, 0, "mWellbehaved");
 						setIntFieldsFromJson(jsonArray, 1, "mHogs");
 						setIntFieldsFromJson(jsonArray, 2, "mBugs");
+						
+						if (CaratApplication.mPrefs != null) {
+							SharedPreferences.Editor editor = CaratApplication.mPrefs.edit();
+							// the returned values (from setIntFieldsFromJson()
+							// might be -1 (Constants.VALUE_NOT_AVAILABLE). So
+							// when we are reading the following pref values, we
+							// should check that condition )
+							editor.putInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, mWellbehaved);
+							editor.putInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, mWellbehaved);
+							editor.putInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, mWellbehaved);
+
+							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+								editor.apply(); // async (runs in parallel
+												// in a new shared thread (off the UI thread)
+							} else {
+								editor.commit();
+							}
+						} else {
+							Log.e(TAG, "The shared preference is null (not loaded yet. "
+									+ "Check CaratApplication's new thread for loading the sharedPref)");
+						}
 						
 						// Log.i(TAG, "received JSON: " + "mBugs: " + mWellbehaved 
 						//		+ ", mHogs: " + mHogs + ", mBugs: " + mBugs);
@@ -711,6 +738,7 @@ public class MainActivity extends ActionBarActivity {
 				throws JSONException, IllegalArgumentException, IllegalAccessException {
 //			Class<? extends PrefetchData> currentClass = this.getClass();
 			Field field = null;
+			int res = Constants.VALUE_NOT_AVAILABLE;
 			
 			try {
 				// important: getField() can only get PUBLIC fields. 
@@ -724,13 +752,15 @@ public class MainActivity extends ActionBarActivity {
 				JSONObject jsonObject = null;
 				if (jsonArray != null ) {
 					jsonObject = jsonArray.getJSONObject(objIdx);
-					if (jsonObject != null && jsonObject.getString("value") != null && jsonObject.getString("value") != "")
-						field.set(CaratApplication.getMainActivity()/*this*/, Integer.parseInt(jsonObject.getString("value")));
-					else 
+					if (jsonObject != null && jsonObject.getString("value") != null && jsonObject.getString("value") != "") {
+						res = Integer.parseInt(jsonObject.getString("value"));
+						field.set(CaratApplication.getMainActivity()/*this*/, res);
+					} else { 
 						Log.e(TAG, "json object (server response) is null: jsonArray(" + objIdx + ")=null (or ='')");
+					}
 				}
 			}
-			
+			// if an exception occurs, the value of the field would be -1 (Constants.VALUE_NOT_AVAILABLE)
 		}
 		
 		public void refreshSummaryFragment() {
@@ -740,7 +770,7 @@ public class MainActivity extends ActionBarActivity {
 				
 				// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
 				// selects an item from the nav-drawer, we replace pre-init fragments including this one.
-				mSummaryFragment = getSupportFragmentManager().findFragmentByTag("Summary"); 
+				mSummaryFragment = manager.findFragmentByTag("Summary"); 
 				
 				FragmentTransaction fragTransaction = manager.beginTransaction();
 				// refresh the summary fragment:
@@ -752,11 +782,5 @@ public class MainActivity extends ActionBarActivity {
 			}
 		    // initSummaryFragment();
 		}
-		
-		private boolean gotDataSuccessfully() {
-			return mWellbehaved != 0 && mHogs != 0 && mBugs != 0;
-		}
-		
 	}
-	
 }

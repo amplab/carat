@@ -1,21 +1,21 @@
-#### For building the Android app, (in adition to the main project) import the following library projects into your IDE:
+#### For building the Android app, import the following library projects (in adition to the main project) into your IDE.
 
 * **Support library**: official library by Google for providing new Android features (such as action bar, navigation drawer, etc) to older APIs (API > 7).
 
     > The Android Support Library package is a set of code libraries that provide backward-compatible versions of Android framework APIs as well as features that are only available through the library APIs.
  
-   * Directory path: app/support-appcompat
+   * Directory path: app/libs/Android/support-appcompat
 
-* **Holograph**: a seamless native library for creating charts and graphs
-  * Directory path: app/libs/HoloGraphLibrary
+* **MPAndroidChart**: a comprehensive and customizable native library for creating charts and graphs
+  * Directory path: app/libs/Android/MPAndroidChart
 
  
 * **Android-Support-PreferenceFragment**: a backport of the PreferenceFragment class. Provides the preference fragment feature for API < 11 (Android < 3.0). A FragmentPreference is the recommended way for implementing a fragment for adjusting settings or user preferences. See the comments in CaratSettingsFragment.java.
-  * Directory path: app/libs/android-support-v4-preferencefragment
+  * Directory path: app/libs/Android/android-support-v4-preferencefragment
 
  
 * **Switch Widget Backport**: provides the switch widget (toggle button) for Android < 3.0
-  * Directory path: app/libs/android-switch-backport
+  * Directory path: app/libs/Android/android-switch-backport
 
 
 If you use Eclipse, follow these stpes to import a library project:
