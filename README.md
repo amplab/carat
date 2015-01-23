@@ -1,4 +1,14 @@
-#### For building the Android app, import the following library projects (in adition to the main project) into your IDE.
+# Carat Project: Android and iOS Applications
+
+For details, visit http://carat.cs.berkeley.edu/
+
+## Build instructions for Android
+
+1. Download Eclipse: http://www.eclipse.org/downloads/
+2. Install Google's ADT: http://developer.android.com/sdk/installing/installing-adt.html
+3. Make sure you have the latest Android SDKs and tools installed.
+4. Import Carat project into your IDE.
+5. Import the following library projects (dependecies) into your IDE: 
 
 * **Support library**: official library by Google for providing new Android features (such as action bar, navigation drawer, etc) to older APIs (API > 7).
 
@@ -27,4 +37,12 @@ If you use Eclipse, follow these stpes to import a library project:
 Eclipse may complain about not being able to find the dependecies for Carat project, this is a bug in Eclipse (not fixed even in Eclipse Mars). The solution is to go to the project properties dialog of Carat project, go to the *Android* section, remove all of the library project dependencies, and re-add them.
 
 
-For more details, visit http://carat.cs.berkeley.edu/
+## Build instructions for iOS
+
+1. Install ruby gems: https://rubygems.org/pages/download
+2. Install CocoaPods 0.33.1: http://rubygems.org/gems/cocoapods/versions/0.33.1
+3. Make sure you have the latest Xcode.
+4. Go to the app/ios folder in a terminal and run `pod install`.
+5. Make sure the `SZIdentifierUtils.m ` and `.h` files still have `#define SHOULD_USE_IDFA 0`
+6. Open the resulting Carat.xcodeworkspace in Xcode.
+7. Build and run on an emulator or your device.
