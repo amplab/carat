@@ -119,9 +119,9 @@ public class SummaryFragment extends Fragment {
         ArrayList<Entry> entries = new ArrayList<Entry>();
         ArrayList<String> xVals = new ArrayList<String>();
         
-        xVals.add("Wellbahved");
-        xVals.add("Hogs");
-        xVals.add("Bugs");
+        xVals.add(mResources.getString(R.string.chart_wellbehaved));
+        xVals.add(mResources.getString(R.string.chart_hogs));
+        xVals.add(mResources.getString(R.string.chart_bugs));
         
         int wellbehaved = mMainActivity.mWellbehaved;
 		int hogs = mMainActivity.mHogs;

@@ -92,12 +92,19 @@ public class Constants {
 	public static int VALUE_NOT_AVAILABLE = -1;
 	
 	public static final int[] CARAT_COLORS = {
-		Color.rgb(55, 145, 120) /*Beautiful Green*/,
+		Color.rgb(90, 198, 108), /* green 3 - Normal green*/
     	Color.rgb(240, 71, 31) /*Beautiful Orange*/, 
     	Color.rgb(250, 150, 38) /*Yellow*/,
     	Color.rgb(193, 216, 216) /*Gray*/,
-    	Color.rgb(220, 84, 26) /*Orange*/,
-    	Color.rgb(90, 115, 40)/*Green*/
+    	Color.rgb(207, 218, 227) /*Mild Gray*/
+    	/* Color.rgb(220, 84, 26), //Orange
+    	Color.rgb(54, 185, 52),
+    	Color.rgb(43, 188, 66),  // green 2
+    	Color.rgb(90, 198, 108),  // green 3 - Normal green
+    	Color.rgb(138, 221, 96),  // green 4
+    	Color.rgb(113, 204, 85),  // green 5
+    	Color.rgb(130, 201, 142),  // mate green 
+		Color.rgb(55, 145, 120), //dark green */
     };
 
 }

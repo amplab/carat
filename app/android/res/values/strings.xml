@@ -180,6 +180,11 @@ delete these from your file.
     <string name="significance">Significance:</string>
     <string name="best">Already best</string>
     
+    <!-- The pie chart -->
+    <string name="chart_wellbehaved">Well-behaved</string>
+    <string name="chart_hogs">Hogs</string>
+    <string name="chart_bugs">Bugs</string>
+    
     <!-- error messages -->
     <string name="connection_error">Offline. Click o turn on Wifi.</string>
     
