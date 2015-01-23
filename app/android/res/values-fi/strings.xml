@@ -6,7 +6,7 @@
     <string name="batterylife">Aktiivinen akunkesto:</string>
     <string name="osver">KJ-versio:</string>
     <string name="dev">Laitemalli:</string>
-    <string name="apps">Käynnissä:</string>
+    <string name="running_apps">Käynnissä:</string>
     <string name="memused">Muistinkäyttö:</string>
     <string name="memactive">Aktiivisena:</string>
     <string name="cpu">CPU-käyttö:</string>
@@ -30,7 +30,7 @@
     <string name="helpcarat">Auta Caratia keräämään dataa</string>
     <string name="questionnaire">Auta meitä parantamaan Caratia</string>
     <string name="questionnaire2">Vastaa kyselyyn (5&#8211;10 min)</string>
-    <string name="feedback">Anna palautetta</string>
+    <string name="feedback">Anna palautetta (email)</string>
     <string name="share">Jaa …</string>
     <string name="sharewith">Jaa käyttäen:</string>
     <string name="chooseemail">Valitse email-sovellus</string>
@@ -41,13 +41,29 @@
     
     <string name="appmanager">Sovellushallinta</string>
     
-    <!-- Tabs. Also used elsewhere. -->
-    
+    <!-- Tabs. Also used ELSEWHERE. 
+    (must be deleted (duplicate with the string array, down below), but with extra care) -->
     <string name="tab_actions">Ehdotukset</string>
     <string name="tab_my_device">Laite</string>
     <string name="tab_bugs">Bugit</string>
     <string name="tab_hogs">Hogit</string>
     <string name="tab_about">Tietoja</string>
+    <!-- TODO: these strings need translation -->
+    <string name="tab_summary">Summary</string>
+    <string name="tab_settings">System Settings</string>
+    <!-- <string name="tab_app_recommendation">Recommendation</string> -->
+    
+    <!-- Navigation drawer items (tabs) -->
+    <string-array name="drawer_items">
+        <item>Summary</item>
+        <item>Ehdotukset</item>
+        <item>Laite</item>
+        <item>Bugit</item>
+        <item>Hogit</item>
+        <item>Tietoja</item>
+        <!-- TODO: this string needs translation -->
+        <item>System Settings</item>
+    </string-array>
     
     <!-- Updating etc -->
     
@@ -136,5 +152,30 @@
     <string name="significance">Merkittävyys:</string>
     
     <string name="best">Jo paras</string>
+    
+    <!-- TODO: these need translation -->
+    
+    <string name="summary_screen_title">Carat Users Statistics</string>
+    <string name="userswithoutany">Users without any anomalies</string>
+    <string name="userswithhogs">Users with hogs</string>
+    <string name="userswithbugs">Users with bugs</string>
+    
+    <!-- error messages -->
+    <string name="connection_error">Offline. Click o turn on Wifi.</string>
+    
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    
+    <!-- Name of the app, in the splash screen -->
+    <string name="title_activity_splash_screen">Carat</string>
+
+    <!-- TODO: these need translation -->
+    <!-- Carat settings screen -->
+    <!-- switch backport strings -->
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="summary_off">Wifi + Mobile Data</string>
+    <string name="summary_on">Wifi Only</string>
     
 </resources>

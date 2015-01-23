@@ -9,6 +9,10 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
 
+    <!-- For reading the 10 recently used apps (to show the number of bugs/hogs among them (in the summary screen)). -->
+    <!-- not working as expected. leave it out for now. -->
+    <!-- <uses-permission android:name="android.permission.GET_TASKS" /> -->
+    
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- For sending and receiving Samples and reports. -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -28,11 +32,14 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
     <!-- Required for programmatic killing of apps -->
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <!-- Required for getting the "gps" location provider for system settings tab -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     
     
     <application
         android:allowBackup="true"
         android:name="CaratApplication"
+        android:enabled="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -45,7 +52,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <receiver
             android:name=".sampling.BootReceiver"
             android:enabled="true"
@@ -61,17 +67,21 @@
             android:exported="true"
             android:label="Carat Sampler" >
             <intent-filter>
-
-                <!--
-                It is not possible to schedule TIME_TICK outside of the program.
+                <!-- It is not possible to schedule TIME_TICK outside of the program.
                 Also, using AlarmManager with setRepeatingInexact saves battery if the interval
-                is 15 mins or more.
-                -->
-<!--                  <action android:name="android.intent.action.TIME_TICK" /> -->
-
+                is 15 mins or more. -->
+                <!-- <action android:name="android.intent.action.TIME_TICK" /> -->
 
                 <!-- This event cannot be registered to from the manifest either. -->
-<!--                 <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
+                <!-- <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
+				
+				<!-- Also these -->
+				<!-- There are certain events that Android does not want to start up new processes for, 
+				so the device does not get too slow from all sorts of stuff all having to run at once. 
+				ACTION_SCREEN_ON is one of those. -->
+				<!-- <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />  -->
+                
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <data android:scheme="package" /> 

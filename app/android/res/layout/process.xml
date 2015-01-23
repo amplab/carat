@@ -33,7 +33,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/appname"
             android:layout_gravity="left"
-            android:textColor="@color/brown" />
+            android:textColor="@color/gray" />
         <TextView
             android:id="@+id/pkgName"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/appname"
             android:layout_gravity="left"
-            android:textColor="@color/brown" />
+            android:textColor="@color/gray" />
         
         <LinearLayout
             android:layout_width="fill_parent"
@@ -55,7 +55,7 @@
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 android:text="@string/priority"
-                android:textColor="@color/brown" />
+                android:textColor="@color/gray" />
 
             <TextView
                 android:id="@+id/processPriority"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/priorityDefault"
-                android:textColor="@color/brown" />
+                android:textColor="@color/gray" />
         </LinearLayout>
 
     </LinearLayout>

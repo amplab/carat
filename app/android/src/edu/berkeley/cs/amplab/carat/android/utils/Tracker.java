@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
+import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
@@ -15,10 +17,21 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 public class Tracker {
 
 	private static Tracker instance = null;
+	private static String uuid = null;
+	private static SharedPreferences p = null;
+	private static MainActivity mainActivity = null;
+	private static Context context = null;
+	private static int jscore = 0;
 	
 	public static Tracker getInstance() {
-		if (instance == null)
+		if (instance == null) {
 			instance = new Tracker();
+			mainActivity = CaratApplication.getMainActivity();
+			context = mainActivity.getApplicationContext();
+			p = PreferenceManager.getDefaultSharedPreferences(mainActivity);
+			uuid = p.getString(CaratApplication.getRegisteredUuid(), "UNKNOWN");
+			jscore = CaratApplication.getJscore();
+		}
 		return instance;
 	}
 
@@ -28,10 +41,8 @@ public class Tracker {
 	 * otherwise you get NullPointerException
 	 */
 	public void trackUser(String label, SimpleHogBug fullObject) {
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(CaratApplication.getMainActivity());
-		PackageInfo pak = SamplingLibrary.getPackageInfo(CaratApplication.getMainActivity(), fullObject.getAppName());
+		PackageInfo pak = SamplingLibrary.getPackageInfo(mainActivity, fullObject.getAppName());
 		if (p != null) {
-			String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
 			HashMap<String, String> options = new HashMap<String, String>();
 			options.put("status", CaratApplication.getMainActivity().getTitle().toString());
 			options.put("type", fullObject.getType().toString());
@@ -42,18 +53,47 @@ public class Tracker {
 				options.put("label", label);
 			}
 			options.put("benefit", fullObject.getBenefitText().replace('\u00B1', '+'));
-			ClickTracking.track(uuId, "samplesview", options, CaratApplication.getMainActivity());
+			ClickTracking.track(uuid, "samplesview", options, CaratApplication.getMainActivity());
 		}
 	}
 
 	public void trackUser(String whatIsGettingDone) {
-		MainActivity main = CaratApplication.getMainActivity();
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(main);
+		Log.d("Tracker.trackUser", whatIsGettingDone);
 		if (p != null) {
 			String uuId = p.getString(CaratApplication.getRegisteredUuid(), "UNKNOWN");
 			HashMap<String, String> options = new HashMap<String, String>();
-			options.put("status", main.getTitle().toString());
-			ClickTracking.track(uuId, whatIsGettingDone, options, main);
+			options.put("status", mainActivity.getTitle().toString());
+			ClickTracking.track(uuId, whatIsGettingDone, options, mainActivity);
+		}
+	}
+	
+	public void trackSharing() {
+		if (p != null) {
+			HashMap<String, String> options = new HashMap<String, String>();
+			options.put("status", mainActivity.getTitle().toString());
+			options.put("sharetext", mainActivity.getString(R.string.myjscoreis) + " " + jscore);
+			ClickTracking.track(uuid, "caratshared", options, context);
+		}
+	}
+	
+	public void trackFeedback(String os, String model) {
+		if (p != null) {
+			HashMap<String, String> options = new HashMap<String, String>();
+			options.put("os", os);
+			options.put("model", model);
+			SimpleHogBug[] b = CaratApplication.storage.getBugReport();
+			int len = 0;
+			if (b != null)
+				len = b.length;
+			options.put("bugs", len + "");
+			b = CaratApplication.storage.getHogReport();
+			len = 0;
+			if (b != null)
+				len = b.length;
+			options.put("hogs", len + "");
+			options.put("status", mainActivity.getTitle().toString());
+			options.put("sharetext", mainActivity.getString(R.string.myjscoreis) + " " + jscore);
+			ClickTracking.track(uuid, "feedbackbutton", options, context);
 		}
 	}
 

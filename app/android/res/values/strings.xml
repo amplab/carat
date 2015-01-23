@@ -11,11 +11,9 @@ delete these from your file.
     <string name="jsna">N/A</string>
     <string name="fake_id">0</string>
     <string name="fake_os">4.0.3</string>
-    <string name="fake_dev">Samsung Galaxy Nexus</string>
+    <string name="fake_device">Samsung Galaxy Nexus</string>
 
     <color name="brown">#744618</color>
-    <color name="orange">#ff8331</color>
-    <color name="green">#127112</color>
     <color name="black">#000000</color>
     <color name="with">#f3b14d</color>
     <color name="without">#007777</color>
@@ -37,7 +35,7 @@ delete these from your file.
     <string name="caratid">Carat ID:</string>
     <string name="osver">OS version:</string>
     <string name="dev">Device model:</string>
-    <string name="apps">Running apps:</string>
+    <string name="running_apps">Running apps:</string>
     <string name="memused">Memory used:</string>
     <string name="memactive">Memory active:</string>
     <string name="cpu">CPU Usage:</string>
@@ -62,7 +60,7 @@ delete these from your file.
     <string name="helpcarat">Help Carat collect data</string>
     <string name="questionnaire">Please help us improve Carat</string>
     <string name="questionnaire2">Answer a questionnaire (takes 5&#8211;10 minutes)</string>
-    <string name="feedback">Give feedback</string>
+    <string name="feedback">Give feedback (email)</string>
     <string name="share">Share …</string>
     <string name="sharewith">Share with:</string>
     <string name="chooseemail">Choose email application</string>
@@ -71,16 +69,35 @@ delete these from your file.
     <string name="sharetext2">!\nWhat\'s yours?\nFind out here: \nhttp://carat.cs.berkeley.edu/</string>
     <string name="myjscoreis">My J-Score is</string>
     <string name="appmanager">App Manager</string>
-
-    <!-- Tabs. Also used elsewhere. -->
     
+    <string name="summary_screen_title">Carat Users Statistics</string>
+    <string name="userswithoutany">Users without any anomalies</string>
+    <string name="userswithhogs">Users with hogs</string>
+    <string name="userswithbugs">Users with bugs</string>
+
+    <!-- Tabs. Also used ELSEWHERE. 
+    (must be deleted (duplicate with the string array, down below), but with extra care) -->    
     <string name="tab_actions">Actions</string>
-    <string name="tab_my_device">Device</string>
+    <string name="tab_my_device">My Device</string>
     <string name="tab_bugs">Bugs</string>
     <string name="tab_hogs">Hogs</string>
+    <string name="tab_settings">System Settings</string>
     <string name="tab_about">About</string>
-    <string name="tab_app_recommendation">Recommendation</string>
-
+    <string name="tab_summary">Summary</string>
+    <!-- <string name="tab_summary_unavailable">Summary Unavailable</string> -->
+    <string name="tab_carat_settings">Carat Settings</string>
+    
+    <!-- Navigation drawer items (tabs) -->
+    <string-array name="drawer_items">
+        <item>Summary</item>
+        <item>Actions</item>
+        <item>My Device</item>
+        <item>Bugs</item>
+        <item>Hogs</item>
+        <item>Carat Settings</item>
+        <item>About</item>
+    </string-array>
+    
     <!-- Updating etc -->
 
     <string name="samplesreported">Samples reported</string>
@@ -162,19 +179,34 @@ delete these from your file.
     <string name="significance">Significance:</string>
     <string name="best">Already best</string>
     
-    <string name="app_recommendation">App Recommendation</string>
+    <!-- The pie chart -->
+    <string name="chart_wellbehaved">Well-behaved</string>
+    <string name="chart_hogs">Hogs</string>
+    <string name="chart_bugs">Bugs</string>
     
-    <string-array name="drawer_items">
-        <item>Actions</item>
-        <item>My Device</item>
-        <item>Bugs</item>
-        <item>Hogs</item>
-        <item>About</item>
-    </string-array>
+    <!-- The dialog to enable Internet -->
+    <string name="dialog_text">Carat needs an Internet connection to update your personalized reports.</string>
+    <string name="dialog_enable">Enable Wifi</string>
+    <string name="dialog_cancel">Cancel</string>
     
+    <!-- error messages -->
+    <string name="connection_error">Offline. Click o turn on Wifi.</string>
+    
+    <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+    
+    <string name="summary_unavailable_title">Nothing to show yet</string>
+    <string name="summary_unavailable_text">This screen will be updated as soon as the data is received from server.</string>
+
+    <string name="app_recommendation">App Recommendation</string>
+    
+    <!-- Carat settings screen -->
+    <!-- switch backport strings -->
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="summary_off">Wifi + Mobile Data</string>
+    <string name="summary_on">Wifi Only</string>
 
 </resources>
 

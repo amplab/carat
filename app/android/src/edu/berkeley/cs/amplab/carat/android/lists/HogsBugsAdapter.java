@@ -2,11 +2,6 @@ package edu.berkeley.cs.amplab.carat.android.lists;
 
 import java.util.Arrays;
 
-import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
@@ -16,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 public class HogsBugsAdapter extends BaseAdapter {
     private SimpleHogBug[] allBugsOrHogs = null;
@@ -23,21 +23,24 @@ public class HogsBugsAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private CaratApplication a = null;
 
-    public HogsBugsAdapter(CaratApplication a, SimpleHogBug[] results) {
-        this.a = a;
+    public HogsBugsAdapter(CaratApplication caratApplication, SimpleHogBug[] results) {
+        this.a = caratApplication;
 
-        Context c = a.getApplicationContext();
-        // Skip system apps.
+        Context appContext = caratApplication.getApplicationContext();
+        // Skip system apps
         int items = 0;
         if (results != null)
-            for (SimpleHogBug b : results) {
-                String appName = b.getAppName();
+            for (SimpleHogBug app : results) {
+                String appName = app.getAppName();
                 if (appName == null)
-                    appName = a.getString(R.string.unknown);
-                if (appName.equals(CaratApplication.CARAT_PACKAGE)
-                        || appName.equals(CaratApplication.CARAT_OLD))
-                    continue;
-                if (!SamplingLibrary.isHidden(c, appName))
+                    appName = caratApplication.getString(R.string.unknown);
+                // don't show special apps: Carat or system apps
+    			// (DISABLED FOR DEBUGGING. TODO: ENABLE IT AFTER DEBUGGING, and check whether this has any problem)                
+//                if (SpecialAppCases.isSpecialApp(appName)) 
+                if (appName.equals(Constants.CARAT_PACKAGE_NAME) || appName.equals(Constants.CARAT_OLD))
+    				continue;
+                // the "dialer" app still shows up. no idea why!
+                if (!SamplingLibrary.isHidden(appContext, appName))
                     items++;
             }
         allBugsOrHogs = new SimpleHogBug[items];
@@ -47,19 +50,19 @@ public class HogsBugsAdapter extends BaseAdapter {
             for (SimpleHogBug b : results) {
                 String appName = b.getAppName();
                 if (appName == null)
-                    appName = a.getString(R.string.unknown);
-                if (appName.equals(CaratApplication.CARAT_PACKAGE)
-                        || appName.equals(CaratApplication.CARAT_OLD))
+                    appName = caratApplication.getString(R.string.unknown);
+                if (appName.equals(Constants.CARAT_PACKAGE_NAME)
+                        || appName.equals(Constants.CARAT_OLD))
                     continue;
                 // Apparently the number of items changes from "items" above?
-                if (!SamplingLibrary.isHidden(c, appName)
+                if (!SamplingLibrary.isHidden(appContext, appName)
                         && i < allBugsOrHogs.length) {
                     allBugsOrHogs[i] = b;
                     i++;
                 }
             }
         Arrays.sort(allBugsOrHogs);
-        mInflater = LayoutInflater.from(c);
+        mInflater = LayoutInflater.from(appContext);
     }
 
     public int getCount() {
@@ -84,7 +87,7 @@ public class HogsBugsAdapter extends BaseAdapter {
             holder.textBenefit = (TextView) convertView
                     .findViewById(R.id.benefit);
             holder.moreInfo = (ImageView) convertView
-                    .findViewById(R.id.moreinfo);
+                    .findViewById(R.id.jscore_info);
 
             convertView.setTag(holder);
         } else {

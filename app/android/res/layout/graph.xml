@@ -43,7 +43,7 @@
                     android:layout_gravity="left"
                     android:text="@string/appname"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/brown" />
+                    android:textColor="@color/gray" />
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -57,7 +57,7 @@
                         android:layout_gravity="left"
                         android:layout_weight="1"
                         android:text="@string/expected"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/cyan" />
 
                     <TextView
                         android:id="@+id/benefit"
@@ -65,12 +65,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:text="@string/benefitdefault"
-                        android:textColor="@color/green" />
+                        android:textColor="@color/cyan" />
                 </LinearLayout>
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/moreinfo"
+                android:id="@+id/jscore_info"
                 android:layout_width="18dip"
                 android:layout_height="18dip"
                 android:layout_gravity="center_vertical"
@@ -80,13 +80,14 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <TextView
+        <!-- duplicate info --> 
+        <!-- <TextView
             android:id="@+id/killBenefitLegend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/expected"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/killBenefit"
@@ -96,16 +97,16 @@
             android:layout_marginTop="10dip"
             android:text="@string/zeroh"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
-
+            android:textColor="@color/gray" /> -->
+		
         <TextView
             android:id="@+id/samplesLegend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
+            android:layout_marginTop="25dp"
             android:text="@string/samples"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/samples"
@@ -115,7 +116,7 @@
             android:layout_marginTop="10dip"
             android:text="@string/zero"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/errorLegend"
@@ -124,7 +125,7 @@
             android:layout_marginTop="10dip"
             android:text="@string/error"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/error"
@@ -134,7 +135,7 @@
             android:layout_marginTop="10dip"
             android:text="@string/zeroh"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/samplesWoLegend"
@@ -143,7 +144,7 @@
             android:layout_marginTop="10dip"
             android:text="@string/samplesWithout"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/samplesWo"
@@ -153,7 +154,7 @@
             android:layout_marginTop="10dip"
             android:text="@string/zero"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/green" />
+            android:textColor="@color/gray" />
         <!--
              <TextView
                 android:id="@+id/errorWoLegend"
@@ -162,7 +163,7 @@
                 android:layout_marginTop="10dip"
                 android:text="@string/error"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/green" />
+                android:textColor="@color/gray" />
 
              <TextView
                 android:id="@+id/errorWo"
@@ -172,7 +173,7 @@
                 android:layout_marginTop="10dip"
                 android:text="@string/zeroh"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/green" />
+                android:textColor="@color/gray" />
         -->
     </LinearLayout>
 

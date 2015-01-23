@@ -57,6 +57,7 @@ public class KillAppFragment extends Fragment {
 				ver = pak.versionName;
 			if (ver == null)
 				ver = "";
+			// Log.d("killApp", pak.packageName);
 			final String s = label + " " + ver;
 			killButton.setText(getString(R.string.kill) + " " + s);
 			killButton.setEnabled(true);
@@ -67,7 +68,7 @@ public class KillAppFragment extends Fragment {
 
 					SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
 					if (p != null) {
-						String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+						String uuId = p.getString(CaratApplication.getRegisteredUuid(), "UNKNOWN");
 						HashMap<String, String> options = new HashMap<String, String>();
 						if (pak != null) {
 							options.put("app", pak.packageName);
@@ -95,7 +96,7 @@ public class KillAppFragment extends Fragment {
 				public void onClick(View arg0) {
 					SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
 					if (p != null) {
-						String uuId = p.getString(CaratApplication.REGISTERED_UUID, "UNKNOWN");
+						String uuId = p.getString(CaratApplication.getRegisteredUuid(), "UNKNOWN");
 						HashMap<String, String> options = new HashMap<String, String>();
 						if (pak != null) {
 							options.put("app", pak.packageName);

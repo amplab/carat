@@ -38,7 +38,7 @@
             android:layout_gravity="left"
             android:text="@string/killappname"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/brown" />
+            android:textColor="@color/gray" />
 
          <TextView
                 android:id="@+id/suggestion_type"
@@ -46,10 +46,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:text="@string/default_type"
-                android:textColor="@color/brown" />
+                android:textColor="@color/gray" />
          
         <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
@@ -61,7 +60,7 @@
                 android:layout_gravity="left"
                 android:layout_weight="1"
                 android:text="@string/expected"
-                android:textColor="@color/green" />
+                android:textColor="@color/cyan" />
 
             <TextView
                 android:id="@+id/expectedBenefit"
@@ -69,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="@string/benefitdefault"
-                android:textColor="@color/green" />
+                android:textColor="@color/cyan" />
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>
@@ -89,14 +88,16 @@
         android:paddingRight="8dip">
     <Button
         android:id="@+id/killButton"
-        android:layout_width="0dp"
+        android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:paddingRight="3dp"
+    	android:paddingLeft="3dp"
         android:text="Kill App X" android:layout_weight="1"/>
     
     <Button
         android:id="@+id/appManager"
-        android:layout_width="0dp"
+        android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:text="@string/appmanager" android:layout_weight="1"/>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CaratApp.iml" filepath="$PROJECT_DIR$/CaratApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../libs/HoloGraphLibrary/HoloGraphLibrary.iml" filepath="$PROJECT_DIR$/../libs/HoloGraphLibrary/HoloGraphLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../support-appcompat/support-appcompat.iml" filepath="$PROJECT_DIR$/../../support-appcompat/support-appcompat.iml" />
+    </modules>
+  </component>
+</project>

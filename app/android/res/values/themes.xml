@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+     <!-- Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices. -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+        <!-- Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+        <item name="android:buttonStyle">@style/button</item>
+        
+        <!-- the following items belongs to the "switch-backport" library (the switch widget for Android API < 14) -->
+        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+        <item name="asb_switchPreferenceStyle">@style/Preference.SwitchPreference</item>
+    </style>
+
+    
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:buttonStyle">@style/button</item>
+        
+        <!-- the following items belongs to the "switch-backport" library (the switch widget for Android API < 14) -->
+        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+        <item name="asb_switchPreferenceStyle">@style/Preference.SwitchPreference</item>
+    </style>
+    
+    
+    <style name="LightBackground" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:textColor">#2E3235</item>
+        <item name="android:background">@color/lightsilver</item>
+        <item name="android:buttonStyle">@style/button</item>
+        
+        <!-- the following items belongs to the "switch-backport" library (the switch widget for Android API < 14) -->
+        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+        <item name="asb_switchPreferenceStyle">@style/Preference.SwitchPreference</item>
+    </style>
+
+    
+    <!-- to be used in the splash screen -->
+    <style name="notitle" parent="Theme.AppCompat.Light">
+    	<item name="android:windowNoTitle">true</item>
+	</style>
+	
+</resources>
