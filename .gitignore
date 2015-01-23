@@ -1,7 +1,7 @@
 # Flurry secret key file
 app/android/assets/flurry.properties
 # Support library binary (compiled) files
-support-appcompat/bin
+app/libs/Android/support-appcompat/bin
 # Built application files
 *.apk
 *.ap_
