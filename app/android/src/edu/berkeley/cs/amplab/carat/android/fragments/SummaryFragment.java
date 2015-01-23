@@ -44,10 +44,10 @@ public class SummaryFragment extends Fragment {
 		hogCount = 0, lastHogCount = 0,
 		bugCount = 0, lastBugCount = 0;
 	
-	MainActivity mMainActivity = CaratApplication.getMainActivity();
+	private MainActivity mMainActivity = CaratApplication.getMainActivity();
 	
-	SharedPreferences mSharedPref;
-	Resources mResources;
+	private SharedPreferences mSharedPref;
+	private Resources mResources;
 	
 	private PieChart mChart;
 	
@@ -62,6 +62,8 @@ public class SummaryFragment extends Fragment {
 		
 		final View inflatedView;
         
+		Log.i(TAG, "isStatsDataAvailable()=" + mMainActivity.isStatsDataAvailable());
+		
 		if (mMainActivity.isStatsDataAvailable()) {
 			inflatedView = inflater.inflate(R.layout.summary, container, false);
 			drawPieChart(inflatedView);

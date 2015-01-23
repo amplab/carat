@@ -82,9 +82,9 @@ public class Constants {
 	public static final String MAIN_ACTIVITY_PREFERENCE_KEY = "Main_Activity_Shared_Preferences_Key";
 	
 	// keys for retrieving values from the shared preference
-	public static final String WELL_BEHAVED_APPS_COUNT_PREF_KEY = "wellbehavedAppCount";
-	public static final String HOGS_COUNT_PREF_KEY = "hogCount";
-	public static final String BUGS_COUNT_PREF_KEY = "bugCount";
+	public static final String WELL_BEHAVED_APPS_COUNT_PREF_KEY = "wellbehaved";
+	public static final String HOGS_COUNT_PREF_KEY = "hogs";
+	public static final String BUGS_COUNT_PREF_KEY = "bugs";
 
 	// Used for messages in comms threads
 	static final String MSG_TRY_AGAIN = " will try again in " + (FRESHNESS_TIMEOUT / 1000) + "s.";

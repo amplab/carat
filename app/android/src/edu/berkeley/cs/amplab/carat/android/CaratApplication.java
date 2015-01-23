@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -77,6 +79,9 @@ public class CaratApplication extends Application {
 	private static Sampler sampler = null;
 	
 	public static MyDeviceData myDeviceData = new MyDeviceData();
+	
+	// used to check if Internet is available
+	private static ConnectivityManager mConnectivityManager = null;
 
 	// Application overrides:
 	
@@ -104,6 +109,9 @@ public class CaratApplication extends Application {
 	 */
 	@Override
 	public void onCreate() {
+		
+		mConnectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		
 		// use a private preference file (created and used only by CaratApp). 
 		// don't use PreferenceManager.getDefaultSharedPreferences (it might cause problem in different OS versions).
 		new Thread() {
@@ -443,7 +451,7 @@ public class CaratApplication extends Application {
 		}.start();
 	}
 
-	public static boolean isInternetAvailable() {
+	public static boolean isInternetAvailable2() {
 	    try {
 	        InetAddress ipAddr = InetAddress.getByName("google.com"); //You can replace it with your name
 	        if (ipAddr.equals("")) {
@@ -456,7 +464,29 @@ public class CaratApplication extends Application {
 	        return false;
 	    }
 	}
+	
+	/**
+	 * Checks whether WiFi or mobile data is enabled  
+	 * @return true of false
+	 */
+	public static boolean isInternetAvailable() {
+	    boolean haveConnectedWifi = false;
+	    boolean haveConnectedMobile = false;
 
+	    
+	    NetworkInfo[] netInfo = mConnectivityManager.getAllNetworkInfo();
+	    for (NetworkInfo ni : netInfo) {
+	        if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+	            if (ni.isConnected())
+	                haveConnectedWifi = true;
+	        if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+	            if (ni.isConnected())
+	                haveConnectedMobile = true;
+	    }
+	    return haveConnectedWifi || haveConnectedMobile;
+	}
+
+	
 	public static void setReportData() {
 		final Reports r = storage.getReports();
 		Log.d(TAG, "Got reports.");

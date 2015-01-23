@@ -44,6 +44,7 @@ import com.flurry.android.FlurryAgent;
 import edu.berkeley.cs.amplab.carat.android.fragments.AboutFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.BugsOrHogsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.CaratSettingsFragment;
+import edu.berkeley.cs.amplab.carat.android.fragments.EnableInternetDialogFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.MyDeviceFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.SettingsSuggestionsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.SuggestionsFragment;
@@ -124,7 +125,11 @@ public class MainActivity extends ActionBarActivity {
 		// track user clicks (taps)
 		tracker.trackUser("caratstarted");
 		
-		
+		if (!CaratApplication.isInternetAvailable()) {
+			EnableInternetDialogFragment dialog = new EnableInternetDialogFragment();
+			dialog.show(getSupportFragmentManager(), "dialog");
+//			replaceFragment(dialog, "enable Internet dialog");
+		}
 		
 
 		/*
@@ -411,6 +416,11 @@ public class MainActivity extends ActionBarActivity {
 		Log.i(TAG, "Resumed. Refreshing UI");
 		tracker.trackUser("caratresumed");
 
+		if ( (! isStatsDataAvailable()) && CaratApplication.isInternetAvailable()) {
+			getStatsFromServer();
+			refreshSummaryFragment();
+		}
+		
 		/*
 		 * Thread for refreshing the UI with new reports every 5 mins and on
 		 * resume. Also sends samples and updates blacklist/questionnaire url.
@@ -501,7 +511,6 @@ public class MainActivity extends ActionBarActivity {
 	 * pre-initialize all fragments before committing a replace fragment transaction
 	 * may help for better smoothness when user selects a navigation drawer item
 	 */
-	@SuppressLint("NewApi")
 	private void preInittializeFragments() {
 //		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 //	    final List<RecentTaskInfo> recentTasks = activityManager.getRecentTasks(20, ActivityManager.RECENT_WITH_EXCLUDED);
@@ -512,14 +521,7 @@ public class MainActivity extends ActionBarActivity {
 //	        }
 //	    }
         
-		// before initializing the summary fragment, we need to fetch the the data it needs from our server, in an asyncTask 
-		PrefetchData prefetchData = new PrefetchData();
-		// run this asyncTask in a new thread [from the thread pool] (run in parallel to other asyncTasks)
-		// (do not wait for them to finish, it takes a long time)
-		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
-			prefetchData.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		 else
-			 prefetchData.execute();
+		getStatsFromServer();
 
 		// after fetching the data needed by the summary fragment, initialize it
 		initSummaryFragment();
@@ -530,6 +532,21 @@ public class MainActivity extends ActionBarActivity {
 		initSettingsSuggestionFragment();
 		initCaratSettingsFragment();
 		initAboutFragment();
+	}
+
+	/**
+	 * Before initializing the summary fragment, we need to fetch the the data it needs from our server,
+	 * in an asyncTask in a new thread
+	 */
+	@SuppressLint("NewApi")
+	private void getStatsFromServer() {
+		PrefetchData prefetchData = new PrefetchData();
+		// run this asyncTask in a new thread [from the thread pool] (run in parallel to other asyncTasks)
+		// (do not wait for them to finish, it takes a long time)
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
+			prefetchData.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		 else
+			 prefetchData.execute();
 	}
 
 	private void initSummaryFragment() {
@@ -619,6 +636,8 @@ public class MainActivity extends ActionBarActivity {
 	public boolean isStatsDataAvailable() {
 		// don't check for zero, check for something unlikely, e.g. -1 (use a constant for that value, use it consistently)
 		if (mWellbehaved != Constants.VALUE_NOT_AVAILABLE && mHogs != Constants.VALUE_NOT_AVAILABLE  && mBugs != Constants.VALUE_NOT_AVAILABLE) {
+			Log.i(TAG, "isStatsDataAvailable(), mWellbehaved=" + mWellbehaved + ", mHogs=" + mHogs + ", mBugs=" + mBugs);
+			
 			return true;
 		} else {
 			// TODO: consider a data freshness timeout (e.g. two weeks)
@@ -626,6 +645,8 @@ public class MainActivity extends ActionBarActivity {
 			int hogs = CaratApplication.mPrefs.getInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
 			int bugs = CaratApplication.mPrefs.getInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
 			if (wellbehaved != Constants.VALUE_NOT_AVAILABLE && hogs != Constants.VALUE_NOT_AVAILABLE  && bugs != Constants.VALUE_NOT_AVAILABLE) {
+				Log.i(TAG, "isStatsDataAvailable(), wellbehaved (fetched from the pref)=" + wellbehaved);
+				
 				mWellbehaved = wellbehaved;
 				mHogs = hogs;
 				mBugs = bugs;
@@ -634,6 +655,30 @@ public class MainActivity extends ActionBarActivity {
 				return false;
 			}
 		}
+	}
+	
+	public void GoToWifiScreen() {
+    	safeStart(android.provider.Settings.ACTION_WIFI_SETTINGS, getString(R.string.wifisettings));
+    }
+	
+	public void refreshSummaryFragment() {
+		if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
+			Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
+			FragmentManager manager = getSupportFragmentManager();
+			
+			// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
+			// selects an item from the nav-drawer, we replace pre-init fragments including this one.
+			mSummaryFragment = manager.findFragmentByTag("Summary"); 
+			
+			FragmentTransaction fragTransaction = manager.beginTransaction();
+			// refresh the summary fragment:
+		    fragTransaction.detach(mSummaryFragment);
+		    fragTransaction.attach(mSummaryFragment);
+		    fragTransaction.commit();
+		} else {
+			Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
+		}
+	    // initSummaryFragment();
 	}
 	
 	/**
@@ -687,8 +732,8 @@ public class MainActivity extends ActionBarActivity {
 							// when we are reading the following pref values, we
 							// should check that condition )
 							editor.putInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, mWellbehaved);
-							editor.putInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, mWellbehaved);
-							editor.putInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, mWellbehaved);
+							editor.putInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, mHogs);
+							editor.putInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, mBugs);
 
 							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 								editor.apply(); // async (runs in parallel
@@ -724,7 +769,6 @@ public class MainActivity extends ActionBarActivity {
 			// SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 			// sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
 			// Log.d(TAG, "asyncTask.onPstExecute(). mWellbehaved=" + mWellbehaved);
-
 			refreshSummaryFragment();
 		}
 	    
@@ -761,26 +805,6 @@ public class MainActivity extends ActionBarActivity {
 				}
 			}
 			// if an exception occurs, the value of the field would be -1 (Constants.VALUE_NOT_AVAILABLE)
-		}
-		
-		public void refreshSummaryFragment() {
-			if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
-				Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
-				FragmentManager manager = getSupportFragmentManager();
-				
-				// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
-				// selects an item from the nav-drawer, we replace pre-init fragments including this one.
-				mSummaryFragment = manager.findFragmentByTag("Summary"); 
-				
-				FragmentTransaction fragTransaction = manager.beginTransaction();
-				// refresh the summary fragment:
-			    fragTransaction.detach(mSummaryFragment);
-			    fragTransaction.attach(mSummaryFragment);
-			    fragTransaction.commit();
-			} else {
-				Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
-			}
-		    // initSummaryFragment();
 		}
 	}
 }

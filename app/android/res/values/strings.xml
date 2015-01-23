@@ -185,6 +185,11 @@ delete these from your file.
     <string name="chart_hogs">Hogs</string>
     <string name="chart_bugs">Bugs</string>
     
+    <!-- The dialog to enable Internet -->
+    <string name="dialog_text">Carat needs an Internet connection to update your personalized reports.</string>
+    <string name="dialog_enable">Enable Wifi</string>
+    <string name="dialog_cancel">Cancel</string>
+    
     <!-- error messages -->
     <string name="connection_error">Offline. Click o turn on Wifi.</string>
     
