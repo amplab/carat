@@ -11,7 +11,7 @@
         <item name="android:buttonStyle">@style/button</item>
         
         <!-- the following items belongs to the "switch-backport" library (the switch widget for Android API < 14) -->
-        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+        <item name="asb_switchStyle">@style/Widget.Holo.Light.CompoundButton.Switch</item>
         <item name="asb_switchPreferenceStyle">@style/Preference.SwitchPreference</item>
     </style>
 
@@ -22,7 +22,7 @@
         <item name="android:buttonStyle">@style/button</item>
         
         <!-- the following items belongs to the "switch-backport" library (the switch widget for Android API < 14) -->
-        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+        <item name="asb_switchStyle">@style/Widget.Holo.Light.CompoundButton.Switch</item>
         <item name="asb_switchPreferenceStyle">@style/Preference.SwitchPreference</item>
     </style>
     
@@ -34,7 +34,7 @@
         <item name="android:buttonStyle">@style/button</item>
         
         <!-- the following items belongs to the "switch-backport" library (the switch widget for Android API < 14) -->
-        <item name="asb_switchStyle">@style/Widget.Holo.CompoundButton.Switch</item>
+        <item name="asb_switchStyle">@style/Widget.Holo.Light.CompoundButton.Switch</item>
         <item name="asb_switchPreferenceStyle">@style/Preference.SwitchPreference</item>
     </style>
 
