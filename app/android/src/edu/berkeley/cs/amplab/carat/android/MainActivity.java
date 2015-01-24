@@ -95,14 +95,14 @@ public class MainActivity extends ActionBarActivity {
 	private Fragment mMyDeviceFragment;
 	private String mMyDeviceFragmentLabel;
 	
-	private Fragment mBugsFragment;
+	private Fragment mBugsFragment;	
 	private String mBugsFragmentLabel;
 	
-	private Fragment mHogsFragment;
+	private Fragment mHogsFragment;			
 	private String mHogsFragmentLabel;
 	
-	private Fragment mSettingsSuggestionFragment;
-	private String mSettingsSuggestionFragmentLabel;
+	// private Fragment mSettingsSuggestionFragment;
+	// private String mSettingsSuggestionFragmentLabel;
 	
 	private Fragment mCaratSettingsFragment;
 	private String mCaratSettingsFragmentLabel;
@@ -116,6 +116,7 @@ public class MainActivity extends ActionBarActivity {
 	public int mWellbehaved = Constants.VALUE_NOT_AVAILABLE,
 			mHogs = Constants.VALUE_NOT_AVAILABLE,
 			mBugs = Constants.VALUE_NOT_AVAILABLE ;
+		
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,6 @@ public class MainActivity extends ActionBarActivity {
 		if (!CaratApplication.isInternetAvailable()) {
 			EnableInternetDialogFragment dialog = new EnableInternetDialogFragment();
 			dialog.show(getSupportFragmentManager(), "dialog");
-//			replaceFragment(dialog, "enable Internet dialog");
 		}
 		
 
@@ -195,10 +195,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 
 		setTitleNormal();
-
-		// first get summary data from the server, then initialize the summary fragment 
-//		new PrefetchData(this).execute();
-//		initSummaryFragment();
 		
 		// Uncomment the following to enable listening on local port 8080:
 		/*
@@ -518,7 +514,7 @@ public class MainActivity extends ActionBarActivity {
 		initMyDeviceFragment();
 		initBugsOrHogsFragment(true);
 		initBugsOrHogsFragment(false);
-		// TODO: enable later (after figuring out an approach for calculating the expected benefit number)
+		// enable later (after figuring out an approach for calculating the expected benefit number)
 		// initSettingsSuggestionFragment();
 		initCaratSettingsFragment();
 		initAboutFragment();
@@ -541,7 +537,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private void initSummaryFragment() {
 		mSummaryFragment = new SummaryFragment();
-		mSummaryFragmentLabel = "Summary"; // getString(R.string.tab_summary)
+		mSummaryFragmentLabel = getString(R.string.tab_summary);
 	}
 	
 	private void initSuggestionsFragment() {
@@ -573,10 +569,10 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 	
-	private void initSettingsSuggestionFragment() {
-		mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
-		mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
-	}
+//	private void initSettingsSuggestionFragment() {
+//		mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
+//		mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
+//	}
 	
 	private void initCaratSettingsFragment() {
 		mCaratSettingsFragment = new CaratSettingsFragment();
@@ -624,26 +620,33 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public boolean isStatsDataAvailable() {
-		// don't check for zero, check for something unlikely, e.g. -1 (use a constant for that value, use it consistently)
-		if (mWellbehaved != Constants.VALUE_NOT_AVAILABLE && mHogs != Constants.VALUE_NOT_AVAILABLE  && mBugs != Constants.VALUE_NOT_AVAILABLE) {
-			Log.i(TAG, "isStatsDataAvailable(), mWellbehaved=" + mWellbehaved + ", mHogs=" + mHogs + ", mBugs=" + mBugs);
-			
+		if (isStatsDataLoaded()) {
+			// Log.i(TAG, "isStatsDataAvailable(), mWellbehaved=" + mWellbehaved + ", mHogs=" + mHogs + ", mBugs=" + mBugs);
 			return true;
 		} else {
-			// TODO: consider a data freshness timeout (e.g. two weeks)
-			int wellbehaved = CaratApplication.mPrefs.getInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
-			int hogs = CaratApplication.mPrefs.getInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
-			int bugs = CaratApplication.mPrefs.getInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
-			if (wellbehaved != Constants.VALUE_NOT_AVAILABLE && hogs != Constants.VALUE_NOT_AVAILABLE  && bugs != Constants.VALUE_NOT_AVAILABLE) {
-				Log.i(TAG, "isStatsDataAvailable(), wellbehaved (fetched from the pref)=" + wellbehaved);
-				
-				mWellbehaved = wellbehaved;
-				mHogs = hogs;
-				mBugs = bugs;
-				return true;
-			} else {
-				return false;
-			}
+			return isStatsDataStoredInPref();
+		}
+	}
+
+	private boolean isStatsDataLoaded() {
+		// don't check for zero, check for something unlikely, e.g. -1 (use a constant for that value, use it consistently)
+		return mWellbehaved != Constants.VALUE_NOT_AVAILABLE && mHogs != Constants.VALUE_NOT_AVAILABLE  && mBugs != Constants.VALUE_NOT_AVAILABLE;
+	}
+
+	private boolean isStatsDataStoredInPref() {
+		// TODO: consider a data freshness timeout (e.g. two weeks)
+		int wellbehaved = CaratApplication.mPrefs.getInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
+		int hogs = CaratApplication.mPrefs.getInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
+		int bugs = CaratApplication.mPrefs.getInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
+		if (wellbehaved != Constants.VALUE_NOT_AVAILABLE && hogs != Constants.VALUE_NOT_AVAILABLE  && bugs != Constants.VALUE_NOT_AVAILABLE) {
+			Log.i(TAG, "isStatsDataAvailable(), wellbehaved (fetched from the pref)=" + wellbehaved);
+			
+			mWellbehaved = wellbehaved;
+			mHogs = hogs;
+			mBugs = bugs;
+			return true;
+		} else {
+			return false;
 		}
 	}
 	
@@ -671,6 +674,22 @@ public class MainActivity extends ActionBarActivity {
 	    // initSummaryFragment();
 	}
 	
+	public Fragment getHogsFragment() {
+		return mHogsFragment;
+	}
+
+	public void setHogsFragment(Fragment hogsFragment) {
+		mHogsFragment = hogsFragment;
+	}
+
+	public Fragment getBugsFragment() {
+		return mBugsFragment;
+	}
+
+	public void setBugsFragment(Fragment bugsFragment) {
+		mBugsFragment = bugsFragment;
+	}
+	
 	/**
 	 * A listener that is triggered when a value changes in our defualtSharedPreferences.
 	 * Can be used to do an immediate action whenever one of our items in that hashtable (defualtSharedPreferences) changes.
@@ -688,27 +707,21 @@ public class MainActivity extends ActionBarActivity {
 		String serverResponseJson = null;
 		private final String TAG = "PrefetchData";
 		
-	    @SuppressLint("NewApi")
 		@Override
 	    protected Void doInBackground(Void... arg0) {
 	    	Log.d(TAG, "started doInBackground() method of the asyncTask");
 	        JsonParser jsonParser = new JsonParser();
-	        // Log.d(TAG, "about to get the stats json");
 	        try {
 	        	if (CaratApplication.isInternetAvailable()) {
 	        		serverResponseJson = jsonParser
 	        				.getJSONFromUrl("http://carat.cs.helsinki.fi/statistics-data/stats.json");
-	        		// Log.d(TAG, "trying to fetch json");
 	        	}
 	        } catch (Exception e) {
-	        	// Log.d("PrefetchData", e.getStackTrace().toString());
 	        }
 	        
 	        if (serverResponseJson != null && serverResponseJson != "") {
-	        	// Log.d(TAG, "server response not null");
 	            try {
 	                JSONArray jsonArray = new JSONObject(serverResponseJson).getJSONArray("android-apps");
-	                // Log.d(TAG, "got json array out of the json object");
 	                // Using Java reflections to set fields by passing their name to a method
 	                try {
 						setIntFieldsFromJson(jsonArray, 0, "mWellbehaved");
@@ -716,21 +729,7 @@ public class MainActivity extends ActionBarActivity {
 						setIntFieldsFromJson(jsonArray, 2, "mBugs");
 						
 						if (CaratApplication.mPrefs != null) {
-							SharedPreferences.Editor editor = CaratApplication.mPrefs.edit();
-							// the returned values (from setIntFieldsFromJson()
-							// might be -1 (Constants.VALUE_NOT_AVAILABLE). So
-							// when we are reading the following pref values, we
-							// should check that condition )
-							editor.putInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, mWellbehaved);
-							editor.putInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, mHogs);
-							editor.putInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, mBugs);
-
-							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-								editor.apply(); // async (runs in parallel
-												// in a new shared thread (off the UI thread)
-							} else {
-								editor.commit();
-							}
+							saveStatsToPref();
 						} else {
 							Log.e(TAG, "The shared preference is null (not loaded yet. "
 									+ "Check CaratApplication's new thread for loading the sharedPref)");
@@ -747,10 +746,29 @@ public class MainActivity extends ActionBarActivity {
 	            	Log.e(TAG, e.getStackTrace().toString());
 	            }
 	        } else {
-	        	// Log.d(TAG, "server respone JSON is null.");
+	        	// Log.d(TAG, "server response JSON is null.");
 	        }
 	        return null;
 	    }
+
+		@SuppressLint("NewApi")
+		private void saveStatsToPref() {
+			SharedPreferences.Editor editor = CaratApplication.mPrefs.edit();
+			// the returned values (from setIntFieldsFromJson()
+			// might be -1 (Constants.VALUE_NOT_AVAILABLE). So
+			// when we are reading the following pref values, we
+			// should check that condition )
+			editor.putInt(Constants.STATS_WELLBEHAVED_COUNT_PREFERENCE_KEY, mWellbehaved);
+			editor.putInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, mHogs);
+			editor.putInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, mBugs);
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+				editor.apply(); // async (runs in parallel
+								// in a new shared thread (off the UI thread)
+			} else {
+				editor.commit();
+			}
+		}
 
 		@Override
 		protected void onPostExecute(Void result) {

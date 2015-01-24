@@ -1,35 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
+    
     <TextView
         android:id="@+id/summary_screen_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/summary_screen_title"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/gray" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
+        android:layout_marginTop="10dp"
+	    android:layout_marginBottom="10dp"
+	    android:gravity="start" >
+
+        <TextView
+	        android:text="@string/summary_your_device_has"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_marginStart="10dp"
+	        android:layout_marginLeft="10dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/gray" />
+        
+	    <TextView
+	        android:id="@+id/summary_hogs_count"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_marginStart="5dp"
+	        android:layout_marginEnd="5dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/gray" />
+	    
+	    <TextView
+	        android:text="@string/summary_conjunction"
+	        android:layout_marginEnd="5dp"
+	        android:layout_marginRight="5dp"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/gray" />
+	    
+	    <TextView
+	        android:id="@+id/summary_bugs_count"
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/gray" />
+    
+    </LinearLayout>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    
-    <!-- <com.echo.holographlibrary.PieGraph
-        android:id="@+id/piegraph"
-        android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_margin="@dimen/default_margin"
-        android:layout_weight="1"
-        app:pieInnerCircleRatio="100"
-        app:pieSlicePadding="0dip" /> -->
 
-    <!-- android:background="@drawable/ic_launcher" -->
 </LinearLayout>

@@ -198,8 +198,8 @@ delete these from your file.
     
     <string name="summary_unavailable_title">Nothing to show yet</string>
     <string name="summary_unavailable_text">This screen will be updated as soon as the data is received from server.</string>
-
-    <string name="app_recommendation">App Recommendation</string>
+    <string name="summary_your_device_has">Your device has</string>
+    <string name="summary_conjunction">and</string>
     
     <!-- Carat settings screen -->
     <!-- switch backport strings -->
