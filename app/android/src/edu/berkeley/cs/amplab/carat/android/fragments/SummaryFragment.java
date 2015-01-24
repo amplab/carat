@@ -2,17 +2,12 @@ package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import java.util.ArrayList;
 
-import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -33,31 +28,18 @@ import edu.berkeley.cs.amplab.carat.android.R;
  *
  */
 public class SummaryFragment extends Fragment {
-	private final String TAG = "SummaryFragment";
-	
-	int wellbehavedAppCount = 0, lastWellbehavedAppCount = 0,
-		hogCount = 0, lastHogCount = 0,
-		bugCount = 0, lastBugCount = 0;
-	
+	// private final String TAG = "SummaryFragment";
 	private MainActivity mMainActivity = CaratApplication.getMainActivity();
-	
-	private SharedPreferences mSharedPref;
-	private Resources mResources;
-	
 	private PieChart mChart;
-	
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d(TAG, "onCreateView() started");
-		mResources = getResources();
-		
 		final View inflatedView;
         
 		int hogsCount = CaratApplication.storage.getHogReport().length;
 		int bugsCount = CaratApplication.storage.getBugReport().length;
 		
-		Log.i(TAG, "isStatsDataAvailable()=" + mMainActivity.isStatsDataAvailable());
+		// Log.i(TAG, "isStatsDataAvailable()=" + mMainActivity.isStatsDataAvailable());
 		
 		if (mMainActivity.isStatsDataAvailable()) {
 			inflatedView = inflater.inflate(R.layout.summary, container, false);
@@ -112,7 +94,7 @@ public class SummaryFragment extends Fragment {
 		mChart.setValueTypeface(tf);
 		mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
 		mChart.setUsePercentValues(true);
-		mChart.setCenterText("Android\nApps");
+		mChart.setCenterText(getString(R.string.summary_chart_center_text)); 
 		mChart.setCenterTextSize(22f);
 		 
 		// radius of the center hole in percent of maximum radius
@@ -133,9 +115,9 @@ public class SummaryFragment extends Fragment {
         ArrayList<Entry> entries = new ArrayList<Entry>();
         ArrayList<String> xVals = new ArrayList<String>();
         
-        xVals.add(mResources.getString(R.string.chart_wellbehaved));
-        xVals.add(mResources.getString(R.string.chart_hogs));
-        xVals.add(mResources.getString(R.string.chart_bugs));
+        xVals.add(getString(R.string.chart_wellbehaved));
+        xVals.add(getString(R.string.chart_hogs));
+        xVals.add(getString(R.string.chart_bugs));
         
         int wellbehaved = mMainActivity.mWellbehaved;
 		int hogs = mMainActivity.mHogs;
@@ -145,7 +127,7 @@ public class SummaryFragment extends Fragment {
 		entries.add(new Entry((float) (hogs), 2));
 		entries.add(new Entry((float) (bugs), 3));
 		
-        PieDataSet ds1 = new PieDataSet(entries, "Users Statistics");
+        PieDataSet ds1 = new PieDataSet(entries, getString(R.string.summary_android_apps));
         ds1.setColors(Constants.CARAT_COLORS);
         ds1.setSliceSpace(2f);
         

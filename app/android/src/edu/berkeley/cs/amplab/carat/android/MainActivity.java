@@ -3,17 +3,14 @@ package edu.berkeley.cs.amplab.carat.android;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Properties;
-import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -46,7 +43,6 @@ import edu.berkeley.cs.amplab.carat.android.fragments.BugsOrHogsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.CaratSettingsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.EnableInternetDialogFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.MyDeviceFragment;
-import edu.berkeley.cs.amplab.carat.android.fragments.SettingsSuggestionsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.SuggestionsFragment;
 import edu.berkeley.cs.amplab.carat.android.fragments.SummaryFragment;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
@@ -73,20 +69,19 @@ public class MainActivity extends ActionBarActivity {
 	private String[] mDrawerItems;
 
 	// Log tag
-	private static final String TAG = "Activity (MainActivity)";
+	// private static final String TAG = "MainActivity";
 
 	public static final String ACTION_BUGS = "bugs",
 							   ACTION_HOGS = "hogs";
 
 	// Key File
 	private static final String FLURRY_KEYFILE = "flurry.properties";
-
+	
 	private String fullVersion = null;
-
+	
 	private Tracker tracker = null;
 
 	private Fragment mSummaryFragment;
-	private Bundle mArgs;
 	private String mSummaryFragmentLabel;
 	
 	private Fragment mSuggestionFragment;
@@ -97,6 +92,8 @@ public class MainActivity extends ActionBarActivity {
 	
 	private Fragment mBugsFragment;	
 	private String mBugsFragmentLabel;
+	
+	private Bundle mArgs;
 	
 	private Fragment mHogsFragment;			
 	private String mHogsFragmentLabel;
@@ -112,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
 
 	// public boolean updateSummaryFragment;
 	
-	// counts (general Carat stats shown in the summary fragment)
+	// counts (general Carat statistics shown in the summary fragment)
 	public int mWellbehaved = Constants.VALUE_NOT_AVAILABLE,
 			mHogs = Constants.VALUE_NOT_AVAILABLE,
 			mBugs = Constants.VALUE_NOT_AVAILABLE ;
@@ -130,7 +127,6 @@ public class MainActivity extends ActionBarActivity {
 			EnableInternetDialogFragment dialog = new EnableInternetDialogFragment();
 			dialog.show(getSupportFragmentManager(), "dialog");
 		}
-		
 
 		/*
 		 * Activity.getWindow.requestFeature() should get invoked only before
@@ -140,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
 		getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		
-		Log.d(TAG, "about to set the layout");
+		// Log.d(TAG, "about to set the layout");
 		setContentView(R.layout.activity_main);
 
 		ActionBar actionBar = getSupportActionBar();
@@ -149,9 +145,10 @@ public class MainActivity extends ActionBarActivity {
 		// read and load the preferences specified in our xml preference file
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 		
-		Log.d(TAG, "about to initialize fragments");
+		// Log.d(TAG, "about to initialize fragments");
 		preInittializeFragments();
-		Log.d(TAG, "done with fragment initialization");
+		// Log.d(TAG, "done with fragment initialization");
+		
 		/*
 		 * Before using the field "fullVersion", first invoke setTitleNormal()
 		 * or setFullVersion() to set this field
@@ -326,12 +323,12 @@ public class MainActivity extends ActionBarActivity {
 			long s = CaratApplication.storage.getSamplesReported();
 			Log.d("setTitleNormal", "number of samples reported=" + String.valueOf(s));
 			if (s > 0) {
-				this.setTitle("Carat - " + s + " " + getString(R.string.samplesreported));
+				setTitle("Carat - " + s + " " + getString(R.string.samplesreported));
 			} else {
-				this.setTitle(fullVersion);
+				setTitle(fullVersion);
 			}
 		} else
-			this.setTitle(fullVersion);
+			setTitle(fullVersion);
 	}
 
 	private void setFullVersion() {
@@ -343,12 +340,11 @@ public class MainActivity extends ActionBarActivity {
 	}
 
 	public void setTitleUpdating(String what) {
-		this.setTitle(getString(R.string.updating) + " " + what);
-//		this.setTitle(fullVersion + " - " + getString(R.string.updating) + " " + what);
+		setTitle(getString(R.string.updating) + " " + what);
 	}
 
 	public void setTitleUpdatingFailed(String what) {
-		this.setTitle(getString(R.string.didntget) + " " + what);
+		setTitle(getString(R.string.didntget) + " " + what);
 	}
 	
 	/**
@@ -362,7 +358,7 @@ public class MainActivity extends ActionBarActivity {
             intent = new Intent(intentString);
             startActivity(intent);
         } catch (Throwable th) {
-            Log.e(TAG, "Could not start activity: " + intent, th);
+            // Log.e(TAG, "Could not start activity: " + intent, th);
             if (thing != null) {
                 Toast t = Toast.makeText(this, getString(R.string.opening) + thing + getString(R.string.notsupported),
                         Toast.LENGTH_SHORT);
@@ -383,11 +379,12 @@ public class MainActivity extends ActionBarActivity {
 				properties.load(raw);
 				if (properties.containsKey("secretkey"))
 					secretKey = properties.getProperty("secretkey", "secretkey");
-				Log.d(TAG, "Set Flurry secret key.");
-			} else
-				Log.e(TAG, "Could not open Flurry key file!");
+				// Log.d(TAG, "Set Flurry secret key.");
+			} else {
+			  // Log.e(TAG, "Could not open Flurry key file!");
+			}
 		} catch (IOException e) {
-			Log.e(TAG, "Could not open Flurry key file: " + e.toString());
+			// Log.e(TAG, "Could not open Flurry key file: " + e.toString());
 		}
 		if (secretKey != null) {
 			FlurryAgent.onStartSession(getApplicationContext(), secretKey);
@@ -405,62 +402,21 @@ public class MainActivity extends ActionBarActivity {
 		FlurryAgent.onEndSession(getApplicationContext());
 		// PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 	}
-
-	
 	
 	@Override
 	protected void onResume() {
-		Log.i(TAG, "Resumed. Refreshing UI");
+		// Log.i(TAG, "Resumed. Refreshing UI");
 		tracker.trackUser("caratresumed");
 
+		// if statistics data for the summary fragment is not already fetched,
+		// and the device has an Internet connection, fetch statistics and then refresh the summary fragment
 		if ( (! isStatsDataAvailable()) && CaratApplication.isInternetAvailable()) {
 			getStatsFromServer();
 			refreshSummaryFragment();
 		}
-		
-		
-//		SummaryFragment summaryFragment = (SummaryFragment) getFragmentManager().findFragmentByTag(mSummaryFragmentLabel);
-		
-//		Fragment fragment = getVisibleFragment();
-//		if (fragment instanceof SummaryFragment) {
-//			Intent intentSplashActvity = new Intent(this, SplashActivity.class);
-//			Log.d(TAG, "about to start the splash activity");
-//			startActivity(intentSplashActvity);
-//			// close current activity
-//			finish();
-//			super.onResume();
-//			return;
-//		}	
-//			Toast.makeText(getApplicationContext(), "current visible fragment is an instance of the SummaryFragment",
-//					   Toast.LENGTH_LONG).show();
-////			TextView title = (TextView) findViewById(R.id.summary_screen_title);
-////			title.setText("Retrieving data. Please wait...");
-//
-//			FragmentManager fragmentManager = getSupportFragmentManager();
-//			FragmentTransaction transaction = fragmentManager.beginTransaction();
-//			
-//			if (fragment.isAdded()) {
-//				transaction.detach(fragment);
-//				new Thread() {
-//					public void run() {
-//						new PrefetchData(CaratApplication.getMainActivity()).execute();
-//					}
-//				}.start();
-//				initSummaryFragment();
-//				transaction.replace(R.id.content_frame, fragment, mSummaryFragmentLabel)
-//							.addToBackStack(mSummaryFragmentLabel)
-//							.commit();
-//			}
-			
-//			transaction.attach(fragment);
-			
-//			initSummaryFragment();
-//			transaction.attach(fragment);
-//			replaceFragment(mSummaryFragment, mSummaryFragmentLabel);
-		
-		
+				
 		((CaratApplication) getApplication()).refreshUi();
-		
+
 		super.onResume();
 	}
 
@@ -476,7 +432,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	@Override
 	protected void onPause() {
-		Log.i(TAG, "Paused");
+		// Log.i(TAG, "Paused");
 		tracker.trackUser("caratpaused");
 		SamplingLibrary.resetRunningProcessInfo();
 		super.onPause();
@@ -484,28 +440,18 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public void finish() {
-		Log.d(TAG, "Finishing up");
+		// Log.d(TAG, "Finishing up");
 		tracker.trackUser("caratstopped");
 		super.finish();
 	}
 
-	
 	/**
 	 * must be called in onCreate() method of the activity, before calling selectItem() method
 	 * [before attaching the navigation drawer listener]
 	 * pre-initialize all fragments before committing a replace fragment transaction
 	 * may help for better smoothness when user selects a navigation drawer item
 	 */
-	private void preInittializeFragments() {
-//		final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//	    final List<RecentTaskInfo> recentTasks = activityManager.getRecentTasks(20, ActivityManager.RECENT_WITH_EXCLUDED);
-//	    for (int i = 0; i < recentTasks.size(); i++) {
-//	        Intent baseIntent = recentTasks.get(i).baseIntent;
-//	        if(baseIntent != null) {
-//	            Log.d("Text", "The Application executed: " + i + ": baseIntent: " + baseIntent.getComponent().getPackageName() + baseIntent.getComponent().getClassName());
-//	        }
-//	    }
-        
+	private void preInittializeFragments() {        
 		getStatsFromServer();
 
 		// after fetching the data needed by the summary fragment, initialize it
@@ -569,17 +515,15 @@ public class MainActivity extends ActionBarActivity {
 		}
 	}
 	
-//	private void initSettingsSuggestionFragment() {
-//		mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
-//		mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
-//	}
+	// private void initSettingsSuggestionFragment() {
+	//  	mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
+	//  	mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
+	//}
 	
 	private void initCaratSettingsFragment() {
 		mCaratSettingsFragment = new CaratSettingsFragment();
 		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
 	}
-	
-	
 	
 	/*
 	 * shows the fragment using a fragment transaction (replaces the FrameLayout
@@ -597,13 +541,13 @@ public class MainActivity extends ActionBarActivity {
 		// use a fragment tag, so that later on we can find the currently displayed fragment
 		final String FRAGMENT_TAG = fragmentNameInBackStack;
 		
-//		String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-//		if (tag == mSummaryFragmentLabel) {		
-		// update summary fragment's view (after enabling Internet)
-//		if (FRAGMENT_TAG == mSummaryFragmentLabel) {
-//			transaction.detach(fragment);
-//			transaction.attach(fragment);
-//		}
+		// String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+		// if (tag == mSummaryFragmentLabel) {		
+		//   update summary fragment's view (after enabling Internet)
+		// if (FRAGMENT_TAG == mSummaryFragmentLabel) {
+		//	  transaction.detach(fragment);
+		//	  transaction.attach(fragment);
+		//}
 		
 		transaction.replace(R.id.content_frame, fragment, FRAGMENT_TAG)
 					.addToBackStack(fragmentNameInBackStack)
@@ -639,8 +583,7 @@ public class MainActivity extends ActionBarActivity {
 		int hogs = CaratApplication.mPrefs.getInt(Constants.STATS_HOGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
 		int bugs = CaratApplication.mPrefs.getInt(Constants.STATS_BUGS_COUNT_PREFERENCE_KEY, Constants.VALUE_NOT_AVAILABLE);
 		if (wellbehaved != Constants.VALUE_NOT_AVAILABLE && hogs != Constants.VALUE_NOT_AVAILABLE  && bugs != Constants.VALUE_NOT_AVAILABLE) {
-			Log.i(TAG, "isStatsDataAvailable(), wellbehaved (fetched from the pref)=" + wellbehaved);
-			
+			// Log.i(TAG, "isStatsDataAvailable(), wellbehaved (fetched from the pref)=" + wellbehaved);
 			mWellbehaved = wellbehaved;
 			mHogs = hogs;
 			mBugs = bugs;
@@ -656,7 +599,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	public void refreshSummaryFragment() {
 		if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
-			Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
+			// Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
 			FragmentManager manager = getSupportFragmentManager();
 			
 			// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
@@ -669,7 +612,7 @@ public class MainActivity extends ActionBarActivity {
 		    fragTransaction.attach(mSummaryFragment);
 		    fragTransaction.commit();
 		} else {
-			Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
+			// Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
 		}
 	    // initSummaryFragment();
 	}
@@ -709,7 +652,7 @@ public class MainActivity extends ActionBarActivity {
 		
 		@Override
 	    protected Void doInBackground(Void... arg0) {
-	    	Log.d(TAG, "started doInBackground() method of the asyncTask");
+	    	// Log.d(TAG, "started doInBackground() method of the asyncTask");
 	        JsonParser jsonParser = new JsonParser();
 	        try {
 	        	if (CaratApplication.isInternetAvailable()) {
@@ -731,8 +674,8 @@ public class MainActivity extends ActionBarActivity {
 						if (CaratApplication.mPrefs != null) {
 							saveStatsToPref();
 						} else {
-							Log.e(TAG, "The shared preference is null (not loaded yet. "
-									+ "Check CaratApplication's new thread for loading the sharedPref)");
+							// Log.e(TAG, "The shared preference is null (not loaded yet. "
+							//		+ "Check CaratApplication's new thread for loading the sharedPref)");
 						}
 						
 						// Log.i(TAG, "received JSON: " + "mBugs: " + mWellbehaved 
@@ -743,7 +686,7 @@ public class MainActivity extends ActionBarActivity {
 						Log.e(TAG, "IllegalAccessException in setFieldsFromJson()");
 					}
 	            } catch (JSONException e) {
-	            	Log.e(TAG, e.getStackTrace().toString());
+	            	// Log.e(TAG, e.getStackTrace().toString());
 	            }
 	        } else {
 	        	// Log.d(TAG, "server response JSON is null.");
@@ -788,7 +731,7 @@ public class MainActivity extends ActionBarActivity {
 	     */
 		private void setIntFieldsFromJson(JSONArray jsonArray, int objIdx, String fieldName) 
 				throws JSONException, IllegalArgumentException, IllegalAccessException {
-//			Class<? extends PrefetchData> currentClass = this.getClass();
+			// Class<? extends PrefetchData> currentClass = this.getClass();
 			Field field = null;
 			int res = Constants.VALUE_NOT_AVAILABLE;
 			
@@ -797,7 +740,7 @@ public class MainActivity extends ActionBarActivity {
 				// For private fields, use another method: getDeclaredField(fieldName)
 				field = /*currentClass.*/ CaratApplication.getMainActivity().getClass().getField(fieldName);
 			} catch(NoSuchFieldException e) {
-				Log.e(TAG, "NoSuchFieldException when trying to get a reference to the field: " + fieldName);
+				// Log.e(TAG, "NoSuchFieldException when trying to get a reference to the field: " + fieldName);
 			}
 			
 			if (field != null) {
@@ -808,7 +751,7 @@ public class MainActivity extends ActionBarActivity {
 						res = Integer.parseInt(jsonObject.getString("value"));
 						field.set(CaratApplication.getMainActivity()/*this*/, res);
 					} else { 
-						Log.e(TAG, "json object (server response) is null: jsonArray(" + objIdx + ")=null (or ='')");
+						// Log.e(TAG, "json object (server response) is null: jsonArray(" + objIdx + ")=null (or ='')");
 					}
 				}
 			}
