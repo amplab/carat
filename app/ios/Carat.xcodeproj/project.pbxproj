@@ -680,7 +680,6 @@
 		C7547E0519963590007A01CF /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x.png"; path = "../Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		C7547E0C19963CCD007A01CF /* icon152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon152.png; path = ../icon152.png; sourceTree = "<group>"; };
 		C7547E0F19963CFD007A01CF /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		C7547E1919963CFD007A01CF /* Carat.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Carat.xcodeproj; sourceTree = "<group>"; };
 		C7547E1C19963CFD007A01CF /* Carat.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Carat.xcworkspace; sourceTree = "<group>"; };
 		C7547E2119963CFD007A01CF /* ActionItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionItemCell.h; sourceTree = "<group>"; };
 		C7547E2219963CFD007A01CF /* ActionItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionItemCell.m; sourceTree = "<group>"; };
@@ -3130,6 +3129,22 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C7547EAA19963CFD007A01CF /* Globals.h */,
+				C7547EAB19963CFD007A01CF /* Globals.m */,
+				C14F5C34145BDA9900087F74 /* AsyncUdpSocket.h */,
+				C14F5C35145BDA9900087F74 /* AsyncUdpSocket.m */,
+				C14F5C2C145BD4D300087F74 /* AsyncSocket.h */,
+				C14F5C2D145BD4D300087F74 /* AsyncSocket.m */,
+				1D3623240D0F684500981E51 /* CaratAppDelegate.h */,
+				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
+				AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */,
+				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
+				AB41CDFB144E3B990090CC09 /* Reachability.h */,
+				AB41CDFC144E3B990090CC09 /* Reachability.m */,
+				C136F09914662E5600F0A292 /* CommunicationManager.h */,
+				C136F09A14662E5600F0A292 /* CommunicationManager.m */,
+				C7547EB619963CFD007A01CF /* MBProgressHUD.h */,
+				C7547EB719963CFD007A01CF /* MBProgressHUD.m */,
 				C7547F1719963CFD007A01CF /* UIImageDoNotCache.h */,
 				C7547F1819963CFD007A01CF /* UIImageDoNotCache.m */,
 				C7547F1919963CFD007A01CF /* Utilities.h */,
@@ -3152,22 +3167,6 @@
 				AB1E7AB814D0BF420010617A /* UIDeviceHardware */,
 				AB91E431149024C3007786F0 /* Data */,
 				ABD317C91487FD1C000A8DC7 /* UI */,
-				C7547EAA19963CFD007A01CF /* Globals.h */,
-				C7547EAB19963CFD007A01CF /* Globals.m */,
-				C14F5C34145BDA9900087F74 /* AsyncUdpSocket.h */,
-				C14F5C35145BDA9900087F74 /* AsyncUdpSocket.m */,
-				C14F5C2C145BD4D300087F74 /* AsyncSocket.h */,
-				C14F5C2D145BD4D300087F74 /* AsyncSocket.m */,
-				1D3623240D0F684500981E51 /* CaratAppDelegate.h */,
-				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
-				AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */,
-				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
-				AB41CDFB144E3B990090CC09 /* Reachability.h */,
-				AB41CDFC144E3B990090CC09 /* Reachability.m */,
-				C136F09914662E5600F0A292 /* CommunicationManager.h */,
-				C136F09A14662E5600F0A292 /* CommunicationManager.m */,
-				C7547EB619963CFD007A01CF /* MBProgressHUD.h */,
-				C7547EB719963CFD007A01CF /* MBProgressHUD.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -3183,7 +3182,13 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
-				C7547E0E19963CFD007A01CF /* ios */,
+				C754878319963D03007A01CF /* Socialize.embeddedframework */,
+				C7547F4E19963CFD007A01CF /* Pods */,
+				C7547F4D19963CFD007A01CF /* Podfile.lock */,
+				C7547F4C19963CFD007A01CF /* Podfile */,
+				C7547F2E19963CFD007A01CF /* Entitlements.plist */,
+				C7547E1C19963CFD007A01CF /* Carat.xcworkspace */,
+				C7547E0F19963CFD007A01CF /* .gitignore */,
 				5232799E42F24276948A951D /* Pods.xcconfig */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -3524,28 +3529,6 @@
 				C70C03D0194E3F30008C8B01 /* Flurry.h */,
 			);
 			path = Flurry;
-			sourceTree = "<group>";
-		};
-		C7547E0E19963CFD007A01CF /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				C7547E0F19963CFD007A01CF /* .gitignore */,
-				C7547E1919963CFD007A01CF /* Carat.xcodeproj */,
-				C7547E1C19963CFD007A01CF /* Carat.xcworkspace */,
-				C7547F2E19963CFD007A01CF /* Entitlements.plist */,
-				C7547F4C19963CFD007A01CF /* Podfile */,
-				C7547F4D19963CFD007A01CF /* Podfile.lock */,
-				C7547F4E19963CFD007A01CF /* Pods */,
-				C754878319963D03007A01CF /* Socialize.embeddedframework */,
-			);
-			name = ios;
-			sourceTree = "<group>";
-		};
-		C7547E1A19963CFD007A01CF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C7547E5019963CFD007A01CF /* CorePlotHeaders */ = {
@@ -6406,10 +6389,6 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Carat */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = C7547E1A19963CFD007A01CF /* Products */;
-					ProjectRef = C7547E1919963CFD007A01CF /* Carat.xcodeproj */;
-				},
 				{
 					ProductGroup = C754841B19963D00007A01CF /* Products */;
 					ProjectRef = C754841A19963D00007A01CF /* Pods.xcodeproj */;
