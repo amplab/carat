@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 public class SuggestionsFragment extends Fragment implements Serializable{
     private static final long serialVersionUID = -6034269327947014085L;
     final MainActivity mMainActivity = CaratApplication.getMainActivity();
-    private static final String TAG = "CaratSuggestions";
+    // private static final String TAG = "CaratSuggestions";
     private View root;
 
     @Override
@@ -45,29 +44,29 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 				Object o = lv.getItemAtPosition(position);
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				final String raw = fullObject.getAppName();
-				Log.v(TAG, "Showing kill view for " + raw);
+				// Log.v(TAG, "Showing kill view for " + raw);
 				if (raw.equals("OsUpgrade"))
 					mMainActivity.showHTMLFile("upgradeos");
-				else if (raw.equals(getString(R.string.dimscreen)))
-					GoToDisplayScreen();
-				else if (raw.equals(getString(R.string.disablewifi)))
-					GoToWifiScreen();
-				else if (raw.equals(getString(R.string.disablegps)))
-					GoToLocSevScreen();
-				else if (raw.equals(getString(R.string.disablebluetooth)))
-					GoToBluetoothScreen();
-				else if (raw.equals(getString(R.string.disablehapticfeedback)))
-					GoToSoundScreen();
-				else if (raw.equals(getString(R.string.automaticbrightness)))
-					GoToDisplayScreen();
-				else if (raw.equals(getString(R.string.disablenetwork)))
-					GoToMobileNetworkScreen();
-				else if (raw.equals(getString(R.string.disablevibration)))
-					GoToSoundScreen();
-				else if (raw.equals(getString(R.string.shortenscreentimeout)))
-					GoToDisplayScreen();
-				else if (raw.equals(getString(R.string.disableautomaticsync)))
-					GoToSyncScreen();
+				//				else if (raw.equals(getString(R.string.dimscreen)))
+				//					GoToDisplayScreen();
+				//				else if (raw.equals(getString(R.string.disablewifi)))
+				//					GoToWifiScreen();
+				//				else if (raw.equals(getString(R.string.disablegps)))
+				//					GoToLocSevScreen();
+				//				else if (raw.equals(getString(R.string.disablebluetooth)))
+				//					GoToBluetoothScreen();
+				//				else if (raw.equals(getString(R.string.disablehapticfeedback)))
+				//					GoToSoundScreen();
+				//				else if (raw.equals(getString(R.string.automaticbrightness)))
+				//					GoToDisplayScreen();
+				//				else if (raw.equals(getString(R.string.disablenetwork)))
+				//					GoToMobileNetworkScreen();
+				//				else if (raw.equals(getString(R.string.disablevibration)))
+				//					GoToSoundScreen();
+				//				else if (raw.equals(getString(R.string.shortenscreentimeout)))
+				//					GoToDisplayScreen();
+				//				else if (raw.equals(getString(R.string.disableautomaticsync)))
+				//					GoToSyncScreen();
 				else if (raw.equals(getString(R.string.helpcarat))) {
 					mMainActivity.showHTMLFile("collectdata");
 				} else if (raw.equals(getString(R.string.questionnaire))) {
@@ -202,7 +201,7 @@ public class SuggestionsFragment extends Fragment implements Serializable{
             intent = new Intent(intentString);
             startActivity(intent);
         } catch (Throwable th) {
-            Log.e(TAG, "Could not start activity: " + intent, th);
+            // Log.e(TAG, "Could not start activity: " + intent, th);
             if (thing != null) {
                 Toast t = Toast.makeText(getActivity(), getString(R.string.opening) + thing + getString(R.string.notsupported),
                         Toast.LENGTH_SHORT);

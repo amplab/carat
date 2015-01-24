@@ -70,10 +70,7 @@ delete these from your file.
     <string name="myjscoreis">My J-Score is</string>
     <string name="appmanager">App Manager</string>
     
-    <string name="summary_screen_title">Carat Users Statistics</string>
-    <string name="userswithoutany">Users without any anomalies</string>
-    <string name="userswithhogs">Users with hogs</string>
-    <string name="userswithbugs">Users with bugs</string>
+    
 
     <!-- Tabs. Also used ELSEWHERE. 
     (must be deleted (duplicate with the string array, down below), but with extra care) -->    
@@ -198,8 +195,11 @@ delete these from your file.
     
     <string name="summary_unavailable_title">Nothing to show yet</string>
     <string name="summary_unavailable_text">This screen will be updated as soon as the data is received from server.</string>
-
-    <string name="app_recommendation">App Recommendation</string>
+    <string name="summary_your_device_has">Your device has</string>
+    <string name="summary_conjunction">and</string>
+    <string name="summary_screen_title">Carat Statistics</string>
+    <string name="summary_android_apps">Android Apps</string>
+    <string name="summary_chart_center_text">Android\nApps</string>
     
     <!-- Carat settings screen -->
     <!-- switch backport strings -->

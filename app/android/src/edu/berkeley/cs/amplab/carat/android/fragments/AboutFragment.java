@@ -11,12 +11,9 @@ import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 public class AboutFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
 	    View rootView = inflater.inflate(R.layout.about, container, false);
         LocalizedWebView webview = (LocalizedWebView) rootView.findViewById(R.id.aboutView);
-        
         webview.loadUrl("file:///android_asset/about.html");
-        
         getActivity().setTitle(getResources().getString(R.string.tab_about));
         
         return rootView;
@@ -24,7 +21,6 @@ public class AboutFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        // TODO Auto-generated method stub
         super.onSaveInstanceState(outState);
     }
 }

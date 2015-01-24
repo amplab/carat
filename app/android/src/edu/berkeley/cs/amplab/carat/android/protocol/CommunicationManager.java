@@ -252,16 +252,16 @@ public class CommunicationManager {
 			Log.d(TAG, "Failed getting bug report");
 		}
 		
-		success = refreshSettingsReports(uuId, model);
-		
-		if (success) {
-			progress += 20;
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
-			Log.d(TAG, "Successfully got settings report");
-		} else {
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_settings), true);
-			Log.d(TAG, "Failed getting settings report");
-		}
+//		success = refreshSettingsReports(uuId, model);
+//		
+//		if (success) {
+//			progress += 20;
+//			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
+//			Log.d(TAG, "Successfully got settings report");
+//		} else {
+//			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_settings), true);
+//			Log.d(TAG, "Failed getting settings report");
+//		}
 		
 		success = refreshHogReports(uuId, model);
 
@@ -270,7 +270,7 @@ public class CommunicationManager {
 			bl = false;
 
 		if (success) {
-			progress += 20;
+			progress += 40; // changed to 40
 			CaratApplication.setActionProgress(progress,
 					bl ? a.getString(R.string.blacklist) : a.getString(R.string.finishing), false);
 			Log.d(TAG, "Successfully got hog report");
@@ -383,32 +383,32 @@ public class CommunicationManager {
 		return false;
 	}
 
-	private boolean refreshSettingsReports(String uuid, String model) {
-		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
-			return false;
-		CaratService.Client instance = null;
-		try {
-			instance = ProtocolClient.open(a.getApplicationContext());
-			HogBugReport r = instance.getHogOrBugReport(uuid, getFeatures("ReportType", "Settings", "Model", model));
-
-			if (r != null) {
-				CaratApplication.storage.writeSettingsReport(r);
-				Log.d("CommunicationManager.refreshSettingsReports()", 
-						"got the settings list: " + r.getHbList().toString());
-			} else {
-				Log.d("CommunicationManager.refreshSettingsReports()", 
-						"the fetched settings report is null");
-			}
-			// Assume freshness written by caller.
-			// s.writeFreshness();
-			safeClose(instance);
-			return true;
-		} catch (Throwable th) {
-			Log.e(TAG, "Error refreshing settings reports.", th);
-			safeClose(instance);
-		}
-		return false;
-	}
+//	private boolean refreshSettingsReports(String uuid, String model) {
+//		if (System.currentTimeMillis() - CaratApplication.storage.getFreshness() < Constants.FRESHNESS_TIMEOUT)
+//			return false;
+//		CaratService.Client instance = null;
+//		try {
+//			instance = ProtocolClient.open(a.getApplicationContext());
+//			HogBugReport r = instance.getHogOrBugReport(uuid, getFeatures("ReportType", "Settings", "Model", model));
+//
+//			if (r != null) {
+//				CaratApplication.storage.writeSettingsReport(r);
+//				Log.d("CommunicationManager.refreshSettingsReports()", 
+//						"got the settings list: " + r.getHbList().toString());
+//			} else {
+//				Log.d("CommunicationManager.refreshSettingsReports()", 
+//						"the fetched settings report is null");
+//			}
+//			// Assume freshness written by caller.
+//			// s.writeFreshness();
+//			safeClose(instance);
+//			return true;
+//		} catch (Throwable th) {
+//			Log.e(TAG, "Error refreshing settings reports.", th);
+//			safeClose(instance);
+//		}
+//		return false;
+//	}
 	
 	private void refreshBlacklist() {
 		// I/O, let's do it on the background.
