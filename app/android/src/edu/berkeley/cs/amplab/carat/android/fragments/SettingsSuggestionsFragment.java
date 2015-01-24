@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +24,8 @@ import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
 public class SettingsSuggestionsFragment extends Fragment implements Serializable{
     
-	// TODO: serialVersionUID is used for serialization. see onSaveInstanceState(). 
-	// should be the same as what expected at de-serialization time
-    private static final long serialVersionUID = -6034269327947014085L; 
-    private static final String TAG = "SettingsSuggestions";
+    private static final long serialVersionUID = 1L; 
+    // private static final String TAG = "SettingsSuggestions";
     private View rootView;
     private final MainActivity mMainActivity = CaratApplication.getMainActivity();
 
@@ -45,8 +42,7 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 				Object o = lv.getItemAtPosition(position);
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				final String actionName = fullObject.getAppName();
-				
-				Log.v(TAG, "Showing view for " + actionName);
+				// Log.v(TAG, "Showing view for " + actionName);
 				
 				if (actionName.equals("OsUpgrade"))
 					mMainActivity.showHTMLFile("upgradeos");
@@ -157,16 +153,8 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onResume()
-     */
     @Override
     public void onResume() {
-    	// TODO: The following method call (setActionList) and the original method should be removed.
-    	// we no longer manipulate fragments directly.
-        //  CaratApplication.setActionList(this); 
         refresh();
         super.onResume();
     }
@@ -175,30 +163,12 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
         CaratApplication caratAppllication = (CaratApplication) CaratApplication.getMainActivity().getApplication();
         final ListView lv = (ListView) rootView.findViewById(android.R.id.list);
         lv.setAdapter(new SettingsSuggestionAdapter(caratAppllication, CaratApplication.storage.getSettingsReport()));
-        // emptyCheck(lv);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-    	// FIXME: disabled until fixing serialization (appropriate serialVersionUID)
+    	// TODO: disabled until fixing serialization (appropriate serialVersionUID)
         //  outState.putSerializable("savedInstance", this);
         super.onSaveInstanceState(outState);
     }
-
-    /*
-     * Needs to happen in Activity
-     */
-    /*
-    @Override
-    public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
-            SamplingLibrary.resetRunningProcessInfo();
-            refresh();
-            vf.setOutAnimation(MainActivity.outtoRight);
-            vf.setInAnimation(MainActivity.inFromLeft);
-            vf.setDisplayedChild(baseViewIndex);
-            viewIndex = baseViewIndex;
-        } else
-            finish();
-    }*/
 }
