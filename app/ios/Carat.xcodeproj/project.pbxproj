@@ -101,7 +101,6 @@
 		C7547E0919963590007A01CF /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0519963590007A01CF /* Default-Landscape@2x.png */; };
 		C7547E0D19963CCD007A01CF /* icon152.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0C19963CCD007A01CF /* icon152.png */; };
 		C754886619963D03007A01CF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0F19963CFD007A01CF /* .gitignore */; };
-		C754886E19963D03007A01CF /* Carat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C7547E1719963CFD007A01CF /* Carat.xcdatamodeld */; };
 		C754886F19963D03007A01CF /* Carat.xcworkspace in Resources */ = {isa = PBXBuildFile; fileRef = C7547E1C19963CFD007A01CF /* Carat.xcworkspace */; };
 		C754887119963D03007A01CF /* ActionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2219963CFD007A01CF /* ActionItemCell.m */; };
 		C754887219963D03007A01CF /* ActionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2419963CFD007A01CF /* ActionObject.m */; };
@@ -681,7 +680,6 @@
 		C7547E0519963590007A01CF /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x.png"; path = "../Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		C7547E0C19963CCD007A01CF /* icon152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon152.png; path = ../icon152.png; sourceTree = "<group>"; };
 		C7547E0F19963CFD007A01CF /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
-		C7547E1819963CFD007A01CF /* Carat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Carat.xcdatamodel; sourceTree = "<group>"; };
 		C7547E1919963CFD007A01CF /* Carat.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Carat.xcodeproj; sourceTree = "<group>"; };
 		C7547E1C19963CFD007A01CF /* Carat.xcworkspace */ = {isa = PBXFileReference; lastKnownFileType = wrapper.workspace; path = Carat.xcworkspace; sourceTree = "<group>"; };
 		C7547E2119963CFD007A01CF /* ActionItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionItemCell.h; sourceTree = "<group>"; };
@@ -3186,9 +3184,7 @@
 			isa = PBXGroup;
 			children = (
 				C7547E0E19963CFD007A01CF /* ios */,
-				8D1107310486CEB800E47090 /* Carat-Info.plist */,
 				5232799E42F24276948A951D /* Pods.xcconfig */,
-				ABEC9B6714F1D9FF005CE813 /* license.txt */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -3210,6 +3206,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8D1107310486CEB800E47090 /* Carat-Info.plist */,
+				ABEC9B6714F1D9FF005CE813 /* license.txt */,
 				ABA3A10214E4A560009B3D33 /* html */,
 				C18E107014665E230028095B /* Carat.xcdatamodeld */,
 				C754877D19963D02007A01CF /* ProcessItemCell.xib */,
@@ -3532,7 +3530,6 @@
 			isa = PBXGroup;
 			children = (
 				C7547E0F19963CFD007A01CF /* .gitignore */,
-				C7547E1719963CFD007A01CF /* Carat.xcdatamodeld */,
 				C7547E1919963CFD007A01CF /* Carat.xcodeproj */,
 				C7547E1C19963CFD007A01CF /* Carat.xcworkspace */,
 				C7547F2E19963CFD007A01CF /* Entitlements.plist */,
@@ -6994,7 +6991,6 @@
 				C754888A19963D03007A01CF /* DetailViewController.m in Sources */,
 				C754888719963D03007A01CF /* CoreDataSubReport.m in Sources */,
 				C754888D19963D03007A01CF /* HiddenAppsViewController.m in Sources */,
-				C754886E19963D03007A01CF /* Carat.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7228,16 +7224,6 @@
 				C18E107114665E230028095B /* Carat.xcdatamodel */,
 			);
 			currentVersion = C18E107114665E230028095B /* Carat.xcdatamodel */;
-			path = Carat.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		C7547E1719963CFD007A01CF /* Carat.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				C7547E1819963CFD007A01CF /* Carat.xcdatamodel */,
-			);
-			currentVersion = C7547E1819963CFD007A01CF /* Carat.xcdatamodel */;
 			path = Carat.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
