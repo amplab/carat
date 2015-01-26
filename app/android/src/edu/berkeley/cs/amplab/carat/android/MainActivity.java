@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.json.JSONArray;
@@ -28,6 +29,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -757,5 +760,36 @@ public class MainActivity extends ActionBarActivity {
 			}
 			// if an exception occurs, the value of the field would be -1 (Constants.VALUE_NOT_AVAILABLE)
 		}
+	}
+	
+	/**
+	 * Handle physical menu button (e.g. Samsung devices).
+	 */
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+            if (drawerOpen) {
+                mDrawerLayout.closeDrawers();
+            } else {
+            	// FIXME: Gravity.Start is not available in API Level 8, so hack below.
+            	int grav = Gravity.TOP|Gravity.LEFT;
+            	if (isRTL())
+            		grav = Gravity.TOP|Gravity.RIGHT;
+                mDrawerLayout.openDrawer(grav);
+            }
+            return true;
+        } else {
+            return super.onKeyUp(keyCode, event);
+        }
+    }
+	
+	private static boolean isRTL() {
+	    return isRTL(Locale.getDefault());
+	}
+
+	private static boolean isRTL(Locale locale) {
+	    final int directionality = Character.getDirectionality(locale.getDisplayName().charAt(0));
+	    return directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+	           directionality == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC;
 	}
 }
