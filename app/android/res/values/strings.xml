@@ -188,7 +188,7 @@ delete these from your file.
     <string name="dialog_cancel">Cancel</string>
     
     <!-- error messages -->
-    <string name="connection_error">Offline. Click o turn on Wifi.</string>
+    <string name="connection_error">Offline. Click to turn on Wifi.</string>
     
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
