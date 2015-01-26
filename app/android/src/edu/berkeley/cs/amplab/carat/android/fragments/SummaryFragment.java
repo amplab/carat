@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.storage.StorageManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 /**
  * 
@@ -36,8 +38,16 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View inflatedView;
         
-		int hogsCount = CaratApplication.storage.getHogReport().length;
-		int bugsCount = CaratApplication.storage.getBugReport().length;
+		int hogsCount = 0;
+		int bugsCount = 0;
+		if (CaratApplication.storage != null){
+			SimpleHogBug[] h = CaratApplication.storage.getHogReport();
+			SimpleHogBug[] b = CaratApplication.storage.getHogReport();
+			if (h != null)
+				hogsCount = h.length;
+			if (b != null)
+				bugsCount = b.length;
+		}
 		
 		// Log.i(TAG, "isStatsDataAvailable()=" + mMainActivity.isStatsDataAvailable());
 		
