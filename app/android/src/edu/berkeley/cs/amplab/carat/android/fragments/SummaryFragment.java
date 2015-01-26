@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.storage.StorageManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,9 +115,8 @@ public class SummaryFragment extends Fragment {
 	    //    mChart.setDrawXValues(false);
 		
 		mChart.setData(generatePieData());
-		
 		Legend l = mChart.getLegend();
-		l.setPosition(LegendPosition.RIGHT_OF_CHART);
+		l.setPosition(LegendPosition.NONE);
 	}
 
 	protected PieData generatePieData() {
