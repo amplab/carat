@@ -69,6 +69,7 @@ public class AppDetailsFragment extends Fragment {
 
 		if (isApp) {
 			drawView.setParams(fullObject, detailsPage);
+			setBenefitTextView(detailsPage, fullObject.getBenefitText());
 		} else { // isOS or isModel
 			Reports reports = CaratApplication.storage.getReports();
 			if (reports != null) {
@@ -79,7 +80,7 @@ public class AppDetailsFragment extends Fragment {
 					setModelWidgets(detailsPage, drawView, reports, tracker);
 				}
 				// common piece of code for both OS and Model
-				setBenefitWidgets(detailsPage);
+				setBenefitWidget(detailsPage);
 			}
 			Log.d("NullReports", "Reports are null!!!");
 		}
@@ -115,11 +116,17 @@ public class AppDetailsFragment extends Fragment {
 		tracker.trackUser("deviceInfo");
 	}
 
-	private void setBenefitWidgets(View detailsPage) {
+	private void setBenefitWidget(View detailsPage) {
 		String benefitText = SimpleHogBug.getBenefitText(ev, error, evWithout, errorWo);
+		Log.d("AppDetails", benefitText);
 		if (benefitText == null)
 			benefitText = getString(R.string.jsna);
 		((TextView) detailsPage.findViewById(R.id.benefit)).setText(benefitText);
+	}
+	
+	private void setBenefitTextView(View detailsPage, String benefit) {
+		TextView tv1 = (TextView) detailsPage.findViewById(R.id.benefit);
+		tv1.setText(benefit);
 	}
 
 	/*

@@ -3,6 +3,7 @@ package edu.berkeley.cs.amplab.carat.android.ui;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ public class DrawView extends View {
 	private int sampleCountWo = 0;
 	private double error = 0.0;
 	private double errorWo = 0.0;
-	private String textBenefit = null;
+	private String benefit = null;
 	private String appName = null;
 	private Drawable icon;
 
@@ -33,6 +34,10 @@ public class DrawView extends View {
 		return this.appName;
 	}
 
+	public String getBenefit() {
+		return benefit;
+	}
+	
 	public DrawView(Context context) {
 		super(context);
 		this.c = context;
@@ -69,7 +74,7 @@ public class DrawView extends View {
 	public void setHogsBugs(SimpleHogBug bugOrHog, String appName, boolean isBug, View parent) {
 		this.ev = bugOrHog.getExpectedValue();
 		this.evWithout = bugOrHog.getExpectedValueWithout();
-		this.textBenefit = bugOrHog.getBenefitText();
+		this.benefit = bugOrHog.getBenefitText();
 		this.error = bugOrHog.getError();
 		this.errorWo = bugOrHog.getErrorWithout();
 		this.sampleCount = (int) bugOrHog.getSamples();
@@ -108,8 +113,7 @@ public class DrawView extends View {
 		this.appName = label + " " + ver;
 		this.icon = CaratApplication.iconForApp(activity, fullObject.getAppName());
 		this.type = fullObject.getType();
-		
-		this.textBenefit = fullObject.getBenefitText();
+		this.benefit = fullObject.getBenefitText();
 		this.sampleCount = fullObject.getSamples();
 		this.sampleCountWo = fullObject.getSamplesWithout();
 		this.error = fullObject.getError();
