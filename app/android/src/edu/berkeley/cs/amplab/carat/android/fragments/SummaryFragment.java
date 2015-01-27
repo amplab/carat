@@ -101,6 +101,9 @@ public class SummaryFragment extends Fragment {
 		mChart.setHoleRadius(40f); 
 		mChart.setTransparentCircleRadius(50f);
 		
+		// disable click / touch / tap on the chart
+		mChart.setTouchEnabled(false);
+		
 		// enable / disable drawing of x- and y-values
 	    //    mChart.setDrawYValues(false);
 	    //    mChart.setDrawXValues(false);
