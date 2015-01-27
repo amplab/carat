@@ -600,17 +600,25 @@ public class MainActivity extends ActionBarActivity {
 	public void refreshSummaryFragment() {
 		if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
 			// Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
-			FragmentManager manager = getSupportFragmentManager();
 			
-			// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
-			// selects an item from the nav-drawer, we replace pre-init fragments including this one.
-			mSummaryFragment = manager.findFragmentByTag("Summary"); 
+			 String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+			 if (tag == mSummaryFragmentLabel) {
+					FragmentManager manager = getSupportFragmentManager();
+					
+					// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
+					// selects an item from the nav-drawer, we replace pre-init fragments including this one.
+					mSummaryFragment = manager.findFragmentByTag("Summary"); 
+					
+					FragmentTransaction fragTransaction = manager.beginTransaction();
+					// refresh the summary fragment:
+				    fragTransaction.detach(mSummaryFragment);
+				    fragTransaction.attach(mSummaryFragment);
+				    fragTransaction.commit();
+			 } else {
+				 initSummaryFragment();
+			 }
 			
-			FragmentTransaction fragTransaction = manager.beginTransaction();
-			// refresh the summary fragment:
-		    fragTransaction.detach(mSummaryFragment);
-		    fragTransaction.attach(mSummaryFragment);
-		    fragTransaction.commit();
+			
 		} else {
 			// Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
 		}
