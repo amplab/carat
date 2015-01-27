@@ -245,7 +245,7 @@ public class CommunicationManager {
 		
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_settings), false);
+			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
 			Log.d(TAG, "Successfully got bug report");
 		} else {
 			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), true);
