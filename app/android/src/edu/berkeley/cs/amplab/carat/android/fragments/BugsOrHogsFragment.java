@@ -27,7 +27,7 @@ import edu.berkeley.cs.amplab.carat.android.subscreens.AppDetailsFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-public class BugsOrHogsFragment extends Fragment {
+public class BugsOrHogsFragment extends ExtendedTitleFragment {
 
 	public static final String IS_BUGS = "IS_BUGS";
 	protected boolean isBugs = false;
@@ -91,8 +91,8 @@ public class BugsOrHogsFragment extends Fragment {
 			}
 		}
 
-		int resourceID = isBugs ? R.string.tab_bugs : R.string.tab_hogs;
-		getActivity().setTitle(getResources().getString(resourceID));
+		/*int resourceID = isBugs ? R.string.tab_bugs : R.string.tab_hogs;
+		getActivity().setTitle(getResources().getString(resourceID));*/
 		
 		return root;
 	}

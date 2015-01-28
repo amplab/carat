@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
  * @author Javad Sadeqzadeh
  *
  */
-public class SummaryFragment extends Fragment {
+public class SummaryFragment extends ExtendedTitleFragment {
 	// private final String TAG = "SummaryFragment";
 	private MainActivity mMainActivity = CaratApplication.getMainActivity();
 	private PieChart mChart;
@@ -63,35 +64,33 @@ public class SummaryFragment extends Fragment {
     }
 
 	private void setClickableUserStatsText(final View inflatedView, int hogsCount, int bugsCount) {
+		CountClickListener l = new CountClickListener();
+		
 		TextView hogsCountTv = (TextView) inflatedView.findViewById(R.id.summary_hogs_count);
 		hogsCountTv.setText(hogsCount + " hogs");
 		hogsCountTv.setTextColor(Constants.CARAT_COLORS[1]);
-		
-		handleHogsCountClick(hogsCountTv);
+		hogsCountTv.setOnClickListener(l);
 		
 		TextView bugsCountTv = (TextView) inflatedView.findViewById(R.id.summary_bugs_count);
 		bugsCountTv.setText(bugsCount + " bugs");
 		bugsCountTv.setTextColor(Constants.CARAT_COLORS[2]);
-		
-		handleBugsCountClick(bugsCountTv);
-	}
-
-	private void handleHogsCountClick(View root) {
-		root.findViewById(R.id.summary_hogs_count).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.replaceFragment(mMainActivity.getHogsFragment(), getString(R.string.tab_hogs));;
-			}
-		});
+		bugsCountTv.setOnClickListener(l);
 	}
 	
-	private void handleBugsCountClick(View root) {
-		root.findViewById(R.id.summary_bugs_count).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.replaceFragment(mMainActivity.getBugsFragment(), getString(R.string.tab_bugs));;
+	/**
+	 * Concisely handle clicks on the hogs/bugs text items.
+	 * @author Eemil Lagerspetz
+	 *
+	 */
+	private class CountClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			if (v == v.getRootView().findViewById(R.id.summary_hogs_count)){
+				mMainActivity.replaceFragment(mMainActivity.getHogsFragment());
+			}else{
+				mMainActivity.replaceFragment(mMainActivity.getBugsFragment());
 			}
-		});
+		}
 	}
 	
 	private void drawPieChart(final View inflatedView) {

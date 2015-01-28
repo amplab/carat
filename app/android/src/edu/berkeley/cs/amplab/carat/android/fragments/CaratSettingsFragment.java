@@ -65,9 +65,6 @@ public class CaratSettingsFragment extends PreferenceFragment {
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    	
-        getActivity().setTitle(getResources().getString(R.string.tab_carat_settings));
-        
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -123,7 +120,7 @@ public class CaratSettingsFragment extends PreferenceFragment {
 				+ model);
 		intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.os) + ": " + os + "\n"
 				+ getString(R.string.model) + ": " + model + "\nCarat ID: " + uuId + "\nJ-Score: " + jscore + "\n"
-				+ mainActivity.getFulVersion() + "\n");
+				+ mainActivity.getFullVersion() + "\n");
 		
 		preference.setIntent(intent);
 		

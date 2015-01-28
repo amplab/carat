@@ -25,7 +25,7 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.subscreens.KillAppFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-public class SuggestionsFragment extends Fragment implements Serializable{
+public class SuggestionsFragment extends ExtendedTitleFragment implements Serializable{
     private static final long serialVersionUID = -6034269327947014085L;
     final MainActivity mMainActivity = CaratApplication.getMainActivity();
     // private static final String TAG = "CaratSuggestions";
@@ -135,9 +135,9 @@ public class SuggestionsFragment extends Fragment implements Serializable{
 //            }
 //        }
 //        }
-        
+        /*
         getActivity().setTitle(getResources().getString(R.string.tab_actions));
-        
+        */
         return root;
     }
     
