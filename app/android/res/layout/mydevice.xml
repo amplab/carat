@@ -34,7 +34,9 @@ Carat My Device Screen layout
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:orientation="vertical" >
+                    android:orientation="vertical"
+                    android:layout_marginTop="5dip" 
+                    android:layout_marginBottom="5dip" >
 
                     <TextView
                         android:id="@+id/jscore_legend"
@@ -76,7 +78,8 @@ Carat My Device Screen layout
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -94,10 +97,13 @@ Carat My Device Screen layout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:text="@string/zeroh"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/gray" />
+                    android:textColor="@color/gray"
+                     />
+                <!-- android:fontFamily="sans-serif-condensed" -->
+                
 				<ImageView
                     android:id="@+id/battery_life_info"
                     android:layout_width="24dip"
@@ -111,7 +117,8 @@ Carat My Device Screen layout
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="8dip"
+                android:layout_marginBottom="3dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -140,7 +147,8 @@ Carat My Device Screen layout
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="8dip"
+                android:layout_marginBottom="3dip"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -175,7 +183,8 @@ Carat My Device Screen layout
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="8dip"
+                android:layout_marginBottom="6dip" 
                 android:orientation="horizontal" >
 
                 <TextView
@@ -244,7 +253,8 @@ Carat My Device Screen layout
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:orientation="horizontal" 
+                android:layout_marginTop="10dp" >
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -256,7 +266,8 @@ Carat My Device Screen layout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dip"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal" 
+                        android:layout_marginBottom="4dp" >
 
                         <TextView
                             android:id="@+id/memory_used_legend"
@@ -269,6 +280,7 @@ Carat My Device Screen layout
                         <ProgressBar
                             android:id="@+id/memory_used_bar"
                             style="?android:attr/progressBarStyleHorizontal"
+                            android:progressDrawable="@drawable/custom_progressbar" 
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:progress="56" />
@@ -278,7 +290,8 @@ Carat My Device Screen layout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dip"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal" 
+                        android:layout_marginBottom="4dp" >
 
                         <TextView
                             android:id="@+id/memory_active_legend"
@@ -291,6 +304,7 @@ Carat My Device Screen layout
                         <ProgressBar
                             android:id="@+id/memory_active_bar"
                             style="?android:attr/progressBarStyleHorizontal"
+                            android:progressDrawable="@drawable/custom_progressbar" 
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -314,6 +328,7 @@ Carat My Device Screen layout
                         <ProgressBar
                             android:id="@+id/cpu_bar"
                             style="?android:attr/progressBarStyleHorizontal"
+                            android:progressDrawable="@drawable/custom_progressbar" 
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

@@ -97,10 +97,10 @@ public class SummaryFragment extends ExtendedTitleFragment {
 		mChart = (PieChart) inflatedView.findViewById(R.id.chart1);
 		mChart.setDescription("");
 		
-		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Regular.ttf");
+		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
 		
 		mChart.setValueTypeface(tf);
-		mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "OpenSans-Light.ttf"));
+		mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Light.ttf"));
 		mChart.setUsePercentValues(true);
 		mChart.setCenterText(getString(R.string.summary_chart_center_text)); 
 		mChart.setCenterTextSize(22f);
