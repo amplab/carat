@@ -33,6 +33,11 @@ public class SuggestionsFragment extends ExtendedTitleFragment implements Serial
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    	if (CaratApplication.storage.getHogReport().length == 0 && CaratApplication.storage.getBugReport().length == 0) {
+    		root = inflater.inflate(R.layout.emptyactions, container, false);
+    		return root;
+    	}
+    	
         root = inflater.inflate(R.layout.suggestions, container, false);
         
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
@@ -226,24 +231,25 @@ public class SuggestionsFragment extends ExtendedTitleFragment implements Serial
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#onResume()
-     */
     @Override
     public void onResume() {
-    	// TODO: The following method call (setActionList) and the original method should be removed.
     	// we no longer manipulate fragments directly.
-        CaratApplication.setActionList(this); 
+        // CaratApplication.setActionList(this); 
         refresh();
         super.onResume();
     }
 
     public void refresh() {
+    	SimpleHogBug[] hogReport, bugReport;
+    	hogReport = CaratApplication.storage.getHogReport();
+    	bugReport = CaratApplication.storage.getBugReport();
+    	
+    	if (hogReport.length == 0 && bugReport.length == 0) 
+    		return;
+    	
         CaratApplication caratAppllication = (CaratApplication) CaratApplication.getMainActivity().getApplication();
         final ListView lv = (ListView) root.findViewById(android.R.id.list);
-        lv.setAdapter(new HogBugSuggestionsAdapter(caratAppllication, CaratApplication.storage.getHogReport(), CaratApplication.storage.getBugReport()));
+        lv.setAdapter(new HogBugSuggestionsAdapter(caratAppllication, hogReport, bugReport));
     }
 
     @Override
@@ -251,21 +257,4 @@ public class SuggestionsFragment extends ExtendedTitleFragment implements Serial
 //        outState.putSerializable("savedInstance", this);
         super.onSaveInstanceState(outState);
     }
-
-    /*
-     * Needs to happen in Activity
-     */
-    /*
-    @Override
-    public void onBackPressed() {
-        if (vf.getDisplayedChild() != baseViewIndex && vf.getDisplayedChild() != emptyIndex) {
-            SamplingLibrary.resetRunningProcessInfo();
-            refresh();
-            vf.setOutAnimation(MainActivity.outtoRight);
-            vf.setInAnimation(MainActivity.inFromLeft);
-            vf.setDisplayedChild(baseViewIndex);
-            viewIndex = baseViewIndex;
-        } else
-            finish();
-    }*/
 }
