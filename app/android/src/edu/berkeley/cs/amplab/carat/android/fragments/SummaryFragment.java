@@ -86,9 +86,9 @@ public class SummaryFragment extends ExtendedTitleFragment {
 		@Override
 		public void onClick(View v) {
 			if (v == v.getRootView().findViewById(R.id.summary_hogs_count)){
-				mMainActivity.replaceFragment(mMainActivity.getHogsFragment());
+				mMainActivity.replaceFragment(mMainActivity.getHogsFragment(), mMainActivity.getFragmentTag(4));
 			}else{
-				mMainActivity.replaceFragment(mMainActivity.getBugsFragment());
+				mMainActivity.replaceFragment(mMainActivity.getBugsFragment(), mMainActivity.getFragmentTag(3));
 			}
 		}
 	}

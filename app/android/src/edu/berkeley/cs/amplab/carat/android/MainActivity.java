@@ -214,6 +214,15 @@ public class MainActivity extends ActionBarActivity {
 
 		mDrawerList.setItemChecked(position, true);
 	}
+	
+	/**
+	 * 
+	 * @param index 0-based index of the navigation drawer entries (e.g. 3 for bugs fragment)
+	 * @return the tag of the fragment corresponding to the index
+	 */
+	public String getFragmentTag(int index) {
+		return mDrawerItems[index];
+	}
 
 	/**
 	 * Avoid displaying a white screen when the back button is pressed in the summary fragment.
@@ -451,8 +460,7 @@ public class MainActivity extends ActionBarActivity {
 	 * (a placeholder in the main activity's layout file) with the passed-in fragment)
 	 * 
 	 * @param fragment the fragment that should be shown
-	 * 
-	 * @param fragmentNameInBackStack a name for the fragment to be shown in the
+	 * @param tag a name for the fragment to be shown in the
 	 * fragment (task) stack
 	 */
 	public void replaceFragment(Fragment fragment, String tag) {
@@ -517,26 +525,22 @@ public class MainActivity extends ActionBarActivity {
 	public void refreshSummaryFragment() {
 		if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
 			// Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
-			
 			int idx = 0;
-			 String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-			 if (tag == mDrawerItems[idx]) {
-					FragmentManager manager = getSupportFragmentManager();
-					
-					// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
-					// selects an item from the nav-drawer, we replace pre-init fragments including this one.
-					frags[idx] = manager.findFragmentByTag(mDrawerItems[idx]); 
-					
-					FragmentTransaction fragTransaction = manager.beginTransaction();
-					// refresh the summary fragment:
-				    fragTransaction.detach(frags[idx]);
-				    fragTransaction.attach(frags[idx]);
-				    fragTransaction.commit();
+			String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
+			if (tag == mDrawerItems[idx]) {
+				FragmentManager manager = getSupportFragmentManager();
+				// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
+				// selects an item from the nav-drawer, we replace pre-init fragments including this one.
+				frags[idx] = manager.findFragmentByTag(mDrawerItems[idx]); 
+				
+				FragmentTransaction fragTransaction = manager.beginTransaction();
+				// refresh the summary fragment:
+			    fragTransaction.detach(frags[idx]);
+			    fragTransaction.attach(frags[idx]);
+			    fragTransaction.commit();
 			 } else {
 				 frags[idx] = new SummaryFragment();
 			 }
-			
-			
 		} else {
 			// Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
 		}

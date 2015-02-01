@@ -6,8 +6,8 @@ public abstract class ExtendedTitleFragment extends Fragment{
 
 	@Override
 	public void onResume() {
-		super.onResume();
 		getActivity().setTitle(getTag());
+		super.onResume();
 	}	
 	
 }
