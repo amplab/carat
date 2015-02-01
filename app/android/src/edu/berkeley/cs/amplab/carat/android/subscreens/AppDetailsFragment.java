@@ -118,7 +118,6 @@ public class AppDetailsFragment extends Fragment {
 
 	private void setBenefitWidget(View detailsPage) {
 		String benefitText = SimpleHogBug.getBenefitText(ev, error, evWithout, errorWo);
-		Log.d("AppDetails", benefitText);
 		if (benefitText == null)
 			benefitText = getString(R.string.jsna);
 		((TextView) detailsPage.findViewById(R.id.benefit)).setText(benefitText);

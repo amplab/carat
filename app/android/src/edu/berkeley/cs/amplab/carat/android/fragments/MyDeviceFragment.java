@@ -3,6 +3,7 @@ package edu.berkeley.cs.amplab.carat.android.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,9 +46,6 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View rootView = inflater.inflate(R.layout.mydevice, container, false);
         handleClicks(rootView);
-       /* 
-        getActivity().setTitle(getResources().getString(R.string.tab_my_device));
-        */
         return rootView;
     }	
 	    
@@ -56,7 +54,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
         setTextViews();
         setMemoryBars();
         super.onResume();
-    }
+    }	
     
     /**
 	 * Handle user clicks on different views (TextViews, little arrow ImageViews, 
@@ -79,6 +77,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
     	setLastUpdateTimeTextView();
     	setCaratIdTextView();
     	setBatteryLifeTextView();
+    	setCondensedFontForBatteryLife();
 	}
 
     /**
@@ -358,6 +357,12 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
         Toast.makeText(getActivity(), getString(R.string.copied) + " " + caratId, 
         		Toast.LENGTH_LONG).show();
     }
+    
+    private void setCondensedFontForBatteryLife() {
+		Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Condensed.ttf");
+        TextView tv = (TextView) getActivity().findViewById(R.id.battery_life);
+        tv.setTypeface(face);
+	}
     
     @Override
     public void onSaveInstanceState(Bundle outState) {
