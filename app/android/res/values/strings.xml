@@ -70,20 +70,6 @@ delete these from your file.
     <string name="myjscoreis">My J-Score is</string>
     <string name="appmanager">App Manager</string>
     
-    
-
-    <!-- Tabs. Also used ELSEWHERE. 
-    (must be deleted (duplicate with the string array, down below), but with extra care) -->    
-    <string name="tab_actions">Actions</string>
-    <string name="tab_my_device">My Device</string>
-    <string name="tab_bugs">Bugs</string>
-    <string name="tab_hogs">Hogs</string>
-    <string name="tab_settings">System Settings</string>
-    <string name="tab_about">About</string>
-    <string name="tab_summary">Summary</string>
-    <!-- <string name="tab_summary_unavailable">Summary Unavailable</string> -->
-    <string name="tab_carat_settings">Carat Settings</string>
-    
     <!-- Navigation drawer items (tabs) -->
     <string-array name="drawer_items">
         <item>Summary</item>

@@ -22,7 +22,7 @@ import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 
-public class SettingsSuggestionsFragment extends Fragment implements Serializable{
+public class SettingsSuggestionsFragment extends ExtendedTitleFragment implements Serializable{
     
     private static final long serialVersionUID = 1L; 
     // private static final String TAG = "SettingsSuggestions";
@@ -77,9 +77,9 @@ public class SettingsSuggestionsFragment extends Fragment implements Serializabl
 		});
 
         initUpgradeOsView(rootView);
-
+/*
         getActivity().setTitle(getResources().getString(R.string.tab_settings));
-        
+  */      
         return rootView;
     }
     

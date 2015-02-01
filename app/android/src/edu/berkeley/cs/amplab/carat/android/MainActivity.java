@@ -67,8 +67,7 @@ public class MainActivity extends ActionBarActivity {
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 
-	private CharSequence mDrawerTitle,
-						 mTitle;
+	private CharSequence mTitle;
 	private String[] mDrawerItems;
 
 	// Log tag
@@ -83,32 +82,13 @@ public class MainActivity extends ActionBarActivity {
 	private String fullVersion = null;
 	
 	private Tracker tracker = null;
-
-	private Fragment mSummaryFragment;
-	private String mSummaryFragmentLabel;
 	
-	private Fragment mSuggestionFragment;
-	private String mSuggestionFragmentLabel;
-	
-	private Fragment mMyDeviceFragment;
-	private String mMyDeviceFragmentLabel;
-	
-	private Fragment mBugsFragment;	
-	private String mBugsFragmentLabel;
+	/**
+	 * Dynamic way of dealing with a list of fragments that you need to keep references for.
+	 */
+	private Fragment[] frags = new Fragment[CaratApplication.getTitles().length];
 	
 	private Bundle mArgs;
-	
-	private Fragment mHogsFragment;			
-	private String mHogsFragmentLabel;
-	
-	// private Fragment mSettingsSuggestionFragment;
-	// private String mSettingsSuggestionFragmentLabel;
-	
-	private Fragment mCaratSettingsFragment;
-	private String mCaratSettingsFragmentLabel;
-	
-	private Fragment mAboutFragment;
-	private String mAboutFragmentLabel;
 
 	// public boolean updateSummaryFragment;
 	
@@ -156,7 +136,6 @@ public class MainActivity extends ActionBarActivity {
 		 * Before using the field "fullVersion", first invoke setTitleNormal()
 		 * or setFullVersion() to set this field
 		 */
-		mTitle = mDrawerTitle = fullVersion;
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -177,11 +156,11 @@ public class MainActivity extends ActionBarActivity {
 				R.string.drawer_close /* "close drawer" description for accessibility */
 				) {
 					public void onDrawerClosed(View view) {
-						getSupportActionBar().setTitle(mTitle);
+						//getSupportActionBar().setTitle(mTitle);
 					}
 
 					public void onDrawerOpened(View drawerView) {
-						getSupportActionBar().setTitle(mDrawerTitle);
+						getSupportActionBar().setTitle(mTitle);
 					}
 				};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -231,38 +210,9 @@ public class MainActivity extends ActionBarActivity {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-		switch (position) {
-		case 0:
-			replaceFragment(mSummaryFragment, mSummaryFragmentLabel);
-			break;
-		case 1:
-			replaceFragment(mSuggestionFragment, mSuggestionFragmentLabel);
-			break;
-		case 2:
-			replaceFragment(mMyDeviceFragment, mMyDeviceFragmentLabel);
-			break;
-		case 3:
-			replaceFragment(mBugsFragment, mBugsFragmentLabel);
-			break;
-		case 4:
-			replaceFragment(mHogsFragment, mHogsFragmentLabel);
-			break;
-		// Before enabling the following lines, first add an item (in the correct order) to the String-array
-		// in res/values/Strings.xml (and other translation string files)
-		// case 5:
-		//	replaceFragment(mSettingsSuggestionFragment, mSettingsSuggestionFragmentLabel);
-		//	break;
-		case 5:
-			replaceFragment(mCaratSettingsFragment, mCaratSettingsFragmentLabel);
-			break;
-		case 6:
-			replaceFragment(mAboutFragment, mAboutFragmentLabel);
-			break;
-		}
+		replaceFragment(frags[position], mDrawerItems[position]);
 
-		// update selected item and title
 		mDrawerList.setItemChecked(position, true);
-		setTitle(mDrawerItems[position]);
 	}
 
 	/**
@@ -286,8 +236,7 @@ public class MainActivity extends ActionBarActivity {
 	
 	@Override
 	public void setTitle(CharSequence title) {
-		mTitle = title;
-		getSupportActionBar().setTitle(mTitle);
+		getSupportActionBar().setTitle(title);
 	}
 
 	/**
@@ -326,19 +275,19 @@ public class MainActivity extends ActionBarActivity {
 			long s = CaratApplication.storage.getSamplesReported();
 			Log.d("setTitleNormal", "number of samples reported=" + String.valueOf(s));
 			if (s > 0) {
-				setTitle("Carat - " + s + " " + getString(R.string.samplesreported));
+				mTitle = fullVersion + " - "+ s + " " + getString(R.string.samplesreported);
 			} else {
-				setTitle(fullVersion);
+				mTitle = fullVersion;
 			}
-		} else
-			setTitle(fullVersion);
+		}
+		setTitle(mTitle);
 	}
 
 	private void setFullVersion() {
 		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 	}
 	
-	public String getFulVersion()  {
+	public String getFullVersion()  {
 		return fullVersion;
 	}
 
@@ -456,17 +405,30 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	private void preInittializeFragments() {        
 		getStatsFromServer();
-
+		
 		// after fetching the data needed by the summary fragment, initialize it
-		initSummaryFragment();
-		initSuggestionsFragment();
-		initMyDeviceFragment();
-		initBugsOrHogsFragment(true);
-		initBugsOrHogsFragment(false);
+		int idx = 0;
+		frags[idx] = new SummaryFragment();
+		idx++;
+		frags[idx] = new SuggestionsFragment();
+		idx++;
+		frags[idx] = new MyDeviceFragment();
+		idx++;
+		frags[idx] = new BugsOrHogsFragment();
+		mArgs = new Bundle();
+		mArgs.putBoolean("isBugs", true);
+		frags[idx].setArguments(mArgs);
+		idx++;
+		frags[idx] = new BugsOrHogsFragment();
+		mArgs = new Bundle();
+		mArgs.putBoolean("isBugs", false);
+		frags[idx].setArguments(mArgs);
+		idx++;
 		// enable later (after figuring out an approach for calculating the expected benefit number)
 		// initSettingsSuggestionFragment();
-		initCaratSettingsFragment();
-		initAboutFragment();
+		frags[idx] = new CaratSettingsFragment();
+		idx++;
+		frags[idx] = new AboutFragment();
 	}
 
 	/**
@@ -483,50 +445,6 @@ public class MainActivity extends ActionBarActivity {
 		 else
 			 prefetchData.execute();
 	}
-
-	private void initSummaryFragment() {
-		mSummaryFragment = new SummaryFragment();
-		mSummaryFragmentLabel = getString(R.string.tab_summary);
-	}
-	
-	private void initSuggestionsFragment() {
-		mSuggestionFragment = new SuggestionsFragment();
-		mSuggestionFragmentLabel = getString(R.string.tab_actions);
-	}
-	
-	private void initAboutFragment() {
-		mAboutFragment = new AboutFragment();
-		mAboutFragmentLabel = getString(R.string.tab_about);
-	}
-
-	private void initMyDeviceFragment() {
-		mMyDeviceFragment = new MyDeviceFragment();
-		mMyDeviceFragmentLabel = getString(R.string.tab_my_device);
-	}
-	
-	private void initBugsOrHogsFragment(boolean bugsFragment) {
-		mArgs = new Bundle();
-		mArgs.putBoolean("isBugs", bugsFragment);
-		if (bugsFragment) {
-			mBugsFragment = new BugsOrHogsFragment();
-			mBugsFragment.setArguments(mArgs);
-			mBugsFragmentLabel = getString(R.string.tab_bugs);
-		} else {
-			mHogsFragment = new BugsOrHogsFragment();
-			mHogsFragment.setArguments(mArgs);
-			mHogsFragmentLabel = getString(R.string.tab_hogs);
-		}
-	}
-	
-	// private void initSettingsSuggestionFragment() {
-	//  	mSettingsSuggestionFragment = new SettingsSuggestionsFragment();
-	//  	mSettingsSuggestionFragmentLabel = getString(R.string.tab_settings);
-	//}
-	
-	private void initCaratSettingsFragment() {
-		mCaratSettingsFragment = new CaratSettingsFragment();
-		mCaratSettingsFragmentLabel = getString(R.string.tab_carat_settings);
-	}
 	
 	/*
 	 * shows the fragment using a fragment transaction (replaces the FrameLayout
@@ -537,24 +455,20 @@ public class MainActivity extends ActionBarActivity {
 	 * @param fragmentNameInBackStack a name for the fragment to be shown in the
 	 * fragment (task) stack
 	 */
-	public void replaceFragment(Fragment fragment, String fragmentNameInBackStack) {
+	public void replaceFragment(Fragment fragment, String tag) {
 		// replace the fragment, using a fragment transaction
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
 		// use a fragment tag, so that later on we can find the currently displayed fragment
-		final String FRAGMENT_TAG = fragmentNameInBackStack;
-		
-		// String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-		// if (tag == mSummaryFragmentLabel) {		
-		//   update summary fragment's view (after enabling Internet)
-		// if (FRAGMENT_TAG == mSummaryFragmentLabel) {
-		//	  transaction.detach(fragment);
-		//	  transaction.attach(fragment);
-		//}
+		final String FRAGMENT_TAG = tag;
 		
 		transaction.replace(R.id.content_frame, fragment, FRAGMENT_TAG)
-					.addToBackStack(fragmentNameInBackStack)
+					.addToBackStack(FRAGMENT_TAG)
 					.commit();
+	}
+	
+	public void replaceFragment(Fragment fragment) {
+		replaceFragment(fragment, fragment.getTag());
 	}
 
 	/**
@@ -563,7 +477,7 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	public void showHTMLFile(String fileName) {
 		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
-		replaceFragment(fragment, fileName);
+		replaceFragment(fragment);
 	}
 
 	public boolean isStatsDataAvailable() {
@@ -604,21 +518,22 @@ public class MainActivity extends ActionBarActivity {
 		if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
 			// Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
 			
+			int idx = 0;
 			 String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-			 if (tag == mSummaryFragmentLabel) {
+			 if (tag == mDrawerItems[idx]) {
 					FragmentManager manager = getSupportFragmentManager();
 					
 					// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
 					// selects an item from the nav-drawer, we replace pre-init fragments including this one.
-					mSummaryFragment = manager.findFragmentByTag("Summary"); 
+					frags[idx] = manager.findFragmentByTag(mDrawerItems[idx]); 
 					
 					FragmentTransaction fragTransaction = manager.beginTransaction();
 					// refresh the summary fragment:
-				    fragTransaction.detach(mSummaryFragment);
-				    fragTransaction.attach(mSummaryFragment);
+				    fragTransaction.detach(frags[idx]);
+				    fragTransaction.attach(frags[idx]);
 				    fragTransaction.commit();
 			 } else {
-				 initSummaryFragment();
+				 frags[idx] = new SummaryFragment();
 			 }
 			
 			
@@ -629,19 +544,19 @@ public class MainActivity extends ActionBarActivity {
 	}
 	
 	public Fragment getHogsFragment() {
-		return mHogsFragment;
+		return frags[4];
 	}
 
 	public void setHogsFragment(Fragment hogsFragment) {
-		mHogsFragment = hogsFragment;
+		frags[4] = hogsFragment;
 	}
 
 	public Fragment getBugsFragment() {
-		return mBugsFragment;
+		return frags[3];
 	}
 
 	public void setBugsFragment(Fragment bugsFragment) {
-		mBugsFragment = bugsFragment;
+		frags[3] = bugsFragment;
 	}
 	
 	/**

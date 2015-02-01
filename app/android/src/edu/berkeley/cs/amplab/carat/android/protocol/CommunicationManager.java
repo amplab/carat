@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.apache.thrift.transport.TTransport;
 import com.flurry.android.FlurryAgent;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
@@ -230,25 +232,31 @@ public class CommunicationManager {
 		FlurryAgent.logEvent("Getting reports for " + uuId + "," + model + "," + OS);
 
 		int progress = 0;
+		
+		String[] titles = CaratApplication.getTitles();
+		if (titles != null){
+			String[] temp = Arrays.copyOfRange(titles, 2, 5);
+			titles = temp;
+		}
 
-		CaratApplication.setActionProgress(progress, a.getString(R.string.tab_my_device), false);
+		CaratApplication.setActionProgress(progress, titles[0], false);
 		boolean success = refreshMainReports(uuId, OS, model);
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), false);
+			CaratApplication.setActionProgress(progress, titles[1], false);
 			Log.d(TAG, "Successfully got main report");
 		} else {
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_my_device), true);
+			CaratApplication.setActionProgress(progress, titles[0], true);
 			Log.d(TAG, "Failed getting main report");
 		}
 		success = refreshBugReports(uuId, model);
 		
 		if (success) {
 			progress += 20;
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), false);
+			CaratApplication.setActionProgress(progress, titles[2], false);
 			Log.d(TAG, "Successfully got bug report");
 		} else {
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_bugs), true);
+			CaratApplication.setActionProgress(progress, titles[1], true);
 			Log.d(TAG, "Failed getting bug report");
 		}
 		
@@ -275,7 +283,7 @@ public class CommunicationManager {
 					bl ? a.getString(R.string.blacklist) : a.getString(R.string.finishing), false);
 			Log.d(TAG, "Successfully got hog report");
 		} else {
-			CaratApplication.setActionProgress(progress, a.getString(R.string.tab_hogs), true);
+			CaratApplication.setActionProgress(progress, titles[2], true);
 			Log.d(TAG, "Failed getting hog report");
 		}
 		

@@ -1,6 +1,7 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.net.InetAddress;
+import java.util.Arrays;
 
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
@@ -10,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -302,13 +304,22 @@ public class CaratApplication extends Application {
 			});
 		}
 	}
+	
+	/**
+	 * Return titles from the drawer items array.
+	 * @return titles from the drawer items array.
+	 */
+	public static String[] getTitles() {
+		Resources res = getContext().getResources();
+		return res.getStringArray(R.array.drawer_items);
+	}
 
 	public static void setActionInProgress() {
 		if (main != null) {
 			main.runOnUiThread(new Runnable() {
 				public void run() {
 					// Updating done
-					main.setTitleUpdating(main.getString(R.string.tab_my_device));
+					main.setTitleUpdating(getTitles()[2]);
 					main.setProgress(0);
 					main.setProgressBarVisibility(true);
 					main.setProgressBarIndeterminateVisibility(true);

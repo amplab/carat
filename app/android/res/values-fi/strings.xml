@@ -158,7 +158,7 @@
     <string name="summary_conjunction">ja</string>
     <string name="summary_screen_title">Carat-tilastoja</string>
     <string name="summary_android_apps">Android-sovellukset</string>
-    <string name="summary_chart_center_text">Android\nsovellukset</string>
+    <string name="summary_chart_center_text">Android-sovellukset</string>
     
     <!-- Carat settings screen -->
     <!-- switch backport strings -->

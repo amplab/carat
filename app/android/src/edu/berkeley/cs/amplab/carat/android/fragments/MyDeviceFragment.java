@@ -24,7 +24,7 @@ import edu.berkeley.cs.amplab.carat.android.subscreens.ProcessListFragment;
  * @author Eemil Lagerspetz
  * 
  */
-public class MyDeviceFragment extends Fragment {
+public class MyDeviceFragment extends ExtendedTitleFragment {
 
 	private final MainActivity mMainActivity = CaratApplication.getMainActivity();
 	long[] lastPoint = null;  // related to the CPU usage bar
@@ -45,9 +45,9 @@ public class MyDeviceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View rootView = inflater.inflate(R.layout.mydevice, container, false);
         handleClicks(rootView);
-        
+       /* 
         getActivity().setTitle(getResources().getString(R.string.tab_my_device));
-        
+        */
         return rootView;
     }	
 	    
