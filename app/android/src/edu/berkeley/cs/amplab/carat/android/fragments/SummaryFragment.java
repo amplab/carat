@@ -41,7 +41,7 @@ public class SummaryFragment extends Fragment {
 		int bugsCount = 0;
 		if (CaratApplication.storage != null){
 			SimpleHogBug[] h = CaratApplication.storage.getHogReport();
-			SimpleHogBug[] b = CaratApplication.storage.getHogReport();
+			SimpleHogBug[] b = CaratApplication.storage.getBugReport();
 			if (h != null)
 				hogsCount = h.length;
 			if (b != null)
