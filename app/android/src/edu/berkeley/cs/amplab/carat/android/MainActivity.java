@@ -3,6 +3,7 @@ package edu.berkeley.cs.amplab.carat.android;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -96,7 +97,6 @@ public class MainActivity extends ActionBarActivity {
 	public int mWellbehaved = Constants.VALUE_NOT_AVAILABLE,
 			mHogs = Constants.VALUE_NOT_AVAILABLE,
 			mBugs = Constants.VALUE_NOT_AVAILABLE ;
-		
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -137,13 +137,28 @@ public class MainActivity extends ActionBarActivity {
 		 * or setFullVersion() to set this field
 		 */
 		mDrawerItems = getResources().getStringArray(R.array.drawer_items);
+		
+		List<Item> items = new ArrayList<Item>();
+		
+//		items.add(new NavDrawerListHeader("Main"));
+		items.add(new ListItem(mDrawerItems[0]));
+		items.add(new ListItem(mDrawerItems[1]));
+		items.add(new ListItem(mDrawerItems[2]));
+		items.add(new ListItem(mDrawerItems[3]));
+		items.add(new ListItem(mDrawerItems[4]));
+		items.add(new NavDrawerListHeader(""));
+		items.add(new ListItem(mDrawerItems[5]));
+		items.add(new ListItem(mDrawerItems[6]));
+		
+		TextArrayAdapter adapter = new TextArrayAdapter(this, items);
+		
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		// set a custom shadow that overlays the main content when the drawer
-		// opens
+		// set a custom shadow that overlays the main content when the drawer opens
 		mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 		// set up the drawer's list view with items and click listener
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
+		mDrawerList.setAdapter(adapter);
+//		mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mDrawerItems));
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
 		// ActionBarDrawerToggle ties together the the proper interactions
@@ -198,11 +213,15 @@ public class MainActivity extends ActionBarActivity {
 			// How to modify the navigation drawer closing transition time: 
 			// http://stackoverflow.com/questions/19460683/speed-up-navigation-drawer-animation-speed-on-closing
 			
+			// TODO: use a dynamic approach
+			// consider headers when selecting an item
+			final int newPosition = (position <= 4) ? position : position - 1;
+			
 			mDrawerLayout.closeDrawer(mDrawerList);
 	        new Handler().postDelayed(new Runnable() {
 	            @Override
 	            public void run() {
-	            	selectItem(position);
+	            	selectItem(newPosition);
 	            }
 	        }, 300); // wait 300ms before calling selectItem()
 		}
