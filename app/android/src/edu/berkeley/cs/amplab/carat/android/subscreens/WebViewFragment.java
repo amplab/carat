@@ -6,10 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.fragments.ExtendedTitleFragment;
 import edu.berkeley.cs.amplab.carat.android.ui.LocalizedWebView;
 import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
-public class WebViewFragment extends Fragment {
+public class WebViewFragment extends ExtendedTitleFragment {
 
 	private String fileName;
 	private static WebViewFragment instance = null;
@@ -28,7 +29,6 @@ public class WebViewFragment extends Fragment {
 		LocalizedWebView webview = (LocalizedWebView) view.findViewById(R.id.webView);
         webview.loadUrl("file:///android_asset/" + fileName + ".html");
 		tracker.trackUser(fileName);
-		
 		// onCreateView() should return the view resulting from inflating the
 		// layout file
 		return view;

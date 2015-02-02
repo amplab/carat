@@ -167,6 +167,13 @@
     <string name="on">ON</string>
     <string name="summary_off">Wifi + Mobiilidata</string>
     <string name="summary_on">Vain Wifi</string>
+    
+        <!-- New screen titles -->
+    <string name="memoryinfo">Tietoa muistista</string>
+    <string name="batterylifeinfo">Aktiivinen akunkesto</string>
+    <string name="jscoreinfo">Mikä on J-Score?</string>
+    <string name="collectdatainfo">Auta Caratia keräämään dataa</string>
+    <string name="upgradeosinfo">Käyttöjärjestelmän päivittäminen</string>
 </resources>
 
 

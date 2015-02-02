@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.fragments.ExtendedTitleFragment;
 import edu.berkeley.cs.amplab.carat.android.lists.ProcessInfoAdapter;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 import edu.berkeley.cs.amplab.carat.thrift.ProcessInfo;
 
-public class ProcessListFragment extends Fragment {
+public class ProcessListFragment extends ExtendedTitleFragment {
 
 	private static ProcessListFragment instance = null;
 	

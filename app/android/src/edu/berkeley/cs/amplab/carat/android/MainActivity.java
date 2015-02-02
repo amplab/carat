@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManager.BackStackEntry;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -252,9 +253,22 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	@Override
 	public void onBackPressed() {
-		// Restore menu (this should happen in most cases)
-		mDrawerToggle.setDrawerIndicatorEnabled(true);
 		FragmentManager manager = getSupportFragmentManager();
+		
+		// If we will pop a top level screen, show drawer indicator again
+		int stackTop = manager.getBackStackEntryCount()-1;
+		BackStackEntry entry = manager.getBackStackEntryAt(stackTop);
+		String name = entry.getName();
+		String[] titles = CaratApplication.getTitles();
+		boolean found = false;
+		for (String t: titles){
+			if (!found)
+				found = t.equals(name);
+		}
+		if (found){
+			// Restore menu
+			mDrawerToggle.setDrawerIndicatorEnabled(true);
+		}
 		if (manager.getBackStackEntryCount() > 1 ) {
 	        // If there are back-stack entries, replace the fragment (go to the fragment)
 	        manager.popBackStack();
@@ -291,6 +305,13 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Pass the event to ActionBarDrawerToggle, if it returns
 		// true, then it has handled the app icon touch event
+		
+		// In case we are at a sublevel, enable going back by clicking title.
+		if (item.getItemId() == android.R.id.home && !mDrawerToggle.isDrawerIndicatorEnabled()){
+			onBackPressed();
+			return true;
+		}
+		
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
@@ -312,7 +333,7 @@ public class MainActivity extends ActionBarActivity {
 		}
 		setTitle(mTitle);
 	}
-
+	
 	private void setFullVersion() {
 		fullVersion = getString(R.string.app_name) + " " + getString(R.string.version_name);
 	}
@@ -497,17 +518,13 @@ public class MainActivity extends ActionBarActivity {
 		mDrawerToggle.setDrawerIndicatorEnabled(showDrawerIndicator);
 	}
 	
-	public void replaceFragment(Fragment fragment, boolean showDrawerIndicator) {
-		replaceFragment(fragment, fragment.getTag(), showDrawerIndicator);
-	}
-
 	/**
 	 * used by other classes
 	 * @param fileName
 	 */
-	public void showHTMLFile(String fileName, boolean showDrawerIndicator) {
+	public void showHTMLFile(String fileName, String title, boolean showDrawerIndicator) {
 		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
-		replaceFragment(fragment, showDrawerIndicator);
+		replaceFragment(fragment, title, showDrawerIndicator);
 	}
 
 	public boolean isStatsDataAvailable() {

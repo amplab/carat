@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -156,7 +155,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	 * @param root the current fragment's view (inflated using a layout inflater)
 	 */
 	private void handleMemoryInfoClick(View root) {
-		Subscreen lis = new Subscreen("memoryinfo");
+		Subscreen lis = new Subscreen("memoryinfo", getString(R.string.memoryinfo));
 		root.findViewById(R.id.memory_info).setOnClickListener(lis);
         root.findViewById(R.id.memory_used_bar).setOnClickListener(lis);
         root.findViewById(R.id.memory_active_bar).setOnClickListener(lis);
@@ -167,7 +166,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	 * @param root the current fragment's view (inflated using a layout inflater)
 	 */
 	private void handleBatteryLifeClick(View root) {
-		Subscreen lis = new Subscreen("batterylifeinfo");
+		Subscreen lis = new Subscreen("batterylifeinfo", getString(R.string.batterylifeinfo));
 		root.findViewById(R.id.battery_life_legend).setOnClickListener(lis);
         root.findViewById(R.id.battery_life).setOnClickListener(lis);
         root.findViewById(R.id.battery_life_info).setOnClickListener(lis);
@@ -178,7 +177,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	 * @param root the current fragment's view (inflated using a layout inflater)
 	 */
 	private void handleJscoreClick(View root) {
-		Subscreen lis = new Subscreen("jscoreinfo");
+		Subscreen lis = new Subscreen("jscoreinfo", getString(R.string.jscoreinfo));
 		root.findViewById(R.id.jscore_info).setOnClickListener(lis);
         root.findViewById(R.id.jscore).setOnClickListener(lis);
         root.findViewById(R.id.jscore_legend).setOnClickListener(lis);
@@ -186,13 +185,15 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	
 	private class Subscreen implements OnClickListener{
 		private String screenName = null;
+		private String title = null;
 		
-		public Subscreen(String screenName) {
+		public Subscreen(String screenName, String title) {
 			this.screenName = screenName;
+			this.title  = title;
 		}
 		@Override
 		public void onClick(View v) {
-			mMainActivity.showHTMLFile(screenName, false);
+			mMainActivity.showHTMLFile(screenName, title, false);
 		}
 	}
     

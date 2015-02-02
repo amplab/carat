@@ -51,7 +51,7 @@ public class SuggestionsFragment extends ExtendedTitleFragment implements Serial
 				final String raw = fullObject.getAppName();
 				// Log.v(TAG, "Showing kill view for " + raw);
 				if (raw.equals("OsUpgrade"))
-					mMainActivity.showHTMLFile("upgradeos", false);
+					mMainActivity.showHTMLFile("upgradeos", getString(R.string.upgradeosinfo), false);
 				//				else if (raw.equals(getString(R.string.dimscreen)))
 				//					GoToDisplayScreen();
 				//				else if (raw.equals(getString(R.string.disablewifi)))
@@ -73,7 +73,7 @@ public class SuggestionsFragment extends ExtendedTitleFragment implements Serial
 				//				else if (raw.equals(getString(R.string.disableautomaticsync)))
 				//					GoToSyncScreen();
 				else if (raw.equals(getString(R.string.helpcarat))) {
-					mMainActivity.showHTMLFile("collectdata", false);
+					mMainActivity.showHTMLFile("collectdata", getString(R.string.collectdatainfo), false);
 				} else if (raw.equals(getString(R.string.questionnaire))) {
 					openQuestionnaire();
 				} else {
@@ -111,7 +111,7 @@ public class SuggestionsFragment extends ExtendedTitleFragment implements Serial
 				Fragment fragment = new KillAppFragment();
 				fragment.setArguments(args);
 
-				CaratApplication.getMainActivity().replaceFragment(fragment, "killApp", false);
+				CaratApplication.getMainActivity().replaceFragment(fragment, getString(R.string.kill)+" "+raw, false);
 
 				/*
 				 * if (raw.equals("Disable bluetooth")) { double benefitOther =

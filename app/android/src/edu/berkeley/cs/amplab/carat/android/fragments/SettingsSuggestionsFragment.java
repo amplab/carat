@@ -45,7 +45,7 @@ public class SettingsSuggestionsFragment extends ExtendedTitleFragment implement
 				// Log.v(TAG, "Showing view for " + actionName);
 				
 				if (actionName.equals("OsUpgrade"))
-					mMainActivity.showHTMLFile("upgradeos", false);
+					mMainActivity.showHTMLFile("upgradeos", getString(R.string.upgradeosinfo), false);
 				else if (actionName.equals(getString(R.string.dimscreen)))
 					GoToDisplayScreen();
 				else if (actionName.equals(getString(R.string.disablewifi)))
@@ -69,7 +69,7 @@ public class SettingsSuggestionsFragment extends ExtendedTitleFragment implement
 				else if (actionName.equals(getString(R.string.disableautomaticsync)))
 					GoToSyncScreen();
 				else if (actionName.equals(getString(R.string.helpcarat)))
-					mMainActivity.showHTMLFile("collectdata", false);
+					mMainActivity.showHTMLFile("collectdata", getString(R.string.collectdatainfo), false);
 				else if (actionName.equals(getString(R.string.questionnaire)))
 					openQuestionnaire();
 			}

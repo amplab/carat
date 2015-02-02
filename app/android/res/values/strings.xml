@@ -196,6 +196,12 @@ delete these from your file.
     <string name="summary_off">Wifi + Mobile Data</string>
     <string name="summary_on">Wifi Only</string>
 
+    <!-- New screen titles -->
+    <string name="memoryinfo">Memory Information</string>
+    <string name="batterylifeinfo">Active Battery Life</string>
+    <string name="jscoreinfo">What is a J-Score?</string>
+    <string name="collectdatainfo">Help Carat collect data</string>
+    <string name="upgradeosinfo">Upgrading the OS</string>
 </resources>
 
 

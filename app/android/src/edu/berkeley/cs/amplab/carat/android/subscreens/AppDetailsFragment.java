@@ -11,6 +11,7 @@ import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.fragments.ExtendedTitleFragment;
 import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.ui.DrawView;
@@ -18,7 +19,7 @@ import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 import edu.berkeley.cs.amplab.carat.thrift.DetailScreenReport;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
 
-public class AppDetailsFragment extends Fragment {
+public class AppDetailsFragment extends ExtendedTitleFragment {
 
 	private SimpleHogBug fullObject;
 	private boolean isApp = false;
@@ -138,13 +139,13 @@ public class AppDetailsFragment extends Fragment {
 		moreinfo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mMainActivity.showHTMLFile("detailinfo", false);
+				mMainActivity.showHTMLFile("detailinfo", getString(R.string.moreinfo), false);
 			}
 		});
 		benefit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mMainActivity.showHTMLFile("detailinfo", false);
+				mMainActivity.showHTMLFile("detailinfo", getString(R.string.moreinfo), false);
 			}
 		});
 	}
