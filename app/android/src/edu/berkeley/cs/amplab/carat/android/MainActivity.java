@@ -256,6 +256,7 @@ public class MainActivity extends ActionBarActivity {
 		
 		// If we will pop a top level screen, show drawer indicator again
 		int stackTop = manager.getBackStackEntryCount()-1;
+		
 		BackStackEntry entry = manager.getBackStackEntryAt(stackTop);
 		String name = entry.getName();
 		String[] titles = CaratApplication.getTitles();
@@ -268,13 +269,11 @@ public class MainActivity extends ActionBarActivity {
 			// Restore menu
 			mDrawerToggle.setDrawerIndicatorEnabled(true);
 		}
-		if (manager.getBackStackEntryCount() > 1 ) {
+		if (stackTop > 0 ) {
 	        // If there are back-stack entries, replace the fragment (go to the fragment)
 	        manager.popBackStack();
-	    } else {
-	    	// if there is only one entry in the backstack, show the home screen
-	    	moveTaskToBack(true);
-	    }
+	    }else
+	        finish();
 	}
 	
 	@Override
