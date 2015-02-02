@@ -229,7 +229,7 @@ public class MainActivity extends ActionBarActivity {
 
 	private void selectItem(int position) {
 		// update the main content by replacing fragments
-		replaceFragment(frags[position], mDrawerItems[position]);
+		replaceFragment(frags[position], mDrawerItems[position], true);
 
 		mDrawerList.setItemChecked(position, true);
 	}
@@ -252,6 +252,8 @@ public class MainActivity extends ActionBarActivity {
 	 */
 	@Override
 	public void onBackPressed() {
+		// Restore menu (this should happen in most cases)
+		mDrawerToggle.setDrawerIndicatorEnabled(true);
 		FragmentManager manager = getSupportFragmentManager();
 		if (manager.getBackStackEntryCount() > 1 ) {
 	        // If there are back-stack entries, replace the fragment (go to the fragment)
@@ -482,7 +484,7 @@ public class MainActivity extends ActionBarActivity {
 	 * @param tag a name for the fragment to be shown in the
 	 * fragment (task) stack
 	 */
-	public void replaceFragment(Fragment fragment, String tag) {
+	public void replaceFragment(Fragment fragment, String tag, boolean showDrawerIndicator) {
 		// replace the fragment, using a fragment transaction
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -492,19 +494,20 @@ public class MainActivity extends ActionBarActivity {
 		transaction.replace(R.id.content_frame, fragment, FRAGMENT_TAG)
 					.addToBackStack(FRAGMENT_TAG)
 					.commit();
+		mDrawerToggle.setDrawerIndicatorEnabled(showDrawerIndicator);
 	}
 	
-	public void replaceFragment(Fragment fragment) {
-		replaceFragment(fragment, fragment.getTag());
+	public void replaceFragment(Fragment fragment, boolean showDrawerIndicator) {
+		replaceFragment(fragment, fragment.getTag(), showDrawerIndicator);
 	}
 
 	/**
 	 * used by other classes
 	 * @param fileName
 	 */
-	public void showHTMLFile(String fileName) {
+	public void showHTMLFile(String fileName, boolean showDrawerIndicator) {
 		WebViewFragment fragment = WebViewFragment.getInstance(fileName);
-		replaceFragment(fragment);
+		replaceFragment(fragment, showDrawerIndicator);
 	}
 
 	public boolean isStatsDataAvailable() {

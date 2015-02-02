@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -103,7 +104,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
         	@Override
             public void onClick(View v) {
             	ProcessListFragment fragment = ProcessListFragment.getInstance(); 
-            	CaratApplication.getMainActivity().replaceFragment(fragment, "ProcessList");
+            	CaratApplication.getMainActivity().replaceFragment(fragment, "ProcessList", false);
             }            
         });
 	}
@@ -155,24 +156,10 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	 * @param root the current fragment's view (inflated using a layout inflater)
 	 */
 	private void handleMemoryInfoClick(View root) {
-		root.findViewById(R.id.memory_info).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("memoryinfo");
-			}
-		});
-        root.findViewById(R.id.memory_used_bar).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("memoryinfo");
-			}
-		});
-        root.findViewById(R.id.memory_active_bar).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("memoryinfo");
-			}
-		});
+		Subscreen lis = new Subscreen("memoryinfo");
+		root.findViewById(R.id.memory_info).setOnClickListener(lis);
+        root.findViewById(R.id.memory_used_bar).setOnClickListener(lis);
+        root.findViewById(R.id.memory_active_bar).setOnClickListener(lis);
 	}
 
 	/** 
@@ -180,24 +167,10 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	 * @param root the current fragment's view (inflated using a layout inflater)
 	 */
 	private void handleBatteryLifeClick(View root) {
-		root.findViewById(R.id.battery_life_legend).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("batterylifeinfo");
-			}
-		});
-        root.findViewById(R.id.battery_life).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("batterylifeinfo");
-			}
-		});
-        root.findViewById(R.id.battery_life_info).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("batterylifeinfo");
-			}
-		});
+		Subscreen lis = new Subscreen("batterylifeinfo");
+		root.findViewById(R.id.battery_life_legend).setOnClickListener(lis);
+        root.findViewById(R.id.battery_life).setOnClickListener(lis);
+        root.findViewById(R.id.battery_life_info).setOnClickListener(lis);
 	}
 
 	/**
@@ -205,24 +178,22 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
 	 * @param root the current fragment's view (inflated using a layout inflater)
 	 */
 	private void handleJscoreClick(View root) {
-		root.findViewById(R.id.jscore_info).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("jscoreinfo");
-			}
-		});
-        root.findViewById(R.id.jscore).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("jscoreinfo");
-			}
-		});
-        root.findViewById(R.id.jscore_legend).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mMainActivity.showHTMLFile("jscoreinfo");
-			}
-		});
+		Subscreen lis = new Subscreen("jscoreinfo");
+		root.findViewById(R.id.jscore_info).setOnClickListener(lis);
+        root.findViewById(R.id.jscore).setOnClickListener(lis);
+        root.findViewById(R.id.jscore_legend).setOnClickListener(lis);
+	}
+	
+	private class Subscreen implements OnClickListener{
+		private String screenName = null;
+		
+		public Subscreen(String screenName) {
+			this.screenName = screenName;
+		}
+		@Override
+		public void onClick(View v) {
+			mMainActivity.showHTMLFile(screenName, false);
+		}
 	}
     
     private void setJscoreTextView() {
@@ -269,7 +240,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
      */
     public void showOsInfo() {
     	detailsFragment = AppDetailsFragment.getInstance(Constants.Type.OS, null, false); 
-    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "OsDetails");
+    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "OsDetails", false);
     }
 
     /**
@@ -277,7 +248,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
      */
     public void showDeviceInfo() {
     	detailsFragment = AppDetailsFragment.getInstance(Constants.Type.MODEL, null, false); 
-    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "DeviceDetails");
+    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "DeviceDetails", false);
     }
 
     /**

@@ -142,7 +142,7 @@ public class BugsOrHogsFragment extends ExtendedTitleFragment {
 				Object o = lv.getItemAtPosition(position);
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				AppDetailsFragment fragment = AppDetailsFragment.getInstance(Constants.Type.BUG, fullObject, isBugs);
-				CaratApplication.getMainActivity().replaceFragment(fragment, "AppDetailsFragment");
+				CaratApplication.getMainActivity().replaceFragment(fragment, "AppDetailsFragment", false);
 			}
 		});
 	}

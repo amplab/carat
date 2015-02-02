@@ -138,13 +138,13 @@ public class AppDetailsFragment extends Fragment {
 		moreinfo.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mMainActivity.showHTMLFile("detailinfo");
+				mMainActivity.showHTMLFile("detailinfo", false);
 			}
 		});
 		benefit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				mMainActivity.showHTMLFile("detailinfo");
+				mMainActivity.showHTMLFile("detailinfo", false);
 			}
 		});
 	}
