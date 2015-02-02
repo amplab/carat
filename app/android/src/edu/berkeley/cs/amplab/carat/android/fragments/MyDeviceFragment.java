@@ -103,7 +103,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
         	@Override
             public void onClick(View v) {
             	ProcessListFragment fragment = ProcessListFragment.getInstance(); 
-            	CaratApplication.getMainActivity().replaceFragment(fragment, "ProcessList", false);
+            	CaratApplication.getMainActivity().replaceFragment(fragment, getString(R.string.processlist), false);
             }            
         });
 	}
@@ -241,7 +241,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
      */
     public void showOsInfo() {
     	detailsFragment = AppDetailsFragment.getInstance(Constants.Type.OS, null, false); 
-    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "OsDetails", false);
+    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, getString(R.string.osinfo), false);
     }
 
     /**
@@ -249,7 +249,7 @@ public class MyDeviceFragment extends ExtendedTitleFragment {
      */
     public void showDeviceInfo() {
     	detailsFragment = AppDetailsFragment.getInstance(Constants.Type.MODEL, null, false); 
-    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, "DeviceDetails", false);
+    	CaratApplication.getMainActivity().replaceFragment(detailsFragment, getString(R.string.deviceinfo), false);
     }
 
     /**
