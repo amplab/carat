@@ -1,7 +1,6 @@
 package edu.berkeley.cs.amplab.carat.android;
 
 import java.net.InetAddress;
-import java.util.Arrays;
 
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;

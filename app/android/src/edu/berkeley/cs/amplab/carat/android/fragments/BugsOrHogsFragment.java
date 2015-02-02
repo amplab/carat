@@ -62,7 +62,7 @@ public class BugsOrHogsFragment extends ExtendedTitleFragment {
 		} else {
 			root = inflater.inflate(R.layout.hogs, container, false);
 	
-			initEnergyDetails(root);
+			initEnergyDetails(root, container);
 			initDetailView(root);
 	
 			if (savedInstanceState != null) {
@@ -91,15 +91,15 @@ public class BugsOrHogsFragment extends ExtendedTitleFragment {
 		}
 	}
 
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		// TODO Auto-generated method stub
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // TODO Auto-generated method stub
 		super.onSaveInstanceState(outState);
 	}
 
-	private void initEnergyDetails(View root) {
+	private void initEnergyDetails(View root, ViewGroup container) {
 		LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		detailPage = inflater.inflate(R.layout.graph, null);
+		detailPage = inflater.inflate(R.layout.graph, container);
 		w = new DrawView(getActivity());
 
 		OnClickListener detailViewer = new OnClickListener() {
@@ -142,7 +142,7 @@ public class BugsOrHogsFragment extends ExtendedTitleFragment {
 				Object o = lv.getItemAtPosition(position);
 				SimpleHogBug fullObject = (SimpleHogBug) o;
 				AppDetailsFragment fragment = AppDetailsFragment.getInstance(Constants.Type.BUG, fullObject, isBugs);
-				CaratApplication.getMainActivity().replaceFragment(fragment, getString(R.string.appdetailinfo)+ " " + fullObject.getAppName(), false);
+				CaratApplication.getMainActivity().replaceFragment(fragment, fullObject.getAppName(), false);
 			}
 		});
 	}

@@ -17,7 +17,6 @@ import org.apache.thrift.transport.TTransport;
 import com.flurry.android.FlurryAgent;
 
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;

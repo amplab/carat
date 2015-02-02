@@ -202,7 +202,6 @@ delete these from your file.
     <string name="jscoreinfo">What is a J-Score?</string>
     <string name="collectdatainfo">Help Carat collect data</string>
     <string name="upgradeosinfo">Upgrading the OS</string>
-    <string name="appdetailinfo">Statistics of </string>
     <string name="deviceinfo">About this device</string>
     <string name="osinfo">About this OS version</string>
     <string name="processlist">Running processes</string>

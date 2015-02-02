@@ -3,7 +3,6 @@ package edu.berkeley.cs.amplab.carat.android.ui;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,8 +14,6 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 import edu.berkeley.cs.amplab.carat.android.utils.Tracker;
 
 public class DrawView extends View {
-
-	private Context c = null;
 
 	private Constants.Type type = null;
 
@@ -40,7 +37,6 @@ public class DrawView extends View {
 	
 	public DrawView(Context context) {
 		super(context);
-		this.c = context;
 	}
 
 	public Constants.Type getType() {
