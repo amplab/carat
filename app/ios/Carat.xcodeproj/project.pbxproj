@@ -86,7 +86,6 @@
 		C704AE611A03B90200E4F13C /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE561A03B90200E4F13C /* icon72.png */; };
 		C704AE621A03B90200E4F13C /* twologo.png in Resources */ = {isa = PBXBuildFile; fileRef = C704AE571A03B90200E4F13C /* twologo.png */; };
 		C74130C319EDC3E500A1E8CE /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3B89C816C03A26007C8596 /* Social.framework */; };
-		C74130C419EDC3F100A1E8CE /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7548CAB19963D05007A01CF /* libPods.a */; };
 		C74130C519EDC6EA00A1E8CE /* SDImageCache.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B3F14F1CA71005CE813 /* SDImageCache.h */; };
 		C74130C619EDC6EA00A1E8CE /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4014F1CA71005CE813 /* SDImageCache.m */; };
 		C74130C719EDC6EA00A1E8CE /* SDImageCacheDelegate.h in Sources */ = {isa = PBXBuildFile; fileRef = ABEC9B4114F1CA71005CE813 /* SDImageCacheDelegate.h */; };
@@ -170,79 +169,6 @@
 		C7548CC519963ED0007A01CF /* Icon-Small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7548CBF19963ED0007A01CF /* Icon-Small@2x.png */; };
 		C7E31C2F1A66D9410007CC19 /* UIScrollView+SVPullToRefresh.m in Sources */ = {isa = PBXBuildFile; fileRef = C7E31C2E1A66D9410007CC19 /* UIScrollView+SVPullToRefresh.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		661955AA1A73FD6B00865B2E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 83062303F96E4EA1B4E2D618;
-			remoteInfo = "Pods-BlocksKit";
-		};
-		C7548CAA19963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 80E7314970EB48B08BED1B15;
-			remoteInfo = Pods;
-		};
-		C7548CAC19963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1B31D83B79B0427EB1B81180;
-			remoteInfo = "Pods-AFNetworking";
-		};
-		C7548CAE19963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A7127CB75C914FCEA399634B;
-			remoteInfo = "Pods-Facebook-iOS-SDK";
-		};
-		C7548CB019963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 84159BD7FC464455935CA519;
-			remoteInfo = "Pods-Loopy";
-		};
-		C7548CB419963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 22CEA486050A4D348564563A;
-			remoteInfo = "Pods-SZJSONKit";
-		};
-		C7548CB619963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6699700E3A1343DE884D9F27;
-			remoteInfo = "Pods-SZOAuthConsumer";
-		};
-		C7548CB819963D05007A01CF /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 55CFD23CED5641F388DEDF61;
-			remoteInfo = "Pods-Socialize";
-		};
-		C7C2440A19DC086400E16CF7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 342D082E47FD4D21B042CA56;
-			remoteInfo = "Pods-Bolts";
-		};
-		C7C2440C19DC086400E16CF7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 1EBF22806AD94588A825CC80;
-			remoteInfo = "Pods-STTwitter";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -547,7 +473,6 @@
 		C7547F4D19963CFD007A01CF /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		C75483F719963CFF007A01CF /* Manifest.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Manifest.lock; sourceTree = "<group>"; };
 		C754841919963D00007A01CF /* Pods.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = "<group>"; };
-		C754841A19963D00007A01CF /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		C754877D19963D02007A01CF /* ProcessItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessItemCell.xib; sourceTree = "<group>"; };
 		C754877E19963D02007A01CF /* ProcessListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessListView.xib; sourceTree = "<group>"; };
 		C754878019963D03007A01CF /* procmanager2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = procmanager2.png; sourceTree = "<group>"; };
@@ -764,7 +689,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C74130C419EDC3F100A1E8CE /* libPods.a in Frameworks */,
 				C74130C319EDC3E500A1E8CE /* Social.framework in Frameworks */,
 				ABAAA9FB161F7A0400504A9E /* MapKit.framework in Frameworks */,
 				ABD31903148EC41C000A8DC7 /* QuartzCore.framework in Frameworks */,
@@ -1293,26 +1217,8 @@
 			children = (
 				C75483F719963CFF007A01CF /* Manifest.lock */,
 				C754841919963D00007A01CF /* Pods.xcconfig */,
-				C754841A19963D00007A01CF /* Pods.xcodeproj */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		C754841B19963D00007A01CF /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C7548CAB19963D05007A01CF /* libPods.a */,
-				C7548CAD19963D05007A01CF /* libPods-AFNetworking.a */,
-				661955AB1A73FD6B00865B2E /* libPods-BlocksKit.a */,
-				C7C2440B19DC086400E16CF7 /* libPods-Bolts.a */,
-				C7548CAF19963D05007A01CF /* libPods-Facebook-iOS-SDK.a */,
-				C7548CB119963D05007A01CF /* libPods-Loopy.a */,
-				C7C2440D19DC086400E16CF7 /* libPods-STTwitter.a */,
-				C7548CB519963D05007A01CF /* libPods-SZJSONKit.a */,
-				C7548CB719963D05007A01CF /* libPods-SZOAuthConsumer.a */,
-				C7548CB919963D05007A01CF /* libPods-Socialize.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		C754878319963D03007A01CF /* Socialize.embeddedframework */ = {
@@ -1582,91 +1488,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* Carat */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = C754841B19963D00007A01CF /* Products */;
-					ProjectRef = C754841A19963D00007A01CF /* Pods.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				1D6058900D05DD3D006BFB54 /* Carat */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		661955AB1A73FD6B00865B2E /* libPods-BlocksKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-BlocksKit.a";
-			remoteRef = 661955AA1A73FD6B00865B2E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CAB19963D05007A01CF /* libPods.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libPods.a;
-			remoteRef = C7548CAA19963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CAD19963D05007A01CF /* libPods-AFNetworking.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-AFNetworking.a";
-			remoteRef = C7548CAC19963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CAF19963D05007A01CF /* libPods-Facebook-iOS-SDK.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Facebook-iOS-SDK.a";
-			remoteRef = C7548CAE19963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CB119963D05007A01CF /* libPods-Loopy.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Loopy.a";
-			remoteRef = C7548CB019963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CB519963D05007A01CF /* libPods-SZJSONKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-SZJSONKit.a";
-			remoteRef = C7548CB419963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CB719963D05007A01CF /* libPods-SZOAuthConsumer.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-SZOAuthConsumer.a";
-			remoteRef = C7548CB619963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7548CB919963D05007A01CF /* libPods-Socialize.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Socialize.a";
-			remoteRef = C7548CB819963D05007A01CF /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7C2440B19DC086400E16CF7 /* libPods-Bolts.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-Bolts.a";
-			remoteRef = C7C2440A19DC086400E16CF7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		C7C2440D19DC086400E16CF7 /* libPods-STTwitter.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libPods-STTwitter.a";
-			remoteRef = C7C2440C19DC086400E16CF7 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1D60588D0D05DD3D006BFB54 /* Resources */ = {
@@ -1917,7 +1744,8 @@
 				);
 				PRODUCT_NAME = Carat;
 				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/BuildHeaders/";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/** $(PROJECT_DIR)/Pods/BuildHeaders/";
 			};
 			name = Debug;
 		};
@@ -1960,7 +1788,8 @@
 				PRODUCT_NAME = Carat;
 				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
 				SKIP_INSTALL = NO;
-				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/**";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/BuildHeaders/ $(PROJECT_DIR)/Pods/BuildHeaders/";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/** $(PROJECT_DIR)/Pods/BuildHeaders/";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2020,6 +1849,7 @@
 				);
 				PRODUCT_NAME = Carat;
 				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/BuildHeaders/";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
