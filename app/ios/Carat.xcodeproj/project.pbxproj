@@ -100,7 +100,6 @@
 		C74130D419EDC72D00A1E8CE /* ProcessListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AB105EBC14EDCA57000DB145 /* ProcessListViewController.m */; };
 		C7547E0919963590007A01CF /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0519963590007A01CF /* Default-Landscape@2x.png */; };
 		C7547E0D19963CCD007A01CF /* icon152.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0C19963CCD007A01CF /* icon152.png */; };
-		C754886619963D03007A01CF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C7547E0F19963CFD007A01CF /* .gitignore */; };
 		C754887119963D03007A01CF /* ActionItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2219963CFD007A01CF /* ActionItemCell.m */; };
 		C754887219963D03007A01CF /* ActionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2419963CFD007A01CF /* ActionObject.m */; };
 		C754887319963D03007A01CF /* ActionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C7547E2619963CFD007A01CF /* ActionViewController.m */; };
@@ -145,7 +144,6 @@
 		C75488C919963D04007A01CF /* detailinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2A19963CFD007A01CF /* detailinfo.html */; };
 		C75488CA19963D04007A01CF /* DetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2B19963CFD007A01CF /* DetailView.xib */; };
 		C75488CC19963D04007A01CF /* energyratedist.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2D19963CFD007A01CF /* energyratedist.png */; };
-		C75488CD19963D04007A01CF /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C7547F2E19963CFD007A01CF /* Entitlements.plist */; };
 		C75488CF19963D04007A01CF /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3019963CFD007A01CF /* icon114.png */; };
 		C75488D019963D04007A01CF /* icon120.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3119963CFD007A01CF /* icon120.png */; };
 		C75488D119963D04007A01CF /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F3219963CFD007A01CF /* icon144.png */; };
@@ -154,8 +152,6 @@
 		C75488E219963D04007A01CF /* InstructionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4419963CFD007A01CF /* InstructionView.xib */; };
 		C75488E419963D04007A01CF /* jscoreplot.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4619963CFD007A01CF /* jscoreplot.png */; };
 		C75488E619963D04007A01CF /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7547F4819963CFD007A01CF /* libFlurry_5.0.0.a */; };
-		C75488EA19963D04007A01CF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4C19963CFD007A01CF /* Podfile */; };
-		C75488EB19963D04007A01CF /* Podfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4D19963CFD007A01CF /* Podfile.lock */; };
 		C754897419963D04007A01CF /* Manifest.lock in Resources */ = {isa = PBXBuildFile; fileRef = C75483F719963CFF007A01CF /* Manifest.lock */; };
 		C7548BBC19963D04007A01CF /* ProcessItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754877D19963D02007A01CF /* ProcessItemCell.xib */; };
 		C7548BBD19963D04007A01CF /* ProcessListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754877E19963D02007A01CF /* ProcessListView.xib */; };
@@ -302,7 +298,6 @@
 		C70C03D0194E3F30008C8B01 /* Flurry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Flurry.h; sourceTree = "<group>"; };
 		C7547E0519963590007A01CF /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape@2x.png"; path = "../Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		C7547E0C19963CCD007A01CF /* icon152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon152.png; path = ../icon152.png; sourceTree = "<group>"; };
-		C7547E0F19963CFD007A01CF /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C7547E2119963CFD007A01CF /* ActionItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionItemCell.h; sourceTree = "<group>"; };
 		C7547E2219963CFD007A01CF /* ActionItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionItemCell.m; sourceTree = "<group>"; };
 		C7547E2319963CFD007A01CF /* ActionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionObject.h; sourceTree = "<group>"; };
@@ -460,7 +455,6 @@
 		C7547F2A19963CFD007A01CF /* detailinfo.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = detailinfo.html; sourceTree = "<group>"; };
 		C7547F2B19963CFD007A01CF /* DetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailView.xib; sourceTree = "<group>"; };
 		C7547F2D19963CFD007A01CF /* energyratedist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = energyratedist.png; sourceTree = "<group>"; };
-		C7547F2E19963CFD007A01CF /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		C7547F3019963CFD007A01CF /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon114.png; path = ../icon114.png; sourceTree = "<group>"; };
 		C7547F3119963CFD007A01CF /* icon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon120.png; path = ../icon120.png; sourceTree = "<group>"; };
 		C7547F3219963CFD007A01CF /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon144.png; path = ../icon144.png; sourceTree = "<group>"; };
@@ -469,8 +463,6 @@
 		C7547F4419963CFD007A01CF /* InstructionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionView.xib; sourceTree = "<group>"; };
 		C7547F4619963CFD007A01CF /* jscoreplot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jscoreplot.png; sourceTree = "<group>"; };
 		C7547F4819963CFD007A01CF /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry_5.0.0.a; path = ../../libFlurry_5.0.0.a; sourceTree = "<group>"; };
-		C7547F4C19963CFD007A01CF /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		C7547F4D19963CFD007A01CF /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		C75483F719963CFF007A01CF /* Manifest.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Manifest.lock; sourceTree = "<group>"; };
 		C754841919963D00007A01CF /* Pods.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = "<group>"; };
 		C754877D19963D02007A01CF /* ProcessItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessItemCell.xib; sourceTree = "<group>"; };
@@ -770,10 +762,6 @@
 			children = (
 				C754878319963D03007A01CF /* Socialize.embeddedframework */,
 				C7547F4E19963CFD007A01CF /* Pods */,
-				C7547F4D19963CFD007A01CF /* Podfile.lock */,
-				C7547F4C19963CFD007A01CF /* Podfile */,
-				C7547F2E19963CFD007A01CF /* Entitlements.plist */,
-				C7547E0F19963CFD007A01CF /* .gitignore */,
 				5232799E42F24276948A951D /* Pods.xcconfig */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -1503,7 +1491,6 @@
 				C75488CF19963D04007A01CF /* icon114.png in Resources */,
 				C7548BBD19963D04007A01CF /* ProcessListView.xib in Resources */,
 				C7548BBF19963D04007A01CF /* procmanager2.png in Resources */,
-				C75488CD19963D04007A01CF /* Entitlements.plist in Resources */,
 				C704AE621A03B90200E4F13C /* twologo.png in Resources */,
 				2840D7CE1179279E00D7F93C /* ReportView.xib in Resources */,
 				AB41CE1C1450BC060090CC09 /* hog.png in Resources */,
@@ -1552,9 +1539,7 @@
 				C704AE601A03B90200E4F13C /* icon57.png in Resources */,
 				AB99EB0114EA6C130008E440 /* upgradeos.html in Resources */,
 				661955AD1A73FE2F00865B2E /* collectdata.html in Resources */,
-				C754886619963D03007A01CF /* .gitignore in Resources */,
 				AB99EB0414EA6CCD0008E440 /* deviceselect.png in Resources */,
-				C75488EA19963D04007A01CF /* Podfile in Resources */,
 				AB99EB0514EA6CCD0008E440 /* updatecheck.png in Resources */,
 				C7548CC219963ED0007A01CF /* Icon-Small-50.png in Resources */,
 				661955AC1A73FE2900865B2E /* activebatterylife.html in Resources */,
@@ -1564,7 +1549,6 @@
 				C7548CC319963ED0007A01CF /* Icon-Small-50@2x.png in Resources */,
 				C75488C219963D04007A01CF /* Default-Landscape~ipad.png in Resources */,
 				C7548CC419963ED0007A01CF /* Icon-Small.png in Resources */,
-				C75488EB19963D04007A01CF /* Podfile.lock in Resources */,
 				ABE8DA7515247B3E0024C111 /* Default-Portrait@2x~ipad.png in Resources */,
 				661955B21A74044300865B2E /* Carat-Info.plist in Resources */,
 				C704AE611A03B90200E4F13C /* icon72.png in Resources */,
