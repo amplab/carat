@@ -152,7 +152,6 @@
 		C75488E219963D04007A01CF /* InstructionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4419963CFD007A01CF /* InstructionView.xib */; };
 		C75488E419963D04007A01CF /* jscoreplot.png in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4619963CFD007A01CF /* jscoreplot.png */; };
 		C75488E619963D04007A01CF /* libFlurry_5.0.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7547F4819963CFD007A01CF /* libFlurry_5.0.0.a */; };
-		C754897419963D04007A01CF /* Manifest.lock in Resources */ = {isa = PBXBuildFile; fileRef = C75483F719963CFF007A01CF /* Manifest.lock */; };
 		C7548BBC19963D04007A01CF /* ProcessItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754877D19963D02007A01CF /* ProcessItemCell.xib */; };
 		C7548BBD19963D04007A01CF /* ProcessListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754877E19963D02007A01CF /* ProcessListView.xib */; };
 		C7548BBF19963D04007A01CF /* procmanager2.png in Resources */ = {isa = PBXBuildFile; fileRef = C754878019963D03007A01CF /* procmanager2.png */; };
@@ -463,8 +462,7 @@
 		C7547F4419963CFD007A01CF /* InstructionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InstructionView.xib; sourceTree = "<group>"; };
 		C7547F4619963CFD007A01CF /* jscoreplot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jscoreplot.png; sourceTree = "<group>"; };
 		C7547F4819963CFD007A01CF /* libFlurry_5.0.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurry_5.0.0.a; path = ../../libFlurry_5.0.0.a; sourceTree = "<group>"; };
-		C75483F719963CFF007A01CF /* Manifest.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Manifest.lock; sourceTree = "<group>"; };
-		C754841919963D00007A01CF /* Pods.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = "<group>"; };
+		C754841919963D00007A01CF /* Pods.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C754877D19963D02007A01CF /* ProcessItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessItemCell.xib; sourceTree = "<group>"; };
 		C754877E19963D02007A01CF /* ProcessListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProcessListView.xib; sourceTree = "<group>"; };
 		C754878019963D03007A01CF /* procmanager2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = procmanager2.png; sourceTree = "<group>"; };
@@ -760,9 +758,9 @@
 		29B97314FDCFA39411CA2CEA /* Carat */ = {
 			isa = PBXGroup;
 			children = (
-				C754878319963D03007A01CF /* Socialize.embeddedframework */,
-				C7547F4E19963CFD007A01CF /* Pods */,
+				C754841919963D00007A01CF /* Pods.xcconfig */,
 				5232799E42F24276948A951D /* Pods.xcconfig */,
+				C754878319963D03007A01CF /* Socialize.embeddedframework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
@@ -1200,15 +1198,6 @@
 			path = SVPullToRefresh;
 			sourceTree = "<group>";
 		};
-		C7547F4E19963CFD007A01CF /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C75483F719963CFF007A01CF /* Manifest.lock */,
-				C754841919963D00007A01CF /* Pods.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		C754878319963D03007A01CF /* Socialize.embeddedframework */ = {
 			isa = PBXGroup;
 			children = (
@@ -1500,7 +1489,6 @@
 				C7548CC019963ED0007A01CF /* Icon-40.png in Resources */,
 				661955AF1A73FE3D00865B2E /* consent.html in Resources */,
 				C75488E419963D04007A01CF /* jscoreplot.png in Resources */,
-				C754897419963D04007A01CF /* Manifest.lock in Resources */,
 				AB645E021456FE530008244B /* Default.png in Resources */,
 				C704AE5E1A03B90200E4F13C /* bug.png in Resources */,
 				C75488BF19963D04007A01CF /* Default-Landscape.png in Resources */,
