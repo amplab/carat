@@ -159,9 +159,6 @@
 		C75488EA19963D04007A01CF /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4C19963CFD007A01CF /* Podfile */; };
 		C75488EB19963D04007A01CF /* Podfile.lock in Resources */ = {isa = PBXBuildFile; fileRef = C7547F4D19963CFD007A01CF /* Podfile.lock */; };
 		C754897419963D04007A01CF /* Manifest.lock in Resources */ = {isa = PBXBuildFile; fileRef = C75483F719963CFF007A01CF /* Manifest.lock */; };
-		C754897519963D04007A01CF /* Pods-acknowledgements.markdown in Resources */ = {isa = PBXBuildFile; fileRef = C75483F819963CFF007A01CF /* Pods-acknowledgements.markdown */; };
-		C754897619963D04007A01CF /* Pods-acknowledgements.plist in Resources */ = {isa = PBXBuildFile; fileRef = C75483F919963CFF007A01CF /* Pods-acknowledgements.plist */; };
-		C754898119963D04007A01CF /* Pods-resources.sh in Resources */ = {isa = PBXBuildFile; fileRef = C754840819963D00007A01CF /* Pods-resources.sh */; };
 		C754898F19963D04007A01CF /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = C754841E19963D00007A01CF /* LICENSE */; };
 		C754899019963D04007A01CF /* README in Resources */ = {isa = PBXBuildFile; fileRef = C754841F19963D00007A01CF /* README */; };
 		C754899319963D04007A01CF /* _SZCommentsListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C754842619963D00007A01CF /* _SZCommentsListViewController.xib */; };
@@ -843,11 +840,6 @@
 		C7547F4C19963CFD007A01CF /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C7547F4D19963CFD007A01CF /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		C75483F719963CFF007A01CF /* Manifest.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Manifest.lock; sourceTree = "<group>"; };
-		C75483F819963CFF007A01CF /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
-		C75483F919963CFF007A01CF /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
-		C75483FE19963CFF007A01CF /* Pods-dummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		C75483FF19963CFF007A01CF /* Pods-environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
-		C754840819963D00007A01CF /* Pods-resources.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
 		C754841919963D00007A01CF /* Pods.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = "<group>"; };
 		C754841A19963D00007A01CF /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Pods.xcodeproj; sourceTree = "<group>"; };
 		C754841E19963D00007A01CF /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -2436,11 +2428,6 @@
 			isa = PBXGroup;
 			children = (
 				C75483F719963CFF007A01CF /* Manifest.lock */,
-				C75483F819963CFF007A01CF /* Pods-acknowledgements.markdown */,
-				C75483F919963CFF007A01CF /* Pods-acknowledgements.plist */,
-				C75483FE19963CFF007A01CF /* Pods-dummy.m */,
-				C75483FF19963CFF007A01CF /* Pods-environment.h */,
-				C754840819963D00007A01CF /* Pods-resources.sh */,
 				C754841919963D00007A01CF /* Pods.xcconfig */,
 				C754841A19963D00007A01CF /* Pods.xcodeproj */,
 				C754841D19963D00007A01CF /* Socialize */,
@@ -3893,7 +3880,6 @@
 				C7548A4D19963D04007A01CF /* socialize-navbar-button-back-ios7.png in Resources */,
 				C7548A3519963D04007A01CF /* socialize-comment-location-disabled@2x.png in Resources */,
 				C754899C19963D04007A01CF /* action-bar-button-black-hover-ios7@2x.png in Resources */,
-				C754898119963D04007A01CF /* Pods-resources.sh in Resources */,
 				C7547E0D19963CCD007A01CF /* icon152.png in Resources */,
 				C754898F19963D04007A01CF /* LICENSE in Resources */,
 				C75489C019963D04007A01CF /* comment-sm-icon@2x.png in Resources */,
@@ -4062,7 +4048,6 @@
 				C75488EA19963D04007A01CF /* Podfile in Resources */,
 				C7548AA019963D04007A01CF /* SocializeAuthTableViewCell.xib in Resources */,
 				AB99EB0514EA6CCD0008E440 /* updatecheck.png in Resources */,
-				C754897619963D04007A01CF /* Pods-acknowledgements.plist in Resources */,
 				C75489DC19963D04007A01CF /* socialize-activity-cell-icon-like.png in Resources */,
 				C75489C919963D04007A01CF /* FacebookLogoNoBlue76x76.png in Resources */,
 				C7548A5719963D04007A01CF /* socialize-navbar-button-blue-bg-normal.png in Resources */,
@@ -4085,7 +4070,6 @@
 				C7548A6C19963D04007A01CF /* socialize-profileimage-large-bg@2x.png in Resources */,
 				C75489BC19963D04007A01CF /* comment-header-icon-ios7@2x.png in Resources */,
 				C7548A0E19963D04007A01CF /* socialize-cell-bg.png in Resources */,
-				C754897519963D04007A01CF /* Pods-acknowledgements.markdown in Resources */,
 				C75489CC19963D04007A01CF /* socialize-activity-bg.png in Resources */,
 				C7548A0A19963D04007A01CF /* socialize-authorize-user-icon.png in Resources */,
 				C7548A6719963D04007A01CF /* socialize-notifications-bottom-shadow-background.png in Resources */,
