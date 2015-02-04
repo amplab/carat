@@ -10,3 +10,5 @@
 
 extern NSString* const kSamplesSentCountUpdateNotification;
 extern NSString* const kSamplesSent;
+extern NSString* const kMemoryUsed;
+extern NSString* const kMemoryActive;

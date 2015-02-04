@@ -244,13 +244,29 @@
     
     options.willShowEmailComposerBlock = ^(SZEmailShareData *emailData) {
         emailData.subject = @"Battery Diagnosis with Carat";
-        
+		emailData.recepients = [NSArray arrayWithObject:@"Carat Team <carat@cs.helsinki.fi>"];
 //        NSString *appURL = [emailData.propagationInfo objectForKey:@"http://bit.ly/xurpWS"];
 //        NSString *entityURL = [emailData.propagationInfo objectForKey:@"entity_url"];
 //        id<SZEntity> entity = emailData.share.entity;
         NSString *appName = emailData.share.application.name;
-        
-        emailData.messageBody = [NSString stringWithFormat:@"Check out this free app called %@ that tells you what is using up your mobile device's battery, whether that's normal, and what you can do about it: http://bit.ly/xurpWS", appName];
+
+		emailData.messageBody = [NSString stringWithFormat:@"Check out this free app called %@ that tells you what is using up your mobile device's battery, whether that's normal, and what you can do about it: http://bit.ly/xurpWS\n\n\n", appName];
+		NSDictionary *memoryInfo = [Utilities getMemoryInfo];
+
+		NSString* memoryUsed = @"Not available";
+		NSString* memoryActive = @"Not available";
+
+		if (memoryInfo) {
+			float frac_used = [memoryInfo[kMemoryUsed] floatValue];
+			float frac_active = [memoryInfo[kMemoryActive] floatValue];
+			memoryUsed = [NSString stringWithFormat:@"%.02f%%",frac_used*100];
+			memoryActive = [NSString stringWithFormat:@"%.02f%%",frac_active*100];
+		}
+
+		NSString *emailBody = [NSString stringWithFormat:
+							   @"Carat ID: %s\n JScore: %f\n OS Version: %f\n Device Model: %f\n Memory Used: %@\n Memory Active: %@\n Apps: %f\n", [[[Globals instance] getUUID] UTF8String], (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], memoryUsed, memoryActive, [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]];
+
+		emailData.messageBody = [emailData.messageBody stringByAppendingString:emailBody];
     };
     
     options.willShowSMSComposerBlock = ^(SZSMSShareData *smsData) {
@@ -268,7 +284,6 @@
         DLog(@"Share creation cancelled");
     }];
 }
-
 
 #pragma mark - View lifecycle
 

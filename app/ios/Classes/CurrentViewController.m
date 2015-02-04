@@ -28,8 +28,6 @@
 @synthesize lastUpdated = _lastUpdated;
 @synthesize osVersion = _osVersion;
 @synthesize deviceModel = _deviceModel;
-@synthesize memUsed = _memUsed;
-@synthesize memActive = _memActive;
 @synthesize uuid = _uuid;
 
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -250,9 +248,9 @@
     [self setLastUpdated:nil];
     [expectedLife release];
     [self setExpectedLife:nil];
-    [memUsed release];
+    [_memUsed release];
     [self setMemUsed:nil];
-    [memActive release];
+    [_memActive release];
     [self setMemActive:nil];
     [uuid release];
     [self setUuid:nil];
@@ -332,26 +330,16 @@
     // Change since last week
 //    [[self sinceLastWeekString] makeObjectsPerformSelector:@selector(setText:) withObject:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:0] stringByAppendingString:[@" (" stringByAppendingString:[[[[CoreDataManager instance] getChangeSinceLastWeek] objectAtIndex:1] stringByAppendingString:@"%)"]]]];
     
-    DLog(@"uuid: %s, jscore: %f, updated: %f, os: %f, model: %f, apps: %f", [[[Globals instance] getUUID] UTF8String], (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]);
-    
-    //  Memory info.
-    mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
-    vm_statistics_data_t vmstat;
-    if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) == KERN_SUCCESS)
-    {
-        int active = vmstat.active_count;
-        int free = vmstat.free_count;
-        int used = vmstat.wire_count+active+vmstat.inactive_count;
-        float frac_used = ((float)(used) / (float)(used+free));
-        float frac_active = ((float)(active) / (float)(used));
-        DLog(@"Active memory: %f, Used memory: %f", frac_active, frac_used);
-        for (UILabel *memUsedProg in self.memUsed) {
-            memUsedProg.text = [NSString stringWithFormat:@"%.02f%%",frac_used*100];
-        }
-        for (UILabel *memActiveProg in self.memActive) {
-            memActiveProg.text = [NSString stringWithFormat:@"%.02f%%",frac_active*100];
-        }
-    }
+	DLog(@"uuid: %s, jscore: %f, updated: %f, os: %f, model: %f, apps: %f", [[[Globals instance] getUUID] UTF8String], (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), howLong, MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]);
+
+	NSDictionary *memoryInfo = [Utilities getMemoryInfo];
+	if (memoryInfo) {
+		float frac_used = [memoryInfo[kMemoryUsed] floatValue];
+		float frac_active = [memoryInfo[kMemoryActive] floatValue];
+
+		self.memUsed.text = [NSString stringWithFormat:@"%.02f%%",frac_used*100];
+		self.memActive.text = [NSString stringWithFormat:@"%.02f%%",frac_active*100];
+	}
 
     // Device info
     UIDeviceHardware *h =[[UIDeviceHardware alloc] init];
@@ -375,8 +363,8 @@
     [jscore release];
     [lastUpdated release];
     [expectedLife release];
-    [memUsed release];
-    [memActive release];
+    [_memUsed release];
+    [_memActive release];
     [super dealloc];
 }
 

@@ -10,4 +10,6 @@
 
 NSString* const kSamplesSentCountUpdateNotification = @"SampleSentCountUpdateNotification";
 NSString* const kSamplesSent = @"SamplesSent";
+NSString* const kMemoryUsed = @"memoryUsed";
+NSString* const kMemoryActive = @"memoryActive";
 

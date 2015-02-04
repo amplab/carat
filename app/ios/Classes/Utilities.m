@@ -8,6 +8,7 @@
 
 #import "Utilities.h"
 #import "CoreDataManager.h"
+#import "CaratConstants.h"
 
 @implementation Utilities
 
@@ -71,4 +72,27 @@
 
 	return NO;
 }
+
++(NSDictionary*) getMemoryInfo{
+	//  Memory info.
+	mach_msg_type_number_t count = HOST_VM_INFO_COUNT;
+	vm_statistics_data_t vmstat;
+
+	NSMutableDictionary *memoryInfo = [NSMutableDictionary dictionary];
+	if (host_statistics(mach_host_self(), HOST_VM_INFO, (host_info_t)&vmstat, &count) == KERN_SUCCESS)
+	{
+		int active = vmstat.active_count;
+		int free = vmstat.free_count;
+		int used = vmstat.wire_count+active+vmstat.inactive_count;
+		float frac_used = ((float)(used) / (float)(used+free));
+		float frac_active = ((float)(active) / (float)(used));
+		memoryInfo[kMemoryUsed] = [NSNumber numberWithFloat:frac_active];
+		memoryInfo[kMemoryActive] = [NSNumber numberWithFloat:frac_used];
+		DLog(@"Active memory: %f, Used memory: %f", frac_active, frac_used);
+		return memoryInfo;
+	}
+
+	return nil;
+}
+
 @end

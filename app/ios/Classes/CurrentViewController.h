@@ -20,9 +20,6 @@
     NSArray *deviceModel;
     NSArray *uuid;
     
-    NSArray *memUsed;
-    NSArray *memActive;
-    
     MBProgressHUD *HUD;
 }
 
@@ -32,8 +29,8 @@
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *osVersion;
 @property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *deviceModel;
 @property (retain, nonatomic) IBOutletCollection(CopyLabel) NSArray *uuid;
-@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *memUsed;
-@property (retain, nonatomic) IBOutletCollection(UILabel) NSArray *memActive;
+@property (retain, nonatomic) IBOutlet UILabel *memUsed;
+@property (retain, nonatomic) IBOutlet UILabel *memActive;
 @property (retain, nonatomic) IBOutlet UIScrollView* scrollView;
 @property(retain,nonatomic) IBOutlet UIImageView* uhAmpLogo;
 

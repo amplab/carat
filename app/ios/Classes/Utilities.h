@@ -21,4 +21,6 @@
 + (BOOL) canUpgradeOS;
 + (CGSize) orientationIndependentScreenSize;
 +(BOOL) isOlderHeightDevice;
++(NSDictionary*) getMemoryInfo;
+
 @end
