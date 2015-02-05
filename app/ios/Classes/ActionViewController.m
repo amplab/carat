@@ -18,6 +18,7 @@
 #import "SVPullToRefresh.h"
 #import <Socialize/Socialize.h>
 #import "CaratConstants.h"
+#import "UIDeviceHardware.h"
 
 @implementation ActionViewController
 
@@ -126,13 +127,19 @@
     // Set up the cell...
     ActionObject *act = [self.actionList objectAtIndex:indexPath.row];
     cell.actionString.text = act.actionText;
-    if (act.actionBenefit == -2) { // already filtered out benefits < 60 seconds
+	if (act.actionBenefit == -1) {
+		cell.actionValue.text = @"better Carat results!";
+		cell.actionType = ActionTypeCollectData;
+	}
+	else if (act.actionBenefit == -2) { // already filtered out benefits < 60 seconds
         cell.actionValue.text = @"+100 karma!";
         cell.actionType = ActionTypeSpreadTheWord;
-    } else if (act.actionBenefit == -1) {
-        cell.actionValue.text = @"better Carat results!";
-        cell.actionType = ActionTypeCollectData;
-    } else {
+    }
+	else if (act.actionBenefit == -3) {
+		cell.actionValue.text = @"";
+		cell.actionType = ActionTypeReportFeedback;
+	}
+	 else {
         cell.actionValue.text = [NSString stringWithFormat:@"%@ ± %@", [Utilities doubleAsTimeNSString:act.actionBenefit], [Utilities doubleAsTimeNSString:act.actionError]];
         cell.actionType = act.actionType;
     }
@@ -157,7 +164,11 @@
     
     if (selectedCell.actionType == ActionTypeSpreadTheWord) {
         [self shareHandler];
-    } else {
+    }
+	else if(selectedCell.actionType == ActionTypeReportFeedback){
+		[self reportFeedback];
+	}
+	else {
         InstructionViewController *ivController = [[InstructionViewController alloc] initWithNibName:@"InstructionView" actionType:selectedCell.actionType];
         [self.navigationController pushViewController:ivController animated:YES];
         [ivController release];
@@ -220,6 +231,50 @@
     [Flurry logEvent:@"selectedSpreadTheWord"];
 }
 
+-(void) reportFeedback{
+	id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
+
+	SZShareOptions *options = [SZShareUtils userShareOptions];
+	options.willShowEmailComposerBlock = ^(SZEmailShareData *emailData) {
+		emailData.subject = @"Battery Diagnosis with Carat";
+		emailData.recepients = [NSArray arrayWithObject:@"Carat Team <carat@cs.helsinki.fi>"];
+		//        NSString *appURL = [emailData.propagationInfo objectForKey:@"http://bit.ly/xurpWS"];
+		//        NSString *entityURL = [emailData.propagationInfo objectForKey:@"entity_url"];
+		//        id<SZEntity> entity = emailData.share.entity;
+		NSDictionary *memoryInfo = [Utilities getMemoryInfo];
+
+		NSString* memoryUsed = @"Not available";
+		NSString* memoryActive = @"Not available";
+
+		if (memoryInfo) {
+			float frac_used = [memoryInfo[kMemoryUsed] floatValue];
+			float frac_active = [memoryInfo[kMemoryActive] floatValue];
+			memoryUsed = [NSString stringWithFormat:@"%.02f%%",frac_used*100];
+			memoryActive = [NSString stringWithFormat:@"%.02f%%",frac_active*100];
+		}
+		float Jscore = (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100);
+		Jscore = ceil(14.5);
+		NSString *JscoreStr = @"N/A";
+		if(Jscore > 0)
+			JscoreStr = [NSString stringWithFormat:@"%.0f", Jscore];
+
+		// Device info
+		UIDeviceHardware *h =[[[UIDeviceHardware alloc] init] autorelease];
+
+		NSString *messageBody = [NSString stringWithFormat:
+								 @"Carat ID: %s\n JScore: %@\n OS Version: %@\n Device Model: %@\n Memory Used: %@\n Memory Active: %@", [[[Globals instance] getUUID] UTF8String], JscoreStr, [UIDevice currentDevice].systemVersion,[h platformString], memoryUsed, memoryActive];
+
+		emailData.messageBody = messageBody;
+	};
+
+	[SZShareUtils shareViaEmailWithViewController:self options:options entity:entity success:^(id<SocializeShare> share) {
+		DLog(@"success reporting feedback");
+	} failure:^(NSError *error) {
+		DLog(@"failed reporting feedback");
+	}];
+	[Flurry logEvent:@"reportFeedback"];
+}
+
 - (void)showShareDialog {
     id<SZEntity> entity = [SZEntity entityWithKey:@"http://carat.cs.berkeley.edu" name:@"Carat"];
     
@@ -244,30 +299,14 @@
     
     options.willShowEmailComposerBlock = ^(SZEmailShareData *emailData) {
         emailData.subject = @"Battery Diagnosis with Carat";
-		emailData.recepients = [NSArray arrayWithObject:@"Carat Team <carat@cs.helsinki.fi>"];
+
 //        NSString *appURL = [emailData.propagationInfo objectForKey:@"http://bit.ly/xurpWS"];
 //        NSString *entityURL = [emailData.propagationInfo objectForKey:@"entity_url"];
 //        id<SZEntity> entity = emailData.share.entity;
         NSString *appName = emailData.share.application.name;
 
 		emailData.messageBody = [NSString stringWithFormat:@"Check out this free app called %@ that tells you what is using up your mobile device's battery, whether that's normal, and what you can do about it: http://bit.ly/xurpWS\n\n\n", appName];
-		NSDictionary *memoryInfo = [Utilities getMemoryInfo];
-
-		NSString* memoryUsed = @"Not available";
-		NSString* memoryActive = @"Not available";
-
-		if (memoryInfo) {
-			float frac_used = [memoryInfo[kMemoryUsed] floatValue];
-			float frac_active = [memoryInfo[kMemoryActive] floatValue];
-			memoryUsed = [NSString stringWithFormat:@"%.02f%%",frac_used*100];
-			memoryActive = [NSString stringWithFormat:@"%.02f%%",frac_active*100];
-		}
-
-		NSString *emailBody = [NSString stringWithFormat:
-							   @"Carat ID: %s\n JScore: %f\n OS Version: %f\n Device Model: %f\n Memory Used: %@\n Memory Active: %@\n Apps: %f\n", [[[Globals instance] getUUID] UTF8String], (MIN( MAX([[CoreDataManager instance] getJScore], -1.0), 1.0)*100), MIN(MAX([[[CoreDataManager instance] getOSInfo:YES] score],0.0),1.0), [[[CoreDataManager instance] getModelInfo:YES] score], memoryUsed, memoryActive, [[[CoreDataManager instance] getSimilarAppsInfo:YES] score]];
-
-		emailData.messageBody = [emailData.messageBody stringByAppendingString:emailBody];
-    };
+	};
     
     options.willShowSMSComposerBlock = ^(SZSMSShareData *smsData) {
 //        NSString *appURL = [smsData.propagationInfo objectForKey:@"application_url"];
@@ -495,7 +534,16 @@
     [tmpAction setActionError:-2];
     [myList addObject:tmpAction];
     [tmpAction release];
-    
+
+	// Feedback Action
+	tmpAction = [[ActionObject alloc] init];
+	[tmpAction setActionText:@"Report Feedback"];
+	[tmpAction setActionType:ActionTypeReportFeedback];
+	[tmpAction setActionBenefit:-3];
+	[tmpAction setActionError:-3];
+	[myList addObject:tmpAction];
+	[tmpAction release];
+
     //the "key" is the *name* of the @property as a string.  So you can also sort by @"label" if you'd like
     [myList sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"actionBenefit" ascending:NO]]];
     

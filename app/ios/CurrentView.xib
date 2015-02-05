@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CurrentViewController">
             <connections>
+                <outlet property="memActive" destination="zRN-h1-RAR" id="Olr-Cf-EWx"/>
+                <outlet property="memUsed" destination="jeB-bN-nlj" id="ZM2-mV-rwY"/>
                 <outlet property="scrollView" destination="4IC-FY-at2" id="otB-Qs-ODm"/>
                 <outlet property="uhAmpLogo" destination="ThF-dz-vet" id="9Nq-OU-nG4"/>
                 <outlet property="view" destination="4kc-H7-Y8z" id="Lfx-c0-Njd"/>
@@ -41,7 +43,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1.0" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" id="113">
-                                    <rect key="frame" x="162" y="195" width="108.99999751458874" height="35"/>
+                                    <rect key="frame" x="161.99999798153144" y="195" width="109" height="35"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <color key="textColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -193,7 +195,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jeB-bN-nlj">
-                                    <rect key="frame" x="172.9999975145887" y="275" width="98" height="35"/>
+                                    <rect key="frame" x="172.99999798153141" y="275" width="98" height="35"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <color key="textColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -221,7 +223,7 @@
                                     </connections>
                                 </button>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="0" textAlignment="right" lineBreakMode="tailTruncation" minimumFontSize="10" id="14" userLabel="jscore-portrait">
-                                    <rect key="frame" x="199" y="0.0" width="64.999999995088757" height="51"/>
+                                    <rect key="frame" x="199" y="0.0" width="65" height="51"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
                                     <color key="textColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

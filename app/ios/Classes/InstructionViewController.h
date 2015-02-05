@@ -18,7 +18,8 @@ typedef enum {
     ActionTypeActiveBatteryLifeInfo,
     ActionTypeJScoreInfo,
     ActionTypeMemoryInfo,
-    ActionTypeDetailInfo
+    ActionTypeDetailInfo,
+	ActionTypeReportFeedback
     } ActionType;
 
 @interface InstructionViewController : UIViewController <UIWebViewDelegate> {
