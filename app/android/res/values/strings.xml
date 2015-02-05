@@ -188,6 +188,8 @@ delete these from your file.
     <string name="summary_screen_title">Carat Statistics</string>
     <string name="summary_android_apps">Android Apps</string>
     <string name="summary_chart_center_text">Android\nApps</string>
+    <string name="hogs">Hogs</string>
+    <string name="bugs">Bugs</string>
     
     <!-- Carat settings screen -->
     <!-- switch backport strings -->

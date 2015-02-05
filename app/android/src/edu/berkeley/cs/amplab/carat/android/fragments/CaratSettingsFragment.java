@@ -65,7 +65,9 @@ public class CaratSettingsFragment extends PreferenceFragment {
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View cr = super.onCreateView(inflater, container, savedInstanceState);
+        cr.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+        return cr;
     }
 
 	/**

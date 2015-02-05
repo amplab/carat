@@ -66,12 +66,12 @@ public class SummaryFragment extends ExtendedTitleFragment {
 		CountClickListener l = new CountClickListener();
 		
 		TextView hogsCountTv = (TextView) inflatedView.findViewById(R.id.summary_hogs_count);
-		hogsCountTv.setText(hogsCount + " hogs");
+		hogsCountTv.setText(hogsCount + " "+getString(R.string.hogs));
 		hogsCountTv.setTextColor(Constants.CARAT_COLORS[1]);
 		hogsCountTv.setOnClickListener(l);
 		
 		TextView bugsCountTv = (TextView) inflatedView.findViewById(R.id.summary_bugs_count);
-		bugsCountTv.setText(bugsCount + " bugs");
+		bugsCountTv.setText(bugsCount +" "+getString(R.string.bugs));
 		bugsCountTv.setTextColor(Constants.CARAT_COLORS[2]);
 		bugsCountTv.setOnClickListener(l);
 	}
