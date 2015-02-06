@@ -128,6 +128,13 @@ public class CaratSettingsFragment extends PreferenceFragment {
 		
 		tracker.trackFeedback(os, model);
 	}
+
+	@Override
+	public void onResume() {
+		getActivity().setTitle(getTag());
+		super.onResume();
+	}
+	
 	
 	/**
 	 * If you would like to do something FURTHER than changing "wifiOnly" preference value, do it in this listener.
