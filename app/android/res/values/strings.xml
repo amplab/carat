@@ -190,6 +190,9 @@ delete these from your file.
     <string name="summary_chart_center_text">Android\nApps</string>
     <string name="hogs">Hogs</string>
     <string name="bugs">Bugs</string>
+    <string name="morestatsat">More at carat.cs.helsinki.fi/statistics</string>
+    <!-- Does not need translation -->
+    <string name="statsurl">http://carat.cs.helsinki.fi/statistics/</string>
     
     <!-- Carat settings screen -->
     <!-- switch backport strings -->

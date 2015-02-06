@@ -6,83 +6,89 @@
     android:background="@android:color/background_light"
     android:orientation="vertical" >
 
-    
     <TextView
         android:id="@+id/summary_screen_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="20dp"
+        android:layout_weight="1"
         android:gravity="center"
         android:text="@string/summary_screen_title"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/gray" />
-    
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" 
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-	    android:layout_marginBottom="10dp"
-	    android:gravity="start" >
+        android:layout_weight="1"
+        android:gravity="start"
+        android:orientation="horizontal" >
 
         <TextView
-	        android:text="@string/summary_your_device_has"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_marginStart="10dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/gray" />
-        
-	    <TextView
-	        android:id="@+id/summary_hogs_count"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_marginStart="5dp"
-	        android:layout_marginEnd="5dp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/gray" />
-	    
-	    <TextView
-	        android:text="@string/summary_conjunction"
-	        android:layout_marginEnd="5dp"
-	        android:layout_marginRight="5dp"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/gray" />
-	    
-	    <TextView
-	        android:id="@+id/summary_bugs_count"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/gray" />
-    
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:text="@string/summary_your_device_has"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:id="@+id/summary_hogs_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/summary_conjunction"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray" />
+
+        <TextView
+            android:id="@+id/summary_bugs_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" 
-        android:layout_marginTop="10dp"
-	    android:layout_marginBottom="10dp"
-	    android:gravity="start" >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:gravity="start"
+        android:text="@string/summary_others_have"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/gray" />
 
-        <TextView
-	        android:text="@string/summary_others_have"
-	        android:textAppearance="?android:attr/textAppearanceMedium"
-	        android:layout_marginStart="10dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/gray" />
-    
-        </LinearLayout>
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="10" />
+
+    <TextView
+        android:id="@+id/morestats"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:text="@string/morestatsat"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/blue" />
 
 </LinearLayout>

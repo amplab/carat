@@ -2,7 +2,9 @@ package edu.berkeley.cs.amplab.carat.android.fragments;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +76,17 @@ public class SummaryFragment extends ExtendedTitleFragment {
 		bugsCountTv.setText(bugsCount +" "+getString(R.string.bugs));
 		bugsCountTv.setTextColor(Constants.CARAT_COLORS[2]);
 		bugsCountTv.setOnClickListener(l);
+		
+		/* Open Carat Statistics website on click: */
+		TextView morestats = (TextView) inflatedView.findViewById(R.id.morestats);
+		morestats.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.statsurl)));
+                startActivity(browserIntent);
+            }
+        });
 	}
 	
 	/**

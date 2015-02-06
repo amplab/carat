@@ -162,6 +162,7 @@
     <string name="summary_chart_center_text">Android-\nsovellukset</string>
     <string name="hogs">Hogia</string>
     <string name="bugs">Bugia</string>
+    <string name="morestatsat">Lisää: carat.cs.helsinki.fi/statistics</string>
     
     <!-- Carat settings screen -->
     <!-- switch backport strings -->
