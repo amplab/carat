@@ -3,7 +3,7 @@ package edu.berkeley.cs.amplab.carat.android.storage;
 import java.io.Serializable;
 
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 
 /**
  * Simple container class for Hog/Bug data to save memory.
@@ -16,27 +16,27 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
      */
     private static final long serialVersionUID = 8272459694607111058L;
     
-    private Type type = null;
+    private Constants.Type type = null;
     
-    public Type getType(){
+    public Constants.Type getType(){
         return type;
     }
     
-    public boolean isBug(){ return type == Type.BUG; }
+    public boolean isBug(){ return type == Constants.Type.BUG; }
     
-    public SimpleHogBug(String appName, Type type){
+    public SimpleHogBug(String appName, Constants.Type type){
         this.type = type;
-        if (type == Type.OS)
-            appPriority = CaratApplication.importanceString(CaratApplication.IMPORTANCE_SUGGESTION);
+        if (type == Constants.Type.OS)
+            appPriority = CaratApplication.importanceString(Constants.IMPORTANCE_SUGGESTION);
         this.appName = appName;
     }
     
-    public SimpleHogBug(String appName, Type type, String priority){
+    public SimpleHogBug(String appName, Constants.Type type, String priority){
         this.type = type;
-        if (type == Type.OTHER)
+        if (type == Constants.Type.OTHER)
             appPriority = priority;
-        else if (type == Type.OS)
-            appPriority = CaratApplication.importanceString(CaratApplication.IMPORTANCE_SUGGESTION);
+        else if (type == Constants.Type.OS)
+            appPriority = CaratApplication.importanceString(Constants.IMPORTANCE_SUGGESTION);
         this.appName = appName;
     }
     
@@ -134,15 +134,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     public double getErrorWithout(){ return errorWithout; }
     public void setErrorWithout(double error){this.errorWithout = error;}
     
-    
-    public String textBenefit() {
-        double ev = getExpectedValue();
-        double evWo = getExpectedValueWithout();
-        double error = getError();
-        double errorWo = getErrorWithout();
-        return textBenefit(ev, error, evWo, errorWo);
-    }
-
     public int getSamples() {
         return samples;
     }
@@ -158,8 +149,17 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
     public void setSamplesWithout(double samplesWithout) {
         this.samplesWithout = (int) samplesWithout;
     }
+
+    // overloaded method. note that one of them is static
+    public String getBenefitText() {
+        double ev = getExpectedValue();
+        double evWo = getExpectedValueWithout();
+        double error = getError();
+        double errorWo = getErrorWithout();
+        return getBenefitText(ev, error, evWo, errorWo);
+    }
     
-    public static String textBenefit(double ev, double error, double evWo, double errorWo){
+    public static String getBenefitText(double ev, double error, double evWo, double errorWo){
         // Max battery life: What if the we swing entirely to the left end of the 95% error bar?
         double blMax = 100.0/(ev - error);
         double blMaxWo = 100.0/(evWo - errorWo);
@@ -186,8 +186,6 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
         // correct seconds value will be in benefit
         benefit -= min * 60;
         min -= hours * 60;
-
-        
         
         int errorMins = (int) (maxError / 60);
         
@@ -209,7 +207,7 @@ public class SimpleHogBug implements Serializable, Comparable<SimpleHogBug>{
         }
     }
     
-    public static String textError(double ev, double error, double evWo, double errorWo){
+    public static String getErrorText(double ev, double error, double evWo, double errorWo){
         // Max battery life: What if the we swing entirely to the left end of the 95% error bar?
         double blMax = 100.0/(ev - error);
         double blMaxWo = 100.0/(evWo - errorWo);

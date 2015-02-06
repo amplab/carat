@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.berkeley.cs.amplab.carat.android"
-    android:versionCode="66"
+    android:versionCode="70"
     android:versionName="@string/version_name"
     >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="10" />
+        android:targetSdkVersion="21" />
 
-    <!-- Not actually required. -->
-<!--     <uses-permission android:name="android.permission.BATTERY_STATS" /> -->
+    <!-- For reading the 10 recently used apps (to show the number of bugs/hogs among them (in the summary screen)). -->
+    <!-- not working as expected. leave it out for now. -->
+    <!-- <uses-permission android:name="android.permission.GET_TASKS" /> -->
+    
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-
     <!-- For sending and receiving Samples and reports. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- For Sampling network stuff -->
@@ -25,71 +25,34 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Required for IMEI / MEID for user differentiation. -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-	<uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <!-- Required for WiFi settings on some phones. -->
+    <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
+    <!-- Required for programmatic killing of apps -->
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <!-- Required for getting the "gps" location provider for system settings tab -->
+    <!--  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />-->
     
     
- 	<!-- <uses-permission android:name="android.permission.WRITE_SETTINGS" />  -->
- 	<!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> -->
- 	<uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    
-    <!-- Disable scary stuff -->
-    <!-- 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
- 	-->
- 	
- 	<!-- Required for WiFi settings on some phones. -->
- 	<uses-permission android:name="android.permission.BROADCAST_STICKY"/>
- 	<!-- Required for programmatic killing of apps -->
- 	<uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
- 
     <application
+        android:allowBackup="true"
         android:name="CaratApplication"
         android:enabled="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        
         <activity
-            android:name=".CaratMainActivity"
-            android:label="@string/app_name" >
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboardHidden|orientation|screenSize" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CaratSuggestionsActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <!-- Info and later button to kill apps -->
-        <activity
-            android:name=".CaratKillAppActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".CaratMyDeviceActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".CaratBugsOrHogsActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <!-- 
-        <activity
-            android:name=".CaratHogsActivity"
-            android:label="@string/app_name" >
-        </activity>
-        -->
-        <activity
-            android:name=".CaratAboutActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".sampling.SampleDebugActivity"
-            android:label="@string/app_name" >
-        </activity>
-
         <receiver
             android:name=".sampling.BootReceiver"
             android:enabled="true"
@@ -105,17 +68,21 @@
             android:exported="true"
             android:label="Carat Sampler" >
             <intent-filter>
-
-                <!--
-                It is not possible to schedule TIME_TICK outside of the program.
+                <!-- It is not possible to schedule TIME_TICK outside of the program.
                 Also, using AlarmManager with setRepeatingInexact saves battery if the interval
-                is 15 mins or more.
-                -->
-<!--                  <action android:name="android.intent.action.TIME_TICK" /> -->
-
+                is 15 mins or more. -->
+                <!-- <action android:name="android.intent.action.TIME_TICK" /> -->
 
                 <!-- This event cannot be registered to from the manifest either. -->
-<!--                 <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
+                <!-- <action android:name="android.intent.action.BATTERY_CHANGED" /> -->
+				
+				<!-- Also these -->
+				<!-- There are certain events that Android does not want to start up new processes for, 
+				so the device does not get too slow from all sorts of stuff all having to run at once. 
+				ACTION_SCREEN_ON is one of those. -->
+				<!-- <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.SCREEN_ON" />  -->
+                
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
                 <data android:scheme="package" /> 
@@ -137,6 +104,6 @@
                 <data android:scheme="package" /> 
             </intent-filter>
         </receiver>
+        
     </application>
-
 </manifest>

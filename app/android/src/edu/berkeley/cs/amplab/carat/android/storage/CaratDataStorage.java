@@ -14,7 +14,7 @@ import java.util.List;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
+import edu.berkeley.cs.amplab.carat.android.Constants;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
@@ -29,6 +29,7 @@ public class CaratDataStorage {
     public static final String GLOBLIST_FILE = "carat-globlist.dat";
     public static final String BUGFILE = "carat-bugs.dat";
     public static final String HOGFILE = "carat-hogs.dat";
+    public static final String SETTINGSFILE = "carat-settings.dat";
 
     public static final String SAMPLES_REPORTED = "carat-samples-reported.dat";
     
@@ -43,6 +44,7 @@ public class CaratDataStorage {
     private WeakReference<Reports> caratData = null;
     private WeakReference<SimpleHogBug[]> bugData = null;
     private WeakReference<SimpleHogBug[]> hogData = null;
+    private WeakReference<SimpleHogBug[]> settingsData = null;
     private WeakReference<List<String>> blacklistedApps = null;
     private WeakReference<List<String>> blacklistedGlobs = null;
 
@@ -348,9 +350,11 @@ public class CaratDataStorage {
         writeText(samples_reported+ "", SAMPLES_REPORTED);
     }
     
+ 
     public long readSamplesReported() {
         String s = readText(SAMPLES_REPORTED);
         Log.d("CaratDataStorage", "Read samples reported: " + s);
+        // here is the bug. s is null!
         if (s != null)
             return Long.parseLong(s);
         else
@@ -397,6 +401,15 @@ public class CaratDataStorage {
             return null;
         return hogData.get();
     }
+    
+    public SimpleHogBug[] getSettingsReport() {
+        if (settingsData == null || settingsData.get() == null) {
+            readSettingsReport();
+        }
+        if (settingsData == null || settingsData.get() == null)
+            return null;
+        return settingsData.get();
+    }
 
     public void writeBugReport(HogBugReport r) {
         if (r != null) {
@@ -417,6 +430,16 @@ public class CaratDataStorage {
             }
         }
     }
+    
+    public void writeSettingsReport(HogBugReport r) {
+        if (r != null) {
+            SimpleHogBug[] list = convert(r.getHbList(), false);
+            if (list != null){
+                settingsData = new WeakReference<SimpleHogBug[]>(list);
+                writeObject(list, SETTINGSFILE);
+            }
+        }
+    }
 
     private SimpleHogBug[] convert(List<HogsBugs> list, boolean isBug) {
         if (list == null)
@@ -425,7 +448,7 @@ public class CaratDataStorage {
         int size = list.size();
         for (int i = 0; i < size; ++i) {
             HogsBugs item = list.get(i);
-            result[i] = new SimpleHogBug(fixName(item.getAppName()), isBug ? Type.BUG:Type.HOG);
+            result[i] = new SimpleHogBug(fixName(item.getAppName()), isBug ? Constants.Type.BUG:Constants.Type.HOG);
             result[i].setAppLabel(item.getAppLabel());
             String priority = item.getAppPriority();
             if (priority == null || priority.length() == 0)
@@ -490,6 +513,15 @@ public class CaratDataStorage {
             return null;
         SimpleHogBug[] r = (SimpleHogBug[]) o;
         hogData = new WeakReference<SimpleHogBug[]>(r);
+        return r;
+    }
+    
+    public SimpleHogBug[] readSettingsReport() {
+        Object o = readObject(SETTINGSFILE);
+        if (o == null || !(o instanceof SimpleHogBug[]))
+            return null;
+        SimpleHogBug[] r = (SimpleHogBug[]) o;
+        settingsData = new WeakReference<SimpleHogBug[]>(r);
         return r;
     }
 }

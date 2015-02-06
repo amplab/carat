@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="android-switch-backport">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../app/libs/Android/android-switch-backport/library/bin/android-switch-backport.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

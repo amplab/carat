@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../app/libs/HoloGraphLibrary/HoloGraphLibrary.iml" filepath="$PROJECT_DIR$/../app/libs/HoloGraphLibrary/HoloGraphLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../app/android/android.iml" filepath="$PROJECT_DIR$/../app/android/android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../app/libs/Android/android-support-v4-preferencefragment/android-support-v4-preferencefragment.iml" filepath="$PROJECT_DIR$/../app/libs/Android/android-support-v4-preferencefragment/android-support-v4-preferencefragment.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../app/libs/Android/android-switch-backport/library/library.iml" filepath="$PROJECT_DIR$/../app/libs/Android/android-switch-backport/library/library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/support-appcompat.iml" filepath="$PROJECT_DIR$/support-appcompat.iml" />
+    </modules>
+  </component>
+</project>

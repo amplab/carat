@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:switchpref="http://schemas.android.com/apk/res-auto" >
+
+    <org.jraf.android.backport.switchwidget.SwitchPreference
+        android:enabled="true"
+        android:key="wifiOnlyPreferenceKey"
+        android:title="@string/wifionly"
+        switchpref:asb_switchTextOff="@string/off"
+        switchpref:asb_switchTextOn="@string/on"
+        switchpref:asb_summaryOff="@string/summary_off"
+        switchpref:asb_summaryOn="@string/summary_on" />
+    
+    <Preference 
+        android:enabled="true"
+        android:key="sharePrefKey"
+        android:title="@string/share" />
+    
+    <Preference 
+        android:enabled="true"
+        android:key="feedbackPrefKey"
+        android:title="@string/feedback" />	
+
+</PreferenceScreen>

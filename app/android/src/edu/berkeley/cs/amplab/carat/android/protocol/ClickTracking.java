@@ -54,7 +54,7 @@ public class ClickTracking {
             ObjectMapper mapper = new ObjectMapper();
             json = mapper.writeValueAsString(action);
 
-            Log.i(TAG, "JSON=\n" + json);
+            Log.d(TAG, "JSON=\n" + json);
             // 5. set json to StringEntity
             StringEntity se = new StringEntity(json, HTTP.UTF_8);
 

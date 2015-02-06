@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import edu.berkeley.cs.amplab.carat.android.R;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication;
-import edu.berkeley.cs.amplab.carat.android.CaratApplication.Type;
-import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
-import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
-
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.R;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
+import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
 
 public class HogBugSuggestionsAdapter extends BaseAdapter {
 
@@ -36,11 +35,11 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 		ArrayList<SimpleHogBug> temp = new ArrayList<SimpleHogBug>();
 		acceptHogsOrBugs(hogs, temp);
 		acceptHogsOrBugs(bugs, temp);
-		// Disabled for stability until we know what to do on pre-ICS phones for this.
+		// TODO: Disabled for stability until we know what to do on pre-ICS phones for this.
 		addFeatureActions(temp);
 
 		if (addFakeItem){
-		    SimpleHogBug fake = new SimpleHogBug(FAKE_ITEM, Type.BUG);
+		    SimpleHogBug fake = new SimpleHogBug(FAKE_ITEM, Constants.Type.BUG);
             fake.setExpectedValue(0.0);
             fake.setExpectedValueWithout(0.0);
             temp.add(fake);
@@ -62,14 +61,17 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 					/ item.getExpectedValue();
 			// TODO other filter conditions?
 			// Limit max number of items?
-			// Skip system apps
 			String appName = item.getAppName();
 			if (appName == null) appName = a.getString(R.string.unknown);
 			
+			// don't show (skip) special/system apps
+			// (DISABLED FOR DEBUGGING. TODO: ENABLE IT AFTER DEBUGGING, and check whether this has any problem)
+//			if (SpecialAppCases.isSpecialApp(appName))
+			if (appName.equals(Constants.CARAT_PACKAGE_NAME) || appName.equals(Constants.CARAT_OLD))
+				continue;
 			if (SamplingLibrary.isHidden(a.getApplicationContext(), appName))
 			    continue;
-			if (appName.equals(CaratApplication.CARAT_PACKAGE) || appName.equals(CaratApplication.CARAT_OLD))
-			    continue;
+			
 			if (addFakeItem && appName.equals(FAKE_ITEM))
 			    result.add(item);
 			// Filter out if benefit is too small
@@ -78,6 +80,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			}
 		}
 	}
+	
 	
     private void addFeatureActions(ArrayList<SimpleHogBug> results) {
         // Disable all for now, benefits are not calculated correctly yet.
@@ -95,7 +98,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
         // acceptDisableAutoSync(results);
         if (results.isEmpty())
             helpCaratCollectMoreData(results);
-        String url = CaratApplication.s.getQuestionnaireUrl(); 
+        String url = CaratApplication.storage.getQuestionnaireUrl(); 
         boolean questionnaireEnabled = url != null && url.length() > 7; // http://
         if (questionnaireEnabled)
             questionnaire(results);
@@ -212,13 +215,13 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 
     private void helpCaratCollectMoreData(ArrayList<SimpleHogBug> result) {
             SimpleHogBug item = new SimpleHogBug(
-                    a.getString(R.string.helpcarat), Type.OS);
+                    a.getString(R.string.helpcarat), Constants.Type.OS);
             result.add(item);
     }
     
     private void questionnaire(ArrayList<SimpleHogBug> result) {
         SimpleHogBug item = new SimpleHogBug(
-                a.getString(R.string.questionnaire), Type.OTHER, a.getString(R.string.questionnaire2));
+                a.getString(R.string.questionnaire), Constants.Type.OTHER, a.getString(R.string.questionnaire2));
         result.add(item);
 }
 
@@ -255,7 +258,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
 			holder.txtBenefit = (TextView) convertView
 					.findViewById(R.id.expectedBenefit);
 			holder.moreInfo = (ImageView) convertView
-					.findViewById(R.id.moreinfo);
+					.findViewById(R.id.jscore_info);
 
 			convertView.setTag(holder);
 		} else {
@@ -282,15 +285,15 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                 label = a.getString(R.string.unknown);
             
             holder.icon.setImageDrawable(icon);
-            Type type = item.getType();
-            if (type == Type.BUG)
+            Constants.Type type = item.getType();
+            if (type == Constants.Type.BUG)
                 holder.txtName.setText(a.getString(R.string.restart)+" "+label);
-            else if (type == Type.HOG)
+            else if (type == Constants.Type.HOG)
                 holder.txtName.setText(a.getString(R.string.kill)+" "+label);
             else{ // Other action
                 holder.txtName.setText(label);
             }
-            if (type == Type.OTHER)
+            if (type == Constants.Type.OTHER)
                 holder.txtType.setText(item.getAppPriority());
             else
             holder.txtType.setText(CaratApplication.translatedPriority(item.getAppPriority()));
@@ -317,7 +320,7 @@ public class HogBugSuggestionsAdapter extends BaseAdapter {
                         .findViewById(R.id.benefitLegend);
                 bl.setText("");
             }else
-            holder.txtBenefit.setText(item.textBenefit());
+            holder.txtBenefit.setText(item.getBenefitText());
 
             // holder.moreInfo...
             }

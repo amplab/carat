@@ -1,0 +1,25 @@
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="56dip"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"    
+    android:textSize="19sp"
+    android:textColor="#2E3235" 
+     />
+
+<!--
+    The following attributes of a TextView require Android API 11 and 14 
+    (even with the Support library (AppCompat)). 
+    The current lowest version (API 8) doesn't support these attributes.
+    So replaced them by equivalent native Android attributes
+-->
+
+
+<!--
+         android:textAppearance="?android:attr/textAppearanceListItemSmall"
+         android:background="?android:attr/activatedBackgroundIndicator"
+         android:minHeight="?android:attr/listPreferredItemHeightSmall"
+-->

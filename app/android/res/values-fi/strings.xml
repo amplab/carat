@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- These will be different -->
+    <!-- These will be different -->
 	
     <string name="jscore">J-Scoresi:</string>
     <string name="batterylife">Aktiivinen akunkesto:</string>
     <string name="osver">KJ-versio:</string>
     <string name="dev">Laitemalli:</string>
-    <string name="apps">Käynnissä:</string>
+    <string name="running_apps">Käynnissä:</string>
     <string name="memused">Muistinkäyttö:</string>
     <string name="memactive">Aktiivisena:</string>
     <string name="cpu">CPU-käyttö:</string>
@@ -30,7 +30,7 @@
     <string name="helpcarat">Auta Caratia keräämään dataa</string>
     <string name="questionnaire">Auta meitä parantamaan Caratia</string>
     <string name="questionnaire2">Vastaa kyselyyn (5&#8211;10 min)</string>
-    <string name="feedback">Anna palautetta</string>
+    <string name="feedback">Anna palautetta (email)</string>
     <string name="share">Jaa …</string>
     <string name="sharewith">Jaa käyttäen:</string>
     <string name="chooseemail">Valitse email-sovellus</string>
@@ -41,13 +41,16 @@
     
     <string name="appmanager">Sovellushallinta</string>
     
-    <!-- Tabs. Also used elsewhere. -->
-    
-    <string name="tab_actions">Ehdotukset</string>
-    <string name="tab_my_device">Laite</string>
-    <string name="tab_bugs">Bugit</string>
-    <string name="tab_hogs">Hogit</string>
-    <string name="tab_about">Tietoja</string>
+    <!-- Navigation drawer items (tabs) -->
+    <string-array name="drawer_items">
+        <item>Yhteenveto</item>
+        <item>Ehdotukset</item>
+        <item>Laite</item>
+        <item>Bugit</item>
+        <item>Hogit</item>
+        <item>Caratin asetukset</item>
+        <item>Tietoja</item>
+    </string-array>
     
     <!-- Updating etc -->
     
@@ -64,7 +67,6 @@
 
     <string name="expected">Arvioitu parannus:</string>
     <string name="killappname">Tapa Sovellus</string>
-
     <string name="appname">Sovelluksen nimi</string>
     <string name="priority">Prioriteetti:</string>
     <string name="priorityDefault">Ei käynnissä</string>
@@ -86,7 +88,7 @@
     <string name="syncsettings">Päivitysasetukset</string>
     <string name="mobilenetworksettings">Puhelinverkon asetukset</string>
     <string name="appsettings">Sovellusasetukset</string>
-    <string name="opening"></string>
+    <string name="opening">Avaa </string>
     <string name="notsupported">eivät ole saatavilla tällä laitteella.</string>
 
     <!-- Actions -->
@@ -122,19 +124,64 @@
     <string name="withotheroses">Muilla KJ:lla</string>
     <string name="withsimilarapps">Sinun sovelluksillasi</string>
     <string name="withdifferentapps">Eri sovelluksilla</string>
-    
     <string name="model">Malli</string>
     <string name="os">KJ-Versio</string>
     <string name="similarapps">Käyttämäsi sovellukset</string>
-    
     <string name="wifionly">Käytä vain WiFiä</string>
     <string name="wifionlyused">Vain WiFi käytössä</string>
-    
     <string name="samples">Mittauksia:</string>
     <string name="samplesWithout">Mittauksia ilman:</string>
     <string name="error">Mittausvirhe:</string>
     <string name="significance">Merkittävyys:</string>
-    
     <string name="best">Jo paras</string>
     
+    <!-- The pie chart -->
+    <string name="chart_wellbehaved">Hyvin käyttäytyvät</string>
+    <string name="chart_hogs">Hogit</string>
+    <string name="chart_bugs">Bugit</string>
+    
+    <!-- The dialog to enable Internet -->
+    <string name="dialog_text">Carat käyttää Internet-yhteyttä raporttiesi päivittämiseen.</string>
+    <string name="dialog_enable">Kytkeydy verkkoon</string>
+    <string name="dialog_cancel">Ei kiitos</string>
+    
+    <!-- error messages -->
+    <string name="connection_error">Ei yhteyttä. Kytkeydy verkkoon.</string>
+
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Näytä valikkopalkki</string>
+    <string name="drawer_close">Sulje valikkopalkki</string>
+
+    <string name="summary_unavailable_title">Ei vielä tuloksia</string>
+    <string name="summary_unavailable_text">Odotetaan tuloksia palvelimelta &#8230;</string>
+    <string name="summary_your_device_has">Laitteellasi on</string>
+    <string name="summary_others_have">Muilla käyttäjillä on:</string>
+    <string name="summary_conjunction">ja</string>
+    <string name="summary_screen_title">Carat-tilastoja</string>
+    <string name="summary_android_apps">Android-sovellukset</string>
+    <string name="summary_chart_center_text">Android-\nsovellukset</string>
+    <string name="hogs">Hogia</string>
+    <string name="bugs">Bugia</string>
+    <string name="morestatsat">Lisää: carat.cs.helsinki.fi/statistics</string>
+    
+    <!-- Carat settings screen -->
+    <!-- switch backport strings -->
+    <string name="off">OFF</string>
+    <string name="on">ON</string>
+    <string name="summary_off">Wifi + Mobiilidata</string>
+    <string name="summary_on">Vain Wifi</string>
+    
+        <!-- New screen titles -->
+    <string name="memoryinfo">Tietoa muistista</string>
+    <string name="batterylifeinfo">Aktiivinen akunkesto</string>
+    <string name="jscoreinfo">Mikä on J-Score?</string>
+    <string name="collectdatainfo">Auta Caratia keräämään dataa</string>
+    <string name="upgradeosinfo">Käyttöjärjestelmän päivittäminen</string>
+    <string name="deviceinfo">Laitteen tilastotietoja</string>
+    <string name="osinfo">KJ-version tilastotietoja</string>
+    <string name="processlist">Käynnissä olevat sovellukset</string>
 </resources>
+
+
+<!--  <item>Sovellussuositus</item>  
+	  <string name="action_websearch">Hae</string> -->
