@@ -687,7 +687,7 @@ public final class SamplingLibrary {
 	 */
 	public static boolean isHidden(Context c, String processName) {
 		boolean isSystem = isSystem(c, processName);
-		boolean blocked = (isSystem && !isWhiteListed(c, processName));
+		boolean blocked = isDisabled(c, processName) || (isSystem && !isWhiteListed(c, processName));
 		return blocked || isBlacklisted(c, processName);
 	}
 
@@ -766,6 +766,19 @@ public final class SamplingLibrary {
 			return isSystemApp;
 		}
 		return false;
+	}
+	
+	public static boolean isDisabled(Context c, String processName) {
+	    PackageManager pm = c.getPackageManager();
+        if (pm == null)
+            return false;
+        try {
+            ApplicationInfo info = pm.getApplicationInfo(processName, 0);
+            return !info.enabled;
+        } catch (NameNotFoundException e) {
+            Log.d(STAG, "Could not find app info for: "+processName);
+        }
+	    return false;
 	}
 
 	/**

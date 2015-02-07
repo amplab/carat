@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.ref.WeakReference;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import edu.berkeley.cs.amplab.carat.android.CaratApplication;
 import edu.berkeley.cs.amplab.carat.android.Constants;
+import edu.berkeley.cs.amplab.carat.android.sampling.SamplingLibrary;
 import edu.berkeley.cs.amplab.carat.thrift.HogBugReport;
 import edu.berkeley.cs.amplab.carat.thrift.HogsBugs;
 import edu.berkeley.cs.amplab.carat.thrift.Reports;
@@ -413,7 +416,7 @@ public class CaratDataStorage {
 
     public void writeBugReport(HogBugReport r) {
         if (r != null) {
-            SimpleHogBug[] list = convert(r.getHbList(), true);
+            SimpleHogBug[] list = convertAndFilter(r.getHbList(), true);
             if (list != null){
                 bugData = new WeakReference<SimpleHogBug[]>(list);
                 writeObject(list, BUGFILE);
@@ -423,17 +426,17 @@ public class CaratDataStorage {
 
     public void writeHogReport(HogBugReport r) {
         if (r != null) {
-            SimpleHogBug[] list = convert(r.getHbList(), false);
+            SimpleHogBug[] list = convertAndFilter(r.getHbList(), false);
             if (list != null){
                 hogData = new WeakReference<SimpleHogBug[]>(list);
                 writeObject(list, HOGFILE);
             }
         }
     }
-    
+
     public void writeSettingsReport(HogBugReport r) {
         if (r != null) {
-            SimpleHogBug[] list = convert(r.getHbList(), false);
+            SimpleHogBug[] list = convertAndFilter(r.getHbList(), false);
             if (list != null){
                 settingsData = new WeakReference<SimpleHogBug[]>(list);
                 writeObject(list, SETTINGSFILE);
@@ -441,33 +444,43 @@ public class CaratDataStorage {
         }
     }
 
-    private SimpleHogBug[] convert(List<HogsBugs> list, boolean isBug) {
+    /**
+     * For Settings, we need more than a boolean here.
+     * @param list the list of bugs or hogs received from the server.
+     * @param isBug True if the list contains Bugs, false if Hogs.
+     * @return The list of non-hidden bugs or hogs.
+     */
+    private SimpleHogBug[] convertAndFilter(List<HogsBugs> list, boolean isBug) {
         if (list == null)
             return null;
-        SimpleHogBug[] result = new SimpleHogBug[list.size()];
+        List<SimpleHogBug> result = new LinkedList<SimpleHogBug>();
         int size = list.size();
         for (int i = 0; i < size; ++i) {
             HogsBugs item = list.get(i);
-            result[i] = new SimpleHogBug(fixName(item.getAppName()), isBug ? Constants.Type.BUG:Constants.Type.HOG);
-            result[i].setAppLabel(item.getAppLabel());
+            String n = fixName(item.getAppName());
+            if (SamplingLibrary.isHidden(CaratApplication.getContext(), n))
+                continue;
+            SimpleHogBug h = new SimpleHogBug(n, isBug ? Constants.Type.BUG:Constants.Type.HOG);
+            h.setAppLabel(item.getAppLabel());
             String priority = item.getAppPriority();
             if (priority == null || priority.length() == 0)
                 priority = "Foreground app";
-            result[i].setAppPriority(priority);
-            result[i].setExpectedValue(item.getExpectedValue());
-            result[i].setExpectedValueWithout(item.getExpectedValueWithout());
-            result[i].setwDistance(item.getWDistance());
+            h.setAppPriority(priority);
+            h.setExpectedValue(item.getExpectedValue());
+            h.setExpectedValueWithout(item.getExpectedValueWithout());
+            h.setwDistance(item.getWDistance());
             //result[i].setxVals(convert(item.getXVals()));
-            result[i].setError(item.getError());
-            result[i].setErrorWithout(item.getErrorWithout());
-            result[i].setSamples(item.getSamples());
-            result[i].setSamplesWithout(item.getSamplesWithout());
+            h.setError(item.getError());
+            h.setErrorWithout(item.getErrorWithout());
+            h.setSamples(item.getSamples());
+            h.setSamplesWithout(item.getSamplesWithout());
             //result[i].setSignificance(item.getSignificance());
             /*result[i].setyVals(convert(item.getYVals()));
             result[i].setxValsWithout(convert(item.getXValsWithout()));
             result[i].setyValsWithout(convert(item.getYValsWithout()));*/
+            result.add(h);
         }
-        return result;
+        return result.toArray(new SimpleHogBug[result.size()]);
     }
 
     public static double[] convert(List<Double> dbls) {
