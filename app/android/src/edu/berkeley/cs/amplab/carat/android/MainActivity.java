@@ -417,8 +417,14 @@ public class MainActivity extends ActionBarActivity {
 			refreshSummaryFragment();
 		}
 				
-		((CaratApplication) getApplication()).refreshUi();
-
+		/** 
+		 * This may take minutes, so refresh summary frag here again.
+		 */
+	    new Thread() {
+	            public void run() {
+	                ((CaratApplication) getApplication()).refreshUi();
+	                refreshSummaryFragment();
+	            }}.start();
 		super.onResume();
 	}
 

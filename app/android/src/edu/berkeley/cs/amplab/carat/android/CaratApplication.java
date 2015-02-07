@@ -387,8 +387,6 @@ public class CaratApplication extends Application {
 
 
 	public void refreshUi() {
-		new Thread() {
-			public void run() {
 				boolean connecting = false;
 				Context co = getApplicationContext();
 				// TODO: using a shared preferences object might cause problem in different OS versions. replace with a private one. see MainActivity.AsyncTask.doInBackground().
@@ -457,8 +455,6 @@ public class CaratApplication extends Application {
 				CaratApplication.setActionFinished();
 				SampleSender.sendSamples(CaratApplication.this);
 				CaratApplication.setActionFinished();
-			}
-		}.start();
 	}
 
 	public static boolean isInternetAvailable2() {
