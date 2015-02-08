@@ -65,6 +65,7 @@ public class Constants {
 
 	public static final String IMPORTANCE_NOT_RUNNING = "Not Running";
 	public static final String IMPORTANCE_UNINSTALLED = "uninstalled";
+	public static final String IMPORTANCE_DISABLED = "disabled";
 	public static final String IMPORTANCE_INSTALLED = "installed";
 	public static final String IMPORTANCE_REPLACED = "replaced";
 

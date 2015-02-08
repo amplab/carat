@@ -40,6 +40,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -93,6 +94,8 @@ public final class SamplingLibrary {
 	public static final String INSTALLED = "installed:";
 	public static final String REPLACED = "replaced:";
 	public static final String UNINSTALLED = "uninstalled:";
+	// Disabled or turned off applications will be scheduled for reporting using this prefix
+	public static final String DISABLED = "disabled:";
 
 	private static final int READ_BUFFER_SIZE = 2 * 1024;
 	// Network status constants
@@ -774,7 +777,21 @@ public final class SamplingLibrary {
             return false;
         try {
             ApplicationInfo info = pm.getApplicationInfo(processName, 0);
-            return !info.enabled;
+            boolean disabled = !info.enabled;
+            /* If an app is disabled, schedule it for sending with the next sample.
+             * This is triggered in the UI, so the amount of times that an app being
+             * disabled is sent is limited to the number of times the user refreshes Carat
+             * between two analysis runs. Disabled applications will then be recorded by
+             * the analysis, and not sent to the client when they ask for hogs/bugs after that.
+             * Over time, Carat then follows users' Hogs and Bugs better, knowing which apps are
+             * disabled.
+             */
+            if (disabled) {
+                Log.i(STAG, "DISABLED: " + processName);
+                Editor e = PreferenceManager.getDefaultSharedPreferences(c.getApplicationContext()).edit();
+                e.putBoolean(SamplingLibrary.DISABLED + processName, true).commit();
+            }
+            return disabled;
         } catch (NameNotFoundException e) {
             Log.d(STAG, "Could not find app info for: "+processName);
         }
@@ -1090,7 +1107,15 @@ public final class SamplingLibrary {
 					result.add(uninstalledItem(pname, pref, e));
 					edited = true;
 				}
-			}
+			} else if (pref.startsWith(DISABLED)) {
+                String pname = pref.substring(DISABLED.length());
+                boolean disabled = p.getBoolean(pref, false);
+                if (disabled) {
+                    Log.i(STAG, "Disabled app:" + pname);
+                    result.add(disabledItem(pname, pref, e));
+                    edited = true;
+                }
+            }
 		}
 		if (edited)
 			e.commit();
@@ -1129,6 +1154,24 @@ public final class SamplingLibrary {
 		e.remove(pref);
 		return item;
 	}
+	
+	/**
+     * Helper to set application to the disabled state in the Carat sample.
+     * @param pname the package that was disabled.
+     * @param pref The preference that stored the disabled directive. This preference will be deleted to ensure disabled apps are not sent multiple times.
+     * @param e the Editor (passed and not created here for efficiency)
+     * @return a new ProcessInfo entry describing the uninstalled item.
+     */
+    private static ProcessInfo disabledItem(String pname, String pref, SharedPreferences.Editor e) {
+        ProcessInfo item = new ProcessInfo();
+        item.setPName(pname);
+        item.setPId(-1);
+        item.setImportance(Constants.IMPORTANCE_DISABLED);
+        // Remember to remove it so we do not send
+        // multiple uninstall events
+        e.remove(pref);
+        return item;
+    }
 
 	/**
 	 * Depratecated, use int[] meminfo = readMemInfo(); int totalMemory =
