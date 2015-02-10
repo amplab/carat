@@ -31,148 +31,154 @@ import edu.berkeley.cs.amplab.carat.android.storage.SimpleHogBug;
  *
  */
 public class SummaryFragment extends ExtendedTitleFragment {
-    // private final String TAG = "SummaryFragment";
-    private MainActivity mMainActivity = CaratApplication.getMainActivity();
-    private PieChart mChart;
+	// private final String TAG = "SummaryFragment";
+	private MainActivity mMainActivity = CaratApplication.getMainActivity();
+	private PieChart mChart;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View inflatedView;
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		final View inflatedView = inflater.inflate(R.layout.summary, container,
+				false);
+		setClickableUserStatsText(inflatedView);
+		return inflatedView;
+	}
 
-        // Log.i(TAG, "isStatsDataAvailable()=" +
-        // mMainActivity.isStatsDataAvailable());
+	@Override
+	public void onResume() {
+		super.onResume();
+		scheduleRefresh();
+	}
 
-        if (mMainActivity.isStatsDataAvailable()) {
-            inflatedView = inflater.inflate(R.layout.summary, container, false);
-            drawPieChart(inflatedView);
-            setClickableUserStatsText(inflatedView);
-        } else {
-            inflatedView = inflater.inflate(R.layout.summary_unavailable, container, false);
-        }
+	public void scheduleRefresh() {
+		getActivity().runOnUiThread(new Runnable() {
+			public void run() {
 
-        // onCreateView() method should always return the inflated view
-        return inflatedView;
-    }
+				if (mMainActivity.isStatsDataAvailable()) {
+					drawPieChart(getView());
+				}
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        scheduleUpdateHogBugCounts();
-    }
+				int hogsCount = 0;
+				int bugsCount = 0;
+				if (CaratApplication.storage != null) {
+					SimpleHogBug[] h = CaratApplication.storage.getHogReport();
+					SimpleHogBug[] b = CaratApplication.storage.getBugReport();
+					if (h != null)
+						hogsCount = h.length;
+					if (b != null)
+						bugsCount = b.length;
+				}
+				TextView hogsCountTv = (TextView) getView().findViewById(
+						R.id.summary_hogs_count);
+				hogsCountTv.setText(hogsCount + " " + getString(R.string.hogs));
 
-    private void setClickableUserStatsText(final View inflatedView) {
-        CountClickListener l = new CountClickListener();
+				TextView bugsCountTv = (TextView) getView().findViewById(
+						R.id.summary_bugs_count);
+				bugsCountTv.setText(bugsCount + " " + getString(R.string.bugs));
+			}
+		});
 
-        TextView hogsCountTv = (TextView) inflatedView.findViewById(R.id.summary_hogs_count);
-        hogsCountTv.setTextColor(Constants.CARAT_COLORS[1]);
-        hogsCountTv.setOnClickListener(l);
+	}
 
-        TextView bugsCountTv = (TextView) inflatedView.findViewById(R.id.summary_bugs_count);
-        bugsCountTv.setTextColor(Constants.CARAT_COLORS[2]);
-        bugsCountTv.setOnClickListener(l);
+	private void setClickableUserStatsText(final View inflatedView) {
+		CountClickListener l = new CountClickListener();
 
-        /* Open Carat Statistics website on click: */
-        TextView morestats = (TextView) inflatedView.findViewById(R.id.morestats);
-        morestats.setOnClickListener(new OnClickListener() {
+		TextView hogsCountTv = (TextView) inflatedView
+				.findViewById(R.id.summary_hogs_count);
+		hogsCountTv.setTextColor(Constants.CARAT_COLORS[1]);
+		hogsCountTv.setOnClickListener(l);
 
-            @Override
-            public void onClick(View v) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(getString(R.string.statsurl)));
-                startActivity(browserIntent);
-            }
-        });
-    }
+		TextView bugsCountTv = (TextView) inflatedView
+				.findViewById(R.id.summary_bugs_count);
+		bugsCountTv.setTextColor(Constants.CARAT_COLORS[2]);
+		bugsCountTv.setOnClickListener(l);
 
-    /**
-     * Concisely handle clicks on the hogs/bugs text items.
-     * 
-     * @author Eemil Lagerspetz
-     *
-     */
-    private class CountClickListener implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (v == v.getRootView().findViewById(R.id.summary_hogs_count)) {
-                mMainActivity.replaceFragment(mMainActivity.getHogsFragment(), mMainActivity.getFragmentTag(4), true);
-            } else {
-                mMainActivity.replaceFragment(mMainActivity.getBugsFragment(), mMainActivity.getFragmentTag(3), true);
-            }
-        }
-    }
+		/* Open Carat Statistics website on click: */
+		TextView morestats = (TextView) inflatedView
+				.findViewById(R.id.morestats);
+		morestats.setOnClickListener(new OnClickListener() {
 
-    public void scheduleUpdateHogBugCounts() {
-        getActivity().runOnUiThread(new Runnable(){
-            public void run(){
-                int hogsCount = 0;
-                int bugsCount = 0;
-                if (CaratApplication.storage != null) {
-                    SimpleHogBug[] h = CaratApplication.storage.getHogReport();
-                    SimpleHogBug[] b = CaratApplication.storage.getBugReport();
-                    if (h != null)
-                        hogsCount = h.length;
-                    if (b != null)
-                        bugsCount = b.length;
-                }
-                TextView hogsCountTv = (TextView) getView().findViewById(R.id.summary_hogs_count);
-                hogsCountTv.setText(hogsCount + " " + getString(R.string.hogs));
+			@Override
+			public void onClick(View v) {
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW)
+						.setData(Uri.parse(getString(R.string.statsurl)));
+				startActivity(browserIntent);
+			}
+		});
+	}
 
-                TextView bugsCountTv = (TextView) getView().findViewById(R.id.summary_bugs_count);
-                bugsCountTv.setText(bugsCount + " " + getString(R.string.bugs));                
-            }
-        });
+	/**
+	 * Concisely handle clicks on the hogs/bugs text items.
+	 * 
+	 * @author Eemil Lagerspetz
+	 *
+	 */
+	private class CountClickListener implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			if (v == v.getRootView().findViewById(R.id.summary_hogs_count)) {
+				mMainActivity.replaceFragment(mMainActivity.getHogsFragment(),
+						mMainActivity.getFragmentTag(4), true);
+			} else {
+				mMainActivity.replaceFragment(mMainActivity.getBugsFragment(),
+						mMainActivity.getFragmentTag(3), true);
+			}
+		}
+	}
+	
+	private void drawPieChart(final View inflatedView) {
+		mChart = (PieChart) inflatedView.findViewById(R.id.chart1);
+		mChart.setDescription("");
 
-    }
+		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),
+				"fonts/OpenSans-Regular.ttf");
 
-    private void drawPieChart(final View inflatedView) {
-        mChart = (PieChart) inflatedView.findViewById(R.id.chart1);
-        mChart.setDescription("");
+		mChart.setValueTypeface(tf);
+		mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity()
+				.getAssets(), "fonts/OpenSans-Light.ttf"));
+		mChart.setUsePercentValues(true);
+		mChart.setCenterText(getString(R.string.summary_chart_center_text));
+		mChart.setCenterTextSize(22f);
 
-        Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
+		// radius of the center hole in percent of maximum radius
+		mChart.setHoleRadius(40f);
+		mChart.setTransparentCircleRadius(50f);
 
-        mChart.setValueTypeface(tf);
-        mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Light.ttf"));
-        mChart.setUsePercentValues(true);
-        mChart.setCenterText(getString(R.string.summary_chart_center_text));
-        mChart.setCenterTextSize(22f);
+		// disable click / touch / tap on the chart
+		mChart.setTouchEnabled(false);
 
-        // radius of the center hole in percent of maximum radius
-        mChart.setHoleRadius(40f);
-        mChart.setTransparentCircleRadius(50f);
+		// enable / disable drawing of x- and y-values
+		// mChart.setDrawYValues(false);
+		// mChart.setDrawXValues(false);
 
-        // disable click / touch / tap on the chart
-        mChart.setTouchEnabled(false);
+		mChart.setData(generatePieData());
+		Legend l = mChart.getLegend();
+		l.setPosition(LegendPosition.NONE);
+	}
 
-        // enable / disable drawing of x- and y-values
-        // mChart.setDrawYValues(false);
-        // mChart.setDrawXValues(false);
+	protected PieData generatePieData() {
+		ArrayList<Entry> entries = new ArrayList<Entry>();
+		ArrayList<String> xVals = new ArrayList<String>();
 
-        mChart.setData(generatePieData());
-        Legend l = mChart.getLegend();
-        l.setPosition(LegendPosition.NONE);
-    }
+		xVals.add(getString(R.string.chart_wellbehaved));
+		xVals.add(getString(R.string.chart_hogs));
+		xVals.add(getString(R.string.chart_bugs));
 
-    protected PieData generatePieData() {
-        ArrayList<Entry> entries = new ArrayList<Entry>();
-        ArrayList<String> xVals = new ArrayList<String>();
+		int wellbehaved = mMainActivity.mWellbehaved;
+		int hogs = mMainActivity.mHogs;
+		int bugs = mMainActivity.mBugs;
 
-        xVals.add(getString(R.string.chart_wellbehaved));
-        xVals.add(getString(R.string.chart_hogs));
-        xVals.add(getString(R.string.chart_bugs));
+		entries.add(new Entry((float) (wellbehaved), 1));
+		entries.add(new Entry((float) (hogs), 2));
+		entries.add(new Entry((float) (bugs), 3));
 
-        int wellbehaved = mMainActivity.mWellbehaved;
-        int hogs = mMainActivity.mHogs;
-        int bugs = mMainActivity.mBugs;
+		PieDataSet ds1 = new PieDataSet(entries,
+				getString(R.string.summary_android_apps));
+		ds1.setColors(Constants.CARAT_COLORS);
+		ds1.setSliceSpace(2f);
 
-        entries.add(new Entry((float) (wellbehaved), 1));
-        entries.add(new Entry((float) (hogs), 2));
-        entries.add(new Entry((float) (bugs), 3));
-
-        PieDataSet ds1 = new PieDataSet(entries, getString(R.string.summary_android_apps));
-        ds1.setColors(Constants.CARAT_COLORS);
-        ds1.setSliceSpace(2f);
-
-        PieData d = new PieData(xVals, ds1);
-        return d;
-    }
+		PieData d = new PieData(xVals, ds1);
+		return d;
+	}
 
 }

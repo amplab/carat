@@ -16,7 +16,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -414,7 +413,6 @@ public class MainActivity extends ActionBarActivity {
 		// and the device has an Internet connection, fetch statistics and then refresh the summary fragment
 		if ( (! isStatsDataAvailable()) && CaratApplication.isInternetAvailable()) {
 			getStatsFromServer();
-			refreshSummaryFragment();
 		}
 				
 		/** 
@@ -567,28 +565,8 @@ public class MainActivity extends ActionBarActivity {
     }
 	
 	public void refreshSummaryFragment() {
-		if (isStatsDataAvailable()) { // blank summary fragment already attached. detach and attach for refresh. 
-			// Log.d(TAG, "data for summary fragment is available. Wellbehaved=" + mWellbehaved + ", hogs=" + mHogs + ", bugs=" + mBugs);
-			int idx = 0;
-			String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-			if (tag == mDrawerItems[idx]) {
-				FragmentManager manager = getSupportFragmentManager();
-				// Important: initialize the mSummaryFragment field here. In selectItem() method, when the user 
-				// selects an item from the nav-drawer, we replace pre-init fragments including this one.
-				frags[idx] = manager.findFragmentByTag(mDrawerItems[idx]); 
-				
-				FragmentTransaction fragTransaction = manager.beginTransaction();
-				// refresh the summary fragment:
-			    fragTransaction.detach(frags[idx]);
-			    fragTransaction.attach(frags[idx]);
-			    fragTransaction.commit();
-			 } else {
-				 frags[idx] = new SummaryFragment();
-			 }
-		} else {
-			// Log.e(TAG, "refreshSummaryFragment(): stats data not avaiable!");
-		}
-	    // initSummaryFragment();
+		if (frags.length > 0)
+			((SummaryFragment) frags[0]).scheduleRefresh();
 	}
 	
 	public Fragment getHogsFragment() {
