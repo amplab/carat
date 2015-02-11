@@ -483,6 +483,15 @@ public class PieChart extends PieRadarChartBase<PieData> {
     protected void drawAdditional() {
         drawHole();
     }
+    
+    /**
+     * Sets the font size of the values that are drawn inside the chart.
+     * 
+     * @param size
+     */
+    public void setValueTextSize(float size) {
+        mValuePaint.setTextSize(Utils.convertDpToPixel(size));
+    }
 
     /**
      * calculates the needed angle for a given value

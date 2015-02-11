@@ -3,6 +3,8 @@ package edu.berkeley.cs.amplab.carat.android.fragments;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -38,12 +41,33 @@ public class SummaryFragment extends ExtendedTitleFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		final View inflatedView = inflater.inflate(R.layout.summary, container,
-				false);
-		setClickableUserStatsText(inflatedView);
-		return inflatedView;
+		/* Handling orientation change manually (to prevent destroying and recreating the activity (by Android)). 
+		 * We have threads and AsyncTasks (e.g. for retrieving statistics from server) which try to 
+		 * change the activity's view, and if the activity is already killed, they might cause a application crash 
+		 * (or simply continue their work). 
+		 * We might need to use the RoboSpice library (instead of AysncTasks) in future)
+		 * http://www.youtube.com/watch?v=ONaD1mB8r-A
+		 */
+		FrameLayout frameLayout = new FrameLayout(getActivity());
+        populateViewForOrientation(inflater, frameLayout);
+        return frameLayout;
 	}
 
+	@Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        LayoutInflater inflater = LayoutInflater.from(getActivity());
+        populateViewForOrientation(inflater, (ViewGroup) getView());
+    }
+
+    private void populateViewForOrientation(LayoutInflater inflater, ViewGroup viewGroup) {
+        viewGroup.removeAllViewsInLayout();
+        View subview = inflater.inflate(R.layout.summary, viewGroup);
+        
+        scheduleRefresh(subview);
+        setClickableUserStatsText(subview);
+    }
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -80,6 +104,36 @@ public class SummaryFragment extends ExtendedTitleFragment {
 
 	}
 
+	public void scheduleRefresh(final View inflatedView) {
+		getActivity().runOnUiThread(new Runnable() {
+			public void run() {
+
+				if (mMainActivity.isStatsDataAvailable()) {
+					drawPieChart(inflatedView);
+				}
+
+				int hogsCount = 0;
+				int bugsCount = 0;
+				if (CaratApplication.storage != null) {
+					SimpleHogBug[] h = CaratApplication.storage.getHogReport();
+					SimpleHogBug[] b = CaratApplication.storage.getBugReport();
+					if (h != null)
+						hogsCount = h.length;
+					if (b != null)
+						bugsCount = b.length;
+				}
+				TextView hogsCountTv = (TextView) inflatedView.findViewById(
+						R.id.summary_hogs_count);
+				hogsCountTv.setText(hogsCount + " " + getString(R.string.hogs));
+
+				TextView bugsCountTv = (TextView) inflatedView.findViewById(
+						R.id.summary_bugs_count);
+				bugsCountTv.setText(bugsCount + " " + getString(R.string.bugs));
+			}
+		});
+
+	}
+	
 	private void setClickableUserStatsText(final View inflatedView) {
 		CountClickListener l = new CountClickListener();
 
@@ -129,6 +183,16 @@ public class SummaryFragment extends ExtendedTitleFragment {
 	private void drawPieChart(final View inflatedView) {
 		mChart = (PieChart) inflatedView.findViewById(R.id.chart1);
 		mChart.setDescription("");
+		
+//		int orientation = getResources().getConfiguration().orientation;		
+//		switch (orientation) {
+//			case (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE):
+//				mChart.setValueTextSize(9);
+//				break;
+//			case (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT):
+//				mChart.setValueTextSize(15);
+//				break;
+//		}
 
 		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(),
 				"fonts/OpenSans-Regular.ttf");

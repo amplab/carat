@@ -213,8 +213,8 @@ public class MainActivity extends ActionBarActivity {
 			// How to modify the navigation drawer closing transition time: 
 			// http://stackoverflow.com/questions/19460683/speed-up-navigation-drawer-animation-speed-on-closing
 			
+			// consider menu item headers (additional menu items) when selecting an item
 			// TODO: use a dynamic approach
-			// consider headers when selecting an item
 			final int newPosition = (position <= 4) ? position : position - 1;
 			
 			mDrawerLayout.closeDrawer(mDrawerList);
@@ -478,8 +478,6 @@ public class MainActivity extends ActionBarActivity {
 		mArgs.putBoolean("isBugs", false);
 		frags[idx].setArguments(mArgs);
 		idx++;
-		// enable later (after figuring out an approach for calculating the expected benefit number)
-		// initSettingsSuggestionFragment();
 		frags[idx] = new CaratSettingsFragment();
 		idx++;
 		frags[idx] = new AboutFragment();
@@ -509,11 +507,11 @@ public class MainActivity extends ActionBarActivity {
 	 * fragment (task) stack
 	 */
 	public void replaceFragment(Fragment fragment, String tag, boolean showDrawerIndicator) {
+		// use a fragment tag, so that later on we can find the currently displayed fragment
+		final String FRAGMENT_TAG = tag;
 		// replace the fragment, using a fragment transaction
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		// use a fragment tag, so that later on we can find the currently displayed fragment
-		final String FRAGMENT_TAG = tag;
 		
 		transaction.replace(R.id.content_frame, fragment, FRAGMENT_TAG)
 					.addToBackStack(FRAGMENT_TAG)
