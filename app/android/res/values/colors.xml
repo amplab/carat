@@ -20,6 +20,8 @@
     <color name="gray">#585858</color>
     <color name="darkgray">#2E3235</color>
     <color name="darkgray2">#808080</color>
+    <color name="hogsOrange">#F0471F</color>
+    <color name="bugsYellow">#FA9626</color>
     <color name="lightgray">#AAAAAA</color>
 </resources>
 

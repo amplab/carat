@@ -154,12 +154,10 @@
 
     <string name="summary_unavailable_title">Ei vielä tuloksia</string>
     <string name="summary_unavailable_text">Odotetaan tuloksia palvelimelta &#8230;</string>
-    <string name="summary_your_device_has">Laitteellasi on</string>
-    <string name="summary_others_have">Muilla käyttäjillä on:</string>
+    <string name="summary_your_device_has">Sinun sovelluksesi</string>
     <string name="summary_conjunction">ja</string>
     <string name="summary_screen_title">Carat-tilastoja</string>
-    <string name="summary_android_apps">Android-sovellukset</string>
-    <string name="summary_chart_center_text">Android-\nsovellukset</string>
+    <string name="summary_chart_center_text">Muut-\nsovellukset</string>
     <string name="hogs">Hogia</string>
     <string name="bugs">Bugia</string>
     <string name="morestatsat">Lisää: carat.cs.helsinki.fi/statistics</string>

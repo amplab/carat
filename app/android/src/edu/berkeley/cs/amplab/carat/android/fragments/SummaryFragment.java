@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -140,15 +141,13 @@ public class SummaryFragment extends ExtendedTitleFragment {
 	private void setClickableUserStatsText(final View inflatedView) {
 		CountClickListener l = new CountClickListener();
 
-		TextView hogsCountTv = (TextView) inflatedView
+		Button hogsCount = (Button) inflatedView
 				.findViewById(R.id.summary_hogs_count);
-		hogsCountTv.setTextColor(Constants.CARAT_COLORS[1]);
-		hogsCountTv.setOnClickListener(l);
+		hogsCount.setOnClickListener(l);
 
-		TextView bugsCountTv = (TextView) inflatedView
+		Button bugsCount = (Button) inflatedView
 				.findViewById(R.id.summary_bugs_count);
-		bugsCountTv.setTextColor(Constants.CARAT_COLORS[2]);
-		bugsCountTv.setOnClickListener(l);
+		bugsCount.setOnClickListener(l);
 
 		/* Open Carat Statistics website on click: */
 		TextView morestats = (TextView) inflatedView
@@ -246,7 +245,7 @@ public class SummaryFragment extends ExtendedTitleFragment {
 		entries.add(new Entry((float) (bugs), 3));
 
 		PieDataSet ds1 = new PieDataSet(entries,
-				getString(R.string.summary_android_apps));
+				getString(R.string.summary_chart_center_text));
 		ds1.setColors(Constants.CARAT_COLORS);
 		ds1.setSliceSpace(2f);
 

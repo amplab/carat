@@ -1,124 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <!-- <TextView
-            android:id="@+id/summary_screen_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="3dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:text="@string/summary_screen_title"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/gray" /> -->
-    
-<LinearLayout 
-    android:layout_width="match_parent"
-    android:layout_height="0dp"
-    android:layout_weight="7"
     android:background="@android:color/background_light"
     android:orientation="horizontal" >
 
-    
-
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="10dip"
         android:orientation="vertical" >
-        
-        <!-- <TextView
-            android:id="@+id/summary_screen_title"
-            android:layout_width="match_parent"
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/summary_screen_title"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@color/gray" /> -->
+            android:text="@string/summary_your_device_has"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp"
-                android:text="@string/summary_your_device_has"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/gray" />
-
-            <TextView
-                android:id="@+id/summary_hogs_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/gray" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/summary_conjunction"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/gray" />
-
-            <TextView
-                android:id="@+id/summary_bugs_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/gray" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/others_have"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="80dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="2"
+            android:background="@drawable/battery_vert"
             android:gravity="start"
-            android:text="@string/summary_others_have"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/gray" />
+            android:orientation="vertical" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:contentDescription="Spacer"
+                android:src="@android:color/transparent" />
+
+            <Button
+                android:id="@+id/summary_hogs_count"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:background="@color/hogsOrange"
+                android:text="X Hogs" />
+
+            <Button
+                android:id="@+id/summary_bugs_count"
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:background="@color/bugsYellow"
+                android:text="Y Bugs" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:orientation="vertical" >
+
+        <!-- android:layout_weight="1" -->
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart1"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/morestats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
             android:clickable="true"
+            android:gravity="center"
+            android:layout_marginBottom="10dip"
             android:text="@string/morestatsat"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/blue" />
+
     </LinearLayout>
-
-    <!-- android:layout_weight="1" -->
-    
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-</LinearLayout>
 
 </LinearLayout>
