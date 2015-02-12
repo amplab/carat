@@ -421,7 +421,8 @@ public class MainActivity extends ActionBarActivity {
 	    new Thread() {
 	            public void run() {
 	                ((CaratApplication) getApplication()).refreshUi();
-	                refreshSummaryFragment();
+	                // This should only run if we are on that tab, so onResume of SummaryFragment should be enough.
+	                //refreshSummaryFragment();
 	            }}.start();
 		super.onResume();
 	}

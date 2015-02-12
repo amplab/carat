@@ -8,6 +8,7 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,34 +72,36 @@ public class SummaryFragment extends ExtendedTitleFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		Log.d("SummaryFragment", "onResume called");
 		scheduleRefresh();
 	}
 
 	public void scheduleRefresh() {
 		getActivity().runOnUiThread(new Runnable() {
 			public void run() {
+				View v = getView();
 
-				if (mMainActivity.isStatsDataAvailable()) {
-					drawPieChart(getView());
+				if (mMainActivity.isStatsDataAvailable() && v != null) {
+					drawPieChart(v);
 				}
 
 				int hogsCount = 0;
 				int bugsCount = 0;
-				if (CaratApplication.storage != null) {
+				if (CaratApplication.storage != null && v != null) {
 					SimpleHogBug[] h = CaratApplication.storage.getHogReport();
 					SimpleHogBug[] b = CaratApplication.storage.getBugReport();
 					if (h != null)
 						hogsCount = h.length;
 					if (b != null)
 						bugsCount = b.length;
-				}
-				TextView hogsCountTv = (TextView) getView().findViewById(
+				TextView hogsCountTv = (TextView) v.findViewById(
 						R.id.summary_hogs_count);
 				hogsCountTv.setText(hogsCount + " " + getString(R.string.hogs));
 
-				TextView bugsCountTv = (TextView) getView().findViewById(
+				TextView bugsCountTv = (TextView) v.findViewById(
 						R.id.summary_bugs_count);
 				bugsCountTv.setText(bugsCount + " " + getString(R.string.bugs));
+				}
 			}
 		});
 
@@ -181,6 +184,12 @@ public class SummaryFragment extends ExtendedTitleFragment {
 	}
 	
 	private void drawPieChart(final View inflatedView) {
+		// This fixes a crash I got 2015-02-11:
+		View v = inflatedView;
+		if (v == null)
+			v = getView();
+		if (v == null)
+			return;
 		mChart = (PieChart) inflatedView.findViewById(R.id.chart1);
 		mChart.setDescription("");
 		
