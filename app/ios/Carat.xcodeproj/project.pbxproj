@@ -21,7 +21,10 @@
 		661955B01A73FE4200865B2E /* jscoreinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = AB105EBE14EDCCD2000DB145 /* jscoreinfo.html */; };
 		661955B11A73FE4500865B2E /* memoryinfo.html in Resources */ = {isa = PBXBuildFile; fileRef = ABFCF9F714F6CDF600A508E0 /* memoryinfo.html */; };
 		661955B21A74044300865B2E /* Carat-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Carat-Info.plist */; };
+		6622E4721A852C14004A7EDF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6622E4701A852C14004A7EDF /* SettingsViewController.m */; };
+		6622E4731A852C14004A7EDF /* SettingsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6622E4711A852C14004A7EDF /* SettingsView.xib */; };
 		6676D13C1A4DDCDB0002FC1F /* CaratConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 6676D13B1A4DDCDB0002FC1F /* CaratConstants.m */; };
+		66D41BCB1A8F8EF800044C66 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 66D41BCA1A8F8EF800044C66 /* settings.png */; };
 		66EC15071A2A6A8E00153746 /* infoButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66EC15051A2A6A8E00153746 /* infoButton@2x.png */; };
 		66EC15081A2A6A8E00153746 /* infoButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 66EC15061A2A6A8E00153746 /* infoButton.png */; };
 		AB244AF814E10D660055FCD6 /* ActionItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AB244AF714E10D660055FCD6 /* ActionItemCell.xib */; };
@@ -178,8 +181,12 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5232799E42F24276948A951D /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		661955B31A740E2D00865B2E /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
+		6622E46F1A852C14004A7EDF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		6622E4701A852C14004A7EDF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		6622E4711A852C14004A7EDF /* SettingsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsView.xib; sourceTree = "<group>"; };
 		6676D13A1A4DDCDB0002FC1F /* CaratConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CaratConstants.h; sourceTree = "<group>"; };
 		6676D13B1A4DDCDB0002FC1F /* CaratConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaratConstants.m; sourceTree = "<group>"; };
+		66D41BCA1A8F8EF800044C66 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		66EC15051A2A6A8E00153746 /* infoButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "infoButton@2x.png"; sourceTree = "<group>"; };
 		66EC15061A2A6A8E00153746 /* infoButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = infoButton.png; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Carat-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Carat-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -712,6 +719,9 @@
 				C14F5C2C145BD4D300087F74 /* AsyncSocket.h */,
 				C14F5C2D145BD4D300087F74 /* AsyncSocket.m */,
 				1D3623240D0F684500981E51 /* CaratAppDelegate.h */,
+				6622E46F1A852C14004A7EDF /* SettingsViewController.h */,
+				6622E4701A852C14004A7EDF /* SettingsViewController.m */,
+				6622E4711A852C14004A7EDF /* SettingsView.xib */,
 				AB41CDF6144E1E520090CC09 /* CaratAppDelegate.m */,
 				AB41CDF1144E1AF60090CC09 /* UIDeviceProc.h */,
 				AB41CDF2144E1AF60090CC09 /* UIDeviceProc.m */,
@@ -881,6 +891,7 @@
 				C7547E0C19963CCD007A01CF /* icon152.png */,
 				AB645DF51456F9EC0008244B /* icon57.png */,
 				C7547F3819963CFD007A01CF /* 32-iphone.png */,
+				66D41BCA1A8F8EF800044C66 /* settings.png */,
 				C704AE531A03B90200E4F13C /* bug.png */,
 				C704AE551A03B90200E4F13C /* icon57.png */,
 				C704AE571A03B90200E4F13C /* twologo.png */,
@@ -1478,6 +1489,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C75488CF19963D04007A01CF /* icon114.png in Resources */,
+				66D41BCB1A8F8EF800044C66 /* settings.png in Resources */,
 				C7548BBD19963D04007A01CF /* ProcessListView.xib in Resources */,
 				C7548BBF19963D04007A01CF /* procmanager2.png in Resources */,
 				C704AE621A03B90200E4F13C /* twologo.png in Resources */,
@@ -1490,6 +1502,7 @@
 				661955AF1A73FE3D00865B2E /* consent.html in Resources */,
 				C75488E419963D04007A01CF /* jscoreplot.png in Resources */,
 				AB645E021456FE530008244B /* Default.png in Resources */,
+				6622E4731A852C14004A7EDF /* SettingsView.xib in Resources */,
 				C704AE5E1A03B90200E4F13C /* bug.png in Resources */,
 				C75488BF19963D04007A01CF /* Default-Landscape.png in Resources */,
 				AB645E041456FF1F0008244B /* Default@2x.png in Resources */,
@@ -1657,6 +1670,7 @@
 				ABC07A2414859EBE00FCC2C2 /* AboutViewController.m in Sources */,
 				C754888919963D03007A01CF /* DatabaseManager.m in Sources */,
 				C754888A19963D03007A01CF /* DetailViewController.m in Sources */,
+				6622E4721A852C14004A7EDF /* SettingsViewController.m in Sources */,
 				C754888719963D03007A01CF /* CoreDataSubReport.m in Sources */,
 				C754888D19963D03007A01CF /* HiddenAppsViewController.m in Sources */,
 			);
@@ -1682,7 +1696,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Haris (2YA6548F88)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1715,7 +1729,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
+				PROVISIONING_PROFILE = "50d7b4b7-e12f-416b-9d06-6769342e0806";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/BuildHeaders/";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/** $(PROJECT_DIR)/Pods/BuildHeaders/";
 			};
@@ -1729,7 +1743,7 @@
 				CLANG_ENABLE_OBJC_ARC = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Haris (2YA6548F88)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1758,7 +1772,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
+				PROVISIONING_PROFILE = "50d7b4b7-e12f-416b-9d06-6769342e0806";
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/BuildHeaders/ $(PROJECT_DIR)/Pods/BuildHeaders/";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "$(BUILT_PRODUCTS_DIR)/** $(PROJECT_DIR)/Pods/BuildHeaders/";
@@ -1791,7 +1805,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = Entitlements.plist;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Eemil Lagerspetz (K5L69FXDVN)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Muhammad Haris (2YA6548F88)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1820,7 +1834,7 @@
 					"$(inherited)",
 				);
 				PRODUCT_NAME = Carat;
-				PROVISIONING_PROFILE = "6bf03b33-417c-4270-8fb0-69a9f121c832";
+				PROVISIONING_PROFILE = "50d7b4b7-e12f-416b-9d06-6769342e0806";
 				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Pods/BuildHeaders/";
 				VALIDATE_PRODUCT = YES;
 			};

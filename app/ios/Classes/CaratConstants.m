@@ -12,4 +12,6 @@ NSString* const kSamplesSentCountUpdateNotification = @"SampleSentCountUpdateNot
 NSString* const kSamplesSent = @"SamplesSent";
 NSString* const kMemoryUsed = @"memoryUsed";
 NSString* const kMemoryActive = @"memoryActive";
-
+NSString* const kUseWifiOnly = @"useWifiOnly";
+NSString* const kIsInternetActive = @"isInternetActive";
+NSString* const kUpdateNetworkStatusNotification = @"UpdateNetworkStatusNotification";

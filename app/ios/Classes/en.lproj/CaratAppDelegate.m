@@ -18,7 +18,7 @@
 #import "HogReportViewController.h"
 #import "BugReportViewController.h"
 #import "ConsentViewController.h"
-#import "AboutViewController.h"
+#import "SettingsViewController.h"
 #import <Socialize/Socialize.h>
 
 @implementation CaratAppDelegate
@@ -99,7 +99,7 @@ void onUncaughtException(NSException *exception)
     if (self.window == nil) self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     UIViewController *viewController0, *viewController1, *viewController2, *viewController3, *viewController4;
 
-    UINavigationController *navController0, *navController1, *navController2, *navController3;
+    UINavigationController *navController0, *navController1, *navController2, *navController3, *navController4;
     viewController0 = [[ActionViewController alloc] initWithNibName:@"ActionView" bundle:nil];
     navController0 = [[UINavigationController alloc] initWithRootViewController:viewController0];
     navController0.navigationBar.translucent = NO;
@@ -116,10 +116,14 @@ void onUncaughtException(NSException *exception)
     navController3 = [[UINavigationController alloc] initWithRootViewController:viewController3];
     navController3.navigationBar.translucent = NO;
     navController3.navigationBarHidden = YES;
-    viewController4 = [[AboutViewController alloc] initWithNibName:@"AboutView" bundle:nil];
+	viewController4 = [[SettingsViewController alloc] initWithNibName:@"SettingsView" bundle:nil];
+
+	navController4 = [[UINavigationController alloc] initWithRootViewController:viewController4];
+	navController4.navigationBar.translucent = NO;
+	navController4.navigationBarHidden = YES;
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
    self.tabBarController.tabBar.translucent = NO;
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, viewController4, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects:navController0, navController1, navController2, navController3, navController4, nil];
 
 
 

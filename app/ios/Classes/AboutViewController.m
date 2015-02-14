@@ -52,12 +52,6 @@
     // Normal error handling…
 }
 
-#pragma mark - View lifecycle
--(void)viewWillLayoutSubviews{
-	self.navigationController.navigationBarHidden = YES;
-	[super viewWillLayoutSubviews];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -79,9 +73,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[self.navigationController setNavigationBarHidden:NO animated:YES];
     [super viewWillAppear:animated];
-    
-    [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
+	 [[CoreDataManager instance] checkConnectivityAndSendStoredDataToServer];
 }
 
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {

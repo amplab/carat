@@ -239,6 +239,7 @@ static NSString * networkStatusString;
             DLog(@"%s NetworkStatus changed to NotReachable", __PRETTY_FUNCTION__);
             isInternetActive = NO;
             networkStatusString = @"NotReachable";
+			[self _postNetworkStatusNotification];
             break;
         }
         case ReachableViaWiFi:
@@ -246,17 +247,33 @@ static NSString * networkStatusString;
             DLog(@"%s NetworkStatus changed to ReachableViaWiFi", __PRETTY_FUNCTION__);
             isInternetActive = YES;
             networkStatusString = @"ReachableViaWiFi";
+			[self _postNetworkStatusNotification];
             break;
         }
         case ReachableViaWWAN:
         {
             DLog(@"%s NetworkStatus changed to ReachableViaWWAN", __PRETTY_FUNCTION__);
-            isInternetActive = YES;
-            networkStatusString = @"ReachableViaWWAN";
+			isInternetActive = NO;
+
+			if(!isUsingWifiOnly)
+				isInternetActive = YES;
+
+			networkStatusString = @"ReachableViaWWAN";
+			[self _postNetworkStatusNotification];
             break;
         }
     }
 }
+
+-(void) _postNetworkStatusNotification{
+	dispatch_async(dispatch_get_main_queue(), ^{
+
+		NSDictionary* userInfo = @{kIsInternetActive:[NSNumber numberWithBool:isInternetActive]};
+		[[NSNotificationCenter defaultCenter] postNotificationName:kUpdateNetworkStatusNotification object:nil userInfo:userInfo];
+	});
+}
+
+
 
 //
 // Cleanup stuff.

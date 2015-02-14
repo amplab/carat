@@ -9,13 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "MBProgressHUD.h"
 
-@class Reachability;
 
 @interface ActionViewController : UIViewController <MBProgressHUDDelegate> {
     
     NSMutableArray *actionList;
     MBProgressHUD *HUD;
-    Reachability* internetReachable;
     
     IBOutlet UITableView *actionTable;
 }
@@ -29,8 +27,5 @@
 - (void)loadDataWithHUD;
 - (void)loadDataWithHUD:(id)obj;
 - (BOOL)isFresh;
-- (void) setupReachabilityNotifications;
-- (void) teardownReachabilityNotifications;
-- (void) checkForUpdatable:(NSNotification *) notice;
 
 @end
