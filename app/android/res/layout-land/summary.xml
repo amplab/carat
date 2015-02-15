@@ -19,21 +19,24 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/gray" />
 
-        <LinearLayout
+        <edu.berkeley.cs.amplab.carat.android.ui.BatteryLayoutView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="2dp"
             android:layout_weight="2"
-            android:background="@drawable/battery_vert"
             android:gravity="start"
             android:orientation="vertical" >
 
-            <ImageView
+            <Button
+                android:id="@+id/active_bl"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
+                android:layout_marginTop="20dip"
                 android:contentDescription="Spacer"
+                android:text="11h 30m"
+                android:background="@color/greencarat"
                 android:src="@android:color/transparent" />
 
             <Button
@@ -51,7 +54,7 @@
                 android:layout_weight="1"
                 android:background="@color/bugsYellow"
                 android:text="Y Bugs" />
-        </LinearLayout>
+        </edu.berkeley.cs.amplab.carat.android.ui.BatteryLayoutView>
     </LinearLayout>
 
     <LinearLayout

@@ -17,7 +17,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/gray" />
 
-    <LinearLayout
+    <edu.berkeley.cs.amplab.carat.android.ui.BatteryLayoutView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="0dp"
@@ -25,7 +25,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_weight="3"
-        android:background="@drawable/battery"
         android:gravity="start"
         android:orientation="horizontal" >
 
@@ -45,14 +44,17 @@
             android:layout_weight="1"
             android:text="Y Bugs" />
 
-        <ImageView
+        <Button
+            android:id="@+id/active_bl"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:contentDescription="Spacer"
+            android:layout_marginRight="20dip"
+            android:text="11h 30m"
+            android:background="@color/greencarat"
             android:src="@android:color/transparent" />
 
-    </LinearLayout>
+    </edu.berkeley.cs.amplab.carat.android.ui.BatteryLayoutView>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart1"

@@ -568,6 +568,10 @@ public class MainActivity extends ActionBarActivity {
 			((SummaryFragment) frags[0]).scheduleRefresh();
 	}
 	
+	public Fragment getMydeviceFragment() {
+        return frags[2];
+    }
+	
 	public Fragment getHogsFragment() {
 		return frags[4];
 	}
