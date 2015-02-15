@@ -81,7 +81,11 @@ public class SummaryFragment extends ExtendedTitleFragment {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 View v = getView();
-
+                if (v != null){
+                String batteryLife = CaratApplication.myDeviceData.getBatteryLife();
+                Button green = (Button) v.findViewById(R.id.active_bl);
+                green.setText(batteryLife);
+                }
                 if (mMainActivity.isStatsDataAvailable() && v != null) {
                     drawPieChart(v);
                 }
@@ -100,9 +104,6 @@ public class SummaryFragment extends ExtendedTitleFragment {
 
                     Button bugsCountTv = (Button) v.findViewById(R.id.summary_bugs_count);
                     bugsCountTv.setText(bugsCount + " " + getString(R.string.bugs));
-                    String batteryLife = CaratApplication.myDeviceData.getBatteryLife();
-                    Button green = (Button) v.findViewById(R.id.active_bl);
-                    green.setText(batteryLife);
                 }
             }
         });

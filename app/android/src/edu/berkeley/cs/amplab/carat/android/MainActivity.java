@@ -342,6 +342,9 @@ public class MainActivity extends ActionBarActivity {
 
 	public void setTitleUpdating(String what) {
 		setTitle(getString(R.string.updating) + " " + what);
+		// this is quick hack to update SummaryFragment.
+		if (what.equals(getString(R.string.finishing)))
+		    refreshSummaryFragment();
 	}
 
 	public void setTitleUpdatingFailed(String what) {
