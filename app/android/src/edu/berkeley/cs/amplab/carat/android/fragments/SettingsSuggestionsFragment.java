@@ -131,11 +131,6 @@ public class SettingsSuggestionsFragment extends ExtendedTitleFragment implement
     	mMainActivity.safeStart(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS, getString(R.string.mobilenetworksettings));
     }
 
-    /* Show the application setting */
-    public void GoToAppScreen() {
-    	mMainActivity.safeStart(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS, getString(R.string.appsettings));
-    }    
-
     /**
      * Open a Carat-related questionnaire.
      */

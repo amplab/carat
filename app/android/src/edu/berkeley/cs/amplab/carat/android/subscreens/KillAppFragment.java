@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import edu.berkeley.cs.amplab.carat.android.CaratApplication;
+import edu.berkeley.cs.amplab.carat.android.MainActivity;
 import edu.berkeley.cs.amplab.carat.android.R;
 import edu.berkeley.cs.amplab.carat.android.fragments.ExtendedTitleFragment;
 import edu.berkeley.cs.amplab.carat.android.protocol.ClickTracking;
@@ -109,7 +110,7 @@ public class KillAppFragment extends ExtendedTitleFragment {
 					}
 					
 					// FIXME: implement this method (show AppManager in a fragment/screen)
-					// GoToAppScreen();
+					GoToAppScreen();
 				}
 			});
 		} else { // Other action
@@ -125,4 +126,9 @@ public class KillAppFragment extends ExtendedTitleFragment {
 		// layout file
 		return view;
 	}
+	
+    /* Show the application setting */
+    public void GoToAppScreen() {
+        ((MainActivity) getActivity()).safeStart(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS, getString(R.string.appsettings));
+    }
 }

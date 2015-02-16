@@ -6,7 +6,7 @@ These are the same for all languages. When translating,
 delete these from your file.
     -->
     <string name="app_name">Carat</string>
-    <string name="version_name">1.0</string>
+    <string name="version_name">1.01</string>
        
     <string name="jsna">N/A</string>
     <string name="fake_id">0</string>
